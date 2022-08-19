@@ -6,7 +6,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>PFPLAY</title>
+        <title>DEV-PFPLAY</title>
         <meta name="description" content="Your Space" />
       </Head>
       <Image src="/image/main.png" alt="main" layout="fill" />
