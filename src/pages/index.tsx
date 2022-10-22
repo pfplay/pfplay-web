@@ -9,7 +9,8 @@ const Home: NextPage = () => {
         <title>DEV-PFPLAY</title>
         <meta name="description" content="Your Space" />
       </Head>
-      <Image src="/image/main.png" alt="main" layout="fill" />
+      <div>H2</div>
+      {/* <Image src="/image/main.png" alt="main" layout="fill" /> */}
     </div>
   );
 };
