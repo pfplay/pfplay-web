@@ -9,7 +9,7 @@ const Home: NextPage = () => {
         <title>DEV-PFPLAY</title>
         <meta name="description" content="Your Space" />
       </Head>
-      <div>H2</div>
+      <h1 className="text-3xl font-bold">Hello world! 안녕</h1>
       {/* <Image src="/image/main.png" alt="main" layout="fill" /> */}
     </div>
   );
