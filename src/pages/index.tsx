@@ -1,5 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const Home: NextPage = () => {
   return (
@@ -16,8 +18,7 @@ const Home: NextPage = () => {
           zIndex: -1,
         }}
       >
-        {/* 임시 백그라운드 */}
-        {/* <Image src="/image/main.png" alt="main" layout="fill" objectFit="cover" /> */}
+        <Image src="/image/Onboard.png" alt="Onboard" layout="fill" objectFit="cover" />
       </div>
 
       {/* 진입 화면 코드 */}
@@ -26,9 +27,11 @@ const Home: NextPage = () => {
           <p className="ml-14 mb-5 font-semibold underline underline-offset-4 text-sm cursor-pointer">Privacy&Terms</p>
         </div>
         <div className="flex flex-col text-center my-auto pr-14">
-          <h1 className="text-4xl font-bold mb-10 mt-10">PFPlay</h1>
+          <h1 className="text-4xl font-extrabold mb-10 mt-10 tracking-wide">PFPlay</h1>
           <button>
-            <p className="text-xl border-none border-2 rounded-full bg-red-800 text-white py-4 px-16">Let your PFP Play</p>
+            <Link href="./login">
+              <p className="text-xl font-extrabold border-none border-2 rounded-full bg-red-800 text-white py-4 px-16">Let your PFP Play</p>
+            </Link>
           </button>
           <p className="underline underline-offset-4 font-semibold mt-16 cursor-pointer	">당신의 PFP는 안녕하신가요?</p>
         </div>
