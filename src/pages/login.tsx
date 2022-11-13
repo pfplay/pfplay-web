@@ -1,9 +1,16 @@
 import type { NextPage } from 'next';
+import { signIn } from 'next-auth/react';
 import Head from 'next/head';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Login: NextPage = () => {
+  const router = useRouter();
+  const signInGoogle = () => {
+    signIn('google', { callbackUrl: '/' });
+  };
+
   return (
     <div>
       <Head>
@@ -18,7 +25,7 @@ const Login: NextPage = () => {
           zIndex: -1,
         }}
       >
-        <Image src="/image/Onboard.png" alt="Onboard" layout="fill" objectFit="cover" />
+        <Image src="/image/Onboard.png" alt="Onboard" fill />
       </div>
 
       {/* 로그인 화면 코드 */}
@@ -32,9 +39,9 @@ const Login: NextPage = () => {
         </div>
         <div className="flex flex-col text-center my-auto">
           <h1 className="text-4xl font-extrabold mb-10 mt-10 tracking-wide">PFPlay</h1>
-          <button className="text-xl border-solid border-2 rounded-full  py-4 w-72 pr-8 font-extrabold flex justify-center border-gray-500 ">
-            <img className="w-7 relative right-14" src="./icons/google.png" />
-            Google
+          <button className="text-xl border-solid border-2 rounded-full  py-4 w-72 pr-8 font-extrabold flex justify-center border-gray-500 " onClick={signInGoogle}>
+            <Image className="mr-4 ml-4" src="/icons/google.png" alt="google login" width={28} height={28} />
+            <p>Sign in with Google</p>
           </button>
           <p className="font-semibold mt-8">OR</p>
           <span className="flex justify-center">
