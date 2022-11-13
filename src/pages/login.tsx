@@ -41,7 +41,7 @@ const Login: NextPage = () => {
           <h1 className="text-4xl font-extrabold mb-10 mt-10 tracking-wide">PFPlay</h1>
           <button className="text-xl border-solid border-2 rounded-full  py-4 w-72 pr-8 font-extrabold flex justify-center border-gray-500 " onClick={signInGoogle}>
             <Image className="mr-4 ml-4" src="/icons/google.png" alt="google login" width={28} height={28} />
-            <p>Sign in with Google</p>
+            <p>Sign in With Google</p>
           </button>
           <p className="font-semibold mt-8">OR</p>
           <span className="flex justify-center">
