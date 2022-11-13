@@ -9,6 +9,7 @@ export default NextAuth({
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET ?? '',
     }),
   ],
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
   callbacks: {
     // token: 구글 로그인을 통해 받은 정보 (user, access_token)
     jwt: async ({ token, account }) => {
