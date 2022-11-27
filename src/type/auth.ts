@@ -1,5 +1,4 @@
-import { Session } from 'next-auth';
-
-export interface SessionWithAuth extends Session {
-  access_token?: string;
+export interface loginResponse {
+  access_token: string;
+  token_type: string;
 }
