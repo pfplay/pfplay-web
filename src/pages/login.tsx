@@ -26,8 +26,7 @@ const Login: NextPage = () => {
         isOpen={isOpen}
         onClose={handleCloseModal}
         title={'잠깐만요!'}
-        content={`비로그인 입장 시 접근 가능한 기능이 제한됩니다
-구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요`}
+        content={`비로그인 입장 시 접근 가능한 기능이 제한됩니다 구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요`}
         cancelTitle={'비로그인 입장하기'}
         okTitle={'구글 연동하기'}
         onOk={signInGoogle}
