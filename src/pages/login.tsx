@@ -4,8 +4,17 @@ import Head from 'next/head';
 import Image from 'next/future/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { NotificationModal } from '@components/modal/NotificationModal';
+import { useCallback, useState } from 'react';
 
 const Login: NextPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpenModal = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+  const handleCloseModal = useCallback(() => {
+    setIsOpen(false);
+  }, []);
   const router = useRouter();
   const signInGoogle = () => {
     signIn('google', { callbackUrl: '/' });
@@ -13,6 +22,16 @@ const Login: NextPage = () => {
 
   return (
     <div>
+      <NotificationModal
+        isOpen={isOpen}
+        onClose={handleCloseModal}
+        title={'잠깐만요!'}
+        content={`비로그인 입장 시 접근 가능한 기능이 제한됩니다
+구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요`}
+        cancelTitle={'비로그인 입장하기'}
+        okTitle={'구글 연동하기'}
+        onOk={signInGoogle}
+      />
       <Head>
         <title>DEV-PFPLAY</title>
         <meta name="description" content="Your Space" />
@@ -45,7 +64,9 @@ const Login: NextPage = () => {
           </button>
           <p className="font-semibold mt-8">OR</p>
           <span className="flex justify-center">
-            <p className="underline underline-offset-8 font-semibold mt-8 cursor-pointer w-36 ">먼저 둘러볼래요</p>
+            <button className="underline underline-offset-8 font-semibold mt-8 cursor-pointer w-36 " onClick={handleOpenModal}>
+              먼저 둘러볼래요
+            </button>
           </span>
         </div>
 
