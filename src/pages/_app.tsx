@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import '@styles/globals.css';
 import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react';
 import { Session } from 'next-auth';
+import { Background } from '@components/ui/Background';
 
 function MyApp({
   Component,
@@ -14,6 +15,7 @@ function MyApp({
   return (
     <SessionProvider session={pageProps.session}>
       <ThirdwebProvider desiredChainId={ChainId.Mainnet}>
+        <Background />
         <Component {...pageProps} />
       </ThirdwebProvider>
     </SessionProvider>
