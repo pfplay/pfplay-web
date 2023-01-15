@@ -45,6 +45,7 @@
     "*.{js,css,md}": "prettier --write ."
   },
   "dependencies": {
+    "@hookform/resolvers": "^2.9.10",
     "@tanstack/react-query": "^4.13.0",
     "@thirdweb-dev/react": "^3.6.2",
     "@thirdweb-dev/sdk": "^3.6.2",
@@ -54,9 +55,11 @@
     "next-auth": "^4.16.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.41.5",
     "react-modal": "^3.16.1",
     "recoil": "^0.7.6",
-    "tailwind-scrollbar-hide": "^1.1.7"
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@havenmoney/organize-imports-cli": "^0.4.0",

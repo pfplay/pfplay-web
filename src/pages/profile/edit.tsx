@@ -1,10 +1,29 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useForm } from 'react-hook-form'
 
 import { Header } from '@/components/Header'
 import { BackButtonItem } from '@/components/ui/BackButtonItem'
+import { profileSchema } from '@/utils/form/schema/profile'
 
 const ProfileEditPage: NextPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(profileSchema),
+    defaultValues: {
+      nickname: '',
+      introduction: '',
+    },
+  })
+
+  const nicknameError = errors.nickname
+  const introductionError = errors.introduction
+
   return (
     <>
       <Head>
@@ -14,18 +33,53 @@ const ProfileEditPage: NextPage = () => {
       </Head>
       <Header />
       <div className="w-full h-[60px]" />
-      <main className="px-[120px] mw-[1680px] h-[600px]">
+      <main className="position: relative h-[600px] bg-[#111111] mx-[120px] pt-[46px] px-[60px]">
         <BackButtonItem title="당신은 누구신가요?" />
-        <div className="flex flex-col items-center justify-center h-full">
-          <div className="flex gap-10 mb-[76px] items-center">
+        <form className="w-[650px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          {/* nickname */}
+          <div className={`flex justify-between ${!nicknameError && 'mb-[76px]'}`}>
             <p className="text-white">닉네임*</p>
-            <input className="w-[536px] border border-solid border-[#2F2F2F] bg-[#2F2F2F] rounded h-12" />
+            <div className="flex flex-col">
+              <input
+                className="w-[536px] border border-solid border-[#2F2F2F] bg-[#2F2F2F] rounded h-12 px-2 placeholder:text-xs"
+                {...register('nickname')}
+                placeholder="한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가"
+              />
+              {nicknameError ? (
+                <span role="alert" className={'text-red-500 text-xs mb-[52px] mt-[8px]'}>
+                  {errors?.nickname?.message ??
+                    '한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'}
+                </span>
+              ) : (
+                <div className="mb-[0px]" />
+              )}
+            </div>
           </div>
-          <div className="flex gap-[65px] items-center">
+          {/* introduction */}
+          <div className="flex justify-between">
             <p className="text-white">소개</p>
-            <input className="w-[536px] border border-solid border-[#2F2F2F] bg-[#2F2F2F] rounded h-12" />
+            <div className="flex flex-col">
+              <textarea
+                className="w-[536px] border border-solid border-[#2F2F2F] bg-[#2F2F2F] rounded h-12 pt-2 px-2"
+                {...register('introduction')}
+                placeholder="한/영 구분 없이 띄어쓰기 포함 50자 제한"
+              />
+              {introductionError ? (
+                <span role="alert" className={'text-red-500 text-xs mt-[8px]'}>
+                  {errors?.introduction?.message ??
+                    '한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'}
+                </span>
+              ) : (
+                <div className="mb-[0px]" />
+              )}
+            </div>
           </div>
-        </div>
+        </form>
+        <button
+          onClick={handleSubmit(e => console.log(e))}
+          className="absolute bottom-[48px] right-[60px] bg-[#1C1C1C] text-[#434343] font-bold-sm px-[96px] py-[12px]">
+          Let&apos;s get in
+        </button>
       </main>
     </>
   )

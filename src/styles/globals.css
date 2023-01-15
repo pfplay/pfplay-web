@@ -20,3 +20,8 @@ html {
 .ReactModal__Overlay--before-close {
   opacity: 0;
 }
+
+textarea:focus,
+input:focus {
+  outline: none;
+}
