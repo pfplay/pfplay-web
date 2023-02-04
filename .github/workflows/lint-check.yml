@@ -1,0 +1,16 @@
+name: lint check
+
+on: pull_request
+
+jobs:
+  eslint-test:
+    name: eslint test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+      - run: npm i -g yarn
+      - run: yarn
+      - run: yarn lint
