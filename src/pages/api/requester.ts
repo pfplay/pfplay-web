@@ -1,33 +1,33 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { getSession } from 'next-auth/react';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { getSession } from 'next-auth/react'
 
-const API_HOST_NAME = process.env.NEXT_PUBLIC_API_HOST_NAME;
+const API_HOST_NAME = process.env.NEXT_PUBLIC_API_HOST_NAME
 
 const defaultHeader = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
-};
+}
 
 const createHeaderWithAuthToken = (token: string) => {
   if (!token) {
-    return defaultHeader;
+    return defaultHeader
   }
 
   return {
     ...defaultHeader,
     Authorization: `Bearer ${token}`,
-  };
-};
+  }
+}
 
 const createHeaderWithSessionAuthToken = async () => {
-  const session = await getSession();
+  const session = await getSession()
 
   if (!session) {
-    throw new Error('Auth Error : session not set');
+    throw new Error('Auth Error : session not set')
   }
 
-  return createHeaderWithAuthToken(session?.user?.accessToken);
-};
+  return createHeaderWithAuthToken(session?.user?.accessToken)
+}
 
 const request = async (options: AxiosRequestConfig) => {
   try {
@@ -36,22 +36,24 @@ const request = async (options: AxiosRequestConfig) => {
       timeout: 30000,
       withCredentials: true, // 쿠키 전송 허용
       ...options,
-    });
+    })
 
-    return response;
+    return response
   } catch (err) {
-    console.log(err);
+    console.log(err)
   }
-};
+}
 
-export const publicRequest = async <T>(options: AxiosRequestConfig): Promise<AxiosResponse<T> | undefined> => {
-  const headers = { ...defaultHeader, ...options.headers };
+export const publicRequest = async <T>(
+  options: AxiosRequestConfig,
+): Promise<AxiosResponse<T> | undefined> => {
+  const headers = { ...defaultHeader, ...options.headers }
 
-  return request({ ...options, headers });
-};
+  return request({ ...options, headers })
+}
 
 export const requestWithAuth = async (options: AxiosRequestConfig) => {
-  const headers = { ...(await createHeaderWithSessionAuthToken()), ...options.headers };
+  const headers = { ...(await createHeaderWithSessionAuthToken()), ...options.headers }
 
-  return request({ ...options, headers });
-};
+  return request({ ...options, headers })
+}

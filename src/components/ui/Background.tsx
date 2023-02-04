@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from 'next/image'
 
 export const Background = () => {
   return (
@@ -6,9 +6,8 @@ export const Background = () => {
       className="bg-black fixed w-screen h-screen"
       style={{
         zIndex: -1,
-      }}
-    >
+      }}>
       <Image src="/image/Onboard.png" alt="Onboard" layout="fill" />
     </div>
-  );
-};
+  )
+}

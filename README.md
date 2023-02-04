@@ -2,7 +2,7 @@
 
 ### Web Directory Structure
 
-Last Update (221020) 
+Last Update (221020)
 
 - `public` : nextjs에서 절대경로로 접근할 수 있는 assets을 저장하는 폴더
   - `icons` : 아이콘 컴포넌트로 사용될 svg 파일의 모음

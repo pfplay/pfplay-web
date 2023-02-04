@@ -16,15 +16,9 @@
     "incremental": true,
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["./components/*"],
-      "@core/*": ["./core/*"],
-      "@pages/*": ["./pages/*"],
-      "@shared/*": ["./shared/*"],
-      "@styles/*": ["./styles/*"],
-      "@types/*": ["./types/*"],
-      "@utils/*": ["./utils/*"]
+      "@/*": ["*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "next-auth.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

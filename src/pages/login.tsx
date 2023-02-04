@@ -1,24 +1,23 @@
-import type { NextPage } from 'next';
-import { signIn } from 'next-auth/react';
-import Head from 'next/head';
-import Image from 'next/future/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { NotificationModal } from '@components/modal/NotificationModal';
-import { useCallback, useState } from 'react';
+import type { NextPage } from 'next'
+import Image from 'next/future/image'
+import Head from 'next/head'
+import Link from 'next/link'
+import { signIn } from 'next-auth/react'
+import { useCallback, useState } from 'react'
+
+import { NotificationModal } from '@/components/modal/NotificationModal'
 
 const Login: NextPage = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
   const handleOpenModal = useCallback(() => {
-    setIsOpen(true);
-  }, []);
+    setIsOpen(true)
+  }, [])
   const handleCloseModal = useCallback(() => {
-    setIsOpen(false);
-  }, []);
-  const router = useRouter();
+    setIsOpen(false)
+  }, [])
   const signInGoogle = () => {
-    signIn('google', { callbackUrl: '/' });
-  };
+    signIn('google', { callbackUrl: '/' })
+  }
 
   return (
     <div>
@@ -26,7 +25,9 @@ const Login: NextPage = () => {
         isOpen={isOpen}
         onClose={handleCloseModal}
         title={'잠깐만요!'}
-        content={`비로그인 입장 시 접근 가능한 기능이 제한됩니다 구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요`}
+        content={
+          '비로그인 입장 시 접근 가능한 기능이 제한됩니다 구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요'
+        }
         cancelTitle={'비로그인 입장하기'}
         okTitle={'구글 연동하기'}
         onOk={signInGoogle}
@@ -41,8 +42,7 @@ const Login: NextPage = () => {
         className=" bg-black fixed w-screen h-screen"
         style={{
           zIndex: -1,
-        }}
-      >
+        }}>
         <Image src="/image/Onboard.png" alt="Onboard" fill />
       </div>
 
@@ -50,20 +50,40 @@ const Login: NextPage = () => {
       <div className="flex justify-between h-screen text-white">
         <div className="ml-4 mt-5">
           <Link href="/">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 cursor-pointer">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-8 h-8 cursor-pointer">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+              />
             </svg>
           </Link>
         </div>
         <div className="flex flex-col text-center my-auto">
           <h1 className="text-4xl font-extrabold mb-10 mt-10 tracking-wide">PFPlay</h1>
-          <button className="text-xl border-solid border-2 rounded-full  py-4 w-72 pr-8 font-extrabold flex justify-center border-gray-500 " onClick={signInGoogle}>
-            <Image className="mr-4 ml-4" src="/icons/google.png" alt="google login" width={28} height={28} />
+          <button
+            className="text-xl border-solid border-2 rounded-full  py-4 w-72 pr-8 font-extrabold flex justify-center border-gray-500 "
+            onClick={signInGoogle}>
+            <Image
+              className="mr-4 ml-4"
+              src="/icons/google.png"
+              alt="google login"
+              width={28}
+              height={28}
+            />
             <p>Sign in With Google</p>
           </button>
           <p className="font-semibold mt-8">OR</p>
           <span className="flex justify-center">
-            <button className="underline underline-offset-8 font-semibold mt-8 cursor-pointer w-36 " onClick={handleOpenModal}>
+            <button
+              className="underline underline-offset-8 font-semibold mt-8 cursor-pointer w-36 "
+              onClick={handleOpenModal}>
               먼저 둘러볼래요
             </button>
           </span>
@@ -71,7 +91,13 @@ const Login: NextPage = () => {
 
         <div className="flex flex-col">
           <div className="mr-4 mt-4 cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-10 h-10">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -82,7 +108,7 @@ const Login: NextPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
