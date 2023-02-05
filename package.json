@@ -6,9 +6,43 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore ."
+    "lint": "eslint --ext .ts,.tsx . --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "prepare": "husky install"
+  },
+  "prettier": "@thumbsu/prettier-config",
+  "eslintConfig": {
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "extends": [
+      "@thumbsu/eslint-config",
+      "next/core-web-vitals"
+    ],
+    "rules": {
+      "react/jsx-uses-react": "off",
+      "react/react-in-jsx-scope": "off",
+      "@typescript-eslint/no-unsafe-call": "off"
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "organize-imports-cli",
+      "yarn format:fix",
+      "yarn lint"
+    ],
+    "*.{js,css,md}": "prettier --write ."
   },
   "dependencies": {
     "@tanstack/react-query": "^4.13.0",
@@ -25,15 +59,24 @@
     "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
+    "@havenmoney/organize-imports-cli": "^0.4.0",
+    "@thumbsu/eslint-config": "^0.0.1",
+    "@thumbsu/prettier-config": "^0.0.1",
     "@types/node": "18.7.6",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@types/react-modal": "^3.13.1",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
     "autoprefixer": "^10.4.12",
-    "eslint": "8.22.0",
+    "eslint": "^8.33.0",
     "eslint-config-next": "12.2.5",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.1.0",
     "postcss": "^8.4.18",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.3",
     "tailwindcss": "^3.2.1",
     "typescript": "4.7.4"
   }

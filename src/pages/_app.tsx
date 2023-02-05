@@ -1,16 +1,17 @@
-import { SessionProvider } from 'next-auth/react';
+import '@/styles/globals.css'
 
-import type { AppProps } from 'next/app';
-import '@styles/globals.css';
-import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react';
-import { Session } from 'next-auth';
-import { Background } from '@components/ui/Background';
+import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react'
+import type { AppProps } from 'next/app'
+import { Session } from 'next-auth'
+import { SessionProvider } from 'next-auth/react'
+
+import { Background } from '@/components/ui/Background'
 
 function MyApp({
   Component,
   pageProps,
 }: AppProps<{
-  session: Session;
+  session: Session
 }>) {
   return (
     <SessionProvider session={pageProps.session}>
@@ -19,7 +20,7 @@ function MyApp({
         <Component {...pageProps} />
       </ThirdwebProvider>
     </SessionProvider>
-  );
+  )
 }
 
-export default MyApp;
+export default MyApp

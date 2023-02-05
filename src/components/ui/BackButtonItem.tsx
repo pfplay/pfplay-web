@@ -1,4 +1,4 @@
-import { ArrowLeft } from '@components/ui/icon';
+import { ArrowLeft } from '@/components/ui/icon'
 
 export const BackButtonItem = ({ title }: { title: string }) => {
   return (
@@ -6,5 +6,5 @@ export const BackButtonItem = ({ title }: { title: string }) => {
       <ArrowLeft />
       <p>{title}</p>
     </div>
-  );
-};
+  )
+}

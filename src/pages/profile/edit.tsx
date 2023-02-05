@@ -1,13 +1,10 @@
-import { Header } from '@components/Header';
-import { BackButtonItem } from '@components/ui/BackButtonItem';
-import { ArrowLeft } from '@components/ui/icon/ArrowLeft';
-import type { NextPage } from 'next';
-import { useSession } from 'next-auth/react';
-import Head from 'next/head';
+import type { NextPage } from 'next'
+import Head from 'next/head'
+
+import { Header } from '@/components/Header'
+import { BackButtonItem } from '@/components/ui/BackButtonItem'
 
 const ProfileEditPage: NextPage = () => {
-  const { data: session } = useSession();
-
   return (
     <>
       <Head>
@@ -31,6 +28,6 @@ const ProfileEditPage: NextPage = () => {
         </div>
       </main>
     </>
-  );
-};
-export default ProfileEditPage;
+  )
+}
+export default ProfileEditPage

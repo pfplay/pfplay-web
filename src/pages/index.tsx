@@ -1,15 +1,10 @@
-import type { NextPage } from 'next';
-import { useSession } from 'next-auth/react';
-import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
-import { signOut } from 'next-auth/react';
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
-  const handleSignOut = () => {
-    signOut();
-  };
+  const { data: session } = useSession()
 
   return (
     <>
@@ -21,20 +16,30 @@ const Home: NextPage = () => {
       {/* 진입 화면 코드 */}
       <div className="flex justify-between h-screen text-white">
         <div className="flex flex-col-reverse ">
-          <p className="ml-14 mb-5 font-semibold underline underline-offset-4 text-sm cursor-pointer">Privacy&Terms</p>
+          <p className="ml-14 mb-5 font-semibold underline underline-offset-4 text-sm cursor-pointer">
+            Privacy&Terms
+          </p>
         </div>
         <div className="flex flex-col text-center my-auto pr-14">
           <h1 className="text-4xl font-extrabold mb-10 mt-10 tracking-wide">PFPlay</h1>
           <button>
             {/* TODO: 백엔드에서 프로필 정보가 없을 때만 profile/edit으로 이동 */}
             <Link href={!session ? './login' : './profile/edit'}>
-              <p className="text-xl font-extrabold border-none border-2 rounded-full bg-red-800 text-white py-4 px-16">Let your PFP Play</p>
+              <p className="text-xl font-extrabold border-none border-2 rounded-full bg-red-800 text-white py-4 px-16">
+                Let your PFP Play
+              </p>
             </Link>
           </button>
         </div>
         <div className="flex flex-col">
           <div className="ml-12 mr-4 mt-4 cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-10 h-10">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -45,6 +50,6 @@ const Home: NextPage = () => {
         </div>
       </div>
     </>
-  );
-};
-export default Home;
+  )
+}
+export default Home
