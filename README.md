@@ -22,4 +22,4 @@ Last Update (221020)
 
 ### Web 기술 스택
 
-`NextJS, Typescript, TailwinCSS, React-query, Recoil`
+`NextJS, Typescript, TailwindCSS, React-query, Recoil`
