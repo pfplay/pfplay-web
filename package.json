@@ -51,7 +51,7 @@
     "@thirdweb-dev/sdk": "^3.6.2",
     "axios": "^1.2.0",
     "ethers": "^5.7.2",
-    "next": "^12.3.1",
+    "next": "^13.1.6",
     "next-auth": "^4.16.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
