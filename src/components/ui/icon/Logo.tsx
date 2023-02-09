@@ -6,8 +6,8 @@ export const Logo = () => {
       <Image
         src="/icons/wordmark_medium_white.png"
         alt="wordmark"
-        width="150px"
-        height="36px"
+        width={150}
+        height={36}
         style={{ marginTop: '1px' }}
       />
     </button>

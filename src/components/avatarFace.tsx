@@ -29,8 +29,8 @@ const AvatarFace: NextPage = () => {
                     <Image
                       src="/icons/Ethereum.png"
                       alt="Ethereum"
-                      width="20px"
-                      height="20px"
+                      width={20}
+                      height={20}
                       style={{ marginTop: '1px' }}
                     />
                     <p className="ml-1">
@@ -63,8 +63,8 @@ const AvatarFace: NextPage = () => {
             <Image
               src="/icons/icn_add.png"
               alt="Ethereum"
-              width="15px"
-              height="15px"
+              width={15}
+              height={15}
               style={{ marginTop: '1px' }}
             />{' '}
             <p className="ml-1">추가 연결</p>
