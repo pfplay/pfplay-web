@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
 
+import { MantineProvider } from '@mantine/core'
 import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react'
 import type { AppProps } from 'next/app'
 import { Session } from 'next-auth'
@@ -15,11 +16,13 @@ function MyApp({
 }>) {
   return (
     <SessionProvider session={pageProps.session}>
-      <ThirdwebProvider desiredChainId={ChainId.Mainnet}>
-        <RootLayout>
-          <Component {...pageProps} />
-        </RootLayout>
-      </ThirdwebProvider>
+      <MantineProvider>
+        <ThirdwebProvider desiredChainId={ChainId.Mainnet}>
+          <RootLayout>
+            <Component {...pageProps} />
+          </RootLayout>
+        </ThirdwebProvider>
+      </MantineProvider>
     </SessionProvider>
   )
 }
