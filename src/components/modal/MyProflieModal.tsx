@@ -12,7 +12,6 @@ const customStyles: Modal.Styles = {
   },
   content: {
     width: 680,
-    // padding: '54px 27px 32px',
     top: '50%',
     left: '50%',
     right: 'auto',
@@ -82,7 +81,6 @@ export const MyProfileModal = ({ isOpen, onClose }: IMyProfileModalProps) => {
               borderLeftColor: 'red',
               borderRightColor: 'red',
               boxSizing: 'border-box',
-              // borderColor: 'red',
             }}>
             <p className="text-[#F31F2C] text-[15px] mx-1 mt-1 mb-1">아바타 설정</p>
           </button>
