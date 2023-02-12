@@ -1,10 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { yupResolver } from '@hookform/resolvers/yup'
 import type { NextPage } from 'next'
 import Image from 'next/future/image'
 import Head from 'next/head'
 import { useCallback, useState } from 'react'
-import { useForm } from 'react-hook-form'
 
 import { Header } from '@/components/Header'
 import { MyPlayListModal } from '@/components/modal/MyPlayListModal'
