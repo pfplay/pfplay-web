@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import Image from 'next/future/image'
+import Image from 'next/image'
 
 export const SubParty: NextPage = () => {
   return (
