@@ -45,6 +45,7 @@
     "*.{js,css,md}": "prettier --write ."
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.10",
     "@hookform/resolvers": "^2.9.10",
     "@tanstack/react-query": "^4.13.0",
     "@thirdweb-dev/react": "^3.6.2",
