@@ -2,7 +2,7 @@ import { Menu } from '@headlessui/react'
 import Image from 'next/image'
 import Modal from 'react-modal'
 
-const customStyles: Modal.Styles = {
+const customStyles: Modal.Styles = 
   overlay: {
     position: 'fixed',
     top: 0,
