@@ -11,7 +11,7 @@ import AuthContext from './AuthContext'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthContext>
-      <html lang="en">
+      <html lang="ko">
         <Head>
           <title>PFPLAY</title>
           <meta name="description" content="Let your PFP Play" />
