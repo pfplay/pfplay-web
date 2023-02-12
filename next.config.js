@@ -2,7 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: { domains: ['lh3.googleusercontent.com'] },
+  images: { domains: ['lh3.googleusercontent.com', 'picsum.photos'] },
+  experimental: {
+    appDir: true,
+  },
 }
 
 module.exports = nextConfig
