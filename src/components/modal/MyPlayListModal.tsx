@@ -14,12 +14,9 @@ const customStyles: Modal.Styles = {
   content: {
     width: 400,
     height: '100%',
-    // padding: '54px 27px 32px',
-    // right: '0',
     left: '79%',
     top: '0',
     position: 'fixed',
-    // right: 'auto',
     bottom: 'auto',
     backgroundColor: 'rgba(0, 0, 0, 1)',
     border: '1px solid #2F2F2F',
