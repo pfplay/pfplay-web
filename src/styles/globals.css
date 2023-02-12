@@ -25,3 +25,13 @@ textarea:focus,
 input:focus {
   outline: none;
 }
+
+.bg_blur{
+border: 1px solid #1C1C1C;
+border-radius: 4px;
+}
+
+.bg_btn{
+border: 1px solid #2F2F2F;
+border-radius: 4px;
+}
