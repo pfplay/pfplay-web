@@ -4,7 +4,7 @@ export const Logo = () => {
   return (
     <button>
       <Image
-        src="/icons/wordmark_medium_white.png"
+        src="/logos/wordmark_medium_white.svg"
         alt="wordmark"
         width={150}
         height={36}

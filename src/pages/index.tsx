@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 
@@ -21,7 +22,13 @@ const Home: NextPage = () => {
           </p>
         </div>
         <div className="flex flex-col text-center my-auto pr-14">
-          <h1 className="text-4xl font-extrabold mb-10 mt-10 tracking-wide">PFPlay</h1>
+          <Image
+            className="mb-[72px]"
+            src="/logos/wordmark_medium_white.svg"
+            width={297.24}
+            height={72}
+            alt="logo"
+          />
           <button>
             {/* TODO: 백엔드에서 프로필 정보가 없을 때만 profile/edit으로 이동 */}
             <Link href={!session ? './login' : './profile/edit'}>
