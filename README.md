@@ -2,7 +2,7 @@
 
 ### Web Directory Structure
 
-Last Update (221020)
+> Last Update (221020)
 
 - `public` : nextjs에서 절대경로로 접근할 수 있는 assets을 저장하는 폴더
   - `icons` : 아이콘 컴포넌트로 사용될 svg 파일의 모음
@@ -22,4 +22,14 @@ Last Update (221020)
 
 ### Web 기술 스택
 
+> Last Update (221020)
+
 `NextJS, Typescript, TailwindCSS, React-query, Recoil`
+
+### Color Theme
+
+> Last Update (230219)
+
+- `tailwind.config.js`에 피그마 파일의 `Component/Color` 섹션 기준으로 컬러 테마 업데이트함
+- `bg-red500`, `text-gray100`, `border-gray50` 과 같은 형태로 사용 가능
+- [vscode Tailwind CSS extensions](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) 사용시 자동완성 지원
