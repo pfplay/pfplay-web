@@ -2,6 +2,8 @@ import { Menu } from '@headlessui/react'
 import Image from 'next/image'
 import Modal from 'react-modal'
 
+import MyPlayListComponent from '../partylist/MyPlayListComponent'
+
 const customStyles: Modal.Styles = {
   overlay: {
     position: 'fixed',
@@ -74,106 +76,9 @@ export const MyPlayListModal = ({ isOpen, onClose }: IMyPlayListModalProps) => {
       {/* Contents */}
       <div className="grid grid-rows-3 grid-flow-col mt-5">
         <div>
-          <Menu as="div">
-            <div className="flex flex-grow">
-              <Menu.Button className="flex items-center flex-grow bg-[#1C1C1C] rounded pt-2 pb-2 px-2 mt-1">
-                <p className="text-[#DADADA] text-[14px]">상큼 아이돌 곡</p>
-                <p className="text-[#DADADA] text-[10px] ml-2">17곡</p>
-                <div className="flex flex-grow justify-end">
-                  <Image
-                    className="rounded-full ml-1"
-                    src="/image/Vector_2.png"
-                    alt="close"
-                    width={14}
-                    height={14}></Image>
-                </div>
-              </Menu.Button>
-            </div>
-            <Menu.Items>
-              <div>
-                <Menu.Item>
-                  <div className="flex flex-row items-center">
-                    <Image
-                      className="mt-4 rounded"
-                      src="/image/newjeans.png"
-                      alt="jeans"
-                      width={100}
-                      height={50}></Image>
-                    <div className="flex flex-col">
-                      <p className="text-[#DADADA] text-[14px] mt-3 ml-2">
-                        NewJeans (뉴진스) Hype Boy Official MV (Performance ver.1)
-                      </p>
-                      <p className="text-[#DADADA] text-[10px] ml-2 flex justify-end mr-5">04:42</p>
-                    </div>
-                  </div>
-                </Menu.Item>
-                <Menu.Item>
-                  <div className="flex flex-row items-center">
-                    <Image
-                      className="mt-4 rounded"
-                      src="/image/newjeans.png"
-                      alt="jeans"
-                      width={100}
-                      height={50}></Image>
-                    <div className="flex flex-col">
-                      <p className="text-[#DADADA] text-[14px] mt-3 ml-2">
-                        NewJeans (뉴진스) Hype Boy Official MV (Performance ver.1)
-                      </p>
-                      <p className="text-[#DADADA] text-[10px] ml-2 flex justify-end mr-5">04:42</p>
-                    </div>
-                  </div>
-                </Menu.Item>
-                <Menu.Item>
-                  <div className="flex flex-row items-center">
-                    <Image
-                      className="mt-4 rounded"
-                      src="/image/newjeans.png"
-                      alt="jeans"
-                      width={100}
-                      height={50}></Image>
-                    <div className="flex flex-col">
-                      <p className="text-[#DADADA] text-[14px] mt-3 ml-2">
-                        NewJeans (뉴진스) Hype Boy Official MV (Performance ver.1)
-                      </p>
-                      <p className="text-[#DADADA] text-[10px] ml-2 flex justify-end mr-5">04:42</p>
-                    </div>
-                  </div>
-                </Menu.Item>
-              </div>
-            </Menu.Items>
-
-            <div className="flex flex-grow">
-              <Menu.Button className="flex items-center flex-grow bg-[#1C1C1C] rounded pt-2 pb-2 px-2 mt-2">
-                <p className="text-[#DADADA] text-[14px] max-w-[250px] truncate ...">
-                  가사가 좋은 말줄임 인디노래 말줄임 인디노래말줄임 인디노래말줄임 인디노래말줄임
-                  인디노래말줄임 인디노래말줄임 인디노래말줄임 인디노래
-                </p>
-                <p className="text-[#DADADA] text-[10px] ml-2">17곡</p>
-                <div className="flex flex-grow justify-end">
-                  <Image
-                    className="rounded-full ml-1"
-                    src="/image/Vector_2.png"
-                    alt="close"
-                    width={14}
-                    height={14}></Image>
-                </div>
-              </Menu.Button>
-            </div>
-            <div className="flex flex-grow">
-              <Menu.Button className="flex items-center flex-grow bg-[#1C1C1C] rounded pt-2 pb-2 px-2 mt-2">
-                <p className="text-[#DADADA] text-[14px]">그랩한 곡</p>
-                <p className="text-[#DADADA] text-[10px] ml-2">8곡</p>
-                <div className="flex flex-grow justify-end">
-                  <Image
-                    className="rounded-full ml-1"
-                    src="/image/Vector_2.png"
-                    alt="close"
-                    width={14}
-                    height={14}></Image>
-                </div>
-              </Menu.Button>
-            </div>
-          </Menu>
+          <MyPlayListComponent></MyPlayListComponent>
+          <MyPlayListComponent></MyPlayListComponent>
+          <MyPlayListComponent></MyPlayListComponent>
         </div>
       </div>
       {/* Footer */}
