@@ -33,3 +33,11 @@
 - `tailwind.config.js`에 피그마 파일의 `Component/Color` 섹션 기준으로 컬러 테마 업데이트함
 - `bg-red500`, `text-gray100`, `border-gray50` 과 같은 형태로 사용 가능
 - [vscode Tailwind CSS extensions](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) 사용시 자동완성 지원
+
+### Images
+
+> Last Update (230219)
+
+- 아이콘: `/public/icons/*`
+- 로고: `/public/logos/*`
+- 일반 이미지: `/public/image/*`

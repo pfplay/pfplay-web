@@ -27,7 +27,7 @@ const AvatarFace: NextPage = () => {
                 <div className="group relative inline-block">
                   <div className="bg-primary inline-flex rounded ptext-base ">
                     <Image
-                      src="/icons/Ethereum.png"
+                      src="/icons/Ethereum.svg"
                       alt="Ethereum"
                       width={20}
                       height={20}
@@ -61,7 +61,7 @@ const AvatarFace: NextPage = () => {
             className="text-sm flex justify-center items-center px-5"
             onClick={connectWithMetamask}>
             <Image
-              src="/icons/icn_add.png"
+              src="/icons/icn_add.svg"
               alt="Ethereum"
               width={15}
               height={15}
