@@ -5,7 +5,7 @@ import type { AppProps } from 'next/app'
 import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 
-import { Background } from '@/components/ui/Background'
+import RootLayout from '@/components/ui/layout/RootLayout'
 
 function MyApp({
   Component,
@@ -16,8 +16,9 @@ function MyApp({
   return (
     <SessionProvider session={pageProps.session}>
       <ThirdwebProvider desiredChainId={ChainId.Mainnet}>
-        <Background />
-        <Component {...pageProps} />
+        <RootLayout>
+          <Component {...pageProps} />
+        </RootLayout>
       </ThirdwebProvider>
     </SessionProvider>
   )
