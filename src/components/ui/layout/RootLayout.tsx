@@ -16,7 +16,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <WorldGlobe />
         </div>
       </header>
-      <main className="w-[100vw] h-[100vh] bg-black ">{children}</main>
+      <main className="w-[100vw] h-[100vh] bg-onboarding">{children}</main>
     </div>
   )
 }

@@ -37,8 +37,14 @@ const Login: NextPage = () => {
       </Head>
       {/* 로그인 화면 코드 */}
       <div className="flex justify-center items-center text-white h-screen">
-        <div className="flex flex-col text-center my-auto">
-          <h1 className="text-4xl font-extrabold mb-10 mt-10 tracking-wide">PFPlay</h1>
+        <div className="flex flex-col items-center text-center my-auto">
+          <Image
+            className="mb-[72px]"
+            src="/logos/wordmark_medium_white.svg"
+            width={115.59}
+            height={28}
+            alt="logo"
+          />
           <button
             className="text-xl border-solid border-2 rounded-full  py-4 w-72 pr-8 font-extrabold flex justify-center border-gray-500 "
             onClick={signInGoogle}>
