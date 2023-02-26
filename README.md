@@ -41,3 +41,32 @@
 - 아이콘: `/public/icons/*`
 - 로고: `/public/logos/*`
 - 일반 이미지: `/public/image/*`
+
+### 프로젝트 세팅 방법
+
+> Last Update (230226)
+
+- 노션 문서 중 [프론트엔드 환경변수](https://www.notion.so/pfplay/3ad552e5b35845c492146605159cc418?pvs=4)를 참고해서 `.env`파일 추가하기
+  ```
+  $ cat .env.sample .env.local
+  ```
+- yarn 명령어로 패키지 설치하기
+  ```shell
+  $ yarn
+  ```
+
+### Work Process
+
+> Last Update (230226)
+
+1. 노션 문서의 로드맵 확인하기
+2. 본인이 작업할 사항 로드맵에 추가하기
+3. Task Board에 에픽에 맞게 로드맵에 추가한 작업할 사항 추가하기
+4. develop 브런치에서 feature/FE 브런치 따서 작업하기
+5. 디자인은 [피그마 파일](https://www.figma.com/file/PrQd76USwYaa2gQ2uN2yyZ/PFPlay-GUI?node-id=1%3A10) 참고하기
+6. PR 및 브랜치 전략은 [노션문서](https://www.notion.so/pfplay/Git-43050745466b4f749421de4cab55f831?pvs=4) 참고하기
+7. 커밋은 `git-cz` 사용하기
+   ```shell
+   $ git add <커밋할 파일>
+   $ npx git-cz
+   ```
