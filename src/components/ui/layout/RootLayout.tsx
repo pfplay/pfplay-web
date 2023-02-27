@@ -7,7 +7,7 @@ import { Logo, WorldGlobe } from '../icon'
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative">
-      <header className="absolute top-[44px] w-[100%] text-white flex justify-between items-center px-[120px]">
+      <header className="absolute top-[44px] w-[100%] text-white flex justify-between items-center px-[120px] z-10">
         <Link href="/" passHref>
           <Logo />
         </Link>
@@ -16,7 +16,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <WorldGlobe />
         </div>
       </header>
-      <main className="w-[100vw] h-[100vh] bg-onboarding">{children}</main>
+      <main className="w-full h-full bg-black pt-[160px] pb-[120px]">{children}</main>
     </div>
   )
 }
