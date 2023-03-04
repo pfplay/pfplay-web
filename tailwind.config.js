@@ -26,6 +26,9 @@ module.exports = {
   theme: {
     extend: {
       colors: darkRedThemeColors,
+      backgroundImage: {
+        onboarding: "url('/image/Onboard.png')",
+      },
     },
   },
   plugins: [require('tailwind-scrollbar-hide')],
