@@ -57,7 +57,7 @@ export const NotificationModal = ({
       <button
         type="button"
         onClick={onOk}
-        className="text-[#FDFDFD] text-center font-bold text-sm px-7 py-3 bg-[#2F2F2F] rounded w-[166px] bg-[#AE001F]">
+        className="text-[#FDFDFD] text-center font-bold text-sm px-7 py-3 rounded w-[166px] bg-gradient-to-r from-[#780808] to-[#AE001F]">
         {okTitle}
       </button>
     </Modal>

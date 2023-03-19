@@ -1,10 +1,12 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useCallback, useState } from 'react'
 
 import { NotificationModal } from '@/components/modal/NotificationModal'
+import { ChevronRight } from '@/components/ui/icon/ChevronRight'
 
 const Login: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -36,36 +38,43 @@ const Login: NextPage = () => {
         <meta name="description" content="Your Space" />
       </Head>
       {/* 로그인 화면 코드 */}
-      <div className="flex justify-center items-center text-white h-screen">
-        <div className="flex flex-col items-center text-center my-auto">
-          <Image
-            className="mb-[72px]"
-            src="/logos/wordmark_medium_white.svg"
-            width={115.59}
-            height={28}
-            alt="logo"
-          />
-          <button
-            className="text-xl border-solid border-2 rounded-full  py-4 w-72 pr-8 font-extrabold flex justify-center border-gray-500 "
-            onClick={signInGoogle}>
-            <Image
-              className="mr-4 ml-4"
-              src="/icons/google.png"
-              alt="google login"
-              width={28}
-              height={28}
-            />
-            <p>Sign in With Google</p>
+      <div className="flex justify-center items-center text-white h-screen relative">
+        <div className="flex flex-col items-center w-[640px] backdrop-blur-lg relative border border-[#1c1c1c] bg-[#180202]/50">
+          <button className="absolute right-10 top-10">
+            <Link href="/">
+              <Image src="/icons/icn_close.svg" alt="close" width={20} height={20} />
+            </Link>
           </button>
-          <p className="font-semibold mt-8">OR</p>
-          <span className="flex justify-center">
+          <div className="w-full py-[70px] flex flex-col justify-center items-center">
+            <Image
+              className="mb-[68px]"
+              src="/logos/wordmark_medium_white.svg"
+              width={115.59}
+              height={28}
+              alt="logo"
+            />
             <button
-              className="underline underline-offset-8 font-semibold mt-8 cursor-pointer w-36 "
-              onClick={handleOpenModal}>
-              먼저 둘러볼래요
+              className="inline-flex items-center w-80 py-3 pl-5 border border-neutral-500 rounded mb-10"
+              onClick={signInGoogle}>
+              <Image src="/icons/google.png" alt="google login" width={32} height={32} />
+              <p className="ml-3 font-poppins">Sign in With Google</p>
             </button>
-          </span>
+            <span className="flex justify-center">
+              <button
+                className="text-sm text-neutral-300 cursor-pointer border-b"
+                onClick={handleOpenModal}>
+                먼저 둘러볼래요
+              </button>
+            </span>
+          </div>
         </div>
+      </div>
+      <div className="w-full absolute bottom-[66px] flex justify-between text-white px-[120px]">
+        <p className="text-[#707070] font-poppins">Privacy&Terms</p>
+        <p className="text-[#dadada] flex items-center space-x-2">
+          <span>당신의 PFP는 안녕한가요?</span>
+          <ChevronRight />
+        </p>
       </div>
     </div>
   )
