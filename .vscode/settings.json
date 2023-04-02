@@ -15,5 +15,6 @@
     "Pretendard",
     "Quarternary",
     "Thirdweb"
-  ]
+  ],
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
