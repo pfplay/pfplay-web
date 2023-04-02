@@ -6,7 +6,7 @@ import { signIn } from 'next-auth/react'
 import { useCallback, useState } from 'react'
 
 import { NotificationModal } from '@/components/modal/NotificationModal'
-import { ChevronRight } from '@/components/ui/icon/ChevronRight'
+import RootLayout from '@/components/ui/layout/RootLayout'
 
 const Login: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -21,7 +21,7 @@ const Login: NextPage = () => {
   }
 
   return (
-    <div>
+    <RootLayout>
       <NotificationModal
         isOpen={isOpen}
         onClose={handleCloseModal}
@@ -69,14 +69,7 @@ const Login: NextPage = () => {
           </div>
         </div>
       </div>
-      <div className="w-full absolute bottom-[66px] flex justify-between text-white px-[120px]">
-        <p className="text-[#707070] font-poppins">Privacy&Terms</p>
-        <p className="text-[#dadada] flex items-center space-x-2">
-          <span>당신의 PFP는 안녕한가요?</span>
-          <ChevronRight />
-        </p>
-      </div>
-    </div>
+    </RootLayout>
   )
 }
 

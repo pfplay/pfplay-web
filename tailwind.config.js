@@ -28,6 +28,7 @@ module.exports = {
       colors: darkRedThemeColors,
       backgroundImage: {
         onboarding: "url('/image/Onboard.png')",
+        partyRoom: "url('/image/PartyRoom.png')",
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
