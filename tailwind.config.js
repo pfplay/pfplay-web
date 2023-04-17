@@ -29,6 +29,9 @@ module.exports = {
       backgroundImage: {
         onboarding: "url('/image/Onboard.png')",
       },
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+      },
     },
   },
   plugins: [require('tailwind-scrollbar-hide')],
