@@ -14,7 +14,9 @@
     "PFPLAY",
     "Pretendard",
     "Quarternary",
-    "Thirdweb"
+    "Thirdweb",
+    "rainbowkit",
+    "wagmi"
   ],
   "typescript.enablePromptUseWorkspaceTsdk": true
 }
