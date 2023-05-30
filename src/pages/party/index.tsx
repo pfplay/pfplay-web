@@ -1,11 +1,13 @@
 import Image from 'next/image'
 import { useState } from 'react'
 
+import CreatePartyModal from '@/components/modal/PartyModal'
 import RootLayout from '@/components/ui/layout/RootLayout'
 import SidebarLayout from '@/components/ui/layout/SidebarLayout'
 
 const PartyRoomListPage = () => {
   const [isHover, setIsHover] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   return (
     <RootLayout>
       <div className="w-full h-screen bg-partyRoom relative">
@@ -38,7 +40,7 @@ const PartyRoomListPage = () => {
             </div>
             {/* 파티룸 목록 */}
             <ul className="grid mt-6 grid-cols-3 gap-6">
-              <li className="bg-[#111] rounded pt-6 px-7 pb-10">
+              <li className="bg-[#111] rounded pt-6 px-7 pb-10" onClick={() => setIsOpen(true)}>
                 <p className=" font-poppins text-[#F31F2C] text-[28px] mb-1.5">Be a PFPlay Host</p>
                 <span className="text-[#DADADA]">
                   원하는 테마의 파티를 자유롭게 호스트해보세요!
@@ -100,6 +102,7 @@ const PartyRoomListPage = () => {
               ))}
             </ul>
           </section>
+          <CreatePartyModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
         </SidebarLayout>
       </div>
     </RootLayout>
