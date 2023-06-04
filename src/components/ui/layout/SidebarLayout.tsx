@@ -4,7 +4,7 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <SideBar />
-      <main>{children}</main>
+      <main className="w-[100vw] h-[100vh] bg-onboarding bg-cover">{children}</main>
     </div>
   )
 }
