@@ -1,16 +1,20 @@
 import { Tabs } from '@mantine/core'
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 
 import { BackButtonItem } from '@/components/ui/BackButtonItem'
 import RootLayout from '@/components/ui/layout/RootLayout'
 
 const AvatarEditPage: NextPage = () => {
+  const router = useRouter()
   return (
     <>
       <RootLayout>
         <div className="pt-40 flex justify-center text-white px-[120px]">
           <div className="w-full bg-[#111111] px-[60px] pb-12 pt-[46px]">
-            <BackButtonItem title="뭘 입고 놀아볼까요?" />
+            <div onClick={() => router.back()}>
+              <BackButtonItem title="뭘 입고 놀아볼까요?" />
+            </div>
             <div className="flex gap-[30px]">
               {/* 아바타 미리보기 */}
               <div className="bg-[#000] min-w-[400px] h-[620px]">avatar preview</div>
@@ -95,7 +99,9 @@ const AvatarEditPage: NextPage = () => {
                     </Tabs.Panel>
                   </div>
                   <div className="flex justify-end align-bottom mt-5">
-                    <button className="w-[280px] py-3 px-4 bg-redGradientStart text-white rounded-sm">
+                    <button
+                      className="w-[280px] py-3 px-4 bg-redGradientStart text-white rounded-sm"
+                      onClick={() => router.push('/party')}>
                       Let&apos;s get in
                     </button>
                   </div>
@@ -108,4 +114,5 @@ const AvatarEditPage: NextPage = () => {
     </>
   )
 }
+
 export default AvatarEditPage
