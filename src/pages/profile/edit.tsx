@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 
 import { BackButtonItem } from '@/components/ui/BackButtonItem'
@@ -23,6 +24,7 @@ const ProfileEditPage: NextPage = () => {
   const nicknameError = errors.nickname
   const introductionError = errors.introduction
 
+  const router = useRouter()
   return (
     <>
       <Head>
@@ -32,7 +34,9 @@ const ProfileEditPage: NextPage = () => {
       </Head>
       <div className="w-full h-[60px]" />
       <main className="position: relative h-[600px] bg-[#111111] mx-[120px] pt-[46px] px-[60px]">
-        <BackButtonItem title="당신은 누구신가요?" />
+        <div onClick={() => router.back()}>
+          <BackButtonItem title="당신은 누구신가요?" />
+        </div>
         <form className="w-[650px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           {/* nickname */}
           <div className={`flex justify-between ${!nicknameError && 'mb-[76px]'}`}>
@@ -74,7 +78,7 @@ const ProfileEditPage: NextPage = () => {
           </div>
         </form>
         <button
-          onClick={handleSubmit(e => console.log(e))}
+          onClick={handleSubmit(() => router.push('/avatar/edit'))}
           className="absolute bottom-[48px] right-[60px] bg-[#1C1C1C] text-[#434343] font-bold-sm px-[96px] py-[12px]">
           Let&apos;s get in
         </button>

@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import CreatePartyModal from '@/components/modal/PartyModal'
@@ -8,13 +9,19 @@ import SidebarLayout from '@/components/ui/layout/SidebarLayout'
 const PartyRoomListPage = () => {
   const [isHover, setIsHover] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+
+  const router = useRouter()
   return (
     <RootLayout>
       <div className="w-full h-screen bg-partyRoom relative">
         <SidebarLayout>
           <section className="w-[1248px] mx-auto pt-40">
             <div className="w-full py-10 px-7 border border-[#1c1c1c] rounded backdrop-blur-lg bg-[#180202]/30">
-              <h2 className="text-white font-poppins text-[28px] mb-1.5">PFPlay Main Stage</h2>
+              <h2
+                className="text-white font-poppins text-[28px] mb-1.5 cursor-pointer no-underline hover:underline"
+                onClick={() => router.push('/party/1')}>
+                PFPlay Main Stage
+              </h2>
               <p className="text-[#dadada] font-light">파티에 오신 것을 환영합니다</p>
               <div className="mt-[28px] flex justify-between items-end">
                 <div className="w-auto flex gap-x-11">
@@ -55,7 +62,11 @@ const PartyRoomListPage = () => {
                 <li
                   key={value}
                   className="py-6 px-7 rounded border border-[#1C1C1C] backdrop-blur-lg bg-[#180202]/30 flex flex-col justify-between h-60 relative">
-                  <p className="text-[#FDFDFD] text-2xl">갓생을 위한 노동요</p>
+                  <h2
+                    className="text-[#FDFDFD] text-2xl cursor-pointer no-underline hover:underline"
+                    onClick={() => router.push(`/party/${value}`)}>
+                    갓생을 위한 노동요
+                  </h2>
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-x-3">
                       <div className="w-20 h-11 bg-slate-500 rounded"></div>

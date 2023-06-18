@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { signIn } from 'next-auth/react'
 import { useCallback, useState } from 'react'
 
@@ -13,9 +14,13 @@ const Login: NextPage = () => {
   const handleOpenModal = useCallback(() => {
     setIsOpen(true)
   }, [])
-  const handleCloseModal = useCallback(() => {
-    setIsOpen(false)
-  }, [])
+
+  const router = useRouter()
+  // TODO: set main stage party room number
+  const signInAnnonynmous = () => {
+    router.push('/party/1')
+  }
+
   const signInGoogle = () => {
     signIn('google', { callbackUrl: '/' })
   }
@@ -24,7 +29,7 @@ const Login: NextPage = () => {
     <RootLayout>
       <NotificationModal
         isOpen={isOpen}
-        onClose={handleCloseModal}
+        onClose={signInAnnonynmous}
         title={'잠깐만요!'}
         content={
           '비로그인 입장 시 접근 가능한 기능이 제한됩니다 구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요'
