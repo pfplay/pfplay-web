@@ -2,8 +2,8 @@ import { Tabs } from '@mantine/core'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
+import RootLayout from '@/components/layout/RootLayout'
 import { BackButtonItem } from '@/components/ui/BackButtonItem'
-import RootLayout from '@/components/ui/layout/RootLayout'
 
 const AvatarEditPage: NextPage = () => {
   const router = useRouter()

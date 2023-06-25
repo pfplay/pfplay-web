@@ -1,10 +1,12 @@
+'use client'
 import Link from 'next/link'
 import React from 'react'
 
-import { EmailBox } from '../EmailBox'
-import { Logo, WorldGlobe } from '../icon'
+import { Logo, WorldGlobe } from '@/components/ui/icon'
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+import { EmailBox } from '../ui/EmailBox'
+
+export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative">
       <header className="absolute top-11 w-full h-ull text-white flex justify-between items-center px-[120px] z-10">
@@ -20,5 +22,3 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     </div>
   )
 }
-
-export default RootLayout

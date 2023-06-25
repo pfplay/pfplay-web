@@ -6,8 +6,8 @@ import { useRouter } from 'next/router'
 import { signIn } from 'next-auth/react'
 import { useCallback, useState } from 'react'
 
+import RootLayout from '@/components/layout/RootLayout'
 import { NotificationModal } from '@/components/modal/NotificationModal'
-import RootLayout from '@/components/ui/layout/RootLayout'
 
 const Login: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false)

@@ -2,9 +2,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+import RootLayout from '@/components/layout/RootLayout'
+import SidebarLayout from '@/components/layout/SidebarLayout'
 import CreatePartyModal from '@/components/modal/PartyModal'
-import RootLayout from '@/components/ui/layout/RootLayout'
-import SidebarLayout from '@/components/ui/layout/SidebarLayout'
 
 const PartyRoomListPage = () => {
   const [isHover, setIsHover] = useState(false)

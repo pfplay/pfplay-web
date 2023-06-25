@@ -1,5 +1,10 @@
+import '@/styles/globals.css'
+
 import { Metadata } from 'next'
 import React from 'react'
+
+import { Layout } from '@/components/layouts/RootLayout'
+import { Providers } from '@/components/providers'
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -9,16 +14,14 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  // Layouts must accept a children prop.
-  // This will be populated with nested layouts or pages
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>
+          <Layout>{children}</Layout>
+        </Providers>
+      </body>
     </html>
   )
 }

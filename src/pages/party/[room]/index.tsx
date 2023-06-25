@@ -1,7 +1,7 @@
 import { Tabs } from '@mantine/core'
 import Image from 'next/image'
 
-import SidebarLayout from '@/components/ui/layout/SidebarLayout'
+import SidebarLayout from '@/components/layout/SidebarLayout'
 
 const PartyRoom = () => {
   return (
