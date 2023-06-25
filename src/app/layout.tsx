@@ -5,6 +5,8 @@ import React from 'react';
 
 import { Header } from '@/components/header';
 import { Providers } from '@/components/providers';
+import { cn } from '@/lib/utils';
+import { fontNanumGothic, fontPoppins } from '@/lib/fonts';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang='en'>
-      <body className='min-h-screen'>
+      <body className={cn('min-h-screen font-sans', fontNanumGothic.className)}>
         <Providers>
           <Header />
           {children}

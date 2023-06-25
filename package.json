@@ -31,6 +31,7 @@
     "@thirdweb-dev/react": "^3.6.2",
     "@thirdweb-dev/sdk": "^3.6.2",
     "axios": "^1.2.0",
+    "clsx": "^1.2.1",
     "ethers": "^5.7.2",
     "next": "^13.4.7",
     "next-auth": "^4.16.3",
@@ -39,6 +40,7 @@
     "react-hook-form": "^7.41.5",
     "react-modal": "^3.16.1",
     "recoil": "^0.7.6",
+    "tailwind-merge": "^1.13.2",
     "tailwind-scrollbar-hide": "^1.1.7",
     "yup": "^0.32.11"
   },

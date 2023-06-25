@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const { fontFamily } = require('tailwindcss/defaultTheme');
 
 const darkRedThemeColors = {
   red500: '#990316',
@@ -31,7 +32,7 @@ module.exports = {
         partyRoom: "url('/image/PartyRoom.png')",
       },
       fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
+        sans: ['var(--font-sans)', ...fontFamily.sans],
       },
     },
   },
