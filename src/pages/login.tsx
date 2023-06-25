@@ -1,3 +1,4 @@
+// import RootLayout from '@/components/layout/RootLayout'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -6,7 +7,6 @@ import { useRouter } from 'next/router'
 import { signIn } from 'next-auth/react'
 import { useCallback, useState } from 'react'
 
-import RootLayout from '@/components/layout/RootLayout'
 import { NotificationModal } from '@/components/modal/NotificationModal'
 
 const Login: NextPage = () => {
@@ -26,7 +26,7 @@ const Login: NextPage = () => {
   }
 
   return (
-    <RootLayout>
+    <main className="min-h-screen bg-onboarding bg-cover">
       <NotificationModal
         isOpen={isOpen}
         onClose={signInAnnonynmous}
@@ -74,7 +74,7 @@ const Login: NextPage = () => {
           </div>
         </div>
       </div>
-    </RootLayout>
+    </main>
   )
 }
 

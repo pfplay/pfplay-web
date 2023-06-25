@@ -17,10 +17,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-screen">
         <Providers>
           <Header />
-          <div className="min-h-screen bg-onboarding bg-cover">{children}</div>
+          {children}
         </Providers>
       </body>
     </html>
