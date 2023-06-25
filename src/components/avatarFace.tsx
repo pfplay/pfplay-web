@@ -1,8 +1,8 @@
+'use client'
 import { useAddress, useDisconnect, useMetamask } from '@thirdweb-dev/react'
-import type { NextPage } from 'next'
 import Image from 'next/image'
 
-const AvatarFace: NextPage = () => {
+export const AvatarFace = () => {
   const connectWithMetamask = useMetamask()
   const disconnect = useDisconnect()
   const address = useAddress()
@@ -133,4 +133,3 @@ const AvatarFace: NextPage = () => {
     </>
   )
 }
-export default AvatarFace

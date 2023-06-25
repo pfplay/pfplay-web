@@ -3,7 +3,7 @@ import '@/styles/globals.css'
 import { Metadata } from 'next'
 import React from 'react'
 
-import { Layout } from '@/components/layouts/RootLayout'
+import { Header } from '@/components/header'
 import { Providers } from '@/components/providers'
 
 export const metadata: Metadata = {
@@ -19,7 +19,8 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <html lang="en">
       <body>
         <Providers>
-          <Layout>{children}</Layout>
+          <Header />
+          <div className="min-h-screen bg-onboarding bg-cover">{children}</div>
         </Providers>
       </body>
     </html>
