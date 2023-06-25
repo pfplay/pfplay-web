@@ -1,12 +1,10 @@
-import '@/styles/globals.css';
-
-import { Metadata } from 'next';
 import React from 'react';
-
+import '@/styles/globals.css';
+import { Metadata } from 'next';
 import { Header } from '@/components/header';
 import { Providers } from '@/components/providers';
 import { cn } from '@/lib/utils';
-import { fontNanumGothic, fontPoppins } from '@/lib/fonts';
+import { fontNanumGothic } from '@/lib/fonts';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
