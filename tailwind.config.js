@@ -19,7 +19,7 @@ const darkRedThemeColors = {
   gray800: '#F5F5F5',
   gray900: '#FDFDFD',
   dim: 'rgba(0, 0, 0, 0.6)',
-}
+};
 
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
@@ -36,4 +36,4 @@ module.exports = {
     },
   },
   plugins: [require('tailwind-scrollbar-hide')],
-}
+};

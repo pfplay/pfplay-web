@@ -1,84 +1,84 @@
-import Router from 'next/router'
-import React from 'react'
+import Router from 'next/router';
+import React from 'react';
 
-import { isInstanceOfAPIError } from '@/utils/error'
+import { isInstanceOfAPIError } from '@/utils/error';
 
-import NotEnabled from './NotEnabled'
-import NotFound from './NotFound'
+import NotEnabled from './NotEnabled';
+import NotFound from './NotFound';
 
-type ErrorBoundaryProps = React.PropsWithChildren<Record<string, any>>
+type ErrorBoundaryProps = React.PropsWithChildren<Record<string, any>>;
 
 interface IErrorBoundaryState {
-  error: Error | null
+  error: Error | null;
 }
 
 const errorBoundaryState: IErrorBoundaryState = {
   error: null,
-}
+};
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, IErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
-    super(props)
-    this.state = errorBoundaryState
+    super(props);
+    this.state = errorBoundaryState;
   }
 
   static getDerivedStateFromError(error: Error) {
-    console.error(error)
-    return { error }
+    console.error(error);
+    return { error };
   }
 
   private resetState = () => {
-    this.setState(errorBoundaryState)
-  }
+    this.setState(errorBoundaryState);
+  };
 
   private setError = (error: Error) => {
-    console.error(error)
+    console.error(error);
 
-    this.setState({ error })
-  }
+    this.setState({ error });
+  };
 
   private handleError = (event: ErrorEvent) => {
-    this.setError(event.error)
-    event.preventDefault?.()
-  }
+    this.setError(event.error);
+    event.preventDefault?.();
+  };
 
   private handleRejectedPromise = (event: PromiseRejectionEvent) => {
-    event?.promise?.catch?.(this.setError)
-    event.preventDefault?.()
-  }
+    event?.promise?.catch?.(this.setError);
+    event.preventDefault?.();
+  };
 
   public componentDidMount() {
-    window.addEventListener('error', this.handleError)
-    window.addEventListener('unhandledrejection', this.handleRejectedPromise)
+    window.addEventListener('error', this.handleError);
+    window.addEventListener('unhandledrejection', this.handleRejectedPromise);
 
-    Router.events.on('routeChangeStart', this.resetState)
+    Router.events.on('routeChangeStart', this.resetState);
   }
 
   public componentWillUnmount() {
-    window.removeEventListener('error', this.handleError)
-    window.removeEventListener('unhandledrejection', this.handleRejectedPromise)
+    window.removeEventListener('error', this.handleError);
+    window.removeEventListener('unhandledrejection', this.handleRejectedPromise);
 
-    Router.events.off('routeChangeStart', this.resetState)
+    Router.events.off('routeChangeStart', this.resetState);
   }
 
   public render() {
-    const { error } = this.state
+    const { error } = this.state;
 
     if (isInstanceOfAPIError(error)) {
-      const { redirectUrl, notFound } = error
+      const { redirectUrl, notFound } = error;
 
       if (notFound) {
-        return <NotFound />
+        return <NotFound />;
       }
 
       if (redirectUrl) {
-        window.location.href = redirectUrl
+        window.location.href = redirectUrl;
       }
 
-      return <NotEnabled />
+      return <NotEnabled />;
     }
-    return this.props.children
+    return this.props.children;
   }
 }
 
-export default ErrorBoundary
+export default ErrorBoundary;

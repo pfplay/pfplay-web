@@ -1,10 +1,10 @@
-import '@/styles/globals.css'
+import '@/styles/globals.css';
 
-import { Metadata } from 'next'
-import React from 'react'
+import { Metadata } from 'next';
+import React from 'react';
 
-import { Header } from '@/components/header'
-import { Providers } from '@/components/providers'
+import { Header } from '@/components/header';
+import { Providers } from '@/components/providers';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -12,17 +12,17 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.ico',
   },
-}
+};
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
-    <html lang="en">
-      <body className="min-h-screen">
+    <html lang='en'>
+      <body className='min-h-screen'>
         <Providers>
           <Header />
           {children}
         </Providers>
       </body>
     </html>
-  )
+  );
 }

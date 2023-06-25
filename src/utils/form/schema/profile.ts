@@ -1,4 +1,4 @@
-import * as yup from 'yup'
+import * as yup from 'yup';
 
 export const profileSchema = yup.object().shape({
   nickname: yup
@@ -9,4 +9,4 @@ export const profileSchema = yup.object().shape({
     .matches(/^[^\s]+$/, '공백 불가')
     .matches(/^[^`~!@#$%^&*|]+$/, '특수문자 불가'),
   introduction: yup.string().max(50, '50자 제한입니다.').required('소개를 입력해주세요.'),
-})
+});

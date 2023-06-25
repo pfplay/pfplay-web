@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { MantineProvider } from '@mantine/core'
-import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react'
-import { SessionProvider } from 'next-auth/react'
-import React from 'react'
+import { MantineProvider } from '@mantine/core';
+import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react';
+import { SessionProvider } from 'next-auth/react';
+import React from 'react';
 
 export const Providers = ({ children }: React.PropsWithChildren) => {
   return (
@@ -12,5 +12,5 @@ export const Providers = ({ children }: React.PropsWithChildren) => {
         <ThirdwebProvider desiredChainId={ChainId.Mainnet}>{children}</ThirdwebProvider>
       </MantineProvider>
     </SessionProvider>
-  )
-}
+  );
+};

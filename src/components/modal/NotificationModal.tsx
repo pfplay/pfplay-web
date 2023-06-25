@@ -1,4 +1,4 @@
-import Modal from 'react-modal'
+import Modal from 'react-modal';
 
 const customStyles: Modal.Styles = {
   overlay: {
@@ -21,16 +21,16 @@ const customStyles: Modal.Styles = {
     backgroundColor: '#1C1C1C',
     border: '1px solid #2F2F2F',
   },
-}
+};
 
 interface INotificationModalProps {
-  isOpen: boolean
-  title: string
-  content: string
-  okTitle: string
-  cancelTitle: string
-  onOk: () => void
-  onClose: () => void
+  isOpen: boolean;
+  title: string;
+  content: string;
+  okTitle: string;
+  cancelTitle: string;
+  onOk: () => void;
+  onClose: () => void;
 }
 
 export const NotificationModal = ({
@@ -44,22 +44,24 @@ export const NotificationModal = ({
 }: INotificationModalProps) => {
   return (
     <Modal style={customStyles} isOpen={isOpen} ariaHideApp={false}>
-      <h1 className="text-center font-bold text-xl mb-3 text-[#FDFDFD]">{title}</h1>
-      <p className="text-center font-normal text-sm whitespace-pre-line mb-9 text-[#969696]">
+      <h1 className='text-center font-bold text-xl mb-3 text-[#FDFDFD]'>{title}</h1>
+      <p className='text-center font-normal text-sm whitespace-pre-line mb-9 text-[#969696]'>
         {content}
       </p>
       <button
         onClick={onClose}
-        type="button"
-        className="text-[#FDFDFD] text-center font-bold text-sm px-7 py-3 bg-[#2F2F2F] rounded mr-3 w-[166px]">
+        type='button'
+        className='text-[#FDFDFD] text-center font-bold text-sm px-7 py-3 bg-[#2F2F2F] rounded mr-3 w-[166px]'
+      >
         {cancelTitle}
       </button>
       <button
-        type="button"
+        type='button'
         onClick={onOk}
-        className="text-[#FDFDFD] text-center font-bold text-sm px-7 py-3 rounded w-[166px] bg-gradient-to-r from-[#780808] to-[#AE001F]">
+        className='text-[#FDFDFD] text-center font-bold text-sm px-7 py-3 rounded w-[166px] bg-gradient-to-r from-[#780808] to-[#AE001F]'
+      >
         {okTitle}
       </button>
     </Modal>
-  )
-}
+  );
+};
