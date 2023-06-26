@@ -11,8 +11,12 @@
     @apply flex flex-col;
   }
 
-  .flexCenter {
-    @apply flex justify-center items-center;
+  .flexRowCenter {
+    @apply flexRow justify-center items-center;
+  }
+
+  .flexColCenter {
+    @apply flexCol justify-center items-center;
   }
 }
 

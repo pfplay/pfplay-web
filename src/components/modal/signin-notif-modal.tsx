@@ -1,19 +1,19 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
-interface AuthNotifModalProps {
+interface SignInNotifModalProps {
   isOpen: boolean;
   onModalClose: () => void;
   onConfirmClick: () => void;
   onCancelClick: () => void;
 }
 
-export const AuthNotifModal = ({
+export const SignInNotifModal = ({
   isOpen,
   onModalClose,
   onConfirmClick,
   onCancelClick,
-}: AuthNotifModalProps) => {
+}: SignInNotifModalProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as='div' className='relative z-10 ' onClose={onModalClose}>
@@ -30,7 +30,7 @@ export const AuthNotifModal = ({
         </Transition.Child>
 
         <div className='fixed inset-0 overflow-y-auto'>
-          <div className='flexCenter min-h-full  p-4 text-center'>
+          <div className='flexRowCenter min-h-full  p-4 text-center'>
             <Transition.Child
               as={Fragment}
               enter='ease-out duration-300'

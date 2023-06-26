@@ -4,9 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
-import { AuthNotifModal } from '../modal/auth-notif-modal';
+import { SignInNotifModal } from '../modal/signin-notif-modal';
 
-export const OAuthLogIn = () => {
+export const OAuthSignIn = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,12 +28,12 @@ export const OAuthLogIn = () => {
 
   return (
     <>
-      <div className='flex justify-center items-center text-white h-screen relative'>
-        <div className='flex flex-col items-center w-[640px] backdrop-blur-lg relative border border-[#1c1c1c] bg-[#180202]/50'>
+      <div className='flexRowCenter text-white h-screen relative'>
+        <div className='flexCol items-center w-[640px] backdrop-blur-lg relative border border-[#1c1c1c] bg-[#180202]/50'>
           <Link href='/' className='absolute right-10 top-10'>
             <Image src='/icons/icn_close.svg' alt='close' width={20} height={20} />
           </Link>
-          <div className='w-full py-[70px] flex flex-col justify-center items-center'>
+          <div className='w-full py-[70px] flexColCenter'>
             <Image
               className='mb-[68px]'
               src='/logos/wordmark_medium_white.svg'
@@ -46,20 +46,18 @@ export const OAuthLogIn = () => {
               onClick={signInGoogle}
             >
               <Image src='/icons/google.png' alt='google login' width={32} height={32} />
-              <p className='ml-3 font-poppins'>Sign in With Google</p>
+              <span className='ml-3 font-poppins'>Sign in With Google</span>
             </button>
-            <span className='flex justify-center'>
-              <button
-                className='text-sm text-neutral-300 cursor-pointer border-b'
-                onClick={handleOpenModal}
-              >
-                먼저 둘러볼래요
-              </button>
-            </span>
+            <button
+              className='text-sm text-neutral-300 cursor-pointer border-b'
+              onClick={handleOpenModal}
+            >
+              먼저 둘러볼래요
+            </button>
           </div>
         </div>
       </div>
-      <AuthNotifModal
+      <SignInNotifModal
         isOpen={isOpen}
         onModalClose={handleModalClose}
         onConfirmClick={signInGoogle}

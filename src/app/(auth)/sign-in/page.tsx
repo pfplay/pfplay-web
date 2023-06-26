@@ -1,5 +1,5 @@
 // import RootLayout from '@/components/layout/RootLayout'
-import { OAuthLogIn } from '@/components/auth/oauth-login';
+import { OAuthSignIn } from '@/components/auth/oauth-sign-in';
 import type { Metadata } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -10,10 +10,10 @@ export const metadata: Metadata = {
   description: 'Your Space',
 };
 
-export default function LoginPage() {
+export default function SignInPage() {
   return (
     <main className='min-h-screen bg-onboarding bg-cover'>
-      <OAuthLogIn />
+      <OAuthSignIn />
     </main>
   );
 }
