@@ -1,3 +1,4 @@
+import { routes } from '@/config/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -22,7 +23,7 @@ const SideBar = () => {
           <p className='text-[#969696] text-[12px]'>내 프로필</p>
         </div>
       </div>
-      <Link href='/' passHref>
+      <Link href={routes.home} passHref>
         <div className='flex flex-col justify-center items-center gap-1'>
           <HeadSet />
           <p className='text-[#969696] text-[12px]'>플레이 리스트</p>

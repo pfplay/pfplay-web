@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 import RootLayout from '@/components/layout/RootLayout';
 import { BackButtonItem } from '@/components/ui/BackButtonItem';
+import { routes } from '@/config/routes';
 
 const AvatarEditPage: NextPage = () => {
   const router = useRouter();
@@ -102,7 +103,7 @@ const AvatarEditPage: NextPage = () => {
                   <div className='flex justify-end align-bottom mt-5'>
                     <button
                       className='w-[280px] py-3 px-4 bg-redGradientStart text-white rounded-sm'
-                      onClick={() => router.push('/party')}
+                      onClick={() => router.push(routes.party)}
                     >
                       Let&apos;s get in
                     </button>

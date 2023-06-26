@@ -5,6 +5,7 @@ import { useState } from 'react';
 import RootLayout from '@/components/layout/RootLayout';
 import SidebarLayout from '@/components/layout/SidebarLayout';
 import CreatePartyModal from '@/components/modal/PartyModal';
+import { routes } from '@/config/routes';
 
 const PartyRoomListPage = () => {
   const [isHover, setIsHover] = useState(false);
@@ -19,7 +20,7 @@ const PartyRoomListPage = () => {
             <div className='w-full py-10 px-7 border border-[#1c1c1c] rounded backdrop-blur-lg bg-[#180202]/30'>
               <h2
                 className='text-white font-poppins text-[28px] mb-1.5 cursor-pointer no-underline hover:underline'
-                onClick={() => router.push('/party/1')}
+                onClick={() => router.push(`${routes.party}/1`)}
               >
                 PFPlay Main Stage
               </h2>

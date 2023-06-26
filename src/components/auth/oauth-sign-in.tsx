@@ -1,4 +1,5 @@
 'use client';
+import { routes } from '@/config/routes';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,17 +21,17 @@ export const OAuthSignIn = () => {
 
   // TODO: set main stage party room number
   const signInAnnonynmous = () => {
-    router.push('/party/1');
+    router.push(`${routes.party.base}/1`);
   };
   const signInGoogle = () => {
-    signIn('google', { callbackUrl: '/' });
+    signIn('google', { callbackUrl: routes.home });
   };
 
   return (
     <>
       <div className='flexRowCenter text-white h-screen relative'>
         <div className='flexCol items-center w-[640px] backdrop-blur-lg relative border border-[#1c1c1c] bg-[#180202]/50'>
-          <Link href='/' className='absolute right-10 top-10'>
+          <Link href={routes.home} className='absolute right-10 top-10'>
             <Image src='/icons/icn_close.svg' alt='close' width={20} height={20} />
           </Link>
           <div className='w-full py-[70px] flexColCenter'>

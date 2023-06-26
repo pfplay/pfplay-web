@@ -1,3 +1,5 @@
+import { routes } from '@/config/routes';
+
 export function isInstanceOfAPIError(object: unknown): object is ApiError {
   return object instanceof ApiError && ('redirectUrl' in object || 'notFound' in object);
 }
@@ -21,7 +23,7 @@ export class ForbiddenError extends ApiError {
 
   message = '인증처리에 실패했습니다.';
 
-  redirectUrl = '/error';
+  redirectUrl = routes.error;
 }
 
 export class AuthError extends ApiError {
@@ -29,5 +31,5 @@ export class AuthError extends ApiError {
 
   message = '인증되지 않은 사용자입니다.';
 
-  redirectUrl = '/auth';
+  redirectUrl = routes.auth.base;
 }
