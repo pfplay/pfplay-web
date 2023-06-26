@@ -17,6 +17,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
+      "yarn prettier:fix",
       "yarn lint:fix"
     ]
   },
@@ -47,15 +48,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
-    "@storybook/addon-actions": "^6.5.16",
-    "@storybook/addon-essentials": "^6.5.16",
-    "@storybook/addon-interactions": "^6.5.16",
-    "@storybook/addon-links": "^6.5.16",
-    "@storybook/addon-postcss": "2.0.0",
-    "@storybook/builder-webpack5": "^6.5.16",
-    "@storybook/manager-webpack5": "^6.5.16",
-    "@storybook/react": "^6.5.16",
-    "@storybook/testing-library": "^0.0.13",
     "@types/node": "18.7.6",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
