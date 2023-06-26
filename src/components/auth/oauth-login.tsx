@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
-import { NotificationModal } from '../modal/NotificationModal';
+import { AuthNotifModal } from '../modal/auth-notif-modal';
 
 export const OAuthLogIn = () => {
   const router = useRouter();
@@ -13,6 +13,10 @@ export const OAuthLogIn = () => {
   const handleOpenModal = useCallback(() => {
     setIsOpen(true);
   }, []);
+
+  const handleModalClose = () => {
+    setIsOpen(false);
+  };
 
   // TODO: set main stage party room number
   const signInAnnonynmous = () => {
@@ -55,16 +59,11 @@ export const OAuthLogIn = () => {
           </div>
         </div>
       </div>
-      <NotificationModal
+      <AuthNotifModal
         isOpen={isOpen}
-        onClose={signInAnnonynmous}
-        title={'잠깐만요!'}
-        content={
-          '비로그인 입장 시 접근 가능한 기능이 제한됩니다 구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요'
-        }
-        cancelTitle={'비로그인 입장하기'}
-        okTitle={'구글 연동하기'}
-        onOk={signInGoogle}
+        onModalClose={handleModalClose}
+        onConfirmClick={signInGoogle}
+        onCancelClick={signInAnnonynmous}
       />
     </>
   );

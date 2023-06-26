@@ -2,8 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  font-family: 'Nanum Gothic', sans-serif;
+@layer components {
+  .flexRow {
+    @apply flex flex-row;
+  }
+
+  .flexCol {
+    @apply flex flex-col;
+  }
+
+  .flexCenter {
+    @apply flex justify-center items-center;
+  }
 }
 
 .ReactModal__Overlay {
