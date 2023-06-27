@@ -4,8 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import MyProfile from '../../modal/MyProfile';
 import { HeadSet } from '../../ui/icon/HeadSet';
+import { MyProfileModal } from './my-profile-modal';
 
 export const PartiesSideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +31,7 @@ export const PartiesSideBar = () => {
           <p className='text-[#969696] text-[12px]'>플레이 리스트</p>
         </div>
       </Link>
-      <MyProfile isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <MyProfileModal isOpen={isOpen} onModalClose={() => setIsOpen(false)} />
     </div>
   );
 };
