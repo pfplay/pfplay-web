@@ -1,9 +1,10 @@
 'use client';
-import CreatePartyModal from '@/components/modal/PartyModal';
+// import CreatePartyModal from '@/components/modal/PartyModal';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { PartiesMainStageCard } from './parties-main-stage-card';
 import { PartyRoomCard } from './party-room-card';
+import { CreatePartyModal } from './create-party-modal';
 
 export const PartiesMain = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +33,7 @@ export const PartiesMain = () => {
           ))}
         </ul>
       </section>
-      <CreatePartyModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <CreatePartyModal isOpen={isOpen} onModalClose={() => setIsOpen(false)} />
     </>
   );
 };

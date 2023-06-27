@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
-import { SignInNotifModal } from '../../modal/signin-notif-modal';
+import { SignInNotifModal } from './signin-notif-modal';
 
 export const OAuthSignIn = () => {
   const router = useRouter();
