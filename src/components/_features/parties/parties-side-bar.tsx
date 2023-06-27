@@ -1,13 +1,15 @@
+'use client';
 import { routes } from '@/config/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import MyProfile from '../modal/MyProfile';
-import { HeadSet } from './icon/HeadSet';
+import MyProfile from '../../modal/MyProfile';
+import { HeadSet } from '../../ui/icon/HeadSet';
 
-const SideBar = () => {
+export const PartiesSideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className='flex flex-col justify-between absolute py-[28px] top-1/2 left-[40px] w-[88px] h-[224px] bg-[#111111] border-solid border-[#545454] border mr-[24px] transform -translate-y-1/2'>
       {/* TODO: 프로필 이미지로 변경, href 추가 */}
@@ -33,5 +35,3 @@ const SideBar = () => {
     </div>
   );
 };
-
-export default SideBar;

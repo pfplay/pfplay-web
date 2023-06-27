@@ -34,6 +34,12 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
       },
+      screens: {
+        // TODO: Set fixed breakpoints
+        tablet: '640px',
+        laptop: '1024px',
+        desktop: '1280px',
+      },
     },
   },
   plugins: [require('tailwind-scrollbar-hide')],

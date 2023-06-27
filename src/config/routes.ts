@@ -5,8 +5,8 @@ export const routes = {
     base: '/profile',
     edit: '/profile/edit',
   },
-  party: {
-    base: '/party',
+  parties: {
+    base: '/parties',
   },
   auth: {
     base: '/auth',

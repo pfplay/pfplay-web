@@ -1,5 +1,6 @@
 // import RootLayout from '@/components/layout/RootLayout'
-import { OAuthSignIn } from '@/components/auth/oauth-sign-in';
+
+import { OAuthSignIn } from '@/components/_features/auth/oauth-sign-in';
 import type { Metadata } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';

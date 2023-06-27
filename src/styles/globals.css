@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  main {
+    @apply min-h-screen bg-cover relative;
+  }
+}
+
 @layer components {
   .flexRow {
     @apply flex flex-row;
@@ -17,6 +23,10 @@
 
   .flexColCenter {
     @apply flexCol justify-center items-center;
+  }
+
+  .footer-text {
+    @apply font-semibold underline underline-offset-4 text-sm cursor-pointer;
   }
 }
 

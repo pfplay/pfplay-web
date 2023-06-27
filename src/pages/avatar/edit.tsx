@@ -103,7 +103,7 @@ const AvatarEditPage: NextPage = () => {
                   <div className='flex justify-end align-bottom mt-5'>
                     <button
                       className='w-[280px] py-3 px-4 bg-redGradientStart text-white rounded-sm'
-                      onClick={() => router.push(routes.party)}
+                      onClick={() => router.push(routes.parties.base)}
                     >
                       Let&apos;s get in
                     </button>
