@@ -19,7 +19,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <html lang='en'>
       <body className={cn('min-h-screen font-sans', fontNanumGothic.className)}>
         <Providers>
-          <Header />
+          {/* TODO: Header를 react-router-dom의 useMatch hook을 이용하는 것 처럼 조건부 렌더 하는 방법 찾기.  */}
           {children}
         </Providers>
       </body>

@@ -1,10 +1,12 @@
-import { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
-
+import { Header } from '@/components/header';
 import React from 'react';
 
 export default function AuthLayout({ children }: React.PropsWithChildren) {
-  return <>{children}</>;
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
 }
 

@@ -1,4 +1,5 @@
 'use client';
+import { routes } from '@/config/routes';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -14,7 +15,10 @@ export const PartyRoomCard = ({ value }: PartyRoomCardProps) => {
   const router = useRouter();
 
   return (
-    <li className='py-6 px-7 rounded border border-[#1C1C1C] backdrop-blur-lg bg-[#180202]/30 flex flex-col justify-between h-60 relative'>
+    <li
+      onClick={() => router.push(`${routes.parties.base}/1`)} // TODO: set proper route with id
+      className='py-6 px-7 rounded border border-[#1C1C1C] backdrop-blur-lg bg-[#180202]/30 flex flex-col justify-between h-60 relative cursor-pointer'
+    >
       <h2
         className='text-[#FDFDFD] text-2xl cursor-pointer no-underline hover:underline'
         onClick={() => router.push(`/party/${value}`)}

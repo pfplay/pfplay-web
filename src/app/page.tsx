@@ -1,11 +1,13 @@
 import Image from 'next/image';
 
-import { HomeLoginButton } from '@/app/home/home-login-button';
+import { HomeLoginButton } from '@/components/_features/home/home-login-button';
+import { Header } from '@/components/header';
 
 export default function Home() {
   return (
     <>
-      <main className='flexColCenter bg-onboarding'>
+      <Header />
+      <main className='flexColCenter  bg-onboarding'>
         <Image
           className='mb-[72px]'
           src='/logos/wordmark_medium_white.svg'

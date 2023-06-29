@@ -1,32 +1,34 @@
 /** @type {import('tailwindcss').Config} */
 const { fontFamily } = require('tailwindcss/defaultTheme');
 
-const darkRedThemeColors = {
-  red500: '#990316',
-  red600: '#B41024',
-  red700: '#F31F2C',
-  red800: '#FF5B65',
-  redGradientStart: '#780808',
-  redGradientEnd: '#AE001F',
-  statesColor: '#EAEAEA',
-  gray50: '#111111',
-  gray100: '#1C1C1C',
-  gray200: '#2F2F2',
-  gray300: '#434343',
-  gray400: '#545454',
-  gray500: '#707070',
-  gray600: '#969696',
-  gray700: '#DADADA',
-  gray800: '#F5F5F5',
-  gray900: '#FDFDFD',
-  dim: 'rgba(0, 0, 0, 0.6)',
-};
-
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      colors: darkRedThemeColors,
+      colors: {
+        statesColor: '#EAEAEA',
+        red: {
+          1: '#FF5B65',
+          2: '#F31F2C',
+          3: '#B41024',
+          4: '#AE001F',
+          5: '#990316',
+          6: '#780808',
+        },
+        grey: {
+          1: '#FDFDFD',
+          2: '#F5F5F5',
+          3: '#DADADA',
+          4: '#969696',
+          5: '#707070',
+          6: '#545454',
+          7: '#434343',
+          8: '#2F2F2',
+          9: '#1C1C1C',
+          10: '#111111',
+        },
+        dim: 'rgba(0, 0, 0, 0.6)',
+      },
       backgroundImage: {
         onboarding: "url('/image/Onboard.png')",
         partyRoom: "url('/image/PartyRoom.png')",
