@@ -7,6 +7,8 @@
     "dev": "yarn open-browser && next dev",
     "build": "next build",
     "start": "next start",
+    "test": "NODE_OPTIONS=--experimental-vm-modules TZ=utc jest src",
+    "test:type": "tsc --noEmit",
     "lint": "eslint 'src/**/*.{ts,tsx}' --fix --quiet",
     "lint:husky": "eslint --fix",
     "format": "prettier --check .",
