@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+.swc
 
 # testing
 /coverage
@@ -14,10 +15,14 @@
 
 # production
 /build
+/dist
 
 # misc
+.idea/
+.vscode/
 .DS_Store
 *.pem
+Thumbs.db
 
 # debug
 npm-debug.log*
