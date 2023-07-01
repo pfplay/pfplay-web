@@ -11,9 +11,7 @@
     "lint:fix": "eslint --fix src --ext ts,tsx --config .eslintrc.json",
     "prettier": "prettier --check src/**/*.{ts,tsx} --config .prettierrc",
     "prettier:fix": "prettier --wrtie src/**/*.{ts,tsx} --config .prettierrc",
-    "prepare": "husky install",
-    "storybook": "start-storybook -p 6006 -s ./public",
-    "build-storybook": "build-storybook -s public"
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
