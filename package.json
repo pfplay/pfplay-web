@@ -7,18 +7,23 @@
     "dev": "yarn open-browser && next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint src --ext ts,tsx --config .eslintrc.json",
-    "lint:fix": "eslint --fix src --ext ts,tsx --config .eslintrc.json",
-    "prettier": "prettier --check src/**/*.{ts,tsx} --config .prettierrc",
-    "prettier:fix": "prettier --wrtie src/**/*.{ts,tsx} --config .prettierrc",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --fix --quiet",
+    "lint:husky": "eslint --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write",
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
+  "prettier": "@thumbsu/prettier-config",
   "lint-staged": {
     "*.{ts,tsx}": [
-      "yarn prettier:fix",
-      "yarn lint:fix"
+      "organize-imports-cli",
+      "yarn format:fix",
+      "yarn lint:husky"
+    ],
+    "*.{js,css,md}": [
+      "yarn format:fix"
     ]
   },
   "dependencies": {
