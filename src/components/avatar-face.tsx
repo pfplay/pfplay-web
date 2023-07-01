@@ -62,7 +62,7 @@ export const AvatarFace = () => {
               backgroundColor: '#2F2F2F',
             }}
             className='text-sm flex justify-center items-center px-5'
-            onClick={connectWithMetamask}
+            // onClick={connectWithMetamask}
           >
             <Image
               src='/icons/icn_add.svg'

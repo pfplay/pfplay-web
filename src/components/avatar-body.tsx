@@ -1,6 +1,4 @@
-import type { NextPage } from 'next';
-
-const AvatarBody: NextPage = () => {
+export const AvatarBody = () => {
   return (
     <>
       <div
@@ -22,4 +20,3 @@ const AvatarBody: NextPage = () => {
     </>
   );
 };
-export default AvatarBody;

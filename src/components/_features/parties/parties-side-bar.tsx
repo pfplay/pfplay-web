@@ -1,10 +1,9 @@
 'use client';
+import { Icons } from '@/components/icons';
 import { routes } from '@/config/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-
-import { HeadSet } from '../../ui/icon/HeadSet';
 import { MyProfileModal } from './my-profile-modal';
 
 export const PartiesSideBar = () => {
@@ -27,7 +26,7 @@ export const PartiesSideBar = () => {
       </div>
       <Link href={routes.home} passHref>
         <div className='flex flex-col justify-center items-center gap-1'>
-          <HeadSet />
+          <Icons.headset />
           <p className='text-[#969696] text-[12px]'>플레이 리스트</p>
         </div>
       </Link>

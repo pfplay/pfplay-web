@@ -1,5 +1,5 @@
 'use client';
-import { BackButtonItem } from '@/components/ui/BackButtonItem';
+import { GoBackButton } from '@/components/go-back-button';
 import { routes } from '@/config/routes';
 import { Tabs } from '@mantine/core';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ export const AvatarEdit = () => {
   return (
     <div className='w-full bg-[#111111] px-[60px] pb-12 pt-[46px]'>
       <div onClick={() => router.back()}>
-        <BackButtonItem title='뭘 입고 놀아볼까요?' />
+        <GoBackButton title='뭘 입고 놀아볼까요?' />
       </div>
       <div className='flex gap-[30px]'>
         {/* 아바타 미리보기 */}
