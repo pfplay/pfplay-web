@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { HomeLoginButton } from '@/components/_features/home/home-login-button';
 import { Header } from '@/components/header';
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <Header />

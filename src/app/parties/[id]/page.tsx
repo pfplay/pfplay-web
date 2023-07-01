@@ -1,7 +1,12 @@
 import { Tabs } from '@/components/tabs';
+import { getAuthSession } from '@/lib/auth/auth-options';
 import Image from 'next/image';
 
-export default function PartyRoom() {
+export default function PartyRoomPage() {
+  const session = getAuthSession();
+
+  console.log({ session });
+
   return (
     <>
       {/* 오른쪽 채팅창 */}
