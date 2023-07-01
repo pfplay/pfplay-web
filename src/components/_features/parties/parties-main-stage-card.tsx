@@ -11,7 +11,7 @@ export const PartiesMainStageCard = () => {
     <div className='w-full py-10 px-7 border border-[#1c1c1c] rounded backdrop-blur-lg bg-[#180202]/30'>
       <h2
         className='text-white font-poppins text-[28px] mb-1.5 cursor-pointer no-underline hover:underline'
-        onClick={() => router.push(`${routes.parties}/1`)}
+        onClick={() => router.push(`${routes.parties.base}/1`)} // TODO: set proper route for main stage
       >
         PFPlay Main Stage
       </h2>

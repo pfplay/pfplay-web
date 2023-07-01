@@ -2,8 +2,8 @@ import { Tabs } from '@/components/tabs';
 import { getAuthSession } from '@/lib/auth/auth-options';
 import Image from 'next/image';
 
-export default function PartyRoomPage() {
-  const session = getAuthSession();
+export default async function PartyRoomPage() {
+  const session = await getAuthSession();
 
   console.log({ session });
 

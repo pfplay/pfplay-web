@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { HomeLoginButton } from '@/components/_features/home/home-login-button';
-import { Header } from '@/components/header';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <Header />
       <main className='flexColCenter  bg-onboarding'>
         <Image
           className='mb-[72px]'

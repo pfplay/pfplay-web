@@ -45,5 +45,6 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
+// 서버에서 세션을 가져오는 함수
 export const getAuthSession = () => getServerSession(authOptions);
 
