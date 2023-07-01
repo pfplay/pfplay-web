@@ -1,10 +1,11 @@
 import { PartiesMain } from '@/components/_features/parties/parties-main';
 
-export default function PartiesPage() {
+const PartiesPage = () => {
   return (
     <main>
       <PartiesMain />
     </main>
   );
-}
+};
 
+export default PartiesPage;

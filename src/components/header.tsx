@@ -6,7 +6,7 @@ import { EmailBox } from './email-box';
 
 export const Header = () => {
   return (
-    <header className='absolute top-11 w-full h-ull text-white flex justify-between items-center px-[120px] z-10'>
+    <header className='absolute top-10 w-full text-white flex justify-between items-center px-[120px] z-10'>
       <Link href={routes.home}>
         <Icons.logo width={116} />
       </Link>

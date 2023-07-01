@@ -7,7 +7,9 @@ export const metadata: Metadata = {
   description: '', // TODO: add description
 };
 
-export default function ProfileEditPage() {
+const ProfileEditPage = () => {
   return <ProfileEdit />;
-}
+};
+
+export default ProfileEditPage;
 

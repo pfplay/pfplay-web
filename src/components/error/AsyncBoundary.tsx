@@ -5,11 +5,11 @@ import CustomSuspense from './CustomSuspense';
 import ErrorBoundary from './ErrorBoundary';
 import ErrorFallback from './ErrorFallback';
 
-interface IAsyncBoundary {
+interface AsyncBoundaryProps {
   children: ReactElement;
 }
 
-const AsyncBoundary = ({ children }: PropsWithChildren<IAsyncBoundary>) => {
+const AsyncBoundary = ({ children }: PropsWithChildren<AsyncBoundaryProps>) => {
   const { reset } = useQueryErrorResetBoundary();
   const resetHandler = useCallback(() => {
     reset();
@@ -22,4 +22,4 @@ const AsyncBoundary = ({ children }: PropsWithChildren<IAsyncBoundary>) => {
   );
 };
 
-export default AsyncBoundary;
+export default AsyncBoundaryProps;

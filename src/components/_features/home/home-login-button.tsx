@@ -5,7 +5,10 @@ import React from 'react';
 import { routes } from '@/config/routes';
 
 export const HomeLoginButton = () => {
+  // client session example
   const { data: session } = useSession();
+
+  console.log({ session });
 
   return (
     <Link

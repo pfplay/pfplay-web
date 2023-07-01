@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+const HomePage = () => {
   return (
     <>
       <main className='flexColCenter  bg-onboarding'>
@@ -29,4 +29,6 @@ export default function HomePage() {
       </footer>
     </>
   );
-}
+};
+
+export default HomePage;

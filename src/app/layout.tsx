@@ -5,7 +5,7 @@ import { Providers } from '@/components/providers';
 import { cn } from '@/lib/utils';
 import { fontNanumGothic } from '@/lib/fonts';
 
-export default function RootLayout({ children }: React.PropsWithChildren) {
+const RootLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <html lang='en'>
       <body className={cn('min-h-screen font-sans', fontNanumGothic.className)}>
@@ -17,4 +17,6 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

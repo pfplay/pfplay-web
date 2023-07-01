@@ -2,7 +2,7 @@ import { Tabs } from '@/components/tabs';
 import { getAuthSession } from '@/lib/auth/auth-options';
 import Image from 'next/image';
 
-export default async function PartyRoomPage() {
+const PartyRoomPage = async () => {
   const session = await getAuthSession();
 
   console.log({ session });
@@ -82,5 +82,7 @@ export default async function PartyRoomPage() {
       </section>
     </>
   );
-}
+};
+
+export default PartyRoomPage;
 
