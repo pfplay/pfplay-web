@@ -9,7 +9,7 @@ export const PartiesMain = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    // TODO: Adjust the reponsive when there is a fixed breakpoints
+    // TODO:  breakpoints 정한 후 반응형 적용
     <>
       <section className='desktop:w-[1248px] laptop:px-[140px] mx-auto'>
         <PartiesMainStageCard />

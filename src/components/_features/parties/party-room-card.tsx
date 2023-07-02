@@ -48,7 +48,7 @@ export const PartyRoomCard = ({ value }: PartyRoomCardProps) => {
           <Image src='/icons/icn_info_outline.svg' alt='채팅' width={24} height={24} />
         </div>
       </div>
-      {/* TODO: Refactor after figuring out usage */}
+      {/* TODO:  usecase 확인 후 Refactoring */}
       {/* {isHover && (
         <div className='absolute top-0 left-0 w-full h-full bg-black/90 p-7 pr-10 flex flex-col justify-between'>
           <p className='text-[#F5F5F5] whitespace-pre-line'>

@@ -1,7 +1,6 @@
 'use client';
 import { GoBackButton } from '@/components/go-back-button';
 import { Tabs } from '@/components/tabs';
-import { routes } from '@/config/routes';
 import { cn } from '@/lib/utils';
 import { Tab } from '@headlessui/react';
 import { useRouter } from 'next/navigation';

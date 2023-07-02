@@ -1,11 +1,10 @@
 'use client';
-import { useAddress, useDisconnect, useMetamask } from '@thirdweb-dev/react';
 import Image from 'next/image';
 
 export const AvatarFace = () => {
-  const connectWithMetamask = useMetamask();
-  const disconnect = useDisconnect();
-  const address = useAddress();
+  // const connectWithMetamask = useMetamask();
+  // const disconnect = useDisconnect();
+  // const address = useAddress();
   return (
     <>
       <div className='flex justify-between items-center' style={{ marginTop: '20px' }}>
@@ -35,13 +34,13 @@ export const AvatarFace = () => {
                       style={{ marginTop: '1px' }}
                     />
                     <p className='ml-1'>
-                      {address.slice(0, 5)}...{address.slice(address.length - 5, address.length)}
+                      {/* {address.slice(0, 5)}...{address.slice(address.length - 5, address.length)} */}
                     </p>
                   </div>
                   <div
                     className='absolute top-full left-1/2 z-20 mt-5 -translate-x-1/2 whitespace-nowrap rounded py-2 px-5 text-sm text-white opacity-0 group-hover:opacity-100 cursor-pointer '
                     style={{ backgroundColor: '#111111' }}
-                    onClick={disconnect}
+                    // onClick={disconnect}
                   >
                     <span
                       className='absolute top-[-3px] left-1/2 -z-10 h-2 w-2 -translate-x-1/2 rotate-45 rounded-sm'
@@ -75,7 +74,7 @@ export const AvatarFace = () => {
           </button>
         </span>
       </div>
-      {address ? (
+      {/* {address ? (
         <div
           className='grid grid-cols-5 gap-5 mt-7 scrollbar-hide overflow-y-auto'
           style={{ maxHeight: '200px' }}
@@ -129,7 +128,7 @@ export const AvatarFace = () => {
         <div className='flex justify-center items-center h-14 rounded bg-slate-900/30'>
           <p>보유한 내역이 없어요</p>
         </div>
-      )}
+      )} */}
       <p style={{ fontSize: '28px', marginTop: '20px' }}>PFPlay</p>
       <div
         className='grid grid-cols-5 gap-5 mt-7 scrollbar-hide overflow-y-auto'

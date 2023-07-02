@@ -7,7 +7,7 @@ export interface LoginResponse {
 
 export const login = async (email: string) =>
   publicRequest<LoginResponse>({
-    // TODO: Check the endpoint and replace with routes config
+    // TODO: URL 확인 후 routes config로 교체
     url: '/auth/login',
     method: 'POST',
     data: {
