@@ -1,4 +1,4 @@
-export const AvatarBody = () => {
+const AvatarBody = () => {
   return (
     <>
       <div
@@ -20,3 +20,5 @@ export const AvatarBody = () => {
     </>
   );
 };
+
+export default AvatarBody;

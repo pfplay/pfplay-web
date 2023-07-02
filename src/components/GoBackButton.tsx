@@ -1,10 +1,10 @@
-import { Icons } from './icons';
+import Icons from './Icons';
 
 interface GoBackButtonProps {
   title: string;
 }
 
-export const GoBackButton = ({ title }: GoBackButtonProps) => {
+const GoBackButton = ({ title }: GoBackButtonProps) => {
   return (
     <div className='text-2xl flex items-center mb-8 w-full text-white'>
       <Icons.arrowLeft />
@@ -12,3 +12,4 @@ export const GoBackButton = ({ title }: GoBackButtonProps) => {
     </div>
   );
 };
+export default GoBackButton;

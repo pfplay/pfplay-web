@@ -15,7 +15,7 @@ interface TabsProps {
   classNames?: string;
 }
 
-export const Tabs = ({ children, classNames = '' }: React.PropsWithChildren<TabsProps>) => {
+const Tabs = ({ children, classNames = '' }: React.PropsWithChildren<TabsProps>) => {
   return (
     <div className='w-full max-w-md px-2 py-16 sm:px-0'>
       <Tab.Group>
@@ -54,3 +54,4 @@ export const Tabs = ({ children, classNames = '' }: React.PropsWithChildren<Tabs
   );
 };
 
+export default Tabs;

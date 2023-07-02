@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-export const PartiesMainStageCard = () => {
+const PartiesMainStageCard = () => {
   const router = useRouter();
 
   return (
@@ -39,3 +39,4 @@ export const PartiesMainStageCard = () => {
   );
 };
 
+export default PartiesMainStageCard;

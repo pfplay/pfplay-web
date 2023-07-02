@@ -1,4 +1,4 @@
-import { AvatarEdit } from '@/components/_features/avatar/avatar-edit';
+import AvatarEdit from '@/components/_features/Avatar/AvatarEdit';
 import React from 'react';
 
 const AvatarEditPage = () => {

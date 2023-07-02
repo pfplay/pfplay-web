@@ -1,4 +1,4 @@
-import { PartiesMain } from '@/components/_features/parties/parties-main';
+import PartiesMain from '@/components/_features/Parties/PartiesMain';
 
 const PartiesPage = () => {
   return (
@@ -9,3 +9,4 @@ const PartiesPage = () => {
 };
 
 export default PartiesPage;
+

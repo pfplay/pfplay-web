@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { HomeLoginButton } from '@/components/_features/home/home-login-button';
 import { Metadata } from 'next';
+import HomeLoginButton from '@/components/_features/Home/HomeLoginButton';
 
 export const metadata: Metadata = {
   title: 'PFPlay',

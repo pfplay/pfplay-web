@@ -1,4 +1,4 @@
-import { PartiesSideBar } from '@/components/_features/parties/parties-side-bar';
+import PartiesSideBar from '@/components/_features/Parties/PartiesSideBar';
 
 const PartiesLayout = ({ children }: React.PropsWithChildren) => {
   return (
@@ -10,3 +10,4 @@ const PartiesLayout = ({ children }: React.PropsWithChildren) => {
 };
 
 export default PartiesLayout;
+

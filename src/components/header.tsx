@@ -1,10 +1,10 @@
 import { routes } from '@/config/routes';
 import Link from 'next/link';
 import React from 'react';
-import { Icons } from './icons';
-import { EmailBox } from './email-box';
+import Icons from './Icons';
+import EmailBox from './EmailBox';
 
-export const Header = () => {
+const Header = () => {
   return (
     <header className='absolute top-10 w-full text-white flex justify-between items-center px-[120px] z-10'>
       <Link href={routes.home}>
@@ -17,3 +17,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export default Header;

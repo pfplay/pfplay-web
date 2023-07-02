@@ -7,7 +7,7 @@ interface MyProfileModalProps {
   onModalClose: () => void;
 }
 
-export const MyProfileModal = ({ isOpen, onModalClose }: MyProfileModalProps) => {
+const MyProfileModal = ({ isOpen, onModalClose }: MyProfileModalProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as='div' className='relative z-10 ' onClose={onModalClose}>
@@ -87,3 +87,4 @@ export const MyProfileModal = ({ isOpen, onModalClose }: MyProfileModalProps) =>
   );
 };
 
+export default MyProfileModal;

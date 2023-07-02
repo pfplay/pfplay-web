@@ -8,7 +8,7 @@ interface PartyRoomCardProps {
   value: number; // TODO: set proper type for value when api is connected
 }
 
-export const PartyRoomCard = ({ value }: PartyRoomCardProps) => {
+const PartyRoomCard = ({ value }: PartyRoomCardProps) => {
   // What is the usage of this state?
   // const [isHover, setIsHover] = useState(false);
 
@@ -69,3 +69,4 @@ export const PartyRoomCard = ({ value }: PartyRoomCardProps) => {
   );
 };
 
+export default PartyRoomCard;

@@ -1,4 +1,4 @@
-import { ProfileEdit } from '@/components/_features/profile/profile-edit';
+import ProfileEdit from '@/components/_features/profile/ProfileEdit';
 import { Metadata } from 'next';
 import React from 'react';
 

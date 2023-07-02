@@ -1,4 +1,4 @@
-import { Tabs } from '@/components/tabs';
+import Tabs from '@/components/Tabs';
 import { getAuthSession } from '@/lib/auth/auth-options';
 import Image from 'next/image';
 

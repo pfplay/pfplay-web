@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { GoBackButton } from '@/components/go-back-button';
+import GoBackButton from '@/components/GoBackButton';
 
 const profileFormSchema = z.object({
   nickname: z.string(),
@@ -13,7 +13,7 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
-export const ProfileEdit = () => {
+const ProfileEdit = () => {
   const router = useRouter();
   const {
     register,
@@ -93,3 +93,4 @@ export const ProfileEdit = () => {
   );
 };
 
+export default ProfileEdit;

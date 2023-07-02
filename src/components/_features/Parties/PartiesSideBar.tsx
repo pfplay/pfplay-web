@@ -1,12 +1,12 @@
 'use client';
-import { Icons } from '@/components/icons';
+import Icons from '@/components/Icons';
 import { routes } from '@/config/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { MyProfileModal } from './my-profile-modal';
+import MyProfileModal from './MyProfileModal';
 
-export const PartiesSideBar = () => {
+const PartiesSideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -34,3 +34,5 @@ export const PartiesSideBar = () => {
     </div>
   );
 };
+
+export default PartiesSideBar;

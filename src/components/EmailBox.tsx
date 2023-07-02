@@ -1,6 +1,6 @@
 'use client';
 
-export const EmailBox = () => {
+const EmailBox = () => {
   // TODO: 구글 로그인 연동 후 주석 해제
   // const { data: session } = useSession()
 
@@ -17,3 +17,5 @@ export const EmailBox = () => {
     </div>
   );
 };
+
+export default EmailBox;

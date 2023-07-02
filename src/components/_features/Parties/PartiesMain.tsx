@@ -1,11 +1,11 @@
 'use client';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { PartiesMainStageCard } from './parties-main-stage-card';
-import { PartyRoomCard } from './party-room-card';
-import { CreatePartyModal } from './create-party-modal';
+import PartiesMainStageCard from './PartiesMainStageCard';
+import PartyRoomCard from './PartyRoomCard';
+import CreatePartyModal from './CreatePartyModal';
 
-export const PartiesMain = () => {
+const PartiesMain = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -37,3 +37,4 @@ export const PartiesMain = () => {
   );
 };
 
+export default PartiesMain;

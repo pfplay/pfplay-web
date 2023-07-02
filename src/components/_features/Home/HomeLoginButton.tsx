@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import React from 'react';
 import { routes } from '@/config/routes';
 
-export const HomeLoginButton = () => {
+const HomeLoginButton = () => {
   // client session example
   const { data: session } = useSession();
 
@@ -19,3 +19,5 @@ export const HomeLoginButton = () => {
     </Link>
   );
 };
+
+export default HomeLoginButton;

@@ -8,7 +8,7 @@ interface SignInNotifModalProps {
   onCancelClick: () => void;
 }
 
-export const SignInNotifModal = ({
+const SignInNotifModal = ({
   isOpen,
   onModalClose,
   onConfirmClick,
@@ -76,3 +76,4 @@ export const SignInNotifModal = ({
   );
 };
 
+export default SignInNotifModal;

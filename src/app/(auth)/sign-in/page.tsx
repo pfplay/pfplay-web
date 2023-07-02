@@ -1,4 +1,4 @@
-import { OAuthSignIn } from '@/components/_features/auth/oauth-sign-in';
+import OAuthSignIn from '@/components/_features/Auth/OAuthSignIn';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -15,3 +15,4 @@ const SignInPage = () => {
 };
 
 export default SignInPage;
+
