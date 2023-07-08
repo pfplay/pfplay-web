@@ -16,8 +16,10 @@ const buttonVariants = cva(
   {
     variants: {
       intent: {
+        text: [],
         primary: ['bg-gradient-red'],
         secondary: ['bg-grey-8'],
+        outlined: ['border-[1px]', 'border-grey-5'],
       },
       size: {
         base: ['px-[68px]', 'py-[10px]'],
@@ -32,7 +34,7 @@ const buttonVariants = cva(
     },
     compoundVariants: [
       {
-        intent: ['primary', 'secondary'],
+        intent: ['primary', 'secondary', 'text', 'outlined'],
         size: 'base',
       },
     ],
