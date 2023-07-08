@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
 import SignInNotifModal from './SignInNotifModal';
+import { Button } from '@/components/ui/Button';
 
 const OAuthSignIn = () => {
   const router = useRouter();
@@ -48,6 +49,7 @@ const OAuthSignIn = () => {
               <Image src='/icons/google.png' alt='google login' width={32} height={32} />
               <span className='ml-3 font-poppins'>Sign in With Google</span>
             </button>
+            <Button intent={'secondary'}>hihi</Button>
             <button
               className='text-sm text-neutral-300 cursor-pointer border-b'
               onClick={handleOpenModal}
@@ -68,3 +70,4 @@ const OAuthSignIn = () => {
 };
 
 export default OAuthSignIn;
+

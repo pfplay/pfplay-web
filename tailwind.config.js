@@ -23,7 +23,7 @@ module.exports = {
           5: '#707070',
           6: '#545454',
           7: '#434343',
-          8: '#2F2F2',
+          8: '#2F2F2F',
           9: '#1C1C1C',
           10: '#111111',
         },
@@ -32,6 +32,7 @@ module.exports = {
       backgroundImage: {
         onboarding: "url('/image/Onboard.png')",
         partyRoom: "url('/image/PartyRoom.png')",
+        'gradient-red': 'linear-gradient(to right top, #780808, #AE001F)',
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],

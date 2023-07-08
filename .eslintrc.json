@@ -1,16 +1,33 @@
 {
-  "extends": ["plugin:@typescript-eslint/recommended", "next", "next/core-web-vitals", "prettier"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "next",
+    "next/core-web-vitals",
+    "prettier",
+    "plugin:storybook/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "rules": {
     "react/react-in-jsx-scope": "off",
     "spaced-comment": "error",
-    "quotes": ["error", "single", { "avoidEscape": true }],
-    "semi": ["error", "always"],
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
     "no-duplicate-imports": "error",
     "react/prop-types": "off",
     "no-extra-boolean-cast": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "no-unused-vars": "off"
   },
-  "plugins": ["@typescript-eslint"]
+  "plugins": [
+    "@typescript-eslint"
+  ]
 }
