@@ -18,10 +18,12 @@ export const authOptions: NextAuthOptions = {
     signIn: async ({ user }) => {
       try {
         const response = await login(user.email);
+
         if (response) {
           const access_token = response.data.access_token;
           user.accessToken = access_token;
         }
+
         return true;
       } catch (e) {
         console.error(e);
