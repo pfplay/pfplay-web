@@ -37,7 +37,7 @@ const Tabs = ({ children, classNames = '' }: React.PropsWithChildren<TabsProps>)
                     )
                   }
                 >
-                  {({ selected }) => (
+                  {() => (
                     <>
                       {/* TODO: selected prop에 따라 svg fill/outline 바꿔주기  or 모든  svg를 component화 시켜서 조건에 따라 prop(e.g. fill, stroke) passing하기*/}
                       <Image src={value.src} alt='채팅' width={20} height={20} />
@@ -55,3 +55,4 @@ const Tabs = ({ children, classNames = '' }: React.PropsWithChildren<TabsProps>)
 };
 
 export default Tabs;
+

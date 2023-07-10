@@ -17,17 +17,22 @@
         "avoidEscape": true
       }
     ],
-    "semi": [
-      "error",
-      "always"
-    ],
+    "semi": ["error", "always"],
     "no-duplicate-imports": "error",
     "react/prop-types": "off",
     "no-extra-boolean-cast": "off",
     "@typescript-eslint/ban-ts-comment": "off",
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ]
   },
-  "plugins": [
-    "@typescript-eslint"
-  ]
+  "ignorePatterns": ["src/types/next-auth.d.ts"],
+  "plugins": ["@typescript-eslint"]
 }
+

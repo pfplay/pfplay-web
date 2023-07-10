@@ -22,4 +22,4 @@ const AsyncBoundary = ({ children }: PropsWithChildren<AsyncBoundaryProps>) => {
   );
 };
 
-export default AsyncBoundaryProps;
+export default AsyncBoundary;

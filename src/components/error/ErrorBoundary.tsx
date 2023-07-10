@@ -6,7 +6,7 @@ import { isInstanceOfAPIError } from '@/utils/error';
 import NotEnabled from './NotEnabled';
 import NotFound from './NotFound';
 
-type ErrorBoundaryProps = React.PropsWithChildren<Record<string, any>>;
+type ErrorBoundaryProps = React.PropsWithChildren<Record<string, unknown>>;
 
 interface IErrorBoundaryState {
   error: Error | null;
