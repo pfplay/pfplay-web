@@ -1,14 +1,13 @@
 'use client';
+import React from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import React from 'react';
+
 import { routes } from '@/config/routes';
 
 const HomeLoginButton = () => {
   // client session example
   const { data: session } = useSession();
-
-  console.log({ session });
 
   return (
     <Link

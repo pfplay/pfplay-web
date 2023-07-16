@@ -8,7 +8,7 @@ const defaultHeader = {
   'Content-Type': 'application/json',
 };
 
-const createHeaderWithAuthToken = (token: string) => {
+const createHeaderWithAuthToken = (token: string | undefined) => {
   if (!token) {
     return defaultHeader;
   }
@@ -57,3 +57,4 @@ export const requestWithAuth = async (options: AxiosRequestConfig) => {
 
   return request({ ...options, headers });
 };
+

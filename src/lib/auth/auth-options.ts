@@ -7,6 +7,13 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_ID ?? '',
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET ?? '',
+      authorization: {
+        params: {
+          redirect_uri: process.env.NEXT_LOGIN_REDIRECT_URI,
+          response_type: 'code',
+          scope: 'email',
+        },
+      },
     }),
   ],
   pages: {
@@ -18,15 +25,15 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     // 구글로그인 성공 후 callback (백엔드에 email을 요청하고 access_token을 받아옴)
-    signIn: async ({ user }) => {
+    signIn: async ({ user, account }) => {
       try {
-        const response = await login(user.email);
-
-        console.log('this is singIn: ', { user, response });
-
+        const response = await login(account?.access_token);
         if (response) {
-          const access_token = response.data.access_token;
-          user.accessToken = access_token;
+          user.accessToken = response.headers.authorization;
+          user.isRegistered = response.data.data.registered;
+          user.authority = response.data.data.authority;
+          user.userId = response.data.data.id;
+          user.name = response.data.data.name;
         }
 
         return true;
@@ -35,18 +42,22 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
     },
-    // token: 구글 로그인을 통해 받은 정보 (user, access_token)
+    // 구글 로그인 성공 후 callback (백엔드에 access_token 전달)
     jwt: async ({ token, user }) => {
-      if (user?.accessToken) {
+      if (user) {
         token.accessToken = user?.accessToken;
+        token.isRegistered = user?.isRegistered;
+        token.authority = user?.authority;
       }
+
       return token;
     },
     // session: 어플리케이션에서 사용할 최종 auth 정보
     session: ({ session, token }) => {
-      if (token?.accessToken) {
-        session.user.accessToken = token.accessToken as string;
-      }
+      session.user.accessToken = token.accessToken as string;
+      session.user.isRegistered = token.isRegistered;
+      session.user.authority = token.authority;
+
       return session;
     },
   },
