@@ -1,13 +1,11 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: ['@thumbsu/eslint-config', 'next/core-web-vitals'],
+  extends: ['next/core-web-vitals', 'plugin:prettier/recommended', 'prettier'],
   rules: {
     'react/jsx-uses-react': 0,
     'react/react-in-jsx-scope': 0,
     '@typescript-eslint/no-unsafe-call': 0,
     '@typescript-eslint/no-var-requires': 0,
-    '@typescript-eslint/no-empty-function': 1,
-    quotes: 0, // FIXME: prettier/prettier 도입 후 제거
   },
   overrides: [
     {
@@ -28,4 +26,4 @@ module.exports = {
       },
     },
   ],
-}
+};
