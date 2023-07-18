@@ -1,0 +1,28 @@
+{
+  "env": {
+    "targets": {
+      "chrome": "23",
+      "edge": "12",
+      "safari": "6",
+      "firefox": "21"
+    },
+    "mode": "usage",
+    "coreJs": "3"
+  },
+  "jsc": {
+    "target": "es5",
+    "parser": {
+      "syntax": "typescript",
+      "tsx": false,
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true
+    }
+  },
+  "module": {
+    "type": "commonjs"
+  }
+}
