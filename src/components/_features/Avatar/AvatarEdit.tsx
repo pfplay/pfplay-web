@@ -10,9 +10,9 @@ const AvatarEdit = () => {
   const router = useRouter();
 
   return (
-    <div className='w-full bg-[#111111] pt-[120px] px-12'>
+    <div className='w-full bg-[#000000] pt-[120px] px-12'>
       <div onClick={() => router.back()}>
-        <GoBackButton title='뭘 입고 놀아볼까요?' />
+        <GoBackButton text='뭘 입고 놀아볼까요?' />
       </div>
       <div className='flex gap-[30px]'>
         {/* 아바타 미리보기 */}

@@ -1,12 +1,7 @@
 import Image from 'next/image';
 import Tabs from '@/components/Tabs';
-import { getAuthSession } from '@/lib/auth/auth-options';
 
 const PartyRoomPage = async () => {
-  const session = await getAuthSession();
-
-  console.log({ session });
-
   return (
     <>
       {/* 오른쪽 채팅창 */}
