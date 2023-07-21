@@ -9,10 +9,13 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET ?? '',
     }),
   ],
+  pages: {
+    signIn: '/sign-in',
+  },
   session: {
     strategy: 'jwt',
   },
-  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     // 구글로그인 성공 후 callback (백엔드에 email을 요청하고 access_token을 받아옴)
     signIn: async ({ user }) => {
