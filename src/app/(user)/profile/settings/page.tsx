@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import React from 'react';
-import ProfileSettings from '@/components/_features/profile/ProfileSettings';
+import ProfileSettings from '@/components/_features/Profile/ProfileSettings';
 
 export const metadata: Metadata = {
   title: 'Profile Edit',

@@ -1,8 +1,8 @@
 import React from 'react';
-import AvatarEdit from '@/components/_features/Avatar/AvatarEdit';
+import AvatarSettings from '@/components/_features/Avatar/AvatarSettings';
 
 const AvatarEditPage = () => {
-  return <AvatarEdit />;
+  return <AvatarSettings />;
 };
 
 export default AvatarEditPage;

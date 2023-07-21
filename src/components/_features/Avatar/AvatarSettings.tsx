@@ -6,13 +6,13 @@ import GoBackButton from '@/components/GoBackButton';
 import Tabs from '@/components/Tabs';
 import { cn } from '@/lib/utils';
 
-const AvatarEdit = () => {
+const AvatarSettings = () => {
   const router = useRouter();
 
   return (
     <div className='w-full bg-[#000000] pt-[120px] px-12'>
-      <div onClick={() => router.back()}>
-        <GoBackButton text='뭘 입고 놀아볼까요?' />
+      <div>
+        <GoBackButton text='뭘 입고 놀아볼까요?' onClick={() => router.back()} />
       </div>
       <div className='flex gap-[30px]'>
         {/* 아바타 미리보기 */}
@@ -40,4 +40,4 @@ const AvatarEdit = () => {
   );
 };
 
-export default AvatarEdit;
+export default AvatarSettings;
