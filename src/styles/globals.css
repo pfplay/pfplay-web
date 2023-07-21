@@ -2,27 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-html {
-  font-family: 'Nanum Gothic', sans-serif;
+@layer base {
+  main {
+    @apply min-h-screen bg-cover relative;
+  }
 }
 
-.ReactModal__Overlay {
-  opacity: 0;
-  transition: opacity 300ms ease-in-out;
-}
+@layer components {
+  .flexRow {
+    @apply flex flex-row;
+  }
 
-.ReactModal__Overlay--after-open {
-  opacity: 1;
-}
+  .flexCol {
+    @apply flex flex-col;
+  }
 
-.ReactModal__Overlay--before-close {
-  opacity: 0;
-}
+  .flexRowCenter {
+    @apply flexRow justify-center items-center;
+  }
 
-textarea:focus,
-input:focus {
-  outline: none;
+  .flexColCenter {
+    @apply flexCol justify-center items-center;
+  }
+
+  .footer-text {
+    @apply font-semibold underline underline-offset-4 text-sm cursor-pointer;
+  }
 }

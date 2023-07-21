@@ -1,22 +1,22 @@
-import { ComponentProps, Suspense, useEffect, useState } from 'react'
+import { ComponentProps, Suspense, useEffect, useState } from 'react';
 
 function useMounted() {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  return mounted
+  return mounted;
 }
 
 const CustomSuspense = (props: ComponentProps<typeof Suspense>) => {
-  const isMounted = useMounted()
+  const isMounted = useMounted();
 
   if (isMounted) {
-    return <Suspense {...props} />
+    return <Suspense {...props} />;
   }
-  return <>{props.fallback}</>
-}
+  return <>{props.fallback}</>;
+};
 
-export default CustomSuspense
+export default CustomSuspense;

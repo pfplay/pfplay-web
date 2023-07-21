@@ -1,2 +1,2 @@
-export * from './error'
-export * from './withServerSideProps'
+export * from './error';
+export * from './withServerSideProps';
