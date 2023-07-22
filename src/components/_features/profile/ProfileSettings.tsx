@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,17 +10,20 @@ import { cn } from '@/lib/utils';
 const profileFormSchema = z.object({
   nickName: z
     .string()
-    .min(1)
-    .max(16)
-    .refine((value) => !/[\s!@#$%^&*()_+{}\[\]:;<>,.?~\-]/g.test(value)),
-  introduction: z.string().min(1).max(50, { message: '50자 제한' }),
+    .min(1, { message: '1자 이상 입력해주세요' })
+    .max(16, { message: '16자 제한' })
+    .refine((value) => !/[\s!@#$%^&*()_+{}\[\]:;<>,.?~\-]/g.test(value), {
+      message: '띄어쓰기 및 특수문자 사용 불가',
+    }),
+  introduction: z
+    .string()
+    .min(1, { message: '1자 이상 입력해주세요' })
+    .max(50, { message: '50자 제한' }),
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 const ProfileSettings = () => {
-  const router = useRouter();
-
   const {
     handleSubmit,
     watch,
@@ -40,18 +42,15 @@ const ProfileSettings = () => {
     console.log({ data });
   };
 
-  const isBtnDisabled = Object.keys(errors).length > 0 || !isValid;
+  const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
   return (
     <section className='min-w-[1000px] bg-grey-10 flexCol justify-between items-center mx-auto pt-10 px-[60px]'>
-      <div className='self-start'>
-        <GoBackButton text='당신은 누구신가요?' onClick={() => router.back()} />
-      </div>
+      <GoBackButton text='당신은 누구신가요?' className='self-start' />
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
         className='w-full h-full flexCol justify-between items-center gap-20 pt-24 pb-12  text-grey-3 '
       >
-        {/* nickname */}
         <div>
           <div className={'flex justify-between gap-10 mb-[77px]'}>
             <h3 className='text-lg'>
@@ -83,7 +82,6 @@ const ProfileSettings = () => {
               )}
             </div>
           </div>
-          {/* introduction */}
           <div className='flex justify-between'>
             <h3 className='text-lg'>소개</h3>
             <div className='w-[536px] flexCol'>
@@ -118,9 +116,9 @@ const ProfileSettings = () => {
           type='submit'
           className={cn(
             'self-end bg-grey-9 text-grey-7 font-bold-sm px-[96px] py-[12px]',
-            !isBtnDisabled && 'bg-gradient-red text-grey-1'
+            !btnDisabled && 'bg-gradient-red text-grey-1'
           )}
-          disabled={isBtnDisabled}
+          disabled={btnDisabled}
         >
           Let&apos;s get in
         </button>
