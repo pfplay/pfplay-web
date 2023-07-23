@@ -39,6 +39,7 @@ const ProfileSettings = () => {
   });
 
   const handleFormSubmit: SubmitHandler<ProfileFormValues> = (data) => {
+    // TODO: Avatar setting 구현시 Console log 지우기
     console.log({ data });
   };
 

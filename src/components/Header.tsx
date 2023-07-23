@@ -1,16 +1,11 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import React from 'react';
 import { routes } from '@/config/routes';
 import EmailBox from './EmailBox';
 import Icons from './Icons';
 
 const Header = () => {
-  const pathName = usePathname();
-
-  console.log({ pathName });
-
   return (
     <header className='absolute top-10 w-full text-white flex justify-between items-center px-[120px] z-10'>
       <Link href={routes.home}>
