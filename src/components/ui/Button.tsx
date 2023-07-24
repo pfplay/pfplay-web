@@ -1,7 +1,7 @@
 'use client';
-import { cn } from '@/lib/utils';
-import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
   [
@@ -59,4 +59,3 @@ export const Button = ({
     </button>
   );
 };
-

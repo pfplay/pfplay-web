@@ -1,5 +1,5 @@
-import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { PropsWithChildren, ReactElement, useCallback } from 'react';
+import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 
 import CustomSuspense from './CustomSuspense';
 import ErrorBoundary from './ErrorBoundary';

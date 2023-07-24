@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { Metadata } from 'next';
+import Image from 'next/image';
 import HomeLoginButton from '@/components/_features/Home/HomeLoginButton';
 
 export const metadata: Metadata = {

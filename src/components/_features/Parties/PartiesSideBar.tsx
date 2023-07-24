@@ -1,10 +1,10 @@
 'use client';
-import { routes } from '@/config/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import MyProfileModal from './MyProfileModal';
 import Icons from '@/components/Icons';
+import { routes } from '@/config/routes';
+import MyProfileModal from './MyProfileModal';
 
 const PartiesSideBar = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -10,4 +10,3 @@ const PartiesLayout = ({ children }: React.PropsWithChildren) => {
 };
 
 export default PartiesLayout;
-

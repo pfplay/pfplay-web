@@ -1,5 +1,5 @@
-import { Button, ButtonProps } from '@/components/ui/Button';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Button, ButtonProps } from '@/components/ui/Button';
 
 const meta: Meta<typeof Button> = {
   title: 'ui/Button',
@@ -52,4 +52,3 @@ export const Outlined = (args: ButtonProps) => (
     </div>
   </div>
 );
-

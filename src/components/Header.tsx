@@ -1,8 +1,8 @@
-import { routes } from '@/config/routes';
 import Link from 'next/link';
 import React from 'react';
-import Icons from './Icons';
+import { routes } from '@/config/routes';
 import EmailBox from './EmailBox';
+import Icons from './Icons';
 
 const Header = () => {
   return (
@@ -19,4 +19,3 @@ const Header = () => {
 };
 
 export default Header;
-

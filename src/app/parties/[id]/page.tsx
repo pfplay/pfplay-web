@@ -1,6 +1,6 @@
+import Image from 'next/image';
 import Tabs from '@/components/Tabs';
 import { getAuthSession } from '@/lib/auth/auth-options';
-import Image from 'next/image';
 
 const PartyRoomPage = async () => {
   const session = await getAuthSession();
@@ -85,4 +85,3 @@ const PartyRoomPage = async () => {
 };
 
 export default PartyRoomPage;
-

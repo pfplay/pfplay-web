@@ -1,9 +1,9 @@
 import React from 'react';
 import '@/styles/globals.css';
-import { cn } from '@/lib/utils';
-import { fontNanumGothic } from '@/lib/fonts';
-import SessionProvider from '@/context/SessionProvider';
 import Header from '@/components/Header';
+import SessionProvider from '@/context/SessionProvider';
+import { fontNanumGothic } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
 
 const RootLayout = ({ children }: React.PropsWithChildren) => {
   return (

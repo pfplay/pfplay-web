@@ -5,4 +5,3 @@ const ProfileEditLayout = ({ children }: React.PropsWithChildren) => {
 };
 
 export default ProfileEditLayout;
-
