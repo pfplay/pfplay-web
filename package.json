@@ -11,7 +11,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules TZ=utc jest src",
     "test:type": "tsc --noEmit",
     "lint-staged": "lint-staged",
-    "lint": "next lint -d src --ext .ts,.tsx --fix --quiet",
+    "lint": "next lint -d src --ext .ts --ext .tsx --fix --quiet",
     "format": "prettier --check .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
