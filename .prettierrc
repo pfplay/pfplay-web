@@ -5,28 +5,5 @@
   "bracketSpacing": true,
   "jsxSingleQuote": true,
   "singleQuote": true,
-  "endOfLine": "auto",
-  "import/order": [
-    2,
-    {
-      "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"], "unknown"],
-      "pathGroups": [
-        {
-          "pattern": "{next*,next*/**,react*,react*/**}",
-          "group": "external",
-          "position": "before"
-        },
-        {
-          "pattern": "{@/**}",
-          "group": "internal",
-          "position": "before"
-        }
-      ],
-      "pathGroupsExcludedImportTypes": ["react", "next"],
-      "alphabetize": {
-        "order": "asc",
-        "caseInsensitive": false
-      }
-    }
-  ]
+  "endOfLine": "auto"
 }
