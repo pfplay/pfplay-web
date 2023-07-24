@@ -1,6 +1,6 @@
-import ProfileEdit from '@/components/_features/profile/ProfileEdit';
 import { Metadata } from 'next';
 import React from 'react';
+import ProfileEdit from '@/components/_features/profile/ProfileEdit';
 
 export const metadata: Metadata = {
   title: 'Profile Edit',
@@ -12,4 +12,3 @@ const ProfileEditPage = () => {
 };
 
 export default ProfileEditPage;
-

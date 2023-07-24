@@ -1,8 +1,8 @@
 'use client';
-import { routes } from '@/config/routes';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { routes } from '@/config/routes';
 
 interface PartyRoomCardProps {
   value: number; // TODO: set proper type for value when api is connected

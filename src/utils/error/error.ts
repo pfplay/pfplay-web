@@ -5,31 +5,31 @@ export function isInstanceOfAPIError(object: unknown): object is ApiError {
 }
 
 export class ApiError extends Error {
-  redirectUrl = '';
+  public redirectUrl = '';
 
-  notFound = false;
+  public notFound = false;
 }
 
 export class NotFoundError extends ApiError {
-  name = 'NotFoundError';
+  public name = 'NotFoundError';
 
-  message = '찾을 수 없습니다.';
+  public message = '찾을 수 없습니다.';
 
-  notFound = true;
+  public notFound = true;
 }
 
 export class ForbiddenError extends ApiError {
-  name = 'ForbiddenError';
+  public name = 'ForbiddenError';
 
-  message = '인증처리에 실패했습니다.';
+  public message = '인증처리에 실패했습니다.';
 
-  redirectUrl = routes.error;
+  public redirectUrl = routes.error;
 }
 
 export class AuthError extends ApiError {
-  name = 'AuthError';
+  public name = 'AuthError';
 
-  message = '인증되지 않은 사용자입니다.';
+  public message = '인증되지 않은 사용자입니다.';
 
-  redirectUrl = routes.auth.base;
+  public redirectUrl = routes.auth.base;
 }

@@ -17,12 +17,12 @@ const errorBoundaryState: IErrorBoundaryState = {
 };
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, IErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
+  public constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = errorBoundaryState;
   }
 
-  static getDerivedStateFromError(error: Error) {
+  public static getDerivedStateFromError(error: Error) {
     console.error(error);
     return { error };
   }

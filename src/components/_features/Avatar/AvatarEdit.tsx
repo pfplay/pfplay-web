@@ -1,10 +1,10 @@
 'use client';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+import { Tab } from '@headlessui/react';
 import GoBackButton from '@/components/GoBackButton';
 import Tabs from '@/components/Tabs';
 import { cn } from '@/lib/utils';
-import { Tab } from '@headlessui/react';
-import { useRouter } from 'next/navigation';
-import React from 'react';
 
 const AvatarEdit = () => {
   const router = useRouter();
@@ -41,4 +41,3 @@ const AvatarEdit = () => {
 };
 
 export default AvatarEdit;
-

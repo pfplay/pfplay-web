@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import CreatePartyModal from './CreatePartyModal';
 import PartiesMainStageCard from './PartiesMainStageCard';
 import PartyRoomCard from './PartyRoomCard';
-import CreatePartyModal from './CreatePartyModal';
 
 const PartiesMain = () => {
   const [isOpen, setIsOpen] = useState(false);

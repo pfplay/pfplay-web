@@ -5,4 +5,3 @@ const AuthLayout = ({ children }: React.PropsWithChildren) => {
 };
 
 export default AuthLayout;
-

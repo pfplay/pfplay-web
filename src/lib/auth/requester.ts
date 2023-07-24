@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getSession } from 'next-auth/react';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const API_HOST_NAME = process.env.NEXT_PUBLIC_API_HOST_NAME;
 

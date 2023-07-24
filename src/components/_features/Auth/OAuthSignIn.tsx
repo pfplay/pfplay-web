@@ -1,12 +1,12 @@
 'use client';
-import { routes } from '@/config/routes';
-import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import React, { useCallback, useState } from 'react';
-import SignInNotifModal from './SignInNotifModal';
 import { Button } from '@/components/ui/Button';
+import { routes } from '@/config/routes';
+import SignInNotifModal from './SignInNotifModal';
 
 const OAuthSignIn = () => {
   const router = useRouter();
@@ -73,4 +73,3 @@ const OAuthSignIn = () => {
 };
 
 export default OAuthSignIn;
-

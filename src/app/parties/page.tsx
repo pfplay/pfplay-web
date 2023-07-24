@@ -9,4 +9,3 @@ const PartiesPage = () => {
 };
 
 export default PartiesPage;
-

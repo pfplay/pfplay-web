@@ -1,5 +1,5 @@
-import OAuthSignIn from '@/components/_features/Auth/OAuthSignIn';
 import type { Metadata } from 'next';
+import OAuthSignIn from '@/components/_features/Auth/OAuthSignIn';
 
 export const metadata: Metadata = {
   title: 'DEV-PFPLAY',
@@ -15,4 +15,3 @@ const SignInPage = () => {
 };
 
 export default SignInPage;
-

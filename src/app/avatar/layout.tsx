@@ -5,4 +5,3 @@ const AvatarEditLayout = ({ children }: React.PropsWithChildren) => {
 };
 
 export default AvatarEditLayout;
-

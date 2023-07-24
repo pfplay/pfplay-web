@@ -1,7 +1,7 @@
 'use client';
+import Image from 'next/image';
 import { Tab } from '@headlessui/react';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 // TODO: Tabs 컴포넌트 Refactoring하기.
 // 같이 정해요: 1. generic component, 2. Compound component, e. Dedicated component
@@ -55,4 +55,3 @@ const Tabs = ({ children, classNames = '' }: React.PropsWithChildren<TabsProps>)
 };
 
 export default Tabs;
-
