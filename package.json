@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
-    "open-browser": "open http://localhost:3000",
-    "dev": "yarn open-browser && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "test": "NODE_OPTIONS=--experimental-vm-modules TZ=utc jest src",

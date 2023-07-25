@@ -3,6 +3,7 @@ export const routes = {
   signin: '/sign-in',
   profile: {
     base: '/profile',
+    settings: '/profile/settings',
     edit: '/profile/edit',
   },
   parties: {

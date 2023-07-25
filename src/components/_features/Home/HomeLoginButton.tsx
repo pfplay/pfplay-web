@@ -12,7 +12,7 @@ const HomeLoginButton = () => {
 
   return (
     <Link
-      href={!session ? routes.signin : routes.profile.edit}
+      href={!session ? routes.signin : routes.profile.settings}
       className='text-xl font-extrabold border-none border-2 rounded-full bg-red-800 text-white py-4 px-16'
     >
       Let your PFP Play
