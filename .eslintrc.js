@@ -5,6 +5,7 @@ module.exports = {
     'next/core-web-vitals',
     'plugin:prettier/recommended',
     'prettier',
+    'plugin:storybook/recommended',
   ],
   plugins: ['unused-imports', 'import'],
   rules: {

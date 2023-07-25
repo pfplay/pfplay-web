@@ -24,8 +24,8 @@ const HomePage = () => {
         <HomeLoginButton />
       </main>
       <footer className='w-full absolute bottom-[68px] flexRow justify-between text-white px-[120px]'>
-        <p className='footer-text'>Privacy&Terms</p>
-        <p className='footer-text'>당신의 PFP는 안녕하신가요?</p>
+        <p className='footerText'>Privacy&Terms</p>
+        <p className='footerText'>당신의 PFP는 안녕하신가요?</p>
       </footer>
     </>
   );
