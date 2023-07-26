@@ -6,7 +6,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        statesColor: '#EAEAEA',
         red: {
           200: '#FF5B65',
           300: '#F31F2C',
