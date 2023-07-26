@@ -77,5 +77,8 @@
   "engines": {
     "node": ">=18.17.0",
     "npm": ">=9.6.7"
+  },
+  "resolutions": {
+    "jackspeak": "2.1.1"
   }
 }
