@@ -54,7 +54,7 @@ const OAuthSignIn = () => {
 
             <Button
               intent={'secondary-outline'}
-              className='text-sm font-normal text-grey-3 cursor-pointer underline border-none'
+              className='text-sm font-normal text-grey-200 cursor-pointer underline border-none'
               onClick={handleOpenModal}
             >
               먼저 둘러볼래요

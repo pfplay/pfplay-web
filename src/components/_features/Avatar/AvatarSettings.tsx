@@ -26,7 +26,9 @@ const AvatarSettings = () => {
                 className={({ selected }) =>
                   cn(
                     'w-full flexRowCenter  pt-3 pb-4 border-b-[1px] text-sm font-medium leading-5  bg-transparent outline-none',
-                    selected ? 'text-red-3 shadow border-red-3' : 'text-[#545454] border-[#545454] '
+                    selected
+                      ? 'text-red-400 shadow border-red-400'
+                      : 'text-[#545454] border-[#545454] '
                   )
                 }
               >
