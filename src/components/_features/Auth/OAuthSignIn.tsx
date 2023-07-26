@@ -44,7 +44,7 @@ const OAuthSignIn = () => {
             />
 
             <Button
-              intent={'outlined'}
+              intent={'secondary-outline'}
               onClick={signInGoogle}
               className='justify-start w-80 py-3 pl-5 mb-10'
             >
@@ -53,8 +53,8 @@ const OAuthSignIn = () => {
             </Button>
 
             <Button
-              intent={'text'}
-              className='text-sm font-normal text-grey-3 cursor-pointer underline'
+              intent={'secondary-outline'}
+              className='text-sm font-normal text-grey-3 cursor-pointer underline border-none'
               onClick={handleOpenModal}
             >
               먼저 둘러볼래요
