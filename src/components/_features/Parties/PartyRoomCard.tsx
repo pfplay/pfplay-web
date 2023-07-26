@@ -17,10 +17,11 @@ const PartyRoomCard = ({ value }: PartyRoomCardProps) => {
   return (
     <li
       onClick={() => router.push(`${routes.parties.base}/1`)} // TODO: set proper route with id
-      className='py-6 px-7 rounded border border-[#1C1C1C] backdrop-blur-lg bg-[#180202]/30 flex flex-col justify-between h-60 relative cursor-pointer'
+      /* FIXME: bg 에 쓰인 [#180202]/30 는 디자인 시스템에 없는 hex */
+      className='py-6 px-7 rounded border border-grey-800 backdrop-blur-lg bg-[#180202]/30 flex flex-col justify-between h-60 relative cursor-pointer'
     >
       <h2
-        className='text-[#FDFDFD] text-2xl cursor-pointer no-underline hover:underline'
+        className='text-grey-50 text-2xl cursor-pointer no-underline hover:underline'
         onClick={() => router.push(`/party/${value}`)}
       >
         갓생을 위한 노동요
@@ -28,16 +29,16 @@ const PartyRoomCard = ({ value }: PartyRoomCardProps) => {
       <div className='flex flex-col gap-4'>
         <div className='flex items-center gap-x-3'>
           <div className='w-20 h-11 bg-slate-500 rounded'></div>
-          <p className='text-[#DADADA] text-sm'>
+          <p className='text-grey-200 text-sm'>
             김윤아 2집 - 10. 증오는 나의 힘 &#40;가사포함&#41;
           </p>
         </div>
-        <hr className='bg-[#2f2f2f]' />
+        <hr className='bg-grey-700' />
         <div className='flex justify-between items-center'>
           <div className='flex items-center gap-x-11'>
             <div className='flex items-center'>
               <Image src='/icons/icn_person_outline.svg' alt='채팅' width={24} height={24} />
-              <span className='inline-block ml-1.5 text-[#dadada]'>48</span>
+              <span className='inline-block ml-1.5 text-grey-200'>48</span>
             </div>
             <ul className='flex items-center gap-x-2'>
               {[1, 2, 3].map((value) => (
@@ -51,15 +52,15 @@ const PartyRoomCard = ({ value }: PartyRoomCardProps) => {
       {/* TODO:  usecase 확인 후 Refactoring */}
       {/* {isHover && (
         <div className='absolute top-0 left-0 w-full h-full bg-black/90 p-7 pr-10 flex flex-col justify-between'>
-          <p className='text-[#F5F5F5] whitespace-pre-line'>
+          <p className='text-grey-100 whitespace-pre-line'>
             기준
             <br />
             톰보이&#40;&#40;G&#41;I-DLE&#41; 포즈를 하고 싶어지는가 지금 내가 제법 락스타 같아
             보이는가
           </p>
           <div className='flex justify-end'>
-            <button className='inline-flex items-center justify-center rounded border border-[#B41024] py-1.5 px-3 gap-x-2'>
-              <span className='text-[#B41024] text-sm'>입장하기</span>
+            <button className='inline-flex items-center justify-center rounded border border-red-400 py-1.5 px-3 gap-x-2'>
+              <span className='text-red-400 text-sm'>입장하기</span>
               <Image src='/icons/icn_right.svg' alt='입장하기' width={14} height={14} />
             </button>
           </div>

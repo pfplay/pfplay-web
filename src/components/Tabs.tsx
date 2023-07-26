@@ -33,7 +33,7 @@ const Tabs = ({ children, classNames = '' }: React.PropsWithChildren<TabsProps>)
                       classNames,
                       selected
                         ? 'text-white shadow border-red-400'
-                        : 'text-[#545454] border-[#545454] '
+                        : 'text-grey-500 border-grey-500 '
                     )
                   }
                 >

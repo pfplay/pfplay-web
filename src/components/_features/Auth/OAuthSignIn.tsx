@@ -30,7 +30,9 @@ const OAuthSignIn = () => {
   return (
     <>
       <div className='flexRowCenter text-white h-screen relative'>
-        <div className='flexCol items-center w-[640px] backdrop-blur-lg relative border border-[#1c1c1c] bg-[#180202]/50'>
+        <div
+          className='flexCol items-center w-[640px] backdrop-blur-lg relative border border-grey-800 bg-[#180202]/50' /* FIXME: 180202 는 디자인 시스템에 없는 hex */
+        >
           <Link href={routes.home} className='absolute right-10 top-10'>
             <Image src='/icons/icn_close.svg' alt='close' width={20} height={20} />
           </Link>
