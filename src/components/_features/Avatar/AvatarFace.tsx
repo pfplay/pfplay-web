@@ -10,9 +10,9 @@ const AvatarFace = () => {
       <div className='flex justify-between items-center' style={{ marginTop: '20px' }}>
         <span className='flex  items-center'>
           <p style={{ fontSize: '28px' }}>NFT</p>
-          <span className='ml-4 flex' style={{ fontSize: '16px', color: '#DADADA' }}>
+          <span className='ml-4 flex text-grey-200' style={{ fontSize: '16px' }}>
             연결된 지갑{' '}
-            <p className='ml-2' style={{ fontWeight: 'bold', color: '#F31F2C' }}>
+            <p className='ml-2 text-red-300' style={{ fontWeight: 'bold' }}>
               1
             </p>
           </span>
@@ -22,11 +22,10 @@ const AvatarFace = () => {
             style={{
               height: '36px',
               marginLeft: '16px',
-              border: 'solid 1px #545454',
+              border: 'solid 1px',
               borderRadius: '4px',
-              backgroundColor: '#2F2F2F',
             }}
-            className='text-sm flex justify-center items-center px-5'
+            className='text-sm flex justify-center items-center px-5 border-grey-500 bg-grey-700'
             // onClick={connectWithMetamask}
           >
             <Image

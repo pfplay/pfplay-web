@@ -10,13 +10,13 @@ const AvatarSettings = () => {
   const router = useRouter();
 
   return (
-    <div className='w-full bg-[#000000] pt-[120px] px-12'>
+    <div className='w-full bg-black pt-[120px] px-12'>
       <div>
         <GoBackButton text='뭘 입고 놀아볼까요?' onClick={() => router.back()} />
       </div>
       <div className='flex gap-[30px]'>
         {/* 아바타 미리보기 */}
-        <div className='bg-[#000] min-w-[400px] h-[620px]'>avatar preview</div>
+        <div className='bg-black min-w-[400px] h-[620px]'>avatar preview</div>
         {/* 아이템 설정 */}
         <div className='flex-col w-full'>
           <Tabs>
@@ -26,7 +26,9 @@ const AvatarSettings = () => {
                 className={({ selected }) =>
                   cn(
                     'w-full flexRowCenter  pt-3 pb-4 border-b-[1px] text-sm font-medium leading-5  bg-transparent outline-none',
-                    selected ? 'text-red-3 shadow border-red-3' : 'text-[#545454] border-[#545454] '
+                    selected
+                      ? 'text-red-400 shadow border-red-400'
+                      : 'text-grey-500 border-grey-500 '
                   )
                 }
               >

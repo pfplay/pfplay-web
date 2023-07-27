@@ -30,7 +30,9 @@ const OAuthSignIn = () => {
   return (
     <>
       <div className='flexRowCenter text-white h-screen relative'>
-        <div className='flexCol items-center w-[640px] backdrop-blur-lg relative border border-[#1c1c1c] bg-[#180202]/50'>
+        <div
+          className='flexCol items-center w-[640px] backdrop-blur-lg relative border border-grey-800 bg-[#180202]/50' /* FIXME: 180202 는 디자인 시스템에 없는 hex */
+        >
           <Link href={routes.home} className='absolute right-10 top-10'>
             <Image src='/icons/icn_close.svg' alt='close' width={20} height={20} />
           </Link>
@@ -44,7 +46,7 @@ const OAuthSignIn = () => {
             />
 
             <Button
-              intent={'outlined'}
+              intent={'secondary-outline'}
               onClick={signInGoogle}
               className='justify-start w-80 py-3 pl-5 mb-10'
             >
@@ -53,8 +55,8 @@ const OAuthSignIn = () => {
             </Button>
 
             <Button
-              intent={'text'}
-              className='text-sm font-normal text-grey-3 cursor-pointer underline'
+              intent={'secondary-outline'}
+              className='text-sm font-normal text-grey-200 cursor-pointer underline border-none'
               onClick={handleOpenModal}
             >
               먼저 둘러볼래요
