@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 };
 
 const ProfileSettingsPage = () => {
-  // TODO: User middleware matcher + session to prevent unathorized access
   return <ProfileSettings />;
 };
 
