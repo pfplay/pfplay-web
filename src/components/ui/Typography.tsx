@@ -31,7 +31,6 @@ const typographyVariants = cva([], {
       false: null,
     },
   },
-  compoundVariants: [],
 });
 
 const elDict: Record<TypographyType, keyof Pick<JSX.IntrinsicElements, 'h1' | 'h2' | 'p'>> = {
