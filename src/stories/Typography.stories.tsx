@@ -1,125 +1,113 @@
 import { FC, PropsWithChildren } from 'react';
-import type { Meta } from '@storybook/react';
-import Typography, { ParagraphType, TitleType } from '@/components/ui/Typography';
-import { cn } from '@/lib/utils';
+import type { Meta, StoryObj } from '@storybook/react';
+import Typography, { TypographyType } from '@/components/ui/Typography';
 
 const meta = {
   title: 'ui/Typography',
+  tags: ['autodocs'],
+  component: Typography,
 } satisfies Meta<typeof Typography>;
 
 export default meta;
 
+export const Preview: StoryObj<typeof meta> = {
+  args: {
+    children:
+      '로렘 입숨(lorem ipsum; 줄여서 립숨, lipsum)은 출판이나 그래픽 디자인 분야에서 폰트, 타이포그래피, 레이아웃 같은 그래픽 요소나 시각적 연출을 보여줄 때 사용하는 표준 채우기 텍스트로, 최종 결과물에 들어가는 실제적인 문장 내용이 채워지기 전에 시각 디자인 프로젝트 모형의 채움 글로도 이용된다. 이런 용도로 사용할 때 로렘 입숨을 그리킹(greeking)이라고도 부르며, 때로 로렘 입숨은 공간만 차지하는 무언가를 지칭하는 용어로도 사용된다.',
+  },
+};
+
 export const Default = () => {
-  const dict: Record<
-    TitleType | ParagraphType,
-    { Comp: FC<any>; weight: number; size: number; lineHeight: number }
-  > = {
-    Title1: { Comp: Typography.Title, weight: 700, size: 28, lineHeight: 1.3 },
-    Title2: { Comp: Typography.Title, weight: 700, size: 24, lineHeight: 1.3 },
-    Body1: { Comp: Typography.Paragraph, weight: 700, size: 20, lineHeight: 1.5 },
-    Body2: { Comp: Typography.Paragraph, weight: 700, size: 18, lineHeight: 1.5 },
-    Body3: { Comp: Typography.Paragraph, weight: 700, size: 16, lineHeight: 1.5 },
-    Detail1: { Comp: Typography.Paragraph, weight: 400, size: 16, lineHeight: 1.5 },
-    Detail2: { Comp: Typography.Paragraph, weight: 600, size: 14, lineHeight: 1.5 },
-    Caption1: { Comp: Typography.Paragraph, weight: 400, size: 14, lineHeight: 1.5 },
-    Caption2: { Comp: Typography.Paragraph, weight: 400, size: 12, lineHeight: 1.5 },
+  const dict: Record<TypographyType, { weight: number; size: number; lineHeight: number }> = {
+    title1: { weight: 700, size: 28, lineHeight: 1.3 },
+    title2: { weight: 700, size: 24, lineHeight: 1.3 },
+    body1: { weight: 700, size: 20, lineHeight: 1.5 },
+    body2: { weight: 700, size: 18, lineHeight: 1.5 },
+    body3: { weight: 700, size: 16, lineHeight: 1.5 },
+    detail1: { weight: 400, size: 16, lineHeight: 1.5 },
+    detail2: { weight: 600, size: 14, lineHeight: 1.5 },
+    caption1: { weight: 400, size: 14, lineHeight: 1.5 },
+    caption2: { weight: 400, size: 12, lineHeight: 1.5 },
   };
 
   return (
     <section className='p-[15px]'>
-      <h1 className='font-bold text-[60px] leading-[1.2] mb-[60px]'>Typography</h1>
-
       <section className='grid grid-cols-4 border-b border-b-grey-200 pb-[15px] mb-[40px]'>
-        <Typography.Paragraph type='Detail1'>Style</Typography.Paragraph>
-        <Typography.Paragraph type='Detail1'>Weight</Typography.Paragraph>
-        <Typography.Paragraph type='Detail1'>Size</Typography.Paragraph>
-        <Typography.Paragraph type='Detail1'>Line Height</Typography.Paragraph>
+        <Typography type='detail1'>Type</Typography>
+        <Typography type='detail1'>Weight</Typography>
+        <Typography type='detail1'>Size</Typography>
+        <Typography type='detail1'>Line Height</Typography>
       </section>
 
       <section className='flexCol gap-[30px]'>
-        {Object.entries(dict).map(([type, { Comp, weight, size, lineHeight }]) => (
-          <section className='grid grid-cols-4' key={type}>
-            <Comp type={type}>{type}</Comp>
-            <Comp type={type}>{weight}</Comp>
-            <Comp type={type}>{size}</Comp>
-            <Comp type={type}>{lineHeight}</Comp>
-          </section>
-        ))}
+        {Object.entries(dict).map(([type_, { weight, size, lineHeight }]) => {
+          const type = type_ as TypographyType;
+          return (
+            <section className='grid grid-cols-4' key={type}>
+              <Typography type={type}>{type}</Typography>
+              <Typography type={type}>{weight}</Typography>
+              <Typography type={type}>{size}</Typography>
+              <Typography type={type}>{lineHeight}</Typography>
+            </section>
+          );
+        })}
       </section>
     </section>
   );
 };
-
-export const Variants = () => {
+export const Overflow = () => {
   const LONG_TEXT = `Looooooooooo ooooooooooo oooooooooooo ooooooooooooo ooooooooooo oooooooooo ooooooooooo oooooog`;
-  const Desc: FC<PropsWithChildren<{ isDefault?: boolean }>> = ({ children, isDefault }) => (
-    <Typography.Paragraph
-      type='Detail1'
-      className={cn(
-        'relative w-fit rounded px-2 py-0.5 mb-2 border border-grey-300 text-white bg-grey-600 [&:not(:first-of-type)]:mt-3',
-        isDefault &&
-          `after:content-['Default'] after:absolute after:bg-red-800 after:right-[-60px] after:rounded after:px-1`
-      )}
-    >
-      {children}
-    </Typography.Paragraph>
-  );
 
   return (
-    <section className='flex gap-10 flex-wrap p-[15px]'>
-      <section className='flex flex-col w-[400px] gap-[10px]'>
-        <Typography.Title type='Title2'>{`<Typography.Title />`}</Typography.Title>
+    <section className='flex flex-col w-[400px] gap-[10px] border-r border-r-dim border-dotted'>
+      <PropDesc tag={`overflow="no-control"`}>
+        <Typography overflow='no-control'>{LONG_TEXT}</Typography>
+      </PropDesc>
 
-        <section className='flex flex-col rounded border p-4'>
-          <Desc isDefault>{`ellipsis=true`}</Desc>
-          <Typography.Title type='Title1'>{LONG_TEXT}</Typography.Title>
+      <PropDesc tag={`overflow="ellipsis"`}>
+        <Typography overflow='ellipsis'>{LONG_TEXT}</Typography>
+      </PropDesc>
 
-          <Desc>{`ellipsis=false`}</Desc>
-          <Typography.Title type='Title1'>{LONG_TEXT}</Typography.Title>
-        </section>
-      </section>
+      <PropDesc tag={`overflow="break-words"`}>
+        <Typography overflow='break-words'>{LONG_TEXT}</Typography>
+      </PropDesc>
 
-      <section className='flex flex-col w-[400px] gap-[10px]'>
-        <Typography.Title type='Title2'>{`<Typography.Typography />`}</Typography.Title>
-
-        <section className='flex flex-col rounded border p-4'>
-          <Desc isDefault>{`overflow="no-control"`}</Desc>
-          <Typography.Paragraph type='Detail1'>{LONG_TEXT}</Typography.Paragraph>
-
-          <Desc>{`overflow="ellipsis"`}</Desc>
-          <Typography.Paragraph type='Detail1' overflow='ellipsis'>
-            {LONG_TEXT}
-          </Typography.Paragraph>
-
-          <Desc>{`overflow="break-words"`}</Desc>
-          <Typography.Paragraph type='Detail1' overflow='break-words'>
-            {LONG_TEXT}
-          </Typography.Paragraph>
-
-          <Desc>{`overflow="break-all"`}</Desc>
-          <Typography.Paragraph type='Detail1' overflow='break-all'>
-            {LONG_TEXT}
-          </Typography.Paragraph>
-        </section>
-
-        <section className='flex flex-col rounded border p-4'>
-          <Desc isDefault>inline: false</Desc>
-          <section>
-            <Typography.Paragraph type='Detail1'>Content 1</Typography.Paragraph>
-            <Typography.Paragraph type='Detail1'>Content 2</Typography.Paragraph>
-          </section>
-
-          <Desc>inline: true</Desc>
-          <section>
-            <Typography.Paragraph type='Detail1' inline>
-              Content 1
-            </Typography.Paragraph>
-            <Typography.Paragraph type='Detail1' inline>
-              Content 2
-            </Typography.Paragraph>
-          </section>
-        </section>
-      </section>
+      <PropDesc tag={`overflow="break-all"`}>
+        <Typography overflow='break-all'>{LONG_TEXT}</Typography>
+      </PropDesc>
     </section>
   );
 };
+
+export const Inline = () => {
+  return (
+    <section className='flex flex-col w-[400px] gap-[10px]'>
+      <PropDesc tag='inline: false'>
+        <section>
+          <Typography inline={false}>Content 1</Typography>
+          <Typography inline={false}>Content 2</Typography>
+        </section>
+      </PropDesc>
+
+      <PropDesc tag='inline: true'>
+        <section>
+          <Typography inline={true}>Content 1</Typography>
+          <Typography inline={true}>Content 2</Typography>
+        </section>
+      </PropDesc>
+    </section>
+  );
+};
+
+const PropDesc: FC<PropsWithChildren<{ tag: string }>> = ({ tag, children }) => (
+  <section className='[&:not(:first-of-type)]:mt-3'>
+    <Typography
+      type='caption1'
+      className='w-fit rounded border border-grey-300 text-white bg-grey-600 px-2 py-0.5 mb-0.5'
+    >
+      {tag}
+    </Typography>
+
+    {children}
+  </section>
+);
