@@ -6,8 +6,8 @@ import { cn } from '@/lib/utils';
 const titleVariants = cva(['font-bold leading-[1.3]'], {
   variants: {
     type: {
-      Title1: ['text-[28px]'],
-      Title2: ['text-[24px]'],
+      title1: ['text-[28px]'],
+      title2: ['text-[24px]'],
     },
     ellipsis: {
       true: 'truncate',
@@ -15,20 +15,20 @@ const titleVariants = cva(['font-bold leading-[1.3]'], {
     },
   },
   defaultVariants: {
-    type: 'Title1',
+    type: 'title1',
     ellipsis: true,
   },
 });
 const paragraphVariants = cva(['leading-[1.5]'], {
   variants: {
     type: {
-      Body1: ['text-[20px] font-bold'],
-      Body2: ['text-[18px] font-bold'],
-      Body3: ['text-[16px] font-bold'],
-      Detail1: ['text-[16px] font-normal'],
-      Detail2: ['text-[14px] font-semibold'],
-      Caption1: ['text-[14px] font-normal'],
-      Caption2: ['text-[12px] font-normal'],
+      body1: ['text-[20px] font-bold'],
+      body2: ['text-[18px] font-bold'],
+      body3: ['text-[16px] font-bold'],
+      detail1: ['text-[16px] font-normal'],
+      detail2: ['text-[14px] font-semibold'],
+      caption1: ['text-[14px] font-normal'],
+      caption2: ['text-[12px] font-normal'],
     },
     overflow: {
       'no-control': '',
@@ -42,7 +42,7 @@ const paragraphVariants = cva(['leading-[1.5]'], {
     },
   },
   defaultVariants: {
-    type: 'Detail1',
+    type: 'detail1',
     overflow: 'no-control',
     inline: false,
   },
@@ -58,8 +58,8 @@ export interface TitleProps extends React.ComponentProps<TitleEl>, TitleVariantP
 export interface ParagraphProps extends React.ComponentProps<ParagraphEl>, ParagraphVariantProps {}
 
 const titleElDict: Record<TitleType, TitleEl> = {
-  Title1: 'h1',
-  Title2: 'h2',
+  title1: 'h1',
+  title2: 'h2',
 };
 const Title = ({
   className,
@@ -69,7 +69,7 @@ const Title = ({
   title,
   ...props
 }: React.PropsWithChildren<TitleProps>) => {
-  const El = titleElDict[type || 'Title1'];
+  const El = titleElDict[type || 'title1'];
 
   return (
     <El
