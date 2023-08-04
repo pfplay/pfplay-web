@@ -3,8 +3,9 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import GoBackButton from '@/components/GoBackButton';
+import { avatarBodyMockArr } from '@/config/profile-body-mock';
 import { cn } from '@/lib/utils';
-import AvatarBody, { AvatarBodyImg, avatarBodyMockArr } from './AvatarBody';
+import AvatarBody, { AvatarBodyImg } from './AvatarBody';
 import AvatarFace from './AvatarFace';
 
 const avatarSettingTabConfig: Array<{ name: 'body' | 'face'; index: number }> = [
@@ -13,7 +14,6 @@ const avatarSettingTabConfig: Array<{ name: 'body' | 'face'; index: number }> = 
 ];
 
 const AvatarSettings = () => {
-  const [selectedIndex, setSelectedIndex] = useState(avatarSettingTabConfig[0].index);
   const [selectedBody, setSelectedBody] = useState<AvatarBodyImg>(avatarBodyMockArr[0]);
 
   return (
@@ -34,7 +34,7 @@ const AvatarSettings = () => {
         </div>
         {/* 아이템 설정 */}
         <div className='flex-col w-full'>
-          <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+          <Tab.Group>
             <Tab.List className={cn('w-full flex space-x-1 max-w-xs')}>
               {avatarSettingTabConfig.map((tab) => (
                 // TODO: Tab 컴포넌트 Atom으로 분리하기
@@ -52,10 +52,10 @@ const AvatarSettings = () => {
               ))}
             </Tab.List>
             <Tab.Panels>
-              <Tab.Panel>
+              <Tab.Panel tabIndex={avatarSettingTabConfig[0].index}>
                 <AvatarBody selectedBody={selectedBody} setSelectedBody={setSelectedBody} />
               </Tab.Panel>
-              <Tab.Panel>
+              <Tab.Panel tabIndex={avatarSettingTabConfig[1].index}>
                 <AvatarFace />
               </Tab.Panel>
             </Tab.Panels>
