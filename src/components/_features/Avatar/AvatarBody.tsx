@@ -17,7 +17,7 @@ interface AvatarBodyProps {
 
 const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
   return (
-    <>
+    <section className='flexCol gap-5'>
       <div className='max-h-[400px] grid grid-cols-5 gap-5 mt-7 scrollbar-hide overflow-y-auto'>
         {/* //  TODO: 아바타 이미지 데이터 가져오면 mock arr 대체하기 */}
         {avatarBodyMockArr.map((avatar) => (
@@ -38,7 +38,13 @@ const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
           </div>
         ))}
       </div>
-    </>
+      {/* TODO: Button 컴포넌트 수정되면 대체 */}
+      <button
+        className={cn('self-end bg-gradient-red text-grey-50 font-bold-sm px-[96px] py-[12px]')}
+      >
+        Let&apos;s get in
+      </button>
+    </section>
   );
 };
 
