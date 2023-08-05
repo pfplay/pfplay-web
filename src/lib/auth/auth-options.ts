@@ -22,6 +22,8 @@ export const authOptions: NextAuthOptions = {
       try {
         const response = await login(user.email);
 
+        console.log('this is singIn: ', { user, response });
+
         if (response) {
           const access_token = response.data.access_token;
           user.accessToken = access_token;
