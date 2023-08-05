@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,6 +7,7 @@ import { z } from 'zod';
 import GoBackButton from '@/components/GoBackButton';
 import InputErrorMessage from '@/components/form/InputErrorMessage';
 import { cn } from '@/lib/utils';
+import { useProfileStore } from '@/store/profile';
 
 const profileFormSchema = z.object({
   nickName: z
@@ -15,13 +17,6 @@ const profileFormSchema = z.object({
     .refine((value) => /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]*$/.test(value), {
       message: '한/영/숫자만 가능하고 띄어쓰기 및 특수문자 사용 불가',
     }),
-  // nickName: z
-  //   .string()
-  //   .min(1, { message: '1자 이상 입력해주세요' })
-  //   .max(16, { message: '16자 제한' })
-  //   .refine((value) => !/[\s!@#$%^&*()_+{}\[\]:;<>,.?~\-]/g.test(value), {
-  //     message: '띄어쓰기 및 특수문자 사용 불가',
-  //   }),
   introduction: z
     .string()
     .min(1, { message: '1자 이상 입력해주세요' })
@@ -31,6 +26,10 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 const ProfileSettings = () => {
+  const router = useRouter();
+
+  const setProfile = useProfileStore((state) => state.setProfile);
+
   const {
     handleSubmit,
     watch,
@@ -45,9 +44,10 @@ const ProfileSettings = () => {
     },
   });
 
-  const handleFormSubmit: SubmitHandler<ProfileFormValues> = (data) => {
-    // TODO: Avatar setting 구현시 Console log 지우기
-    console.log({ data });
+  const handleFormSubmit: SubmitHandler<ProfileFormValues> = ({ nickName, introduction }) => {
+    setProfile({ nickName, introduction });
+    // TODO: Route config 설정 후 avatar body 설정 route로 수정
+    router.push('/avatar/edit');
   };
 
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
