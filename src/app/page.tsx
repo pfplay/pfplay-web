@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   },
 };
 
-const HomePage = async () => {
+const HomePage = () => {
   return (
     <>
       <main className='flexColCenter  bg-onboarding'>
