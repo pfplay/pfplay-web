@@ -1,12 +1,19 @@
 import { NextAuthOptions, getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { login } from './login';
+import { AuthService } from '@/api/services/Auth';
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_ID ?? '',
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET ?? '',
+      authorization: {
+        params: {
+          redirect_uri: process.env.NEXT_LOGIN_REDIRECT_URI,
+          response_type: 'code',
+          scope: 'email',
+        },
+      },
     }),
   ],
   pages: {
@@ -15,16 +22,22 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
   callbacks: {
     // 구글로그인 성공 후 callback (백엔드에 email을 요청하고 access_token을 받아옴)
-    signIn: async ({ user }) => {
+    signIn: async ({ user, account }) => {
       try {
-        const response = await login(user.email);
+        if (!account) throw 'account is null';
+        if (!account.access_token) throw 'access_token is undefined';
+
+        const response = await AuthService.login({
+          access_token: account.access_token,
+        });
 
         if (response) {
-          const access_token = response.data.access_token;
-          user.accessToken = access_token;
+          user.accessToken = account.access_token;
+          user.isRegistered = response.registered;
+          user.authority = response.authority;
         }
 
         return true;
@@ -35,16 +48,20 @@ export const authOptions: NextAuthOptions = {
     },
     // token: 구글 로그인을 통해 받은 정보 (user, access_token)
     jwt: async ({ token, user }) => {
-      if (user?.accessToken) {
-        token.accessToken = user?.accessToken;
+      if (user) {
+        token.accessToken = user.accessToken;
+        token.isRegistered = user.isRegistered;
+        token.authority = user.authority;
       }
+
       return token;
     },
     // session: 어플리케이션에서 사용할 최종 auth 정보
     session: ({ session, token }) => {
-      if (token?.accessToken) {
-        session.user.accessToken = token.accessToken as string;
-      }
+      session.user.accessToken = token.accessToken;
+      session.user.isRegistered = token.isRegistered;
+      session.user.authority = token.authority;
+
       return session;
     },
   },

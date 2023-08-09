@@ -19,8 +19,7 @@ export function logResponse(response: AxiosResponse) {
 }
 
 export function unwrapResponse(response: AxiosResponse) {
-  // TODO: API 응답 명세 확인하고 추가 unwrap 필요한지 검토
-  return response.data;
+  return response.data?.data ?? response.data;
 }
 
 export function logError(e: AxiosError) {
