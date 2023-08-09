@@ -36,10 +36,13 @@ export function logError(e: AxiosError) {
     errorObj: e,
   });
 
+  return Promise.reject(e);
+}
+
+export function processError(e: AxiosError) {
   if (e.status === 401 || e.response?.status === 401) {
-    // TODO: 에러 없이 로그인 페이지로 리디렉션
+    // TODO: 에러 없이 로그인 페이지로 리디렉션, next-auth 토큰 제거
     // return;
   }
-
   return Promise.reject(e);
 }
