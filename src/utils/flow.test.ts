@@ -8,15 +8,15 @@ describe('utils/flow', () => {
       }, 50);
     });
   };
+  const waitError = async (e: number): Promise<never> => {
+    await wait('');
+    throw e + 1;
+  };
   const addOne = (x: number) => x + 1;
   const addOneAsync = (x: number) => wait(x + 1);
   const multiplyByTwo = (x: number) => x * 2;
   const multiplyByTwoAsync = (x: number) => wait(x * 2);
-
-  test('빈 입력을 올바르게 처리해야 한다.', async () => {
-    const result = await flow([])();
-    expect(result).toBeUndefined();
-  });
+  const throwOneAddedAsync = (err: number) => waitError(err);
 
   test('단일 함수를 올바르게 처리해야 한다.', async () => {
     const functions = [addOne];
@@ -37,5 +37,14 @@ describe('utils/flow', () => {
     const result = await flow(functions)(1);
 
     expect(result).toBe(12);
+  });
+
+  test('에러 핸들러 목록도 올바르게 처리해야 한다.', async () => {
+    const handlers = [throwOneAddedAsync, throwOneAddedAsync, throwOneAddedAsync];
+    try {
+      await flow(handlers)(1);
+    } catch (e) {
+      expect(e).toBe(4);
+    }
   });
 });

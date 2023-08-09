@@ -1,12 +1,29 @@
-export function flow<T>(functions: ((...args: T[]) => T | Promise<T>)[]) {
-  const length = functions.length;
+type FunctionType<T> = (input: T) => T | Promise<T>;
+type ErrorHandlerType<E = any> = (error: E) => Promise<never>;
 
-  return async (...args: T[]) => {
-    let index = 0;
-    let result: T = length ? await functions[index](...args) : args[0];
-    while (++index < length) {
-      result = await functions[index](result);
+export function flow<T, E = any>(functions: FunctionType<T>[] | ErrorHandlerType<E>[]) {
+  return async (initialInput: T): Promise<T> => {
+    let result: T | E = initialInput;
+
+    for (const func of functions) {
+      result = await processFunction(func, result);
     }
-    return result;
+
+    if (result instanceof Error) {
+      throw result;
+    }
+
+    return result as T;
   };
+}
+
+async function processFunction<T, E = any>(
+  func: FunctionType<T> | ErrorHandlerType<E>,
+  input: T | E
+): Promise<T | E> {
+  try {
+    return await func(input as T & E);
+  } catch (error) {
+    return error as E;
+  }
 }
