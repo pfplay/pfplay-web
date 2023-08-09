@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { flow } from '@/utils/flow';
-import { logRequest } from './interceptors/request';
+import { logRequest, setAccessToken } from './interceptors/request';
 import { logError, logResponse, unwrapResponse } from './interceptors/response';
 
 export const axiosInstance = axios.create({
@@ -9,5 +9,5 @@ export const axiosInstance = axios.create({
   validateStatus: (status) => status >= 200 && status < 400,
 });
 
-axiosInstance.interceptors.request.use(logRequest);
+axiosInstance.interceptors.request.use(flow([setAccessToken, logRequest]));
 axiosInstance.interceptors.response.use(flow([logResponse, unwrapResponse]), logError);
