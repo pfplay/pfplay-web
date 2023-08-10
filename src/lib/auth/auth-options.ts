@@ -24,6 +24,7 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
   callbacks: {
+    // FIXME: 유진님 확인 필요. 현재 백엔드 스웨거 명세에 따르면 로그인 accessToken 을 전달해줘야 함. accessToken 은 구글에서 받아오고 그걸 백엔드로 전달하는건지? (주석이랑 명세랑 반대..?)
     // 구글로그인 성공 후 callback (백엔드에 email을 요청하고 access_token을 받아옴)
     signIn: async ({ user, account }) => {
       try {
