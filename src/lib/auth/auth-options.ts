@@ -30,9 +30,9 @@ export const authOptions: NextAuthOptions = {
         const response = await login(account?.access_token);
         if (response) {
           user.accessToken = response.headers.authorization;
-          user.isRegistered = response.data.data.registered;
+          user.registered = response.data.data.registered;
           user.authority = response.data.data.authority;
-          user.userId = response.data.data.id;
+          user.id = String(response.data.data.id);
           user.name = response.data.data.name;
         }
 
@@ -46,8 +46,10 @@ export const authOptions: NextAuthOptions = {
     jwt: async ({ token, user }) => {
       if (user) {
         token.accessToken = user?.accessToken;
-        token.isRegistered = user?.isRegistered;
+        token.registered = user?.registered;
         token.authority = user?.authority;
+        token.id = user?.id;
+        token.name = user?.name;
       }
 
       return token;
@@ -55,8 +57,10 @@ export const authOptions: NextAuthOptions = {
     // session: 어플리케이션에서 사용할 최종 auth 정보
     session: ({ session, token }) => {
       session.user.accessToken = token.accessToken as string;
-      session.user.isRegistered = token.isRegistered;
+      session.user.registered = token.registered;
       session.user.authority = token.authority;
+      session.user.id = token.id;
+      session.user.name = token.name;
 
       return session;
     },
