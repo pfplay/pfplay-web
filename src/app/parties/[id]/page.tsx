@@ -1,11 +1,5 @@
 import Image from 'next/image';
-import { Tab } from '@headlessui/react';
-import { cn } from '@/lib/utils';
-
-const tabList: { src: string; alt: string }[] = [
-  { src: '/icons/icn_person_outline.svg', alt: '채팅' },
-  { src: '/icons/icn_chat_filled.svg', alt: '채팅' },
-];
+import PartiesTab from '@/components/_features/Parties/PartiesTab';
 
 const PartyRoomPage = async () => {
   return (
@@ -24,31 +18,7 @@ const PartyRoomPage = async () => {
         </div>
         {/* 채팅, 사람 탭 */}
         <div className='px-7 bg-black'>
-          <Tab.Group>
-            <Tab.List className={cn('w-full flex space-x-1 rounded-xl p-1')}>
-              {tabList.map((value) => (
-                <Tab
-                  key={value.src}
-                  className={({ selected }) =>
-                    cn(
-                      'w-full flexRowCenter  pt-3 pb-4 border-b-[1px] text-sm font-medium leading-5  bg-transparent outline-none',
-                      selected
-                        ? 'text-white shadow border-red-400'
-                        : 'text-grey-500 border-grey-500 '
-                    )
-                  }
-                >
-                  {() => (
-                    <>
-                      {/* TODO: selected prop에 따라 svg fill/outline 바꿔주기  or 모든  svg를 component화 시켜서 조건에 따라 prop(e.g. fill, stroke) passing하기*/}
-                      <Image src={value.src} alt='채팅' width={20} height={20} />
-                      <span className='inline-block ml-1.5 font-medium leading-relaxed'>채팅</span>
-                    </>
-                  )}
-                </Tab>
-              ))}
-            </Tab.List>
-          </Tab.Group>
+          <PartiesTab />
         </div>
         {/* 채팅창 목록 */}
         <div className='relative w-full bg-gradient-to-r from-black/0 via-black/80 to-black/80'>
