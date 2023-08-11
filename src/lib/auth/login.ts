@@ -1,16 +1,22 @@
 import { publicRequest } from './requester';
 
-export interface LoginResponse {
-  access_token: string;
-  token_type: string;
+export interface Response {
+  data: LoginResponse;
 }
 
-export const login = async (email: string) =>
-  publicRequest<LoginResponse>({
+export interface LoginResponse {
+  registered: boolean;
+  authority: string;
+  id: number;
+  name: string;
+}
+
+export const login = async (accessToken?: string) =>
+  publicRequest<Response>({
     // TODO: URL 확인 후 routes config로 교체
-    url: '/auth/login',
+    url: 'v1/user/info',
     method: 'POST',
     data: {
-      email,
+      accessToken,
     },
   });

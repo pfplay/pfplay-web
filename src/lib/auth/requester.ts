@@ -8,7 +8,7 @@ const defaultHeader = {
   'Content-Type': 'application/json',
 };
 
-const createHeaderWithAuthToken = (token: string) => {
+const createHeaderWithAuthToken = (token?: string) => {
   if (!token) {
     return defaultHeader;
   }
