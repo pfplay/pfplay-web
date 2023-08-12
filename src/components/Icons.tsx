@@ -1,5 +1,6 @@
 import React from 'react';
 
+// TODO: SVG ICON 준비되면 대체
 const Icons = {
   arrowLeft: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
     <svg
@@ -25,6 +26,43 @@ const Icons = {
       {...props}
     >
       <path strokeLinecap='round' strokeLinejoin='round' d='M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18' />
+    </svg>
+  ),
+  arrowDown: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      width='18'
+      height='10'
+      viewBox='0 0 18 10'
+      fill='none'
+      stroke='currentColor'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <path
+        d='M1 1L9 9L17 1'
+        stroke='#DADADA'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  ),
+  arrowUp: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      width='18'
+      height='10'
+      viewBox='0 0 18 10'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <path
+        d='M1 9L9 1L17 9'
+        stroke='white'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
     </svg>
   ),
   headset: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
