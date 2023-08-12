@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import DropdownItem from '@/components/ui/Dropdown/DropdownItem';
-import DropdownMenu from '@/components/ui/Dropdown/DropdownMenu';
+import MenuContainer from '@/components/ui/Menu/MenuContainer';
+import MenuItem from '@/components/ui/Menu/MenuItem';
 import { avatarBodyMockArr } from '@/config/profile-body-mock';
 import { cn } from '@/lib/utils';
 
@@ -40,18 +40,18 @@ const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
           </div>
         ))}
       </div>
-      {/* TODO: Button 컴포넌트 수정되면 대체 */}
-      <DropdownMenu>
-        {[
-          { value: '/account-settings', label: 'Account settings' },
-          { value: '/support', label: 'Support' },
-          { value: '/license', label: 'License' },
-          { value: '/sign-out', label: 'Sign out' },
-        ].map((config) => (
-          <DropdownItem key={config.value} dropdownItem={config} />
-        ))}
-      </DropdownMenu>
 
+      <MenuContainer>
+        {[
+          { link: '/account-settings', label: 'Account settings' },
+          { link: '/support', label: 'Support' },
+          { link: '/license', label: 'License' },
+          { link: '/sign-out', label: 'Sign out' },
+        ].map((menuConfig) => (
+          <MenuItem key={menuConfig.link} menuItem={menuConfig} />
+        ))}
+      </MenuContainer>
+      {/* TODO: Button 컴포넌트 수정되면 대체 */}
       <button
         className={cn('self-end bg-gradient-red text-grey-50 font-bold-sm px-[96px] py-[12px]')}
       >
