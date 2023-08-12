@@ -2,8 +2,8 @@
 import { Fragment, PropsWithChildren } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { VariantProps, cva } from 'class-variance-authority';
+import Icons from '@/components/Icons';
 import { cn } from '@/lib/utils';
-import Icons from '../../Icons';
 
 const DropdownSize: Record<'lg' | 'md' | 'sm', string> = {
   lg: 'w-[330px]',
@@ -32,8 +32,8 @@ const dropdownButtonVariants = cva(
 export interface DropdownProps
   extends React.ComponentProps<'button'>,
     VariantProps<typeof dropdownButtonVariants> {
-  prefixIcon?: boolean;
-  suffixIcon?: boolean;
+  prefixIcon?: JSX.Element;
+  suffixIcon?: JSX.Element;
   suffixTag?: {
     variant: 'filled' | 'outlined';
     value: string;
@@ -45,29 +45,44 @@ const DropdownMenu = ({
   variant,
   size,
   suffixTag,
+  prefixIcon,
+  suffixIcon,
   children,
 }: PropsWithChildren<DropdownProps>) => {
+  const displaySuffixIcon = (open: boolean) => {
+    if (suffixIcon) return suffixIcon;
+
+    return open ? <Icons.arrowUp /> : <Icons.arrowDown />;
+  };
+
+  const displayPrefixIcon = () => {
+    if (prefixIcon) return prefixIcon;
+
+    if (suffixTag) {
+      return (
+        <div
+          className={cn(
+            'rounded-[40px] py-[1.5px] px-2 font-semibold',
+            suffixTag.variant === 'filled' && 'bg-red-400 text-grey-50',
+            suffixTag.variant === 'outlined' && 'border border-red-400 text-red-300'
+          )}
+        >
+          {suffixTag.value}
+        </div>
+      );
+    }
+  };
+
   return (
     <Menu as='section' className={cn(`relative ${DropdownSize.lg}`, size && DropdownSize[size])}>
       {({ open }) => (
         <>
           <Menu.Button className={cn(dropdownButtonVariants({ variant, className, size }))}>
             <div className='flex items-center gap-2'>
-              {/* TODO: Add prefix icon */}
-              {suffixTag && (
-                <div
-                  className={cn(
-                    'rounded-[40px] py-[1.5px] px-2 font-semibold',
-                    suffixTag.variant === 'filled' && 'bg-red-400 text-grey-50',
-                    suffixTag.variant === 'outlined' && 'border border-red-400 text-red-300'
-                  )}
-                >
-                  {suffixTag.value}
-                </div>
-              )}
+              {displayPrefixIcon()}
               Options
             </div>
-            {open ? <Icons.arrowUp /> : <Icons.arrowDown />}
+            {displaySuffixIcon(open)}
           </Menu.Button>
           <Transition
             as={Fragment}

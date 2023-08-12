@@ -41,7 +41,7 @@ const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
         ))}
       </div>
       {/* TODO: Button 컴포넌트 수정되면 대체 */}
-      <DropdownMenu suffixTag={{ value: '현재', variant: 'outlined' }}>
+      <DropdownMenu>
         {[
           { value: '/account-settings', label: 'Account settings' },
           { value: '/support', label: 'Support' },
