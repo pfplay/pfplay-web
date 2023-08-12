@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { Menu } from '@headlessui/react';
