@@ -5,7 +5,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import Icons from '../../Icons';
 
-const dropdownSize: Record<'lg' | 'md' | 'sm', string> = {
+const DropdownSize: Record<'lg' | 'md' | 'sm', string> = {
   lg: 'w-[330px]',
   md: 'w-[220px]',
   sm: 'w-[90px]',
@@ -20,7 +20,7 @@ const dropdownButtonVariants = cva(
         outlined: 'border-[1px] border-grey-500',
       },
       size: {
-        ...dropdownSize,
+        ...DropdownSize,
       },
     },
     defaultVariants: {
@@ -34,20 +34,37 @@ export interface DropdownProps
     VariantProps<typeof dropdownButtonVariants> {
   prefixIcon?: boolean;
   suffixIcon?: boolean;
-  tag?: boolean;
+  suffixTag?: {
+    variant: 'filled' | 'outlined';
+    value: string;
+  };
 }
 
-const DropdownMenu = ({ className, variant, size, children }: PropsWithChildren<DropdownProps>) => {
+const DropdownMenu = ({
+  className,
+  variant,
+  size,
+  suffixTag,
+  children,
+}: PropsWithChildren<DropdownProps>) => {
   return (
-    <Menu as='section' className='relative'>
+    <Menu as='section' className={cn(`relative ${DropdownSize.lg}`, size && DropdownSize[size])}>
       {({ open }) => (
         <>
           <Menu.Button className={cn(dropdownButtonVariants({ variant, className, size }))}>
             <div className='flex items-center gap-2'>
               {/* TODO: Add prefix icon */}
-              <div className='border rounded-[40px] py-[1.5px] px-2 border-red-400 text-red-300 font-bold'>
-                Tag
-              </div>
+              {suffixTag && (
+                <div
+                  className={cn(
+                    'rounded-[40px] py-[1.5px] px-2 font-semibold',
+                    suffixTag.variant === 'filled' && 'bg-red-400 text-grey-50',
+                    suffixTag.variant === 'outlined' && 'border border-red-400 text-red-300'
+                  )}
+                >
+                  {suffixTag.value}
+                </div>
+              )}
               Options
             </div>
             {open ? <Icons.arrowUp /> : <Icons.arrowDown />}
@@ -63,8 +80,8 @@ const DropdownMenu = ({ className, variant, size, children }: PropsWithChildren<
           >
             <Menu.Items
               className={cn(
-                `absolute right-0 mt-2 py-3 w-full origin-top-right rounded-[4px] bg-grey-800 shadow-lg ${dropdownSize.lg}`,
-                size && dropdownSize[size]
+                `absolute right-0 mt-2 py-3 w-full origin-top-right rounded-[4px] bg-grey-800 shadow-lg ${DropdownSize.lg}`,
+                size && DropdownSize[size]
               )}
             >
               {children}
