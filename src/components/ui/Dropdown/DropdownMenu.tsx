@@ -34,17 +34,12 @@ export interface DropdownProps
     VariantProps<typeof dropdownButtonVariants> {
   prefixIcon?: JSX.Element;
   suffixIcon?: JSX.Element;
-  suffixTag?: {
-    variant: 'filled' | 'outlined';
-    value: string;
-  };
 }
 
 const DropdownMenu = ({
   className,
   variant,
   size,
-  suffixTag,
   prefixIcon,
   suffixIcon,
   children,
@@ -55,31 +50,13 @@ const DropdownMenu = ({
     return open ? <Icons.arrowUp /> : <Icons.arrowDown />;
   };
 
-  const displayPrefixIcon = () => {
-    if (prefixIcon) return prefixIcon;
-
-    if (suffixTag) {
-      return (
-        <div
-          className={cn(
-            'rounded-[40px] py-[1.5px] px-2 font-semibold',
-            suffixTag.variant === 'filled' && 'bg-red-400 text-grey-50',
-            suffixTag.variant === 'outlined' && 'border border-red-400 text-red-300'
-          )}
-        >
-          {suffixTag.value}
-        </div>
-      );
-    }
-  };
-
   return (
     <Menu as='section' className={cn(`relative ${DropdownSize.lg}`, size && DropdownSize[size])}>
       {({ open }) => (
         <>
           <Menu.Button className={cn(dropdownButtonVariants({ variant, className, size }))}>
             <div className='flex items-center gap-2'>
-              {displayPrefixIcon()}
+              {prefixIcon && prefixIcon}
               Options
             </div>
             {displaySuffixIcon(open)}
