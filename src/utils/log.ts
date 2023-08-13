@@ -14,13 +14,13 @@ type PrintRequestLogParams = {
   requestParams?: Record<string, unknown>;
   config: AxiosRequestConfig;
 };
-export function printRequestLog({
+export const printRequestLog = ({
   method,
   endPoint,
   requestData,
   requestParams,
   config,
-}: PrintRequestLogParams) {
+}: PrintRequestLogParams) => {
   if (Object.keys(requestParams ?? {}).length) {
     console.log(
       `%c${method?.toUpperCase()} ${endPoint} [REQ PARAMS]`,
@@ -43,20 +43,20 @@ export function printRequestLog({
     `color: ${color.info};font-weight: bold;`,
     config
   );
-}
+};
 
 type PrintResponseLogParams = {
   method?: string;
   endPoint?: string;
   responseObj?: Record<string, unknown>;
 };
-export function printResponseLog({ method, endPoint, responseObj }: PrintResponseLogParams) {
+export const printResponseLog = ({ method, endPoint, responseObj }: PrintResponseLogParams) => {
   console.log(
     `%c${method?.toUpperCase()} ${endPoint} [RES BODY]`,
     `color: ${color.success};font-weight: bold`,
     responseObj
   );
-}
+};
 
 type PrintErrorLogParams = {
   method?: string;
@@ -64,11 +64,16 @@ type PrintErrorLogParams = {
   errorMessage?: string;
   errorObj?: AxiosError;
 };
-export function printErrorLog({ method, endPoint, errorMessage, errorObj }: PrintErrorLogParams) {
+export const printErrorLog = ({
+  method,
+  endPoint,
+  errorMessage,
+  errorObj,
+}: PrintErrorLogParams) => {
   console.log(
     `%c${method?.toUpperCase()} ${endPoint} [ERR]`,
     `color: ${color.error};font-weight: bold`,
     errorMessage,
     errorObj
   );
-}
+};
