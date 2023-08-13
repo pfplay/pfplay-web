@@ -3,11 +3,7 @@ import { getErrorMessage } from '@/api/helper';
 import { printErrorLog, printResponseLog } from '@/utils/log';
 
 export function logResponse(response: AxiosResponse) {
-  const {
-    // config: { url, method },
-    config,
-    data,
-  } = response;
+  const { config, data } = response;
 
   printResponseLog({
     method: config?.method,
