@@ -1,4 +1,4 @@
-export function getErrorMessage(err: unknown): string {
+export const getErrorMessage = (err: unknown): string => {
   if (typeof err === 'string') {
     return err;
   }
@@ -18,4 +18,4 @@ export function getErrorMessage(err: unknown): string {
     }
   }
   return 'Unknown error occurred';
-}
+};
