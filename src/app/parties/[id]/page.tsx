@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Tabs from '@/components/Tabs';
+import PartiesTab from '@/components/_features/Parties/PartiesTab';
 
 const PartyRoomPage = async () => {
   return (
@@ -18,7 +18,7 @@ const PartyRoomPage = async () => {
         </div>
         {/* 채팅, 사람 탭 */}
         <div className='px-7 bg-black'>
-          <Tabs />
+          <PartiesTab />
         </div>
         {/* 채팅창 목록 */}
         <div className='relative w-full bg-gradient-to-r from-black/0 via-black/80 to-black/80'>

@@ -1,14 +1,13 @@
-import { DefaultSession } from 'next-auth';
+import { DefaultSession, User } from 'next-auth';
+import { LoginResponse } from '@/lib/auth/login';
 
 declare module 'next-auth' {
   /**
    * The shape of the user object returned in the OAuth providers' `profile` callback,
    * or the second parameter of the `session` callback, when using a database.
    */
-  interface User {
-    userId: number;
+  interface User extends LoginResponse {
     email: string;
-    name: string;
     accessToken: string;
   }
 
@@ -22,7 +21,5 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
-  interface JWT {
-    user: User;
-  }
+  interface JWT extends User {}
 }
