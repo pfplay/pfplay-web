@@ -59,7 +59,7 @@ export const Overflow = () => {
   const LONG_TEXT = `Looooooooooo ooooooooooo oooooooooooo ooooooooooooo ooooooooooo oooooooooo ooooooooooo oooooog`;
 
   return (
-    <section className='flex flex-col w-[400px] gap-[10px] border-r border-r-dim border-dotted'>
+    <section className='flexCol w-[400px] gap-[10px] border-r border-r-dim border-dotted'>
       <PropDesc tag={`overflow="no-control"`}>
         <Typography overflow='no-control'>{LONG_TEXT}</Typography>
       </PropDesc>
@@ -81,7 +81,7 @@ export const Overflow = () => {
 
 export const Inline = () => {
   return (
-    <section className='flex flex-col w-[400px] gap-[10px]'>
+    <section className='flexCol w-[400px] gap-[10px]'>
       <PropDesc tag='inline: false'>
         <section>
           <Typography inline={false}>Content 1</Typography>
