@@ -60,8 +60,8 @@ export const Overflow = () => {
 
   return (
     <section className='flexCol w-[400px] gap-[10px] border-r border-r-dim border-dotted'>
-      <PropDesc tag={`overflow="no-control"`}>
-        <Typography overflow='no-control'>{LONG_TEXT}</Typography>
+      <PropDesc tag={`overflow=undefined`}>
+        <Typography>{LONG_TEXT}</Typography>
       </PropDesc>
 
       <PropDesc tag={`overflow="ellipsis"`}>

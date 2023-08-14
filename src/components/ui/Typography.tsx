@@ -2,8 +2,9 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
+import { RecursiveExcludeNull } from '@/types';
 
-type TypographyVariantProps = VariantProps<typeof typographyVariants>;
+type TypographyVariantProps = RecursiveExcludeNull<VariantProps<typeof typographyVariants>>;
 export type TypographyType = NonNullable<TypographyVariantProps['type']>;
 export interface TypographyProps extends React.ComponentProps<'p'>, TypographyVariantProps {}
 
@@ -21,14 +22,12 @@ const typographyVariants = cva([], {
       caption2: ['text-[12px] font-normal leading-[1.5]'],
     },
     overflow: {
-      'no-control': '',
       ellipsis: 'truncate',
       'break-words': 'break-words',
       'break-all': 'break-all',
     },
     inline: {
       true: 'inline-block',
-      false: null,
     },
   },
 });
@@ -49,19 +48,13 @@ const titleTypes: TypographyType[] = ['title1', 'title2'];
 const Typography = ({
   className,
   children,
-  type: type_,
-  overflow: overflow_,
-  title: title_,
+  type = 'detail1',
+  overflow = titleTypes.includes(type) ? 'ellipsis' : undefined,
+  title = overflow === 'ellipsis' && typeof children === 'string' ? children : undefined,
   inline,
   ...props
 }: React.PropsWithChildren<TypographyProps>) => {
-  // NOTE: cva prop 엔 null 이 포함되어 default parameter 문법을 사용할 수 없다. 이게 최선인지 질문을..;
-  const type = type_ || 'detail1';
-  const overflow = overflow_ || (titleTypes.includes(type) ? 'ellipsis' : 'no-control');
-
   const El = elDict[type];
-  const title =
-    title_ ?? (overflow === 'ellipsis' && typeof children === 'string' ? children : undefined);
 
   return (
     <El
