@@ -40,7 +40,6 @@ const authOptions: NextAuthOptions = {
 
         return true;
       } catch (e) {
-        console.error(e);
         return false;
       }
     },
