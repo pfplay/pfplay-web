@@ -2,7 +2,22 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: { domains: ['lh3.googleusercontent.com', 'picsum.photos'] },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'nft-cdn.alchemy.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ipfs.io',
+      },
+    ],
+  },
   experimental: {
     appDir: true,
   },

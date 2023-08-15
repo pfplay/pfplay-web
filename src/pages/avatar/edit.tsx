@@ -1,10 +1,53 @@
 import { Tabs } from '@mantine/core'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import axios from 'axios'
 import type { NextPage } from 'next'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
 
 import { BackButtonItem } from '@/components/ui/BackButtonItem'
 import RootLayout from '@/components/ui/layout/RootLayout'
 
 const AvatarEditPage: NextPage = () => {
+  const { address } = useAccount()
+  const walletAddress = address
+
+  const [list, setList] = useState<string[]>([])
+
+  useEffect(() => {
+    const baseURL = 'https://eth-mainnet.g.alchemy.com/v2/ypoWB89fktlLXGG5FCYGEa_Sk_GIsYvL'
+    // const url = `${baseURL}/getNFTs/?owner=${walletAddress}`
+    const url = `${baseURL}/getNFTs/?owner=${'0xa4d1D0060eAd119cdF04b7C797A061400C6Ba8a7'}`
+
+    if (walletAddress === undefined) {
+      return
+    }
+    const config = {
+      method: 'get',
+      url: url,
+    }
+    const address: string[] = []
+    const loadNft = async () => {
+      const response: Test = await (await axios(config)).data
+      for (const element of response.ownedNfts) {
+        // console.log(element.media)
+        for (const de of element.media) {
+          if (de.format === 'png') {
+            address.push(de.gateway)
+          }
+        }
+      }
+      // console.log(address)
+      setList(address)
+      // setList(response.ownedNfts)
+      // console.log(response)
+    }
+    loadNft()
+  }, [])
+
+  // console.log(list)
+
   return (
     <>
       <RootLayout>
@@ -74,12 +117,20 @@ const AvatarEditPage: NextPage = () => {
                           <p className="text-4 text-gray700 ml-4">연결된 지갑</p>
                           <p className="text-4 text-red700">1</p>
                         </div>
-                        {/* <div className="flex justify-end"></div> */}
+                        <ConnectButton label="지갑 연결" />
                       </div>
                       <div className="flex gap-5 flex-wrap h-[480px] overflow-auto mb-4 scrollbar-hide">
-                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(value => (
-                          <div key={value} className="w-[200px] h-[200px] bg-[#1A1A1A]">
-                            nft
+                        {list.map((d: any, i) => (
+                          <div key={i} className="w-[200px] h-[200px] aspect-square object-cover">
+                            <>
+                              <Image
+                                width={200}
+                                height={200}
+                                // src={d.media[0].gateway}
+                                src={d}
+                                alt={'NFT'}
+                              />
+                            </>
                           </div>
                         ))}
                       </div>
@@ -109,3 +160,17 @@ const AvatarEditPage: NextPage = () => {
   )
 }
 export default AvatarEditPage
+
+type Test = {
+  ownedNfts: [
+    {
+      media: [
+        {
+          format: string
+          raw: string
+          gateway: string
+        },
+      ]
+    },
+  ]
+}
