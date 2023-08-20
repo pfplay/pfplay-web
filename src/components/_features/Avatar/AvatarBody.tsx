@@ -1,7 +1,5 @@
+'use client';
 import Image from 'next/image';
-import Icons from '@/components/Icons';
-import OptionMenu from '@/components/OptionMenu';
-import MenuItem from '@/components/ui/MenuItem';
 import { avatarBodyMockArr } from '@/config/profile-body-mock';
 import { cn } from '@/lib/utils';
 
@@ -41,17 +39,6 @@ const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
           </div>
         ))}
       </div>
-      {/* TODO: Remove before push to remote  */}
-      <OptionMenu>
-        {[
-          { link: '/account-settings', label: 'Account settings' },
-          { link: '/support', label: 'Support' },
-          { link: '/license', label: 'License' },
-          { link: '/sign-out', label: 'Sign out' },
-        ].map((menuConfig) => (
-          <MenuItem key={menuConfig.link} menuItem={menuConfig} prefixIcon={<Icons.arrowDown />} />
-        ))}
-      </OptionMenu>
       {/* TODO: Button 컴포넌트 수정되면 대체 */}
       <button
         className={cn('self-end bg-gradient-red text-grey-50 font-bold-sm px-[96px] py-[12px]')}

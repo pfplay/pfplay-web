@@ -1,5 +1,6 @@
 'use client';
-import { Fragment, PropsWithChildren } from 'react';
+import Link from 'next/link';
+import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { cn } from '@/lib/utils';
 import Icons from './Icons';
@@ -12,19 +13,16 @@ const MenuItemBoxSize: Record<MenuItemBoxSizeKey, string> = {
 };
 
 interface OptionMenuProps {
-  size?: MenuItemBoxSizeKey;
   menuItemBoxClassNmae?: string;
+  size?: MenuItemBoxSizeKey;
+  optionMenuConfig: Array<{ link: string; label: string }>;
 }
-const OptionMenu = ({
-  menuItemBoxClassNmae,
-  size = 'lg',
-  children,
-}: PropsWithChildren<OptionMenuProps>) => {
+const OptionMenu = ({ menuItemBoxClassNmae, optionMenuConfig, size = 'lg' }: OptionMenuProps) => {
   return (
     <Menu as='section' className={`relative w-fit`}>
       {({}) => (
         <>
-          <Menu.Button className={'flex items-center gap-2 text-grey-50'}>
+          <Menu.Button className={'flex items-center gap-2 text-grey-50 p-2 bg-red-500'}>
             {/* TODO: SVG Icon 사용법 정해지면 대체 */}
             <Icons.option />
           </Menu.Button>
@@ -44,7 +42,23 @@ const OptionMenu = ({
                 MenuItemBoxSize[size]
               )}
             >
-              {children}
+              {optionMenuConfig.map((config) => (
+                <Menu.Item as={Fragment} key={config.label}>
+                  {({ active }) => (
+                    <Link
+                      href={config.link}
+                      className={cn(
+                        'w-full flex items-center gap-2 rounded-md px-4 py-3 cursor-pointer text-grey-50',
+                        active && 'bg-grey-700',
+                        size === 'sm' && `text-sm`
+                      )}
+                    >
+                      {size !== 'sm' && <Icons.arrowDown />}
+                      {config.label}
+                    </Link>
+                  )}
+                </Menu.Item>
+              ))}
             </Menu.Items>
           </Transition>
         </>
