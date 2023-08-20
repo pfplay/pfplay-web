@@ -1,4 +1,3 @@
-'use client';
 import Image from 'next/image';
 import { avatarBodyMockArr } from '@/config/profile-body-mock';
 import { cn } from '@/lib/utils';
