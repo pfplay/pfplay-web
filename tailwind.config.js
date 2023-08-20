@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import { fontFamily } from 'tailwindcss/defaultTheme';
 
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
@@ -32,9 +31,6 @@ module.exports = {
         onboarding: "url('/image/Onboard.png')",
         partyRoom: "url('/image/PartyRoom.png')",
         'gradient-red': 'linear-gradient(to right top, #780808, #AE001F)',
-      },
-      fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans],
       },
       screens: {
         // TODO: Set fixed breakpoints

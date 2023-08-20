@@ -1,0 +1,8 @@
+@import '../src/styles/fonts/pretendard/pretendardvariable.css';
+
+body {
+  /* 실 코드에선 css 가 아닌 next-font 의 localFont 사용 */
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+    Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+}
