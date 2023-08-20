@@ -9,6 +9,7 @@ export interface UserLoginResponse {
   name: string;
   registered: boolean;
   authority: Authority;
+  accessToken: string;
 }
 
 export interface UserClient {
