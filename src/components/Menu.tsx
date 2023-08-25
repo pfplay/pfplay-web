@@ -11,10 +11,10 @@ const MenuItemBoxSize: Record<MenuItemBoxSizeKey, string> = {
   sm: 'w-[90px]',
 };
 
-export type OptionMenuItem = { onClickItem: () => void; label: string };
-interface OptionMenuProps {
+export type MenuItem = { onClickItem: () => void; label: string };
+interface MenuProps {
   // TODO:  optionMenuConfig 정해지면 type 재정의하기
-  optionMenuConfig: Array<OptionMenuItem>;
+  optionMenuConfig: Array<MenuItem>;
   HeaderIcon?: React.ReactNode;
   MenuItemPrefixIcon?: React.ReactNode;
   className?: string;
@@ -27,7 +27,7 @@ const Menu = ({
   MenuItemPrefixIcon,
   className,
   size = 'lg',
-}: OptionMenuProps) => {
+}: MenuProps) => {
   return (
     <_Menu as='section' className={`relative w-fit`}>
       {({ close }) => (
