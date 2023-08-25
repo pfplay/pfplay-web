@@ -1,6 +1,6 @@
 'use client';
 import { Fragment } from 'react';
-import { Menu, Transition } from '@headlessui/react';
+import { Menu as _Menu, Transition } from '@headlessui/react';
 import { cn } from '@/lib/utils';
 import Icons from './Icons';
 
@@ -21,7 +21,7 @@ interface OptionMenuProps {
   size?: MenuItemBoxSizeKey;
 }
 
-const OptionMenu = ({
+const Menu = ({
   optionMenuConfig,
   HeaderIcon,
   MenuItemPrefixIcon,
@@ -29,13 +29,13 @@ const OptionMenu = ({
   size = 'lg',
 }: OptionMenuProps) => {
   return (
-    <Menu as='section' className={`relative w-fit`}>
+    <_Menu as='section' className={`relative w-fit`}>
       {({ close }) => (
         <>
-          <Menu.Button className={'flex items-center gap-2 text-grey-50 p-2'}>
+          <_Menu.Button className={'flex items-center gap-2 text-grey-50 p-2'}>
             {/* TODO: SVG Icon 사용법 정해지면 대체 */}
             <Icons.option />
-          </Menu.Button>
+          </_Menu.Button>
           <Transition
             as={Fragment}
             enter='transition ease-out duration-100'
@@ -45,7 +45,7 @@ const OptionMenu = ({
             leaveFrom='transform opacity-100 scale-100'
             leaveTo='transform opacity-0 scale-95'
           >
-            <Menu.Items
+            <_Menu.Items
               as='ul'
               className={cn(
                 'absolute right-0 mt-2 py-2 origin-top-right rounded-[4px] bg-grey-800 shadow-lg z-50',
@@ -59,7 +59,7 @@ const OptionMenu = ({
                 </div>
               )}
               {optionMenuConfig.map((config) => (
-                <Menu.Item as={Fragment} key={config.label}>
+                <_Menu.Item as={Fragment} key={config.label}>
                   {({ active }) => (
                     <li
                       onClick={() => config.onClickItem()}
@@ -73,14 +73,14 @@ const OptionMenu = ({
                       {config.label}
                     </li>
                   )}
-                </Menu.Item>
+                </_Menu.Item>
               ))}
-            </Menu.Items>
+            </_Menu.Items>
           </Transition>
         </>
       )}
-    </Menu>
+    </_Menu>
   );
 };
 
-export default OptionMenu;
+export default Menu;

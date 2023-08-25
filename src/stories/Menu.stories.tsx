@@ -1,12 +1,12 @@
 import type { Meta } from '@storybook/react';
 import Icons from '@/components/Icons';
-import OptionMenu, { OptionMenuItem } from '@/components/OptionMenu';
+import Menu, { OptionMenuItem } from '@/components/Menu';
 
 const meta = {
   title: 'ui/OptionMenu',
   tags: ['autodocs'],
-  component: OptionMenu,
-} satisfies Meta<typeof OptionMenu>;
+  component: Menu,
+} satisfies Meta<typeof Menu>;
 
 export default meta;
 
@@ -20,7 +20,7 @@ const exampleMenuConfig: Array<OptionMenuItem> = [
 export const OptionMenuLarge = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end bg-black'>
-      <OptionMenu optionMenuConfig={exampleMenuConfig} size='lg' />
+      <Menu optionMenuConfig={exampleMenuConfig} size='lg' />
     </div>
   );
 };
@@ -28,7 +28,7 @@ export const OptionMenuLarge = () => {
 export const OptionMenuMedium = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end bg-black'>
-      <OptionMenu optionMenuConfig={exampleMenuConfig} size='md' />
+      <Menu optionMenuConfig={exampleMenuConfig} size='md' />
     </div>
   );
 };
@@ -36,7 +36,7 @@ export const OptionMenuMedium = () => {
 export const OptionMenuSmall = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end bg-black'>
-      <OptionMenu optionMenuConfig={exampleMenuConfig} size='sm' />
+      <Menu optionMenuConfig={exampleMenuConfig} size='sm' />
     </div>
   );
 };
@@ -44,7 +44,7 @@ export const OptionMenuSmall = () => {
 export const OptionMenuWithHeaderIcon = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end bg-black'>
-      <OptionMenu
+      <Menu
         optionMenuConfig={exampleMenuConfig}
         HeaderIcon={<Icons.arrowLeft width={24} height={24} stroke='#fff' />}
         size='sm'
@@ -56,7 +56,7 @@ export const OptionMenuWithHeaderIcon = () => {
 export const OptionMenuItemWithPrefixIcon = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end bg-black'>
-      <OptionMenu
+      <Menu
         optionMenuConfig={exampleMenuConfig}
         MenuItemPrefixIcon={<Icons.arrowDown stroke='#fff' />}
       />
