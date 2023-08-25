@@ -1,5 +1,6 @@
 import React from 'react';
 
+// TODO: SVG ICON 준비되면 대체
 const Icons = {
   arrowLeft: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
     <svg
@@ -25,6 +26,58 @@ const Icons = {
       {...props}
     >
       <path strokeLinecap='round' strokeLinejoin='round' d='M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18' />
+    </svg>
+  ),
+  arrowDown: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      width='18'
+      height='10'
+      viewBox='0 0 18 10'
+      fill='none'
+      stroke='currentColor'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <path
+        d='M1 1L9 9L17 1'
+        stroke='#DADADA'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  ),
+  arrowUp: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      width='18'
+      height='10'
+      viewBox='0 0 18 10'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <path
+        d='M1 9L9 1L17 9'
+        stroke='white'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  ),
+  option: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      width='4'
+      height='16'
+      viewBox='0 0 4 16'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <path
+        d='M2 4C3.1 4 4 3.1 4 2C4 0.9 3.1 0 2 0C0.9 0 0 0.9 0 2C0 3.1 0.9 4 2 4ZM2 6C0.9 6 0 6.9 0 8C0 9.1 0.9 10 2 10C3.1 10 4 9.1 4 8C4 6.9 3.1 6 2 6ZM2 12C0.9 12 0 12.9 0 14C0 15.1 0.9 16 2 16C3.1 16 4 15.1 4 14C4 12.9 3.1 12 2 12Z'
+        fill='white'
+      />
     </svg>
   ),
   headset: ({ ...props }: React.SVGProps<SVGSVGElement>) => (

@@ -33,8 +33,8 @@ module.exports = {
         'gradient-red': 'linear-gradient(to right top, #780808, #AE001F)',
       },
       screens: {
-        // TODO: Set fixed breakpoints
-        tablet: '640px',
+        mobile: '400px',
+        tablet: '768px',
         laptop: '1024px',
         desktop: '1280px',
       },
