@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import HomeLoginButton from '@/components/@features/Home/HomeLoginButton';
+import CollapseList from '@/components/CollapseList';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -22,6 +23,30 @@ const HomePage = () => {
           alt='logo'
         />
         <HomeLoginButton />
+
+        <CollapseList
+          PrefixIcon={<Chip value='Tag' />}
+          title={
+            'Do you offer technical supportkllllllllllllkkkkkkkkkkkkkjjjjjjjjjjjjjjhhhhhhhhhhl?'
+          }
+          infoText='24곡'
+          listPanelConfig={[
+            {
+              id: '1',
+              title: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
+              thumbnail: '',
+              alt: '',
+              duration: '00:00',
+            },
+            {
+              id: '2',
+              title: 'BLACKPINK(블랙핑크)checkehck ',
+              thumbnail: '',
+              alt: '',
+              duration: '04:20',
+            },
+          ]}
+        />
       </main>
       <footer className='w-full absolute bottom-[68px] flexRow justify-between text-white px-[120px]'>
         <p className='footerText'>Privacy&Terms</p>
