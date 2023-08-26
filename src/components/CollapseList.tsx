@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import Icons from './Icons';
 import Typography from './ui/Typography';
 
+// TODO: Config 정해지면 type 재정의하기
 export type ListPanel = {
   id: string;
   title: string;
@@ -18,7 +19,7 @@ interface CollapseListProps {
   PrefixIcon?: React.ReactNode;
   title: string;
   infoText?: string;
-  listPanelConfig: Array<ListPanel>;
+  listPanelConfig: ListPanel[];
 }
 
 const CollapseList = ({
@@ -28,13 +29,16 @@ const CollapseList = ({
   listPanelConfig,
   variant = 'default',
 }: CollapseListProps) => {
+  const sliceTextIfNeeded = (title: string) =>
+    title.length > 80 ? `${title.slice(0, 80)}...` : title;
+
   return (
-    <Disclosure as='div' className='mx-auto w-full max-w-md bg-black'>
+    <Disclosure as='div' className='mx-auto w-full max-w-md bg-transparent'>
       {({ open }) => (
         <>
           <Disclosure.Button
             className={cn(
-              'w-full flexRow justify-between items-center px-4 py-3 rounded-[4px] bg-grey-800 text-left text-grey-50 hover:bg-grey-700 ',
+              'w-full flexRow justify-between items-center px-4 py-3 rounded bg-grey-800 text-left text-grey-50 hover:bg-grey-700 ',
               variant === 'default' && 'border-none',
               variant === 'accent' && 'border-[1px] border-red-500',
               variant === 'outlined' && 'border-[1px] border-grey-500'
@@ -57,15 +61,18 @@ const CollapseList = ({
           </Disclosure.Button>
           {listPanelConfig.map((config) => (
             <Disclosure.Panel key={config.id} as='article' className='py-3  text-grey-200'>
-              <div className='relative flexRow justify-start gap-3 rounded-[4px]'>
+              <div className='relative h-12 flexRow justify-start gap-3 rounded'>
                 {/* TODO: thumbnail, alt가 있을 경우 <Image /> 컴포넌트로 대체 */}
-                <div className='w-20 h-11 bg-blue-500' />
+                <div className='w-20 h-11 rounded bg-blue-500' />
 
-                <Typography type='caption1' className='w-4/6 text-left'>
-                  {config.title}
-                </Typography>
-                <Typography type='caption1' className='absolute bottom-0 right-0 text-grey-400'>
-                  {config.duration}
+                <Typography type='caption1' className='relative w-4/5 text-justify'>
+                  {sliceTextIfNeeded(config.title)}
+                  <Typography
+                    type='caption1'
+                    className='float-right flexCol justify-end items-end text-grey-400'
+                  >
+                    {config.duration}
+                  </Typography>
                 </Typography>
               </div>
             </Disclosure.Panel>
