@@ -16,12 +16,12 @@ const PartiesMain = () => {
         {/* 파티룸 목록 */}
         <ul className='grid mt-6 grid-cols-3 gap-6'>
           <li
-            className='flexCol gap-4 bg-grey-900 rounded pt-6 px-7  cursor-pointer'
+            className='flexCol gap-4 bg-gray-900 rounded pt-6 px-7  cursor-pointer'
             onClick={() => setIsOpen(true)}
           >
             <div>
               <p className='font-poppins text-red-300 text-[28px] mb-1.5'>Be a PFPlay Host</p>
-              <span className='text-grey-200'>원하는 테마의 파티를 자유롭게 호스트해보세요!</span>
+              <span className='text-gray-200'>원하는 테마의 파티를 자유롭게 호스트해보세요!</span>
             </div>
             <div className='flex items-center justify-center'>
               <Image src='/icons/icn_add.svg' alt='add' width={60} height={60} />

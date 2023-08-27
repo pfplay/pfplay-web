@@ -32,7 +32,7 @@ export const Default = () => {
 
   return (
     <section className='p-[15px]'>
-      <section className='grid grid-cols-4 border-b border-b-grey-200 pb-[15px] mb-[40px]'>
+      <section className='grid grid-cols-4 border-b border-b-gray-200 pb-[15px] mb-[40px]'>
         <Typography type='detail1'>Type</Typography>
         <Typography type='detail1'>Weight</Typography>
         <Typography type='detail1'>Size</Typography>
@@ -103,7 +103,7 @@ const PropDesc: FC<PropsWithChildren<{ tag: string }>> = ({ tag, children }) => 
   <section className='[&:not(:first-of-type)]:mt-3'>
     <Typography
       type='caption1'
-      className='w-fit rounded border border-grey-300 text-white bg-grey-600 px-2 py-0.5 mb-0.5'
+      className='w-fit rounded border border-gray-300 text-white bg-gray-600 px-2 py-0.5 mb-0.5'
     >
       {tag}
     </Typography>

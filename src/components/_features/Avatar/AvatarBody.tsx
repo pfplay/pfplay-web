@@ -31,8 +31,8 @@ const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
               sizes='(max-width:200px) 100vw, 200px'
               onClick={() => setSelectedBody({ ...avatar })}
               className={cn(
-                'bg-grey-500 max-h-[200px] aspect-square cursor-pointer',
-                selectedBody.id === avatar.id && 'border-[1px] border-red-700 bg-grey-50'
+                'bg-gray-500 max-h-[200px] aspect-square cursor-pointer',
+                selectedBody.id === avatar.id && 'border-[1px] border-red-700 bg-gray-50'
               )}
             />
           </div>
@@ -40,7 +40,7 @@ const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
       </div>
       {/* TODO: Button 컴포넌트 수정되면 대체 */}
       <button
-        className={cn('self-end bg-gradient-red text-grey-50 font-bold-sm px-[96px] py-[12px]')}
+        className={cn('self-end bg-gradient-red text-gray-50 font-bold-sm px-[96px] py-[12px]')}
       >
         Let&apos;s get in
       </button>

@@ -14,7 +14,7 @@ const GoBackButton = ({ text, className, ...props }: GoBackButtonProps) => {
     // Button component 준비되면 교체
     <button
       onClick={() => router.back()}
-      className={cn('text-2xl flex items-center text-grey-50', className)}
+      className={cn('text-2xl flex items-center text-gray-50', className)}
       {...props}
     >
       <Icons.arrowLeft />

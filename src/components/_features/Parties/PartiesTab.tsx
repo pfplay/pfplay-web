@@ -20,7 +20,7 @@ const PartiesTab = () => {
             className={({ selected }) =>
               cn(
                 'w-full flexRowCenter  pt-3 pb-4 border-b-[1px] text-sm font-medium leading-5  bg-transparent outline-none',
-                selected ? 'text-white shadow border-red-400' : 'text-grey-500 border-grey-500 '
+                selected ? 'text-white shadow border-red-400' : 'text-gray-500 border-gray-500 '
               )
             }
           >

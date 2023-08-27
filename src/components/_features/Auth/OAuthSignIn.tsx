@@ -31,7 +31,7 @@ const OAuthSignIn = () => {
     <>
       <div className='flexRowCenter text-white h-screen relative'>
         <div
-          className='flexCol items-center w-[640px] backdrop-blur-lg relative border border-grey-800 bg-[#180202]/50' /* FIXME: 180202 는 디자인 시스템에 없는 hex */
+          className='flexCol items-center w-[640px] backdrop-blur-lg relative border border-gray-800 bg-[#180202]/50' /* FIXME: 180202 는 디자인 시스템에 없는 hex */
         >
           <Link href={routes.home} className='absolute right-10 top-10'>
             <Image src='/icons/icn_close.svg' alt='close' width={20} height={20} />
@@ -56,7 +56,7 @@ const OAuthSignIn = () => {
 
             <Button
               intent={'secondary-outline'}
-              className='text-sm font-normal text-grey-200 cursor-pointer underline border-none'
+              className='text-sm font-normal text-gray-200 cursor-pointer underline border-none'
               onClick={handleOpenModal}
             >
               먼저 둘러볼래요

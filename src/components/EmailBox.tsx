@@ -12,7 +12,7 @@ const EmailBox = () => {
 
   const dummyEmail = 'pfplayer@pfplay.co';
   return (
-    <div className='text-sm flex justify-center items-center px-6 rounded-[40px] h-[36px] border-solid border-grey-500 border mr-[24px]'>
+    <div className='text-sm flex justify-center items-center px-6 rounded-[40px] h-[36px] border-solid border-gray-500 border mr-[24px]'>
       <p className='mb-1'>{dummyEmail}</p>
     </div>
   );

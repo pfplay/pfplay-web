@@ -53,11 +53,11 @@ const ProfileSettings = () => {
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
   return (
-    <section className='min-w-[1000px] bg-grey-900 flexCol justify-between items-center mx-auto pt-10 px-[60px]'>
+    <section className='min-w-[1000px] bg-gray-900 flexCol justify-between items-center mx-auto pt-10 px-[60px]'>
       <GoBackButton text='당신은 누구신가요?' className='self-start' />
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
-        className='w-full h-full flexCol justify-between items-center gap-20 pt-24 pb-12  text-grey-200 '
+        className='w-full h-full flexCol justify-between items-center gap-20 pt-24 pb-12  text-gray-200 '
       >
         <div>
           <div className={'flex justify-between gap-10 mb-[77px]'}>
@@ -74,9 +74,9 @@ const ProfileSettings = () => {
                       {...field}
                       maxLength={16}
                       placeholder='한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'
-                      className='w-full bg-grey-700 rounded px-4 py-[13px] placeholder:text-[15px]'
+                      className='w-full bg-gray-700 rounded px-4 py-[13px] placeholder:text-[15px]'
                     />
-                    <p className='absolute right-4 top-1/2 transform -translate-y-1/2 text-grey-400'>
+                    <p className='absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400'>
                       <span className={cn(errors.nickName && 'text-red-300')}>
                         {watch('nickName') ? watch('nickName').length : 0}
                       </span>
@@ -103,9 +103,9 @@ const ProfileSettings = () => {
                       maxLength={50}
                       rows={3}
                       placeholder='한/영 구분 없이 띄어쓰기 포함 50자 제한'
-                      className='w-full bg-grey-700 rounded pt-[13px] px-4'
+                      className='w-full bg-gray-700 rounded pt-[13px] px-4'
                     />
-                    <p className='absolute right-4 bottom-3 text-grey-400'>
+                    <p className='absolute right-4 bottom-3 text-gray-400'>
                       <span className={cn(errors.introduction && 'text-red-300')}>
                         {watch('introduction') ? watch('introduction').length : 0}
                       </span>
@@ -124,8 +124,8 @@ const ProfileSettings = () => {
         <button
           type='submit'
           className={cn(
-            'self-end bg-grey-800 text-grey-600 font-bold-sm px-[96px] py-[12px]',
-            !btnDisabled && 'bg-gradient-red text-grey-50'
+            'self-end bg-gray-800 text-gray-600 font-bold-sm px-[96px] py-[12px]',
+            !btnDisabled && 'bg-gradient-red text-gray-50'
           )}
           disabled={btnDisabled}
         >

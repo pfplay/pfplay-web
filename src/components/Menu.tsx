@@ -32,7 +32,7 @@ const Menu = ({
     <_Menu as='section' className={`relative w-fit`}>
       {({ close }) => (
         <>
-          <_Menu.Button className={'flex items-center gap-2 text-grey-50 p-2'}>
+          <_Menu.Button className={'flex items-center gap-2 text-gray-50 p-2'}>
             {/* TODO: SVG Icon 사용법 정해지면 대체 */}
             <Icons.option />
           </_Menu.Button>
@@ -48,7 +48,7 @@ const Menu = ({
             <_Menu.Items
               as='ul'
               className={cn(
-                'absolute right-0 mt-2 py-2 origin-top-right rounded-[4px] bg-grey-800 shadow-lg z-50',
+                'absolute right-0 mt-2 py-2 origin-top-right rounded-[4px] bg-gray-800 shadow-lg z-50',
                 className,
                 MenuItemBoxSize[size]
               )}
@@ -64,8 +64,8 @@ const Menu = ({
                     <li
                       onClick={() => config.onClickItem()}
                       className={cn(
-                        'w-full flex items-center gap-2 rounded-sm px-4 py-3 cursor-pointer text-grey-50',
-                        active && 'bg-grey-700',
+                        'w-full flex items-center gap-2 rounded-sm px-4 py-3 cursor-pointer text-gray-50',
+                        active && 'bg-gray-700',
                         size === 'sm' && `text-sm`
                       )}
                     >
