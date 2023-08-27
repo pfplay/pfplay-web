@@ -32,7 +32,7 @@ const authOptions: NextAuthOptions = {
         const response = await UserService.login({
           accessToken: account.access_token,
         });
-        user.accessToken = account.access_token;
+        user.accessToken = response.accessToken;
         user.registered = response.registered;
         user.authority = response.authority;
         user.id = response.id;
@@ -44,7 +44,8 @@ const authOptions: NextAuthOptions = {
       }
     },
     // 구글 로그인 성공 후 callback
-    jwt: async ({ token, user }) => {
+    jwt: ({ token, user }) => {
+      if (!user) return token;
       token.accessToken = user.accessToken;
       token.registered = user.registered;
       token.authority = user.authority;
