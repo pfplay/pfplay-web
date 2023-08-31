@@ -19,5 +19,5 @@ export const OutlinedTag = () => {
 };
 
 export const ProfileTag = () => {
-  return <Tag variant='profile' value='박가든 garden' prefixIcon={<Icons.profileExample />} />;
+  return <Tag variant='profile' value='박가든 garden' PrefixIcon={<Icons.profileExample />} />;
 };
