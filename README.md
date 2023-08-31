@@ -31,7 +31,7 @@
 > Last Update (230219)
 
 - `tailwind.config.js`에 피그마 파일의 `Component/Color` 섹션 기준으로 컬러 테마 업데이트함
-- `bg-red-1`, `text-grey-2`, `border-grey-5` 과 같은 형태로 사용 가능
+- `bg-red-200`, `text-gray-200`, `border-gray-500` 과 같은 형태로 사용 가능
 - [vscode Tailwind CSS extensions](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) 사용시 자동완성 지원
 
 ### Images
@@ -76,5 +76,5 @@
 > Last Update (230726)
 
 - `tailwind.config.js`에 피그마 파일의 `Design System` pages 기준으로 컬러 테마 업데이트함
-- `bg-red-100`, `text-grey-100`, `border-grey-100` 과 같은 형태로 사용 가능
+- `bg-red-100`, `text-gray-100`, `border-gray-100` 과 같은 형태로 사용 가능
 - [figma design system](https://www.figma.com/file/9I5PR6OqN8cHJ7WVTOKe00/PFPlay-GUI-%EC%84%A4%EA%B3%84%EC%84%9C-%ED%95%A9%EB%B3%B8?type=design&node-id=1-17&mode=design&t=QqCaaHhIdHcQ4KoN-0)

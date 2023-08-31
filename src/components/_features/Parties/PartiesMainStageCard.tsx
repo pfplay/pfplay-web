@@ -9,7 +9,7 @@ const PartiesMainStageCard = () => {
 
   return (
     <div
-      className='w-full py-10 px-7 border border-grey-800 rounded backdrop-blur-lg bg-[#180202]/30'
+      className='w-full py-10 px-7 border border-gray-800 rounded backdrop-blur-lg bg-[#180202]/30'
       /* FIXME: bg 에 쓰인 [#180202]/30 는 디자인 시스템에 없는 hex */
     >
       <h2
@@ -18,12 +18,12 @@ const PartiesMainStageCard = () => {
       >
         PFPlay Main Stage
       </h2>
-      <p className='text-grey-200 font-light'>파티에 오신 것을 환영합니다</p>
+      <p className='text-gray-200 font-light'>파티에 오신 것을 환영합니다</p>
       <div className='w-full flex justify-start items-center gap-36 mt-[28px]'>
         <div className='flexRow gap-11'>
           <div className='flex  gap-x-1.5'>
             <Image src='/icons/icn_person_outline.svg' alt='채팅' width={20} height={20} />
-            <p className='text-grey-200'>48</p>
+            <p className='text-gray-200'>48</p>
           </div>
           <ul className='flex items-center gap-x-2'>
             {[1, 2, 3].map((value) => (
@@ -31,9 +31,9 @@ const PartiesMainStageCard = () => {
             ))}
           </ul>
         </div>
-        <div className='w-full flex items-center pt-4 gap-x-3 border-t border-grey-700 '>
+        <div className='w-full flex items-center pt-4 gap-x-3 border-t border-gray-700 '>
           <div className='w-20 h-11 bg-white overflow-hidden rounded'></div>
-          <p className='text-grey-200 text-sm'>NewJeans (뉴진스) &#39;Attention&#39; Official MV</p>
+          <p className='text-gray-200 text-sm'>NewJeans (뉴진스) &#39;Attention&#39; Official MV</p>
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ const AvatarSettings = () => {
   const [selectedBody, setSelectedBody] = useState<AvatarBodyImg>(avatarBodyMockArr[0]);
 
   return (
-    <section className='max-w-[1680px] bg-grey-900  mx-auto pt-[46px] pb-12 px-[60px] flexCol gap-9'>
+    <section className='max-w-[1680px] bg-gray-900  mx-auto pt-[46px] pb-12 px-[60px] flexCol gap-9'>
       <GoBackButton text='뭘 입고 놀아볼까요?' className='self-start' />
       <div className='flex gap-[30px] '>
         {/* 아바타 미리보기 */}
@@ -42,7 +42,7 @@ const AvatarSettings = () => {
                   key={tab.index}
                   className={({ selected }) =>
                     cn(
-                      'w-[101px] flexRowCenter py-2 px-6 border-b-[1px] bg-transparent outline-none text-xl font-bold text-grey-500 border-grey-500 uppercase',
+                      'w-[101px] flexRowCenter py-2 px-6 border-b-[1px] bg-transparent outline-none text-xl font-bold text-gray-500 border-gray-500 uppercase',
                       selected && 'text-red-400  border-red-700'
                     )
                   }

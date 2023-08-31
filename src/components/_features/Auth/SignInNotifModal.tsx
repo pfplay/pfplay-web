@@ -40,12 +40,12 @@ const SignInNotifModal = ({
               leaveFrom='opacity-100 scale-100'
               leaveTo='opacity-0 scale-95'
             >
-              <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-md bg-grey-800 pt-[52px] pb-8 px-[17px] text-left align-middle shadow-xl transition-all'>
-                <Dialog.Title as='h1' className='text-center font-bold text-xl mb-3 text-grey-50'>
+              <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-md bg-gray-800 pt-[52px] pb-8 px-[17px] text-left align-middle shadow-xl transition-all'>
+                <Dialog.Title as='h1' className='text-center font-bold text-xl mb-3 text-gray-50'>
                   잠깐만요!
                 </Dialog.Title>
                 <div className='mt-3'>
-                  <p className='text-center font-normal text-sm whitespace-pre-line mb-9 text-grey-300'>
+                  <p className='text-center font-normal text-sm whitespace-pre-line mb-9 text-gray-300'>
                     비로그인 입장 시 접근 가능한 기능이 제한됩니다 구글 계정을 연동하면 온전한
                     서비스를 즐길 수 있어요
                   </p>
@@ -55,14 +55,14 @@ const SignInNotifModal = ({
                   <button
                     onClick={onCancelClick}
                     type='button'
-                    className='text-grey-50 text-center font-bold text-sm px-7 py-3 bg-grey-700 rounded mr-3 w-[166px]'
+                    className='text-gray-50 text-center font-bold text-sm px-7 py-3 bg-gray-700 rounded mr-3 w-[166px]'
                   >
                     비로그인 입장하기
                   </button>
                   <button
                     type='button'
                     onClick={onConfirmClick}
-                    className='text-grey-50 text-center font-bold text-sm px-7 py-3 rounded w-[166px] bg-gradient-red'
+                    className='text-gray-50 text-center font-bold text-sm px-7 py-3 rounded w-[166px] bg-gradient-red'
                   >
                     구글 연동하기
                   </button>
