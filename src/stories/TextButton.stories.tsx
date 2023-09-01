@@ -3,7 +3,7 @@ import TextButton from '@/components/@shared/@atoms/TextButton';
 import Icons from '@/components/__legacy__/Icons';
 
 const meta = {
-  title: 'ui/TextButton',
+  title: '@atoms/TextButton',
   component: TextButton,
   tags: ['autodocs'],
 } satisfies Meta<typeof TextButton>;

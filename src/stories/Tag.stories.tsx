@@ -3,7 +3,7 @@ import Tag from '@/components/@shared/@atoms/Tag';
 import Icons from '@/components/__legacy__/Icons';
 
 const meta = {
-  title: 'ui/Tag',
+  title: '@atoms/Tag',
   tags: ['autodocs'],
   component: Tag,
 } satisfies Meta<typeof Tag>;
