@@ -1,6 +1,6 @@
 import React from 'react';
 import '@/styles/globals.css';
-import Header from '@/components/Header';
+import Header from '@/components/__legacy__/Header';
 import SessionProvider from '@/context/SessionProvider';
 import { cn } from '@/lib/utils';
 import { pretendardVariable } from '@/styles/fonts';

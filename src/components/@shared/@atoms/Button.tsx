@@ -1,8 +1,8 @@
 'use client';
 import type { ComponentProps, PropsWithChildren, ReactNode } from 'react';
 import { forwardRef } from 'react';
-import Loading from '@/components/ui/Loading';
-import Typography, { TypographyType } from '@/components/ui/Typography';
+import Loading from '@/components/@shared/@atoms/Loading';
+import Typography, { TypographyType } from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/lib/utils';
 
 type ButtonColor = 'primary' | 'secondary';

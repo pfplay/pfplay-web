@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
-import Icons from '@/components/Icons';
-import Menu, { MenuItem } from '@/components/Menu';
+import Menu, { MenuItem } from '@/components/@shared/Menu';
+import Icons from '@/components/__legacy__/Icons';
 
 const meta = {
   title: 'ui/Menu',
