@@ -13,7 +13,7 @@ const Header = () => {
       </Link>
       <div className='flexRow items-center'>
         <EmailBox />
-        <Icons.wordglobe />
+        <Icons.worldglobe />
       </div>
     </header>
   );
