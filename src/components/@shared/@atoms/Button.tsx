@@ -38,6 +38,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
     ref
   ) => {
     const iconOnly = !children && !!Icon;
+    const interactable = !(disabled || loading);
 
     return (
       <button
@@ -52,18 +53,21 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
           variant === 'outline' && 'border border-solid',
 
           colorsDict[color][variant].default,
-          colorsDict[color][variant].hover,
-          colorsDict[color][variant].active,
+          interactable
+            ? [
+                colorsDict[color][variant].hover,
+                colorsDict[color][variant].active,
+                'transition-transform active:scale-[0.96]',
+              ]
+            : '!cursor-not-allowed',
 
-          !disabled && 'transition-transform active:scale-[0.96]',
-
-          ...getDisabledStyles(color, variant, disabled),
+          getDisabledStyles(color, variant, disabled),
 
           className
         )}
         disabled={disabled || loading}
         onClick={(e) => {
-          if (disabled || loading) return;
+          if (!interactable) return;
           onClick?.(e);
         }}
         {...rest}
@@ -129,7 +133,7 @@ const colorsDict: Record<ButtonColor, Record<ButtonVariant, Record<ButtonState, 
   },
 };
 function getDisabledStyles(color: ButtonColor, variant: ButtonVariant, disabled?: boolean) {
-  if (!disabled) return [];
+  if (!disabled) return;
 
   const disabledColorsDict: Record<ButtonColor, Record<ButtonVariant, string>> = {
     primary: {
@@ -142,7 +146,7 @@ function getDisabledStyles(color: ButtonColor, variant: ButtonVariant, disabled?
     },
   };
 
-  return [disabledColorsDict[color][variant], '!cursor-not-allowed'];
+  return disabledColorsDict[color][variant];
 }
 
 export default Button;

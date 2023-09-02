@@ -33,6 +33,8 @@ const TextButton = forwardRef<HTMLButtonElement, PropsWithChildren<TextButtonPro
     },
     ref
   ) => {
+    const interactable = !(disabled || loading);
+
     return (
       <button
         ref={ref}
@@ -41,8 +43,8 @@ const TextButton = forwardRef<HTMLButtonElement, PropsWithChildren<TextButtonPro
           '[&>svg]:w-[16px] [&>svg]:h-[16px]',
 
           colorsDict[color],
-          disabled && '!text-gray-700 !cursor-not-allowed',
-          !disabled && 'transition-transform active:scale-[0.96]',
+          interactable ? 'transition-transform active:scale-[0.96]' : '!cursor-not-allowed',
+          disabled && '!text-gray-700',
 
           underline && 'underline',
 
