@@ -106,8 +106,8 @@ const colorsDict: Record<ButtonColor, Record<ButtonVariant, Record<ButtonState, 
   primary: {
     fill: {
       default: 'text-gray-50 bg-gradient-red',
-      hover: 'hover:text-gray-50 hover:bg-red-400',
-      active: 'active:text-gray-50 active:bg-red-500',
+      hover: 'hover:text-gray-50 hover:bg-none hover:bg-red-400',
+      active: 'active:text-gray-50 active:bg-none active:bg-red-500',
     },
     outline: {
       default: 'text-red-300 border-red-300',
@@ -118,8 +118,8 @@ const colorsDict: Record<ButtonColor, Record<ButtonVariant, Record<ButtonState, 
   secondary: {
     fill: {
       default: 'text-gray-50 bg-gray-700',
-      hover: 'hover:text-gray-50 hover:bg-gray-600',
-      active: 'active:text-gray-50 active:bg-gray-700',
+      hover: 'hover:text-gray-50 hover:bg-none hover:bg-gray-600',
+      active: 'active:text-gray-50 active:bg-none active:bg-gray-700',
     },
     outline: {
       default: 'text-gray-50 border-gray-500',
