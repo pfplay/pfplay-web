@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Meta, StoryObj } from '@storybook/react';
 import TextButton from '@/components/@shared/@atoms/TextButton';
 import Icons from '@/components/__legacy__/Icons';
@@ -26,10 +27,12 @@ export const Icon: Story = {
 };
 
 export const Underline: Story = {
+  storyName: 'Underline (Will be wrapped in <Link>...</Link>.)',
   args: {
     children: 'Text btn',
     underline: true,
   },
+  decorators: [(Story) => <Link href='#'>{Story()}</Link>],
 };
 
 export const Loading: Story = {
