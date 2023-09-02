@@ -1,4 +1,4 @@
-import PartiesMain from '@/components/_features/Parties/PartiesMain';
+import PartiesMain from '@/components/@features/Parties/PartiesMain';
 
 const PartiesPage = () => {
   return (

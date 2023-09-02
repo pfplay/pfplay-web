@@ -1,4 +1,4 @@
-import PartiesSideBar from '@/components/_features/Parties/PartiesSideBar';
+import PartiesSideBar from '@/components/@features/Parties/PartiesSideBar';
 
 const PartiesLayout = ({ children }: React.PropsWithChildren) => {
   return (

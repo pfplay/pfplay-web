@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import PartiesTab from '@/components/_features/Parties/PartiesTab';
+import PartiesTab from '@/components/@features/Parties/PartiesTab';
 
 const PartyRoomPage = async () => {
   return (

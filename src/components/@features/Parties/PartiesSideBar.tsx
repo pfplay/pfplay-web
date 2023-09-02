@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import Icons from '@/components/Icons';
+import Icons from '@/components/__legacy__/Icons';
 import { routes } from '@/config/routes';
 import MyProfileModal from './MyProfileModal';
 

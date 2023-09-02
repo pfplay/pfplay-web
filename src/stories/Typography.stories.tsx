@@ -1,9 +1,9 @@
 import { FC, PropsWithChildren } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import Typography, { TypographyType } from '@/components/ui/Typography';
+import Typography, { TypographyType } from '@/components/@shared/@atoms/Typography';
 
 const meta = {
-  title: 'ui/Typography',
+  title: '@atoms/Typography',
   tags: ['autodocs'],
   component: Typography,
 } satisfies Meta<typeof Typography>;

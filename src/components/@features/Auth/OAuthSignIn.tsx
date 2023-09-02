@@ -3,8 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import React, { useCallback, useState } from 'react';
-import { Button } from '@/components/ui/Button';
+import React, { useState } from 'react';
 import { routes } from '@/config/routes';
 import SignInNotifModal from './SignInNotifModal';
 
@@ -12,9 +11,9 @@ const OAuthSignIn = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleOpenModal = useCallback(() => {
-    setIsOpen(true);
-  }, []);
+  // const handleOpenModal = useCallback(() => {
+  //   setIsOpen(true);
+  // }, []);
 
   const handleModalClose = () => {
     setIsOpen(false);
@@ -45,22 +44,23 @@ const OAuthSignIn = () => {
               alt='logo'
             />
 
-            <Button
-              intent={'secondary-outline'}
-              onClick={signInGoogle}
-              className='justify-start w-80 py-3 pl-5 mb-10'
-            >
-              <Image src='/icons/google.png' alt='google login' width={32} height={32} />
-              <span className='ml-3 font-poppins'>Sign in With Google</span>
-            </Button>
+            {/* TODO: svg 관리 확정되면 구글 이미지 svg 로 변환 및 새로운 버튼 아톰에 적용하여 대체 */}
+            {/*<Button*/}
+            {/*  intent={'secondary-outline'}*/}
+            {/*  onClick={signInGoogle}*/}
+            {/*  className='justify-start w-80 py-3 pl-5 mb-10'*/}
+            {/*>*/}
+            {/*  <Image src='/icons/google.png' alt='google login' width={32} height={32} />*/}
+            {/*  <span className='ml-3 font-poppins'>Sign in With Google</span>*/}
+            {/*</Button>*/}
 
-            <Button
-              intent={'secondary-outline'}
-              className='text-sm font-normal text-gray-200 cursor-pointer underline border-none'
-              onClick={handleOpenModal}
-            >
-              먼저 둘러볼래요
-            </Button>
+            {/*<Button*/}
+            {/*  intent={'secondary-outline'}*/}
+            {/*  className='text-sm font-normal text-gray-200 cursor-pointer underline border-none'*/}
+            {/*  onClick={handleOpenModal}*/}
+            {/*>*/}
+            {/*  먼저 둘러볼래요*/}
+            {/*</Button>*/}
           </div>
         </div>
       </div>

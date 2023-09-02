@@ -4,8 +4,8 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import GoBackButton from '@/components/GoBackButton';
-import InputErrorMessage from '@/components/form/InputErrorMessage';
+import GoBackButton from '@/components/__legacy__/GoBackButton';
+import InputErrorMessage from '@/components/__legacy__/InputErrorMessage';
 import { cn } from '@/lib/utils';
 import { useProfileStore } from '@/store/profile';
 

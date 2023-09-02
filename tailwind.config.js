@@ -32,11 +32,23 @@ module.exports = {
         partyRoom: "url('/image/PartyRoom.png')",
         'gradient-red': 'linear-gradient(to right top, #780808, #AE001F)',
       },
+
       screens: {
         mobile: '400px',
         tablet: '768px',
         laptop: '1024px',
         desktop: '1280px',
+      },
+
+      animation: {
+        loading: 'loading 2s infinite',
+      },
+      keyframes: {
+        loading: {
+          '0%': { transform: 'rotateZ(0deg)' },
+          '50%': { transform: 'rotateZ(480deg)' },
+          '100%': { transform: 'rotateZ(1080deg)' },
+        },
       },
     },
   },
