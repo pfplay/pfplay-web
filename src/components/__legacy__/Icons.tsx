@@ -116,7 +116,7 @@ const Icons = {
       </defs>
     </svg>
   ),
-  wordglobe: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+  worldglobe: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
     <svg
       width='36'
       height='36'

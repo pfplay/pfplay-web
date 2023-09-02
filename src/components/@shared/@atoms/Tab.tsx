@@ -17,13 +17,6 @@ interface NonBoxProps {
 export type CustomTabProps = (CommonProps & BoxProps) | (CommonProps & NonBoxProps);
 
 const CustomTab = (props: CustomTabProps) => {
-  const getCommentTabStyle = (selected: boolean) => {
-    return cn(
-      'flexRowCenter gap-[6px] outline-none border-b-[1px] border-gray-400',
-      selected && 'text-red-300 border-red-300'
-    );
-  };
-
   if (props.variant === 'box') {
     return (
       <Tab as={Fragment}>
@@ -48,9 +41,9 @@ const CustomTab = (props: CustomTabProps) => {
       className={({ selected }) =>
         cn(
           getCommentTabStyle(selected),
-          props.variant === 'line' && 'py-[9px] px-6 bg-transparent',
           props.variant === 'line' && !selected && 'text-gray-400',
-          props.variant === 'text' && 'py-[9px] px-3 border-none',
+          props.variant === 'line' && 'py-[9px] px-[24px] bg-transparent',
+          props.variant === 'text' && 'py-[9px] px-[12px] border-none',
           props.variant === 'text' && !selected && 'text-gray-300'
         )
       }
@@ -63,3 +56,10 @@ const CustomTab = (props: CustomTabProps) => {
 };
 
 export default CustomTab;
+
+const getCommentTabStyle = (selected: boolean) => {
+  return cn(
+    'flexRowCenter gap-[6px] outline-none border-b-[1px] border-gray-400',
+    selected && 'text-red-300 border-red-300'
+  );
+};

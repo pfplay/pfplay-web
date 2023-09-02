@@ -2,11 +2,11 @@ import { PropsWithChildren, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import type { Meta } from '@storybook/react';
 import themeColors from 'tailwindcss/colors';
-import Icons from '@/components/Icons';
-import CustomTab from '@/components/ui/Tab';
+import CustomTab from '@/components/@shared/@atoms/Tab';
+import Icons from '@/components/__legacy__/Icons';
 
 const meta = {
-  title: 'ui/CustomTab',
+  title: '@atoms/CustomTab',
   tags: ['autodocs'],
   component: CustomTab,
 } satisfies Meta<typeof CustomTab>;

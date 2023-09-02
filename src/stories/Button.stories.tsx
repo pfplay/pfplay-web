@@ -21,7 +21,7 @@ export const Preview: Story = {
 export const Icon: Story = {
   args: {
     children: 'Button',
-    Icon: <Icons.wordglobe />,
+    Icon: <Icons.worldglobe />,
   },
 };
 
