@@ -46,20 +46,18 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
         className={cn(
           'flex h-max items-center justify-center gap-[8px] rounded-[4px]',
 
-          iconOnly
-            ? 'py-[6px] px-[12px] [&>svg]:w-[20px] [&>svg]:h-[20px]'
-            : [sizeDict[size], iconSizeDict[size]],
+          iconOnly && 'py-[6px] px-[12px] [&>svg]:w-[20px] [&>svg]:h-[20px]',
+          !iconOnly && [sizeDict[size], iconSizeDict[size]],
 
           variant === 'outline' && 'border border-solid',
 
           colorsDict[color][variant].default,
-          interactable
-            ? [
-                colorsDict[color][variant].hover,
-                colorsDict[color][variant].active,
-                'transition-transform active:scale-[0.96]',
-              ]
-            : '!cursor-not-allowed',
+          interactable && [
+            colorsDict[color][variant].hover,
+            colorsDict[color][variant].active,
+            'transition-transform active:scale-[0.96]',
+          ],
+          !interactable && '!cursor-not-allowed',
 
           getDisabledStyles(color, variant, disabled),
 

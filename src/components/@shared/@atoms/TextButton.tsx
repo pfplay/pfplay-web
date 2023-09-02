@@ -43,7 +43,8 @@ const TextButton = forwardRef<HTMLButtonElement, PropsWithChildren<TextButtonPro
           '[&>svg]:w-[16px] [&>svg]:h-[16px]',
 
           colorsDict[color],
-          interactable ? 'transition-transform active:scale-[0.96]' : '!cursor-not-allowed',
+          interactable && 'transition-transform active:scale-[0.96]',
+          !interactable && '!cursor-not-allowed',
           disabled && '!text-gray-700',
 
           underline && 'underline',
