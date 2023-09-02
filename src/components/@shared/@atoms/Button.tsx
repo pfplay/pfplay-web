@@ -1,5 +1,5 @@
 'use client';
-import type { ComponentProps, PropsWithChildren, ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
 import Loading from '@/components/@shared/@atoms/Loading';
 import Typography, { TypographyType } from '@/components/@shared/@atoms/Typography';
@@ -20,7 +20,7 @@ export interface ButtonProps extends Omit<ButtonHTMLProps, 'color' | 'children'>
   loading?: boolean;
 }
 
-const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,

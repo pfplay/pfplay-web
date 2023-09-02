@@ -1,5 +1,5 @@
 'use client';
-import type { ComponentProps, PropsWithChildren, ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
 import Loading from '@/components/@shared/@atoms/Loading';
 import Typography from '@/components/@shared/@atoms/Typography';
@@ -17,7 +17,7 @@ export interface TextButtonProps extends Omit<ButtonHTMLProps, 'color' | 'childr
   underline?: boolean;
 }
 
-const TextButton = forwardRef<HTMLButtonElement, PropsWithChildren<TextButtonProps>>(
+const TextButton = forwardRef<HTMLButtonElement, TextButtonProps>(
   (
     {
       className,
