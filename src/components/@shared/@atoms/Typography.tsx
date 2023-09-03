@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 export type TypographyType =
@@ -15,38 +15,45 @@ export type TypographyType =
 type TypographyOverflow = 'ellipsis' | 'break-words' | 'break-all' | 'break-normal';
 
 interface TypographyProps extends React.ComponentProps<'p'> {
+  children?: ReactNode;
   type?: TypographyType;
   overflow?: TypographyOverflow;
   inline?: boolean;
 }
 
-const Typography = ({
-  className,
-  children,
-  type = 'detail1',
-  overflow = titleTypes.includes(type) ? 'ellipsis' : undefined,
-  title = overflow === 'ellipsis' && typeof children === 'string' ? children : undefined,
-  inline,
-  ...props
-}: React.PropsWithChildren<TypographyProps>) => {
-  const El = elDict[type];
+const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
+  (
+    {
+      className,
+      children,
+      type = 'detail1',
+      overflow = titleTypes.includes(type) ? 'ellipsis' : undefined,
+      title = overflow === 'ellipsis' && typeof children === 'string' ? children : undefined,
+      inline,
+      ...rest
+    },
+    ref
+  ) => {
+    const El = elDict[type];
 
-  return (
-    <El
-      title={title}
-      className={cn([
-        typoStyleDict[type],
-        overflow && overflowDict[overflow],
-        inline && 'inline-block',
+    return (
+      <El
+        ref={ref}
+        title={title}
+        className={cn([
+          typoStyleDict[type],
+          overflow && overflowDict[overflow],
+          inline && 'inline-block',
 
-        className,
-      ])}
-      {...props}
-    >
-      {children}
-    </El>
-  );
-};
+          className,
+        ])}
+        {...rest}
+      >
+        {children}
+      </El>
+    );
+  }
+);
 
 const elDict: Record<TypographyType, keyof Pick<JSX.IntrinsicElements, 'h1' | 'h2' | 'p'>> = {
   title1: 'h1',
