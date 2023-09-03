@@ -22,7 +22,7 @@ export const Preview: Story = {
 export const Icon: Story = {
   args: {
     children: 'Text btn',
-    Icon: <Icons.wordglobe />,
+    Icon: <Icons.worldglobe />,
   },
 };
 
