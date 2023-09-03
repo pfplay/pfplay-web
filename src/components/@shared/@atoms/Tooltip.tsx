@@ -80,6 +80,11 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, visible, color = 're
               'opacity-0': !(visible && position.ready),
               'opacity-1': visible && position.ready,
             },
+
+            /* arrow */
+            'before:content-[""] before:absolute before:-z-1',
+            'before:top-0 before:left-1/2 before:-translate-x-1/2 before:-translate-y-full',
+            'before:w-[8px] before:h-[8px] before:bg-inherit before:polygon-equilateral-triangle',
           ])}
           style={{
             top: position.top,
