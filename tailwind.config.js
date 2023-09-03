@@ -39,6 +39,10 @@ module.exports = {
         laptop: '1024px',
         desktop: '1280px',
       },
+      zIndex: {
+        dialog: '1000',
+        tooltip: '1001',
+      },
 
       animation: {
         loading: 'loading 2s infinite',

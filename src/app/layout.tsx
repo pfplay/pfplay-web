@@ -1,6 +1,7 @@
 import React from 'react';
 import '@/styles/globals.css';
 import Header from '@/components/__legacy__/Header';
+import { DomId } from '@/contants/domId';
 import SessionProvider from '@/context/SessionProvider';
 import { cn } from '@/lib/utils';
 import { pretendardVariable } from '@/styles/fonts';
@@ -17,6 +18,8 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
             {children}
           </SessionCheck>
         </SessionProvider>
+
+        <div id={DomId.TooltipRoot} />
       </body>
     </html>
   );

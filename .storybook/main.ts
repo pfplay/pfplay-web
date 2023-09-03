@@ -1,4 +1,6 @@
 import type { StorybookConfig } from '@storybook/nextjs';
+import { DomId } from '../src/contants/domId';
+
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
@@ -13,5 +15,10 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag',
   },
+  previewBody: (body) => `
+    ${body}
+    <div id="${DomId.TooltipRoot}"></div>
+  `,
 };
+
 export default config;
