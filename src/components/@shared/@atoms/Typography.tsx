@@ -73,7 +73,7 @@ const typoStyleDict: Record<TypographyType, string> = {
   caption2: 'text-[12px] font-normal leading-[1.5]',
 };
 const overflowDict: Record<TypographyOverflow, string> = {
-  ellipsis: 'ellipsis',
+  ellipsis: 'truncate',
   'break-words': 'break-words',
   'break-all': 'break-all',
   'break-normal': 'break-normal',
