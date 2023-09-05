@@ -39,20 +39,20 @@ const PlayListItem = ({ title, duration, src, alt }: PlayListItemProps) => {
     <div
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => !isMenuOpen && setIsHover(false)}
-      className='relative w-full max-w-[332px] py-3 flexRow justify-start rounded'
+      className='relative w-full flexRow justify-start rounded gap-[12px]'
     >
       {/* TODO: 기본 Thumbnail 이미지 정해지면 대체  */}
-      <div className='w-[80px] h-[44px] select-none pointer-events-none'>
+      <div className='w-[80px] h-[44px] bg-gray-700'>
         <Image
           priority
           src={src ?? '/image/thumbnail.png'}
           alt={alt ?? ''}
           width={80}
           height={44}
-          className='w-full h-full object-contain'
+          className='w-full h-full object-contain select-none pointer-events-none'
         />
       </div>
-      <div className='flexCol w-9/12 pl-3'>
+      <div className='flexCol flex-1 min-w-0'>
         <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
           {title}
         </Typography>
@@ -60,25 +60,24 @@ const PlayListItem = ({ title, duration, src, alt }: PlayListItemProps) => {
           {duration}
         </Typography>
       </div>
+
       <div
         className={cn(
-          'absolute inset-0  bg-transparent',
+          'absolute inset-0 bg-transparent',
           isHover && 'bg-gradient-to-r from-transparent to-gray-900'
         )}
       />
 
       {isHover && (
-        <>
-          {/* TODO: Menu config 정해지면 optionMenuconfig props 대체 */}
-          <Menu
-            optionMenuConfig={exampleMenuConfig}
-            onMenuIconClick={handleMenuIconClick}
-            onMenuClose={handleMenuClose}
-            menuContainerStyle='absolute right-0 opacity-100'
-            ref={menuRef}
-            size='md'
-          />
-        </>
+        <Menu
+          /* TODO: Menu config 정해지면 optionMenuconfig props 대체 */
+          optionMenuConfig={exampleMenuConfig}
+          onMenuIconClick={handleMenuIconClick}
+          onMenuClose={handleMenuClose}
+          menuContainerStyle='absolute right-0 opacity-100'
+          ref={menuRef}
+          size='md'
+        />
       )}
     </div>
   );
