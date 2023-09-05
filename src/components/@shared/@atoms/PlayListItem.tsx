@@ -1,9 +1,9 @@
+'use client';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import useClickOutside from '@/hooks/useClickOutside';
 import { cn } from '@/lib/utils';
 import Typography from './Typography';
-import ThumbnailImg from '../../../../public/image/thumbnail.png';
 import Menu, { MenuItem } from '../Menu';
 
 interface PlayListItemProps {
@@ -33,26 +33,33 @@ const PlayListItem = ({ title, duration, src, alt }: PlayListItemProps) => {
     setIsHover(false);
   };
 
-  const menuRef = useClickOutside<HTMLDivElement>(() => handleMenuClose());
+  const menuRef = useClickOutside<HTMLDivElement>(handleMenuClose);
 
   return (
-    <ul
+    <div
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => !isMenuOpen && setIsHover(false)}
-      className='relative max-w-[332px] py-3 flexRow justify-start rounded'
+      className='relative w-full max-w-[332px] py-3 flexRow justify-start rounded'
     >
       {/* TODO: 기본 Thumbnail 이미지 정해지면 대체  */}
-      <li className='select-none pointer-events-none'>
-        <Image priority src={src ?? ThumbnailImg} alt={alt ?? ''} width={80} height={44} />
-      </li>
-      <li className='flexCol w-9/12 pl-3'>
+      <div className='w-[80px] h-[44px] select-none pointer-events-none'>
+        <Image
+          priority
+          src={src ?? '/image/thumbnail.png'}
+          alt={alt ?? ''}
+          width={80}
+          height={44}
+          className='w-full h-full object-contain'
+        />
+      </div>
+      <div className='flexCol w-9/12 pl-3'>
         <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
           {title}
         </Typography>
         <Typography type='caption1' className='self-end text-gray-400'>
           {duration}
         </Typography>
-      </li>
+      </div>
       <div
         className={cn(
           'absolute inset-0  bg-transparent',
@@ -73,7 +80,7 @@ const PlayListItem = ({ title, duration, src, alt }: PlayListItemProps) => {
           />
         </>
       )}
-    </ul>
+    </div>
   );
 };
 
