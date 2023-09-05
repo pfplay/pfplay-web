@@ -8,7 +8,7 @@ interface CommonProps {
 }
 interface ProfileProps {
   variant: 'profile';
-  prefixIcon: React.ReactNode;
+  PrefixIcon: React.ReactNode;
 }
 interface NonProfileProps {
   variant: 'filled' | 'outlined';
@@ -19,7 +19,7 @@ const Tag = (props: TagProps) => {
   if (props.variant === 'profile') {
     return (
       <div className={cn('w-fit flexRowCenter rounded-[40px] py-1 px-2 gap-1 bg-black')}>
-        <div className='flexRowCenter w-5 h-5 rounded-full'>{props.prefixIcon}</div>
+        <div className='flexRowCenter w-5 h-5 rounded-full'>{props.PrefixIcon}</div>
         <Typography type='caption1' className={'text-gray-100'}>
           {props.value}
         </Typography>
