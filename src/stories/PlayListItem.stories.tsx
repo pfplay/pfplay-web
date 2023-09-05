@@ -13,9 +13,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Preview: Story = {
   args: {
+    id: 1,
     title: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
     duration: '00:00',
-    src: 'https://source.unsplash.com/user/c_v_r', // 예시 이미지. 필요시 uncomment하고 사용
+    src: 'https://source.unsplash.com/user/c_v_r',
     alt: 'PlayListItem',
   },
 };
@@ -23,14 +24,15 @@ export const Preview: Story = {
 export const Ellipsis: Story = {
   name: 'Ellipsis (Adjust by Parent width)',
   args: {
+    id: 1,
     title: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
     duration: '00:00',
-    src: 'https://source.unsplash.com/user/c_v_r', // 예시 이미지. 필요시 uncomment하고 사용
+    src: 'https://source.unsplash.com/user/c_v_r',
     alt: 'PlayListItem',
   },
   decorators: [
     (Story) => {
-      return <div className='max-w-[300px]'>{Story()}</div>;
+      return <div className='max-w-[332px]'>{Story()}</div>;
     },
   ],
 };

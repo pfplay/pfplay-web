@@ -1,12 +1,14 @@
 'use client';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import Icons from '@/components/__legacy__/Icons';
 import useClickOutside from '@/hooks/useClickOutside';
 import { cn } from '@/lib/utils';
 import Typography from './Typography';
 import Menu, { MenuItem } from '../Menu';
 
 interface PlayListItemProps {
+  id: number;
   title: string;
   duration: string;
   src?: string;
@@ -20,7 +22,7 @@ const exampleMenuConfig: Array<MenuItem> = [
   { onClickItem: () => console.log('밴 clicked'), label: '밴' },
 ];
 
-const PlayListItem = ({ title, duration, src, alt }: PlayListItemProps) => {
+const PlayListItem = ({ id, title, duration, src, alt }: PlayListItemProps) => {
   const [isHover, setIsHover] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -33,6 +35,11 @@ const PlayListItem = ({ title, duration, src, alt }: PlayListItemProps) => {
     setIsHover(false);
   };
 
+  const handlePlayBtnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => {
+    e.stopPropagation();
+    console.log(`id: ${id}는 향후 비디오 재생 api 연결에 사용될 예정입니다.`);
+  };
+
   const menuRef = useClickOutside<HTMLDivElement>(handleMenuClose);
 
   return (
@@ -42,17 +49,25 @@ const PlayListItem = ({ title, duration, src, alt }: PlayListItemProps) => {
       className='relative w-full flexRow justify-start rounded gap-[12px]'
     >
       {/* TODO: 기본 Thumbnail 이미지 정해지면 대체  */}
-      <div className='w-[80px] h-[44px] bg-gray-700'>
+      <div className='relative w-[80px] h-[44px] bg-gray-700'>
         <Image
           priority
           src={src ?? '/image/thumbnail.png'}
           alt={alt ?? ''}
           width={80}
           height={44}
-          className='w-full h-full object-contain select-none pointer-events-none'
+          className={cn('w-full h-full object-contain select-none', isHover && 'opacity-60')}
         />
+        {isHover && (
+          <div
+            onClick={(e) => handlePlayBtnClick(e, id)}
+            className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-50'
+          >
+            <Icons.play />
+          </div>
+        )}
       </div>
-      <div className='flexCol flex-1 min-w-0'>
+      <div className='flexCol flex-1 min-w-0 select-none'>
         <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
           {title}
         </Typography>
@@ -74,7 +89,7 @@ const PlayListItem = ({ title, duration, src, alt }: PlayListItemProps) => {
           optionMenuConfig={exampleMenuConfig}
           onMenuIconClick={handleMenuIconClick}
           onMenuClose={handleMenuClose}
-          menuContainerStyle='absolute right-0 opacity-100'
+          menuContainerStyle='absolute top-[5px] right-0'
           ref={menuRef}
           size='md'
         />
