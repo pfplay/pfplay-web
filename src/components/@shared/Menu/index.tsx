@@ -3,15 +3,14 @@ import { forwardRef, Fragment } from 'react';
 import { Menu as _Menu, Transition } from '@headlessui/react';
 import Icons from '@/components/__legacy__/Icons';
 import { cn } from '@/lib/utils';
+import { MenuItemBoxSizeKey, MenuItem } from './Menu.types';
 
-export type MenuItemBoxSizeKey = 'lg' | 'md' | 'sm';
 const MenuItemBoxSize: Record<MenuItemBoxSizeKey, string> = {
   lg: 'w-[330px]',
   md: 'w-[220px]',
   sm: 'w-[90px]',
 };
 
-export type MenuItem = { onClickItem: () => void; label: string };
 interface MenuProps {
   // TODO:  optionMenuConfig 정해지면 type 재정의하기
   optionMenuConfig: Array<MenuItem>;

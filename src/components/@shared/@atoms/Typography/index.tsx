@@ -2,8 +2,7 @@
 import React, { forwardRef, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { titleTypes, elDict, typoStyleDict, overflowDict } from './Typography.config';
-import { TypographyOverflow } from './Typography.types';
-import { TypographyType } from '../Typography';
+import { TypographyOverflow, TypographyType } from './Typography.types';
 
 interface TypographyProps extends React.ComponentProps<'p'> {
   children?: ReactNode;

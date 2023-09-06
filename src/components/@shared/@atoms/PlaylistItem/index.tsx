@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import Icons from '@/components/__legacy__/Icons';
 import useClickOutside from '@/hooks/useClickOutside';
 import { cn } from '@/lib/utils';
-import Typography from './Typography';
-import Menu, { MenuItem } from '../Menu';
+import Menu from '../../Menu';
+import { MenuItem } from '../../Menu/Menu.types';
+import Typography from '../Typography';
 
 interface PlaylistItemProps {
   id: number;
