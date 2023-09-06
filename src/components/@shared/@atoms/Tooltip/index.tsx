@@ -11,12 +11,12 @@ import Typography from '@/components/@shared/@atoms/Typography';
 import { DomId } from '@/contants/domId';
 import { cn } from '@/lib/utils';
 import { repeatAnimationFrame } from '@/utils/repeatAnimationFrame';
+import { colorsDict } from './Tooltip.config';
+import { TooltipColor } from './Tooltip.types';
 
 interface Position extends Pick<CSSProperties, 'top' | 'left'> {
   ready: boolean;
 }
-
-type TooltipColor = 'red' | 'gray';
 interface TooltipProps {
   children: ReactElement;
   title: string;
@@ -97,11 +97,6 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, visible, color = 're
       )}
     </>
   );
-};
-
-const colorsDict: Record<TooltipColor, string> = {
-  red: 'text-gray-50 bg-red-500',
-  gray: 'text-gray-50 bg-gray-700',
 };
 
 export default Tooltip;
