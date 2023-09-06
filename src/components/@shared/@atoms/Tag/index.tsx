@@ -1,18 +1,18 @@
 'use client';
 import React from 'react';
 import { cn } from '@/lib/utils';
-import Typography from './Typography';
+import Typography from '../Typography';
 
-interface CommonProps {
+type CommonProps = {
   value: string;
-}
-interface ProfileProps {
+};
+type ProfileProps = {
   variant: 'profile';
   PrefixIcon: React.ReactNode;
-}
-interface NonProfileProps {
+};
+type NonProfileProps = {
   variant: 'filled' | 'outlined';
-}
+};
 export type TagProps = (CommonProps & ProfileProps) | (CommonProps & NonProfileProps);
 
 const Tag = (props: TagProps) => {

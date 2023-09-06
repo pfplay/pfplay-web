@@ -5,16 +5,16 @@ import { cn } from '@/lib/utils';
 import { getCommentTabStyle } from './Tab.helper';
 import Typography from '../Typography';
 
-interface CommonProps {
+type CommonProps = {
   tabTitle: string;
-}
-interface BoxProps {
+};
+type BoxProps = {
   variant?: 'box';
   onSwitchPrefixIconColor: (selected: boolean) => JSX.Element;
-}
-interface NonBoxProps {
+};
+type NonBoxProps = {
   variant?: 'line' | 'text';
-}
+};
 export type CustomTabProps = (CommonProps & BoxProps) | (CommonProps & NonBoxProps);
 
 const CustomTab = (props: CustomTabProps) => {

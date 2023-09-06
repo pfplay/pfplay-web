@@ -4,8 +4,8 @@ import { forwardRef } from 'react';
 import Loading from '@/components/@shared/@atoms/Loading';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/lib/utils';
-
-type TextButtonColor = 'basic' | 'primary' | 'secondary';
+import { colorsDict } from './TextButton.config';
+import { TextButtonColor } from './TextButton.types';
 
 type ButtonHTMLProps = ComponentProps<'button'>;
 export interface TextButtonProps extends Omit<ButtonHTMLProps, 'color' | 'children'> {
@@ -69,11 +69,5 @@ const TextButton = forwardRef<HTMLButtonElement, TextButtonProps>(
     );
   }
 );
-
-const colorsDict: Record<TextButtonColor, string> = {
-  basic: 'text-white',
-  primary: 'text-red-300',
-  secondary: 'text-gray-300',
-};
 
 export default TextButton;
