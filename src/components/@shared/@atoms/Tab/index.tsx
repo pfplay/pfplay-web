@@ -2,7 +2,8 @@
 import React, { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
 import { cn } from '@/lib/utils';
-import Typography from './Typography';
+import { getCommentTabStyle } from './Tab.helper';
+import Typography from '../Typography';
 
 interface CommonProps {
   tabTitle: string;
@@ -56,10 +57,3 @@ const CustomTab = (props: CustomTabProps) => {
 };
 
 export default CustomTab;
-
-const getCommentTabStyle = (selected: boolean) => {
-  return cn(
-    'flexRowCenter gap-[6px] outline-none border-b-[1px] border-gray-400',
-    selected && 'text-red-300 border-red-300'
-  );
-};
