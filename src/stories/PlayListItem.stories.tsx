@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import PlayListItem from '@/components/@shared/@atoms/PlayListItem';
+import PlayListItem from '@/components/@shared/PlaylistItem';
 
 const meta = {
   title: '@atoms/PlayListItem',

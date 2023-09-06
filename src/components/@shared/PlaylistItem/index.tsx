@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import Icons from '@/components/__legacy__/Icons';
 import useClickOutside from '@/hooks/useClickOutside';
 import { cn } from '@/lib/utils';
-import Typography from './Typography';
-import Menu, { MenuItem } from '../Menu';
+import Typography from '../@atoms/Typography';
+import Menu from '../Menu';
+import { exampleMenuConfig } from '../Menu/Menu.config';
 
 interface PlayListItemProps {
   id: number;
@@ -14,13 +15,6 @@ interface PlayListItemProps {
   src?: string;
   alt: string;
 }
-
-const exampleMenuConfig: Array<MenuItem> = [
-  { onClickItem: () => console.log('삭제 clicked'), label: '삭제' },
-  { onClickItem: () => console.log('꿀 clicked'), label: '꿀' },
-  { onClickItem: () => console.log('킥 clicked'), label: '킥' },
-  { onClickItem: () => console.log('밴 clicked'), label: '밴' },
-];
 
 const PlayListItem = ({ id, title, duration, src, alt }: PlayListItemProps) => {
   const [isHover, setIsHover] = useState(false);
