@@ -1,5 +1,5 @@
 import { ButtonColor, ButtonSize, ButtonVariant } from './Button.types';
-import { TypographyType } from '../Typography';
+import { TypographyType } from '../Typography/Typography.types';
 
 type ButtonState = 'default' | 'hover' | 'active';
 export const colorsDict: Record<ButtonColor, Record<ButtonVariant, Record<ButtonState, string>>> = {

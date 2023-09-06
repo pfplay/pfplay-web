@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import Typography, { TypographyType } from '@/components/@shared/@atoms/Typography';
+import Typography from '@/components/@shared/@atoms/Typography';
+import { TypographyType } from '@/components/@shared/@atoms/Typography/Typography.types';
 
 const meta = {
   title: '@atoms/Typography',

@@ -1,5 +1,4 @@
-import { TypographyOverflow } from './Typography.types';
-import { TypographyType } from '../Typography';
+import { TypographyOverflow, TypographyType } from './Typography.types';
 
 export const elDict: Record<TypographyType, keyof Pick<JSX.IntrinsicElements, 'h1' | 'h2' | 'p'>> =
   {
