@@ -2,6 +2,7 @@ import '../src/styles/globals.css';
 import './font.css';
 
 import type { Preview } from '@storybook/react';
+import { DialogProvider } from '../src/context/DialogProvider';
 
 const preview: Preview = {
   parameters: {
@@ -17,6 +18,13 @@ const preview: Preview = {
       values: [{ name: 'dark', value: '#111111' }],
     },
   },
+  decorators: [
+    (Story) => (
+      <DialogProvider>
+        <Story />
+      </DialogProvider>
+    ),
+  ],
 };
 
 export default preview;
