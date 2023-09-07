@@ -30,7 +30,7 @@ const getEmphasisedInnerHTML = (strWithEmphasis: StrWithEmphasis): string => {
     [emphasisPhrase].flat().map((v) => ({
       targetPhrase: v,
       tag: 'strong',
-      tagAttr: { className: 'appearance-none text-red-300' },
+      tagAttr: { class: 'appearance-none text-red-300' },
     }))
   );
 };
