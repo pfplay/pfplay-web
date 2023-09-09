@@ -3,8 +3,9 @@ import type { Meta, StoryFn } from '@storybook/react';
 import Button from '@/components/@shared/@atoms/Button';
 import Typography from '@/components/@shared/@atoms/Typography';
 import Dialog from '@/components/@shared/Dialog';
-import { useDialog } from '@/context/DialogProvider';
+import { useDialog } from '@/hooks/useDialog';
 import { cn } from '@/lib/utils';
+import { delay } from '@/utils/delay';
 
 const meta = {
   title: 'Dialog',
@@ -78,4 +79,48 @@ export const Fully: Story = () => {
   };
 
   return <Button onClick={handleClickButton}>Click</Button>;
+};
+
+export const Predefined: Story = () => {
+  const { openAlertDialog, openConfirmDialog, openErrorDialog } = useDialog();
+  const [errorButtonLoading, setErrorButtonLoading] = useState(false);
+
+  const buttonHandlers = {
+    alert: () => {
+      openAlertDialog({
+        title: 'Alert title',
+        subTitle: 'Alert subTitle',
+        content: 'Alert content',
+        okText: 'okText',
+      });
+    },
+    confirm: async () => {
+      const confirmed = await openConfirmDialog({
+        title: 'Confirm title',
+        subTitle: 'Confirm subTitle',
+        content: 'Confirm content',
+        okText: 'okText',
+        cancelText: 'cancelText',
+      });
+
+      if (confirmed) alert(`확인됐어요.`);
+      if (!confirmed) alert('취소됐어요.');
+    },
+    error: async () => {
+      setErrorButtonLoading(true);
+      await delay(2000);
+      await openErrorDialog('에러가 이런이런 이유로 발생했어요.');
+      setErrorButtonLoading(false);
+    },
+  };
+
+  return (
+    <div className='flex gap-[20px]'>
+      <Button onClick={buttonHandlers.alert}>Alert</Button>
+      <Button onClick={buttonHandlers.confirm}>Confirm</Button>
+      <Button onClick={buttonHandlers.error} loading={errorButtonLoading}>
+        Error
+      </Button>
+    </div>
+  );
 };

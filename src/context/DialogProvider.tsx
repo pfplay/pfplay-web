@@ -11,16 +11,16 @@ type PushDialog = <T = void>(factory: DialogFactory<T>) => Promise<T | undefined
 type ID = NonNullable<DialogProps['id']>;
 type PopDialog = (id: ID) => Promise<void>;
 
-type ProviderContext = {
-  openDialog: PushDialog;
-  closeDialog: PopDialog;
-};
-
 interface DialogOptions extends Omit<DialogProps, 'id'> {
   id: ID;
 }
 
-const DialogContext = React.createContext({} as ProviderContext);
+export const DialogContext = React.createContext(
+  {} as {
+    openDialog: PushDialog;
+    closeDialog: PopDialog;
+  }
+);
 
 const generateId = () => `${Date.now()}`;
 
@@ -83,12 +83,4 @@ export const DialogProvider: React.FC<PropsWithChildren> = ({ children }) => {
       ))}
     </DialogContext.Provider>
   );
-};
-
-export const useDialog = (): ProviderContext => {
-  const context = React.useContext(DialogContext);
-  if (!Object.values(context).length) {
-    throw new Error('useDialog must be used within a DialogProvider');
-  }
-  return context;
 };
