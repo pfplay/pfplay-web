@@ -17,7 +17,7 @@ interface StrWithEmphasis {
 export interface DialogProps {
   open: boolean;
   title: string | StrWithEmphasis;
-  subTitle?: string | StrWithEmphasis;
+  Sub?: ReactNode;
   Body: FC | ReactNode;
   onClose: () => void;
   id?: string;
@@ -35,14 +35,7 @@ const getEmphasisedInnerHTML = (strWithEmphasis: StrWithEmphasis): string => {
   );
 };
 
-const Dialog: FC<DialogProps> & DialogComposition = ({
-  open,
-  title,
-  subTitle,
-  Body,
-  onClose,
-  id,
-}) => {
+const Dialog: FC<DialogProps> & DialogComposition = ({ open, title, Sub, Body, onClose, id }) => {
   const Title = useMemo(() => {
     const titleProps: PropsWithRef<TypographyProps> = {
       type: 'body1',
@@ -56,26 +49,6 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
     const titleInnerHTML = getEmphasisedInnerHTML(title);
     return <Typography {...titleProps} dangerouslySetInnerHTML={{ __html: titleInnerHTML }} />;
   }, [title]);
-
-  const SubTitle = useMemo(() => {
-    if (!subTitle) {
-      return;
-    }
-
-    const subTitleProps: PropsWithRef<TypographyProps> = {
-      type: 'detail1',
-      className: 'text-gray-300 mt-[12px]',
-    };
-
-    if (typeof subTitle === 'string') {
-      return <Typography {...subTitleProps}>{subTitle}</Typography>;
-    }
-
-    const subTitleInnerHTML = getEmphasisedInnerHTML(subTitle);
-    return (
-      <Typography {...subTitleProps} dangerouslySetInnerHTML={{ __html: subTitleInnerHTML }} />
-    );
-  }, [subTitle]);
 
   return (
     <Transition appear show={open} as={Fragment}>
@@ -108,10 +81,10 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
                   'pt-[52px] px-[32px] pb-[32px] w-[400px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all'
                 )}
               >
-                <HUDialog.Title as='div' className='mb-[24px]'>
+                <HUDialog.Title as='div' className='flexCol gap-[12px] mb-[24px]'>
                   {Title}
 
-                  {SubTitle}
+                  {Sub}
                 </HUDialog.Title>
 
                 {typeof Body === 'function' ? <Body /> : Body}

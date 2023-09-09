@@ -4,11 +4,11 @@ import Typography from '@/components/@shared/@atoms/Typography';
 import Dialog, { DialogProps } from '@/components/@shared/Dialog';
 import { DialogContext } from '@/context/DialogProvider';
 
-interface AlertDialogParams extends Pick<DialogProps, 'title' | 'subTitle'> {
+interface AlertDialogParams extends Pick<DialogProps, 'title' | 'Sub'> {
   content?: string;
   okText: string;
 }
-interface ConfirmDialogParams extends Pick<DialogProps, 'title' | 'subTitle'> {
+interface ConfirmDialogParams extends Pick<DialogProps, 'title' | 'Sub'> {
   content?: string;
   okText: string;
   cancelText: string;
@@ -22,10 +22,10 @@ export const useDialog = () => {
 
   const predefinedDialogs = useMemo(
     () => ({
-      openAlertDialog: ({ title, subTitle, content, okText }: AlertDialogParams) =>
+      openAlertDialog: ({ title, Sub, content, okText }: AlertDialogParams) =>
         openDialog((_, onCancel) => ({
           title,
-          subTitle,
+          Sub,
           Body: () => (
             <>
               {content && <Typography type='body3'>{content}</Typography>}
@@ -37,10 +37,10 @@ export const useDialog = () => {
           ),
         })),
 
-      openConfirmDialog: ({ title, subTitle, content, okText, cancelText }: ConfirmDialogParams) =>
+      openConfirmDialog: ({ title, Sub, content, okText, cancelText }: ConfirmDialogParams) =>
         openDialog<boolean>((onOk) => ({
           title,
-          subTitle,
+          Sub,
           Body: () => (
             <>
               {content && <Typography type='body3'>{content}</Typography>}

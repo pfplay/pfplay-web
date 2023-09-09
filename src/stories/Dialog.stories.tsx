@@ -40,7 +40,11 @@ export const Fully: Story = () => {
   const openFullDialog = () => {
     return openDialog<number>((onOk, onCancel) => ({
       title: { fullPhrase: '확인을 누르면 1000을 반환합니다', emphasisPhrase: '1000' },
-      subTitle: '취소를 누르면 항상 undefined 를 반환해요.',
+      Sub: (
+        <Typography type='detail1' className='text-gray-300'>
+          취소를 누르면 항상 <span className='text-red-300'>undefined</span> 를 반환해요.
+        </Typography>
+      ),
       Body: () => {
         const [spread, setSpread] = useState(false);
 
@@ -89,7 +93,11 @@ export const Predefined: Story = () => {
     alert: () => {
       openAlertDialog({
         title: 'Alert title',
-        subTitle: 'Alert subTitle',
+        Sub: (
+          <Typography type='detail1' className='text-gray-300'>
+            Alert Sub
+          </Typography>
+        ),
         content: 'Alert content',
         okText: 'okText',
       });
@@ -97,7 +105,11 @@ export const Predefined: Story = () => {
     confirm: async () => {
       const confirmed = await openConfirmDialog({
         title: 'Confirm title',
-        subTitle: 'Confirm subTitle',
+        Sub: (
+          <Typography type='detail1' className='text-gray-300'>
+            Confirm Sub
+          </Typography>
+        ),
         content: 'Confirm content',
         okText: 'okText',
         cancelText: 'cancelText',
@@ -137,7 +149,7 @@ export const Stream: Story = () => {
     const startCount = () => {
       intervalRef.current = setInterval(() => {
         setCount((prev) => prev + 1);
-      }, 1000);
+      }, 500);
     };
 
     return {
