@@ -60,7 +60,7 @@ const ProfilePanel = ({
           >
             <ProfilePanelBody src={src} username={username} alt={alt} />
 
-            {suffixProps && <ProfilePanelSuffix {...suffixProps} />}
+            {suffixProps && <ProfilePanelSuffix suffixProps={suffixProps} />}
           </div>
         )}
       </DisplayOptionMenuOnHoverListener>
@@ -83,7 +83,7 @@ const ProfilePanel = ({
 
       <ProfilePanelBody src={src} username={username} alt={alt} />
 
-      {suffixProps && <ProfilePanelSuffix {...suffixProps} />}
+      {suffixProps && <ProfilePanelSuffix suffixProps={suffixProps} smallSize />}
     </div>
   );
 };
@@ -107,11 +107,17 @@ const ProfilePanelBody = ({ src, username, alt }: ProfilePanelUserConfig) => {
   );
 };
 
-const ProfilePanelSuffix = (suffixProps: Partial<ProfilePanelWithTag | ProfilePanelWithButton>) => {
+const ProfilePanelSuffix = ({
+  smallSize = false,
+  suffixProps,
+}: {
+  smallSize?: boolean;
+  suffixProps: Partial<ProfilePanelWithTag | ProfilePanelWithButton>;
+}) => {
   return (
     <>
       {suffixProps?.suffixType === 'tag' && <Tag value='Tag' variant='filled' />}
-      {suffixProps?.suffixType === 'button' && (
+      {!smallSize && suffixProps?.suffixType === 'button' && (
         <Button variant='outline' color='secondary' onClick={suffixProps?.onButtonClick} size='sm'>
           {suffixProps?.suffixValue}
         </Button>
