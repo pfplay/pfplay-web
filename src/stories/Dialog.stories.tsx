@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
 import Button from '@/components/@shared/@atoms/Button';
 import Typography from '@/components/@shared/@atoms/Typography';
@@ -122,5 +122,58 @@ export const Predefined: Story = () => {
         Error
       </Button>
     </div>
+  );
+};
+
+export const Stream: Story = () => {
+  const [count, setCount] = useState(0);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const intervalRef = useRef<NodeJS.Timer>();
+
+  const streamLike = useMemo(() => {
+    const stopCount = () => {
+      clearInterval(intervalRef.current);
+    };
+    const startCount = () => {
+      intervalRef.current = setInterval(() => {
+        setCount((prev) => prev + 1);
+      }, 1000);
+    };
+
+    return {
+      stopCount,
+      startCount,
+    };
+  }, []);
+
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+    streamLike.startCount();
+  };
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    streamLike.stopCount();
+    setCount(0);
+  };
+
+  return (
+    <>
+      <Button onClick={handleOpenDialog}>Click</Button>
+
+      <Dialog
+        open={dialogOpen}
+        title='스트림 Like'
+        Body={() => (
+          <>
+            <Typography type='body3'>count: {count}</Typography>
+
+            <Dialog.ButtonGroup>
+              <Dialog.Button onClick={handleCloseDialog}>닫기</Dialog.Button>
+            </Dialog.ButtonGroup>
+          </>
+        )}
+        onClose={handleCloseDialog}
+      />
+    </>
   );
 };
