@@ -1,5 +1,5 @@
 import '../src/styles/globals.css';
-import './font.css';
+import './styles.css';
 
 import type { Preview } from '@storybook/react';
 import { DialogProvider } from '../src/context/DialogProvider';
