@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import React, { useState } from 'react';
-import useClickOutside from '@/hooks/useClickOutside';
+import React from 'react';
 import { cn } from '@/lib/utils';
 import Button from './@atoms/Button';
 import Tag from './@atoms/Tag';
 import Typography from './@atoms/Typography';
-import Menu, { MenuItem } from './Menu';
+import DisplayOptionMenuOnHoverListener from './DisplayOptionMenuOnHoverListener';
+import { MenuItem } from './Menu';
 
 const exampleMenuConfig: Array<MenuItem> = [
   { onClickItem: () => console.log('삭제 clicked'), label: '삭제' },
@@ -31,15 +31,12 @@ type ProfilePanelWithButton = {
   onButtonClick: () => void;
 };
 
-type ProfilePanelCommenProps = {
+type ProfilePanelProps = {
   order?: string;
   size?: 'sm' | 'md';
   variant?: 'basic' | 'outlineAccent' | 'filled';
   userConfig: ProfilePanelUserConfig;
-};
-
-type ProfilePanelProps = ProfilePanelCommenProps &
-  Partial<ProfilePanelWithTag | ProfilePanelWithButton>;
+} & Partial<ProfilePanelWithTag | ProfilePanelWithButton>;
 
 const ProfilePanel = ({
   userConfig: { username, src, alt },
@@ -48,52 +45,25 @@ const ProfilePanel = ({
   order,
   ...suffixProps
 }: ProfilePanelProps) => {
-  const [isHover, setIsHover] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleMenuIconClick = () => {
-    setIsMenuOpen(true);
-  };
-
-  const handleMenuClose = () => {
-    setIsMenuOpen(false);
-    setIsHover(false);
-  };
-
-  const menuRef = useClickOutside<HTMLDivElement>(handleMenuClose);
-
   if (size === 'md') {
     return (
-      <div
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => !isMenuOpen && setIsHover(false)}
-        className={cn(
-          'relative w-full flexRow justify-between items-center py-2 px-4 rounded-[4px]'
-        )}
+      <DisplayOptionMenuOnHoverListener
+        menuConfig={exampleMenuConfig}
+        menuPositionStyle='top-[8px] right-[12px]'
+        listenerDisabled={suffixProps.suffixType === 'button'}
       >
-        <ProfilePanelBody src={src} username={username} alt={alt} />
+        {() => (
+          <div
+            className={cn(
+              'relative w-full flexRow justify-between items-center py-2 px-4 rounded-[4px]'
+            )}
+          >
+            <ProfilePanelBody src={src} username={username} alt={alt} />
 
-        <ProfilePanelSuffix {...suffixProps} />
-
-        <div
-          className={cn(
-            'absolute inset-0 bg-transparent',
-            isHover && 'bg-gradient-to-r from-transparent to-gray-900'
-          )}
-        />
-
-        {isHover && (
-          <Menu
-            /* TODO: Menu config 정해지면 optionMenuconfig props 대체 */
-            optionMenuConfig={exampleMenuConfig}
-            onMenuIconClick={handleMenuIconClick}
-            onMenuClose={handleMenuClose}
-            menuContainerStyle='absolute top-[8px] right-[12px]'
-            ref={menuRef}
-            size='md'
-          />
+            {suffixProps && <ProfilePanelSuffix {...suffixProps} />}
+          </div>
         )}
-      </div>
+      </DisplayOptionMenuOnHoverListener>
     );
   }
 
@@ -113,7 +83,7 @@ const ProfilePanel = ({
 
       <ProfilePanelBody src={src} username={username} alt={alt} />
 
-      <ProfilePanelSuffix {...suffixProps} />
+      {suffixProps && <ProfilePanelSuffix {...suffixProps} />}
     </div>
   );
 };
