@@ -5,6 +5,7 @@ import Typography from './Typography';
 
 interface CommonProps {
   value: string;
+  className?: string;
 }
 interface ProfileProps {
   variant: 'profile';
@@ -18,7 +19,12 @@ export type TagProps = (CommonProps & ProfileProps) | (CommonProps & NonProfileP
 const Tag = (props: TagProps) => {
   if (props.variant === 'profile') {
     return (
-      <div className={cn('w-fit flexRowCenter rounded-[40px] py-1 px-2 gap-1 bg-black')}>
+      <div
+        className={cn(
+          'w-fit flexRowCenter rounded-[40px] py-1 px-2 gap-1 bg-black',
+          props.className
+        )}
+      >
         <div className='flexRowCenter w-5 h-5 rounded-full'>{props.PrefixIcon}</div>
         <Typography type='caption1' className={'text-gray-100'}>
           {props.value}
@@ -31,6 +37,7 @@ const Tag = (props: TagProps) => {
     <div
       className={cn(
         'w-fit rounded-[40px] py-[2px] px-2',
+        props.className,
         props.variant === 'filled' && 'bg-red-400',
         props.variant === 'outlined' && 'border border-red-400 text-red-300'
       )}
