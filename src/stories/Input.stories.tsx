@@ -35,7 +35,7 @@ export const Icon: Story = {
     value: '',
     placeholder: 'Placeholder',
     maxLen: 10,
-    icon: <Icons.headset />,
+    icon: <Icons.headset color='white' fillOpacity={0.5} />,
   },
 };
 
@@ -51,7 +51,7 @@ export const ColoredButton: Story = {
   args: {
     value: 'pfplay',
     placeholder: 'Placeholder',
-    button: <Button Icon={<Icons.chat />} />,
+    button: <Button Icon={<Icons.chat color={'white'} fillOpacity={0.5} />} />,
   },
 };
 
