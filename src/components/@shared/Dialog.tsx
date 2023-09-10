@@ -1,3 +1,4 @@
+'use client';
 import { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo } from 'react';
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import Button, { ButtonProps } from '@/components/@shared/@atoms/Button';

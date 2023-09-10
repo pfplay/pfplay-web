@@ -1,3 +1,4 @@
+'use client';
 import React, { PropsWithChildren, useCallback } from 'react';
 import Dialog, { DialogProps } from '@/components/@shared/Dialog';
 import { delay } from '@/utils/delay';
