@@ -54,10 +54,10 @@ const generatePaths = <T extends Routes>(routes: T): ItemRouteOrLabel<T> => {
     return Object.fromEntries(
       Object.entries(routes).map(([k, v]) => {
         if (k !== 'index' && typeof v === 'object' && !v.route) {
-          return [k, mapRoutes(v, joinPath(parentPath, v.default.route))];
+          return [k, mapRoutes(v, joinPath(parentPath, v.index.route))];
         }
 
-        const routeName = k === 'default' ? parentPath : joinPath(parentPath, v.route);
+        const routeName = k === 'index' ? parentPath : joinPath(parentPath, v.route);
         return [k, routeName];
       })
     );
@@ -65,8 +65,6 @@ const generatePaths = <T extends Routes>(routes: T): ItemRouteOrLabel<T> => {
 
   return mapRoutes(routes, '/');
 };
-
-export const NO_AUTH_ROUTES = generatePaths(noAuthRoutes);
 
 /**
  * ```
@@ -87,3 +85,4 @@ export const NO_AUTH_ROUTES = generatePaths(noAuthRoutes);
  * ```
  */
 export const ROUTES = generatePaths(authRoutes);
+export const NO_AUTH_ROUTES = generatePaths(noAuthRoutes);
