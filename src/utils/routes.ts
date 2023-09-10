@@ -86,3 +86,18 @@ const generatePaths = <T extends Routes>(routes: T): ItemRouteOrLabel<T> => {
  */
 export const ROUTES = generatePaths(authRoutes);
 export const NO_AUTH_ROUTES = generatePaths(noAuthRoutes);
+export const PAGE_TITLES = (<T extends Routes>(routes: T): ItemRouteOrLabel<T> => {
+  function mapRoutes(routes: Routes | ParentRoute | RouteInfo): ItemRouteOrLabel<T> {
+    return Object.fromEntries(
+      Object.entries(routes).map(([k, v]) => {
+        if (k !== 'index' && typeof v === 'object' && !v.title) {
+          return [k, mapRoutes(v)];
+        }
+
+        return [k, v.title as string];
+      })
+    );
+  }
+
+  return mapRoutes(routes);
+})({ ...noAuthRoutes, ...authRoutes });
