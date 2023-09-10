@@ -6,11 +6,18 @@ const meta = {
   title: '@atoms/UserListItem',
   tags: ['autodocs'],
   component: UserListItem,
+  decorators: [
+    (Story) => (
+      <div className='h-[240px] bg-gray-600'>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof UserListItem>;
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof UserListItem>;
 
 const exampleMenuConfig: Array<MenuItem> = [
   { onClickItem: () => console.log('삭제 clicked'), label: '삭제' },

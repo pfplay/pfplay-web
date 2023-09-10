@@ -37,25 +37,31 @@ const DisplayOptionMenuOnHoverListener = ({
       className='relative'
     >
       {children(isHover)}
+
       {!listenerDisabled && (
         <>
           <div
             className={cn(
-              'absolute inset-0 bg-transparent',
-              isHover && 'bg-gradient-to-r from-transparent to-gray-900'
+              'absolute inset-0',
+              'bg-gradient-to-r from-transparent to-gray-900',
+              'opacity-0 transition-[opacity] duration-100',
+              isHover && 'opacity-100'
             )}
           />
 
-          {isHover && (
-            <Menu
-              optionMenuConfig={menuConfig}
-              onMenuIconClick={handleMenuIconClick}
-              onMenuClose={handleMenuClose}
-              menuContainerStyle={cn('absolute top-[5px] right-0', menuPositionStyle)}
-              ref={menuRef}
-              size='md'
-            />
-          )}
+          <Menu
+            optionMenuConfig={menuConfig}
+            onMenuIconClick={handleMenuIconClick}
+            onMenuClose={handleMenuClose}
+            menuContainerStyle={cn([
+              'absolute top-[5px] right-0',
+              'opacity-0 transition-[opacity] duration-100',
+              isHover && 'opacity-100',
+              menuPositionStyle,
+            ])}
+            ref={menuRef}
+            size='md'
+          />
         </>
       )}
     </div>
