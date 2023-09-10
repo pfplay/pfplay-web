@@ -1,7 +1,7 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { routes } from '@/config/routes';
+import { routes } from '@/constants/routes';
 
 interface SessionCheckProps {
   children: React.ReactNode;

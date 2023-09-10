@@ -1,7 +1,7 @@
 'use client';
 import React, { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 import Typography from './Typography';
 
 interface CommonProps {

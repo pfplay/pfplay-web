@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import React, { useState } from 'react';
-import { routes } from '@/config/routes';
+import { routes } from '@/constants/routes';
 import SignInNotifModal from './SignInNotifModal';
 
 const OAuthSignIn = () => {
