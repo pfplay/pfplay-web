@@ -21,7 +21,13 @@ export const Preview: Story = {
 export const Icon: Story = {
   args: {
     children: 'Button',
-    Icon: <Icons.worldglobe />,
+    Icon: <Icons.worldglobe color={'white'} fillOpacity={0.5} />,
+  },
+};
+
+export const IconOnly: Story = {
+  args: {
+    Icon: <Icons.worldglobe color={'white'} fillOpacity={0.5} />,
   },
 };
 
