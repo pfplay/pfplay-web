@@ -2,13 +2,14 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { routes } from '@/constants/routes';
+import { routerHelper } from '@/utils/routerHelper';
+import { ROUTES } from '@/utils/routes';
 
 interface PartyRoomCardProps {
-  value: number; // TODO: set proper type for value when api is connected
+  roomId: number; // TODO: set proper type for value when api is connected
 }
 
-const PartyRoomCard = ({ value }: PartyRoomCardProps) => {
+const PartyRoomCard = ({ roomId }: PartyRoomCardProps) => {
   // What is the usage of this state?
   // const [isHover, setIsHover] = useState(false);
 
@@ -16,14 +17,17 @@ const PartyRoomCard = ({ value }: PartyRoomCardProps) => {
 
   return (
     <li
-      onClick={() => router.push(`${routes.parties.base}/1`)} // TODO: set proper route with id
+      onClick={() =>
+        router.push(
+          routerHelper.replaceDynamic(ROUTES.PARTIES.index, {
+            id: roomId, // TODO: set proper route with id
+          })
+        )
+      }
       /* FIXME: bg 에 쓰인 [#180202]/30 는 디자인 시스템에 없는 hex */
       className='py-6 px-7 rounded border border-gray-800 backdrop-blur-lg bg-[#180202]/30 flex flex-col justify-between h-60 relative cursor-pointer'
     >
-      <h2
-        className='text-gray-50 text-2xl cursor-pointer no-underline hover:underline'
-        onClick={() => router.push(`/party/${value}`)}
-      >
+      <h2 className='text-gray-50 text-2xl cursor-pointer no-underline hover:underline'>
         갓생을 위한 노동요
       </h2>
       <div className='flex flex-col gap-4'>

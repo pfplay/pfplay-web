@@ -2,7 +2,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { routes } from '@/constants/routes';
+import { routerHelper } from '@/utils/routerHelper';
+import { ROUTES } from '@/utils/routes';
 
 const PartiesMainStageCard = () => {
   const router = useRouter();
@@ -14,7 +15,13 @@ const PartiesMainStageCard = () => {
     >
       <h2
         className='text-white font-poppins text-[28px] mb-1.5 cursor-pointer no-underline hover:underline'
-        onClick={() => router.push(`${routes.parties.base}/1`)} // TODO: set proper route for main stage
+        onClick={() =>
+          router.push(
+            routerHelper.replaceDynamic(ROUTES.PARTIES.index, {
+              id: 1, // TODO: set proper route for main stage
+            })
+          )
+        }
       >
         PFPlay Main Stage
       </h2>

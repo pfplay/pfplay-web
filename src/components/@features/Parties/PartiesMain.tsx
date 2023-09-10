@@ -27,8 +27,8 @@ const PartiesMain = () => {
               <Image src='/icons/icn_add.svg' alt='add' width={60} height={60} />
             </div>
           </li>
-          {[1, 2, 3, 4].map((value) => (
-            <PartyRoomCard key={value} value={value} />
+          {[1, 2, 3, 4].map((roomId) => (
+            <PartyRoomCard key={roomId} roomId={roomId} />
           ))}
         </ul>
       </section>
