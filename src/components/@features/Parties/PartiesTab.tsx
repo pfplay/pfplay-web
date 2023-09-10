@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 import { Tab } from '@headlessui/react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 
 const tabList: { src: string; alt: string }[] = [
   { src: '/icons/icn_person_outline.svg', alt: '채팅' },

@@ -2,7 +2,7 @@
 import { forwardRef, Fragment } from 'react';
 import { Menu as _Menu, Transition } from '@headlessui/react';
 import Icons from '@/components/__legacy__/Icons';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 
 export type MenuItemBoxSizeKey = 'lg' | 'md' | 'sm';
 const MenuItemBoxSize: Record<MenuItemBoxSizeKey, string> = {

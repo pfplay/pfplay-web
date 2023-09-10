@@ -8,8 +8,8 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 import Typography from '@/components/@shared/@atoms/Typography';
-import { DomId } from '@/contants/domId';
-import { cn } from '@/lib/utils';
+import { DomId } from '@/constants/domId';
+import { cn } from '@/utils/cn';
 import { repeatAnimationFrame } from '@/utils/repeatAnimationFrame';
 
 interface Position extends Pick<CSSProperties, 'top' | 'left'> {

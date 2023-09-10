@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import React from 'react';
-import { routes } from '@/config/routes';
+import { routes } from '@/constants/routes';
 
 const HomeLoginButton = () => {
   return (

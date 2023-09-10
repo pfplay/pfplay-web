@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import Icons from '@/components/__legacy__/Icons';
 import useClickOutside from '@/hooks/useClickOutside';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 import Typography from './Typography';
 import Menu, { MenuItem } from '../Menu';
 

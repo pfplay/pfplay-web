@@ -1,10 +1,10 @@
 import React from 'react';
 import '@/styles/globals.css';
 import Header from '@/components/__legacy__/Header';
-import { DomId } from '@/contants/domId';
+import { DomId } from '@/constants/domId';
 import SessionProvider from '@/context/SessionProvider';
-import { cn } from '@/lib/utils';
 import { pretendardVariable } from '@/styles/fonts';
+import { cn } from '@/utils/cn';
 import SessionCheck from './sessionCheck';
 
 const RootLayout = ({ children }: React.PropsWithChildren) => {
