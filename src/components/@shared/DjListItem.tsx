@@ -26,7 +26,7 @@ const DjListItem = ({
   return (
     <div
       className={cn(
-        'relative w-fit flexRow justify-start items-center gap-3 py-2 px-4 rounded-[4px]',
+        'relative w-fit flexRow justify-start items-center gap-3 h-12 px-4 rounded-[4px]',
         variant === 'outlineAccent' && 'border border-red-300 rounded-[40px]',
         variant === 'filled' && 'bg-gray-800'
       )}

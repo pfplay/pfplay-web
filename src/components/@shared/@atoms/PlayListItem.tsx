@@ -41,15 +41,16 @@ const PlayListItem = ({ id, title, duration, src, alt }: PlayListItemProps) => {
               height={44}
               className={cn('w-full h-full object-contain select-none', isHover && 'opacity-60')}
             />
-            {isHover && (
-              <>
-                <div
-                  className='absolute inset-0 bg-transparent cursor-pointer z-50'
-                  onClick={(e) => handlePlayBtnClick(e, id)}
-                />
-                <Icons.play className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2' />
-              </>
-            )}
+            <div
+              className={cn([
+                'absolute inset-0 bg-transparent cursor-pointer z-50 flex justify-center items-center',
+                'opacity-from-zero',
+                isHover && 'opacity-100',
+              ])}
+              onClick={(e) => handlePlayBtnClick(e, id)}
+            >
+              <Icons.play />
+            </div>
           </div>
           <div className='flexCol flex-1 min-w-0 select-none'>
             <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>

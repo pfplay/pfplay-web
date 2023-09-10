@@ -44,7 +44,7 @@ const DisplayOptionMenuOnHoverListener = ({
             className={cn(
               'absolute inset-0',
               'bg-gradient-to-r from-transparent to-gray-900',
-              'opacity-0 transition-[opacity] duration-100',
+              'opacity-from-zero',
               isHover && 'opacity-100'
             )}
           />
@@ -55,7 +55,7 @@ const DisplayOptionMenuOnHoverListener = ({
             onMenuClose={handleMenuClose}
             menuContainerStyle={cn([
               'absolute top-[5px] right-0',
-              'opacity-0 transition-[opacity] duration-100',
+              'opacity-from-zero',
               isHover && 'opacity-100',
               menuPositionStyle,
             ])}
