@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProfilePanel from '@/components/@shared/ProfilePanel';
+import DjListItem from '@/components/@shared/DjListItem';
 
 const meta = {
-  title: '@atoms/ProfilePanel',
+  title: '@atoms/DjListItem',
   tags: ['autodocs'],
-  component: ProfilePanel,
-} satisfies Meta<typeof ProfilePanel>;
+  component: DjListItem,
+} satisfies Meta<typeof DjListItem>;
 
 export default meta;
 
@@ -17,7 +17,14 @@ export const Preview: Story = {
   },
 };
 
-export const ProfilePanelAccentOutline: Story = {
+export const DjListItemWithOrder: Story = {
+  args: {
+    order: '1',
+    userConfig: { username: 'nickname', src: 'https://source.unsplash.com/user/c_v_r' },
+  },
+};
+
+export const DjListItemAccentOutline: Story = {
   args: {
     order: '0',
     userConfig: { username: 'nickname', src: 'https://source.unsplash.com/user/c_v_r' },
@@ -25,21 +32,19 @@ export const ProfilePanelAccentOutline: Story = {
   },
 };
 
-export const ProfilePanelWithTag: Story = {
+export const DjListItemWithBackground: Story = {
   args: {
     order: '0',
     userConfig: { username: 'nickname', src: 'https://source.unsplash.com/user/c_v_r' },
-    suffixType: 'tag',
-    variant: 'outlineAccent',
+    variant: 'filled',
   },
 };
 
-export const ProfilePanelWithButton: Story = {
+export const DjListItemWithTag: Story = {
   args: {
     order: '0',
     userConfig: { username: 'nickname', src: 'https://source.unsplash.com/user/c_v_r' },
-    suffixType: 'button',
-    suffixValue: 'Button',
     variant: 'outlineAccent',
+    suffixTagValue: 'Tag',
   },
 };
