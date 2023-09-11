@@ -5,6 +5,13 @@ const meta = {
   title: '@atoms/PlayListItem',
   component: PlayListItem,
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div className='h-[240px] bg-gray-600'>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof PlayListItem>;
 
 export default meta;
