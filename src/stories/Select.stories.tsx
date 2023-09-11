@@ -1,11 +1,14 @@
 import type { Meta } from '@storybook/react';
 import Select, { SelectListItem } from '@/components/Select';
-import Chip from '@/components/ui/Chip';
+import Typography from '@/components/ui/Typography';
 
 const meta = {
   title: 'ui/Select',
   tags: ['autodocs'],
   component: Select,
+  decorators: [
+    (Story) => <div className='w-full h-72 flexCol item-center gap-4 p-4 bg-black'>{Story()}</div>,
+  ],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -20,45 +23,16 @@ const selectListConfig: Array<SelectListItem> = [
 ];
 
 export const SelectDefault = () => {
-  return (
-    <div className='w-full h-72 flexRow justify-center bg-black'>
-      <Select selectListConfig={selectListConfig} />
-    </div>
-  );
-};
-
-export const SelectWithPrefixIcon = () => {
-  return (
-    <div className='w-full h-72 flexRow justify-center bg-black'>
-      <Select
-        selectListConfig={selectListConfig}
-        PrefixIcon={<Chip value='현재' variant='outlined' />}
-      />
-    </div>
-  );
+  return <Select selectListConfig={selectListConfig} />;
 };
 
 export const SelectWithInitialValue = () => {
   return (
-    <div className='w-full h-72 flexRow justify-center bg-black'>
-      <Select
-        selectListConfig={selectListConfig}
-        PrefixIcon={<Chip value='현재' variant='outlined' />}
-        initialValue={selectListConfig[2]}
-      />
-    </div>
-  );
-};
-
-export const SelectWithCustomWidth = () => {
-  return (
-    <div className='w-full h-72 flexRow justify-center bg-black'>
-      <Select
-        width='w-48'
-        selectListConfig={selectListConfig}
-        PrefixIcon={<Chip value='현재' variant='outlined' />}
-        initialValue={selectListConfig[2]}
-      />
-    </div>
+    <>
+      <Typography type='title2' className='text-grey-50'>
+        Select with initial value
+      </Typography>
+      <Select selectListConfig={selectListConfig} initialValue={selectListConfig[2]} />
+    </>
   );
 };
