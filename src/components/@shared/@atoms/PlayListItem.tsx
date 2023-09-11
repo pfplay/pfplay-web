@@ -3,9 +3,9 @@ import Image from 'next/image';
 import React from 'react';
 import DisplayOptionMenuOnHoverListener from '@/components/@shared/DisplayOptionMenuOnHoverListener';
 import Icons from '@/components/__legacy__/Icons';
+import { cn } from '@/utils/cn';
 import Typography from './Typography';
 import { MenuItem } from '../Menu';
-import { cn } from '@/lib/utils';
 
 interface PlayListItemProps {
   id: number;

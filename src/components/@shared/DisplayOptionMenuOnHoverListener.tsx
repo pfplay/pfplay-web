@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Menu, { MenuItem } from '@/components/@shared/Menu';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 import useClickOutside from '../../hooks/useClickOutside';
 
 interface DisplayOptionMenuOnHoverListenerProps {
