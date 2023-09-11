@@ -34,6 +34,10 @@ const DisplayOptionMenuOnHoverListener = ({
     <div
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => !isMenuOpen && setIsHover(false)}
+      onClick={(e) => {
+        // keep the hover state when click the container, unless other CTA is triggered
+        e.stopPropagation();
+      }}
       className='relative'
     >
       {children(isHover)}
