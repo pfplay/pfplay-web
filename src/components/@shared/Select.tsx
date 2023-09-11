@@ -1,9 +1,9 @@
 'use client';
 import { Fragment, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-import { cn } from '@/lib/utils';
-import Icons from './Icons';
-import Typography from './ui/Typography';
+import { cn } from '@/utils/cn';
+import Typography from './@atoms/Typography';
+import Icons from '../__legacy__/Icons';
 
 export type SelectListItem = {
   label: string;
@@ -29,11 +29,11 @@ export const Select = ({ selectListConfig, initialValue, className }: SelectProp
         <div className={cn('relative w-full', className?.container)}>
           <Listbox.Button
             className={cn([
-              'relative w-full flexRow justify-between items-center rounded bg-grey-800 py-3 px-4 text-grey-50 border-[1px] border-grey-500 cursor-pointer focus:outline-none',
+              'relative w-full h-12 flexRow justify-between items-center rounded bg-gray-800 px-4 text-gray-50 border-[1px] border-gray-500 cursor-pointer focus:outline-none',
               className?.selectButton,
             ])}
           >
-            <Typography type='detail1' overflow='ellipsis' className={cn('w-5/6 text-left')}>
+            <Typography type='detail1' overflow='ellipsis' className='w-5/6 text-left'>
               {selected.label}
             </Typography>
             <span>{open ? <Icons.arrowUp /> : <Icons.arrowDown />}</span>
@@ -46,7 +46,7 @@ export const Select = ({ selectListConfig, initialValue, className }: SelectProp
           >
             <Listbox.Options
               className={cn([
-                'absolute max-h-[264px] w-full mt-2 py-3 overflow-auto rounded bg-grey-800 border-[1px] border-grey-500 focus:outline-none',
+                'absolute max-h-[264px] w-full mt-2 py-3 overflow-auto rounded bg-gray-800 border-[1px] border-gray-500 focus:outline-none',
                 className?.optionPanel,
               ])}
             >
@@ -54,11 +54,11 @@ export const Select = ({ selectListConfig, initialValue, className }: SelectProp
                 <Listbox.Option
                   key={config.value}
                   className={({ active }) =>
-                    cn('relative cursor-pointer px-4 py-3', active && 'bg-grey-700')
+                    cn('relative cursor-pointer px-4 py-3', active && 'bg-gray-700')
                   }
                   value={config}
                 >
-                  <Typography type='detail1' overflow='ellipsis' className='text-grey-50'>
+                  <Typography type='detail1' overflow='ellipsis' className='text-gray-50'>
                     {config.label}
                   </Typography>
                 </Listbox.Option>

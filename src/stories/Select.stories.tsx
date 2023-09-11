@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
-import Select, { SelectListItem } from '@/components/Select';
-import Typography from '@/components/ui/Typography';
+import Typography from '@/components/@shared/@atoms/Typography';
+import Select, { SelectListItem } from '@/components/@shared/Select';
 
 const meta = {
   title: 'ui/Select',
@@ -29,7 +29,7 @@ export const SelectDefault = () => {
 export const SelectWithInitialValue = () => {
   return (
     <>
-      <Typography type='title2' className='text-grey-50'>
+      <Typography type='title2' className='text-white'>
         Select with initial value
       </Typography>
       <Select selectListConfig={selectListConfig} initialValue={selectListConfig[2]} />
