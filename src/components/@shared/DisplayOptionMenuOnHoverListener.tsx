@@ -35,6 +35,11 @@ const DisplayOptionMenuOnHoverListener = ({
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => !isMenuOpen && setIsHover(false)}
       onClick={(e) => {
+        // when menu is open and click the container, set the hover state to false
+        if (isMenuOpen) {
+          setIsHover(false);
+          return;
+        }
         // keep the hover state when click the container, unless other CTA is triggered
         e.stopPropagation();
       }}
@@ -47,7 +52,7 @@ const DisplayOptionMenuOnHoverListener = ({
           <div
             className={cn(
               'absolute inset-0',
-              'bg-gradient-to-r from-transparent to-gray-900',
+              'bg-gradient-to-r from-transparent to-black',
               'opacity-from-zero',
               isHover && 'opacity-100'
             )}

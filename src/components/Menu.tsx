@@ -1,8 +1,8 @@
 'use client';
 import { Fragment } from 'react';
 import { Menu as _Menu, Transition } from '@headlessui/react';
-import { cn } from '@/lib/utils';
-import Icons from './Icons';
+import { cn } from '@/utils/cn';
+import Icons from './__legacy__/Icons';
 
 export type MenuItemBoxSizeKey = 'lg' | 'md' | 'sm';
 const MenuItemBoxSize: Record<MenuItemBoxSizeKey, string> = {
