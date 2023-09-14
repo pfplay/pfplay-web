@@ -6,6 +6,16 @@ const meta = {
   title: 'ui/PlayListItem',
   component: PlayListItem,
   tags: ['autodocs'],
+  args: {
+    playListItemConfig: {
+      id: 1,
+      title: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
+      duration: '00:00',
+      src: 'https://source.unsplash.com/user/c_v_r',
+      alt: 'PlayListItem',
+    },
+    menuItemList: exampleMenuConfig,
+  },
   decorators: [
     (Story) => (
       <div className='h-[240px] bg-gray-600'>
@@ -19,31 +29,10 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Preview: Story = {
-  args: {
-    playListItemConfig: {
-      id: 1,
-      title: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
-      duration: '00:00',
-      src: 'https://source.unsplash.com/user/c_v_r',
-      alt: 'PlayListItem',
-    },
-    menuItemList: exampleMenuConfig,
-  },
-};
+export const Preview: Story = {};
 
 export const Ellipsis: Story = {
   name: 'Ellipsis (Adjust by Parent width)',
-  args: {
-    playListItemConfig: {
-      id: 1,
-      title: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
-      duration: '00:00',
-      src: 'https://source.unsplash.com/user/c_v_r',
-      alt: 'PlayListItem',
-    },
-    menuItemList: exampleMenuConfig,
-  },
   decorators: [
     (Story) => {
       return <div className='max-w-[332px]'>{Story()}</div>;
