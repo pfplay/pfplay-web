@@ -7,7 +7,8 @@ import Typography from './@atoms/Typography';
 import DisplayOptionMenuOnHoverListener from './DisplayOptionMenuOnHoverListener';
 import { MenuItem } from './Menu';
 
-type UserListItemUserConfig = {
+export type UserListItemType = {
+  id: number;
   username: string;
   src: string;
   alt?: string;
@@ -21,19 +22,15 @@ type UserListItemWithTag = {
 type UserListItemWithButton = {
   suffixType: 'button';
   suffixValue: string;
-  onButtonClick: () => void; // 사용처 정해지면 param 추가/제거 및 타입 수정
+  onButtonClick: (id?: number) => void; // 사용처 정해지면 param 추가/제거 및 타입 수정
 };
 
 type UserListItemProps = {
-  userConfig: UserListItemUserConfig;
-  menuItemList: Array<MenuItem>;
-} & Partial<UserListItemWithTag | UserListItemWithButton>;
+  userListItemConfig: UserListItemType;
+  menuItemList: MenuItem[];
+} & (UserListItemWithTag | UserListItemWithButton);
 
-const UserListItem = ({
-  userConfig: { src, username, alt },
-  menuItemList,
-  ...suffixProps
-}: UserListItemProps) => {
+const UserListItem = ({ userListItemConfig, menuItemList, ...suffixProps }: UserListItemProps) => {
   return (
     <DisplayOptionMenuOnHoverListener
       menuConfig={menuItemList}
@@ -48,26 +45,28 @@ const UserListItem = ({
         >
           <div className={cn('flexRow justify-center items-center gap-2')}>
             <Image
-              src={src ?? '/image/monkey.png'}
-              alt={alt ?? username}
+              src={userListItemConfig.src ?? '/image/monkey.png'}
+              alt={userListItemConfig?.alt ?? userListItemConfig.username}
               width={32}
               height={32}
               className='w-8 h-8 rounded-full'
             />
             <Typography type='detail1' className='text-white'>
-              {username}
+              {userListItemConfig.username}
             </Typography>
           </div>
 
-          {suffixProps?.suffixType === 'tag' && <Tag value='Tag' variant='filled' />}
-          {suffixProps?.suffixType === 'button' && (
+          {suffixProps.suffixType === 'tag' && (
+            <Tag value={suffixProps.suffixValue} variant='filled' />
+          )}
+          {suffixProps.suffixType === 'button' && (
             <Button
               variant='outline'
               color='secondary'
-              onClick={suffixProps?.onButtonClick}
+              onClick={() => suffixProps.onButtonClick(userListItemConfig.id)}
               size='sm'
             >
-              {suffixProps?.suffixValue}
+              {suffixProps.suffixValue}
             </Button>
           )}
         </div>

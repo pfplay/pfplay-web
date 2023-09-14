@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import DjListItem from '@/components/@shared/DjListItem';
 
 const meta = {
-  title: '@atoms/DjListItem',
+  title: 'ui/DjListItem',
   tags: ['autodocs'],
   component: DjListItem,
 } satisfies Meta<typeof DjListItem>;
