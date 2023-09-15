@@ -15,9 +15,8 @@ const noAuthRoutes = {
   HOME: {
     index: { route: '/', title: 'Home' },
   },
-  AUTH: {
-    index: { route: 'auth', title: 'Auth' },
-    signIn: { route: 'sign-in', title: 'Sign In' },
+  SIGN_IN: {
+    index: { route: 'sign-in', title: 'Auth' },
   },
   ERROR: {
     index: { route: 'error', title: 'Error' }, // TODO: error.ts 페이지 추가
