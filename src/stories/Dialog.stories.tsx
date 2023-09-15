@@ -4,7 +4,7 @@ import Button from '@/components/@shared/@atoms/Button';
 import Typography from '@/components/@shared/@atoms/Typography';
 import Dialog from '@/components/@shared/Dialog';
 import { useDialog } from '@/hooks/useDialog';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 import { delay } from '@/utils/delay';
 
 const meta = {

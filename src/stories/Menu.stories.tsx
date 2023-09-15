@@ -1,21 +1,15 @@
 import type { Meta } from '@storybook/react';
-import Menu, { MenuItem } from '@/components/@shared/Menu';
+import Menu from '@/components/@shared/Menu';
 import Icons from '@/components/__legacy__/Icons';
+import { exampleMenuConfig } from '@/constants/stories/exampleMenuConfig';
 
 const meta = {
-  title: 'Menu',
+  title: 'ui/Menu',
   tags: ['autodocs'],
   component: Menu,
 } satisfies Meta<typeof Menu>;
 
 export default meta;
-
-const exampleMenuConfig: Array<MenuItem> = [
-  { onClickItem: () => console.log('삭제 clicked'), label: '삭제' },
-  { onClickItem: () => console.log('꿀 clicked'), label: '꿀' },
-  { onClickItem: () => console.log('킥 clicked'), label: '킥' },
-  { onClickItem: () => console.log('밴 clicked'), label: '밴' },
-];
 
 export const MenuLarge = () => {
   return (

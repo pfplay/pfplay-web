@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { avatarBodyMockArr } from '@/config/profile-body-mock';
-import { cn } from '@/lib/utils';
+import { avatarBodyMockArr } from '@/constants/__mock__/profile-body-mock';
+import { cn } from '@/utils/cn';
 
 export type AvatarBodyImg = {
   id: number;

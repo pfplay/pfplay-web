@@ -3,8 +3,8 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import GoBackButton from '@/components/__legacy__/GoBackButton';
-import { avatarBodyMockArr } from '@/config/profile-body-mock';
-import { cn } from '@/lib/utils';
+import { avatarBodyMockArr } from '@/constants/__mock__/profile-body-mock';
+import { cn } from '@/utils/cn';
 import AvatarBody, { AvatarBodyImg } from './AvatarBody';
 import AvatarFace from './AvatarFace';
 

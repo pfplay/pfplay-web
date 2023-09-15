@@ -28,6 +28,10 @@
   .footerText {
     @apply font-semibold underline underline-offset-4 text-sm cursor-pointer;
   }
+
+  .opacity-from-zero {
+    @apply opacity-0 transition-[opacity] duration-100;
+  }
 }
 
 @layer utilities {

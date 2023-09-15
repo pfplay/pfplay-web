@@ -1,6 +1,6 @@
 'use client';
 import React, { forwardRef, ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 
 export type TypographyType =
   | 'title1'
@@ -12,7 +12,7 @@ export type TypographyType =
   | 'detail2'
   | 'caption1'
   | 'caption2';
-type TypographyOverflow = 'ellipsis' | 'break-words' | 'break-all' | 'break-normal';
+type TypographyOverflow = 'ellipsis' | 'break-words' | 'break-all' | 'break-normal' | 'break-keep';
 
 export interface TypographyProps extends React.ComponentProps<'p'> {
   children?: ReactNode;
@@ -80,10 +80,11 @@ const typoStyleDict: Record<TypographyType, string> = {
   caption2: 'text-[12px] font-normal leading-[1.5]',
 };
 const overflowDict: Record<TypographyOverflow, string> = {
-  ellipsis: 'ellipsis',
+  ellipsis: 'truncate',
   'break-words': 'break-words',
   'break-all': 'break-all',
   'break-normal': 'break-normal',
+  'break-keep': 'break-keep',
 };
 
 export default Typography;

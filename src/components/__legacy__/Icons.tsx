@@ -2,6 +2,21 @@ import React from 'react';
 
 // TODO: SVG ICON 준비되면 대체
 const Icons = {
+  play: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      width='20'
+      height='20'
+      viewBox='0 0 20 20'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <path
+        d='M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM8.48 14.14C8.28223 14.2883 8 14.1472 8 13.9V6.1C8 5.85279 8.28223 5.71167 8.48 5.86L13.68 9.76C13.84 9.88 13.84 10.12 13.68 10.24L8.48 14.14Z'
+        fill='white'
+      />
+    </svg>
+  ),
   arrowLeft: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
     <svg
       xmlns='http://www.w3.org/2000/svg'

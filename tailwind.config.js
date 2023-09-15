@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
@@ -56,5 +55,11 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwind-scrollbar-hide')],
+  plugins: [
+    require('tailwind-scrollbar-hide'),
+
+    function ({ addVariant }) {
+      addVariant('child-form-labels', '& label [data-custom-role="form-item-title"]');
+    },
+  ],
 };

@@ -3,7 +3,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
 import Loading from '@/components/@shared/@atoms/Loading';
 import Typography, { TypographyType } from '@/components/@shared/@atoms/Typography';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 
 type ButtonColor = 'primary' | 'secondary';
 type ButtonVariant = 'fill' | 'outline';

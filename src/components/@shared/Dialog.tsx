@@ -3,7 +3,7 @@ import { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo } fro
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import Button, { ButtonProps } from '@/components/@shared/@atoms/Button';
 import Typography, { TypographyProps } from '@/components/@shared/@atoms/Typography';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 import { wrapByTag } from '@/utils/wrapByTag';
 
 interface DialogComposition {
