@@ -6,7 +6,7 @@ import CustomTab from '@/components/@shared/@atoms/Tab';
 import Icons from '@/components/__legacy__/Icons';
 
 const meta = {
-  title: '@atoms/CustomTab',
+  title: 'ui/CustomTab',
   tags: ['autodocs'],
   component: CustomTab,
 } satisfies Meta<typeof CustomTab>;
