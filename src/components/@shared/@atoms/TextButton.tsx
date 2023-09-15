@@ -47,7 +47,7 @@ const TextButton = forwardRef<HTMLButtonElement, TextButtonProps>(
           !interactable && '!cursor-not-allowed',
           disabled && '!text-gray-700',
 
-          underline && 'underline',
+          underline && 'underline underline-offset-2',
 
           className
         )}
