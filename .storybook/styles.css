@@ -1,6 +1,8 @@
 @import '../src/styles/fonts/pretendard/pretendardvariable.css';
 
 body {
+  color: white; /* FIXME: 임시 기본 컬러 */
+
   /* 실 코드에선 css 가 아닌 next-font 의 localFont 사용 */
   font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
     Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',

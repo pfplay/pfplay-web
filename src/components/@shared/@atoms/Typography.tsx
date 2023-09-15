@@ -14,7 +14,7 @@ export type TypographyType =
   | 'caption2';
 type TypographyOverflow = 'ellipsis' | 'break-words' | 'break-all' | 'break-normal' | 'break-keep';
 
-interface TypographyProps extends React.ComponentProps<'p'> {
+export interface TypographyProps extends React.ComponentProps<'p'> {
   children?: ReactNode;
   type?: TypographyType;
   overflow?: TypographyOverflow;
