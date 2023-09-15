@@ -50,7 +50,7 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
         data-custom-role='form-item-title'
         overflow='break-keep'
         className={cn([
-          'relative md:text-right',
+          'relative text-start md:text-right',
           required && "after:ml-[0.2em] after:text-red-300 after:content-['*']",
           classNames?.title,
         ])}
