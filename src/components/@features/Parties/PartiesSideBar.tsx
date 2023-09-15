@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import Icons from '@/components/__legacy__/Icons';
-import { routes } from '@/config/routes';
+import { routes } from '@/constants/routes';
 import MyProfileModal from './MyProfileModal';
 
 const PartiesSideBar = () => {

@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 import Icons from './Icons';
 interface GoBackButtonProps extends React.ComponentProps<'button'> {
   text: string;
