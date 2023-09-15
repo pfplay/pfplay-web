@@ -99,11 +99,11 @@ const sizeDict: Record<ButtonSize, string> = {
   xl: 'px-[16px] h-[56px]',
 };
 const iconSizeDict: Record<ButtonSize, string> = {
-  xs: '[&>svg]:w-[24px] [&>svg]:h-[24px]',
-  sm: '[&>svg]:w-[24px] [&>svg]:h-[24px]',
+  xs: '[&>svg]:w-[12px] [&>svg]:h-[12px]',
+  sm: '[&>svg]:w-[14px] [&>svg]:h-[14px]',
   md: '[&>svg]:w-[16px] [&>svg]:h-[16px]',
-  lg: '[&>svg]:w-[14px] [&>svg]:h-[14px]',
-  xl: '[&>svg]:w-[14px] [&>svg]:h-[14px]',
+  lg: '[&>svg]:w-[24px] [&>svg]:h-[24px]',
+  xl: '[&>svg]:w-[32px] [&>svg]:h-[32px]',
 };
 type ButtonState = 'default' | 'hover' | 'active';
 const colorsDict: Record<ButtonColor, Record<ButtonVariant, Record<ButtonState, string>>> = {
