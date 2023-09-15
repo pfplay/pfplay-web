@@ -5,7 +5,7 @@ import { z } from 'zod';
 import Button from '@/components/@shared/@atoms/Button';
 import Typography from '@/components/@shared/@atoms/Typography';
 import FormItem, { FormItemProps } from '@/components/@shared/FormItem';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 
 const meta = {
   title: 'FormItem',

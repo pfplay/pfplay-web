@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren, ReactNode } from 'react';
 import clsx from 'clsx';
 import Typography from '@/components/@shared/@atoms/Typography';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 
 export interface FormItemProps {
   label: ReactNode;
