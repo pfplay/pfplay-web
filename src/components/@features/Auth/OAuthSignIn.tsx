@@ -50,16 +50,20 @@ const OAuthSignIn = () => {
             />
 
             <Button
+              size='xl'
+              typo='detail1'
               color='secondary'
               variant='outline'
               Icon={<Icons.google />}
               onClick={signInGoogle}
-              className='mb-[40px]'
+              className='mb-[40px] w-[320px]'
             >
               Sign in With Google
             </Button>
 
-            <TextButton onClick={handleOpenModal}>먼저 둘러볼래요</TextButton>
+            <TextButton onClick={handleOpenModal} underline>
+              먼저 둘러볼래요
+            </TextButton>
           </div>
         </div>
       </div>

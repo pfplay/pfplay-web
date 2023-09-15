@@ -15,6 +15,7 @@ export interface ButtonProps extends Omit<ButtonHTMLProps, 'color' | 'children'>
   color?: ButtonColor;
   variant?: ButtonVariant;
   size?: ButtonSize;
+  typo?: TypographyType;
   Icon?: ReactNode;
   iconPlacement?: 'left' | 'right';
   loading?: boolean;
@@ -28,6 +29,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       color = 'primary',
       variant = 'fill',
       size = 'md',
+      typo = typoTypeDict[size],
       Icon,
       iconPlacement = 'left',
       loading,
@@ -73,7 +75,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {loading ? <Loading /> : iconPlacement === 'left' && Icon}
 
         {children && (
-          <Typography type={typoTypeDict[size]} overflow='break-normal'>
+          <Typography type={typo} overflow='break-normal'>
             {children}
           </Typography>
         )}
