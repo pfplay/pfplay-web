@@ -12,9 +12,9 @@ export type TypographyType =
   | 'detail2'
   | 'caption1'
   | 'caption2';
-type TypographyOverflow = 'ellipsis' | 'break-words' | 'break-all' | 'break-normal';
+type TypographyOverflow = 'ellipsis' | 'break-words' | 'break-all' | 'break-normal' | 'break-keep';
 
-interface TypographyProps extends React.ComponentProps<'p'> {
+export interface TypographyProps extends React.ComponentProps<'p'> {
   children?: ReactNode;
   type?: TypographyType;
   overflow?: TypographyOverflow;
@@ -84,6 +84,7 @@ const overflowDict: Record<TypographyOverflow, string> = {
   'break-words': 'break-words',
   'break-all': 'break-all',
   'break-normal': 'break-normal',
+  'break-keep': 'break-keep',
 };
 
 export default Typography;

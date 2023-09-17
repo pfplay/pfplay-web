@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import React, { useState } from 'react';
-import { routes } from '@/constants/routes';
+import { NO_AUTH_ROUTES, ROUTES } from '@/utils/routes';
 import SignInNotifModal from './SignInNotifModal';
 
 const OAuthSignIn = () => {
@@ -20,10 +20,12 @@ const OAuthSignIn = () => {
   };
 
   const signInAnnonynmous = () => {
-    router.push(`${routes.parties.base}`);
+    router.push(ROUTES.PARTIES.index);
   };
   const signInGoogle = () => {
-    signIn('google', { callbackUrl: routes.home });
+    signIn('google', {
+      callbackUrl: NO_AUTH_ROUTES.HOME.index,
+    });
   };
 
   return (
@@ -32,7 +34,7 @@ const OAuthSignIn = () => {
         <div
           className='flexCol items-center w-[640px] backdrop-blur-lg relative border border-gray-800 bg-[#180202]/50' /* FIXME: 180202 는 디자인 시스템에 없는 hex */
         >
-          <Link href={routes.home} className='absolute right-10 top-10'>
+          <Link href={NO_AUTH_ROUTES.HOME.index} className='absolute right-10 top-10'>
             <Image src='/icons/icn_close.svg' alt='close' width={20} height={20} />
           </Link>
           <div className='w-full py-[70px] flexColCenter'>

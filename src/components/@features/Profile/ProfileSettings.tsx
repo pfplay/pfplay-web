@@ -8,6 +8,7 @@ import GoBackButton from '@/components/__legacy__/GoBackButton';
 import InputErrorMessage from '@/components/__legacy__/InputErrorMessage';
 import { useProfileStore } from '@/store/profile';
 import { cn } from '@/utils/cn';
+import { ROUTES } from '@/utils/routes';
 
 const profileFormSchema = z.object({
   nickName: z
@@ -46,8 +47,7 @@ const ProfileSettings = () => {
 
   const handleFormSubmit: SubmitHandler<ProfileFormValues> = ({ nickName, introduction }) => {
     setProfile({ nickName, introduction });
-    // TODO: Route config 설정 후 avatar body 설정 route로 수정
-    router.push('/avatar/edit');
+    router.push(ROUTES.AVATAR.settings);
   };
 
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
