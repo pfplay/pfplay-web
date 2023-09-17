@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import PlayListItem from '@/components/@shared/@atoms/PlayListItem';
-import { exampleMenuConfig } from '@/constants/stories/exampleMenuConfig';
+import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 
 const meta = {
   title: 'ui/PlayListItem',
@@ -14,7 +14,7 @@ const meta = {
       src: 'https://source.unsplash.com/user/c_v_r',
       alt: 'PlayListItem',
     },
-    menuItemList: exampleMenuConfig,
+    menuItemList: mockMenuConfig,
   },
   decorators: [
     (Story) => (

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import GoBackButton from '@/components/__legacy__/GoBackButton';
-import { avatarBodyMockArr } from '@/constants/__mock__/profile-body-mock';
+import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
 import { cn } from '@/utils/cn';
 import AvatarBody, { AvatarBodyImg } from './AvatarBody';
 import AvatarFace from './AvatarFace';
@@ -14,7 +14,7 @@ const avatarSettingTabConfig: Array<{ name: 'body' | 'face'; index: number }> = 
 ];
 
 const AvatarSettings = () => {
-  const [selectedBody, setSelectedBody] = useState<AvatarBodyImg>(avatarBodyMockArr[0]);
+  const [selectedBody, setSelectedBody] = useState<AvatarBodyImg>(mockAvatarBodyList[0]);
 
   return (
     <section className='max-w-[1680px] bg-gray-900  mx-auto pt-[46px] pb-12 px-[60px] flexCol gap-9'>

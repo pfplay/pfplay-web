@@ -1,7 +1,7 @@
 import type { Meta } from '@storybook/react';
 import Menu from '@/components/@shared/Menu';
 import Icons from '@/components/__legacy__/Icons';
-import { exampleMenuConfig } from '@/constants/stories/exampleMenuConfig';
+import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 
 const meta = {
   title: 'ui/Menu',
@@ -14,7 +14,7 @@ export default meta;
 export const MenuLarge = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <Menu optionMenuConfig={exampleMenuConfig} size='lg' />
+      <Menu optionMenuConfig={mockMenuConfig} size='lg' />
     </div>
   );
 };
@@ -22,7 +22,7 @@ export const MenuLarge = () => {
 export const MenuMedium = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <Menu optionMenuConfig={exampleMenuConfig} size='md' />
+      <Menu optionMenuConfig={mockMenuConfig} size='md' />
     </div>
   );
 };
@@ -30,7 +30,7 @@ export const MenuMedium = () => {
 export const MenuSmall = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <Menu optionMenuConfig={exampleMenuConfig} size='sm' />
+      <Menu optionMenuConfig={mockMenuConfig} size='sm' />
     </div>
   );
 };
@@ -39,7 +39,7 @@ export const MenuWithHeaderIcon = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
       <Menu
-        optionMenuConfig={exampleMenuConfig}
+        optionMenuConfig={mockMenuConfig}
         HeaderIcon={<Icons.arrowLeft width={24} height={24} stroke='#fff' />}
         size='sm'
       />
@@ -51,7 +51,7 @@ export const OptionMenuItemWithPrefixIcon = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
       <Menu
-        optionMenuConfig={exampleMenuConfig}
+        optionMenuConfig={mockMenuConfig}
         MenuItemPrefixIcon={<Icons.arrowDown stroke='#fff' />}
       />
     </div>
