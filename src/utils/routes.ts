@@ -34,6 +34,7 @@ const authRoutes = {
     settings: { route: 'settings', title: 'Avatar Settings' },
   },
   PARTIES: {
+    main: { route: 'parties/', title: 'Parties' },
     index: { route: 'parties/[id]', title: 'Parties' },
   },
 } as const;
