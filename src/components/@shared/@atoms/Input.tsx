@@ -1,42 +1,30 @@
 'use client';
-import { ComponentProps, useEffect, useState, ReactNode, FC } from 'react';
+import { ComponentProps, ReactNode, FC, ChangeEventHandler } from 'react';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 
-export interface InputProps extends ComponentProps<'input'> {
+export interface InputProps
+  extends Omit<ComponentProps<'input'>, 'value' | 'placeholder' | 'onChange' | 'maxLength'> {
   value: string;
+  onChange: (v: string) => void;
   placeholder: string;
-  max?: number;
+  maxLength?: number;
   Icon?: ReactNode;
   Button?: ReactNode;
-  error?: boolean;
 }
 
 const Input: FC<InputProps> = ({
   value,
+  onChange,
   placeholder,
-  max,
+  maxLength,
   Icon,
   Button,
-  error = false,
   ...rest
 }) => {
-  const [currentLen, setCurrentLen] = useState(0);
-  const [isFilled, setIsFilled] = useState(false);
-
-  useEffect(() => {
-    if (currentLen !== value.length) {
-      setCurrentLen(value.length);
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (currentLen !== 0) {
-      return setIsFilled(true);
-    }
-
-    return setIsFilled(false);
-  }, [currentLen]);
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    onChange(e.target.value);
+  };
 
   return (
     <div className='h-[48px] flex items-center bg-gray-700 rounded-[4px] px-[12px] [&>svg]:w-[24px] [&>svg]:h-[24px]'>
@@ -44,18 +32,22 @@ const Input: FC<InputProps> = ({
 
       <input
         className={cn(
-          'flex-1 bg-transparent placeholder-gray-400 text-gray-50 caret-red-300 focus:outline-none'
+          'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none'
         )}
         placeholder={placeholder}
         value={value}
-        max={max}
+        onChange={handleChange}
         {...rest}
       />
 
-      {max && (
-        <Typography className={cn('text-gray-400 ml-[12px]', isFilled && 'text-gray-50')}>
-          <strong className={cn('appearance-none', error && 'text-red-300')}>{currentLen}</strong>/
-          {max}
+      {Number.isInteger(maxLength) && (
+        <Typography className={cn('text-gray-400 ml-[12px]', !!value.length && 'text-gray-50')}>
+          <strong
+            className={cn('font-normal', maxLength && value.length > maxLength && 'text-red-300')}
+          >
+            {value.length}
+          </strong>
+          /{maxLength}
         </Typography>
       )}
 

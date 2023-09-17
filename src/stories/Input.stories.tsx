@@ -1,6 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+import { Meta, StoryFn } from '@storybook/react';
 import Button from '@/components/@shared/@atoms/Button';
-import Input from '@/components/@shared/@atoms/Input';
+import Input, { InputProps } from '@/components/@shared/@atoms/Input';
 import Icons from '@/components/__legacy__/Icons';
 
 const meta: Meta<typeof Input> = {
@@ -11,58 +12,39 @@ const meta: Meta<typeof Input> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Input>;
+const Template: StoryFn<Omit<InputProps, 'value' | 'onChange' | 'placeholder'>> = (args) => {
+  const [value, setValue] = useState<string>('');
 
-export const Preview: Story = {
-  args: {
-    value: '',
-    placeholder: 'Placeholder',
-    max: 10,
-  },
+  const onChange = (inputValue: string) => {
+    setValue(inputValue);
+  };
+
+  return <Input {...args} placeholder='Placeholder' value={value} onChange={onChange} />;
 };
 
-export const Error: Story = {
-  args: {
-    value: 'error',
-    placeholder: 'Placeholder',
-    max: 10,
-    error: true,
-  },
+export const Preview = Template.bind({});
+Preview.args = {
+  maxLength: 10,
 };
 
-export const Icon: Story = {
-  args: {
-    value: '',
-    placeholder: 'Placeholder',
-    max: 10,
-    Icon: <Icons.headset color='white' fillOpacity={0.5} />,
-  },
+export const Icon = Template.bind({});
+Icon.args = {
+  maxLength: 10,
+  Icon: <Icons.headset color='white' />,
 };
 
-export const DisabledColoredButton: Story = {
-  args: {
-    value: '',
-    placeholder: 'Placeholder',
-    Button: <Button Icon={<Icons.chat />} disabled={true} />,
-  },
+export const Button_ = Template.bind({});
+Button_.args = {
+  Button: <Button Icon={<Icons.chat color={'white'} />} />,
 };
 
-export const ColoredButton: Story = {
-  args: {
-    value: 'pfplay',
-    placeholder: 'Placeholder',
-    Button: <Button Icon={<Icons.chat color={'white'} fillOpacity={0.5} />} />,
-  },
-};
-
-export const OutlinedButton: Story = {
-  args: {
-    value: 'pfplay',
-    placeholder: 'Placeholder',
-    Button: (
-      <Button color={'secondary'} variant={'outline'}>
-        Button
-      </Button>
-    ),
-  },
+export const Fully = Template.bind({});
+Fully.args = {
+  maxLength: 10,
+  Icon: <Icons.headset color='white' />,
+  Button: (
+    <Button color={'secondary'} variant={'outline'}>
+      Button
+    </Button>
+  ),
 };
