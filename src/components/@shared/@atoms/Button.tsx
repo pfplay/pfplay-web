@@ -44,10 +44,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          'flex h-max items-center justify-center rounded-[4px]',
+          'flex h-max items-center justify-center gap-[8px] rounded-[4px]',
 
           iconOnly && 'py-[6px] px-[12px] [&>svg]:w-[20px] [&>svg]:h-[20px]',
-          !iconOnly && [sizeDict[size], iconSizeDict[size], 'gap-[8px]'],
+          !iconOnly && [sizeDict[size], iconSizeDict[size]],
 
           variant === 'outline' && 'border border-solid',
 
@@ -72,11 +72,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading ? <Loading /> : iconPlacement === 'left' && Icon}
 
-        {children ?? (
-          <Typography type={typoTypeDict[size]} overflow='break-normal'>
-            {children}
-          </Typography>
-        )}
+        <Typography type={typoTypeDict[size]} overflow='break-normal'>
+          {children}
+        </Typography>
 
         {iconPlacement === 'right' && Icon}
       </button>
