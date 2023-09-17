@@ -27,7 +27,7 @@ export const Icon: Story = {
 };
 
 export const Underline: Story = {
-  storyName: 'Underline (Will be wrapped in <Link>...</Link>.)',
+  name: 'Underline (Will be wrapped in <Link>...</Link>.)',
   args: {
     children: 'Text btn',
     underline: true,

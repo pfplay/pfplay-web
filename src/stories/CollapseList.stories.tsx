@@ -4,7 +4,7 @@ import PlayListItem, { PlayListItemType } from '@/components/@shared/@atoms/Play
 import Tag from '@/components/@shared/@atoms/Tag';
 import UserListItem, { UserListItemType } from '@/components/@shared/UserListItem';
 import CollapseList from '@/components/CollapseList';
-import { exampleMenuConfig } from '@/constants/stories/exampleMenuConfig';
+import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 
 const meta = {
   title: 'ui/CollapseList',
@@ -57,7 +57,7 @@ export const CollapseListDefault = () => {
     <CollapseList title={'Do you offer technical support?'}>
       {exampleConfig.playListPanel.map((config) => (
         <Disclosure.Panel key={config.id} as='article' className=' text-gray-200'>
-          <PlayListItem playListItemConfig={config} menuItemList={exampleMenuConfig} />
+          <PlayListItem playListItemConfig={config} menuItemList={mockMenuConfig} />
         </Disclosure.Panel>
       ))}
     </CollapseList>
@@ -69,7 +69,7 @@ export const CollapseListAccent = () => {
     <CollapseList variant='accent' title={'Do you offer technical support?'}>
       {exampleConfig.playListPanel.map((config) => (
         <Disclosure.Panel key={config.id} as='article' className=' text-gray-200'>
-          <PlayListItem playListItemConfig={config} menuItemList={exampleMenuConfig} />
+          <PlayListItem playListItemConfig={config} menuItemList={mockMenuConfig} />
         </Disclosure.Panel>
       ))}
     </CollapseList>
@@ -81,7 +81,7 @@ export const CollapseListOutlined = () => {
     <CollapseList variant='outlined' title={'Do you offer technical support?'}>
       {exampleConfig.playListPanel.map((config) => (
         <Disclosure.Panel key={config.id} as='article' className=' text-gray-200'>
-          <PlayListItem playListItemConfig={config} menuItemList={exampleMenuConfig} />
+          <PlayListItem playListItemConfig={config} menuItemList={mockMenuConfig} />
         </Disclosure.Panel>
       ))}
     </CollapseList>
@@ -97,7 +97,7 @@ export const CollapseListForPlaylist = () => {
     >
       {exampleConfig.playListPanel.map((config) => (
         <Disclosure.Panel key={config.id} as='article' className=' text-gray-200'>
-          <PlayListItem playListItemConfig={config} menuItemList={exampleMenuConfig} />
+          <PlayListItem playListItemConfig={config} menuItemList={mockMenuConfig} />
         </Disclosure.Panel>
       ))}
     </CollapseList>
@@ -113,7 +113,7 @@ export const CollapseListForUserlist = () => {
             suffixType='button'
             suffixValue='Click'
             userListItemConfig={config}
-            menuItemList={exampleMenuConfig}
+            menuItemList={mockMenuConfig}
             onButtonClick={(id) => console.log(`id: ${id}는 향후 api 연결에 사용될 예정입니다.`)}
           />
         </Disclosure.Panel>

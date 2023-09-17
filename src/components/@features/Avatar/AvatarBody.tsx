@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { avatarBodyMockArr } from '@/constants/__mock__/profile-body-mock';
+import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
 import { cn } from '@/utils/cn';
 
 export type AvatarBodyImg = {
@@ -20,7 +20,7 @@ const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
     <section className='flexCol gap-5'>
       <div className='max-h-[400px] grid grid-cols-5 gap-5 mt-7 scrollbar-hide overflow-y-auto'>
         {/* //  TODO: 아바타 이미지 데이터 가져오면 mock arr 대체하기 */}
-        {avatarBodyMockArr.map((avatar) => (
+        {mockAvatarBodyList.map((avatar) => (
           <div key={avatar.id} className='relative w-full max-width-[200px] aspect-square'>
             {/* // TODO: Component화 시키고 반응형으로 만들기 */}
             <Image

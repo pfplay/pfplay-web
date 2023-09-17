@@ -23,7 +23,7 @@ const SessionCheck = ({ children }: SessionCheckProps) => {
   }
 
   if (session?.user.accessToken && (pathname === '/sign-in' || pathname === '/')) {
-    router.replace(NO_AUTH_ROUTES.AUTH.signIn);
+    router.replace(NO_AUTH_ROUTES.SIGN_IN.index);
     return null;
   }
 

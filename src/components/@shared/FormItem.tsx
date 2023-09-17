@@ -28,10 +28,10 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
     <label
       className={cn([
         'grid gap-x-[16px] gap-y-[12px] items-center grid-rows-max auto-rows-max',
-        'md:gap-y-[6px]',
+        'tablet:gap-y-[6px]',
         {
-          'md:grid-cols-[max-content_1fr]': !fit,
-          'md:grid-cols-[max-content_max-content]': fit,
+          'tablet:grid-cols-[max-content_1fr]': !fit,
+          'tablet:grid-cols-[max-content_max-content]': fit,
         },
         classNames?.container,
       ])}
@@ -50,7 +50,7 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
         data-custom-role='form-item-title'
         overflow='break-keep'
         className={cn([
-          'relative md:text-right',
+          'relative text-start tablet:text-right',
           required && "after:ml-[0.2em] after:text-red-300 after:content-['*']",
           classNames?.title,
         ])}
@@ -72,7 +72,7 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
 
       {typeof error === 'string' && (
         <>
-          <div className='hidden md:block' />
+          <div className='hidden tablet:block' />
 
           <Typography
             type='caption1'

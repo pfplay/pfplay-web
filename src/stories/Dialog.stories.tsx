@@ -1,14 +1,17 @@
 import { useMemo, useRef, useState } from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
 import Button from '@/components/@shared/@atoms/Button';
+import Tag from '@/components/@shared/@atoms/Tag';
 import Typography from '@/components/@shared/@atoms/Typography';
 import Dialog from '@/components/@shared/Dialog';
+import FormItem from '@/components/@shared/FormItem';
+import Icons from '@/components/__legacy__/Icons';
 import { useDialog } from '@/hooks/useDialog';
 import { cn } from '@/utils/cn';
 import { delay } from '@/utils/delay';
 
 const meta = {
-  title: 'Dialog',
+  title: 'ui/Dialog',
   component: Dialog,
   tags: ['autodocs'],
 } satisfies Meta<typeof Dialog>;
@@ -188,4 +191,65 @@ export const Stream: Story = () => {
       />
     </>
   );
+};
+
+export const CustomStructure: Story = () => {
+  const { openDialog } = useDialog();
+  const TEMP_INPUT_STYLES = 'text-black h-[48px] w-full rounded-[4px] p-[10px]'; // FIXME: 아직 Input 아톰 추가 안됨
+
+  const openSimpleDialog = () => {
+    return openDialog((onOk) => ({
+      title: 'Title',
+      titleAlign: 'left',
+      Sub: (
+        <Typography type='detail1' className='text-gray-300'>
+          Form Sub
+        </Typography>
+      ),
+      showCloseIcon: true,
+      classNames: {
+        container: 'w-[800px]',
+      },
+      Body: () => (
+        <>
+          <div className='flexCol gap-[20px]'>
+            <FormItem label='Label' required>
+              <input className={TEMP_INPUT_STYLES} />
+            </FormItem>
+            <FormItem label='Label' required>
+              <textarea className={cn(TEMP_INPUT_STYLES, 'h-[200px] leading-[1.5]')} />
+            </FormItem>
+            <div className='flex flex-wrap gap-[32px] items-center'>
+              <FormItem label='Label' required classNames={{ container: 'flex-1 min-w-[200px]' }}>
+                <input className={TEMP_INPUT_STYLES} />
+              </FormItem>
+              <FormItem
+                label='Label'
+                required
+                classNames={{ childrenWrapper: 'flex gap-[16px] items-center' }}
+                fit
+              >
+                <input className={cn(TEMP_INPUT_STYLES, 'w-[84px]')} />
+                <Typography type='detail1'>m</Typography>
+              </FormItem>
+            </div>
+            <div className='flex flex-wrap justify-between gap-[32px] items-center'>
+              <FormItem label='Label' required>
+                <Tag
+                  variant='profile'
+                  value='박가든 garden'
+                  PrefixIcon={<Icons.profileExample />}
+                />
+              </FormItem>
+              <Button size='lg' className='w-[236px]' onClick={() => onOk()}>
+                확인
+              </Button>
+            </div>
+          </div>
+        </>
+      ),
+    }));
+  };
+
+  return <Button onClick={openSimpleDialog}>Click</Button>;
 };

@@ -15,6 +15,7 @@ export interface ButtonProps extends Omit<ButtonHTMLProps, 'color' | 'children'>
   color?: ButtonColor;
   variant?: ButtonVariant;
   size?: ButtonSize;
+  typo?: TypographyType;
   Icon?: ReactNode;
   iconPlacement?: 'left' | 'right';
   loading?: boolean;
@@ -28,6 +29,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       color = 'primary',
       variant = 'fill',
       size = 'md',
+      typo = typoTypeDict[size],
       Icon,
       iconPlacement = 'left',
       loading,
@@ -72,9 +74,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading ? <Loading /> : iconPlacement === 'left' && Icon}
 
-        <Typography type={typoTypeDict[size]} overflow='break-normal'>
-          {children}
-        </Typography>
+        {children && (
+          <Typography type={typo} overflow='break-normal'>
+            {children}
+          </Typography>
+        )}
 
         {iconPlacement === 'right' && Icon}
       </button>
@@ -97,11 +101,11 @@ const sizeDict: Record<ButtonSize, string> = {
   xl: 'px-[16px] h-[56px]',
 };
 const iconSizeDict: Record<ButtonSize, string> = {
-  xs: '[&>svg]:w-[24px] [&>svg]:h-[24px]',
-  sm: '[&>svg]:w-[24px] [&>svg]:h-[24px]',
+  xs: '[&>svg]:w-[12px] [&>svg]:h-[12px]',
+  sm: '[&>svg]:w-[14px] [&>svg]:h-[14px]',
   md: '[&>svg]:w-[16px] [&>svg]:h-[16px]',
-  lg: '[&>svg]:w-[14px] [&>svg]:h-[14px]',
-  xl: '[&>svg]:w-[14px] [&>svg]:h-[14px]',
+  lg: '[&>svg]:w-[24px] [&>svg]:h-[24px]',
+  xl: '[&>svg]:w-[32px] [&>svg]:h-[32px]',
 };
 type ButtonState = 'default' | 'hover' | 'active';
 const colorsDict: Record<ButtonColor, Record<ButtonVariant, Record<ButtonState, string>>> = {

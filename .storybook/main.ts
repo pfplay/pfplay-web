@@ -19,6 +19,7 @@ const config: StorybookConfig = {
     ${body}
     <div id="${DomId.TooltipRoot}"></div>
   `,
+  staticDirs: ['../public'],
 };
 
 export default config;

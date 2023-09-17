@@ -1,5 +1,6 @@
 'use client';
-import { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo } from 'react';
+import Image from 'next/image';
+import React, { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo } from 'react';
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import Button, { ButtonProps } from '@/components/@shared/@atoms/Button';
 import Typography, { TypographyProps } from '@/components/@shared/@atoms/Typography';
@@ -18,10 +19,15 @@ interface StrWithEmphasis {
 export interface DialogProps {
   open: boolean;
   title: string | StrWithEmphasis;
+  titleAlign?: 'left' | 'center';
   Sub?: ReactNode;
   Body: FC | ReactNode;
   onClose: () => void;
   id?: string;
+  showCloseIcon?: boolean;
+  classNames?: {
+    container?: string;
+  };
 }
 
 const getEmphasisedInnerHTML = (strWithEmphasis: StrWithEmphasis): string => {
@@ -36,7 +42,17 @@ const getEmphasisedInnerHTML = (strWithEmphasis: StrWithEmphasis): string => {
   );
 };
 
-const Dialog: FC<DialogProps> & DialogComposition = ({ open, title, Sub, Body, onClose, id }) => {
+const Dialog: FC<DialogProps> & DialogComposition = ({
+  open,
+  title,
+  Sub,
+  Body,
+  onClose,
+  id,
+  titleAlign = 'center',
+  showCloseIcon,
+  classNames,
+}) => {
   const Title = useMemo(() => {
     const titleProps: PropsWithRef<TypographyProps> = {
       type: 'body1',
@@ -79,10 +95,30 @@ const Dialog: FC<DialogProps> & DialogComposition = ({ open, title, Sub, Body, o
             >
               <HUDialog.Panel
                 className={cn(
-                  'pt-[52px] px-[32px] pb-[32px] w-[400px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all'
+                  'pt-[52px] px-[32px] pb-[32px] w-[400px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all',
+                  classNames?.container
                 )}
               >
-                <HUDialog.Title as='div' className='flexCol gap-[12px] mb-[24px]'>
+                <HUDialog.Title
+                  as='div'
+                  className={cn([
+                    'relative flexCol gap-[12px] mb-[24px]',
+                    {
+                      'items-start': titleAlign === 'left',
+                      'items-center': titleAlign === 'center',
+                    },
+                  ])}
+                >
+                  {showCloseIcon && (
+                    <Button
+                      color='secondary'
+                      variant='outline'
+                      Icon={<Image src='/icons/icn_close.svg' alt='close' width={24} height={24} />}
+                      className='border-none p-0 absolute top-[2.5px] right-0' /*  */
+                      onClick={onClose}
+                    />
+                  )}
+
                   {Title}
 
                   {Sub}
