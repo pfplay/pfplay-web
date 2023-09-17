@@ -17,7 +17,7 @@ export const Preview: Story = {
   args: {
     value: '',
     placeholder: 'Placeholder',
-    maxLen: 10,
+    max: 10,
   },
 };
 
@@ -25,7 +25,7 @@ export const Error: Story = {
   args: {
     value: 'error',
     placeholder: 'Placeholder',
-    maxLen: 10,
+    max: 10,
     error: true,
   },
 };
@@ -34,8 +34,8 @@ export const Icon: Story = {
   args: {
     value: '',
     placeholder: 'Placeholder',
-    maxLen: 10,
-    icon: <Icons.headset color='white' fillOpacity={0.5} />,
+    max: 10,
+    Icon: <Icons.headset color='white' fillOpacity={0.5} />,
   },
 };
 
@@ -43,7 +43,7 @@ export const DisabledColoredButton: Story = {
   args: {
     value: '',
     placeholder: 'Placeholder',
-    button: <Button Icon={<Icons.chat />} disabled={true} />,
+    Button: <Button Icon={<Icons.chat />} disabled={true} />,
   },
 };
 
@@ -51,7 +51,7 @@ export const ColoredButton: Story = {
   args: {
     value: 'pfplay',
     placeholder: 'Placeholder',
-    button: <Button Icon={<Icons.chat color={'white'} fillOpacity={0.5} />} />,
+    Button: <Button Icon={<Icons.chat color={'white'} fillOpacity={0.5} />} />,
   },
 };
 
@@ -59,7 +59,7 @@ export const OutlinedButton: Story = {
   args: {
     value: 'pfplay',
     placeholder: 'Placeholder',
-    button: (
+    Button: (
       <Button color={'secondary'} variant={'outline'}>
         Button
       </Button>

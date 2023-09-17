@@ -1,26 +1,29 @@
 'use client';
-import { ComponentProps, useEffect, useState, ReactNode } from 'react';
+import { ComponentProps, useEffect, useState, ReactNode, FC } from 'react';
+import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 
 export interface InputProps extends ComponentProps<'input'> {
   value: string;
   placeholder: string;
-  maxLen?: number;
-  icon?: ReactNode;
-  button?: ReactNode;
+  max?: number;
+  Icon?: ReactNode;
+  Button?: ReactNode;
   error?: boolean;
 }
 
-const Input = ({
+const Input: FC<InputProps> = ({
   value,
   placeholder,
-  maxLen,
-  icon,
-  button,
+  max,
+  Icon,
+  Button,
   error = false,
-}: React.PropsWithChildren<InputProps>) => {
+  ...rest
+}) => {
   const [currentLen, setCurrentLen] = useState(0);
   const [isFilled, setIsFilled] = useState(false);
+
   useEffect(() => {
     if (currentLen !== value.length) {
       setCurrentLen(value.length);
@@ -36,26 +39,27 @@ const Input = ({
   }, [currentLen]);
 
   return (
-    <div className='flex items-center gap-[4px] bg-gray-700 rounded-[4px] p-[12px] [&>svg]:w-[24px] [&>svg]:h-[24px]'>
-      {icon}
+    <div className='h-[48px] flex items-center bg-gray-700 rounded-[4px] px-[12px] [&>svg]:w-[24px] [&>svg]:h-[24px]'>
+      {Icon && <div className='mr-[12px]'>{Icon}</div>}
+
       <input
         className={cn(
           'flex-1 bg-transparent placeholder-gray-400 text-gray-50 caret-red-300 focus:outline-none'
         )}
         placeholder={placeholder}
         value={value}
+        max={max}
+        {...rest}
       />
-      {maxLen && (
-        <div>
-          <span
-            className={cn('text-gray-400', isFilled && 'text-gray-50', error && 'text-red-300')}
-          >
-            {currentLen}
-          </span>
-          <span className={cn('text-gray-400', isFilled && 'text-gray-50')}>{`/${maxLen}`}</span>
-        </div>
+
+      {max && (
+        <Typography className={cn('text-gray-400 ml-[12px]', isFilled && 'text-gray-50')}>
+          <strong className={cn('appearance-none', error && 'text-red-300')}>{currentLen}</strong>/
+          {max}
+        </Typography>
       )}
-      {button}
+
+      {Button && <div className='ml-[8px]'>{Button}</div>}
     </div>
   );
 };
