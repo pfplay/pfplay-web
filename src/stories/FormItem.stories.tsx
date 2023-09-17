@@ -8,7 +8,7 @@ import FormItem, { FormItemProps } from '@/components/@shared/FormItem';
 import { cn } from '@/utils/cn';
 
 const meta = {
-  title: 'FormItem',
+  title: 'ui/FormItem',
   component: FormItem,
   tags: ['autodocs'],
 } satisfies Meta<typeof FormItem>;

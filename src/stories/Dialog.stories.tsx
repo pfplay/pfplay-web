@@ -11,7 +11,7 @@ import { cn } from '@/utils/cn';
 import { delay } from '@/utils/delay';
 
 const meta = {
-  title: 'Dialog',
+  title: 'ui/Dialog',
   component: Dialog,
   tags: ['autodocs'],
 } satisfies Meta<typeof Dialog>;
