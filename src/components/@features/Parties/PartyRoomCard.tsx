@@ -19,7 +19,7 @@ const PartyRoomCard = ({ roomId }: PartyRoomCardProps) => {
     <li
       onClick={() =>
         router.push(
-          routerHelper.replaceDynamic(ROUTES.PARTIES.index, {
+          routerHelper.replaceDynamic(ROUTES.PARTIES.room, {
             id: roomId, // TODO: set proper route with id
           })
         )
