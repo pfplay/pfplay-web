@@ -1,4 +1,5 @@
 import { Config } from 'tailwindcss';
+import { PluginAPI } from 'tailwindcss/types/config';
 import theme from './src/styles/theme';
 
 const tailwindConfig: Config = {
@@ -11,7 +12,7 @@ const tailwindConfig: Config = {
   plugins: [
     require('tailwind-scrollbar-hide'),
 
-    function ({ addVariant }) {
+    function ({ addVariant }: PluginAPI) {
       addVariant('child-form-labels', '& label [data-custom-role="form-item-title"]');
     },
   ],
