@@ -11,11 +11,15 @@ import {
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 
+type InputSize = 'md' | 'lg';
+type InputVariant = 'filled' | 'outlined';
 export interface InputProps
-  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'onChange' | 'maxLength'> {
+  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'onChange' | 'maxLength' | 'size'> {
   value: string;
   onChange: (v: string) => void;
   maxLength?: number;
+  size?: InputSize;
+  variant?: InputVariant;
   Prefix?: ReactNode;
   Suffix?: ReactNode;
 }
@@ -24,6 +28,8 @@ const Input: FC<InputProps> = ({
   value,
   onChange,
   maxLength,
+  size = 'md',
+  variant = 'filled',
   Prefix,
   Suffix,
   onFocus,
@@ -55,9 +61,9 @@ const Input: FC<InputProps> = ({
       ref={wrapperRef}
       onClick={handleClickWrapper}
       className={cn([
-        'h-[48px] px-[12px] flex items-center rounded-[4px]',
-        'bg-gray-700 cursor-text',
-        '[&>svg]:w-[24px] [&>svg]:h-[24px]',
+        'px-[12px] flex items-center rounded-[4px] cursor-text',
+        sizeDict[size],
+        variantDict[variant],
       ])}
     >
       {Prefix && <div className='mr-[12px]'>{Prefix}</div>}
@@ -91,6 +97,15 @@ const Input: FC<InputProps> = ({
       {Suffix && <div className='ml-[8px]'>{Suffix}</div>}
     </div>
   );
+};
+
+const sizeDict: Record<InputSize, string> = {
+  md: 'h-[48px]',
+  lg: 'h-[56px]',
+};
+const variantDict: Record<InputVariant, string> = {
+  filled: 'bg-gray-700',
+  outlined: 'bg-transparent border border-gray-500',
 };
 
 export default Input;
