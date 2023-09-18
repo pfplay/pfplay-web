@@ -15,10 +15,9 @@ import { cn } from '@/utils/cn';
 type InputSize = 'md' | 'lg';
 type InputVariant = 'filled' | 'outlined';
 export interface InputProps
-  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'onChange' | 'maxLength' | 'size'> {
+  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'onChange' | 'size'> {
   value: string;
   onChange: (v: string) => void;
-  maxLength?: number;
   size?: InputSize;
   variant?: InputVariant;
   Prefix?: ReactNode;

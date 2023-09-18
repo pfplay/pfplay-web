@@ -3,11 +3,9 @@ import { ComponentProps, FC, ChangeEventHandler, CSSProperties } from 'react';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 
-export interface TextAreaProps
-  extends Omit<ComponentProps<'textarea'>, 'value' | 'onChange' | 'maxLength'> {
+export interface TextAreaProps extends Omit<ComponentProps<'textarea'>, 'value' | 'onChange'> {
   value: string;
   onChange: (v: string) => void;
-  maxLength?: number;
   width?: CSSProperties['width'];
 }
 
