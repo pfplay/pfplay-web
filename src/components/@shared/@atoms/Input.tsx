@@ -1,13 +1,20 @@
 'use client';
-import { ComponentProps, ReactNode, FC, ChangeEventHandler } from 'react';
+import {
+  ComponentProps,
+  ReactNode,
+  FC,
+  ChangeEventHandler,
+  useRef,
+  FocusEventHandler,
+  MouseEventHandler,
+} from 'react';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 
 export interface InputProps
-  extends Omit<ComponentProps<'input'>, 'value' | 'placeholder' | 'onChange' | 'maxLength'> {
+  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'onChange' | 'maxLength'> {
   value: string;
   onChange: (v: string) => void;
-  placeholder: string;
   maxLength?: number;
   Prefix?: ReactNode;
   Suffix?: ReactNode;
@@ -20,23 +27,53 @@ const Input: FC<InputProps> = ({
   maxLength,
   Prefix,
   Suffix,
+  onFocus,
+  onBlur,
   ...rest
 }) => {
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleClickWrapper: MouseEventHandler<HTMLDivElement> = (e) => {
+    if (!(e.target as HTMLElement).closest('button')) {
+      inputRef.current?.focus();
+    }
+  };
+  const handleFocusInput: FocusEventHandler<HTMLInputElement> = (e) => {
+    onFocus?.(e);
+    wrapperRef.current?.classList.add('interaction-outline');
+  };
+  const handleBlurInput: FocusEventHandler<HTMLInputElement> = (e) => {
+    onBlur?.(e);
+    wrapperRef.current?.classList.remove('interaction-outline');
+  };
+  const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     onChange(e.target.value);
   };
 
   return (
-    <div className='h-[48px] flex items-center bg-gray-700 rounded-[4px] px-[12px] [&>svg]:w-[24px] [&>svg]:h-[24px]'>
+    <div
+      ref={wrapperRef}
+      onClick={handleClickWrapper}
+      className={cn([
+        'h-[48px] px-[12px] flex items-center rounded-[4px]',
+        'bg-gray-700 cursor-text',
+        '[&>svg]:w-[24px] [&>svg]:h-[24px]',
+      ])}
+    >
       {Prefix && <div className='mr-[12px]'>{Prefix}</div>}
 
       <input
-        className={cn(
+        ref={inputRef}
+        type='text'
+        className={
           'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none'
-        )}
+        }
         placeholder={placeholder}
         value={value}
-        onChange={handleChange}
+        onChange={handleChangeInput}
+        onFocus={handleFocusInput}
+        onBlur={handleBlurInput}
         {...rest}
       />
 
