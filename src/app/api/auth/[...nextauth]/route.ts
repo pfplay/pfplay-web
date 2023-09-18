@@ -5,11 +5,11 @@ import { UserService } from '@/api/services/User';
 const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_ID ?? '',
-      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET ?? '',
+      clientId: process.env.GOOGLE_ID ?? '',
+      clientSecret: process.env.GOOGLE_SECRET ?? '',
       authorization: {
         params: {
-          redirect_uri: process.env.NEXT_LOGIN_REDIRECT_URI,
+          redirect_uri: process.env.OAUTH_REDIRECT_URI_GOOGLE,
           response_type: 'code',
           scope: 'email',
         },
