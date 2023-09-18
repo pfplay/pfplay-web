@@ -27,6 +27,11 @@ Preview.args = {
   maxLength: 10,
 };
 
+export const FixedWidth = Template.bind({});
+FixedWidth.args = {
+  width: 300,
+};
+
 export const PrefixAndSuffix = Template.bind({});
 PrefixAndSuffix.args = {
   maxLength: 10,

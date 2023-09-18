@@ -7,6 +7,7 @@ import {
   useRef,
   FocusEventHandler,
   MouseEventHandler,
+  CSSProperties,
 } from 'react';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
@@ -22,6 +23,7 @@ export interface InputProps
   variant?: InputVariant;
   Prefix?: ReactNode;
   Suffix?: ReactNode;
+  width?: CSSProperties['width'];
 }
 
 const Input: FC<InputProps> = ({
@@ -32,6 +34,7 @@ const Input: FC<InputProps> = ({
   variant = 'filled',
   Prefix,
   Suffix,
+  width,
   onFocus,
   onBlur,
   ...rest
@@ -61,10 +64,11 @@ const Input: FC<InputProps> = ({
       ref={wrapperRef}
       onClick={handleClickWrapper}
       className={cn([
-        'px-[12px] flex items-center rounded-[4px] cursor-text',
+        'max-w-full flex items-center px-[12px] rounded-[4px] cursor-text',
         sizeDict[size],
         variantDict[variant],
       ])}
+      style={{ width }}
     >
       {Prefix && <div className='mr-[12px]'>{Prefix}</div>}
 
