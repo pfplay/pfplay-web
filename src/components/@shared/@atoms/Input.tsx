@@ -9,8 +9,8 @@ export interface InputProps
   onChange: (v: string) => void;
   placeholder: string;
   maxLength?: number;
-  Icon?: ReactNode;
-  Button?: ReactNode;
+  Prefix?: ReactNode;
+  Suffix?: ReactNode;
 }
 
 const Input: FC<InputProps> = ({
@@ -18,8 +18,8 @@ const Input: FC<InputProps> = ({
   onChange,
   placeholder,
   maxLength,
-  Icon,
-  Button,
+  Prefix,
+  Suffix,
   ...rest
 }) => {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -28,7 +28,7 @@ const Input: FC<InputProps> = ({
 
   return (
     <div className='h-[48px] flex items-center bg-gray-700 rounded-[4px] px-[12px] [&>svg]:w-[24px] [&>svg]:h-[24px]'>
-      {Icon && <div className='mr-[12px]'>{Icon}</div>}
+      {Prefix && <div className='mr-[12px]'>{Prefix}</div>}
 
       <input
         className={cn(
@@ -51,7 +51,7 @@ const Input: FC<InputProps> = ({
         </Typography>
       )}
 
-      {Button && <div className='ml-[8px]'>{Button}</div>}
+      {Suffix && <div className='ml-[8px]'>{Suffix}</div>}
     </div>
   );
 };

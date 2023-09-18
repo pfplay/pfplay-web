@@ -30,19 +30,19 @@ Preview.args = {
 export const Icon = Template.bind({});
 Icon.args = {
   maxLength: 10,
-  Icon: <Icons.headset color='white' />,
+  Prefix: <Icons.headset color='white' />,
 };
 
 export const Button_ = Template.bind({});
 Button_.args = {
-  Button: <Button Icon={<Icons.chat color={'white'} />} />,
+  Suffix: <Button Icon={<Icons.chat color={'white'} />} />,
 };
 
 export const Fully = Template.bind({});
 Fully.args = {
   maxLength: 10,
-  Icon: <Icons.headset color='white' />,
-  Button: (
+  Prefix: <Icons.headset color='white' />,
+  Suffix: (
     <Button color={'secondary'} variant={'outline'}>
       Button
     </Button>
