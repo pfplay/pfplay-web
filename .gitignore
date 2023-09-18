@@ -31,17 +31,10 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # environment
-.env
-.env.local
-.env.development
-.env.production
+.env*.local
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
-
-# idea
-.vscode/
-.idea/
