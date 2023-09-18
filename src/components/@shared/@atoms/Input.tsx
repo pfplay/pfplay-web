@@ -23,7 +23,6 @@ export interface InputProps
 const Input: FC<InputProps> = ({
   value,
   onChange,
-  placeholder,
   maxLength,
   Prefix,
   Suffix,
@@ -69,7 +68,6 @@ const Input: FC<InputProps> = ({
         className={
           'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none'
         }
-        placeholder={placeholder}
         value={value}
         onChange={handleChangeInput}
         onFocus={handleFocusInput}
@@ -80,9 +78,11 @@ const Input: FC<InputProps> = ({
       {Number.isInteger(maxLength) && (
         <Typography className={cn('text-gray-400 ml-[12px]', !!value.length && 'text-gray-50')}>
           <strong
-            className={cn('font-normal', maxLength && value.length > maxLength && 'text-red-300')}
+            className={cn({
+              'text-red-300': maxLength && value.length > maxLength,
+            })}
           >
-            {value.length}
+            {String(value.length).padStart(String(maxLength).length, '0')}
           </strong>
           /{maxLength}
         </Typography>

@@ -6,6 +6,9 @@
   main {
     @apply min-h-screen bg-cover relative;
   }
+  strong {
+    font-weight: inherit;
+  }
 }
 
 @layer components {
