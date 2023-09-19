@@ -28,7 +28,7 @@
 
 ### Color Theme
 
-> Last Update (230219)
+> Last Update (23.02.19)
 
 - `tailwind.config.js`에 피그마 파일의 `Component/Color` 섹션 기준으로 컬러 테마 업데이트함
 - `bg-red-200`, `text-gray-200`, `border-gray-500` 과 같은 형태로 사용 가능
@@ -36,7 +36,7 @@
 
 ### Images
 
-> Last Update (230219)
+> Last Update (23.02.19)
 
 - 아이콘: `/public/icons/*`
 - 로고: `/public/logos/*`
@@ -44,7 +44,7 @@
 
 ### 프로젝트 세팅 방법
 
-> Last Update (230226)
+> Last Update (23.02.26)
 
 - 노션 문서 중 [프론트엔드 환경변수](https://www.notion.so/pfplay/3ad552e5b35845c492146605159cc418?pvs=4)를 참고해서 `.env`파일 추가하기
   ```
@@ -57,7 +57,7 @@
 
 ### Work Process
 
-> Last Update (230226)
+> Last Update (23.02.26)
 
 1. 노션 문서의 로드맵 확인하기
 2. 본인이 작업할 사항 로드맵에 추가하기
@@ -73,7 +73,7 @@
 
 ### Color Theme
 
-> Last Update (230726)
+> Last Update (23.07.26)
 
 - `tailwind.config.js`에 피그마 파일의 `Design System` pages 기준으로 컬러 테마 업데이트함
 - `bg-red-100`, `text-gray-100`, `border-gray-100` 과 같은 형태로 사용 가능
