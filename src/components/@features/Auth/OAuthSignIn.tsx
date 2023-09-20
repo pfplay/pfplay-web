@@ -22,7 +22,7 @@ const OAuthSignIn = () => {
     setIsOpen(false);
   };
 
-  const signInAnnonynmous = () => {
+  const signInAnonymous = () => {
     router.push(ROUTES.PARTIES.index);
   };
   const signInGoogle = () => {
@@ -71,7 +71,7 @@ const OAuthSignIn = () => {
         isOpen={isOpen}
         onModalClose={handleModalClose}
         onConfirmClick={signInGoogle}
-        onCancelClick={signInAnnonynmous}
+        onCancelClick={signInAnonymous}
       />
     </>
   );

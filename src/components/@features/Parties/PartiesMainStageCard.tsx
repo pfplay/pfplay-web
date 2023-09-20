@@ -17,7 +17,7 @@ const PartiesMainStageCard = () => {
         className='text-white font-poppins text-[28px] mb-1.5 cursor-pointer no-underline hover:underline'
         onClick={() =>
           router.push(
-            routerHelper.replaceDynamic(ROUTES.PARTIES.index, {
+            routerHelper.replaceDynamic(ROUTES.PARTIES.room, {
               id: 1, // TODO: set proper route for main stage
             })
           )
