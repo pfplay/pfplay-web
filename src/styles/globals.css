@@ -6,6 +6,9 @@
   main {
     @apply min-h-screen bg-cover relative;
   }
+  strong {
+    font-weight: inherit;
+  }
 }
 
 @layer components {
@@ -32,10 +35,34 @@
   .opacity-from-zero {
     @apply opacity-0 transition-[opacity] duration-100;
   }
+
+  .interaction-outline {
+    @apply outline outline-gray-300;
+  }
 }
 
 @layer utilities {
   .polygon-equilateral-triangle {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  .styled-scroll {
+    & {
+      scrollbar-gutter: stable;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 8px;
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar {
+      width: 16px;
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-clip: padding-box;
+      border: 4px solid transparent;
+      border-radius: 8px;
+      background-color: theme('colors.gray.400');
+    }
   }
 }

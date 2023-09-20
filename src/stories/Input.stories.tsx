@@ -27,24 +27,24 @@ Preview.args = {
   maxLength: 10,
 };
 
-export const Icon = Template.bind({});
-Icon.args = {
-  maxLength: 10,
-  Icon: <Icons.headset color='white' />,
+export const FixedWidth = Template.bind({});
+FixedWidth.args = {
+  width: 300,
 };
 
-export const Button_ = Template.bind({});
-Button_.args = {
-  Button: <Button Icon={<Icons.chat color={'white'} />} />,
-};
-
-export const Fully = Template.bind({});
-Fully.args = {
+export const PrefixAndSuffix = Template.bind({});
+PrefixAndSuffix.args = {
   maxLength: 10,
-  Icon: <Icons.headset color='white' />,
-  Button: (
+  Prefix: <Icons.headset color='white' />,
+  Suffix: (
     <Button color={'secondary'} variant={'outline'}>
       Button
     </Button>
   ),
+};
+
+export const LargeAndOutlined = Template.bind({});
+LargeAndOutlined.args = {
+  variant: 'outlined',
+  size: 'lg',
 };

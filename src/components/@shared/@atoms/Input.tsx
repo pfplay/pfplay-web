@@ -1,59 +1,114 @@
 'use client';
-import { ComponentProps, ReactNode, FC, ChangeEventHandler } from 'react';
+import {
+  ComponentProps,
+  ReactNode,
+  FC,
+  ChangeEventHandler,
+  useRef,
+  FocusEventHandler,
+  MouseEventHandler,
+  CSSProperties,
+} from 'react';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 
+type InputSize = 'md' | 'lg';
+type InputVariant = 'filled' | 'outlined';
 export interface InputProps
-  extends Omit<ComponentProps<'input'>, 'value' | 'placeholder' | 'onChange' | 'maxLength'> {
+  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'onChange' | 'size'> {
   value: string;
   onChange: (v: string) => void;
-  placeholder: string;
-  maxLength?: number;
-  Icon?: ReactNode;
-  Button?: ReactNode;
+  size?: InputSize;
+  variant?: InputVariant;
+  Prefix?: ReactNode;
+  Suffix?: ReactNode;
+  width?: CSSProperties['width'];
 }
 
 const Input: FC<InputProps> = ({
   value,
   onChange,
-  placeholder,
   maxLength,
-  Icon,
-  Button,
+  size = 'md',
+  variant = 'filled',
+  Prefix,
+  Suffix,
+  width,
+  onFocus,
+  onBlur,
   ...rest
 }) => {
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleClickWrapper: MouseEventHandler<HTMLDivElement> = (e) => {
+    if (!(e.target as HTMLElement).closest('button')) {
+      inputRef.current?.focus();
+    }
+  };
+  const handleFocusInput: FocusEventHandler<HTMLInputElement> = (e) => {
+    onFocus?.(e);
+    wrapperRef.current?.classList.add('interaction-outline');
+  };
+  const handleBlurInput: FocusEventHandler<HTMLInputElement> = (e) => {
+    onBlur?.(e);
+    wrapperRef.current?.classList.remove('interaction-outline');
+  };
+  const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     onChange(e.target.value);
   };
 
   return (
-    <div className='h-[48px] flex items-center bg-gray-700 rounded-[4px] px-[12px] [&>svg]:w-[24px] [&>svg]:h-[24px]'>
-      {Icon && <div className='mr-[12px]'>{Icon}</div>}
+    <div
+      ref={wrapperRef}
+      onClick={handleClickWrapper}
+      className={cn([
+        'max-w-full flex items-center px-[12px] rounded-[4px] cursor-text',
+        sizeDict[size],
+        variantDict[variant],
+      ])}
+      style={{ width }}
+    >
+      {Prefix && <div className='mr-[12px]'>{Prefix}</div>}
 
       <input
-        className={cn(
+        ref={inputRef}
+        type='text'
+        className={
           'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none'
-        )}
-        placeholder={placeholder}
+        }
         value={value}
-        onChange={handleChange}
+        onChange={handleChangeInput}
+        onFocus={handleFocusInput}
+        onBlur={handleBlurInput}
         {...rest}
       />
 
       {Number.isInteger(maxLength) && (
         <Typography className={cn('text-gray-400 ml-[12px]', !!value.length && 'text-gray-50')}>
           <strong
-            className={cn('font-normal', maxLength && value.length > maxLength && 'text-red-300')}
+            className={cn({
+              'text-red-300': maxLength && value.length > maxLength,
+            })}
           >
-            {value.length}
+            {String(value.length).padStart(String(maxLength).length, '0')}
           </strong>
           /{maxLength}
         </Typography>
       )}
 
-      {Button && <div className='ml-[8px]'>{Button}</div>}
+      {Suffix && <div className='ml-[8px]'>{Suffix}</div>}
     </div>
   );
+};
+
+const sizeDict: Record<InputSize, string> = {
+  md: 'h-[48px]',
+  lg: 'h-[56px]',
+};
+const variantDict: Record<InputVariant, string> = {
+  filled: 'bg-gray-700',
+  outlined: 'bg-transparent border border-gray-500',
 };
 
 export default Input;

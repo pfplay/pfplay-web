@@ -21,6 +21,7 @@ const theme = {
       900: '#111111',
     },
     dim: 'rgba(0, 0, 0, 0.6)',
+    transparent: 'transparent',
   },
   backgroundImage: {
     onboarding: "url('/image/Onboard.png')",
