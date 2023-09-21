@@ -15,7 +15,13 @@ export default meta;
 export const IconMenuLarge = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <IconMenu MenuButtonIcon={<Icons.option />} menuItemConfig={mockMenuConfig} size='lg' />
+      <IconMenu
+        MenuButtonIcon={<Icons.option />}
+        menuItemConfig={mockMenuConfig}
+        menuItemPanel={{
+          size: 'lg',
+        }}
+      />
     </div>
   );
 };
@@ -23,7 +29,13 @@ export const IconMenuLarge = () => {
 export const IconMenuMedium = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <IconMenu MenuButtonIcon={<Icons.option />} menuItemConfig={mockMenuConfig} size='md' />
+      <IconMenu
+        MenuButtonIcon={<Icons.option />}
+        menuItemConfig={mockMenuConfig}
+        menuItemPanel={{
+          size: 'md',
+        }}
+      />
     </div>
   );
 };
@@ -31,7 +43,13 @@ export const IconMenuMedium = () => {
 export const IconMenuSmall = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <IconMenu MenuButtonIcon={<Icons.option />} menuItemConfig={mockMenuConfig} size='sm' />
+      <IconMenu
+        MenuButtonIcon={<Icons.option />}
+        menuItemConfig={mockMenuConfig}
+        menuItemPanel={{
+          size: 'sm',
+        }}
+      />
     </div>
   );
 };
@@ -44,8 +62,8 @@ export const MenuWithHeaderIcon = () => {
         menuItemConfig={mockMenuConfig}
         menuItemPanel={{
           HeaderIcon: <Icons.arrowLeft width={24} height={24} stroke='#fff' />,
+          size: 'sm',
         }}
-        size='sm'
       />
     </div>
   );
