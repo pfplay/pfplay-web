@@ -2,8 +2,8 @@ import { Disclosure } from '@headlessui/react';
 import type { Meta } from '@storybook/react';
 import PlayListItem, { PlayListItemType } from '@/components/@shared/@atoms/PlayListItem';
 import Tag from '@/components/@shared/@atoms/Tag';
+import CollapseList from '@/components/@shared/CollapseList';
 import UserListItem, { UserListItemType } from '@/components/@shared/UserListItem';
-import CollapseList from '@/components/CollapseList';
 import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 
 const meta = {

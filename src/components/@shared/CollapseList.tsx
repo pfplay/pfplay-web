@@ -2,8 +2,8 @@
 import React, { PropsWithChildren } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { cn } from '@/utils/cn';
-import Typography from './@shared/@atoms/Typography';
-import Icons from './__legacy__/Icons';
+import Typography from './@atoms/Typography';
+import Icons from '../__legacy__/Icons';
 
 type CollapseListProps = {
   variant?: 'default' | 'accent' | 'outlined';
