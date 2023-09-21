@@ -1,8 +1,11 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
+import HomeHeader from '@/components/@features/Home/HomeHeader';
 import HomeLoginButton from '@/components/@features/Home/HomeLoginButton';
-import ProfileMenu from '@/components/@features/Home/ProfileMenu';
+import Button from '@/components/@shared/@atoms/Button';
+import Typography from '@/components/@shared/@atoms/Typography';
 import Icons from '@/components/__legacy__/Icons';
+import { cn } from '@/utils/cn';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -14,26 +17,31 @@ export const metadata: Metadata = {
 
 const HomePage = () => {
   return (
-    <div className='max-w-screen flexColCenter px-[120px] bg-onboarding'>
-      <header className='w-full flex justify-end items-center py-10 gap-6'>
-        <ProfileMenu />
-        <Icons.worldglobe />
-      </header>
-      <main className='flexColCenter'>
+    <>
+      <HomeHeader />
+      <main className={cn('bg-onboarding flexColCenter max-w-screen flexColCenter px-[120px]')}>
         <Image
           className='mb-[72px]'
           src='/logos/wordmark_medium_white.svg'
           width={297.24}
           height={72}
           alt='logo'
+          priority
         />
         <HomeLoginButton />
       </main>
-      <footer className='w-full absolute bottom-[68px] flexRow justify-between text-white px-[120px]'>
-        <p className='footerText'>Privacy&Terms</p>
-        <p className='footerText'>당신의 PFP는 안녕하신가요?</p>
+      <footer className='absolute bottom-[52px] w-full flexRow justify-between items-center px-[120px]'>
+        <Typography className='text-gray-300'>Privacy&Terms</Typography>
+        <Button
+          variant='outline'
+          color='secondary'
+          Icon={<Icons.chevronRight />}
+          iconPlacement='right'
+        >
+          당신의 PFP는 안녕하신가요?
+        </Button>
       </footer>
-    </div>
+    </>
   );
 };
 

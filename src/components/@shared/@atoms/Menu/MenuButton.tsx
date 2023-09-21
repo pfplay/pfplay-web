@@ -1,10 +1,10 @@
 import React, { PropsWithChildren } from 'react';
 import { Menu } from '@headlessui/react';
 import { cn } from '@/utils/cn';
-import { colorsDict, sizeDict } from '../@atoms/Button';
+import { sizeDict, colorsDict } from '../Button';
 
 interface MenuButtonProps {
-  type: 'icon' | 'profile';
+  type: 'icon' | 'button';
   onMenuIconClick?: () => void;
 }
 export const MenuButton = ({
@@ -20,7 +20,7 @@ export const MenuButton = ({
       className={cn(
         'flex h-max items-center justify-center gap-[8px] rounded-[4px]',
         type === 'icon' && 'flex items-center gap-2 text-gray-50 p-2',
-        type === 'profile' &&
+        type === 'button' &&
           `border border-solid px-[16px] h-[36px] ${sizeDict['md']} ${colorsDict['secondary']['outline'].default}`
       )}
     >

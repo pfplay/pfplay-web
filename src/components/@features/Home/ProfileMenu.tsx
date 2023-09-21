@@ -1,15 +1,16 @@
 'use client';
 import React from 'react';
 import { Menu } from '@headlessui/react';
-import { MenuButton } from '@/components/@shared/Menu/MenuButton';
-import MenuItemPanel from '@/components/@shared/Menu/MenuItemPanel';
+import MenuButton from '@/components/@shared/@atoms/Menu/MenuButton';
+import MenuItemPanel from '@/components/@shared/@atoms/Menu/MenuItemPanel';
 
 const ProfileMenu = () => {
   return (
     <Menu as='section' className={`relative w-fit`}>
       {({ close }) => (
         <>
-          <MenuButton type='profile'>pfplay@pfplay.com</MenuButton>
+          {/* // TODO: Get the user info from session and display email in MenuButton component */}
+          <MenuButton type='button'>pfplay@pfplay.com</MenuButton>
           <MenuItemPanel
             menuItemConfig={[{ label: '로그아웃', onClickItem: () => console.log('로그아웃') }]}
             close={close}

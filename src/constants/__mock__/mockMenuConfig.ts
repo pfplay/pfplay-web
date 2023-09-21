@@ -1,4 +1,4 @@
-import { MenuItem } from '@/components/@shared/Menu/MenuItemPanel';
+import { MenuItem } from '@/components/@shared/@atoms/Menu/MenuItemPanel';
 
 export const mockMenuConfig: MenuItem[] = [
   { onClickItem: () => console.log('삭제 clicked'), label: '삭제' },

@@ -2,10 +2,10 @@ import Image from 'next/image';
 import React from 'react';
 import { cn } from '@/utils/cn';
 import Button from './@atoms/Button';
+import { MenuItem } from './@atoms/Menu/MenuItemPanel';
 import Tag from './@atoms/Tag';
 import Typography from './@atoms/Typography';
 import DisplayOptionMenuOnHoverListener from './DisplayOptionMenuOnHoverListener';
-import { MenuItem } from './Menu/MenuItemPanel';
 
 export type UserListItemType = {
   id: number;

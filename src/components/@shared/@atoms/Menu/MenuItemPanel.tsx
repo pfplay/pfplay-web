@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import { Transition, Menu } from '@headlessui/react';
 import { cn } from '@/utils/cn';
-import { MenuItemBoxSizeKey } from './Menu';
 
 // TODO: MenuConfig 정해지면 type 재정의하기
 export type MenuItem = { onClickItem: () => void; label: string };
-const MenuItemBoxSize: Record<MenuItemBoxSizeKey, string> = {
+export type MenuItemPanelSize = 'lg' | 'md' | 'sm';
+const MenuItemBoxSize: Record<MenuItemPanelSize, string> = {
   lg: 'w-[330px]',
   md: 'w-[220px]',
   sm: 'w-[90px]',
@@ -16,7 +16,7 @@ interface MenuItemPanelProps {
   HeaderIcon?: React.ReactNode;
   MenuItemPrefixIcon?: React.ReactNode;
   menuItemPanelStyle?: string;
-  size?: MenuItemBoxSizeKey;
+  size?: MenuItemPanelSize;
   close: () => void;
   onMenuClose?: () => void;
 }
