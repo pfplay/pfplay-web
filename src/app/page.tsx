@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
+import Footer from '@/components/@features/Home/Footer';
 import HomeHeader from '@/components/@features/Home/HomeHeader';
-import HomeLoginButton from '@/components/@features/Home/HomeLoginButton';
-import Button from '@/components/@shared/@atoms/Button';
 import Typography from '@/components/@shared/@atoms/Typography';
-import Icons from '@/components/__legacy__/Icons';
 import { cn } from '@/utils/cn';
+import { NO_AUTH_ROUTES } from '@/utils/routes';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -19,28 +19,24 @@ const HomePage = () => {
   return (
     <>
       <HomeHeader />
-      <main className={cn('bg-onboarding flexColCenter max-w-screen flexColCenter px-[120px]')}>
+      <main className={cn('bg-onboarding flexColCenter gap-[92px]')}>
         <Image
-          className='mb-[72px]'
           src='/logos/wordmark_medium_white.svg'
           width={297.24}
           height={72}
           alt='logo'
           priority
         />
-        <HomeLoginButton />
-      </main>
-      <footer className='absolute bottom-[52px] w-full flexRow justify-between items-center px-[120px]'>
-        <Typography className='text-gray-300'>Privacy&Terms</Typography>
-        <Button
-          variant='outline'
-          color='secondary'
-          Icon={<Icons.chevronRight />}
-          iconPlacement='right'
+        <Link
+          href={NO_AUTH_ROUTES.SIGN_IN.index}
+          className='border-none rounded py-[13px] px-[99px] bg-gradient-red'
         >
-          당신의 PFP는 안녕하신가요?
-        </Button>
-      </footer>
+          <Typography className='text-gray-50' type='body1'>
+            Let your PFP Play
+          </Typography>
+        </Link>
+      </main>
+      <Footer />
     </>
   );
 };
