@@ -27,7 +27,6 @@ const HomePage = () => {
           height={72}
           alt='logo'
         />
-        <ProfileMenu />
         <HomeLoginButton />
       </main>
       <footer className='w-full absolute bottom-[68px] flexRow justify-between text-white px-[120px]'>

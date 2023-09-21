@@ -9,7 +9,6 @@ import MenuItemPanel, { MenuItem } from './MenuItemPanel';
 export type MenuItemBoxSizeKey = 'lg' | 'md' | 'sm';
 
 interface OptionMenuProps {
-  // TODO:  optionMenuConfig 정해지면 type 재정의하기
   optionMenuConfig: Array<MenuItem>;
   HeaderIcon?: React.ReactNode;
   MenuItemPrefixIcon?: React.ReactNode;
@@ -43,7 +42,7 @@ const OptionMenu = forwardRef<HTMLDivElement, OptionMenuProps>(
                 <Icons.option />
               </MenuButton>
               <MenuItemPanel
-                optionMenuConfig={optionMenuConfig}
+                menuItemConfig={optionMenuConfig}
                 HeaderIcon={HeaderIcon}
                 MenuItemPrefixIcon={MenuItemPrefixIcon}
                 menuItemPanelStyle={menuItemPanelStyle}

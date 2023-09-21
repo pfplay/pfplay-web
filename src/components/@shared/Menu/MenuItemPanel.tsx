@@ -3,6 +3,7 @@ import { Transition, Menu } from '@headlessui/react';
 import { cn } from '@/utils/cn';
 import { MenuItemBoxSizeKey } from './Menu';
 
+// TODO: MenuConfig 정해지면 type 재정의하기
 export type MenuItem = { onClickItem: () => void; label: string };
 const MenuItemBoxSize: Record<MenuItemBoxSizeKey, string> = {
   lg: 'w-[330px]',
@@ -11,7 +12,7 @@ const MenuItemBoxSize: Record<MenuItemBoxSizeKey, string> = {
 };
 
 interface MenuItemPanelProps {
-  optionMenuConfig: Array<MenuItem>;
+  menuItemConfig: Array<MenuItem>;
   HeaderIcon?: React.ReactNode;
   MenuItemPrefixIcon?: React.ReactNode;
   menuItemPanelStyle?: string;
@@ -21,7 +22,7 @@ interface MenuItemPanelProps {
 }
 
 const MenuItemPanel = ({
-  optionMenuConfig,
+  menuItemConfig,
   HeaderIcon,
   MenuItemPrefixIcon,
   menuItemPanelStyle,
@@ -57,7 +58,7 @@ const MenuItemPanel = ({
             {HeaderIcon}
           </div>
         )}
-        {optionMenuConfig.map((config) => (
+        {menuItemConfig.map((config) => (
           <Menu.Item as={Fragment} key={config.label}>
             {({ active }) => (
               <li
