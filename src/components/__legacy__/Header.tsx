@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import React from 'react';
 import { NO_AUTH_ROUTES } from '@/utils/routes';
-import EmailBox from './EmailBox';
 import Icons from './Icons';
 
 const Header = () => {
@@ -12,7 +11,6 @@ const Header = () => {
         <Icons.logo width={116} />
       </Link>
       <div className='flexRow items-center'>
-        <EmailBox />
         <Icons.worldglobe />
       </div>
     </header>

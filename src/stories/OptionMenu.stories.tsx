@@ -1,36 +1,37 @@
+import React from 'react';
 import type { Meta } from '@storybook/react';
-import Menu from '@/components/@shared/Menu';
+import OptionMenu from '@/components/@shared/Menu/Menu';
 import Icons from '@/components/__legacy__/Icons';
 import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 
 const meta = {
-  title: 'ui/Menu',
+  title: 'ui/OptionMenu',
   tags: ['autodocs'],
-  component: Menu,
-} satisfies Meta<typeof Menu>;
+  component: OptionMenu,
+} satisfies Meta<typeof OptionMenu>;
 
 export default meta;
 
-export const MenuLarge = () => {
+export const OptionMenuLarge = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <Menu optionMenuConfig={mockMenuConfig} size='lg' />
+      <OptionMenu optionMenuConfig={mockMenuConfig} size='lg' />
     </div>
   );
 };
 
-export const MenuMedium = () => {
+export const OptionMenuMedium = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <Menu optionMenuConfig={mockMenuConfig} size='md' />
+      <OptionMenu optionMenuConfig={mockMenuConfig} size='md' />
     </div>
   );
 };
 
-export const MenuSmall = () => {
+export const OptionMenuSmall = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <Menu optionMenuConfig={mockMenuConfig} size='sm' />
+      <OptionMenu optionMenuConfig={mockMenuConfig} size='sm' />
     </div>
   );
 };
@@ -38,7 +39,7 @@ export const MenuSmall = () => {
 export const MenuWithHeaderIcon = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <Menu
+      <OptionMenu
         optionMenuConfig={mockMenuConfig}
         HeaderIcon={<Icons.arrowLeft width={24} height={24} stroke='#fff' />}
         size='sm'
@@ -50,7 +51,7 @@ export const MenuWithHeaderIcon = () => {
 export const OptionMenuItemWithPrefixIcon = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <Menu
+      <OptionMenu
         optionMenuConfig={mockMenuConfig}
         MenuItemPrefixIcon={<Icons.arrowDown stroke='#fff' />}
       />

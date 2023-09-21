@@ -5,7 +5,7 @@ import Button from './@atoms/Button';
 import Tag from './@atoms/Tag';
 import Typography from './@atoms/Typography';
 import DisplayOptionMenuOnHoverListener from './DisplayOptionMenuOnHoverListener';
-import { MenuItem } from './Menu';
+import { MenuItem } from './Menu/MenuItemPanel';
 
 export type UserListItemType = {
   id: number;

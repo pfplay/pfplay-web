@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import HomeLoginButton from '@/components/@features/Home/HomeLoginButton';
+import ProfileMenu from '@/components/@features/Home/ProfileMenu';
+import Icons from '@/components/__legacy__/Icons';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -12,8 +14,12 @@ export const metadata: Metadata = {
 
 const HomePage = () => {
   return (
-    <>
-      <main className='flexColCenter bg-onboarding'>
+    <div className='max-w-screen flexColCenter px-[120px] bg-onboarding'>
+      <header className='w-full flex justify-end items-center py-10 gap-6'>
+        <ProfileMenu />
+        <Icons.worldglobe />
+      </header>
+      <main className='flexColCenter'>
         <Image
           className='mb-[72px]'
           src='/logos/wordmark_medium_white.svg'
@@ -21,13 +27,14 @@ const HomePage = () => {
           height={72}
           alt='logo'
         />
+        <ProfileMenu />
         <HomeLoginButton />
       </main>
       <footer className='w-full absolute bottom-[68px] flexRow justify-between text-white px-[120px]'>
         <p className='footerText'>Privacy&Terms</p>
         <p className='footerText'>당신의 PFP는 안녕하신가요?</p>
       </footer>
-    </>
+    </div>
   );
 };
 

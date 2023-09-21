@@ -5,7 +5,7 @@ import DisplayOptionMenuOnHoverListener from '@/components/@shared/DisplayOption
 import Icons from '@/components/__legacy__/Icons';
 import { cn } from '@/utils/cn';
 import Typography from './Typography';
-import { MenuItem } from '../Menu';
+import { MenuItem } from '../Menu/MenuItemPanel';
 
 export interface PlayListItemType {
   id: number;
