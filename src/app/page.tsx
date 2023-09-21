@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const HomePage = () => {
   return (
     <>
-      <main className='flexColCenter  bg-onboarding'>
+      <main className='flexColCenter bg-onboarding'>
         <Image
           className='mb-[72px]'
           src='/logos/wordmark_medium_white.svg'

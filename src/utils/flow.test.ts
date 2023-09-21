@@ -1,5 +1,4 @@
-import { flow } from '@/utils/flow';
-
+import { flow } from './flow';
 describe('utils/flow', () => {
   const wait = <T>(v: T) => {
     return new Promise<T>((resolve) => {
