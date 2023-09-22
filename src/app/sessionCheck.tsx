@@ -27,6 +27,8 @@ const SessionCheck = ({ children }: SessionCheckProps) => {
     return null;
   }
 
+  // FIXME: Auth middleware 개발 시 middleware에서 session 없어도 parties 갈 수 있게 추가 대응 필요
+
   return children;
 };
 

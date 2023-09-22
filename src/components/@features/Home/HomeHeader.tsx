@@ -6,7 +6,7 @@ import Icons from '../../__legacy__/Icons';
 
 const HomeHeader = () => {
   return (
-    <header className='absolute top-10 right-[120px] w-full flex justify-end items-center gap-6 z-20'>
+    <header className='absolute top-10 px-[120px] w-full min-w-tablet flex justify-end items-center gap-6 z-20'>
       <ProfileMenu />
       <IconMenu
         MenuButtonIcon={<Icons.worldglobe />}

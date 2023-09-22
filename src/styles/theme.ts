@@ -1,3 +1,10 @@
+export const breakPoints: Record<'mobile' | 'tablet' | 'laptop' | 'desktop', string> = {
+  mobile: '400px',
+  tablet: '768px',
+  laptop: '1024px',
+  desktop: '1280px',
+};
+
 const theme = {
   colors: {
     white: '#FFFFFF',
@@ -22,18 +29,16 @@ const theme = {
     },
     dim: 'rgba(0, 0, 0, 0.6)',
     transparent: 'transparent',
+    'backdrop-black': '#180202',
   },
   backgroundImage: {
     onboarding: "url('/image/Onboard.png')",
     partyRoom: "url('/image/PartyRoom.png')",
     'gradient-red': 'linear-gradient(to right top, #780808, #AE001F)',
   },
-  screens: {
-    mobile: '400px',
-    tablet: '768px',
-    laptop: '1024px',
-    desktop: '1280px',
-  },
+  width: breakPoints,
+  minWidth: breakPoints,
+  screens: breakPoints,
   zIndex: {
     dialog: '1000',
     tooltip: '1001',

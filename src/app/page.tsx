@@ -19,7 +19,7 @@ const HomePage = () => {
   return (
     <>
       <HomeHeader />
-      <main className={cn('bg-onboarding flexColCenter gap-[92px]')}>
+      <main className={cn('min-w-tablet bg-onboarding flexColCenter gap-[92px]')}>
         <Image
           src='/logos/wordmark_medium_white.svg'
           width={297.24}

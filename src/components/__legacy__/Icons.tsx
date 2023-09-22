@@ -2,6 +2,31 @@ import React from 'react';
 
 // TODO: SVG ICON 준비되면 대체
 const Icons = {
+  close: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <path
+        d='M4 4L20 20'
+        stroke='white'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M20 4L4 20'
+        stroke='white'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  ),
   chevronRight: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
     <svg
       width='8'
