@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '@/components/@features/Home/Footer';
-import HomeHeader from '@/components/@features/Home/HomeHeader';
+import Header from '@/components/@features/Home/Header';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 import { NO_AUTH_ROUTES } from '@/utils/routes';
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const HomePage = () => {
   return (
     <>
-      <HomeHeader />
+      <Header />
       <main className={cn('min-w-tablet bg-onboarding flexColCenter gap-[92px]')}>
         <Image
           src='/logos/wordmark_medium_white.svg'

@@ -27,8 +27,11 @@ const SessionCheck = ({ children }: SessionCheckProps) => {
     return null;
   }
 
-  // FIXME: Auth middleware 개발 시 middleware에서 session 없어도 parties 갈 수 있게 추가 대응 필요
-
+  /**
+   * TODO:
+   * 1. Auth middleware 개발 시 middleware에서 session 없어도 parties 갈 수 있게 추가 대응 필요
+   * 2. 프로파일 설정이 되어있지 않으면 프로파일 설정 페이지로 이동
+   */
   return children;
 };
 

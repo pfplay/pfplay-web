@@ -17,10 +17,8 @@ const OAuthSignIn = () => {
   const { openDialog } = useDialog();
 
   const handleBrowseButtonClick = async () => {
-    const result = await openFullDialog();
-
-    if (result) alert(`확인됐어요. (value: ${result})`);
-    if (!result) alert('취소됐어요.');
+    await openFullDialog();
+    return;
   };
 
   const signInAnonymous = () => {
@@ -72,7 +70,7 @@ const OAuthSignIn = () => {
             alt='logo'
             width={150}
             height={36}
-            className='w-full h-full object-contain select-none pointer-events-none'
+            className='object-contain w-full h-full pointer-events-none select-none'
           />
         </div>
 

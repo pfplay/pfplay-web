@@ -19,7 +19,7 @@ export const MenuButton = ({
       }}
       className={cn(
         'flex h-max items-center justify-center gap-[8px] rounded-[4px]',
-        type === 'icon' && 'flex items-center gap-2 text-gray-50 p-2',
+        type === 'icon' && 'flex items-center gap-2 text-gray-50 p-1',
         type === 'button' &&
           `border border-solid px-[16px] h-[36px] ${sizeDict['md']} ${colorsDict['secondary']['outline'].default}`
       )}
