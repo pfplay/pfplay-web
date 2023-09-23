@@ -4,8 +4,8 @@ import React from 'react';
 import DisplayOptionMenuOnHoverListener from '@/components/@shared/DisplayOptionMenuOnHoverListener';
 import Icons from '@/components/__legacy__/Icons';
 import { cn } from '@/utils/cn';
+import { MenuItem } from './Menu/MenuItemPanel';
 import Typography from './Typography';
-import { MenuItem } from '../Menu';
 
 export interface PlayListItemType {
   id: number;

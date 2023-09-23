@@ -93,7 +93,7 @@ const typoTypeDict: Record<ButtonSize, TypographyType> = {
   lg: 'body3',
   xl: 'body1',
 };
-const sizeDict: Record<ButtonSize, string> = {
+export const sizeDict: Record<ButtonSize, string> = {
   xs: 'px-[8px] h-[28px]',
   sm: 'px-[12px] h-[32px]',
   md: 'px-[16px] h-[36px]',
@@ -108,7 +108,7 @@ const iconSizeDict: Record<ButtonSize, string> = {
   xl: '[&>svg]:w-[32px] [&>svg]:h-[32px]',
 };
 type ButtonState = 'default' | 'hover' | 'active';
-const colorsDict: Record<ButtonColor, Record<ButtonVariant, Record<ButtonState, string>>> = {
+export const colorsDict: Record<ButtonColor, Record<ButtonVariant, Record<ButtonState, string>>> = {
   primary: {
     fill: {
       default: 'text-gray-50 bg-gradient-red',

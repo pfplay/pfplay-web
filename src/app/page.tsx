@@ -1,6 +1,11 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import HomeLoginButton from '@/components/@features/Home/HomeLoginButton';
+import Link from 'next/link';
+import Footer from '@/components/@features/Home/Footer';
+import Header from '@/components/@features/Home/Header';
+import Typography from '@/components/@shared/@atoms/Typography';
+import { cn } from '@/utils/cn';
+import { NO_AUTH_ROUTES } from '@/utils/routes';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -13,20 +18,25 @@ export const metadata: Metadata = {
 const HomePage = () => {
   return (
     <>
-      <main className='flexColCenter  bg-onboarding'>
+      <Header />
+      <main className={cn('min-w-tablet bg-onboarding flexColCenter gap-[92px]')}>
         <Image
-          className='mb-[72px]'
           src='/logos/wordmark_medium_white.svg'
           width={297.24}
           height={72}
           alt='logo'
+          priority
         />
-        <HomeLoginButton />
+        <Link
+          href={NO_AUTH_ROUTES.SIGN_IN.index}
+          className='border-none rounded py-[13px] px-[99px] bg-gradient-red'
+        >
+          <Typography className='text-gray-50' type='body1'>
+            Let your PFP Play
+          </Typography>
+        </Link>
       </main>
-      <footer className='w-full absolute bottom-[68px] flexRow justify-between text-white px-[120px]'>
-        <p className='footerText'>Privacy&Terms</p>
-        <p className='footerText'>당신의 PFP는 안녕하신가요?</p>
-      </footer>
+      <Footer />
     </>
   );
 };

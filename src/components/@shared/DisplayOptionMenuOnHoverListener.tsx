@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import Menu, { MenuItem } from '@/components/@shared/Menu';
+import useClickOutside from '@/hooks/useClickOutside';
 import { cn } from '@/utils/cn';
-import useClickOutside from '../../hooks/useClickOutside';
+import { MenuItem } from './@atoms/Menu/MenuItemPanel';
+import IconMenu from './IconMenu';
+import Icons from '../__legacy__/Icons';
 
 interface DisplayOptionMenuOnHoverListenerProps {
   menuConfig: MenuItem[];
@@ -58,8 +60,9 @@ const DisplayOptionMenuOnHoverListener = ({
             )}
           />
 
-          <Menu
-            optionMenuConfig={menuConfig}
+          <IconMenu
+            MenuButtonIcon={<Icons.option />}
+            menuItemConfig={menuConfig}
             onMenuIconClick={handleMenuIconClick}
             onMenuClose={handleMenuClose}
             menuContainerStyle={cn([
@@ -69,7 +72,7 @@ const DisplayOptionMenuOnHoverListener = ({
               menuPositionStyle,
             ])}
             ref={menuRef}
-            size='md'
+            menuItemPanel={{ size: 'md' }}
           />
         </>
       )}

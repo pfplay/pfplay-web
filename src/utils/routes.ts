@@ -18,6 +18,9 @@ const noAuthRoutes = {
   SIGN_IN: {
     index: { route: 'sign-in', title: 'Auth' },
   },
+  PARTIES: {
+    index: { route: 'parties', title: 'Parties' },
+  },
   ERROR: {
     index: { route: 'error', title: 'Error' }, // TODO: error.ts 페이지 추가
   },
