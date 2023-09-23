@@ -2,10 +2,10 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import React from 'react';
+import IconMenu from '@/components/@shared/IconMenu';
+import Icons from '@/components/__legacy__/Icons';
 import { NO_AUTH_ROUTES } from '@/utils/routes';
 import ProfileMenu from './ProfileMenu';
-import IconMenu from '../../@shared/IconMenu';
-import Icons from '../../__legacy__/Icons';
 
 const Header = () => {
   const session = useSession();

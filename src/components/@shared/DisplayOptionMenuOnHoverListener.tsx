@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import useClickOutside from '@/hooks/useClickOutside';
 import { cn } from '@/utils/cn';
 import { MenuItem } from './@atoms/Menu/MenuItemPanel';
 import IconMenu from './IconMenu';
-import useClickOutside from '../../hooks/useClickOutside';
 import Icons from '../__legacy__/Icons';
 
 interface DisplayOptionMenuOnHoverListenerProps {
