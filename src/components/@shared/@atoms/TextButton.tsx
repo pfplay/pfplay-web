@@ -2,7 +2,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
 import Loading from '@/components/@shared/@atoms/Loading';
-import Typography from '@/components/@shared/@atoms/Typography';
+import Typography, { TypographyType } from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 
 type TextButtonColor = 'basic' | 'primary' | 'secondary';
@@ -15,6 +15,7 @@ export interface TextButtonProps extends Omit<ButtonHTMLProps, 'color' | 'childr
   iconPlacement?: 'left' | 'right';
   loading?: boolean;
   underline?: boolean;
+  typographyType?: TypographyType;
 }
 
 const TextButton = forwardRef<HTMLButtonElement, TextButtonProps>(
@@ -29,6 +30,7 @@ const TextButton = forwardRef<HTMLButtonElement, TextButtonProps>(
       underline,
       disabled,
       onClick,
+      typographyType = 'detail1',
       ...rest
     },
     ref
@@ -40,7 +42,7 @@ const TextButton = forwardRef<HTMLButtonElement, TextButtonProps>(
         ref={ref}
         className={cn(
           'flex h-max items-center justify-center gap-[8px]',
-          '[&>svg]:w-[16px] [&>svg]:h-[16px]',
+          // '[&>svg]:w-[16px] [&>svg]:h-[16px]',
 
           colorsDict[color],
           interactable && 'transition-transform active:scale-[0.96]',
@@ -60,7 +62,7 @@ const TextButton = forwardRef<HTMLButtonElement, TextButtonProps>(
       >
         {loading ? <Loading /> : iconPlacement === 'left' && Icon}
 
-        <Typography type='detail1' overflow='break-normal'>
+        <Typography type={typographyType} overflow='break-normal'>
           {children}
         </Typography>
 

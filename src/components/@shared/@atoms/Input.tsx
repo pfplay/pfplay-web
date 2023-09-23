@@ -5,9 +5,8 @@ import {
   FC,
   ChangeEventHandler,
   useRef,
-  FocusEventHandler,
   MouseEventHandler,
-  CSSProperties,
+  FocusEventHandler,
 } from 'react';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
@@ -15,14 +14,17 @@ import { cn } from '@/utils/cn';
 type InputSize = 'md' | 'lg';
 type InputVariant = 'filled' | 'outlined';
 export interface InputProps
-  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'onChange' | 'size'> {
+  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'onChange' | 'size' | 'className'> {
   value: string;
   onChange: (v: string) => void;
   size?: InputSize;
   variant?: InputVariant;
   Prefix?: ReactNode;
   Suffix?: ReactNode;
-  width?: CSSProperties['width'];
+  className?: {
+    container?: string;
+    input?: string;
+  };
 }
 
 const Input: FC<InputProps> = ({
@@ -33,9 +35,9 @@ const Input: FC<InputProps> = ({
   variant = 'filled',
   Prefix,
   Suffix,
-  width,
   onFocus,
   onBlur,
+  className: { container: containerClassName, input: inputClassName } = {},
   ...rest
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -54,6 +56,7 @@ const Input: FC<InputProps> = ({
     onBlur?.(e);
     wrapperRef.current?.classList.remove('interaction-outline');
   };
+
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     onChange(e.target.value);
   };
@@ -66,17 +69,19 @@ const Input: FC<InputProps> = ({
         'max-w-full flex items-center px-[12px] rounded-[4px] cursor-text',
         sizeDict[size],
         variantDict[variant],
+        containerClassName,
       ])}
-      style={{ width }}
     >
       {Prefix && <div className='mr-[12px]'>{Prefix}</div>}
 
       <input
         ref={inputRef}
+        maxLength={maxLength}
         type='text'
-        className={
-          'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none'
-        }
+        className={cn(
+          'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none',
+          inputClassName
+        )}
         value={value}
         onChange={handleChangeInput}
         onFocus={handleFocusInput}

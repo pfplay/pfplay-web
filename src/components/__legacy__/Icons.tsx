@@ -62,15 +62,24 @@ const Icons = {
   ),
   arrowLeft: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
     <svg
-      xmlns='http://www.w3.org/2000/svg'
+      width='32'
+      height='32'
+      viewBox='0 0 32 32'
       fill='none'
-      viewBox='0 0 20 20'
-      strokeWidth={1.5}
-      stroke='currentColor'
-      className='w-8 h-8 mb-2 mr-5 cursor-pointer'
+      xmlns='http://www.w3.org/2000/svg'
       {...props}
     >
-      <path strokeLinecap='round' strokeLinejoin='round' d='M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18' />
+      <path
+        d='M29.3332 17C29.8855 17 30.3332 16.5523 30.3332 16C30.3332 15.4477 29.8855 15 29.3332 15V17ZM29.3332 15H2.6665V17H29.3332V15Z'
+        fill='white'
+      />
+      <path
+        d='M13.3332 5.33325L2.6665 15.9999L13.3332 26.6666'
+        stroke='white'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+      />
     </svg>
   ),
   square: ({ ...props }: React.SVGProps<SVGSVGElement>) => (

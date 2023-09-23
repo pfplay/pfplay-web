@@ -5,7 +5,7 @@ const ProfileEditLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <>
       <Header />
-      <main className='p-[120px] bg-black'>{children}</main>
+      <main className='min-w-laptop  py-[160px] pb-[120px] bg-black'>{children}</main>
     </>
   );
 };

@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
-import GoBackButton from '@/components/__legacy__/GoBackButton';
+import BackButton from '@/components/@shared/BackButton';
 import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
 import { cn } from '@/utils/cn';
 import AvatarBody, { AvatarBodyImg } from './AvatarBody';
@@ -18,7 +18,7 @@ const AvatarSettings = () => {
 
   return (
     <section className='max-w-[1680px] bg-gray-900  mx-auto pt-[46px] pb-12 px-[60px] flexCol gap-9'>
-      <GoBackButton text='뭘 입고 놀아볼까요?' className='self-start' />
+      <BackButton text='뭘 입고 놀아볼까요?' className='self-start' />
       <div className='flex gap-[30px] '>
         {/* 아바타 미리보기 */}
         <div className='relative flexRow items-center bg-black'>
