@@ -58,14 +58,14 @@ const ProfileSettingForm = () => {
       onSubmit={handleSubmit(handleFormSubmit)}
       className='flexCol justify-between items-center py-24'
     >
-      <div className='flexCol items-end  gap-12'>
+      <div className='flexCol items-end gap-12'>
         <Controller
           control={control}
           name='nickName'
           render={({ field }) => (
             <FormItem
               label='닉네임'
-              error={'한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'}
+              error={errors.nickName && '한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'}
               required
               classNames={{ label: 'text-gray-200' }}
             >
@@ -87,7 +87,7 @@ const ProfileSettingForm = () => {
           render={({ field }) => (
             <FormItem
               label='소개'
-              error={'한/영 구분 없이 띄어쓰기 포함 50자 제한'}
+              error={errors.introduction && '한/영 구분 없이 띄어쓰기 포함 50자 제한'}
               classNames={{ label: 'text-gray-200' }}
             >
               <TextArea

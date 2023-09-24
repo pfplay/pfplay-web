@@ -10,9 +10,8 @@ export const metadata: Metadata = {
 
 const ProfileSettingsPage = () => {
   return (
-    // TODO: add padding responsive with/ without width
-    <section className='relative min-w-laptop tablet:w-tablet laptop:w-desktop flexCol mx-auto pt-10 px-[60px] bg-gray-800'>
-      <BackButton text='당신은 누구신가요?' className='self-start' />
+    <section className='absolute inset-x-32 inset-y-32 flexColCenter py-10 px-[60px] bg-gray-800'>
+      <BackButton text='당신은 누구신가요?' className='absolute top-10 self-start' />
       <ProfileSettingForm />
     </section>
   );
