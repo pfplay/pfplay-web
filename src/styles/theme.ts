@@ -38,6 +38,7 @@ const theme = {
   },
   width: breakPoints,
   minWidth: breakPoints,
+  maxHeight: breakPoints,
   screens: breakPoints,
   zIndex: {
     dialog: '1000',

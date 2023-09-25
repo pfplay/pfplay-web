@@ -17,11 +17,14 @@ interface AvatarBodyProps {
 
 const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
   return (
-    <section className='flexCol gap-5'>
-      <div className='max-h-[400px] grid grid-cols-5 gap-5 mt-7 scrollbar-hide overflow-y-auto'>
+    <section className='relative flexCol h-full gap-5'>
+      <div className='max-h-[300px] grid grid-cols-2 gap-5 laptop:grid-cols-3 desktop:grid-cols-5 mt-7 overflow-y-auto'>
         {/* //  TODO: 아바타 이미지 데이터 가져오면 mock arr 대체하기 */}
         {mockAvatarBodyList.map((avatar) => (
-          <div key={avatar.id} className='relative w-full max-width-[200px] aspect-square'>
+          <div
+            key={avatar.id}
+            className='relative w-full max-width-[200px] aspect-square cursor-pointer'
+          >
             {/* // TODO: Component화 시키고 반응형으로 만들기 */}
             <Image
               key={avatar.id}
@@ -31,7 +34,7 @@ const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
               sizes='(max-width:200px) 100vw, 200px'
               onClick={() => setSelectedBody({ ...avatar })}
               className={cn(
-                'bg-gray-500 max-h-[200px] aspect-square cursor-pointer',
+                'bg-gray-500 max-h-[200px] aspect-square select-none drag-none',
                 selectedBody.id === avatar.id && 'border-[1px] border-red-700 bg-gray-50'
               )}
             />

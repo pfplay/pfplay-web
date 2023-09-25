@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const ProfileSettingsPage = () => {
   return (
-    <section className='absolute inset-x-32 inset-y-32 flexColCenter py-10 px-[60px] bg-gray-800'>
+    <section className='absolute-user-form-section flexColCenter py-10 px-[60px]'>
       <BackButton text='당신은 누구신가요?' className='absolute top-10 self-start' />
       <ProfileSettingForm />
     </section>
