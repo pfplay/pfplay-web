@@ -14,7 +14,7 @@ interface BoxProps {
 interface NonBoxProps {
   variant?: 'line' | 'text';
 }
-export type CustomTabProps = (CommonProps & BoxProps) | (CommonProps & NonBoxProps);
+export type CustomTabProps = CommonProps & (BoxProps | NonBoxProps);
 
 const CustomTab = (props: CustomTabProps) => {
   if (props.variant === 'box') {

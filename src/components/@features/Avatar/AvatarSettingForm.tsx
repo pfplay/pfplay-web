@@ -20,9 +20,7 @@ const AvatarSettingForm = () => {
 
   return (
     <div className='flexRow gap-[60px]'>
-      {/* 아바타 미리보기 */}
       <div className='h-full flexRow items-center bg-black select-none pointer-events-none'>
-        {/* // TODO: Component화 시키고 반응형으로 만들기 */}
         <Image
           src={selectedBody.image}
           alt={selectedBody.name}
@@ -32,15 +30,12 @@ const AvatarSettingForm = () => {
           className='bg-black min-w-[300px]'
         />
       </div>
-      {/* 아이템 설정 */}
       <div className='flexCol w-full'>
         <Tab.Group>
           <Tab.List className={cn('w-full flexRow')}>
-            <div className='flexRow max-w-xs'>
-              {avatarSettingTabConfig.map((tab) => (
-                <CustomTab key={tab.index} tabTitle={tab.name} variant='line' />
-              ))}
-            </div>
+            {avatarSettingTabConfig.map((tab) => (
+              <CustomTab key={tab.index} tabTitle={tab.name} variant='line' />
+            ))}
             <div className='flex-1 border-b-[1px] border-b-gray-400' />
           </Tab.List>
           <Tab.Panels>
