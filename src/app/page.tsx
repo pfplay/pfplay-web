@@ -1,9 +1,8 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import Footer from '@/components/@features/Home/Footer';
 import Header from '@/components/@features/Home/Header';
-import Typography from '@/components/@shared/@atoms/Typography';
+import CustomLink from '@/components/@shared/CustomLink';
 import { cn } from '@/utils/cn';
 import { NO_AUTH_ROUTES } from '@/utils/routes';
 
@@ -27,14 +26,11 @@ const HomePage = () => {
           alt='logo'
           priority
         />
-        <Link
+        <CustomLink
           href={NO_AUTH_ROUTES.SIGN_IN.index}
-          className='border-none rounded py-[13px] px-[99px] bg-gradient-red'
-        >
-          <Typography className='text-gray-50' type='body1'>
-            Let your PFP Play
-          </Typography>
-        </Link>
+          linkTitle='Let your PFP Play'
+          className='px-[99px]'
+        />
       </main>
       <Footer />
     </>

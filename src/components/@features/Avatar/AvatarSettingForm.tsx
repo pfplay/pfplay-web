@@ -3,8 +3,10 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import CustomTab from '@/components/@shared/@atoms/CustomTab';
+import CustomLink from '@/components/@shared/CustomLink';
 import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
 import { cn } from '@/utils/cn';
+import { ROUTES } from '@/utils/routes';
 import AvatarBody from './AvatarBody';
 import AvatarFace from './AvatarFace';
 import { AvatarImg } from './AvatarImage';
@@ -30,7 +32,7 @@ const AvatarSettingForm = () => {
           className='bg-black min-w-[300px]'
         />
       </div>
-      <div className='flexCol w-full'>
+      <div className='w-full flexCol'>
         <Tab.Group>
           <Tab.List className={cn('w-full flexRow')}>
             {avatarSettingTabConfig.map((tab) => (
@@ -47,6 +49,13 @@ const AvatarSettingForm = () => {
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
+
+        <CustomLink
+          href={ROUTES.PARTIES.index}
+          linkTitle="Let's get in"
+          className='self-end px-[88.5px]'
+          // disabled={true}
+        />
       </div>
     </div>
   );

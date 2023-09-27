@@ -78,9 +78,6 @@ const AvatarFace = ({ selectedFace, setSelectedFace }: AvatarFaceProps) => {
               />
             ))}
           </div>
-          <Button size='xl' className='self-end px-[88.5px]'>
-            Let&apos;s get in
-          </Button>
         </div>
       </section>
     </div>

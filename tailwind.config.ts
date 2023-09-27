@@ -19,7 +19,7 @@ const tailwindConfig: Config = {
 
     plugin(({ addUtilities }) => {
       addUtilities({
-        '.drag-none': {
+        '.user-drag-none': {
           '-webkit-user-drag': 'none',
           '-khtml-user-drag': 'none',
           '-moz-user-drag': 'none',
