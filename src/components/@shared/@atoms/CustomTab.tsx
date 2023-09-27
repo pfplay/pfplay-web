@@ -29,7 +29,9 @@ const CustomTab = (props: CustomTabProps) => {
             )}
           >
             {props.onSwitchPrefixIconColor(selected)}
-            <Typography type={'body1'}>{props.tabTitle}</Typography>
+            <Typography type={'body1'} className='capitalize'>
+              {props.tabTitle}
+            </Typography>
           </button>
         )}
       </Tab>
@@ -48,7 +50,7 @@ const CustomTab = (props: CustomTabProps) => {
         )
       }
     >
-      <Typography type={props.variant === 'text' ? 'detail1' : 'body1'}>
+      <Typography type={props.variant === 'text' ? 'detail1' : 'body1'} className='capitalize'>
         {props.tabTitle}
       </Typography>
     </Tab>

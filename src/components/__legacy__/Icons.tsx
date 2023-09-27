@@ -76,9 +76,9 @@ const Icons = {
       <path
         d='M13.3332 5.33325L2.6665 15.9999L13.3332 26.6666'
         stroke='white'
-        stroke-width='2'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   ),

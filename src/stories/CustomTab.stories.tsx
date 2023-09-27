@@ -2,7 +2,7 @@ import { PropsWithChildren, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import type { Meta } from '@storybook/react';
 import themeColors from 'tailwindcss/colors';
-import CustomTab from '@/components/@shared/@atoms/Tab';
+import CustomTab from '@/components/@shared/@atoms/CustomTab';
 import Icons from '@/components/__legacy__/Icons';
 
 const meta = {

@@ -2,10 +2,12 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
+import CustomTab from '@/components/@shared/@atoms/CustomTab';
 import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
 import { cn } from '@/utils/cn';
-import AvatarBody, { AvatarBodyImg } from './AvatarBody';
+import AvatarBody from './AvatarBody';
 import AvatarFace from './AvatarFace';
+import { AvatarImg } from './AvatarImage';
 
 const avatarSettingTabConfig: Array<{ name: 'body' | 'face'; index: number }> = [
   { name: 'body', index: 0 },
@@ -13,8 +15,8 @@ const avatarSettingTabConfig: Array<{ name: 'body' | 'face'; index: number }> = 
 ];
 
 const AvatarSettingForm = () => {
-  const [selectedBody, setSelectedBody] = useState<AvatarBodyImg>(mockAvatarBodyList[0]);
-  const [selectedFace, setSelectedFace] = useState<AvatarBodyImg>(mockAvatarBodyList[0]); // FIXME: Avatar face type 정해면 재정의
+  const [selectedBody, setSelectedBody] = useState<AvatarImg>(mockAvatarBodyList[0]);
+  const [selectedFace, setSelectedFace] = useState<AvatarImg>(mockAvatarBodyList[0]); // FIXME: Avatar face type 정해면 재정의
 
   return (
     <div className='flexRow gap-[60px]'>
@@ -33,21 +35,13 @@ const AvatarSettingForm = () => {
       {/* 아이템 설정 */}
       <div className='flexCol w-full'>
         <Tab.Group>
-          <Tab.List className={cn('w-full flex space-x-1 max-w-xs')}>
-            {avatarSettingTabConfig.map((tab) => (
-              // TODO: Tab 컴포넌트 Atom으로 분리하기
-              <Tab
-                key={tab.index}
-                className={({ selected }) =>
-                  cn(
-                    'w-[101px] flexRowCenter py-2 px-6 border-b-[1px] bg-transparent outline-none text-xl font-bold text-gray-500 border-gray-500 uppercase',
-                    selected && 'text-red-400  border-red-700'
-                  )
-                }
-              >
-                {tab.name}
-              </Tab>
-            ))}
+          <Tab.List className={cn('w-full flexRow')}>
+            <div className='flexRow max-w-xs'>
+              {avatarSettingTabConfig.map((tab) => (
+                <CustomTab key={tab.index} tabTitle={tab.name} variant='line' />
+              ))}
+            </div>
+            <div className='flex-1 border-b-[1px] border-b-gray-400' />
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel tabIndex={avatarSettingTabConfig[0].index}>
