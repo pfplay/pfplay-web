@@ -41,7 +41,7 @@
   }
 
   .absolute-user-form-section {
-    @apply absolute inset-x-32 top-32 bottom-20 bg-gray-800;
+    @apply absolute inset-x-32 top-32 bottom-20 bg-gray-800 min-h-[620px] max-h-tablet;
   }
 }
 

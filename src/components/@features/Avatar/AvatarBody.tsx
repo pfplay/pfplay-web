@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Button from '@/components/@shared/@atoms/Button';
 import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
 import { cn } from '@/utils/cn';
 
@@ -17,8 +18,8 @@ interface AvatarBodyProps {
 
 const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
   return (
-    <section className='relative flexCol h-full gap-5'>
-      <div className='max-h-[300px] grid grid-cols-2 gap-5 laptop:grid-cols-3 desktop:grid-cols-5 mt-7 overflow-y-auto'>
+    <section className='flexCol gap-10'>
+      <div className='max-h-[300px] grid grid-cols-2 gap-5 laptop:grid-cols-3 desktop:grid-cols-5 mt-7 overflow-y-auto styled-scroll'>
         {/* //  TODO: 아바타 이미지 데이터 가져오면 mock arr 대체하기 */}
         {mockAvatarBodyList.map((avatar) => (
           <div
@@ -41,12 +42,9 @@ const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
           </div>
         ))}
       </div>
-      {/* TODO: Button 컴포넌트 수정되면 대체 */}
-      <button
-        className={cn('self-end bg-gradient-red text-gray-50 font-bold-sm px-[96px] py-[12px]')}
-      >
+      <Button size='xl' className='self-end px-[88.5px]'>
         Let&apos;s get in
-      </button>
+      </Button>
     </section>
   );
 };

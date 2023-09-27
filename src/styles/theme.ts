@@ -38,6 +38,8 @@ const theme = {
   },
   width: breakPoints,
   minWidth: breakPoints,
+  maxWidth: breakPoints,
+  minHeight: breakPoints,
   maxHeight: breakPoints,
   screens: breakPoints,
   zIndex: {

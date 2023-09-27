@@ -14,9 +14,10 @@ const avatarSettingTabConfig: Array<{ name: 'body' | 'face'; index: number }> = 
 
 const AvatarSettingForm = () => {
   const [selectedBody, setSelectedBody] = useState<AvatarBodyImg>(mockAvatarBodyList[0]);
+  const [selectedFace, setSelectedFace] = useState<AvatarBodyImg>(mockAvatarBodyList[0]); // FIXME: Avatar face type 정해면 재정의
 
   return (
-    <div className='flexRow gap-[30px]'>
+    <div className='flexRow gap-[60px]'>
       {/* 아바타 미리보기 */}
       <div className='h-full flexRow items-center bg-black select-none pointer-events-none'>
         {/* // TODO: Component화 시키고 반응형으로 만들기 */}
@@ -53,7 +54,7 @@ const AvatarSettingForm = () => {
               <AvatarBody selectedBody={selectedBody} setSelectedBody={setSelectedBody} />
             </Tab.Panel>
             <Tab.Panel tabIndex={avatarSettingTabConfig[1].index}>
-              <AvatarFace />
+              <AvatarFace selectedFace={selectedFace} setSelectedFace={setSelectedFace} />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
