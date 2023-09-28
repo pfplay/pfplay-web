@@ -21,7 +21,7 @@ export interface InputProps
   variant?: InputVariant;
   Prefix?: ReactNode;
   Suffix?: ReactNode;
-  className?: {
+  classNames?: {
     container?: string;
     input?: string;
   };
@@ -37,7 +37,7 @@ const Input: FC<InputProps> = ({
   Suffix,
   onFocus,
   onBlur,
-  className: { container: containerClassName, input: inputClassName } = {},
+  classNames: { container: containerClassName, input: inputClassName } = {},
   ...rest
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);

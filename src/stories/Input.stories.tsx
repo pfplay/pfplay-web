@@ -29,7 +29,7 @@ Preview.args = {
 
 export const FixedWidth = Template.bind({});
 FixedWidth.args = {
-  className: {
+  classNames: {
     container: 'w-[300px]',
   },
 };

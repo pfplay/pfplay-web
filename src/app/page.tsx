@@ -29,7 +29,10 @@ const HomePage = () => {
         <CustomLink
           href={NO_AUTH_ROUTES.SIGN_IN.index}
           linkTitle='Let your PFP Play'
-          className='px-[99px]'
+          classNames={{
+            button: 'px-[99px]',
+          }}
+          size='xl'
         />
       </main>
       <Footer />

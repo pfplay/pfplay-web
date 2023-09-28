@@ -15,7 +15,7 @@ export const Preview: Story = {
   args: {
     linkTitle: 'CustomLink',
     href: 'https://www.naver.com',
-    className: 'px-[90px]',
+    classNames: { button: 'px-[90px]' },
   },
 };
 
@@ -24,6 +24,6 @@ export const Disabled: Story = {
     linkTitle: 'CustomLink disabled',
     href: 'https://www.naver.com',
     disabled: true,
-    className: 'px-[40px]',
+    classNames: { button: 'px-[40px]' },
   },
 };

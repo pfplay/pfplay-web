@@ -27,7 +27,7 @@ const AvatarImage = ({ avatar, selectedImg, setSelectedImage }: AvatarImageProps
         sizes='(max-width:200px) 100vw, 200px'
         onClick={() => setSelectedImage({ ...avatar })}
         className={cn(
-          'bg-gray-800 max-h-[200px] aspect-square select-none user-drag-none',
+          'bg-gray-800 max-h-[200px] aspect-square select-none',
           selectedImg.id === avatar.id && 'border-[1px] border-red-300'
         )}
       />

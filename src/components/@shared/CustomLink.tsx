@@ -1,28 +1,27 @@
 import Link from 'next/link';
 import React from 'react';
 import { cn } from '@/utils/cn';
-import Typography from './@atoms/Typography';
+import Button, { ButtonProps } from './@atoms/Button';
 
-interface CustomLinkProps {
+interface CustomLinkProps
+  extends Pick<
+    ButtonProps,
+    'variant' | 'color' | 'size' | 'typo' | 'Icon' | 'iconPlacement' | 'disabled'
+  > {
   linkTitle: string;
   href: string;
-  className?: string;
-  disabled?: boolean;
+  classNames?: {
+    container?: string;
+    button?: string;
+  };
 }
 
-const CustomLink = ({ href, linkTitle, className, disabled }: CustomLinkProps) => {
+const CustomLink = ({ href, linkTitle, classNames, ...props }: CustomLinkProps) => {
   return (
-    <Link
-      href={href}
-      className={cn(
-        'flexRowCenter rounded h-[56px] bg-gradient-red',
-        disabled && 'bg-transparent border border-gray-700 select-none pointer-events-none',
-        className
-      )}
-    >
-      <Typography className={cn('text-gray-50', disabled && ' text-gray-600')} type='body1'>
+    <Link href={href} className={cn('w-fit', classNames?.container)}>
+      <Button tabIndex={-1} className={cn(classNames?.button)} {...props}>
         {linkTitle}
-      </Typography>
+      </Button>
     </Link>
   );
 };

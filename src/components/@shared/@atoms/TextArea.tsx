@@ -7,7 +7,7 @@ export interface TextAreaProps
   extends Omit<ComponentProps<'textarea'>, 'value' | 'onChange' | 'className'> {
   value: string;
   onChange: (v: string) => void;
-  className?: {
+  classNames?: {
     container?: string;
     textarea?: string;
   };
@@ -18,7 +18,7 @@ const TextArea: FC<TextAreaProps> = ({
   onChange,
   placeholder,
   maxLength,
-  className: { container: containerClassName, textarea: textareaClassName } = {},
+  classNames: { container: containerClassName, textarea: textareaClassName } = {},
   ...rest
 }) => {
   const handleChangeTextArea: ChangeEventHandler<HTMLTextAreaElement> = (e) => {

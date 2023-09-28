@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 
 const ProfileSettingsPage = () => {
   return (
-    <section className='absolute-user-form-section flexColCenter py-10 px-[60px]'>
-      <BackButton text='당신은 누구신가요?' className='absolute top-10 self-start' />
+    <div className='absolute-user-form-section flexColCenter py-10 px-[60px]'>
+      <BackButton text='당신은 누구신가요?' className='absolute self-start top-10' />
       <ProfileSettingForm />
-    </section>
+    </div>
   );
 };
 

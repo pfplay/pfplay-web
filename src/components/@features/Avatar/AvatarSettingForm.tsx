@@ -22,7 +22,7 @@ const AvatarSettingForm = () => {
 
   return (
     <div className='flexRow gap-[60px]'>
-      <div className='h-full flexRow items-center bg-black select-none pointer-events-none'>
+      <div className='items-center h-full bg-black pointer-events-none select-none flexRow'>
         <Image
           src={selectedBody.image}
           alt={selectedBody.name}
@@ -53,8 +53,11 @@ const AvatarSettingForm = () => {
         <CustomLink
           href={ROUTES.PARTIES.index}
           linkTitle="Let's get in"
-          className='self-end px-[88.5px]'
-          // disabled={true}
+          classNames={{
+            container: 'self-end',
+            button: 'px-[88.5px]',
+          }}
+          size='xl'
         />
       </div>
     </div>

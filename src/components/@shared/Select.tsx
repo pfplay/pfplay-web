@@ -13,24 +13,24 @@ export type SelectListItem = {
 interface SelectProps {
   selectListConfig: Array<SelectListItem>;
   initialValue?: SelectListItem;
-  className?: {
+  classNames?: {
     container?: string;
     selectButton?: string;
     optionPanel?: string;
   };
 }
 
-export const Select = ({ selectListConfig, initialValue, className }: SelectProps) => {
+export const Select = ({ selectListConfig, initialValue, classNames }: SelectProps) => {
   const [selected, setSelected] = useState<SelectListItem>(initialValue ?? selectListConfig[0]);
 
   return (
     <Listbox value={selected} onChange={setSelected}>
       {({ open }) => (
-        <div className={cn('relative w-full', className?.container)}>
+        <div className={cn('relative w-full', classNames?.container)}>
           <Listbox.Button
             className={cn([
               'relative w-full h-12 flexRow justify-between items-center rounded bg-gray-800 px-4 text-gray-50 border-[1px] border-gray-500 cursor-pointer focus:outline-none',
-              className?.selectButton,
+              classNames?.selectButton,
             ])}
           >
             <Typography type='detail1' overflow='ellipsis' className='w-5/6 text-left'>
@@ -47,7 +47,7 @@ export const Select = ({ selectListConfig, initialValue, className }: SelectProp
             <Listbox.Options
               className={cn([
                 'absolute max-h-[264px] w-full mt-2 py-3 overflow-auto rounded bg-gray-800 border-[1px] border-gray-500 focus:outline-none',
-                className?.optionPanel,
+                classNames?.optionPanel,
               ])}
             >
               {selectListConfig.map((config) => (

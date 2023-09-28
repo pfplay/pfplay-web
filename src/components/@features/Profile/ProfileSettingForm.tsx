@@ -56,9 +56,9 @@ const ProfileSettingForm = () => {
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className='flexCol justify-between items-center py-24'
+      className='items-center justify-between py-24 flexCol'
     >
-      <div className='flexCol items-end gap-12'>
+      <div className='items-end gap-12 flexCol'>
         <Controller
           control={control}
           name='nickName'
@@ -74,7 +74,7 @@ const ProfileSettingForm = () => {
                 {...field}
                 maxLength={16}
                 placeholder='한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'
-                className={{
+                classNames={{
                   container: 'w-[550px]',
                 }}
               />
@@ -95,7 +95,7 @@ const ProfileSettingForm = () => {
                 maxLength={50}
                 rows={3}
                 placeholder='한/영 구분 없이 띄어쓰기 포함 50자 제한'
-                className={{
+                classNames={{
                   container: 'w-[550px]',
                 }}
               />
@@ -106,7 +106,7 @@ const ProfileSettingForm = () => {
 
       <Button
         type='submit'
-        variant={btnDisabled ? 'outline' : 'fill'}
+        variant={btnDisabled ? 'outline' : 'fill'} // FIXME: true/false에 따라 variant가 바뀌어야 하는 것인지 디자이너와 협의 필요
         size='xl'
         className={cn('absolute bottom-10 right-[60px] px-[88px]')}
         disabled={btnDisabled}
