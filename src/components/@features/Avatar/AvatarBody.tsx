@@ -1,50 +1,24 @@
-import Image from 'next/image';
 import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
-import { cn } from '@/utils/cn';
-
-export type AvatarBodyImg = {
-  id: number;
-  type: 'basic' | 'dj' | 'room' | 'ref';
-  name: string;
-  image: string;
-  point: number;
-};
+import AvatarImage, { AvatarImg } from './AvatarImage';
 
 interface AvatarBodyProps {
-  selectedBody: AvatarBodyImg;
-  setSelectedBody: (body: AvatarBodyImg) => void;
+  selectedBody: AvatarImg;
+  setSelectedBody: (body: AvatarImg) => void;
 }
 
 const AvatarBody = ({ selectedBody, setSelectedBody }: AvatarBodyProps) => {
   return (
-    <section className='flexCol gap-5'>
-      <div className='max-h-[400px] grid grid-cols-5 gap-5 mt-7 scrollbar-hide overflow-y-auto'>
-        {/* //  TODO: 아바타 이미지 데이터 가져오면 mock arr 대체하기 */}
-        {mockAvatarBodyList.map((avatar) => (
-          <div key={avatar.id} className='relative w-full max-width-[200px] aspect-square'>
-            {/* // TODO: Component화 시키고 반응형으로 만들기 */}
-            <Image
-              key={avatar.id}
-              src={avatar.image}
-              alt={avatar.name}
-              fill
-              sizes='(max-width:200px) 100vw, 200px'
-              onClick={() => setSelectedBody({ ...avatar })}
-              className={cn(
-                'bg-gray-500 max-h-[200px] aspect-square cursor-pointer',
-                selectedBody.id === avatar.id && 'border-[1px] border-red-700 bg-gray-50'
-              )}
-            />
-          </div>
-        ))}
-      </div>
-      {/* TODO: Button 컴포넌트 수정되면 대체 */}
-      <button
-        className={cn('self-end bg-gradient-red text-gray-50 font-bold-sm px-[96px] py-[12px]')}
-      >
-        Let&apos;s get in
-      </button>
-    </section>
+    <div className='max-h-[300px] grid grid-cols-2 gap-5 laptop:grid-cols-3 desktop:grid-cols-5 mt-7 mb-10 overflow-y-auto styled-scroll'>
+      {/* //  TODO: 아바타 이미지 데이터 가져오면 mock arr 대체하기 */}
+      {mockAvatarBodyList.map((avatar) => (
+        <AvatarImage
+          key={avatar.id}
+          avatar={avatar}
+          selectedImg={selectedBody}
+          setSelectedImage={setSelectedBody}
+        />
+      ))}
+    </div>
   );
 };
 

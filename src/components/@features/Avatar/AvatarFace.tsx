@@ -1,117 +1,86 @@
 'use client';
-import Image from 'next/image';
+import Button from '@/components/@shared/@atoms/Button';
+import Typography from '@/components/@shared/@atoms/Typography';
+import Icons from '@/components/__legacy__/Icons';
+import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
+import AvatarImage, { AvatarImg } from './AvatarImage';
 
-const AvatarFace = () => {
+interface AvatarFaceProps {
+  selectedFace: AvatarImg;
+  setSelectedFace: (face: AvatarImg) => void;
+}
+
+const AvatarFace = ({ selectedFace, setSelectedFace }: AvatarFaceProps) => {
   // const connectWithMetamask = useMetamask();
   // const disconnect = useDisconnect();
   // const address = useAddress();
   return (
-    <>
-      <div className='flex justify-between items-center' style={{ marginTop: '20px' }}>
-        <span className='flex  items-center'>
-          <p style={{ fontSize: '28px' }}>NFT</p>
-          <span className='ml-4 flex text-gray-200' style={{ fontSize: '16px' }}>
-            연결된 지갑{' '}
-            <p className='ml-2 text-red-300' style={{ fontWeight: 'bold' }}>
-              1
-            </p>
-          </span>
-        </span>
-        <span className='flex items-center text-sm'>
-          <button
-            style={{
-              height: '36px',
-              marginLeft: '16px',
-              border: 'solid 1px',
-              borderRadius: '4px',
-            }}
-            className='text-sm flex justify-center items-center px-5 border-gray-500 bg-gray-700'
-            // onClick={connectWithMetamask}
-          >
-            <Image
-              src='/icons/icn_add.svg'
-              alt='Ethereum'
-              width={15}
-              height={15}
-              style={{ marginTop: '1px' }}
-            />{' '}
-            <p className='ml-1'>추가 연결</p>
-          </button>
-        </span>
-      </div>
-      {/* {address ? (
-        <div
-          className='grid grid-cols-5 gap-5 mt-7 scrollbar-hide overflow-y-auto'
-          style={{ maxHeight: '200px' }}
-        >
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
-          <div
-            className=' bg-gray-500'
-            style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}
-          ></div>
+    <div className='max-h-[580px] flexCol gap-5 mt-5'>
+      <section className='flexCol gap-5'>
+        <div className='flexRow justify-between items-center '>
+          <div className='flexRow gap-4'>
+            <Typography type='title1' className='text-gray-50 uppercase'>
+              nft
+            </Typography>
+            <Typography type='detail1' className='flexRowCenter gap-1 text-gray-50 uppercase'>
+              연결된 지갑이
+              <Typography className='text-red-300'>1</Typography>
+            </Typography>
+          </div>
+          <div className='flexRow gap-4'>
+            <Button variant='outline' color='secondary' className='px-[24px]'></Button>
+            <Button variant='fill' color='secondary' Icon={<Icons.plus />} className='px-[38px]'>
+              추가 연결
+            </Button>
+          </div>
         </div>
-      ) : (
-        <div className='flex justify-center items-center h-14 rounded bg-slate-900/30'>
-          <p>보유한 내역이 없어요</p>
+        <div className='w-full flexRowCenter bg-gray-800 py-4'>
+          {/* <div className=' grid grid-cols-2 gap-5 laptop:grid-cols-3 desktop:grid-cols-5 overflow-y-auto styled-scroll'>
+            <AvatarImage
+              key={1}
+              avatar={{
+                id: 1,
+                type: 'basic',
+                name: '도깨비불',
+                image:
+                  'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
+                point: 0,
+              }}
+              selectedImg={{
+                id: 1,
+                type: 'basic',
+                name: '도깨비불',
+                image:
+                  'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
+                point: 0,
+              }}
+              setSelectedImage={setSelectedFace}
+            />
+          </div> */}
+          <Typography type='body3' className='text-gray-400'>
+            보유한 내역이 없어요
+          </Typography>
         </div>
-      )} */}
-      <p style={{ fontSize: '28px', marginTop: '20px' }}>PFPlay</p>
-      <div
-        className='grid grid-cols-5 gap-5 mt-7 scrollbar-hide overflow-y-auto'
-        style={{ maxHeight: '190px' }}
-      >
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-        <div className=' bg-gray-500' style={{ maxWidth: '200px', aspectRatio: 'auto 1/1' }}></div>
-      </div>
-    </>
+      </section>
+      <section className='flexCol gap-5'>
+        <Typography type='title1' className='text-gray-50'>
+          PFPlay
+        </Typography>
+        <div className='flexCol gap-10'>
+          <div className='max-h-[140px] grid grid-cols-2 gap-5 laptop:grid-cols-3 desktop:grid-cols-5 overflow-y-auto styled-scroll'>
+            {/* //  TODO: 아바타 이미지 데이터 가져오면 mock arr 대체하기 */}
+            {mockAvatarBodyList.map((avatar) => (
+              <AvatarImage
+                key={avatar.id}
+                avatar={avatar}
+                selectedImg={selectedFace}
+                setSelectedImage={setSelectedFace}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 

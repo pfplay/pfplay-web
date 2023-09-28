@@ -1,7 +1,7 @@
-import { AvatarBodyImg } from '@/components/@features/Avatar/AvatarBody';
+import { AvatarImg } from '@/components/@features/Avatar/AvatarImage';
 
 //  TODO: 아바타 이미지 데이터 가져오면 mock arr, file 지우기
-export const mockAvatarBodyList: Array<AvatarBodyImg> = [
+export const mockAvatarBodyList: Array<AvatarImg> = [
   {
     id: 1,
     type: 'basic',

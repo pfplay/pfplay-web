@@ -5,7 +5,7 @@ import Icons from '@/components/__legacy__/Icons';
 
 const Footer = () => {
   return (
-    <footer className='absolute bottom-[52px] w-full min-w-tablet flexRow justify-between items-center px-[120px]'>
+    <footer className='absolute bottom-[52px] w-full min-w-laptop flexRow justify-between items-center px-[120px]'>
       <Typography className='text-gray-300'>Privacy&Terms</Typography>
       <Button
         variant='outline'

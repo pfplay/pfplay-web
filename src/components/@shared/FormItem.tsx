@@ -11,7 +11,7 @@ export interface FormItemProps {
 
   classNames?: {
     container?: string;
-    title?: string;
+    label?: string;
     childrenWrapper?: string;
   };
 }
@@ -52,7 +52,7 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
         className={cn([
           'relative text-start tablet:text-right',
           required && "after:ml-[0.2em] after:text-red-300 after:content-['*']",
-          classNames?.title,
+          classNames?.label,
         ])}
       >
         {label}

@@ -1,12 +1,16 @@
 'use client';
-import { ComponentProps, FC, ChangeEventHandler, CSSProperties } from 'react';
+import { ComponentProps, FC, ChangeEventHandler } from 'react';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 
-export interface TextAreaProps extends Omit<ComponentProps<'textarea'>, 'value' | 'onChange'> {
+export interface TextAreaProps
+  extends Omit<ComponentProps<'textarea'>, 'value' | 'onChange' | 'className'> {
   value: string;
   onChange: (v: string) => void;
-  width?: CSSProperties['width'];
+  classNames?: {
+    container?: string;
+    textarea?: string;
+  };
 }
 
 const TextArea: FC<TextAreaProps> = ({
@@ -14,8 +18,7 @@ const TextArea: FC<TextAreaProps> = ({
   onChange,
   placeholder,
   maxLength,
-  width,
-  className,
+  classNames: { container: containerClassName, textarea: textareaClassName } = {},
   ...rest
 }) => {
   const handleChangeTextArea: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
@@ -23,14 +26,15 @@ const TextArea: FC<TextAreaProps> = ({
   };
 
   return (
-    <div className='relative flex max-w-full' style={{ width }}>
+    <div className={cn('relative flex max-w-full', containerClassName)}>
       <textarea
         className={cn(
           'flex-1 min-h-max py-[12px] pl-[12px] pr-[60px] rounded-[4px]',
           'bg-gray-700 text-gray-50 placeholder:gray-400 caret-red-300',
           'focus:interaction-outline styled-scroll',
-          className
+          textareaClassName
         )}
+        maxLength={maxLength}
         placeholder={placeholder}
         value={value}
         onChange={handleChangeTextArea}

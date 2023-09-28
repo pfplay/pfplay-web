@@ -2,6 +2,38 @@ import React from 'react';
 
 // TODO: SVG ICON 준비되면 대체
 const Icons = {
+  plus: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      width='16'
+      height='16'
+      viewBox='0 0 16 16'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <g clip-path='url(#clip0_2539_2780)'>
+        <path
+          d='M1.3335 8H14.6668'
+          stroke='white'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+        />
+        <path
+          d='M8 14.6667V1.33343'
+          stroke='white'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+        />
+      </g>
+      <defs>
+        <clipPath id='clip0_2539_2780'>
+          <rect width='16' height='16' fill='white' />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
   close: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
     <svg
       width='24'
@@ -62,15 +94,24 @@ const Icons = {
   ),
   arrowLeft: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
     <svg
-      xmlns='http://www.w3.org/2000/svg'
+      width='32'
+      height='32'
+      viewBox='0 0 32 32'
       fill='none'
-      viewBox='0 0 20 20'
-      strokeWidth={1.5}
-      stroke='currentColor'
-      className='w-8 h-8 mb-2 mr-5 cursor-pointer'
+      xmlns='http://www.w3.org/2000/svg'
       {...props}
     >
-      <path strokeLinecap='round' strokeLinejoin='round' d='M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18' />
+      <path
+        d='M29.3332 17C29.8855 17 30.3332 16.5523 30.3332 16C30.3332 15.4477 29.8855 15 29.3332 15V17ZM29.3332 15H2.6665V17H29.3332V15Z'
+        fill='white'
+      />
+      <path
+        d='M13.3332 5.33325L2.6665 15.9999L13.3332 26.6666'
+        stroke='white'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
     </svg>
   ),
   square: ({ ...props }: React.SVGProps<SVGSVGElement>) => (

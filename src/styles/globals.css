@@ -39,6 +39,10 @@
   .interaction-outline {
     @apply outline outline-gray-300;
   }
+
+  .absolute-user-form-section {
+    @apply absolute inset-x-32 top-28 bottom-20 bg-gray-900 min-h-[620px] max-h-tablet;
+  }
 }
 
 @layer utilities {

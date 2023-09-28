@@ -11,7 +11,7 @@ const Header = () => {
   const session = useSession();
 
   return (
-    <header className='absolute top-10 w-full min-w-tablet flex justify-between items-center px-[120px] py-0 z-20'>
+    <header className='absolute top-10 w-full min-w-laptop flex justify-between items-center px-[120px] py-0 z-20'>
       <Link href={NO_AUTH_ROUTES.HOME.index}>
         <Icons.logo width={124} />
       </Link>
