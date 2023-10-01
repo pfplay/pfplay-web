@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 
 export interface FormItemProps {
   label: ReactNode;
+  layout?: 'vertical' | 'horizontal';
   required?: boolean;
   error?: string | boolean;
   fit?: boolean;
@@ -19,6 +20,7 @@ export interface FormItemProps {
 const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
   children,
   label,
+  layout = 'horizontal',
   required,
   error,
   fit,
@@ -27,11 +29,10 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
   return (
     <label
       className={cn([
-        'grid gap-x-[16px] gap-y-[12px] items-center grid-rows-max auto-rows-max',
-        'tablet:gap-y-[6px]',
-        {
-          'tablet:grid-cols-[max-content_1fr]': !fit,
-          'tablet:grid-cols-[max-content_max-content]': fit,
+        'grid gap-x-[16px] gap-y-[8px] items-center grid-rows-max auto-rows-max',
+        layout === 'horizontal' && {
+          'grid-cols-[max-content_1fr]': !fit,
+          'grid-cols-[max-content_max-content]': fit,
         },
         classNames?.container,
       ])}
@@ -46,11 +47,15 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
       }}
     >
       <Typography
-        type='body2'
+        type={layout === 'horizontal' ? 'body2' : 'detail2'}
         data-custom-role='form-item-title'
         overflow='break-keep'
         className={cn([
-          'relative text-start tablet:text-right',
+          'relative pr-[12px]',
+          {
+            'text-start text-gray-300': layout === 'vertical',
+            'text-right': layout === 'horizontal',
+          },
           required && "after:ml-[0.2em] after:text-red-300 after:content-['*']",
           classNames?.label,
         ])}
@@ -59,7 +64,6 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
       </Typography>
 
       <div
-        data-custom-role='form-item-label'
         className={cn([
           'leading-none' /* FIXME: 이 속성이 들어간 이유 스레드 내용 참고 - https://pfplay.slack.com/files/U05CVKV905U/F05RGLGFE14/image.png */,
           fit && 'w-max',
@@ -72,7 +76,12 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
 
       {typeof error === 'string' && (
         <>
-          <div className='hidden tablet:block' />
+          <div
+            className={cn({
+              hidden: layout === 'vertical',
+              block: layout === 'horizontal',
+            })}
+          />
 
           <Typography
             type='caption1'
