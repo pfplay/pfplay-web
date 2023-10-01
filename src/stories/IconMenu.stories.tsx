@@ -1,8 +1,6 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
-import PFMoreVert from '@/components/@shared/@icons/action/PFMoreVert';
-import PFArrowLeft from '@/components/@shared/@icons/navigation/PFArrowLeft';
-import PFChevronDown from '@/components/@shared/@icons/navigation/PFChevronDown';
+import { PFMoreVert, PFArrowLeft, PFChevronDown } from '@/components/@shared/@icons';
 import IconMenu from '@/components/@shared/IconMenu';
 
 import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';

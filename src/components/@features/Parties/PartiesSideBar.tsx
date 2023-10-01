@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import PFHeadset from '@/components/@shared/@icons/music/PFHeadset';
+import { PFHeadset } from '@/components/@shared/@icons';
 import { NO_AUTH_ROUTES } from '@/utils/routes';
 import MyProfileModal from './MyProfileModal';
 

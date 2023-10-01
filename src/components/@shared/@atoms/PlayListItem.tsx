@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import React from 'react';
-import PFPlayCircleFilled from '@/components/@shared/@icons/music/PFPlayCircleFilled';
+import { PFPlayCircleFilled } from '@/components/@shared/@icons';
 import DisplayOptionMenuOnHoverListener from '@/components/@shared/DisplayOptionMenuOnHoverListener';
 
 import { cn } from '@/utils/cn';

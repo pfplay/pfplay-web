@@ -1,8 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import PFPersonOutline from '@/components/@shared/@icons/action/PFPersonOutline';
-import PFInfoOutline from '@/components/@shared/@icons/alert/PFInfoOutline';
+import { PFPersonOutline, PFInfoOutline } from '@/components/@shared/@icons';
 import { routerHelper } from '@/utils/routerHelper';
 import { ROUTES } from '@/utils/routes';
 

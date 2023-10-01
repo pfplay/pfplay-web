@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import PFArrowLeft from '@/components/@shared/@icons/navigation/PFArrowLeft';
+import { PFArrowLeft } from '@/components/@shared/@icons';
 import { cn } from '@/utils/cn';
 import TextButton from './@atoms/TextButton';
 

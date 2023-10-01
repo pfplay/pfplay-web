@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import PFEdit from '@/components/@shared/@icons/action/PFEdit';
-import PFClose from '@/components/@shared/@icons/navigation/PFClose';
+import { PFEdit, PFClose } from '@/components/@shared/@icons';
 
 interface MyProfileModalProps {
   isOpen: boolean;

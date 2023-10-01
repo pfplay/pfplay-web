@@ -1,11 +1,13 @@
 import TempPartiesTab from '@/components/@features/Parties/TempPartiesTab';
-import PFParty from '@/components/@shared/@icons/action/PFParty';
-import PFInfoOutline from '@/components/@shared/@icons/alert/PFInfoOutline';
-import PFCampaign from '@/components/@shared/@icons/chat/PFCampaign';
-import PFSend from '@/components/@shared/@icons/chat/PFSend';
-import PFThumbDownAlt from '@/components/@shared/@icons/display/PFThumbDownAlt';
-import PFThumbUpAlt from '@/components/@shared/@icons/display/PFThumbUpAlt';
-import PFAddPlaylist from '@/components/@shared/@icons/music/PFAddPlaylist';
+import {
+  PFParty,
+  PFInfoOutline,
+  PFCampaign,
+  PFSend,
+  PFThumbDownAlt,
+  PFThumbUpAlt,
+  PFAddPlaylist,
+} from '@/components/@shared/@icons';
 
 const PartyRoomPage = async () => {
   return (

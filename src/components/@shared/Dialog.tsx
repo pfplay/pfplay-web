@@ -3,7 +3,7 @@ import React, { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMem
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import Button, { ButtonProps } from '@/components/@shared/@atoms/Button';
 import Typography, { TypographyProps } from '@/components/@shared/@atoms/Typography';
-import PFClose from '@/components/@shared/@icons/navigation/PFClose';
+import { PFClose } from '@/components/@shared/@icons';
 import { cn } from '@/utils/cn';
 import { wrapByTag } from '@/utils/wrapByTag';
 

@@ -1,8 +1,7 @@
 'use client';
 import Button from '@/components/@shared/@atoms/Button';
 import Typography from '@/components/@shared/@atoms/Typography';
-
-import PFAdd from '@/components/@shared/@icons/action/PFAdd';
+import { PFAdd } from '@/components/@shared/@icons';
 import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
 import AvatarImage, { AvatarImg } from './AvatarImage';
 

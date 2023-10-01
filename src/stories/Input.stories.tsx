@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Meta, StoryFn } from '@storybook/react';
 import Button from '@/components/@shared/@atoms/Button';
 import Input, { InputProps } from '@/components/@shared/@atoms/Input';
-import PFHeadset from '@/components/@shared/@icons/music/PFHeadset';
+import { PFHeadset } from '@/components/@shared/@icons';
 
 const meta: Meta<typeof Input> = {
   title: '@atoms/Input',

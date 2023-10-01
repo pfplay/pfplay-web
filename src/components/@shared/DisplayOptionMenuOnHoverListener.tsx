@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import PFMoreVert from '@/components/@shared/@icons/action/PFMoreVert';
+import { PFMoreVert } from '@/components/@shared/@icons';
 import useClickOutside from '@/hooks/useClickOutside';
 import { cn } from '@/utils/cn';
 import { MenuItem } from './@atoms/Menu/MenuItemPanel';

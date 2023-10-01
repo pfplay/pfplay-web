@@ -1,7 +1,7 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import React from 'react';
-import PFLanguage from '@/components/@shared/@icons/action/PFLanguage';
+import { PFLanguage } from '@/components/@shared/@icons';
 import IconMenu from '@/components/@shared/IconMenu';
 
 import ProfileMenu from './ProfileMenu';

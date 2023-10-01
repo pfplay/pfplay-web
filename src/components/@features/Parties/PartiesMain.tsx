@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import PFAdd from '@/components/@shared/@icons/action/PFAdd';
+import { PFAdd } from '@/components/@shared/@icons';
 import CreatePartyModal from './CreatePartyModal';
 import PartiesMainStageCard from './PartiesMainStageCard';
 import PartyRoomCard from './PartyRoomCard';

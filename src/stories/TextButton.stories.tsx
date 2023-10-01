@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Meta, StoryObj } from '@storybook/react';
 import TextButton from '@/components/@shared/@atoms/TextButton';
-import PFLanguage from '@/components/@shared/@icons/action/PFLanguage';
+import { PFLanguage } from '@/components/@shared/@icons';
 
 const meta = {
   title: '@atoms/TextButton',

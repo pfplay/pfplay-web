@@ -1,8 +1,7 @@
 'use client';
 import React, { PropsWithChildren } from 'react';
 import { Disclosure } from '@headlessui/react';
-import PFChevronDown from '@/components/@shared/@icons/navigation/PFChevronDown';
-import PFChevronUp from '@/components/@shared/@icons/navigation/PFChevronUp';
+import { PFChevronDown, PFChevronUp } from '@/components/@shared/@icons';
 import { cn } from '@/utils/cn';
 import Typography from './@atoms/Typography';
 

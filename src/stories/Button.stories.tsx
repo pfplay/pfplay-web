@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Button from '@/components/@shared/@atoms/Button';
-import PFLanguage from '@/components/@shared/@icons/action/PFLanguage';
+import { PFLanguage } from '@/components/@shared/@icons';
 
 const meta = {
   title: '@atoms/Button',

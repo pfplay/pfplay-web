@@ -7,7 +7,7 @@ import React from 'react';
 import Button from '@/components/@shared/@atoms/Button';
 import TextButton from '@/components/@shared/@atoms/TextButton';
 import Typography from '@/components/@shared/@atoms/Typography';
-import PFClose from '@/components/@shared/@icons/navigation/PFClose';
+import { PFClose } from '@/components/@shared/@icons';
 import Dialog from '@/components/@shared/Dialog';
 
 import { useDialog } from '@/hooks/useDialog';
