@@ -13,7 +13,6 @@ const utils = {
     return transform.sync(
       svg,
       {
-        icon: true,
         typescript: true,
         jsxRuntime: 'automatic',
         prettierConfig: JSON.parse(prettierConfig),
