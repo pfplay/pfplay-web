@@ -34,8 +34,6 @@ const utils = {
 };
 
 const exec = () => {
-  const svgPaths = glob.sync(`${svgDir}/**/*.svg`);
-
   try {
     fs.rmSync(componentDir, { force: true, recursive: true });
   } catch {
@@ -44,6 +42,8 @@ const exec = () => {
       fs.mkdirSync(utils.generateSvgGroupDirPath(groupName), { recursive: true });
     }
   }
+
+  const svgPaths = glob.sync(`${svgDir}/**/*.svg`);
 
   for (const svgPath of svgPaths) {
     const [groupName, fileName] = svgPath.replace(`${svgDir}/`, '').split('/');
