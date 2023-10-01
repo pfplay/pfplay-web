@@ -17,7 +17,7 @@ const utils = {
         jsxRuntime: 'automatic',
         prettierConfig: JSON.parse(prettierConfig),
         replaceAttrValues: { '#fff': 'currentColor' },
-        plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx', '@svgr/plugin-prettier'],
+        plugins: ['@svgr/plugin-jsx', '@svgr/plugin-prettier'],
       },
       { componentName }
     );
