@@ -50,6 +50,22 @@ export const Align = {
   ),
 };
 
+export const Vertical = {
+  render: () => (
+    <form className='flex flex-col gap-[20px]'>
+      <FormItem label='Label' layout='vertical' required>
+        <input className={TEMP_INPUT_STYLES} />
+      </FormItem>
+      <FormItem label='LabelAAAAA' layout='vertical'>
+        <input className={TEMP_INPUT_STYLES} />
+      </FormItem>
+      <FormItem label='LabelBBB' layout='vertical' error='Error'>
+        <input className={TEMP_INPUT_STYLES} />
+      </FormItem>
+    </form>
+  ),
+};
+
 export const Fit: Story = {
   args: {
     label: 'Label',
@@ -96,7 +112,7 @@ export const ProcessError = (args: Omit<FormItemProps, 'label' | 'error'>) => {
         onSubmit={handleSubmit((data) => {
           alert(JSON.stringify(data, null, 2));
         })}
-        className='flex flex-col gap-[20px] child-form-labels:w-[100px]'
+        className='flex flex-col gap-[20px] child-form-labels:w-[120px]'
       >
         <FormItem label='Checkbox' error={errors.myBool?.message} required fit {...args}>
           <input type='checkbox' className='w-[20px] h-[20px]' {...register('myBool')} />
