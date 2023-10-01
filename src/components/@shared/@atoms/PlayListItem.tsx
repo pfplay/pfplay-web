@@ -1,8 +1,9 @@
 'use client';
 import Image from 'next/image';
 import React from 'react';
+import PFPlayCircleFilled from '@/components/@shared/@icons/music/PFPlayCircleFilled';
 import DisplayOptionMenuOnHoverListener from '@/components/@shared/DisplayOptionMenuOnHoverListener';
-import Icons from '@/components/__legacy__/Icons';
+
 import { cn } from '@/utils/cn';
 import { MenuItem } from './Menu/MenuItemPanel';
 import Typography from './Typography';
@@ -33,7 +34,7 @@ const PlayListItem = ({ playListItemConfig, menuItemList }: UserListItemProps) =
           <div className='relative w-[80px] h-[44px] bg-gray-700'>
             <Image
               priority
-              src={playListItemConfig.src ?? '/image/thumbnail.png'}
+              src={playListItemConfig.src ?? '/images/ETC/PlaylistThumbnail.png'}
               alt={playListItemConfig.alt ?? playListItemConfig.title}
               width={80}
               height={44}
@@ -47,7 +48,7 @@ const PlayListItem = ({ playListItemConfig, menuItemList }: UserListItemProps) =
               ])}
               onClick={(e) => handlePlayBtnClick(e, playListItemConfig.id)}
             >
-              <Icons.play />
+              <PFPlayCircleFilled />
             </div>
           </div>
           <div className='flexCol flex-1 min-w-0 select-none'>

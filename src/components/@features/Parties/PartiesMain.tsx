@@ -1,6 +1,6 @@
 'use client';
-import Image from 'next/image';
 import React, { useState } from 'react';
+import PFAdd from '@/components/@shared/@icons/action/PFAdd';
 import CreatePartyModal from './CreatePartyModal';
 import PartiesMainStageCard from './PartiesMainStageCard';
 import PartyRoomCard from './PartyRoomCard';
@@ -24,7 +24,7 @@ const PartiesMain = () => {
               <span className='text-gray-200'>원하는 테마의 파티를 자유롭게 호스트해보세요!</span>
             </div>
             <div className='flex items-center justify-center'>
-              <Image src='/icons/icn_add.svg' alt='add' width={60} height={60} />
+              <PFAdd width={60} height={60} />
             </div>
           </li>
           {[1, 2, 3, 4].map((roomId) => (

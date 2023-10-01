@@ -1,9 +1,7 @@
 import { PropsWithChildren, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import type { Meta } from '@storybook/react';
-import themeColors from 'tailwindcss/colors';
 import CustomTab from '@/components/@shared/@atoms/CustomTab';
-import Icons from '@/components/__legacy__/Icons';
 
 const meta = {
   title: 'ui/CustomTab',
@@ -37,24 +35,24 @@ export const TextTabs = () => {
   );
 };
 
-export const BoxTabs = () => {
-  const [categories] = useState<typeof exampleTabsConfig>(exampleTabsConfig);
-
-  return (
-    <TabsContainer>
-      {Object.keys(categories).map((category) => (
-        <CustomTab
-          key={category}
-          tabTitle={category}
-          variant='box'
-          onSwitchPrefixIconColor={(selected: boolean) => {
-            return <Icons.square fill={selected ? themeColors.red[500] : themeColors.gray[600]} />;
-          }}
-        />
-      ))}
-    </TabsContainer>
-  );
-};
+// export const BoxTabs = () => {
+//   const [categories] = useState<typeof exampleTabsConfig>(exampleTabsConfig);
+//
+//   return (
+//     <TabsContainer>
+//       {Object.keys(categories).map((category) => (
+//         <CustomTab
+//           key={category}
+//           tabTitle={category}
+//           variant='box'
+//           onSwitchPrefixIconColor={(selected: boolean) => {
+//             return <Icons.square fill={selected ? themeColors.red[500] : themeColors.gray[600]} />;
+//           }}
+//         />
+//       ))}
+//     </TabsContainer>
+//   );
+// };
 
 const exampleTabsConfig = {
   Recent: [

@@ -1,9 +1,10 @@
 'use client';
 import React, { PropsWithChildren } from 'react';
 import { Disclosure } from '@headlessui/react';
+import PFChevronDown from '@/components/@shared/@icons/navigation/PFChevronDown';
+import PFChevronUp from '@/components/@shared/@icons/navigation/PFChevronUp';
 import { cn } from '@/utils/cn';
 import Typography from './@atoms/Typography';
-import Icons from '../__legacy__/Icons';
 
 type CollapseListProps = {
   variant?: 'default' | 'accent' | 'outlined';
@@ -40,9 +41,9 @@ const CollapseList = ({
             <span className='flexRow items-center gap-2'>
               {infoText && <Typography className='text-gray-300'>{infoText}</Typography>}
               {open ? (
-                <Icons.arrowUp width={16} height={8} />
+                <PFChevronUp width={16} height={8} />
               ) : (
-                <Icons.arrowDown width={16} height={8} />
+                <PFChevronDown width={16} height={8} />
               )}
             </span>
           </Disclosure.Button>

@@ -7,8 +7,9 @@ import React from 'react';
 import Button from '@/components/@shared/@atoms/Button';
 import TextButton from '@/components/@shared/@atoms/TextButton';
 import Typography from '@/components/@shared/@atoms/Typography';
+import PFClose from '@/components/@shared/@icons/navigation/PFClose';
 import Dialog from '@/components/@shared/Dialog';
-import Icons from '@/components/__legacy__/Icons';
+
 import { useDialog } from '@/hooks/useDialog';
 import { NO_AUTH_ROUTES, ROUTES } from '@/utils/routes';
 
@@ -61,12 +62,12 @@ const OAuthSignIn = () => {
     <div className='relative min-h-screen flexRowCenter'>
       <div className='relative flexCol items-center px-[160px] pt-[62px] pb-[65px] backdrop-blur-xl bg-backdrop-black/50 border border-gray-800'>
         <Link href={NO_AUTH_ROUTES.HOME.index} className='absolute right-10 top-10'>
-          <Icons.close />
+          <PFClose />
         </Link>
 
         <div className='w-[150px] h-[36px] mb-[68px]'>
           <Image
-            src='/logos/wordmark_medium_white.svg'
+            src='/images/Logo/wordmark_medium_white.png'
             alt='logo'
             width={150}
             height={36}
@@ -79,7 +80,7 @@ const OAuthSignIn = () => {
           typo='detail1'
           color='secondary'
           variant='outline'
-          Icon={<Icons.google />}
+          Icon={<Image src='/images/ETC/google.png' alt='google' width={32} height={32} />}
           onClick={signInGoogle}
           className='w-[320px] h-[56px] mb-[40px]'
         >

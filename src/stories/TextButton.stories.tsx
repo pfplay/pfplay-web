@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Meta, StoryObj } from '@storybook/react';
 import TextButton from '@/components/@shared/@atoms/TextButton';
-import Icons from '@/components/__legacy__/Icons';
+import PFLanguage from '@/components/@shared/@icons/action/PFLanguage';
 
 const meta = {
   title: '@atoms/TextButton',
@@ -22,7 +22,7 @@ export const Preview: Story = {
 export const Icon: Story = {
   args: {
     children: 'Text btn',
-    Icon: <Icons.worldglobe width={16} height={16} />,
+    Icon: <PFLanguage width={16} height={16} />,
   },
 };
 

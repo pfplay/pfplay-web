@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import PFClose from '@/components/@shared/@icons/navigation/PFClose';
 
 interface CreatePartyModalProps {
   isOpen: boolean;
@@ -36,7 +36,7 @@ const CreatePartyModal = ({ isOpen, onModalClose }: CreatePartyModalProps) => {
             >
               <Dialog.Panel className='w-full max-w-[800px] transform overflow-hidden rounded-md bg-gray-800  p-10  pb-14  text-left align-middle shadow-xl transition-all'>
                 <button onClick={onModalClose} className='absolute right-10 top-10'>
-                  <Image src='/icons/icn_close.svg' alt='close' width={20} height={20} />
+                  <PFClose width={20} height={20} />
                 </button>
                 <Dialog.Title as='h1' className='text-left font-bold text-xl mb-12 text-gray-50'>
                   파티 정보

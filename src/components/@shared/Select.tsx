@@ -1,9 +1,10 @@
 'use client';
 import { Fragment, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
+import PFChevronDown from '@/components/@shared/@icons/navigation/PFChevronDown';
+import PFChevronUp from '@/components/@shared/@icons/navigation/PFChevronUp';
 import { cn } from '@/utils/cn';
 import Typography from './@atoms/Typography';
-import Icons from '../__legacy__/Icons';
 
 export type SelectListItem = {
   label: string;
@@ -36,7 +37,7 @@ export const Select = ({ selectListConfig, initialValue, classNames }: SelectPro
             <Typography type='detail1' overflow='ellipsis' className='w-5/6 text-left'>
               {selected.label}
             </Typography>
-            <span>{open ? <Icons.arrowUp /> : <Icons.arrowDown />}</span>
+            <span>{open ? <PFChevronUp /> : <PFChevronDown />}</span>
           </Listbox.Button>
           <Transition
             as={Fragment}

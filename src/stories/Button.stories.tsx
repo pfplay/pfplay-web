@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Button from '@/components/@shared/@atoms/Button';
-import Icons from '@/components/__legacy__/Icons';
+import PFLanguage from '@/components/@shared/@icons/action/PFLanguage';
 
 const meta = {
   title: '@atoms/Button',
@@ -21,13 +21,13 @@ export const Preview: Story = {
 export const Icon: Story = {
   args: {
     children: 'Button',
-    Icon: <Icons.worldglobe color={'white'} />,
+    Icon: <PFLanguage />,
   },
 };
 
 export const IconOnly: Story = {
   args: {
-    Icon: <Icons.worldglobe color={'white'} />,
+    Icon: <PFLanguage />,
   },
 };
 

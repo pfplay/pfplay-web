@@ -1,9 +1,9 @@
 'use client';
-import Image from 'next/image';
 import React, { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo } from 'react';
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import Button, { ButtonProps } from '@/components/@shared/@atoms/Button';
 import Typography, { TypographyProps } from '@/components/@shared/@atoms/Typography';
+import PFClose from '@/components/@shared/@icons/navigation/PFClose';
 import { cn } from '@/utils/cn';
 import { wrapByTag } from '@/utils/wrapByTag';
 
@@ -113,7 +113,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
                     <Button
                       color='secondary'
                       variant='outline'
-                      Icon={<Image src='/icons/icn_close.svg' alt='close' width={24} height={24} />}
+                      Icon={<PFClose width={24} height={24} />}
                       className='border-none p-0 absolute top-[2.5px] right-0' /*  */
                       onClick={onClose}
                     />

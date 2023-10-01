@@ -2,7 +2,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import Icons from '@/components/__legacy__/Icons';
+
+import PFHeadset from '@/components/@shared/@icons/music/PFHeadset';
 import { NO_AUTH_ROUTES } from '@/utils/routes';
 import MyProfileModal from './MyProfileModal';
 
@@ -26,7 +27,7 @@ const PartiesSideBar = () => {
       </div>
       <Link href={NO_AUTH_ROUTES.HOME.index} passHref>
         <div className='flex flex-col justify-center items-center gap-1'>
-          <Icons.headset />
+          <PFHeadset />
           <p className='text-gray-300 text-[12px]'>플레이 리스트</p>
         </div>
       </Link>

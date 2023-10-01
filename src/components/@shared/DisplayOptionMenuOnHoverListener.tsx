@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import PFMoreVert from '@/components/@shared/@icons/action/PFMoreVert';
 import useClickOutside from '@/hooks/useClickOutside';
 import { cn } from '@/utils/cn';
 import { MenuItem } from './@atoms/Menu/MenuItemPanel';
 import IconMenu from './IconMenu';
-import Icons from '../__legacy__/Icons';
 
 interface DisplayOptionMenuOnHoverListenerProps {
   menuConfig: MenuItem[];
@@ -61,7 +61,7 @@ const DisplayOptionMenuOnHoverListener = ({
           />
 
           <IconMenu
-            MenuButtonIcon={<Icons.option />}
+            MenuButtonIcon={<PFMoreVert />}
             menuItemConfig={menuConfig}
             onMenuIconClick={handleMenuIconClick}
             onMenuClose={handleMenuClose}

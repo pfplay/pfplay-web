@@ -1,6 +1,6 @@
+import Image from 'next/image';
 import type { Meta } from '@storybook/react';
 import Tag from '@/components/@shared/@atoms/Tag';
-import Icons from '@/components/__legacy__/Icons';
 
 const meta = {
   title: '@atoms/Tag',
@@ -19,5 +19,11 @@ export const OutlinedTag = () => {
 };
 
 export const ProfileTag = () => {
-  return <Tag variant='profile' value='박가든 garden' PrefixIcon={<Icons.profileExample />} />;
+  return (
+    <Tag
+      variant='profile'
+      value='박가든 garden'
+      PrefixIcon={<Image src='/images/Temp/ProfileExample.png' alt='' width={20} height={20} />}
+    />
+  );
 };

@@ -1,7 +1,7 @@
 'use client';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import PFPersonOutline from '@/components/@shared/@icons/action/PFPersonOutline';
 import { routerHelper } from '@/utils/routerHelper';
 import { ROUTES } from '@/utils/routes';
 
@@ -29,7 +29,7 @@ const PartiesMainStageCard = () => {
       <div className='w-full flex justify-start items-center gap-36 mt-[28px]'>
         <div className='flexRow gap-11'>
           <div className='flex  gap-x-1.5'>
-            <Image src='/icons/icn_person_outline.svg' alt='채팅' width={20} height={20} />
+            <PFPersonOutline width={20} height={20} />
             <p className='text-gray-200'>48</p>
           </div>
           <ul className='flex items-center gap-x-2'>

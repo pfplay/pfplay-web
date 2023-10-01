@@ -1,7 +1,8 @@
 'use client';
 import Button from '@/components/@shared/@atoms/Button';
 import Typography from '@/components/@shared/@atoms/Typography';
-import Icons from '@/components/__legacy__/Icons';
+
+import PFAdd from '@/components/@shared/@icons/action/PFAdd';
 import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
 import AvatarImage, { AvatarImg } from './AvatarImage';
 
@@ -29,7 +30,7 @@ const AvatarFace = ({ selectedFace, setSelectedFace }: AvatarFaceProps) => {
           </div>
           <div className='flexRow gap-4'>
             <Button variant='outline' color='secondary' className='px-[24px]'></Button>
-            <Button variant='fill' color='secondary' Icon={<Icons.plus />} className='px-[38px]'>
+            <Button variant='fill' color='secondary' Icon={<PFAdd />} className='px-[38px]'>
               추가 연결
             </Button>
           </div>

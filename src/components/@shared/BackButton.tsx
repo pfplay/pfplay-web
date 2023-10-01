@@ -1,9 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import PFArrowLeft from '@/components/@shared/@icons/navigation/PFArrowLeft';
 import { cn } from '@/utils/cn';
 import TextButton from './@atoms/TextButton';
-import Icons from '../__legacy__/Icons';
 
 interface GoBackButtonProps {
   text: string;
@@ -15,7 +15,7 @@ const BackButton = ({ text, className }: GoBackButtonProps) => {
 
   return (
     <TextButton
-      Icon={<Icons.arrowLeft width={32} height={32} />}
+      Icon={<PFArrowLeft width={32} height={32} />}
       onClick={() => router.back()}
       className={cn('gap-5', className)}
       typographyType='title2'
