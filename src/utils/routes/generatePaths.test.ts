@@ -76,7 +76,7 @@ describe('generatePaths 함수 테스트', () => {
           settings: { route: 'settings' },
         },
       },
-      TEST: {
+      GROUP: {
         group: true,
         PROFILE: {
           index: { route: 'profile' },
@@ -99,13 +99,15 @@ describe('generatePaths 함수 테스트', () => {
           settings: '/user/profile/settings',
         },
       },
-      PROFILE: {
-        index: '/profile',
-        settings: '/profile/settings',
-      },
-      AVATAR: {
-        index: '/avatar',
-        settings: '/avatar/settings',
+      GROUP: {
+        PROFILE: {
+          index: '/profile',
+          settings: '/profile/settings',
+        },
+        AVATAR: {
+          index: '/avatar',
+          settings: '/avatar/settings',
+        },
       },
     });
   });
