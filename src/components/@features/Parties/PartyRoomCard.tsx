@@ -2,8 +2,8 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { PFPersonOutline, PFInfoOutline } from '@/components/@shared/@icons';
-import { routerHelper } from '@/utils/routerHelper';
 import { ROUTES } from '@/utils/routes';
+import { replaceDynamic } from '@/utils/routes/replaceDynamic';
 
 interface PartyRoomCardProps {
   roomId: number; // TODO: set proper type for value when api is connected
@@ -19,7 +19,7 @@ const PartyRoomCard = ({ roomId }: PartyRoomCardProps) => {
     <li
       onClick={() =>
         router.push(
-          routerHelper.replaceDynamic(ROUTES.PARTIES.room, {
+          replaceDynamic(ROUTES.PARTIES.room, {
             id: roomId, // TODO: set proper route with id
           })
         )

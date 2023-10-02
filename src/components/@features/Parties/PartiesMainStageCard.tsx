@@ -2,8 +2,8 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { PFPersonOutline } from '@/components/@shared/@icons';
-import { routerHelper } from '@/utils/routerHelper';
 import { ROUTES } from '@/utils/routes';
+import { replaceDynamic } from '@/utils/routes/replaceDynamic';
 
 const PartiesMainStageCard = () => {
   const router = useRouter();
@@ -17,7 +17,7 @@ const PartiesMainStageCard = () => {
         className='text-white font-poppins text-[28px] mb-1.5 cursor-pointer no-underline hover:underline'
         onClick={() =>
           router.push(
-            routerHelper.replaceDynamic(ROUTES.PARTIES.room, {
+            replaceDynamic(ROUTES.PARTIES.room, {
               id: 1, // TODO: set proper route for main stage
             })
           )
