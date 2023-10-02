@@ -1,7 +1,8 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
+import { PFMoreVert, PFArrowLeft, PFChevronDown } from '@/components/@shared/@icons';
 import IconMenu from '@/components/@shared/IconMenu';
-import Icons from '@/components/__legacy__/Icons';
+
 import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 
 const meta = {
@@ -16,7 +17,7 @@ export const IconMenuLarge = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
       <IconMenu
-        MenuButtonIcon={<Icons.option />}
+        MenuButtonIcon={<PFMoreVert />}
         menuItemConfig={mockMenuConfig}
         menuItemPanel={{
           size: 'lg',
@@ -30,7 +31,7 @@ export const IconMenuMedium = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
       <IconMenu
-        MenuButtonIcon={<Icons.option />}
+        MenuButtonIcon={<PFMoreVert />}
         menuItemConfig={mockMenuConfig}
         menuItemPanel={{
           size: 'md',
@@ -44,7 +45,7 @@ export const IconMenuSmall = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
       <IconMenu
-        MenuButtonIcon={<Icons.option />}
+        MenuButtonIcon={<PFMoreVert />}
         menuItemConfig={mockMenuConfig}
         menuItemPanel={{
           size: 'sm',
@@ -58,10 +59,10 @@ export const MenuWithHeaderIcon = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
       <IconMenu
-        MenuButtonIcon={<Icons.option />}
+        MenuButtonIcon={<PFMoreVert />}
         menuItemConfig={mockMenuConfig}
         menuItemPanel={{
-          HeaderIcon: <Icons.arrowLeft width={24} height={24} stroke='#fff' />,
+          HeaderIcon: <PFArrowLeft width={24} height={24} stroke='#fff' />,
           size: 'sm',
         }}
       />
@@ -73,9 +74,9 @@ export const IconMenuItemWithPrefixIcon = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
       <IconMenu
-        MenuButtonIcon={<Icons.option />}
+        MenuButtonIcon={<PFMoreVert />}
         menuItemConfig={mockMenuConfig}
-        menuItemPanel={{ PrefixIcon: <Icons.arrowDown stroke='#fff' /> }}
+        menuItemPanel={{ PrefixIcon: <PFChevronDown stroke='#fff' /> }}
       />
     </div>
   );

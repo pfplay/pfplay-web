@@ -1,7 +1,7 @@
 'use client';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { PFPersonOutline, PFInfoOutline } from '@/components/@shared/@icons';
 import { routerHelper } from '@/utils/routerHelper';
 import { ROUTES } from '@/utils/routes';
 
@@ -41,7 +41,7 @@ const PartyRoomCard = ({ roomId }: PartyRoomCardProps) => {
         <div className='flex justify-between items-center'>
           <div className='flex items-center gap-x-11'>
             <div className='flex items-center'>
-              <Image src='/icons/icn_person_outline.svg' alt='채팅' width={24} height={24} />
+              <PFPersonOutline width={24} height={24} />
               <span className='inline-block ml-1.5 text-gray-200'>48</span>
             </div>
             <ul className='flex items-center gap-x-2'>
@@ -50,7 +50,7 @@ const PartyRoomCard = ({ roomId }: PartyRoomCardProps) => {
               ))}
             </ul>
           </div>
-          <Image src='/icons/icn_info_outline.svg' alt='채팅' width={24} height={24} />
+          <PFInfoOutline width={24} height={24} />
         </div>
       </div>
       {/* TODO:  usecase 확인 후 Refactoring */}
@@ -65,7 +65,7 @@ const PartyRoomCard = ({ roomId }: PartyRoomCardProps) => {
           <div className='flex justify-end'>
             <button className='inline-flex items-center justify-center rounded border border-red-400 py-1.5 px-3 gap-x-2'>
               <span className='text-red-400 text-sm'>입장하기</span>
-              <Image src='/icons/icn_right.svg' alt='입장하기' width={14} height={14} />
+              <PFChevronRight width={14} height={14} />
             </button>
           </div>
         </div>

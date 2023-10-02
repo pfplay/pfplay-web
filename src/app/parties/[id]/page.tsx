@@ -1,5 +1,13 @@
-import Image from 'next/image';
-import PartiesTab from '@/components/@features/Parties/PartiesTab';
+import TempPartiesTab from '@/components/@features/Parties/TempPartiesTab';
+import {
+  PFParty,
+  PFInfoOutline,
+  PFCampaign,
+  PFSend,
+  PFThumbDownAlt,
+  PFThumbUpAlt,
+  PFAddPlaylist,
+} from '@/components/@shared/@icons';
 
 const PartyRoomPage = async () => {
   return (
@@ -8,17 +16,17 @@ const PartyRoomPage = async () => {
       <aside className='w-[400px] max-h-[90vh] absolute right-0 top-0'>
         <div className='pt-8 pb-3 px-7 bg-black grid grid-cols-2 gap-3'>
           <button className='inline-flex items-center justify-center space-x-2 bg-gray-900 py-2 rounded'>
-            <Image src='/icons/icn_info_outline.svg' alt='파티정보' width={20} height={20} />
+            <PFInfoOutline width={20} height={20} />
             <span className='text-gray-300 text-sm'>파티정보</span>
           </button>
           <button className='inline-flex items-center justify-center space-x-2 bg-gray-900 py-2 rounded'>
-            <Image src='/icons/icn_party.svg' alt='파티정보' width={20} height={20} />
+            <PFParty widths={20} height={20} />
             <span className='text-gray-300 text-sm'>파티목록</span>
           </button>
         </div>
         {/* 채팅, 사람 탭 */}
         <div className='px-7 bg-black'>
-          <PartiesTab />
+          <TempPartiesTab />
         </div>
         {/* 채팅창 목록 */}
         <div className='relative w-full bg-gradient-to-r from-black/0 via-black/80 to-black/80'>
@@ -42,7 +50,7 @@ const PartyRoomPage = async () => {
                 placeholder='무슨 얘기를 해볼까요?'
               />
               <button className='inline-flex items-center justify-center py-1 px-3 bg-gray-800 rounded-sm'>
-                <Image src='/icons/icn_send.svg' alt='send' width={20} height={20} />
+                <PFSend width={20} height={20} />
               </button>
             </div>
           </div>
@@ -51,7 +59,7 @@ const PartyRoomPage = async () => {
       {/* 가운데 플레이리스트 */}
       <section className='w-[512px] flex flex-col items-center justify-center mx-auto'>
         <div className='mt-11 bg-black px-3 py-2.5 flex items-center w-full border-2 border-gray-800 rounded'>
-          <Image src='/icons/icn_campaign.svg' alt='campaign' width={20} height={20} />
+          <PFCampaign width={20} height={20} />
           <p className='text-white text-xs ml-3'>
             회원간 비방 및 친목을 금지합니다. 어길 시 바로 강퇴
           </p>
@@ -63,15 +71,15 @@ const PartyRoomPage = async () => {
           </p>
           <div className='absolute top-1.5 right-1.5 flex items-center gap-x-1 bg-black'>
             <div className='bg-gray-800 w-12 py-1 rounded flex items-center justify-center flex-col'>
-              <Image src='/icons/icn_thumb_up.svg' alt='campaign' width={18} height={18} />
+              <PFThumbUpAlt width={18} height={18} />
               <p className='text-white font-bold mt-1'>17</p>
             </div>
             <div className='bg-gray-800 w-12 py-1 rounded flex items-center justify-center flex-col'>
-              <Image src='/icons/icn_add_playlist.svg' alt='campaign' width={18} height={18} />
+              <PFAddPlaylist width={18} height={18} />
               <p className='text-white font-bold mt-1'>5</p>
             </div>
             <div className='bg-gray-800 w-12 py-1 rounded flex items-center justify-center flex-col'>
-              <Image src='/icons/icn_thumb_down.svg' alt='campaign' width={18} height={18} />
+              <PFThumbDownAlt width={18} height={18} />
               <p className='text-white font-bold mt-1'>3</p>
             </div>
           </div>

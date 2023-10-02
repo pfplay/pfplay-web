@@ -6,6 +6,9 @@
   main {
     @apply min-h-screen bg-cover relative;
   }
+  body {
+    color: theme('colors.white');
+  }
   strong {
     font-weight: inherit;
   }

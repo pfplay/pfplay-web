@@ -20,7 +20,7 @@ const HomePage = () => {
       <Header />
       <main className={cn('min-w-laptop bg-onboarding flexColCenter gap-[92px]')}>
         <Image
-          src='/logos/wordmark_medium_white.svg'
+          src='/images/Logo/wordmark_medium_white.png'
           width={297.24}
           height={72}
           alt='logo'

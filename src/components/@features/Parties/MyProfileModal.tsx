@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { PFEdit, PFClose } from '@/components/@shared/@icons';
 
 interface MyProfileModalProps {
   isOpen: boolean;
@@ -36,7 +36,7 @@ const MyProfileModal = ({ isOpen, onModalClose }: MyProfileModalProps) => {
             >
               <Dialog.Panel className='w-full max-w-[800px] transform overflow-hidden rounded-md bg-gray-800  p-10  pb-14  text-left align-middle shadow-xl transition-all'>
                 <button onClick={onModalClose} className='absolute right-10 top-10'>
-                  <Image src='/icons/icn_close.svg' alt='close' width={20} height={20} />
+                  <PFClose width={20} height={20} />
                 </button>
                 <Dialog.Title as='h1' className='text-left font-bold text-xl mb-12 text-gray-50'>
                   내 프로필
@@ -49,12 +49,10 @@ const MyProfileModal = ({ isOpen, onModalClose }: MyProfileModalProps) => {
                     <div className='flex flex-col max-w-[300px]'>
                       <div className='flex gap-x-3 items-center'>
                         <p className='text-xl font-bold text-gray-200'>FENDI</p>
-                        <Image
+                        <PFEdit
                           width={18}
                           height={18}
-                          src={'/icons/icn_edit.svg'}
-                          alt={'수정하기'}
-                          className='cursor-pointer'
+                          className='cursor-pointer' /* TODO: 아이콘이 아닌 버튼에 onClick 넣어야 함 */
                         />
                       </div>
                       <p className='text-gray-200 mt-3 text-[15px]'>

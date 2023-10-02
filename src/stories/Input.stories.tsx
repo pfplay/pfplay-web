@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Meta, StoryFn } from '@storybook/react';
 import Button from '@/components/@shared/@atoms/Button';
 import Input, { InputProps } from '@/components/@shared/@atoms/Input';
-import Icons from '@/components/__legacy__/Icons';
+import { PFHeadset } from '@/components/@shared/@icons';
 
 const meta: Meta<typeof Input> = {
   title: '@atoms/Input',
@@ -37,7 +37,7 @@ FixedWidth.args = {
 export const PrefixAndSuffix = Template.bind({});
 PrefixAndSuffix.args = {
   maxLength: 10,
-  Prefix: <Icons.headset color='white' />,
+  Prefix: <PFHeadset />,
   Suffix: (
     <Button color={'secondary'} variant={'outline'}>
       Button

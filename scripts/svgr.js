@@ -16,7 +16,10 @@ const utils = {
         typescript: true,
         jsxRuntime: 'automatic',
         prettierConfig: JSON.parse(prettierConfig),
-        replaceAttrValues: { '#fff': 'currentColor' },
+        replaceAttrValues: {
+          '#fff': 'currentColor',
+          '#ffffff': 'currentColor',
+        },
         plugins: ['@svgr/plugin-jsx', '@svgr/plugin-prettier'],
       },
       { componentName }
@@ -34,6 +37,8 @@ const utils = {
 };
 
 const exec = () => {
+  const indexFilePath = `${componentDir}/index.tsx`;
+
   try {
     fs.rmSync(componentDir, { force: true, recursive: true });
   } catch {
@@ -41,6 +46,7 @@ const exec = () => {
     for (const groupName of fs.readdirSync(svgDir)) {
       fs.mkdirSync(utils.generateSvgGroupDirPath(groupName), { recursive: true });
     }
+    fs.writeFileSync(indexFilePath, '');
   }
 
   const svgPaths = glob.sync(`${svgDir}/**/*.svg`);
@@ -52,14 +58,15 @@ const exec = () => {
 
     const svg = fs.readFileSync(svgPath, { encoding: 'utf-8' });
     const component = utils.generateSvgComponent(svg, componentName);
+    const svgGroupDirPath = utils.generateSvgGroupDirPath(groupName);
 
-    fs.writeFileSync(
-      `${utils.generateSvgGroupDirPath(groupName)}/${componentName}.tsx`,
-      component,
-      {
-        encoding: 'utf-8',
-      }
-    );
+    const componentFilePath = `${svgGroupDirPath}/${componentName}.tsx`;
+    const exportPhrase = `export { default as ${componentName} } from './${utils.pascalCaseToCamelCase(
+      groupName
+    )}/${componentName}';`;
+
+    fs.writeFileSync(componentFilePath, component, { encoding: 'utf-8' });
+    fs.appendFileSync(indexFilePath, `${exportPhrase}\n`, { encoding: 'utf-8' });
   }
 };
 

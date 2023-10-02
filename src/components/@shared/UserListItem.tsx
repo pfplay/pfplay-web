@@ -45,7 +45,7 @@ const UserListItem = ({ userListItemConfig, menuItemList, ...suffixProps }: User
         >
           <div className={cn('flexRow justify-center items-center gap-2')}>
             <Image
-              src={userListItemConfig.src ?? '/image/monkey.png'}
+              src={userListItemConfig.src ?? '/images/ETC/monkey.png'}
               alt={userListItemConfig?.alt ?? userListItemConfig.username}
               width={32}
               height={32}

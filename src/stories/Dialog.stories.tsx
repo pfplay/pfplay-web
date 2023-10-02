@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useMemo, useRef, useState } from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
 import Button from '@/components/@shared/@atoms/Button';
@@ -5,7 +6,7 @@ import Tag from '@/components/@shared/@atoms/Tag';
 import Typography from '@/components/@shared/@atoms/Typography';
 import Dialog from '@/components/@shared/Dialog';
 import FormItem from '@/components/@shared/FormItem';
-import Icons from '@/components/__legacy__/Icons';
+
 import { useDialog } from '@/hooks/useDialog';
 import { cn } from '@/utils/cn';
 import { delay } from '@/utils/delay';
@@ -238,7 +239,9 @@ export const CustomStructure: Story = () => {
                 <Tag
                   variant='profile'
                   value='박가든 garden'
-                  PrefixIcon={<Icons.profileExample />}
+                  PrefixIcon={
+                    <Image src='/images/Temp/ProfileExample.png' alt='' width={20} height={20} />
+                  }
                 />
               </FormItem>
               <Button size='lg' className='w-[236px]' onClick={() => onOk()}>
