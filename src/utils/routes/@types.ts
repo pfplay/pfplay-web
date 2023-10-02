@@ -15,6 +15,4 @@ export type Routes = Record<string, ParentRoute>;
 
 export type ItemRouteOrLabel<T> = T extends RouteInfo
   ? string
-  : T extends true /* FIXME: 임시 */
-  ? never
-  : { [K in keyof T]: ItemRouteOrLabel<T[K]> };
+  : { [K in Exclude<keyof T, 'group'>]: ItemRouteOrLabel<T[K]> };
