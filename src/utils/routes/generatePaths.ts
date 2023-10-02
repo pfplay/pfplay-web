@@ -1,3 +1,4 @@
+import { omit } from '@/utils/omit';
 import type { ItemRouteOrLabel, ParentRoute, RouteInfo, Routes } from './@types';
 
 export const generatePaths = <T extends Routes>(routes: T): ItemRouteOrLabel<T> => {
@@ -12,16 +13,27 @@ export const generatePaths = <T extends Routes>(routes: T): ItemRouteOrLabel<T> 
     routes: Routes | ParentRoute | RouteInfo,
     parentPath: string
   ): ItemRouteOrLabel<T> {
-    return Object.fromEntries(
-      Object.entries(routes).map(([k, v]) => {
-        if (k !== 'index' && typeof v === 'object' && !v.route) {
-          return [k, mapRoutes(v, joinPath(parentPath, v.index.route))];
-        }
+    const result = {} as Record<string, any>;
 
-        const routeName = k === 'index' ? parentPath : joinPath(parentPath, v.route);
-        return [k, routeName];
-      })
-    );
+    for (const [k, v] of Object.entries(routes)) {
+      if (k !== 'index' && typeof v === 'object' && !v.route) {
+        if ('index' in v) {
+          result[k] = mapRoutes(v, joinPath(parentPath, v.index.route));
+          continue;
+        }
+        if ('group' in v && !!v.group) {
+          Object.entries(omit(v, 'group')).forEach(([k, v]) => {
+            result[k] = mapRoutes(v, joinPath(parentPath, v.index.route));
+          });
+          continue;
+        }
+        throw new Error('Invalid structure');
+      }
+
+      result[k] = k === 'index' ? parentPath : joinPath(parentPath, v.route);
+    }
+
+    return result as ItemRouteOrLabel<T>;
   }
 
   return mapRoutes(routes, '/');

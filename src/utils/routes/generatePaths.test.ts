@@ -33,6 +33,7 @@ describe('generatePaths 함수 테스트', () => {
         index: { route: 'user' },
         PROFILE: {
           index: { route: 'profile' },
+          settings: { route: 'settings' },
         },
       },
     } as const;
@@ -41,7 +42,10 @@ describe('generatePaths 함수 테스트', () => {
     expect(result).toEqual({
       USER: {
         index: '/user',
-        PROFILE: { index: '/user/profile' },
+        PROFILE: {
+          index: '/user/profile',
+          settings: '/user/profile/settings',
+        },
       },
     });
   });
@@ -60,6 +64,49 @@ describe('generatePaths 함수 테스트', () => {
     expect(result).toEqual({
       HOME: { index: '/home' },
       ABOUT: { index: '/about' },
+    });
+  });
+
+  test('NextJS group route 대응', () => {
+    const routes = {
+      USER: {
+        index: { route: 'user' },
+        PROFILE: {
+          index: { route: 'profile' },
+          settings: { route: 'settings' },
+        },
+      },
+      TEST: {
+        group: true,
+        PROFILE: {
+          index: { route: 'profile' },
+          settings: { route: 'settings' },
+        },
+        AVATAR: {
+          index: { route: 'avatar' },
+          settings: { route: 'settings' },
+        },
+      },
+    } as const;
+
+    const result = generatePaths(routes);
+
+    expect(result).toEqual({
+      USER: {
+        index: '/user',
+        PROFILE: {
+          index: '/user/profile',
+          settings: '/user/profile/settings',
+        },
+      },
+      PROFILE: {
+        index: '/profile',
+        settings: '/profile/settings',
+      },
+      AVATAR: {
+        index: '/avatar',
+        settings: '/avatar/settings',
+      },
     });
   });
 });
