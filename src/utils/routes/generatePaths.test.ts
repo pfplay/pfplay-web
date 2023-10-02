@@ -67,7 +67,7 @@ describe('generatePaths 함수 테스트', () => {
     });
   });
 
-  test('NextJS group route 대응', () => {
+  test('NextJS group route 와 page.tsx 없는 디렉터리 대응', () => {
     const routes = {
       USER: {
         index: { route: 'user' },
@@ -82,8 +82,11 @@ describe('generatePaths 함수 테스트', () => {
           index: { route: 'profile' },
           settings: { route: 'settings' },
         },
-        AVATAR: {
-          index: { route: 'avatar' },
+      },
+      GROUP_WITH_PATH: {
+        group: 'my-group',
+        PROFILE: {
+          index: { route: 'profile' },
           settings: { route: 'settings' },
         },
       },
@@ -104,9 +107,11 @@ describe('generatePaths 함수 테스트', () => {
           index: '/profile',
           settings: '/profile/settings',
         },
-        AVATAR: {
-          index: '/avatar',
-          settings: '/avatar/settings',
+      },
+      GROUP_WITH_PATH: {
+        PROFILE: {
+          index: '/my-group/profile',
+          settings: '/my-group/profile/settings',
         },
       },
     });

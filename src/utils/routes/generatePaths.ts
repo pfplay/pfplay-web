@@ -19,8 +19,13 @@ export const generatePaths = <T extends Routes>(routes: T): ItemRouteOrLabel<T> 
           if ('index' in v) {
             return [k, mapRoutes(v, joinPath(parentPath, v.index.route))];
           }
-          if ('group' in v && !!v.group) {
-            return [k, mapRoutes(omit(v, 'group'), parentPath)];
+          if ('group' in v) {
+            if (v.group === true) {
+              return [k, mapRoutes(omit(v, 'group'), parentPath)];
+            }
+            if (typeof v.group === 'string') {
+              return [k, mapRoutes(omit(v, 'group'), joinPath(parentPath, v.group))];
+            }
           }
           throw new Error('Invalid structure');
         }

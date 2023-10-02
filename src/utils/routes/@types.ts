@@ -9,7 +9,7 @@ interface BaseParentRoute {
 
 export type ParentRoute =
   | ({ readonly index: RouteInfo } & BaseParentRoute)
-  | ({ readonly group: true } & BaseParentRoute);
+  | ({ readonly group: true | string } & BaseParentRoute);
 
 export type Routes = Record<string, ParentRoute>;
 
