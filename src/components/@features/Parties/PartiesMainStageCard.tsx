@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+
 import { PFPersonOutline } from '@/components/@shared/@icons';
 import { ROUTES } from '@/utils/routes';
 import { replaceDynamic } from '@/utils/routes/replaceDynamic';

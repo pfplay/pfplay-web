@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+
 import { cn } from '@/utils/cn';
 import Tag from './@atoms/Tag';
 import Typography from './@atoms/Typography';

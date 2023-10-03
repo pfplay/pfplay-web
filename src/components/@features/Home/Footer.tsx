@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from '@/components/@shared/@atoms/Button';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { PFChevronRight } from '@/components/@shared/@icons';

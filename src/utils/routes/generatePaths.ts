@@ -1,7 +1,7 @@
 import { omit } from '@/utils/omit';
-import type { ItemRouteOrLabel, ParentRoute, RouteInfo, Routes } from './@types';
+import type { ItemRoute, ParentRoute, RouteInfo, Routes } from './@types';
 
-export const generatePaths = <T extends Routes>(routes: T): ItemRouteOrLabel<T> => {
+export const generatePaths = <T extends Routes>(routes: T): ItemRoute<T> => {
   function expectParentPath(parentPath: string): string {
     return parentPath === '/' ? '' : parentPath;
   }
@@ -9,10 +9,7 @@ export const generatePaths = <T extends Routes>(routes: T): ItemRouteOrLabel<T> 
     return expectParentPath(parentPath) + '/' + path;
   }
 
-  function mapRoutes(
-    routes: Routes | ParentRoute | RouteInfo,
-    parentPath: string
-  ): ItemRouteOrLabel<T> {
+  function mapRoutes(routes: Routes | ParentRoute | RouteInfo, parentPath: string): ItemRoute<T> {
     return Object.fromEntries(
       Object.entries(routes).map(([k, v]) => {
         if (k !== 'index' && typeof v === 'object' && !v.route) {

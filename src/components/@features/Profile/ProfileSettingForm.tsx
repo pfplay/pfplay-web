@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -48,7 +48,7 @@ const ProfileSettingForm = () => {
 
   const handleFormSubmit: SubmitHandler<ProfileFormValues> = ({ nickName, introduction }) => {
     setProfile({ nickName, introduction });
-    router.push(ROUTES.AVATAR.settings);
+    router.push(ROUTES.SETTINGS.AVATAR.index);
   };
 
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;

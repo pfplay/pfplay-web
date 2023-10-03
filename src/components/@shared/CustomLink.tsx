@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+
 import { cn } from '@/utils/cn';
 import Button, { ButtonProps } from './@atoms/Button';
 
