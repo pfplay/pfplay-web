@@ -1,12 +1,10 @@
 import { Metadata } from 'next';
-import React from 'react';
+
 import ProfileSettingForm from '@/components/@features/Profile/ProfileSettingForm';
 import BackButton from '@/components/@shared/BackButton';
+import { PAGE_METADATA } from '@/utils/routes';
 
-export const metadata: Metadata = {
-  title: 'Profile Edit',
-  description: '', // TODO: add description
-};
+export const metadata: Metadata = PAGE_METADATA.SETTINGS.PROFILE.index;
 
 const ProfileSettingsPage = () => {
   return (

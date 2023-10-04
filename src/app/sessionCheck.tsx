@@ -2,10 +2,11 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { NO_AUTH_ROUTES, ROUTES } from '@/utils/routes';
+import { ReactNode } from 'react';
+import { ROUTES } from '@/utils/routes';
 
 interface SessionCheckProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const SessionCheck = ({ children }: SessionCheckProps) => {
@@ -18,7 +19,7 @@ const SessionCheck = ({ children }: SessionCheckProps) => {
   }
 
   if (!session?.user.accessToken && pathname !== '/' && pathname !== '/sign-in') {
-    router.replace(NO_AUTH_ROUTES.HOME.index);
+    router.replace(ROUTES.HOME.index);
     return null;
   }
 

@@ -1,4 +1,5 @@
-import React from 'react';
+import { Metadata } from 'next';
+
 import '@/styles/globals.css';
 import { DomId } from '@/constants/domId';
 import { DialogProvider } from '@/context/DialogProvider';
@@ -6,6 +7,12 @@ import SessionProvider from '@/context/SessionProvider';
 import { pretendardVariable } from '@/styles/fonts';
 import { cn } from '@/utils/cn';
 import SessionCheck from './sessionCheck';
+
+export const metadata: Metadata = {
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
 
 const RootLayout = ({ children }: React.PropsWithChildren) => {
   return (

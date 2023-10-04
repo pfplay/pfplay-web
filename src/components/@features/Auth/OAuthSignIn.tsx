@@ -3,15 +3,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import React from 'react';
+
 import Button from '@/components/@shared/@atoms/Button';
 import TextButton from '@/components/@shared/@atoms/TextButton';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { PFClose } from '@/components/@shared/@icons';
 import Dialog from '@/components/@shared/Dialog';
-
 import { useDialog } from '@/hooks/useDialog';
-import { NO_AUTH_ROUTES, ROUTES } from '@/utils/routes';
+import { ROUTES } from '@/utils/routes';
 
 const OAuthSignIn = () => {
   const router = useRouter();
@@ -23,7 +22,7 @@ const OAuthSignIn = () => {
   };
 
   const signInAnonymous = () => {
-    router.push(NO_AUTH_ROUTES.PARTIES.index);
+    router.push(ROUTES.PARTIES.index);
   };
 
   const signInGoogle = () => {
@@ -61,7 +60,7 @@ const OAuthSignIn = () => {
   return (
     <div className='relative min-h-screen flexRowCenter'>
       <div className='relative flexCol items-center px-[160px] pt-[62px] pb-[65px] backdrop-blur-xl bg-backdrop-black/50 border border-gray-800'>
-        <Link href={NO_AUTH_ROUTES.HOME.index} className='absolute right-10 top-10'>
+        <Link href={ROUTES.HOME.index} className='absolute right-10 top-10'>
           <PFClose />
         </Link>
 

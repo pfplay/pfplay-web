@@ -1,6 +1,6 @@
 import '../src/styles/globals.css';
 import './styles.css';
-import React from 'react';
+
 import type { Preview } from '@storybook/react';
 import { DialogProvider } from '../src/context/DialogProvider';
 

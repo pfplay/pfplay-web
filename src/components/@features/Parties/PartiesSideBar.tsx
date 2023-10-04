@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import { PFHeadset } from '@/components/@shared/@icons';
-import { NO_AUTH_ROUTES } from '@/utils/routes';
+import { ROUTES } from '@/utils/routes';
 import MyProfileModal from './MyProfileModal';
 
 const PartiesSideBar = () => {
@@ -25,7 +25,7 @@ const PartiesSideBar = () => {
           <p className='text-gray-300 text-[12px]'>내 프로필</p>
         </div>
       </div>
-      <Link href={NO_AUTH_ROUTES.HOME.index} passHref>
+      <Link href={ROUTES.HOME.index} passHref>
         <div className='flex flex-col justify-center items-center gap-1'>
           <PFHeadset />
           <p className='text-gray-300 text-[12px]'>플레이 리스트</p>

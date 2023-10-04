@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import TempPartiesTab from '@/components/@features/Parties/TempPartiesTab';
 import {
   PFParty,
@@ -8,6 +9,9 @@ import {
   PFThumbUpAlt,
   PFAddPlaylist,
 } from '@/components/@shared/@icons';
+import { PAGE_METADATA } from '@/utils/routes';
+
+export const metadata: Metadata = PAGE_METADATA.PARTIES.room;
 
 const PartyRoomPage = async () => {
   return (

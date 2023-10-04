@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import OAuthSignIn from '@/components/@features/Auth/OAuthSignIn';
+import { PAGE_METADATA } from '@/utils/routes';
 
-export const metadata: Metadata = {
-  title: 'DEV-PFPLAY',
-  description: 'Your Space', // TODO: edit description
-};
+export const metadata: Metadata = PAGE_METADATA.AUTH.SIGN_IN.index;
 
 const SignInPage = () => {
   return (

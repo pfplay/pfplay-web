@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Meta } from '@storybook/react';
 import { PFMoreVert, PFArrowLeft, PFChevronDown } from '@/components/@shared/@icons';
 import IconMenu from '@/components/@shared/IconMenu';
