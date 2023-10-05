@@ -9,7 +9,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_SECRET ?? '',
       authorization: {
         params: {
-          redirect_uri: process.env.OAUTH_REDIRECT_URI_GOOGLE,
+          redirect_uri: `${process.env.NEXTAUTH_URL}/callback/google`,
           response_type: 'code',
           scope: 'email',
         },
