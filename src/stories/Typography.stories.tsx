@@ -79,20 +79,20 @@ export const Overflow = () => {
   );
 };
 
-export const Inline = () => {
+export const As = () => {
   return (
     <section className='flexCol w-[400px] gap-[10px]'>
-      <PropDesc tag='inline: false'>
+      <PropDesc tag='as=undefined'>
         <section>
-          <Typography inline={false}>Content 1</Typography>
-          <Typography inline={false}>Content 2</Typography>
+          <Typography>Content 1</Typography>
+          <Typography>Content 2</Typography>
         </section>
       </PropDesc>
 
-      <PropDesc tag='inline: true'>
+      <PropDesc tag='as="span"'>
         <section>
-          <Typography inline={true}>Content 1</Typography>
-          <Typography inline={true}>Content 2</Typography>
+          <Typography as='span'>Content 1</Typography>
+          <Typography as='span'>Content 2</Typography>
         </section>
       </PropDesc>
     </section>
