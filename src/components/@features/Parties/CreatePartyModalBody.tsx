@@ -107,9 +107,9 @@ const CreatePartyModalBody = () => {
             render={({ field: { ref: _ref, ...fields } }) => (
               <FormItem
                 label={
-                  <Typography isSpan type='body2' className='text-left'>
+                  <Typography as='span' type='body2' className='text-left'>
                     도메인
-                    <Typography isSpan type='detail2'>
+                    <Typography as='span' type='detail2'>
                       (선택)
                     </Typography>
                   </Typography>
@@ -134,10 +134,10 @@ const CreatePartyModalBody = () => {
                     <FormItem
                       fit
                       label={
-                        <Typography isSpan type='body2' className='flexCol items-start'>
+                        <Typography as='span' type='body2' className='flexCol items-start'>
                           디제잉
                           <Typography
-                            isSpan
+                            as='span'
                             type='body2'
                             className="after:ml-[0.2em] after:text-red-300 after:content-['*']"
                           >
@@ -161,7 +161,7 @@ const CreatePartyModalBody = () => {
         <div className='w-full flexRow justify-between items-center'>
           <FormItem
             label={
-              <Typography isSpan type='body2'>
+              <Typography as='span' type='body2'>
                 Admin
               </Typography>
             }

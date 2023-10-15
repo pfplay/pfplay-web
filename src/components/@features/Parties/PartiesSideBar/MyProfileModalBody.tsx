@@ -54,13 +54,13 @@ const MyProfileModalBody = () => {
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               포인트
               {/* FIXME:<p> cannot appear as a descendant of <p>. */}
-              <Typography isSpan type='body3'>
+              <Typography as='span' type='body3'>
                 76p
               </Typography>
             </Typography>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               가입일
-              <Typography isSpan type='body3'>
+              <Typography as='span' type='body3'>
                 76p
               </Typography>
             </Typography>
