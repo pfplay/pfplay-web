@@ -13,7 +13,7 @@ export interface PlayListItemType {
   title: string;
   duration: string;
   src?: string;
-  alt: string;
+  alt?: string;
 }
 
 interface UserListItemProps {
@@ -51,7 +51,7 @@ const PlayListItem = ({ playListItemConfig, menuItemList }: UserListItemProps) =
               <PFPlayCircleFilled />
             </div>
           </div>
-          <div className='flexCol flex-1 min-w-0 select-none'>
+          <div className='flex-1 min-w-0 select-none flexCol'>
             <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
               {playListItemConfig.title}
             </Typography>

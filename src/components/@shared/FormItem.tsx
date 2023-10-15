@@ -8,8 +8,8 @@ export interface FormItemProps {
   layout?: 'vertical' | 'horizontal';
   required?: boolean;
   error?: string | boolean;
+  tooltipError?: string;
   fit?: boolean;
-
   classNames?: {
     container?: string;
     label?: string;
@@ -86,7 +86,7 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
           <Typography
             type='caption1'
             overflow='break-keep'
-            className={clsx(['pl-[12px] text-red-300'])}
+            className={clsx(['pl-[12px] text-red-300 text-left'])}
           >
             {error}
           </Typography>

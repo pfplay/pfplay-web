@@ -1,23 +1,30 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import Button from '@/components/@shared/@atoms/Button';
 import Typography from '@/components/@shared/@atoms/Typography';
 import Icons from '@/components/__legacy__/Icons';
+import { ROUTES } from '@/utils/routes';
 
-const ProfileModalBody = () => {
+const MyProfileModalBody = () => {
+  const router = useRouter();
+
+  const handleClickEditButton = () => {
+    // TODO: Username 정보 수정 BE integration 필요
+    console.log('EditButton Clicked');
+  };
+
   return (
     <div className='gap-5 flexRow'>
       <div className='flexCol gap-9'>
         <div className='w-[108px] bg-[#1D1D1D] pointer-events-none select-none'>
-          <Image
-            src={'/image/avatar.png'}
-            alt={'profilePicture'}
-            width={108}
-            height={216}
-            // sizes='(max-width:108px)'
-          />
+          <Image src={'/image/avatar.png'} alt={'profilePicture'} width={108} height={216} />
         </div>
-        <Button size='sm' variant='outline'>
+        <Button
+          size='sm'
+          variant='outline'
+          onClick={() => router.push(ROUTES.SETTINGS.AVATAR.index)}
+        >
           아바다 설정
         </Button>
       </div>
@@ -28,7 +35,7 @@ const ProfileModalBody = () => {
             <Typography type='body1' className='text-white'>
               USERNAME
             </Typography>
-            <div onClick={() => console.log('hihi')} className='cursor-pointer'>
+            <div onClick={() => handleClickEditButton()} className='cursor-pointer'>
               <Icons.edit />
             </div>
           </div>
@@ -42,11 +49,15 @@ const ProfileModalBody = () => {
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               포인트
               {/* FIXME:<p> cannot appear as a descendant of <p>. */}
-              <Typography type='body3'>76p</Typography>
+              <Typography isSpan type='body3'>
+                76p
+              </Typography>
             </Typography>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               가입일
-              <Typography type='body3'>76p</Typography>
+              <Typography isSpan type='body3'>
+                76p
+              </Typography>
             </Typography>
           </div>
           <Icons.rainbow />
@@ -56,4 +67,4 @@ const ProfileModalBody = () => {
   );
 };
 
-export default ProfileModalBody;
+export default MyProfileModalBody;

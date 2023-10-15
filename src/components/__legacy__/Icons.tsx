@@ -2,6 +2,57 @@ import React from 'react';
 
 // TODO: SVG ICON 준비되면 대체
 const Icons = {
+  info: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <circle
+        cx='11.9998'
+        cy='12'
+        r='9.33333'
+        stroke='#707070'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M12 7.33334L12 13.3333'
+        stroke='#707070'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M12 16.6667L12 17.0667'
+        stroke='#707070'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  ),
+  profile: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      width='18'
+      height='18'
+      viewBox='0 0 18 18'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <circle cx='9' cy='4' r='3' stroke='#707070' strokeWidth='2' />
+      <path
+        d='M1 16.6512C1 13.6821 3.24666 11.226 6.15028 11.0822C7.15123 11.0326 8.13825 11 9 11C9.86175 11 10.8488 11.0326 11.8497 11.0822C14.7533 11.226 17 13.6821 17 16.6512C17 16.8438 16.8438 17 16.6512 17H1.34882C1.15617 17 1 16.8438 1 16.6512Z'
+        stroke='#707070'
+        strokeWidth='2'
+      />
+    </svg>
+  ),
   edit: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
     <svg
       width='18'
@@ -52,21 +103,21 @@ const Icons = {
   close: ({ ...props }: React.SVGProps<SVGSVGElement>) => (
     <svg
       width='24'
-      height='24'
-      viewBox='0 0 24 24'
+      height='25'
+      viewBox='0 0 24 25'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
       {...props}
     >
       <path
-        d='M4 4L20 20'
+        d='M4 4.5L20 20.5'
         stroke='white'
         strokeWidth='2'
         strokeLinecap='round'
         strokeLinejoin='round'
       />
       <path
-        d='M20 4L4 20'
+        d='M20 4.5L4 20.5'
         stroke='white'
         strokeWidth='2'
         strokeLinecap='round'

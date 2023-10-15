@@ -1,14 +1,13 @@
 'use client';
-import { FC, ChangeEventHandler } from 'react';
+import { FC, ChangeEventHandler, ComponentProps } from 'react';
 import { cn } from '@/utils/cn';
 
-export interface InputNumberProps {
+export interface InputNumberProps
+  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'onChange'> {
   value?: number;
   onChange: (v: number) => void;
-  max?: number;
   min?: number;
   locale?: boolean;
-  className?: string;
 }
 
 const InputNumber: FC<InputNumberProps> = ({
@@ -16,27 +15,24 @@ const InputNumber: FC<InputNumberProps> = ({
   onChange,
   max,
   min,
-  locale = true,
   className,
+  locale = false,
   ...rest
 }) => {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, ''); // 현재 소수점, 음수 미지원
 
-    if (value === '') {
-      onChange(0);
-      return;
-    }
-
     const numValue = Number(value);
-    if (max !== undefined && numValue > max) {
+    if (max !== undefined && typeof max === 'number' && numValue > max) {
       onChange(max);
       return;
     }
+
     if (min !== undefined && numValue < min) {
       onChange(min);
       return;
     }
+
     onChange(numValue);
   };
 

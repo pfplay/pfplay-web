@@ -3,16 +3,17 @@ import {
   ComponentProps,
   ReactNode,
   FC,
-  ChangeEventHandler,
   useRef,
   MouseEventHandler,
   FocusEventHandler,
+  ChangeEventHandler,
 } from 'react';
-import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
+import Typography from './Typography';
 
 type InputSize = 'md' | 'lg';
 type InputVariant = 'filled' | 'outlined';
+
 export interface InputProps
   extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'onChange' | 'size' | 'className'> {
   value: string;
@@ -76,7 +77,6 @@ const Input: FC<InputProps> = ({
 
       <input
         ref={inputRef}
-        maxLength={maxLength}
         type='text'
         className={cn(
           'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none',

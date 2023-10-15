@@ -80,4 +80,18 @@ const overflowDict: Record<TypographyOverflow, string> = {
   'break-keep': 'break-keep',
 };
 
+const getTypographyClassNames = ({
+  type = 'detail1',
+  overflow,
+  inline,
+  className,
+}: TypographyProps) => {
+  return [
+    typoStyleDict[type],
+    overflow && overflowDict[overflow],
+    inline && 'inline-block',
+    className,
+  ];
+};
+
 export default Typography;

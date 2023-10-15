@@ -3,9 +3,13 @@ import Image from 'next/image';
 import Typography from '@/components/@shared/@atoms/Typography';
 import Icons from '@/components/__legacy__/Icons';
 import { useDialog } from '@/hooks/useDialog';
-import ProfileModalBody from './ProfileModalBody';
+import MyProfileModalBody from './MyProfileModalBody';
 
-const PartiesSideBar = () => {
+interface PartiesSideBarProps {
+  setDrawerOpen: (open: boolean) => void;
+}
+
+const PartiesSideBar = ({ setDrawerOpen }: PartiesSideBarProps) => {
   const { openDialog } = useDialog();
 
   const handleClickProfileButton = () => {
@@ -17,12 +21,12 @@ const PartiesSideBar = () => {
         container: 'min-w-[620px] py-7 px-10 bg-black',
         titleType: 'title2',
       },
-      Body: () => <ProfileModalBody />,
+      Body: () => <MyProfileModalBody />,
     }));
   };
 
   return (
-    <div className='absolute top-1/2 left-10 transform -translate-y-1/2 flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded z-20'>
+    <div className='fixed top-1/2 left-10 transform -translate-y-1/2 flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded z-10'>
       {/* TODO: 프로필 이미지로 변경, href 추가 */}
       <div onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
         <Image
@@ -36,7 +40,7 @@ const PartiesSideBar = () => {
           내 프로필
         </Typography>
       </div>
-      <div className='gap-2 cursor-pointer flexColCenter'>
+      <div onClick={() => setDrawerOpen(true)} className='flexColCenter gap-2 cursor-pointer '>
         <Icons.headset width={36} height={36} />
         <Typography type='caption1' className='text-gray-200'>
           플레이리스트

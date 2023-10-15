@@ -1,10 +1,12 @@
 'use client';
 import { ComponentProps, FC, ChangeEventHandler } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 
 export interface TextAreaProps
   extends Omit<ComponentProps<'textarea'>, 'value' | 'onChange' | 'className'> {
+  register?: UseFormRegisterReturn;
   value: string;
   onChange: (v: string) => void;
   classNames?: {
@@ -19,8 +21,11 @@ const TextArea: FC<TextAreaProps> = ({
   placeholder,
   maxLength,
   classNames: { container: containerClassName, textarea: textareaClassName } = {},
+  register,
   ...rest
 }) => {
+  const { onChange: _onChange, ...hookFormRegister } = register || {};
+
   const handleChangeTextArea: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     onChange(e.target.value);
   };
@@ -38,6 +43,7 @@ const TextArea: FC<TextAreaProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={handleChangeTextArea}
+        {...hookFormRegister}
         {...rest}
       />
 
