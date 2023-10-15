@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { Meta, StoryFn } from '@storybook/react';
-import InputNumber, { InputNumberProps } from '@/components/@shared/@atoms/InputNumber';
+import { Meta, StoryObj } from '@storybook/react';
+import InputNumber from '@/components/@shared/@atoms/InputNumber';
 
 const meta: Meta<typeof InputNumber> = {
   title: '@atoms/InputNumber',
@@ -10,20 +9,14 @@ const meta: Meta<typeof InputNumber> = {
 
 export default meta;
 
-const Template: StoryFn<Omit<InputNumberProps, 'value' | 'onChange' | 'placeholder'>> = (args) => {
-  const [value, setValue] = useState<number>();
+type Story = StoryObj<typeof meta>;
 
-  const onChange = (inputValue: number) => {
-    setValue(inputValue);
-  };
-
-  return <InputNumber {...args} value={value} onChange={onChange} />;
+export const Preview: Story = {
+  args: {},
 };
 
-export const Preview = Template.bind({});
-Preview.args = {};
-
-export const NotLocale = Template.bind({});
-NotLocale.args = {
-  locale: false,
+export const NotLocale: Story = {
+  args: {
+    locale: false,
+  },
 };

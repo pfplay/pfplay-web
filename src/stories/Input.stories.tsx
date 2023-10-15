@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import Button from '@/components/@shared/@atoms/Button';
-import Input, { InputProps } from '@/components/@shared/@atoms/Input';
+import Input from '@/components/@shared/@atoms/Input';
 import { PFHeadset } from '@/components/@shared/@icons';
 
 const meta: Meta<typeof Input> = {
@@ -12,41 +11,37 @@ const meta: Meta<typeof Input> = {
 
 export default meta;
 
-const Template: StoryFn<Omit<InputProps, 'value' | 'onChange' | 'placeholder'>> = (args) => {
-  const [value, setValue] = useState<string>('');
+type Story = StoryObj<typeof meta>;
 
-  const onChange = (inputValue: string) => {
-    setValue(inputValue);
-  };
-
-  return <Input {...args} placeholder='Placeholder' value={value} onChange={onChange} />;
-};
-
-export const Preview = Template.bind({});
-Preview.args = {
-  maxLength: 10,
-};
-
-export const FixedWidth = Template.bind({});
-FixedWidth.args = {
-  classNames: {
-    container: 'w-[300px]',
+export const Preview: Story = {
+  args: {
+    maxLength: 10,
   },
 };
 
-export const PrefixAndSuffix = Template.bind({});
-PrefixAndSuffix.args = {
-  maxLength: 10,
-  Prefix: <PFHeadset />,
-  Suffix: (
-    <Button color={'secondary'} variant={'outline'}>
-      Button
-    </Button>
-  ),
+export const FixedWidth: Story = {
+  args: {
+    classNames: {
+      container: 'w-[300px]',
+    },
+  },
 };
 
-export const LargeAndOutlined = Template.bind({});
-LargeAndOutlined.args = {
-  variant: 'outlined',
-  size: 'lg',
+export const PrefixAndSuffix: Story = {
+  args: {
+    maxLength: 10,
+    Prefix: <PFHeadset />,
+    Suffix: (
+      <Button color={'secondary'} variant={'outline'}>
+        Button
+      </Button>
+    ),
+  },
+};
+
+export const LargeAndOutlined: Story = {
+  args: {
+    variant: 'outlined',
+    size: 'lg',
+  },
 };
