@@ -3,9 +3,10 @@ import clsx from 'clsx';
 import Typography from '@/components/@shared/@atoms/Typography';
 import { cn } from '@/utils/cn';
 
+type Axis = 'vertical' | 'horizontal';
 export interface FormItemProps {
   label: ReactNode;
-  layout?: 'vertical' | 'horizontal';
+  layout?: Axis;
   required?: boolean;
   error?: string | boolean;
   tooltipError?: string;
@@ -46,22 +47,23 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
         }
       }}
     >
-      <Typography
-        type={layout === 'horizontal' ? 'body2' : 'detail2'}
-        data-custom-role='form-item-title'
-        overflow='break-keep'
-        className={cn([
-          'relative pr-[12px]',
-          {
-            'text-start text-gray-300': layout === 'vertical',
-            'text-right': layout === 'horizontal',
-          },
-          required && "after:ml-[0.2em] after:text-red-300 after:content-['*']",
-          classNames?.label,
-        ])}
-      >
-        {label}
-      </Typography>
+      {typeof label === 'string' ? (
+        <Typography
+          type={layout === 'horizontal' ? 'body2' : 'detail2'}
+          data-custom-role='form-item-title'
+          overflow='break-keep'
+          className={cn([...labelTextStyle(layout, required), classNames?.label])}
+        >
+          {label}
+        </Typography>
+      ) : (
+        <div
+          data-custom-role='form-item-title'
+          className={cn([...labelTextStyle(layout, required), classNames?.label])}
+        >
+          {label}
+        </div>
+      )}
 
       <div
         className={cn([
@@ -94,6 +96,17 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
       )}
     </label>
   );
+};
+
+const labelTextStyle = (layout: Axis, required?: boolean) => {
+  return [
+    'relative pr-[12px]',
+    {
+      'text-start text-gray-300': layout === 'vertical',
+      'text-right': layout === 'horizontal',
+    },
+    required && "after:ml-[0.2em] after:text-red-300 after:content-['*']",
+  ];
 };
 
 export default FormItem;

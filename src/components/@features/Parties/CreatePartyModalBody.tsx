@@ -92,7 +92,7 @@ const CreatePartyModalBody = () => {
         <div className='w-full flexRow items-center justify-between gap-8'>
           <FormItem
             label={
-              <Typography type='body2' className='text-left'>
+              <Typography as='span' type='body2' className='text-left'>
                 도메인
                 <Typography as='span' type='detail2'>
                   (선택)
@@ -130,7 +130,10 @@ const CreatePartyModalBody = () => {
                 }
                 classNames={{ label: 'text-gray-200 !w-[80px] pr-0' }}
               >
-                <InputNumber {...register('playTimeLimit', { valueAsNumber: true })} />
+                <InputNumber
+                  {...register('playTimeLimit', { valueAsNumber: true })}
+                  initialValue={7}
+                />
                 <Typography as='span' type='detail1' className='text-gray-200 ml-[8px]'>
                   분
                 </Typography>
