@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { PlayListItemType } from '@/components/@shared/@atoms/PlayListItem';
 import Typography from '@/components/@shared/@atoms/Typography';
+import { PFInfoOutline } from '@/components/@shared/@icons';
 import BackdropBlurContainer from '@/components/@shared/BackdropBlurContainer';
-import Icons from '@/components/__legacy__/Icons';
 import { cn } from '@/utils/cn';
 import { ROUTES } from '@/utils/routes';
 import { replaceDynamic } from '@/utils/routes/replaceDynamic';
@@ -57,7 +57,7 @@ const PartyRoomCard = ({ roomId, playListItemConfig }: PartyRoomCardProps) => {
           <div className='bg-gray-600 h-[1px]' />
           <div className='items-center justify-between flexRow'>
             <MembersInfoSection membersCount={50} membersImage={[{}, {}, {}, {}]} />
-            <Icons.info width={24} height={24} />
+            <PFInfoOutline width={24} height={24} />
           </div>
         </div>
       </div>

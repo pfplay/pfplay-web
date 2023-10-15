@@ -3,9 +3,9 @@ import { Disclosure } from '@headlessui/react';
 import Button from '@/components/@shared/@atoms/Button';
 import PlayListItem from '@/components/@shared/@atoms/PlayListItem';
 import TextButton from '@/components/@shared/@atoms/TextButton';
+import { PFAdd } from '@/components/@shared/@icons';
 import CollapseList from '@/components/@shared/CollapseList';
 import Drawer from '@/components/@shared/Drawer';
-import Icons from '@/components/__legacy__/Icons';
 import { mockCollapslistConfig } from '@/constants/__mock__/mockCollapslistConfig';
 import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 
@@ -19,10 +19,10 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
     <Drawer title='내 플레이리스트' drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}>
       <div className='flexRow justify-between items-center mt-10 mb-6'>
         <div className='flexRow gap-3'>
-          <Button size='sm' variant='outline' color='secondary' Icon={<Icons.plus />}>
+          <Button size='sm' variant='outline' color='secondary' Icon={<PFAdd />}>
             곡 추가
           </Button>
-          <Button size='sm' variant='outline' color='secondary' Icon={<Icons.plus />}>
+          <Button size='sm' variant='outline' color='secondary' Icon={<PFAdd />}>
             리스트 추가
           </Button>
         </div>

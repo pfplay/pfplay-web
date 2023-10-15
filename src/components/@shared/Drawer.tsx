@@ -2,7 +2,7 @@
 import React, { Fragment, PropsWithChildren, useEffect } from 'react';
 import { Transition } from '@headlessui/react';
 import Typography from './@atoms/Typography';
-import Icons from '../__legacy__/Icons';
+import { PFClose } from './@icons';
 
 interface DrawerProps {
   title?: string;
@@ -50,7 +50,7 @@ const Drawer = ({ title, drawerOpen, setDrawerOpen, children }: PropsWithChildre
                       {title}
                     </Typography>
                     <div onClick={() => setDrawerOpen(false)} className='cursor-pointer'>
-                      <Icons.close width={24} height={24} />
+                      <PFClose width={24} height={24} />
                     </div>
                   </div>
                   {children}

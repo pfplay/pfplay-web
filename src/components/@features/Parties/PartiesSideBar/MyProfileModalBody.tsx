@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import Button from '@/components/@shared/@atoms/Button';
 import Typography from '@/components/@shared/@atoms/Typography';
-import Icons from '@/components/__legacy__/Icons';
+import { PFEdit } from '@/components/@shared/@icons';
 import { ROUTES } from '@/utils/routes';
 
 const MyProfileModalBody = () => {
@@ -18,7 +18,12 @@ const MyProfileModalBody = () => {
     <div className='gap-5 flexRow'>
       <div className='flexCol gap-9'>
         <div className='w-[108px] bg-[#1D1D1D] pointer-events-none select-none'>
-          <Image src={'/image/avatar.png'} alt={'profilePicture'} width={108} height={216} />
+          <Image
+            src={'/images/Background/avatar.png'}
+            alt={'profilePicture'}
+            width={108}
+            height={216}
+          />
         </div>
         <Button
           size='sm'
@@ -36,7 +41,7 @@ const MyProfileModalBody = () => {
               USERNAME
             </Typography>
             <div onClick={() => handleClickEditButton()} className='cursor-pointer'>
-              <Icons.edit />
+              <PFEdit />
             </div>
           </div>
           <Typography className='text-left text-white'>
@@ -60,7 +65,13 @@ const MyProfileModalBody = () => {
               </Typography>
             </Typography>
           </div>
-          <Icons.rainbow />
+          <Image
+            src={'/images/ETC/rainbow.png'}
+            alt='rainbow'
+            width={32}
+            height={32}
+            className='select-none pointer-events-none'
+          />
         </div>
       </div>
     </div>

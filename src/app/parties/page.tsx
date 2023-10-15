@@ -46,7 +46,12 @@ const PartiesPage = () => {
               </Typography>
             </div>
             <div className='flex items-center justify-center'>
-              <Image src='/image/bigPlus.png' alt='Party Room Add' width={60} height={60} />
+              <Image
+                src='/images/Background/bigPlus.png'
+                alt='Party Room Add'
+                width={60}
+                height={60}
+              />
             </div>
           </article>
           {mockPlayListItemConfig.map((config) => (

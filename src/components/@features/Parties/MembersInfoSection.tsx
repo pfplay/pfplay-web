@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import Typography from '@/components/@shared/@atoms/Typography';
-import Icons from '@/components/__legacy__/Icons';
+import { PFPersonFilled } from '@/components/@shared/@icons';
 import { cn } from '@/utils/cn';
 
 interface MembersInfoSectionProps {
@@ -15,7 +15,7 @@ const MembersInfoSection = ({ membersCount, membersImage }: MembersInfoSectionPr
   return (
     <div className='relative items-center flexRow'>
       <div className='items-center flexRow gap-[6px]'>
-        <Icons.profile width={18} height={18} />
+        <PFPersonFilled width={18} height={18} />
         <Typography type='body3' className='text-gray-50'>
           {membersCount ? membersCount : 0}
         </Typography>
@@ -26,7 +26,7 @@ const MembersInfoSection = ({ membersCount, membersImage }: MembersInfoSectionPr
           <li key={i} className='w-6 h-6 rounded-full bg-slate-400'>
             <Image
               priority
-              src={config.src || '/image/profile.png'}
+              src={config.src || '/images/Background/profile.png'}
               alt={config.alt || 'party member'}
               width={24}
               height={24}

@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Typography from '@/components/@shared/@atoms/Typography';
-import Icons from '@/components/__legacy__/Icons';
+import { PFHeadset } from '@/components/@shared/@icons';
 import { useDialog } from '@/hooks/useDialog';
 import MyProfileModalBody from './MyProfileModalBody';
 
@@ -30,7 +30,7 @@ const PartiesSideBar = ({ setDrawerOpen }: PartiesSideBarProps) => {
       {/* TODO: 프로필 이미지로 변경, href 추가 */}
       <div onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
         <Image
-          src='/image/profile.png' // TODO: user session에서 프로필 받아와 변경
+          src='/images/Background/profile.png' // TODO: user session에서 프로필 받아와 변경
           alt='profile' // TODO: user session에서 프로필 받아와 변경
           width={48}
           height={48}
@@ -41,7 +41,7 @@ const PartiesSideBar = ({ setDrawerOpen }: PartiesSideBarProps) => {
         </Typography>
       </div>
       <div onClick={() => setDrawerOpen(true)} className='flexColCenter gap-2 cursor-pointer '>
-        <Icons.headset width={36} height={36} />
+        <PFHeadset width={36} height={36} />
         <Typography type='caption1' className='text-gray-200'>
           플레이리스트
         </Typography>
