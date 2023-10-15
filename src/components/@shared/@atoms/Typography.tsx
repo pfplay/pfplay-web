@@ -1,5 +1,5 @@
 'use client';
-import React, { forwardRef, ReactNode } from 'react';
+import { forwardRef, HTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 
 export type TypographyType =
@@ -14,11 +14,11 @@ export type TypographyType =
   | 'caption2';
 type TypographyOverflow = 'ellipsis' | 'break-words' | 'break-all' | 'break-normal' | 'break-keep';
 
-export interface TypographyProps extends React.ComponentProps<'p'> {
+export interface TypographyProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;
   type?: TypographyType;
   overflow?: TypographyOverflow;
-  inline?: boolean;
+  as?: keyof Pick<JSX.IntrinsicElements, 'h1' | 'h2' | 'p' | 'span'>;
 }
 
 const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
@@ -29,24 +29,16 @@ const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
       type = 'detail1',
       overflow = titleTypes.includes(type) ? 'ellipsis' : undefined,
       title = overflow === 'ellipsis' && typeof children === 'string' ? children : undefined,
-      inline,
+      as: El = defaultElDict[type],
       ...rest
     },
     ref
   ) => {
-    const El = elDict[type];
-
     return (
       <El
         ref={ref}
         title={title}
-        className={cn([
-          typoStyleDict[type],
-          overflow && overflowDict[overflow],
-          inline && 'inline-block',
-
-          className,
-        ])}
+        className={cn([typoStyleDict[type], overflow && overflowDict[overflow], className])}
         {...rest}
       >
         {children}
@@ -55,17 +47,18 @@ const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
   }
 );
 
-const elDict: Record<TypographyType, keyof Pick<JSX.IntrinsicElements, 'h1' | 'h2' | 'p'>> = {
-  title1: 'h1',
-  title2: 'h2',
-  body1: 'p',
-  body2: 'p',
-  body3: 'p',
-  detail1: 'p',
-  detail2: 'p',
-  caption1: 'p',
-  caption2: 'p',
-};
+const defaultElDict: Record<TypographyType, keyof Pick<JSX.IntrinsicElements, 'h1' | 'h2' | 'p'>> =
+  {
+    title1: 'h1',
+    title2: 'h2',
+    body1: 'p',
+    body2: 'p',
+    body3: 'p',
+    detail1: 'p',
+    detail2: 'p',
+    caption1: 'p',
+    caption2: 'p',
+  };
 const titleTypes: TypographyType[] = ['title1', 'title2'];
 
 const typoStyleDict: Record<TypographyType, string> = {
