@@ -12,11 +12,16 @@ interface DrawerProps {
 
 const Drawer = ({ title, drawerOpen, setDrawerOpen, children }: PropsWithChildren<DrawerProps>) => {
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    if (drawerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'scroll';
+    }
+
     return () => {
       document.body.style.overflow = 'scroll';
     };
-  }, []);
+  }, [drawerOpen]);
 
   return (
     <>

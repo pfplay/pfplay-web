@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 
 import { PFLanguage } from '@/components/@shared/@icons';
@@ -10,7 +11,14 @@ const Header = () => {
   const session = useSession();
 
   return (
-    <header className='absolute top-10 w-full min-w-laptop flex justify-end items-center px-[120px] py-0 z-20'>
+    <header className='fixed top-10 w-full min-w-laptop flex justify-between items-center px-[120px] py-0 z-20'>
+      <Image
+        src='/images/Logo/wordmark_small_white.png'
+        width={124}
+        height={30}
+        alt='Pfplay Logo'
+        priority
+      />
       <div className='items-center gap-6 flexRow'>
         {session.data && <ProfileMenu />}
         <IconMenu
