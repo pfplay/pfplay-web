@@ -18,7 +18,6 @@ const PartiesPage = () => {
     return openDialog(() => ({
       title: '파티 개설',
       titleAlign: 'left',
-
       showCloseIcon: true,
       classNames: {
         container: 'w-[800px]',
@@ -26,12 +25,12 @@ const PartiesPage = () => {
       Body: () => <CreatePartyModalBody />,
     }));
   };
+
   return (
     <>
       <PartiesSideBar setDrawerOpen={setDrawerOpen} />
       <div className='max-w-desktop mx-auto'>
         <PartiesMainStageCard />
-        {/* FIXME: set height of the partyRoom list section */}
         <section className='grid grid-cols-3 gap-6 mt-6 overflow-y-auto'>
           <article
             onClick={() => handleClickBeAHostBtn()}

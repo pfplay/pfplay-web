@@ -1,4 +1,4 @@
-import { APP_NAME } from '@/utils/routes/generateMetaData';
+import { APP_NAME } from './generateMetaData';
 import { generatePaths } from './generatePaths';
 
 describe('generatePaths 함수 테스트', () => {

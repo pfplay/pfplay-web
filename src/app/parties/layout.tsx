@@ -8,7 +8,6 @@ const PartiesLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <>
       <Header />
-      {/* TODO: layout 정리되면  추가  */}
       <main className='min-w-laptop  px-[120px] desktop:px-[80px]  py-[140px] pb-[120px] bg-black  overflow-y-auto'>
         {children}
       </main>
