@@ -58,7 +58,7 @@ const Header = () => {
         </Link>
       )}
       <div className='items-center gap-6 flexRow'>
-        {session.data && <ProfileMenu />}
+        {session.data && <ProfileMenu userData={session.data} />}
         <IconMenu
           MenuButtonIcon={<PFLanguage />}
           menuItemPanel={{ size: 'sm' }}
