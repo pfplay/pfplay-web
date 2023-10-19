@@ -22,14 +22,19 @@ interface TooltipProps {
   title: string;
   visible: boolean;
   color?: TooltipColor;
+  spacing?: number;
 }
-
-const SPACING = 47;
 
 /**
  * @description children 이 function component 일 경우 forwardedRef 가 적용되어 있어야 합니다.
  */
-const Tooltip: React.FC<TooltipProps> = ({ children, title, visible, color = 'red' }) => {
+const Tooltip: React.FC<TooltipProps> = ({
+  children,
+  title,
+  visible,
+  color = 'red',
+  spacing = 13,
+}) => {
   const [position, setPosition] = useState<Position>({
     top: 0,
     left: 0,
@@ -51,7 +56,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, visible, color = 're
         const centerOffset = childRect.width / 2 - tooltipRect.width / 2;
 
         setPosition({
-          top: childRect.bottom + window.scrollY + SPACING,
+          top: childRect.bottom + window.scrollY + spacing,
           left: childRect.left + window.scrollX + centerOffset,
           ready: true,
         });
@@ -83,8 +88,8 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, visible, color = 're
 
             /* arrow */
             'before:content-[""] before:absolute before:-z-1',
-            'before:top-0 before:left-1/2 before:-translate-x-1/2 before:-translate-y-full',
-            'before:w-[8px] before:h-[8px] before:bg-inherit before:polygon-equilateral-triangle',
+            'before:top-[1px] before:left-1/2 before:-translate-x-1/2 before:-translate-y-full',
+            'before:w-[8px] before:h-[8px] before:polygon-equilateral-triangle',
           ])}
           style={{
             top: position.top,
@@ -100,8 +105,8 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, visible, color = 're
 };
 
 const colorsDict: Record<TooltipColor, string> = {
-  red: 'text-gray-50 bg-red-500',
-  gray: 'text-gray-50 bg-gray-700',
+  red: 'text-gray-50 bg-red-500 before:bg-red-500',
+  gray: 'text-gray-50 bg-gray-700 before:bg-gray-700',
 };
 
 export default Tooltip;

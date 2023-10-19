@@ -1,11 +1,17 @@
-import PartiesSideBar from '@/components/@features/Parties/PartiesSideBar';
+import { Metadata } from 'next';
+import Header from '@/components/@features/Home/Header';
+import { PAGE_METADATA } from '@/utils/routes';
+
+export const metadata: Metadata = PAGE_METADATA.PARTIES.index;
 
 const PartiesLayout = ({ children }: React.PropsWithChildren) => {
   return (
-    <main className='bg-partyRoom py-40 '>
-      <PartiesSideBar />
-      {children}
-    </main>
+    <>
+      <Header />
+      <main className='min-w-laptop  px-[120px] desktop:px-[80px]  py-[140px] pb-[120px] bg-black  overflow-y-auto'>
+        {children}
+      </main>
+    </>
   );
 };
 

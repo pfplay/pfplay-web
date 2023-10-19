@@ -46,7 +46,7 @@ const CollapseList = ({
               )}
             </span>
           </Disclosure.Button>
-          <div className='py-3 space-y-3'>{children}</div>
+          <div className='space-y-3 [&>:first-child]:pt-3'>{children}</div>
         </>
       )}
     </Disclosure>

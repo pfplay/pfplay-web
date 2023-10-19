@@ -1,49 +1,64 @@
 'use client';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { PFPersonOutline } from '@/components/@shared/@icons';
+import React from 'react';
+import Typography from '@/components/@shared/@atoms/Typography';
+import BackdropBlurContainer from '@/components/@shared/BackdropBlurContainer';
+import { cn } from '@/utils/cn';
 import { ROUTES } from '@/utils/routes';
 import { replaceDynamic } from '@/utils/routes/replaceDynamic';
+import MembersInfoSection from './MembersInfoSection';
 
 const PartiesMainStageCard = () => {
   const router = useRouter();
 
   return (
-    <div
-      className='w-full py-10 px-7 border border-gray-800 rounded backdrop-blur-lg bg-[#180202]/30'
-      /* FIXME: bg 에 쓰인 [#180202]/30 는 디자인 시스템에 없는 hex */
-    >
-      <h2
-        className='text-white font-poppins text-[28px] mb-1.5 cursor-pointer no-underline hover:underline'
-        onClick={() =>
-          router.push(
-            replaceDynamic(ROUTES.PARTIES.room, {
-              id: 1, // TODO: set proper route for main stage
-            })
-          )
-        }
-      >
-        PFPlay Main Stage
-      </h2>
-      <p className='text-gray-200 font-light'>파티에 오신 것을 환영합니다</p>
-      <div className='w-full flex justify-start items-center gap-36 mt-[28px]'>
-        <div className='flexRow gap-11'>
-          <div className='flex  gap-x-1.5'>
-            <PFPersonOutline width={20} height={20} />
-            <p className='text-gray-200'>48</p>
+    <BackdropBlurContainer>
+      <div className='flexRow items-center gap-[50px] desktop:gap-[169px] px-7 py-10 backdrop-blur-xl bg-backdrop-black/80'>
+        <div className='flexCol gap-12 pb-[21px]'>
+          <div className='gap-3 flexCol'>
+            <Typography
+              type='title2'
+              onClick={() =>
+                router.push(
+                  replaceDynamic(ROUTES.PARTIES.room, {
+                    id: 1, // TODO: set proper route for main stage
+                  })
+                )
+              }
+              className='text-white'
+            >
+              PFPlay Main Stage
+            </Typography>
+            <Typography type='detail1' className='text-gray-200'>
+              파티에 오신 것을 환영합니다
+            </Typography>
           </div>
-          <ul className='flex items-center gap-x-2'>
-            {[1, 2, 3].map((value) => (
-              <li key={value} className='w-6 h-6 rounded-full bg-slate-400'></li>
-            ))}
-          </ul>
+          <MembersInfoSection membersCount={50} membersImage={[{}, {}, {}, {}]} />
         </div>
-        <div className='w-full flex items-center pt-4 gap-x-3 border-t border-gray-700 '>
-          <div className='w-20 h-11 bg-white overflow-hidden rounded'></div>
-          <p className='text-gray-200 text-sm'>NewJeans (뉴진스) &#39;Attention&#39; Official MV</p>
+        <div className='w-full flexRow items-end justify-start pt-4 mt-auto border-t border-gray-700 '>
+          <div className='relative w-full flexRow justify-start  gap-[12px] items-center'>
+            <div className='relative w-[80px] h-[44px] bg-gray-700'>
+              <Image
+                priority
+                src={'/images/ETC/PlaylistThumbnail.png'}
+                alt={'image'}
+                width={80}
+                height={44}
+                className={cn('w-full h-full object-contain select-none')}
+              />
+            </div>
+            <div className='flex-1 min-w-0 max-w-[300px] tablet:max-w-[350px] laptop:max-w-[390px] desktop:max-w-[580px] select-none'>
+              <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
+                NewJeans (뉴진스) Official MV NewJeans (뉴진스) Official MV NewJeans (뉴진스)
+                NewJeans (뉴진스) Official MV NewJeans (뉴진스) Official MV NewJeans (뉴진스)
+              </Typography>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </BackdropBlurContainer>
   );
 };
 

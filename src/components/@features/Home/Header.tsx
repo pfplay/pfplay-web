@@ -1,16 +1,62 @@
 'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
+import { useEffect, useState } from 'react';
 import { PFLanguage } from '@/components/@shared/@icons';
 import IconMenu from '@/components/@shared/IconMenu';
 
+import { cn } from '@/utils/cn';
+import { ROUTES } from '@/utils/routes';
 import ProfileMenu from './ProfileMenu';
 
+const HEADER_HEIGHT = 100;
+
 const Header = () => {
+  const pathname = usePathname();
   const session = useSession();
+  const [scrolled, setScrolled] = useState<boolean>(false);
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    if (offset > HEADER_HEIGHT) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const isHome = pathname === ROUTES.HOME.index;
 
   return (
-    <header className='absolute top-10 w-full min-w-laptop flex justify-end items-center px-[120px] py-0 z-20'>
+    <header
+      className={cn(
+        'fixed top-0 w-full min-w-laptop flex justify-end  items-center px-[120px] pt-10 pb-6 bg-transparent transition-colors z-20',
+        isHome && 'justify-between',
+        scrolled && 'bg-black'
+      )}
+    >
+      {isHome && (
+        <Link href={ROUTES.HOME.index}>
+          <Image
+            src='/images/Logo/wordmark_small_white.png'
+            width={124}
+            height={30}
+            alt='Pfplay Logo'
+            priority
+          />
+        </Link>
+      )}
       <div className='items-center gap-6 flexRow'>
         {session.data && <ProfileMenu />}
         <IconMenu

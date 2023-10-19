@@ -1,4 +1,4 @@
-import { APP_NAME, generateMetaData } from '@/utils/routes/generateMetaData';
+import { APP_NAME, generateMetaData } from './generateMetaData';
 
 describe('utils/generateTitles', () => {
   test('단일 루트 타이틀 생성', () => {

@@ -27,6 +27,7 @@ export interface DialogProps {
   showCloseIcon?: boolean;
   classNames?: {
     container?: string;
+    titleType?: TypographyProps['type'];
   };
 }
 
@@ -55,7 +56,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
 }) => {
   const Title = useMemo(() => {
     const titleProps: PropsWithRef<TypographyProps> = {
-      type: 'body1',
+      type: classNames?.titleType || 'body1',
       className: 'text-gray-50',
     };
 
