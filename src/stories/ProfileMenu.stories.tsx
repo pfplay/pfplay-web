@@ -12,7 +12,7 @@ export default meta;
 export const ProfleMenu = () => {
   return (
     <div className='w-2/3 h-72 flexRow justify-end'>
-      <ProfileMenu />
+      <ProfileMenu email='pfplay@pfplay.com' />
     </div>
   );
 };

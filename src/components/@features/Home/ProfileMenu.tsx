@@ -1,18 +1,20 @@
-'use client';
-
+import { signOut } from 'next-auth/react';
 import { Menu } from '@headlessui/react';
 import MenuButton from '@/components/@shared/@atoms/Menu/MenuButton';
 import MenuItemPanel from '@/components/@shared/@atoms/Menu/MenuItemPanel';
 
-const ProfileMenu = () => {
+interface ProfileMenuProps {
+  email: string;
+}
+
+const ProfileMenu = ({ email }: ProfileMenuProps) => {
   return (
     <Menu as='section' className={`relative w-fit`}>
       {({ close }) => (
         <>
-          {/* // TODO: Get the user info from session and display email in MenuButton component */}
-          <MenuButton type='button'>pfplay@pfplay.com</MenuButton>
+          <MenuButton type='button'>{email}</MenuButton>
           <MenuItemPanel
-            menuItemConfig={[{ label: '로그아웃', onClickItem: () => console.log('로그아웃') }]}
+            menuItemConfig={[{ label: '로그아웃', onClickItem: () => signOut() }]}
             close={close}
             size='sm'
           />
