@@ -1,6 +1,6 @@
 import { AvatarType } from '@/api/@types/@enums';
 
-export interface AvatarBody {
+export interface AvatarParts {
   id: number;
   type: AvatarType;
   name: string;
@@ -9,5 +9,5 @@ export interface AvatarBody {
 }
 
 export interface AvatarClient {
-  getBodyList(): Promise<AvatarBody[]>;
+  getBodyList(): Promise<AvatarParts[]>;
 }

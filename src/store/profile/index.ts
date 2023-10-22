@@ -1,14 +1,14 @@
 import { create } from 'zustand';
-import { Profile } from './profile.types';
+import { UserProfile } from '@/api/@types/User';
 
 interface ProfileStore {
-  profile?: Profile;
-  setProfile: (profile: Profile) => void;
+  profile?: UserProfile;
+  setProfile: (profile: UserProfile) => void;
   clearProfileSetting: () => void;
 }
 
 export const useProfileStore = create<ProfileStore>((set) => ({
   profile: undefined,
-  setProfile: (profile: Profile) => set({ profile }),
+  setProfile: (profile: UserProfile) => set({ profile }),
   clearProfileSetting: () => set({ profile: undefined }),
 }));
