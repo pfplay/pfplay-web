@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Header from '@/components/@features/Home/Header';
+import Header from '@/components/features/Home/Header';
 import { PAGE_METADATA } from '@/utils/routes';
 
 export const metadata: Metadata = PAGE_METADATA.PARTIES.index;

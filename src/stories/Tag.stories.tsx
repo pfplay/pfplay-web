@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import type { Meta } from '@storybook/react';
-import Tag from '@/components/@shared/@atoms/Tag';
+import Tag from '@/components/shared/atoms/Tag';
 
 const meta = {
-  title: '@atoms/Tag',
+  title: 'atoms/Tag',
   tags: ['autodocs'],
   component: Tag,
 } satisfies Meta<typeof Tag>;

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Loading from '@/components/@shared/@atoms/Loading';
+import Loading from '@/components/shared/atoms/Loading';
 
 const meta = {
-  title: '@atoms/Loading',
+  title: 'atoms/Loading',
   component: Loading,
   tags: ['autodocs'],
 } satisfies Meta<typeof Loading>;

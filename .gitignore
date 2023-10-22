@@ -16,7 +16,7 @@
 # production
 /build
 /dist
-/src/components/@shared/@icons
+/src/components/shared/icons
 
 # misc
 .idea/

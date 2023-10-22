@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
-import Typography from '@/components/@shared/@atoms/Typography';
-import Select, { SelectListItem } from '@/components/@shared/Select';
+import Select, { SelectListItem } from '@/components/shared/Select';
+import Typography from '@/components/shared/atoms/Typography';
 
 const meta = {
   title: 'ui/Select',

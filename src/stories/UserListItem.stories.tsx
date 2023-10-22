@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import UserListItem from '@/components/@shared/UserListItem';
+import UserListItem from '@/components/shared/UserListItem';
 import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 
 const meta = {

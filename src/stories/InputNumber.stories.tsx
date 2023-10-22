@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
-import InputNumber from '@/components/@shared/@atoms/InputNumber';
+import InputNumber from '@/components/shared/atoms/InputNumber';
 
 const meta: Meta<typeof InputNumber> = {
-  title: '@atoms/InputNumber',
+  title: 'atoms/InputNumber',
   component: InputNumber,
   tags: ['autodocs'],
 };

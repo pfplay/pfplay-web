@@ -1,4 +1,4 @@
-import { PlayListItemType } from '@/components/@shared/@atoms/PlayListItem';
+import { PlayListItemType } from '@/components/shared/atoms/PlayListItem';
 
 export const mockPlayListItemConfig: PlayListItemType[] = [
   {

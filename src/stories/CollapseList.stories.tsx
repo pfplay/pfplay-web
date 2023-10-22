@@ -1,9 +1,9 @@
 import { Disclosure } from '@headlessui/react';
 import type { Meta } from '@storybook/react';
-import PlayListItem from '@/components/@shared/@atoms/PlayListItem';
-import Tag from '@/components/@shared/@atoms/Tag';
-import CollapseList from '@/components/@shared/CollapseList';
-import UserListItem from '@/components/@shared/UserListItem';
+import CollapseList from '@/components/shared/CollapseList';
+import UserListItem from '@/components/shared/UserListItem';
+import PlayListItem from '@/components/shared/atoms/PlayListItem';
+import Tag from '@/components/shared/atoms/Tag';
 import { mockCollapslistConfig } from '@/constants/__mock__/mockCollapslistConfig';
 import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 
