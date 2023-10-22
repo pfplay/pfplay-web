@@ -1,10 +1,11 @@
-import { AvatarImg } from '@/components/features/Avatar/AvatarImage';
-
 //  TODO: 아바타 이미지 데이터 가져오면 mock arr, file 지우기
-export const mockAvatarBodyList: Array<AvatarImg> = [
+import { AvatarType } from '@/api/@types/@enums';
+import { AvatarParts } from '@/api/@types/Avatar';
+
+export const mockAvatarPartsList: Array<AvatarParts> = [
   {
     id: 1,
-    type: 'basic',
+    type: AvatarType.Basic,
     name: '도깨비불',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -12,7 +13,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 2,
-    type: 'basic',
+    type: AvatarType.Basic,
     name: '유령',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -20,7 +21,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 3,
-    type: 'basic',
+    type: AvatarType.Basic,
     name: '기본1',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -28,7 +29,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 4,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타1',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -36,7 +37,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 5,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타2',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -44,7 +45,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 6,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타3',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -52,7 +53,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 7,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타4',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -60,7 +61,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 8,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타5',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -68,7 +69,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 9,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타6',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -76,7 +77,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 10,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타7',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -84,7 +85,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 11,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타8',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -92,7 +93,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 12,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타9',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -100,7 +101,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 13,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타10',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -108,7 +109,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 14,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타11',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -116,7 +117,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 15,
-    type: 'dj',
+    type: AvatarType.Dj,
     name: '디제잉 아바타12',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -124,7 +125,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 16,
-    type: 'ref',
+    type: AvatarType.Ref,
     name: '레퍼럴 아바타1',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -132,7 +133,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 17,
-    type: 'ref',
+    type: AvatarType.Ref,
     name: '레퍼럴 아바타2',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -140,7 +141,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 18,
-    type: 'ref',
+    type: AvatarType.Ref,
     name: '레퍼럴 아바타3',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -148,7 +149,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 19,
-    type: 'ref',
+    type: AvatarType.Ref,
     name: '레퍼럴 아바타4',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -156,7 +157,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 20,
-    type: 'room',
+    type: AvatarType.Room,
     name: '누적 DJ 아바타1',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -164,7 +165,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 21,
-    type: 'room',
+    type: AvatarType.Room,
     name: '누적 DJ 아바타2',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -172,7 +173,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 22,
-    type: 'room',
+    type: AvatarType.Room,
     name: '누적 DJ 아바타3',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
@@ -180,7 +181,7 @@ export const mockAvatarBodyList: Array<AvatarImg> = [
   },
   {
     id: 23,
-    type: 'room',
+    type: AvatarType.Room,
     name: '누적 DJ 아바타4',
     image:
       'https://postfiles.pstatic.net/MjAyMzA3MjlfMTE3/MDAxNjkwNjE0MTc3MjUz.owpzAVyLyeWQNKejvnYsd7g4Qv9SPvwwzl6voUCAeZ0g.Re2hKthxs8iV4NJr2Ofd-4_DfiXe46GzvPfhrjftX3Eg.PNG.sylviuss/avatar_empty.png?type=w773',
