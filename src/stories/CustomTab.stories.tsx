@@ -1,7 +1,7 @@
 import { PropsWithChildren, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import type { Meta } from '@storybook/react';
-import CustomTab from '@/components/@shared/@atoms/CustomTab';
+import CustomTab from '@/components/shared/atoms/CustomTab';
 
 const meta = {
   title: 'ui/CustomTab',

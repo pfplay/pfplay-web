@@ -1,5 +1,5 @@
-import { PlayListItemType } from '@/components/@shared/@atoms/PlayListItem';
-import { UserListItemType } from '@/components/@shared/UserListItem';
+import { UserListItemType } from '@/components/shared/UserListItem';
+import { PlayListItemType } from '@/components/shared/atoms/PlayListItem';
 
 export const mockCollapslistConfig: {
   playListPanel: PlayListItemType[];

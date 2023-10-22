@@ -1,12 +1,12 @@
 'use client';
 import Image from 'next/image';
 import { useState } from 'react';
-import CreatePartyModalBody from '@/components/@features/Parties/CreatePartyModalBody';
-import MyPlaylist from '@/components/@features/Parties/MyPlaylist';
-import PartiesMainStageCard from '@/components/@features/Parties/PartiesMainStageCard';
-import PartiesSideBar from '@/components/@features/Parties/PartiesSideBar';
-import PartyRoomCard from '@/components/@features/Parties/PartyRoomCard';
-import Typography from '@/components/@shared/@atoms/Typography';
+import CreatePartyModalBody from '@/components/features/Parties/CreatePartyModalBody';
+import MyPlaylist from '@/components/features/Parties/MyPlaylist';
+import PartiesMainStageCard from '@/components/features/Parties/PartiesMainStageCard';
+import PartiesSideBar from '@/components/features/Parties/PartiesSideBar';
+import PartyRoomCard from '@/components/features/Parties/PartyRoomCard';
+import Typography from '@/components/shared/atoms/Typography';
 import { mockPlayListItemConfig } from '@/constants/__mock__/mockPlayListItemConfig';
 import { useDialog } from '@/hooks/useDialog';
 

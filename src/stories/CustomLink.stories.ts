@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import CustomLink from '@/components/@shared/CustomLink';
+import CustomLink from '@/components/shared/CustomLink';
 
 const meta = {
-  title: '@atoms/CustomLink',
+  title: 'atoms/CustomLink',
   component: CustomLink,
   tags: ['autodocs'],
 } satisfies Meta<typeof CustomLink>;

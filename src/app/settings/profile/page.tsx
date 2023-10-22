@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
-import ProfileSettingForm from '@/components/@features/Profile/ProfileSettingForm';
-import BackButton from '@/components/@shared/BackButton';
+import ProfileSettingForm from '@/components/features/Profile/ProfileSettingForm';
+import BackButton from '@/components/shared/BackButton';
 import { PAGE_METADATA } from '@/utils/routes';
 
 export const metadata: Metadata = PAGE_METADATA.SETTINGS.PROFILE.index;

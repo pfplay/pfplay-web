@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import Footer from '@/components/@features/Home/Footer';
-import Header from '@/components/@features/Home/Header';
-import CustomLink from '@/components/@shared/CustomLink';
+import Footer from '@/components/features/Home/Footer';
+import Header from '@/components/features/Home/Header';
+import CustomLink from '@/components/shared/CustomLink';
 import { cn } from '@/utils/cn';
 import { PAGE_METADATA, ROUTES } from '@/utils/routes';
 

@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
-import Button from '@/components/@shared/@atoms/Button';
-import Input from '@/components/@shared/@atoms/Input';
-import { PFHeadset } from '@/components/@shared/@icons';
+import Button from '@/components/shared/atoms/Button';
+import Input from '@/components/shared/atoms/Input';
+import { PFHeadset } from '@/components/shared/icons';
 
 const meta: Meta<typeof Input> = {
-  title: '@atoms/Input',
+  title: 'atoms/Input',
   component: Input,
   tags: ['autodocs'],
 };

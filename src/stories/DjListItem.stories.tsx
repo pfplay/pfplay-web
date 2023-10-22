@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import DjListItem from '@/components/@shared/DjListItem';
+import DjListItem from '@/components/shared/DjListItem';
 
 const meta = {
   title: 'ui/DjListItem',

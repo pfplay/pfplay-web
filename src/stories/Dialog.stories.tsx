@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import { useMemo, useRef, useState } from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
-import Button from '@/components/@shared/@atoms/Button';
-import Tag from '@/components/@shared/@atoms/Tag';
-import Typography from '@/components/@shared/@atoms/Typography';
-import Dialog from '@/components/@shared/Dialog';
-import FormItem from '@/components/@shared/FormItem';
+import Dialog from '@/components/shared/Dialog';
+import FormItem from '@/components/shared/FormItem';
+import Button from '@/components/shared/atoms/Button';
+import Tag from '@/components/shared/atoms/Tag';
+import Typography from '@/components/shared/atoms/Typography';
 
 import { useDialog } from '@/hooks/useDialog';
 import { cn } from '@/utils/cn';

@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import type { Meta, StoryObj } from '@storybook/react';
-import TextButton from '@/components/@shared/@atoms/TextButton';
-import { PFLanguage } from '@/components/@shared/@icons';
+import TextButton from '@/components/shared/atoms/TextButton';
+import { PFLanguage } from '@/components/shared/icons';
 
 const meta = {
-  title: '@atoms/TextButton',
+  title: 'atoms/TextButton',
   component: TextButton,
   tags: ['autodocs'],
 } satisfies Meta<typeof TextButton>;
