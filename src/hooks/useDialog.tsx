@@ -22,8 +22,8 @@ export const useDialog = () => {
 
   const predefinedDialogs = useMemo(
     () => ({
-      openAlertDialog: ({ title, Sub, content, okText }: AlertDialogParams) =>
-        openDialog((_, onCancel) => ({
+      openAlertDialog: async ({ title, Sub, content, okText }: AlertDialogParams) => {
+        await openDialog((_, onCancel) => ({
           title,
           Sub,
           Body: () => (
@@ -35,10 +35,17 @@ export const useDialog = () => {
               </Dialog.ButtonGroup>
             </>
           ),
-        })),
+        }));
+      },
 
-      openConfirmDialog: ({ title, Sub, content, okText, cancelText }: ConfirmDialogParams) =>
-        openDialog<boolean>((onOk) => ({
+      openConfirmDialog: async ({
+        title,
+        Sub,
+        content,
+        okText,
+        cancelText,
+      }: ConfirmDialogParams) => {
+        return await openDialog<boolean>((onOk) => ({
           title,
           Sub,
           Body: () => (
@@ -51,10 +58,16 @@ export const useDialog = () => {
               </Dialog.ButtonGroup>
             </>
           ),
-        })),
+        }));
+      },
 
-      openErrorDialog: (error: unknown) =>
-        openDialog((_, onCancel) => ({
+      openErrorDialog: async (error: unknown) => {
+        if (typeof window === 'undefined') {
+          console.error(getErrorMessage(error));
+          return;
+        }
+
+        await openDialog((_, onCancel) => ({
           title: { fullPhrase: 'Error', emphasisPhrase: 'Error' },
           Body: () => (
             <>
@@ -65,7 +78,8 @@ export const useDialog = () => {
               </Dialog.ButtonGroup>
             </>
           ),
-        })),
+        }));
+      },
     }),
     [openDialog]
   );
