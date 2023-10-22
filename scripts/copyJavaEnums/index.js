@@ -20,7 +20,7 @@ function main() {
       return acc;
     }
 
-    const enumFieldsRegex = /(?<enumValue>[A-Z_]+)\("(?<enumLabel>.+)"\)/g;
+    const enumFieldsRegex = /(?<enumValue>[A-Z_]+)(?:\("(?<enumLabel>.+)"\)|,)/g;
     const enumFields = [...content.matchAll(enumFieldsRegex)].map((v) => v.groups);
 
     const enumStr = `
