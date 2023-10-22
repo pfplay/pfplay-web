@@ -1,12 +1,12 @@
 import { Authority } from '@/api/@types/@enums';
-import { AvatarBody, AvatarFace } from '@/api/@types/Avatar';
+import { AvatarParts } from '@/api/@types/Avatar';
 
-/* FIXME: 임시 타입. 아직 API 에서 Profile DTO 안나옴 */
+/* FIXME: 임시 타입. 아직 API 에서 Profile DTO 명확힌 안나옴 */
 export interface UserProfile {
-  nickName?: string;
-  introduction?: string;
-  avatarBody?: AvatarBody;
-  avatarFace?: AvatarFace;
+  nickName: string;
+  introduction: string;
+  avatarBody?: AvatarParts;
+  avatarFace?: AvatarParts;
 }
 
 export interface UserLoginRequest {
