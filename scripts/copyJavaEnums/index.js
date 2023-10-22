@@ -5,7 +5,7 @@ const ROOT = `${__dirname}/../../`;
 const JAVA_ENUMS_DIRNAME = `${__dirname}/enums`; // 백엔드 common/enums 디렉터리를 임시로 카피해오세요
 const ENUMS_DIRNAME = `${ROOT}/src/api/@types`;
 const ENUMS_FILENAME = `${ENUMS_DIRNAME}/@enums.ts`;
-const exceptEnums = new Set(['ExceptionEnum']);
+const exceptionEnumNames = new Set(['ExceptionEnum']);
 
 main();
 
@@ -16,7 +16,7 @@ function main() {
     const enumNameRegex = /(?<=public enum )([A-Z]\w+)/;
     const enumName = enumNameRegex.exec(content)[1];
 
-    if (exceptEnums.has(enumName)) {
+    if (exceptionEnumNames.has(enumName)) {
       return acc;
     }
 
