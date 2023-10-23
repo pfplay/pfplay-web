@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "svgr": "node scripts/svgr",
+    "generate-enums": "node scripts/copyJavaEnums",
     "prepare": "husky install && npm run svgr",
     "dev": "next dev",
     "build": "next build",
