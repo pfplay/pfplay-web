@@ -1,3 +1,8 @@
+export enum ApiHeader {
+  AUTHORIZATION = 'AUTHORIZATION',
+  BEARER = 'BEARER',
+}
+
 export enum Authority {
   ROLE_USER = 'ROLE_USER',
   ROLE_GUEST = 'ROLE_GUEST',
@@ -5,9 +10,28 @@ export enum Authority {
 }
 
 export enum AvatarType {
-  // TODO: 백엔드에 enum 이 없어 하드 코딩으로 생성한 enum. 백엔드 측에 이게 왜 enum 이 아닌지 문의 필요
-  Basic = 'basic',
-  Dj = 'dj',
-  Ref = 'ref',
-  Room = 'room',
+  BASIC = 'BASIC',
+  DJ = 'DJ',
+  REF = 'REF',
+  ROOM = 'ROOM',
+}
+
+export enum Domain {
+  CLIENT = 'CLIENT',
+}
+
+export enum PartyPermissionRole {
+  ADMIN = 'ADMIN',
+  COMMUNITY_MANAGER = 'COMMUNITY_MANAGER',
+  MODERATOR = 'MODERATOR',
+  CLUBBER = 'CLUBBER',
+}
+
+export enum PartyRoomStatus {
+  ACTIVE = 'ACTIVE',
+}
+
+export enum PartyRoomType {
+  PARTY = 'PARTY',
+  MAIN = 'MAIN',
 }
