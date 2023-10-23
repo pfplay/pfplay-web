@@ -10,7 +10,7 @@ interface Props {
 
 const AvatarBodyList: FC<Props> = ({ list, selected, setSelected }) => {
   return (
-    <div className='max-h-[300px] grid grid-cols-2 gap-5 laptop:grid-cols-3 desktop:grid-cols-5 mt-7 mb-10 overflow-y-auto styled-scroll'>
+    <div className='max-h-[300px] grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5 mt-7 mb-10 overflow-y-auto styled-scroll'>
       {list.map((avatar) => (
         <AvatarListItem
           key={avatar.id}

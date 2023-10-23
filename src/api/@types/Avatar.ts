@@ -6,6 +6,7 @@ export interface AvatarParts {
   name: string;
   image: string;
   point: number;
+  purchased: boolean;
 }
 
 export interface AvatarClient {
