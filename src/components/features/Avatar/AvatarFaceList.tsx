@@ -1,16 +1,18 @@
 'use client';
+import { FC } from 'react';
+import { AvatarParts } from '@/api/@types/Avatar';
+import AvatarListItem from '@/components/features/Avatar/AvatarListItem';
 import Button from '@/components/shared/atoms/Button';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFAdd } from '@/components/shared/icons';
-import { mockAvatarBodyList } from '@/constants/__mock__/mockAvatarBodyList';
-import AvatarImage, { AvatarImg } from './AvatarImage';
 
-interface AvatarFaceProps {
-  selectedFace: AvatarImg;
-  setSelectedFace: (face: AvatarImg) => void;
+interface Props {
+  list: AvatarParts[];
+  selected?: AvatarParts;
+  setSelected: (body: AvatarParts) => void;
 }
 
-const AvatarFace = ({ selectedFace, setSelectedFace }: AvatarFaceProps) => {
+const AvatarFaceList: FC<Props> = ({ list, selected, setSelected }) => {
   // const connectWithMetamask = useMetamask();
   // const disconnect = useDisconnect();
   // const address = useAddress();
@@ -24,7 +26,9 @@ const AvatarFace = ({ selectedFace, setSelectedFace }: AvatarFaceProps) => {
             </Typography>
             <Typography type='detail1' className='flexRowCenter gap-1 text-gray-50 uppercase'>
               연결된 지갑이
-              <Typography className='text-red-300'>1</Typography>
+              <Typography as='span' className='text-red-300'>
+                1
+              </Typography>
             </Typography>
           </div>
           <div className='flexRow gap-4'>
@@ -68,13 +72,12 @@ const AvatarFace = ({ selectedFace, setSelectedFace }: AvatarFaceProps) => {
         </Typography>
         <div className='flexCol gap-10'>
           <div className='max-h-[140px] grid grid-cols-2 gap-5 laptop:grid-cols-3 desktop:grid-cols-5 overflow-y-auto styled-scroll'>
-            {/* //  TODO: 아바타 이미지 데이터 가져오면 mock arr 대체하기 */}
-            {mockAvatarBodyList.map((avatar) => (
-              <AvatarImage
+            {list.map((avatar) => (
+              <AvatarListItem
                 key={avatar.id}
                 avatar={avatar}
-                selectedImg={selectedFace}
-                setSelectedImage={setSelectedFace}
+                selected={avatar.id === selected?.id}
+                setSelected={setSelected}
               />
             ))}
           </div>
@@ -84,4 +87,4 @@ const AvatarFace = ({ selectedFace, setSelectedFace }: AvatarFaceProps) => {
   );
 };
 
-export default AvatarFace;
+export default AvatarFaceList;

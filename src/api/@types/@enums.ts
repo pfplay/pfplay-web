@@ -9,6 +9,13 @@ export enum Authority {
   ROLE_WALLET_USER = 'ROLE_WALLET_USER',
 }
 
+export enum AvatarType {
+  BASIC = 'BASIC',
+  DJ = 'DJ',
+  REF = 'REF',
+  ROOM = 'ROOM',
+}
+
 export enum Domain {
   CLIENT = 'CLIENT',
 }
