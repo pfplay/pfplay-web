@@ -1,6 +1,19 @@
-export enum ApiHeader {
-  AUTHORIZATION = 'AUTHORIZATION',
-  BEARER = 'BEARER',
+export enum PartyRoomType {
+  PARTY = 'PARTY',
+  MAIN = 'MAIN',
+}
+
+export enum PartyRoomStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
+
+export enum PartyPermissionRole {
+  ADMIN = 'ADMIN',
+  COMMUNITY_MANAGER = 'COMMUNITY_MANAGER',
+  MODERATOR = 'MODERATOR',
+  CLUBBER = 'CLUBBER',
+  LISTENER = 'LISTENER',
 }
 
 export enum Authority {
@@ -14,24 +27,4 @@ export enum AvatarType {
   DJ = 'DJ',
   REF = 'REF',
   ROOM = 'ROOM',
-}
-
-export enum Domain {
-  CLIENT = 'CLIENT',
-}
-
-export enum PartyPermissionRole {
-  ADMIN = 'ADMIN',
-  COMMUNITY_MANAGER = 'COMMUNITY_MANAGER',
-  MODERATOR = 'MODERATOR',
-  CLUBBER = 'CLUBBER',
-}
-
-export enum PartyRoomStatus {
-  ACTIVE = 'ACTIVE',
-}
-
-export enum PartyRoomType {
-  PARTY = 'PARTY',
-  MAIN = 'MAIN',
 }
