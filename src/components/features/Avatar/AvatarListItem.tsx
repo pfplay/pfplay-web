@@ -13,18 +13,18 @@ interface Props {
 const AvatarListItem: FC<Props> = ({ avatar, selected, setSelected }) => {
   return (
     <div className='relative w-full max-width-[200px] aspect-square cursor-pointer group'>
-      {/* FIXME: BE api 상세에 맞춰 아래 코드 수정 */}
-      {!avatar.purchased && (
-        <>
-          <div className='absolute inset-0 flexRow justify-start items-start bg-transparent group-hover:opacity-60 group-hover:bg-black z-30' />
-          <Typography
-            type='detail1'
-            className='absolute inset-3 text-white z-50 opacity-0 group-hover:opacity-100'
-          >
-            DJ 포인트 5점 획득 시 잠금해제 할 수 있어요!
-          </Typography>
-        </>
-      )}
+      {/* FIXME: BE api 상세에 맞춰 아래 코드 수정
+          해금 안된 이미지 대응
+      */}
+      <>
+        <div className='absolute inset-0 flexRow justify-start items-start bg-transparent group-hover:opacity-60 group-hover:bg-black z-30' />
+        <Typography
+          type='detail1'
+          className='absolute inset-3 text-white z-50 opacity-0 group-hover:opacity-100'
+        >
+          DJ 포인트 5점 획득 시 잠금해제 할 수 있어요!
+        </Typography>
+      </>
 
       <Image
         key={avatar.id}
