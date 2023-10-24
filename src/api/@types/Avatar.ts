@@ -6,7 +6,7 @@ export interface AvatarParts {
   name: string;
   image: string;
   point: number;
-  purchased: boolean;
+  purchased: boolean; // FIXME: BE api 상세 변경에 따라 수정
 }
 
 export interface AvatarClient {
