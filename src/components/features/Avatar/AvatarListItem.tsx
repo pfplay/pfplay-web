@@ -13,6 +13,7 @@ interface Props {
 const AvatarListItem: FC<Props> = ({ avatar, selected, setSelected }) => {
   return (
     <div className='relative w-full max-width-[200px] aspect-square cursor-pointer group'>
+      {/* FIXME: BE api 상세에 맞춰 아래 코드 수정 */}
       {!avatar.purchased && (
         <>
           <div className='absolute inset-0 flexRow justify-start items-start bg-transparent group-hover:opacity-60 group-hover:bg-black z-30' />

@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import React, { FC, Fragment, PropsWithChildren, useEffect, useState } from 'react';
 import { Tab } from '@headlessui/react';
+import { FetchStatus } from '@/api/@types/@shared';
 import { AvatarParts } from '@/api/@types/Avatar';
 import { AvatarService } from '@/api/services/Avatar';
 import AvatarBodyList from '@/components/features/Avatar/AvatarBodyList';
@@ -24,25 +25,34 @@ const AvatarSettingForm: FC<Props> = ({ withLayout }) => {
   const [faceList, setFaceList] = useState<AvatarParts[]>([]);
   const [selectedBody, setSelectedBody] = useState<AvatarParts>();
   const [selectedFace, setSelectedFace] = useState<AvatarParts>();
+  const [bodyStatus, setBodyStatus] = useState<FetchStatus>('idle');
+  const [faceStatus, setFaceStatus] = useState<FetchStatus>('idle');
+
   const Container = withLayout ? Layout : Fragment;
 
   const fetchBodyList = async () => {
+    setBodyStatus('loading');
     try {
       const bodyList = await AvatarService.getBodyList();
       setBodyList(bodyList);
       setSelectedBody(bodyList[0]);
+      setBodyStatus('succeeded');
     } catch (e) {
       openErrorDialog(e);
+      setBodyStatus('failed');
     }
   };
 
   const fetchFaceList = async () => {
+    setFaceStatus('loading');
     try {
       // TODO: fetch face list
       setFaceList(mockAvatarPartsList);
       setSelectedFace(mockAvatarPartsList[0]);
+      setFaceStatus('succeeded');
     } catch (e) {
       openErrorDialog(e);
+      setFaceStatus('failed');
     }
   };
 
@@ -83,6 +93,7 @@ const AvatarSettingForm: FC<Props> = ({ withLayout }) => {
                   list={bodyList}
                   selected={selectedBody}
                   setSelected={setSelectedBody}
+                  status={bodyStatus}
                 />
               </Tab.Panel>
               <Tab.Panel tabIndex={1} className={' pt-4 '}>
@@ -90,6 +101,7 @@ const AvatarSettingForm: FC<Props> = ({ withLayout }) => {
                   list={faceList}
                   selected={selectedFace}
                   setSelected={setSelectedFace}
+                  status={faceStatus}
                 />
               </Tab.Panel>
             </Tab.Panels>
