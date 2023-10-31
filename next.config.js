@@ -2,9 +2,24 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: { domains: ['lh3.googleusercontent.com', 'picsum.photos', 'postfiles.pstatic.net'] },
-  experimental: {
-    appDir: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'postfiles.pstatic.net',
+        port: '',
+      },
+    ],
   },
   output: 'standalone',
 };

@@ -22,7 +22,7 @@
     "@hookform/resolvers": "^2.9.10",
     "axios": "^1.2.0",
     "clsx": "^1.2.1",
-    "next": "^13.4.7",
+    "next": "^14.0.0",
     "next-auth": "^4.22.1",
     "postcss-nesting": "^12.0.1",
     "react": "^18.2.0",
