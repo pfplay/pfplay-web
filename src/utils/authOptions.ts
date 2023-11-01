@@ -32,6 +32,7 @@ export const authOptions: NextAuthOptions = {
         const response = await UserService.login({
           accessToken: account.access_token,
         });
+
         user.accessToken = response.accessToken;
         user.registered = response.registered;
         user.authority = response.authority;
@@ -67,4 +68,4 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-export const getAuthSession = () => getServerSession(authOptions);
+export const getServerAuthSession = () => getServerSession(authOptions);
