@@ -1,12 +1,14 @@
-import React, { Fragment, PropsWithChildren } from 'react';
+import React, { Fragment, PropsWithChildren, Suspense } from 'react';
 import BackButton from '@/components/shared/BackButton';
 import CustomLink from '@/components/shared/CustomLink';
-import CustomTab, {
+import {
+  CustomTab,
   TabGroup,
   TabList,
   TabPanel,
   TabPanels,
 } from '@/components/shared/atoms/CustomTab';
+import Typography from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
 import { ROUTES } from '@/utils/routes';
 import AvatarBodyList from './AvatarBodyList';
@@ -85,13 +87,15 @@ const AvatarSettingForm = ({ withLayout }: Props) => {
             </TabList>
             <TabPanels className={'pb-2'}>
               <TabPanel tabIndex={0} className={'pt-6'}>
-                <AvatarBodyList />
-                {/* <AvatarBodyList
-                // list={bodyList}
-                // selected={selectedBody}
-                // setSelected={setSelectedBody}
-                // status={bodyStatus}
-                /> */}
+                <Suspense
+                  fallback={
+                    <div className='flexRow justify-center items-center p-20'>
+                      <Typography type='detail1'>로딩중...</Typography>
+                    </div>
+                  }
+                >
+                  <AvatarBodyList />
+                </Suspense>
               </TabPanel>
               <TabPanel tabIndex={1} className={' pt-4 '}>
                 {/* <AvatarFaceList

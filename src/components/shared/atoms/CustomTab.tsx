@@ -16,7 +16,7 @@ interface NonBoxProps {
 }
 export type CustomTabProps = CommonProps & (BoxProps | NonBoxProps);
 
-const CustomTab = (props: CustomTabProps) => {
+export const CustomTab = (props: CustomTabProps) => {
   if (props.variant === 'box') {
     return (
       <Tab as={Fragment}>
@@ -56,8 +56,6 @@ const CustomTab = (props: CustomTabProps) => {
     </Tab>
   );
 };
-
-export default CustomTab;
 
 const getCommentTabStyle = (selected: boolean) => {
   return cn(
