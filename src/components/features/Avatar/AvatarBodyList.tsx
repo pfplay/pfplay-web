@@ -1,4 +1,3 @@
-'use server';
 import { AvatarService } from '@/api/services/Avatar';
 import AvatarListItem from './AvatarListItem';
 

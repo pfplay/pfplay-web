@@ -10,4 +10,5 @@ export interface AvatarParts {
 
 export interface AvatarClient {
   getBodyList(): Promise<AvatarParts[]>;
+  getFaceList(): Promise<AvatarParts[]>;
 }

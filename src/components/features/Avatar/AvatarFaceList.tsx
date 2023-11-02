@@ -1,31 +1,15 @@
-'use client';
-import { FC } from 'react';
-import { FetchStatus } from '@/api/@types/@shared';
-import { AvatarParts } from '@/api/@types/Avatar';
-import AvatarListItem from '@/components/features/Avatar/AvatarListItem';
+import { AvatarService } from '@/api/services/Avatar';
 import Button from '@/components/shared/atoms/Button';
 import Typography from '@/components/shared/atoms/Typography';
 import PFAdd from '@/components/shared/icons/action/PFAdd';
+import AvatarListItem from './AvatarListItem';
 
-interface Props {
-  list: AvatarParts[];
-  selected?: AvatarParts;
-  setSelected: (body: AvatarParts) => void;
-  status: FetchStatus;
-}
-
-const AvatarFaceList: FC<Props> = ({ list, selected, setSelected, status }) => {
+const AvatarFaceList = async () => {
   // const connectWithMetamask = useMetamask();
   // const disconnect = useDisconnect();
   // const address = useAddress();
-  if (status === 'loading') {
-    // FIXME: 로딩 디자인 나오면 수정
-    return (
-      <div className='flexRow justify-center items-center'>
-        <Typography type='detail1'>로딩중...</Typography>
-      </div>
-    );
-  }
+  const faceList = await AvatarService.getFaceList();
+
   return (
     <div className='flexCol gap-4'>
       <div className='flexRow justify-end items-center gap-3'>
@@ -45,15 +29,9 @@ const AvatarFaceList: FC<Props> = ({ list, selected, setSelected, status }) => {
         </Button>
       </div>
       <div className='max-h-[416px] grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5  overflow-y-auto styled-scroll'>
-        {status === 'succeeded' &&
-          list.map((avatar) => (
-            <AvatarListItem
-              key={avatar.id}
-              avatar={avatar}
-              selected={avatar.id === selected?.id}
-              setSelected={setSelected}
-            />
-          ))}
+        {faceList.map((avatar) => (
+          <AvatarListItem key={avatar.id} avatar={avatar} />
+        ))}
       </div>
     </div>
   );

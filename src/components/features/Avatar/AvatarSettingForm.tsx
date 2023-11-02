@@ -1,3 +1,4 @@
+'use server';
 import React, { Fragment, PropsWithChildren, Suspense } from 'react';
 import BackButton from '@/components/shared/BackButton';
 import CustomLink from '@/components/shared/CustomLink';
@@ -12,52 +13,14 @@ import Typography from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
 import { ROUTES } from '@/utils/routes';
 import AvatarBodyList from './AvatarBodyList';
+import AvatarFaceList from './AvatarFaceList';
 
 interface Props {
   withLayout?: boolean;
 }
 
 const AvatarSettingForm = ({ withLayout }: Props) => {
-  // const { openErrorDialog } = useDialog();
-  // const [bodyList, setBodyList] = useState<AvatarParts[]>([]);
-  // const [faceList, setFaceList] = useState<AvatarParts[]>([]);
-  // const [selectedBody, setSelectedBody] = useState<AvatarParts>();
-  // const [selectedFace, setSelectedFace] = useState<AvatarParts>();
-  // const [bodyStatus, setBodyStatus] = useState<FetchStatus>('idle');
-  // const [faceStatus, setFaceStatus] = useState<FetchStatus>('idle');
-
   const Container = withLayout ? Layout : Fragment;
-
-  // const fetchBodyList = async () => {
-  //   setBodyStatus('loading');
-  //   try {
-  //     const bodyList = await AvatarService.getBodyList();
-  //     setBodyList(bodyList);
-  //     setSelectedBody(bodyList[0]);
-  //     setBodyStatus('succeeded');
-  //   } catch (e) {
-  //     openErrorDialog(e);
-  //     setBodyStatus('failed');
-  //   }
-  // };
-
-  // const fetchFaceList = async () => {
-  //   setFaceStatus('loading');
-  //   try {
-  //     // TODO: fetch face list
-  //     setFaceList(mockAvatarPartsList);
-  //     setSelectedFace(mockAvatarPartsList[0]);
-  //     setFaceStatus('succeeded');
-  //   } catch (e) {
-  //     openErrorDialog(e);
-  //     setFaceStatus('failed');
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchBodyList();
-  //   fetchFaceList();
-  // }, []);
 
   return (
     <Container>
@@ -98,12 +61,15 @@ const AvatarSettingForm = ({ withLayout }: Props) => {
                 </Suspense>
               </TabPanel>
               <TabPanel tabIndex={1} className={' pt-4 '}>
-                {/* <AvatarFaceList
-                  list={faceList}
-                  selected={selectedFace}
-                  setSelected={setSelectedFace}
-                  status={faceStatus}
-                /> */}
+                <Suspense
+                  fallback={
+                    <div className='flexRow justify-center items-center p-20'>
+                      <Typography type='detail1'>로딩중...</Typography>
+                    </div>
+                  }
+                >
+                  <AvatarFaceList />
+                </Suspense>
               </TabPanel>
             </TabPanels>
           </TabGroup>
