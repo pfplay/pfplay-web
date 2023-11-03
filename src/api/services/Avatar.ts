@@ -1,5 +1,6 @@
 import { AvatarClient } from '@/api/@types/Avatar';
 import { mockAvatarPartsList } from '@/constants/__mock__/mockAvatarPartsList';
+import { delay } from '@/utils/delay';
 import { axiosInstance } from '../client';
 
 const ROUTE_V1 = 'v1/avatar';
@@ -10,6 +11,7 @@ export const AvatarService: AvatarClient = {
   },
   getFaceList: async () => {
     // TODO: Replace with real API call
-    return new Promise((resolve) => setTimeout(() => resolve([...mockAvatarPartsList]), 5000));
+    await delay(5000);
+    return [...mockAvatarPartsList];
   },
 };
