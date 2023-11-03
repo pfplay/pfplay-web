@@ -1,7 +1,6 @@
 import { PropsWithChildren, useState } from 'react';
-import { Tab } from '@headlessui/react';
 import type { Meta } from '@storybook/react';
-import CustomTab from '@/components/shared/atoms/CustomTab';
+import { CustomTab, TabGroup, TabList } from '@/components/shared/atoms/CustomTab';
 
 const meta = {
   title: 'ui/CustomTab',
@@ -59,9 +58,9 @@ const exampleTabsConfig = {
 const TabsContainer = ({ children }: PropsWithChildren) => {
   return (
     <div className='flexCol items-center bg-black h-52'>
-      <Tab.Group>
-        <Tab.List className='flex rounded-xl p-1'>{children} </Tab.List>
-      </Tab.Group>
+      <TabGroup>
+        <TabList className='flex rounded-xl p-1'>{children} </TabList>
+      </TabGroup>
     </div>
   );
 };
