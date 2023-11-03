@@ -1,16 +1,20 @@
 import { create } from 'zustand';
 import { AvatarParts } from '@/api/@types/Avatar';
 
+export type SelectedAvatarParts = Partial<{
+  body: AvatarParts;
+  face: AvatarParts;
+}>;
+
 interface SelectedAvatarStore {
-  selectedBody?: AvatarParts;
-  selectedFace?: AvatarParts;
-  setSelectedBody: (avatarBody: AvatarParts) => void;
-  setSelectedFace: (avatarFace: AvatarParts) => void;
+  selectedAvatarParts?: SelectedAvatarParts;
+  setSelectedAvatarParts: (avatarParts: SelectedAvatarParts) => void;
+  clearSelectedAvatarParts: () => void;
 }
 
 export const useSelectedAvatarStore = create<SelectedAvatarStore>((set) => ({
-  selectedBody: undefined,
-  selectedFace: undefined,
-  setSelectedBody: (avatarBody: AvatarParts) => set({ selectedBody: avatarBody }),
-  setSelectedFace: (avatarFace: AvatarParts) => set({ selectedFace: avatarFace }),
+  selectedAvatarParts: undefined,
+  setSelectedAvatarParts: ({ body, face }: SelectedAvatarParts) =>
+    set({ selectedAvatarParts: { ...(body && { body }), ...(face && { face }) } }),
+  clearSelectedAvatarParts: () => set({ selectedAvatarParts: undefined }),
 }));

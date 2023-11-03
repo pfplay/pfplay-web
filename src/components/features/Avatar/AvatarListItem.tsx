@@ -11,30 +11,26 @@ interface Props {
 }
 
 const AvatarListItem: FC<Props> = ({ avatar, from }) => {
-  const [selectedBody, selectedFace, setSelectedBody, setSelectedFace] = useSelectedAvatarStore(
-    (state) => [
-      state.selectedBody,
-      state.selectedFace,
-      state.setSelectedBody,
-      state.setSelectedFace,
-    ]
-  );
+  const [selectedAvatarParts, setSelectedAvatarParts] = useSelectedAvatarStore((state) => [
+    state.selectedAvatarParts,
+    state.setSelectedAvatarParts,
+  ]);
 
-  const hanldeAvatarImgClick = (avatar: AvatarParts) => {
+  const hanldeAvatarImgClick = (parts: AvatarParts) => {
     if (from === 'body') {
-      setSelectedBody(avatar);
+      setSelectedAvatarParts({ ...selectedAvatarParts, body: parts });
       return;
     } else if (from === 'face') {
-      setSelectedFace(avatar);
+      setSelectedAvatarParts({ ...selectedAvatarParts, face: parts });
       return;
     }
   };
 
   const selected = (id: number) => {
     if (from === 'body') {
-      return selectedBody?.id === id;
+      return selectedAvatarParts?.body?.id === id;
     } else if (from === 'face') {
-      return selectedFace?.id === id;
+      return selectedAvatarParts?.face?.id === id;
     }
   };
 
