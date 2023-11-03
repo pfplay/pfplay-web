@@ -2,22 +2,46 @@
 import Image from 'next/image';
 import { FC } from 'react';
 import { AvatarParts } from '@/api/@types/Avatar';
-import Typography from '@/components/shared/atoms/Typography';
+import { useSelectedAvatarStore } from '@/store/avatar';
 import { cn } from '@/utils/cn';
 
 interface Props {
   avatar: AvatarParts;
-  // selected: boolean;
-  // setSelected: (face: AvatarParts) => void;
+  from: 'body' | 'face';
 }
 
-const AvatarListItem: FC<Props> = ({ avatar }) => {
+const AvatarListItem: FC<Props> = ({ avatar, from }) => {
+  const [selectedBody, selectedFace, setSelectedBody, setSelectedFace] = useSelectedAvatarStore(
+    (state) => [
+      state.selectedBody,
+      state.selectedFace,
+      state.setSelectedBody,
+      state.setSelectedFace,
+    ]
+  );
+
+  const hanldeAvatarImgClick = (avatar: AvatarParts) => {
+    if (from === 'body') {
+      setSelectedBody(avatar);
+      return;
+    } else if (from === 'face') {
+      setSelectedFace(avatar);
+      return;
+    }
+  };
+
+  const selected = (id: number) => {
+    if (from === 'body') {
+      return selectedBody?.id === id;
+    } else if (from === 'face') {
+      return selectedFace?.id === id;
+    }
+  };
+
   return (
     <div className='relative w-full max-width-[200px] aspect-square cursor-pointer group'>
-      {/* FIXME: BE api 상세에 맞춰 아래 코드 수정
-          해금 안된 이미지 대응
-      */}
-      <>
+      {/* <>
+      // FIXME: BE api 상세에 맞춰 아래 코드 수정 and 해금 안된 이미지 대응
         <div className='absolute inset-0 flexRow justify-start items-start bg-transparent group-hover:opacity-60 group-hover:bg-black z-30' />
         <Typography
           type='detail1'
@@ -25,7 +49,7 @@ const AvatarListItem: FC<Props> = ({ avatar }) => {
         >
           DJ 포인트 5점 획득 시 잠금해제 할 수 있어요!
         </Typography>
-      </>
+      </> */}
 
       <Image
         key={avatar.id}
@@ -33,10 +57,10 @@ const AvatarListItem: FC<Props> = ({ avatar }) => {
         alt={avatar.name}
         fill
         sizes='(max-width:200px) 100vw, 200px'
-        // onClick={() => setSelected(avatar)}
+        onClick={() => hanldeAvatarImgClick(avatar)}
         className={cn(
-          'bg-gray-800 max-h-[200px] aspect-square select-none'
-          // selected && 'border-[1px] border-red-300'
+          'bg-gray-800 max-h-[200px] aspect-square select-none',
+          selected(avatar.id) && 'border-[1px] border-red-300'
         )}
       />
     </div>

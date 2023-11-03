@@ -14,6 +14,7 @@ import { cn } from '@/utils/cn';
 import { ROUTES } from '@/utils/routes';
 import AvatarBodyList from './AvatarBodyList';
 import AvatarFaceList from './AvatarFaceList';
+import SelectedAvatar from './SelectedAvatar';
 
 interface Props {
   withLayout?: boolean;
@@ -27,19 +28,7 @@ const AvatarSettingForm = ({ withLayout }: Props) => {
       <div className='flexRow gap-5'>
         <div className='flexCol items-start gap-10'>
           <BackButton text='뭘 입고 놀아볼까요?' />
-          <div className='items-center h-full bg-black pointer-events-none select-none flexRow'>
-            {/* {!(selectedBody && selectedFace) && <div className='bg-black w-[300px] h-[300px]' />}
-            {selectedBody && selectedFace && (
-              <Image
-                src={selectedBody.image}
-                alt={selectedBody.name}
-                width={300}
-                height={300}
-                sizes='(max-width:300px)'
-                className='bg-black min-w-[300px]'
-              />
-            )} */}
-          </div>
+          <SelectedAvatar />
         </div>
         <div className='w-full flexCol'>
           <TabGroup>

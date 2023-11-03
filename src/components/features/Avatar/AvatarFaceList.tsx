@@ -30,7 +30,7 @@ const AvatarFaceList = async () => {
       </div>
       <div className='max-h-[416px] grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5  overflow-y-auto styled-scroll'>
         {faceList.map((avatar) => (
-          <AvatarListItem key={avatar.id} avatar={avatar} />
+          <AvatarListItem key={avatar.id} avatar={avatar} from='face' />
         ))}
       </div>
     </div>
