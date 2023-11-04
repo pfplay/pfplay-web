@@ -1,4 +1,3 @@
-import TempPartiesTab from '@/components/features/Parties/TempPartiesTab';
 import {
   PFParty,
   PFInfoOutline,
@@ -24,10 +23,7 @@ const PartyRoomPage = async () => {
             <span className='text-gray-300 text-sm'>파티목록</span>
           </button>
         </div>
-        {/* 채팅, 사람 탭 */}
-        <div className='px-7 bg-black'>
-          <TempPartiesTab />
-        </div>
+        <div className='px-7 bg-black'>{/* 채팅, 사람 탭 */}</div>
         {/* 채팅창 목록 */}
         <div className='relative w-full bg-gradient-to-r from-black/0 via-black/80 to-black/80'>
           <div className='absolute top-0 left-0 w-full h-6 bg-gradient-to-b from-black to-black/0 z-50'>

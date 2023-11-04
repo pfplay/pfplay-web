@@ -1,3 +1,4 @@
+import { PlayListItemType } from '@/components/shared/atoms/PlayListItem';
 import { Authority, PartyRoomStatus, PartyRoomType } from './@enums';
 
 export interface PartyRoom {
@@ -40,6 +41,7 @@ export interface CreatePartyRoomResponse {
   defaultPartyPermission: DefaultPartyPermission;
 }
 
-export interface PartyRoomClient {
-  createPartyRoom(): Promise<CreatePartyRoomResponse>;
+export interface PartiesClient {
+  createPartyRoom(partyRoomConfig: PartyRoom): Promise<CreatePartyRoomResponse>;
+  getPartyRoomList(): Promise<PlayListItemType[]>; // TODO: API 준비되면 return type 수정
 }
