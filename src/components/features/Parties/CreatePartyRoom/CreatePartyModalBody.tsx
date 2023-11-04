@@ -3,6 +3,7 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { PartiesService } from '@/api/services/Parties';
 import DjListItem from '@/components/shared/DjListItem';
 import FormItem from '@/components/shared/FormItem';
 import Button from '@/components/shared/atoms/Button';
@@ -13,19 +14,19 @@ import Tooltip from '@/components/shared/atoms/Tooltip';
 import Typography from '@/components/shared/atoms/Typography';
 
 const createPartyFormSchema = z.object({
-  partyName: z
+  name: z
     .string()
     .min(1, { message: '1자 이상 입력해주세요' })
     .max(30, { message: '한글 30자, 영문 30자 제한 / 띄어쓰기,특수문자 사용 불가' })
     .refine((value) => /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]*$/.test(value), {
       message: '한글 30자, 영문 30자 제한 / 띄어쓰기,특수문자 사용 불가',
     }),
-  introduction: z
+  introduce: z
     .string()
     .min(1, { message: '1자 이상 입력해주세요' })
     .max(50, { message: '한/영 구분 없이 띄어쓰기 포함 50자 제한' }),
   domain: z.string(),
-  playTimeLimit: z.coerce
+  limit: z.coerce
     .number({ invalid_type_error: '디제잉 1회당 제한 시간은 3분 이상부터 가능해요' })
     .int()
     .nonnegative()
@@ -43,15 +44,23 @@ const CreatePartyModalBody = () => {
     mode: 'all',
     resolver: zodResolver(createPartyFormSchema),
     defaultValues: {
-      partyName: '',
-      introduction: '',
+      name: '',
+      introduce: '',
       domain: '',
-      playTimeLimit: 7,
+      limit: 7,
     },
   });
 
-  const handleFormSubmit: SubmitHandler<CreatePartyFormValues> = (values) => {
-    console.log({ values, errors });
+  const handleFormSubmit: SubmitHandler<CreatePartyFormValues> = async (partyRoomConfig) => {
+    try {
+      await PartiesService.createPartyRoom({
+        ...partyRoomConfig,
+        domainOption: !!partyRoomConfig.domain,
+      });
+    } catch (error) {
+      // TODO: Error handling 디자인 나오면 따라서 에러 처리
+      console.log(error);
+    }
   };
 
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
@@ -64,12 +73,12 @@ const CreatePartyModalBody = () => {
       <div className=' w-full items-end gap-12 flexCol'>
         <FormItem
           label='파티이름'
-          error={errors.partyName?.message}
+          error={errors.name?.message}
           required
           classNames={{ label: 'text-gray-200', container: 'w-full' }}
         >
           <Input
-            {...register('partyName')}
+            {...register('name')}
             placeholder='한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'
             maxLength={30}
           />
@@ -78,11 +87,11 @@ const CreatePartyModalBody = () => {
         <FormItem
           label='파티 소개'
           required
-          error={errors.introduction && '한/영 구분 없이 띄어쓰기 포함 50자 제한'}
+          error={errors.introduce && '한/영 구분 없이 띄어쓰기 포함 50자 제한'}
           classNames={{ label: 'text-gray-200', container: 'w-full' }}
         >
           <TextArea
-            {...register('introduction')}
+            {...register('introduce')}
             maxLength={50}
             rows={3}
             placeholder='한/영 구분 없이 띄어쓰기 포함 50자 제한'
@@ -114,7 +123,7 @@ const CreatePartyModalBody = () => {
                 label={
                   <Tooltip
                     title='디제잉 1회당 제한 시간은 3분 이상부터 가능해요'
-                    visible={!!errors.playTimeLimit?.message}
+                    visible={!!errors.limit?.message}
                   >
                     <Typography type='body2' className='flexCol items-start'>
                       디제잉
@@ -130,10 +139,7 @@ const CreatePartyModalBody = () => {
                 }
                 classNames={{ label: 'text-gray-200 !w-[80px] pr-0' }}
               >
-                <InputNumber
-                  {...register('playTimeLimit', { valueAsNumber: true })}
-                  initialValue={7}
-                />
+                <InputNumber {...register('limit', { valueAsNumber: true })} initialValue={7} />
                 <Typography as='span' type='detail1' className='text-gray-200 ml-[8px]'>
                   분
                 </Typography>
