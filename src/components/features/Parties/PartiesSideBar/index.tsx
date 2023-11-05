@@ -21,7 +21,7 @@ const PartiesSideBar = ({ setDrawerOpen }: PartiesSideBarProps) => {
       classNames: {
         container: 'min-w-[620px] py-7 px-10 bg-black',
       },
-      Body: () => <MyProfileModalBody />,
+      Body: MyProfileModalBody,
     }));
   };
 
