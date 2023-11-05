@@ -1,5 +1,13 @@
 'use client';
-import React, { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo } from 'react';
+import React, {
+  FC,
+  Fragment,
+  PropsWithChildren,
+  PropsWithRef,
+  ReactNode,
+  useMemo,
+  useRef,
+} from 'react';
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import Button, { ButtonProps } from '@/components/shared/atoms/Button';
 import Typography, { TypographyProps } from '@/components/shared/atoms/Typography';
@@ -50,6 +58,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   Sub,
   Body,
   onClose,
+  closeConfirm,
   id,
   titleAlign = 'center',
   titleType = 'body1',
@@ -70,9 +79,25 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
     return <Typography {...titleProps} dangerouslySetInnerHTML={{ __html: titleInnerHTML }} />;
   }, [titleType, title]);
 
+  const closing = useRef(false);
+  const handleClose = async () => {
+    // NOTE: handleClose 는 x 버튼과 container overlay 클릭, DialogButton 의 onClick 에서 호출되는데
+    // HUDialog container 의 onclose 는 버튼 클릭 이후에 한번 더 호출되므로
+    // closeConfirm 이 두 번 호출되지 않게 closing 으로 호출 막는 과정 필요
+    if (closing.current) return;
+    closing.current = true;
+
+    const confirmed = closeConfirm ? await closeConfirm() : true;
+    if (confirmed) {
+      onClose();
+    }
+
+    closing.current = false;
+  };
+
   return (
     <Transition appear show={open} as={Fragment}>
-      <HUDialog as='div' className='relative z-dialog' onClose={onClose} id={id}>
+      <HUDialog as='div' className='relative z-dialog' onClose={handleClose} id={id}>
         <Transition.Child
           as={Fragment}
           enter='ease-out duration-300'
@@ -118,7 +143,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
                       variant='outline'
                       Icon={<PFClose width={24} height={24} />}
                       className='border-none p-0 absolute top-[2.5px] right-0' /*  */
-                      onClick={onClose}
+                      onClick={handleClose}
                     />
                   )}
 
