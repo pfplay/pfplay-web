@@ -25,7 +25,12 @@ const createPartyFormSchema = z.object({
     .string()
     .min(1, { message: '1자 이상 입력해주세요' })
     .max(50, { message: '한/영 구분 없이 띄어쓰기 포함 50자 제한' }),
-  domain: z.string(),
+  domain: z
+    .string()
+    .optional()
+    .refine((value) => !value || /^\S*$/.test(value), {
+      message: '도메인에 공백이나 띄어쓰기를 포함할 수 없습니다',
+    }),
   limit: z.coerce
     .number({ invalid_type_error: '디제잉 1회당 제한 시간은 3분 이상부터 가능해요' })
     .int()
@@ -51,11 +56,18 @@ const CreatePartyModalBody = () => {
     },
   });
 
-  const handleFormSubmit: SubmitHandler<CreatePartyFormValues> = async (partyRoomConfig) => {
+  const handleFormSubmit: SubmitHandler<CreatePartyFormValues> = async ({
+    name,
+    introduce,
+    limit,
+    domain,
+  }) => {
     try {
       await PartiesService.createPartyRoom({
-        ...partyRoomConfig,
-        domainOption: !!partyRoomConfig.domain,
+        name,
+        introduce,
+        limit,
+        domain: domain || null,
       });
     } catch (error) {
       // TODO: Error handling 디자인 나오면 따라서 에러 처리
@@ -108,6 +120,7 @@ const CreatePartyModalBody = () => {
                 </Typography>
               </Typography>
             }
+            error={errors.domain?.message}
             classNames={{ label: 'text-gray-200', container: 'flex-1' }}
           >
             <Input
