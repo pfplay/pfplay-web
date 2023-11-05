@@ -16,12 +16,12 @@ const PartiesSideBar = ({ setDrawerOpen }: PartiesSideBarProps) => {
     return openDialog(() => ({
       title: '내 프로필 ',
       titleAlign: 'left',
+      titleType: 'title2',
       showCloseIcon: true,
       classNames: {
         container: 'min-w-[620px] py-7 px-10 bg-black',
-        titleType: 'title2',
       },
-      Body: () => <MyProfileModalBody />,
+      Body: MyProfileModalBody,
     }));
   };
 
