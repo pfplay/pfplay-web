@@ -20,14 +20,15 @@ export interface DialogProps {
   open: boolean;
   title: string | StrWithEmphasis;
   titleAlign?: 'left' | 'center';
+  titleType?: TypographyProps['type'];
   Sub?: ReactNode;
   Body: FC | ReactNode;
   onClose: () => void;
+  closeConfirm?: () => Promise<boolean | undefined>;
   id?: string;
   showCloseIcon?: boolean;
   classNames?: {
     container?: string;
-    titleType?: TypographyProps['type'];
   };
 }
 
@@ -51,12 +52,13 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   onClose,
   id,
   titleAlign = 'center',
+  titleType = 'body1',
   showCloseIcon,
   classNames,
 }) => {
   const Title = useMemo(() => {
     const titleProps: PropsWithRef<TypographyProps> = {
-      type: classNames?.titleType || 'body1',
+      type: titleType,
       className: 'text-gray-50',
     };
 
@@ -66,7 +68,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
 
     const titleInnerHTML = getEmphasisedInnerHTML(title);
     return <Typography {...titleProps} dangerouslySetInnerHTML={{ __html: titleInnerHTML }} />;
-  }, [title]);
+  }, [titleType, title]);
 
   return (
     <Transition appear show={open} as={Fragment}>
