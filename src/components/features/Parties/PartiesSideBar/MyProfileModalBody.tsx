@@ -25,7 +25,7 @@ const MyProfileModalBody = () => {
           />
         </div>
         <Button size='sm' variant='outline' onClick={() => router.push('/settings/avatar')}>
-          아바다 설정
+          아바타 설정
         </Button>
       </div>
       <div className='justify-between flex-1 flexCol'>

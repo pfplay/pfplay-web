@@ -1,4 +1,4 @@
-import Footer from '@/components/features/Home/Footer';
+import Footer from '@/components/layouts/Footer';
 
 const AuthLayout = ({ children }: React.PropsWithChildren) => {
   return (

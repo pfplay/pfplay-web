@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import Footer from '@/components/features/Home/Footer';
-import Header from '@/components/features/Home/Header';
+import Footer from '@/components/layouts/Footer';
+import Header from '@/components/layouts/Header';
 import CustomLink from '@/components/shared/CustomLink';
 import { cn } from '@/utils/cn';
 

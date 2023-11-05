@@ -3,13 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-
 import { useEffect, useState } from 'react';
+import ProfileMenu from '@/components/features/Profile/ProfileMenu';
 import IconMenu from '@/components/shared/IconMenu';
 import { PFLanguage } from '@/components/shared/icons';
-
 import { cn } from '@/utils/cn';
-import ProfileMenu from './ProfileMenu';
 
 const HEADER_HEIGHT = 100;
 

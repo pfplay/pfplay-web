@@ -1,4 +1,4 @@
-import Header from '@/components/features/Home/Header';
+import Header from '@/components/layouts/Header';
 
 const ProfileEditLayout = ({ children }: React.PropsWithChildren) => {
   return (

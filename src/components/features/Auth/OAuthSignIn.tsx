@@ -15,11 +15,6 @@ const OAuthSignIn = () => {
   const router = useRouter();
   const { openDialog } = useDialog();
 
-  const handleBrowseButtonClick = async () => {
-    await openFullDialog();
-    return;
-  };
-
   const signInAnonymous = () => {
     router.push('/parties');
   };
@@ -30,7 +25,7 @@ const OAuthSignIn = () => {
     });
   };
 
-  const openFullDialog = () => {
+  const openLookAroundDialog = () => {
     return openDialog<number>(() => ({
       title: '잠깐만요!',
       Sub: (
@@ -44,12 +39,12 @@ const OAuthSignIn = () => {
           <Dialog.ButtonGroup>
             <Dialog.Button
               color='secondary'
-              onClick={() => signInAnonymous()}
+              onClick={signInAnonymous}
               className='flex-none px-[10.5px]'
             >
               비로그인 입장하기
             </Dialog.Button>
-            <Dialog.Button onClick={() => signInGoogle()}>구글 연동하기</Dialog.Button>
+            <Dialog.Button onClick={signInGoogle}>구글 연동하기</Dialog.Button>
           </Dialog.ButtonGroup>
         );
       },
@@ -85,7 +80,7 @@ const OAuthSignIn = () => {
           Sign in With Google
         </Button>
 
-        <TextButton onClick={handleBrowseButtonClick} underline>
+        <TextButton onClick={openLookAroundDialog} underline>
           먼저 둘러볼래요
         </TextButton>
       </div>
