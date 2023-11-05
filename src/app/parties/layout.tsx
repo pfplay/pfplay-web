@@ -1,9 +1,5 @@
-import { Metadata } from 'next';
 import { PropsWithChildren } from 'react';
 import Header from '@/components/features/Home/Header';
-import { PAGE_METADATA } from '@/utils/routes';
-
-export const metadata: Metadata = PAGE_METADATA.PARTIES.index;
 
 const PartiesLayout = ({ children }: PropsWithChildren) => {
   return (

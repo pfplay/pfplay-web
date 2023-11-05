@@ -8,8 +8,6 @@ import { PlayListItemType } from '@/components/shared/atoms/PlayListItem';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFInfoOutline } from '@/components/shared/icons';
 import { cn } from '@/utils/cn';
-import { ROUTES } from '@/utils/routes';
-import { replaceDynamic } from '@/utils/routes/replaceDynamic';
 import MembersInfoSection from './MembersInfoSection';
 
 interface PartyRoomCardProps {
@@ -26,9 +24,7 @@ const PartyRoomCard = ({ roomId, playListItemConfig }: PartyRoomCardProps) => {
       <div
         onClick={() =>
           router.push(
-            replaceDynamic(ROUTES.PARTIES.room, {
-              id: roomId, // TODO: set proper route with id
-            })
+            `/parties/${roomId}` // TODO: set proper route with id
           )
         }
         className='flexCol gap-[61px] py-6  px-7  backdrop-blur-xl bg-backdrop-black/80'

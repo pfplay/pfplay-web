@@ -11,7 +11,6 @@ import {
 } from '@/components/shared/atoms/CustomTab';
 import Typography from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
-import { ROUTES } from '@/utils/routes';
 import AvatarBodyList from './AvatarBodyList';
 import AvatarFaceList from './AvatarFaceList';
 import SelectedAvatar from './SelectedAvatar';
@@ -66,7 +65,7 @@ const AvatarSettingForm = ({ withLayout }: Props) => {
           </TabGroup>
 
           <CustomLink
-            href={ROUTES.PARTIES.index}
+            href='/parties'
             linkTitle="Let's get in"
             classNames={{
               container: 'self-end',

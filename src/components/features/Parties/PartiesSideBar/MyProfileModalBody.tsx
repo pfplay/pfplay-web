@@ -4,7 +4,6 @@ import React from 'react';
 import Button from '@/components/shared/atoms/Button';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFEdit } from '@/components/shared/icons';
-import { ROUTES } from '@/utils/routes';
 
 const MyProfileModalBody = () => {
   const router = useRouter();
@@ -25,11 +24,7 @@ const MyProfileModalBody = () => {
             height={216}
           />
         </div>
-        <Button
-          size='sm'
-          variant='outline'
-          onClick={() => router.push(ROUTES.SETTINGS.AVATAR.index)}
-        >
+        <Button size='sm' variant='outline' onClick={() => router.push('/settings/avatar')}>
           아바다 설정
         </Button>
       </div>
