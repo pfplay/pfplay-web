@@ -141,6 +141,39 @@ export const Predefined: Story = () => {
   );
 };
 
+export const CloseConfirm: Story = () => {
+  const { openDialog, openConfirmDialog } = useDialog();
+
+  const openCloseConfirmDialog = async () => {
+    return await openConfirmDialog({
+      title: '저장하지 않고 닫을까요??',
+      content: '사라진 내용은 복구할 수 없어요.',
+      okText: '네',
+      cancelText: '아니오',
+    });
+  };
+
+  const openDialogWithCloseConfirm = () => {
+    return openDialog((onOk) => ({
+      title: '환영합니다!',
+      showCloseIcon: true,
+      closeConfirm: openCloseConfirmDialog,
+      Body: () => (
+        <>
+          <div className='h-[200px] bg-gray-400' />
+
+          <Dialog.ButtonGroup>
+            <Dialog.Button onClick={() => onOk()}>저장하기</Dialog.Button>
+          </Dialog.ButtonGroup>
+        </>
+      ),
+      classNames: { container: 'w-[600px]' },
+    }));
+  };
+
+  return <Button onClick={openDialogWithCloseConfirm}>Click</Button>;
+};
+
 export const Stream: Story = () => {
   const [count, setCount] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
