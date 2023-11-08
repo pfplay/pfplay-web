@@ -8,6 +8,7 @@
   }
   body {
     color: theme('colors.white');
+    background: theme('colors.black');
   }
   strong {
     font-weight: inherit;
