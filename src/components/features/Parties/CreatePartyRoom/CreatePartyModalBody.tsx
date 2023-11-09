@@ -1,7 +1,9 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
 import { z } from 'zod';
 import { PartiesService } from '@/api/services/Parties';
 import DjListItem from '@/components/shared/DjListItem';
@@ -40,11 +42,18 @@ const createPartyFormSchema = z.object({
 
 type CreatePartyFormValues = z.infer<typeof createPartyFormSchema>;
 
-const CreatePartyModalBody = () => {
+interface CreatePartyModalBodyProps {
+  onModalClose?: () => void;
+}
+
+const CreatePartyModalBody = ({ onModalClose }: CreatePartyModalBodyProps) => {
+  const router = useRouter();
+
   const {
     handleSubmit,
     register,
     formState: { errors, isValid },
+    setError,
   } = useForm<CreatePartyFormValues>({
     mode: 'all',
     resolver: zodResolver(createPartyFormSchema),
@@ -56,6 +65,8 @@ const CreatePartyModalBody = () => {
     },
   });
 
+  const btnDisabled = Object.keys(errors).length > 0 || !isValid;
+
   const handleFormSubmit: SubmitHandler<CreatePartyFormValues> = async ({
     name,
     introduce,
@@ -63,19 +74,22 @@ const CreatePartyModalBody = () => {
     domain,
   }) => {
     try {
-      await PartiesService.createPartyRoom({
+      const response = await PartiesService.createPartyRoom({
         name,
         introduce,
         limit,
         domain: domain || null,
       });
-    } catch (error) {
-      // TODO: Error handling 디자인 나오면 따라서 에러 처리
-      console.log(error);
+
+      onModalClose && onModalClose();
+
+      router.push(`/parties/${domain ? domain : response.name}`);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError && error.response?.status === 409) {
+        setError('domain', { message: '이미 존재하는 도메인 주소입니다' });
+      }
     }
   };
-
-  const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
   return (
     <form

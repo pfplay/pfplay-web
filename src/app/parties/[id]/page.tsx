@@ -9,6 +9,7 @@ import {
 } from '@/components/shared/icons';
 
 const PartyRoomPage = async () => {
+  // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
   return (
     <>
       {/* 오른쪽 채팅창 */}

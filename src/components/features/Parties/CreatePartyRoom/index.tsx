@@ -9,7 +9,7 @@ const CreatePartyRoom = () => {
   const { openDialog, openConfirmDialog } = useDialog();
 
   const handleClickBeAHostBtn = async () => {
-    return await openDialog(() => ({
+    return await openDialog((_, onCancel) => ({
       title: '파티 개설',
       titleAlign: 'left',
       showCloseIcon: true,
@@ -17,7 +17,7 @@ const CreatePartyRoom = () => {
       classNames: {
         container: 'w-[800px]',
       },
-      Body: CreatePartyModalBody,
+      Body: () => <CreatePartyModalBody onModalClose={onCancel} />,
     }));
   };
 
