@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -47,7 +48,9 @@ interface CreatePartyModalBodyProps {
 }
 
 const CreatePartyModalBody = ({ onModalClose }: CreatePartyModalBodyProps) => {
+  const { data } = useSession();
   const router = useRouter();
+  console.log({ data });
 
   const {
     handleSubmit,
@@ -183,7 +186,7 @@ const CreatePartyModalBody = ({ onModalClose }: CreatePartyModalBodyProps) => {
             }
             classNames={{ label: 'text-gray-200' }}
           >
-            <DjListItem userConfig={{ username: 'PFPlay User', src: '' }} />
+            <DjListItem userConfig={{ username: data?.user.name || 'PFPlay User', src: '' }} />
           </FormItem>
 
           <Button
