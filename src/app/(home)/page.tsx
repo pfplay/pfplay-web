@@ -15,7 +15,7 @@ const HomePage = () => {
         href='/sign-in'
         linkTitle='Let your PFP Play'
         classNames={{
-          button: 'px-[99px]',
+          button: 'w-[360px]',
         }}
         size='xl'
       />

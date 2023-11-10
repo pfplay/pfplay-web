@@ -18,7 +18,7 @@ interface ButtonLinkProps
 
 const ButtonLink = ({ href, linkTitle, classNames, ...props }: ButtonLinkProps) => {
   return (
-    <Link href={href} className={cn('w-fit', classNames?.container)}>
+    <Link href={href} className={classNames?.container}>
       <Button tabIndex={-1} className={cn(classNames?.button)} {...props}>
         {linkTitle}
       </Button>

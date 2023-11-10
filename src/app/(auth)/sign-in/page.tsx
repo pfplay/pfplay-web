@@ -52,12 +52,12 @@ const SignInPage = () => {
 
   return (
     <div className='relative min-h-screen flexRowCenter'>
-      <div className='relative flexCol items-center px-[160px] pt-[62px] pb-[65px] backdrop-blur-xl bg-backdrop-black/50 border border-gray-800'>
-        <Link href='/' className='absolute right-10 top-10'>
+      <div className='relative w-full max-w-[640px] flexColCenter px-[20px] pt-[62px] pb-[65px] backdrop-blur-xl bg-backdrop-black/50 border border-gray-800'>
+        <Link href='/' className='absolute right-6 top-6 tablet:right-10 tablet:top-10'>
           <PFClose />
         </Link>
 
-        <div className='w-[150px] h-[36px] mb-[68px]'>
+        <div className='w-[150px] max-w-full h-[36px] mb-[68px]'>
           <Image
             src='/images/Logo/wordmark_medium_white.png'
             alt='logo'

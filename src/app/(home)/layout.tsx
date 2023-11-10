@@ -6,7 +6,9 @@ const HomeLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <Header withLogo />
-      <main className='bg-onboarding flexColCenter gap-[92px]'>{children}</main>
+      <main className='bg-onboarding px-app flexColCenter gap-[64px] tablet:gap-[92px]'>
+        {children}
+      </main>
       <Footer />
     </>
   );
