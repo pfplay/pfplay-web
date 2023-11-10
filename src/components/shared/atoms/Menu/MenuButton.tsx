@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { Menu } from '@headlessui/react';
+import { sizeDict, colorsDict } from '@/components/shared/atoms/Button';
 import { cn } from '@/utils/cn';
-import { sizeDict, colorsDict } from '../Button';
 
 interface MenuButtonProps {
   type: 'icon' | 'button';

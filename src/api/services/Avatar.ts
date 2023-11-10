@@ -1,7 +1,7 @@
 import { AvatarClient } from '@/api/@types/Avatar';
+import { axiosInstance } from '@/api/client';
 import { mockAvatarPartsList } from '@/constants/__mock__/mockAvatarPartsList';
 import { delay } from '@/utils/delay';
-import { axiosInstance } from '../client';
 
 const ROUTE_V1 = 'v1/avatar';
 
