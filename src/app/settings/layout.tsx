@@ -5,7 +5,7 @@ const ProfileEditLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
       <Header />
-      <main className='pt-app pb-[120px]'>{children}</main>
+      <main className='pt-app pb-app'>{children}</main>
     </>
   );
 };

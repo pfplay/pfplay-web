@@ -5,6 +5,7 @@
 @layer base {
   :root {
     --header-height: 100px;
+    --footer-bottom: 52px;
   }
   body {
     @apply text-white bg-black min-h-screen;
@@ -29,6 +30,9 @@
   }
   .px-app {
     @apply px-[20px] tablet:px-[60px] laptop:px-[120px];
+  }
+  .pb-app {
+    @apply pb-[calc(var(--footer-bottom)+100px)];
   }
 
   .flexRow {
