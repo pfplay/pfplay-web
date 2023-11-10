@@ -4,7 +4,7 @@ import Footer from '@/components/layouts/Footer';
 const AuthLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
-      {children}
+      <main className='min-h-screen bg-onboarding bg-cover'>{children}</main>
       <Footer />
     </>
   );
