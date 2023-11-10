@@ -1,7 +1,7 @@
 'use server';
 import { Fragment, PropsWithChildren, Suspense } from 'react';
 import BackButton from '@/components/shared/BackButton';
-import CustomLink from '@/components/shared/CustomLink';
+import ButtonLink from '@/components/shared/ButtonLink';
 import {
   CustomTab,
   TabGroup,
@@ -64,7 +64,7 @@ const AvatarSettingForm = ({ withLayout }: Props) => {
             </TabPanels>
           </TabGroup>
 
-          <CustomLink
+          <ButtonLink
             href='/parties'
             linkTitle="Let's get in"
             classNames={{

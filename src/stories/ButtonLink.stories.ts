@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import CustomLink from '@/components/shared/CustomLink';
+import ButtonLink from '@/components/shared/ButtonLink';
 
 const meta = {
   title: 'atoms/CustomLink',
-  component: CustomLink,
+  component: ButtonLink,
   tags: ['autodocs'],
-} satisfies Meta<typeof CustomLink>;
+} satisfies Meta<typeof ButtonLink>;
 
 export default meta;
 

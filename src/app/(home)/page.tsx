@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import CustomLink from '@/components/shared/CustomLink';
+import ButtonLink from '@/components/shared/ButtonLink';
 
 const HomePage = () => {
   return (
@@ -11,7 +11,7 @@ const HomePage = () => {
         alt='logo'
         priority
       />
-      <CustomLink
+      <ButtonLink
         href='/sign-in'
         linkTitle='Let your PFP Play'
         classNames={{
