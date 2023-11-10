@@ -5,7 +5,7 @@ import Typography from '@/components/shared/atoms/Typography';
 import { useDialog } from '@/hooks/useDialog';
 import CreatePartyModalBody from './CreatePartyModalBody';
 
-const CreatePartyRoom = () => {
+const CreatePartyRoomCard = () => {
   const { openDialog, openConfirmDialog } = useDialog();
 
   const handleClickBeAHostBtn = async () => {
@@ -50,4 +50,4 @@ const CreatePartyRoom = () => {
   );
 };
 
-export default CreatePartyRoom;
+export default CreatePartyRoomCard;

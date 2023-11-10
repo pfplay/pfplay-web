@@ -1,6 +1,6 @@
 'use server';
 import { Suspense } from 'react';
-import CreatePartyRoom from '@/components/features/Parties/CreatePartyRoom';
+import CreatePartyRoomCard from '@/components/features/Parties/CreatePartyRoomCard';
 import PartiesContainer from '@/components/features/Parties/PartiesContainer';
 import PartiesMainStageCard from '@/components/features/Parties/PartiesMainStageCard';
 import PartyRoomList from '@/components/features/Parties/PartyRoomList';
@@ -12,7 +12,7 @@ const PartiesPage = async () => {
       <div className='max-w-desktop mx-auto'>
         <PartiesMainStageCard />
         <section className='grid grid-cols-3 gap-6 mt-6 overflow-y-auto'>
-          <CreatePartyRoom />
+          <CreatePartyRoomCard />
           <Suspense
             fallback={
               // TODO: 로딩 skeleon 나오면 수정
