@@ -6,8 +6,6 @@ import React from 'react';
 import BackdropBlurContainer from '@/components/shared/BackdropBlurContainer';
 import Typography from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
-import { ROUTES } from '@/utils/routes';
-import { replaceDynamic } from '@/utils/routes/replaceDynamic';
 import MembersInfoSection from './MembersInfoSection';
 
 const PartiesMainStageCard = () => {
@@ -20,13 +18,7 @@ const PartiesMainStageCard = () => {
           <div className='gap-3 flexCol'>
             <Typography
               type='title2'
-              onClick={() =>
-                router.push(
-                  replaceDynamic(ROUTES.PARTIES.room, {
-                    id: 1, // TODO: set proper route for main stage
-                  })
-                )
-              }
+              onClick={() => router.push(`/parties/${1}`)} // TODO: set proper route for main stage
               className='text-white'
             >
               PFPlay Main Stage

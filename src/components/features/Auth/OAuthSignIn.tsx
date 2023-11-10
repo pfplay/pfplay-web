@@ -10,7 +10,6 @@ import TextButton from '@/components/shared/atoms/TextButton';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFClose } from '@/components/shared/icons';
 import { useDialog } from '@/hooks/useDialog';
-import { ROUTES } from '@/utils/routes';
 
 const OAuthSignIn = () => {
   const router = useRouter();
@@ -22,12 +21,12 @@ const OAuthSignIn = () => {
   };
 
   const signInAnonymous = () => {
-    router.push(ROUTES.PARTIES.index);
+    router.push('/parties');
   };
 
   const signInGoogle = () => {
     signIn('google', {
-      callbackUrl: ROUTES.PARTIES.index,
+      callbackUrl: '/parties',
     });
   };
 
@@ -60,7 +59,7 @@ const OAuthSignIn = () => {
   return (
     <div className='relative min-h-screen flexRowCenter'>
       <div className='relative flexCol items-center px-[160px] pt-[62px] pb-[65px] backdrop-blur-xl bg-backdrop-black/50 border border-gray-800'>
-        <Link href={ROUTES.HOME.index} className='absolute right-10 top-10'>
+        <Link href='/' className='absolute right-10 top-10'>
           <PFClose />
         </Link>
 

@@ -9,7 +9,6 @@ import IconMenu from '@/components/shared/IconMenu';
 import { PFLanguage } from '@/components/shared/icons';
 
 import { cn } from '@/utils/cn';
-import { ROUTES } from '@/utils/routes';
 import ProfileMenu from './ProfileMenu';
 
 const HEADER_HEIGHT = 100;
@@ -36,7 +35,7 @@ const Header = () => {
     };
   }, []);
 
-  const isHome = pathname === ROUTES.HOME.index;
+  const isHome = pathname === '/';
 
   return (
     <header
@@ -47,7 +46,7 @@ const Header = () => {
       )}
     >
       {isHome && (
-        <Link href={ROUTES.HOME.index}>
+        <Link href='/'>
           <Image
             src='/images/Logo/wordmark_small_white.png'
             width={124}

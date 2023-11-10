@@ -4,9 +4,11 @@ import Footer from '@/components/features/Home/Footer';
 import Header from '@/components/features/Home/Header';
 import CustomLink from '@/components/shared/CustomLink';
 import { cn } from '@/utils/cn';
-import { PAGE_METADATA, ROUTES } from '@/utils/routes';
 
-export const metadata: Metadata = PAGE_METADATA.HOME.index;
+export const metadata: Metadata = {
+  title: 'PfPlay',
+  description: 'PFP Playground for music',
+};
 
 const HomePage = () => {
   return (
@@ -21,7 +23,7 @@ const HomePage = () => {
           priority
         />
         <CustomLink
-          href={ROUTES.AUTH.SIGN_IN.index}
+          href='/sign-in'
           linkTitle='Let your PFP Play'
           classNames={{
             button: 'px-[99px]',

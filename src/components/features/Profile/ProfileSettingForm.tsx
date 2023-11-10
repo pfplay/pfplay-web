@@ -10,7 +10,6 @@ import Input from '@/components/shared/atoms/Input';
 import TextArea from '@/components/shared/atoms/TextArea';
 import { useProfileStore } from '@/store/profile';
 import { cn } from '@/utils/cn';
-import { ROUTES } from '@/utils/routes';
 
 const profileFormSchema = z.object({
   nickName: z
@@ -48,7 +47,7 @@ const ProfileSettingForm = () => {
 
   const handleFormSubmit: SubmitHandler<ProfileFormValues> = ({ nickName, introduction }) => {
     setProfile({ nickName, introduction });
-    router.push(ROUTES.SETTINGS.AVATAR.index);
+    router.push('/settings/avatar');
   };
 
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
