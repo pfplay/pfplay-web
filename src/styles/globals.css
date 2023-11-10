@@ -21,6 +21,9 @@
 }
 
 @layer components {
+  .pt-app {
+    @apply pt-[60px];
+  }
   .px-app {
     @apply px-[20px] tablet:px-[60px] laptop:px-[120px];
   }
@@ -28,15 +31,12 @@
   .flexRow {
     @apply flex flex-row;
   }
-
   .flexCol {
     @apply flex flex-col;
   }
-
   .flexRowCenter {
     @apply flexRow justify-center items-center;
   }
-
   .flexColCenter {
     @apply flexCol justify-center items-center;
   }
