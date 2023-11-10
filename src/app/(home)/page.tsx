@@ -1,11 +1,5 @@
-import { Metadata } from 'next';
 import Image from 'next/image';
 import CustomLink from '@/components/shared/CustomLink';
-
-export const metadata: Metadata = {
-  title: 'PfPlay',
-  description: 'PFP Playground for music',
-};
 
 const HomePage = () => {
   return (
