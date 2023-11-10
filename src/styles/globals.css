@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --header-height: 100px;
+  }
   body {
     @apply text-white bg-black min-h-screen;
   }
@@ -22,7 +25,7 @@
 
 @layer components {
   .pt-app {
-    @apply pt-[60px];
+    @apply pt-[calc(var(--header-height)+60px)];
   }
   .px-app {
     @apply px-[20px] tablet:px-[60px] laptop:px-[120px];
