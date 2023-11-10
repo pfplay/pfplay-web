@@ -32,9 +32,9 @@ const PartiesPage = () => {
       <div className='max-w-desktop mx-auto'>
         <PartiesMainStageCard />
         <section className='grid grid-cols-3 gap-6 mt-6 overflow-y-auto'>
-          <article
-            onClick={() => handleClickBeAHostBtn()}
-            className='gap-10 pt-6 bg-gray-900 rounded cursor-pointer flexCol px-7 z-0'
+          <button
+            onClick={handleClickBeAHostBtn}
+            className='pt-6 bg-gray-900 rounded flexCol px-7 z-0 text-start'
           >
             <div className='items-start gap-3 flexCol'>
               <Typography type='title2' className='text-red-300'>
@@ -44,7 +44,7 @@ const PartiesPage = () => {
                 원하는 테마의 파티를 자유롭게 호스트해보세요!
               </Typography>
             </div>
-            <div className='flex items-center justify-center'>
+            <div className='flex-1 w-full flex items-center justify-center'>
               <Image
                 src='/images/Background/bigPlus.png'
                 alt='Party Room Add'
@@ -52,7 +52,7 @@ const PartiesPage = () => {
                 height={60}
               />
             </div>
-          </article>
+          </button>
           {mockPlayListItemConfig.map((config) => (
             <PartyRoomCard key={config.id} roomId={config.id} playListItemConfig={config} />
           ))}
