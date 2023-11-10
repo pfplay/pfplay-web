@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply text-white bg-black min-h-screen overflow-auto;
+    @apply text-white bg-black min-h-screen;
   }
   main {
     @apply min-h-screen bg-cover relative;
