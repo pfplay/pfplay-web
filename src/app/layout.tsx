@@ -9,6 +9,8 @@ import { cn } from '@/utils/cn';
 import SessionCheck from './sessionCheck';
 
 export const metadata: Metadata = {
+  title: 'PFPlay',
+  // TODO: description 추가, title 뒤에 설명 추가
   icons: {
     icon: '/favicon.ico',
   },
