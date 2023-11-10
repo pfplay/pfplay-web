@@ -25,9 +25,9 @@ const Header: FC<Props> = ({ withLogo }) => {
 
       <header
         className={cn(
-          'fixed top-0 w-full h-[var(--header-height)] flex items-center px-app pt-10 pb-6 bg-transparent transition-colors z-20',
+          'fixed top-0 w-full h-[var(--header-height)] flex items-center px-app pt-10 pb-6 transition-colors z-20',
           withLogo ? 'justify-between' : 'justify-end',
-          !atTopOfPage && 'bg-black'
+          atTopOfPage ? 'bg-transparent' : 'bg-black'
         )}
       >
         {withLogo && (
