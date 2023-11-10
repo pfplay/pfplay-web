@@ -56,7 +56,7 @@ const Header: FC<Props> = ({ withLogo }) => {
         </Link>
       )}
       <div className='items-center gap-6 flexRow'>
-        {session.data && <ProfileMenu email={session.data.user.email} />}
+        {session.status === 'authenticated' && <ProfileMenu email={session.data.user.email} />}
         <IconMenu
           MenuButtonIcon={<PFLanguage />}
           menuItemPanel={{ size: 'sm' }}
