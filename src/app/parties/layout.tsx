@@ -5,9 +5,7 @@ const PartiesLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
       <Header />
-      <main className='min-w-laptop  px-[120px] desktop:px-[80px]  py-[140px] pb-[120px] overflow-y-auto'>
-        {children}
-      </main>
+      <main className='px-app py-[140px] pb-[120px] overflow-y-auto'>{children}</main>
     </>
   );
 };
