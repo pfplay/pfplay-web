@@ -42,6 +42,7 @@ const Header: FC<Props> = ({ withLogo }) => {
         withLogo ? 'justify-between' : 'justify-end',
         scrolled && 'bg-black'
       )}
+      style={{ height: HEADER_HEIGHT }}
     >
       {withLogo && (
         <Link href='/'>
