@@ -12,7 +12,7 @@ const PartiesMainStageCard = () => {
 
   return (
     <BackdropBlurContainer>
-      <div className='flexRow items-center gap-[50px] desktop:gap-[169px] px-7 py-10 backdrop-blur-xl bg-backdrop-black/80'>
+      <div className='flexRow items-end gap-[50px] desktop:gap-[169px] px-7 py-10 backdrop-blur-xl bg-backdrop-black/80'>
         <div className='flexCol gap-12 pb-[21px]'>
           <div className='gap-3 flexCol'>
             <Typography
@@ -28,9 +28,9 @@ const PartiesMainStageCard = () => {
           </div>
           <MembersInfoSection membersCount={50} membersImage={[{}, {}, {}, {}]} />
         </div>
-        <div className='w-full flexRow items-end justify-start pt-4 mt-auto border-t border-gray-700 '>
-          <div className='relative w-full flexRow justify-start  gap-[12px] items-center'>
-            <div className='relative w-[80px] h-[44px] bg-gray-700'>
+        <div className='flex-1 flexRow min-w-0 pt-4 border-t border-gray-700 '>
+          <div className='flexRow gap-[12px] items-center'>
+            <div className='w-[80px] h-[44px] bg-gray-700'>
               <Image
                 priority
                 src={'/images/ETC/PlaylistThumbnail.png'}
@@ -40,12 +40,14 @@ const PartiesMainStageCard = () => {
                 className={cn('w-full h-full object-contain select-none')}
               />
             </div>
-            <div className='flex-1 min-w-0 max-w-[300px] tablet:max-w-[350px] laptop:max-w-[390px] desktop:max-w-[580px] select-none'>
-              <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
-                NewJeans (뉴진스) Official MV NewJeans (뉴진스) Official MV NewJeans (뉴진스)
-                NewJeans (뉴진스) Official MV NewJeans (뉴진스) Official MV NewJeans (뉴진스)
-              </Typography>
-            </div>
+            <Typography
+              type='caption1'
+              overflow='ellipsis'
+              className='flex-1 select-none text-gray-50'
+            >
+              NewJeans (뉴진스) Official MV NewJeans (뉴진스) Official MV NewJeans (뉴진스) NewJeans
+              (뉴진스) Official MV NewJeans (뉴진스) Official MV NewJeans (뉴진스)
+            </Typography>
           </div>
         </div>
       </div>
