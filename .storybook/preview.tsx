@@ -1,9 +1,8 @@
-import React from 'react';
-import '../src/styles/globals.css';
+import 'styles/globals.css';
 import './styles.css';
 
 import type { Preview } from '@storybook/react';
-import { DialogProvider } from '../src/context/DialogProvider';
+import { DialogProvider } from 'context/DialogProvider';
 
 const preview: Preview = {
   parameters: {

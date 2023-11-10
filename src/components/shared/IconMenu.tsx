@@ -1,5 +1,5 @@
 'use client';
-import React, { forwardRef } from 'react';
+import { forwardRef, ReactNode } from 'react';
 import { Menu } from '@headlessui/react';
 import { cn } from '@/utils/cn';
 import MenuButton from './atoms/Menu/MenuButton';
@@ -8,13 +8,13 @@ import MenuItemPanel, { MenuItem, MenuItemPanelSize } from './atoms/Menu/MenuIte
 interface IconMenuProps {
   menuItemConfig: Array<MenuItem>;
   menuItemPanel?: {
-    HeaderIcon?: React.ReactNode;
-    PrefixIcon?: React.ReactNode;
+    HeaderIcon?: ReactNode;
+    PrefixIcon?: ReactNode;
     className?: string;
     size?: MenuItemPanelSize;
   };
   menuContainerStyle?: string;
-  MenuButtonIcon: React.ReactNode;
+  MenuButtonIcon: ReactNode;
   onMenuClose?: () => void;
   onMenuIconClick?: () => void;
 }

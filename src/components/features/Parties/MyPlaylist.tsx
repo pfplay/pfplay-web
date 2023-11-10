@@ -1,4 +1,3 @@
-import React from 'react';
 import { Disclosure } from '@headlessui/react';
 import CollapseList from '@/components/shared/CollapseList';
 import Drawer from '@/components/shared/Drawer';

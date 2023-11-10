@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { Menu } from '@headlessui/react';
 import { cn } from '@/utils/cn';
 import { sizeDict, colorsDict } from '../Button';

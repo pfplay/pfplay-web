@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { getErrorMessage } from '@/api/helper';
 import Dialog, { DialogProps } from '@/components/shared/Dialog';
 import Typography from '@/components/shared/atoms/Typography';
@@ -15,7 +15,7 @@ interface ConfirmDialogParams extends Pick<DialogProps, 'title' | 'Sub'> {
 }
 
 export const useDialog = () => {
-  const { openDialog, closeDialog } = React.useContext(DialogContext);
+  const { openDialog, closeDialog } = useContext(DialogContext);
   if (!openDialog) {
     throw new Error('useDialog must be used within a DialogProvider');
   }

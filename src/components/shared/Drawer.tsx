@@ -1,5 +1,5 @@
 'use client';
-import React, { Fragment, PropsWithChildren, useEffect } from 'react';
+import { Fragment, PropsWithChildren, useEffect } from 'react';
 import { Transition } from '@headlessui/react';
 import Typography from './atoms/Typography';
 import { PFClose } from './icons';

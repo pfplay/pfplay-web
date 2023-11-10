@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFPersonFilled } from '@/components/shared/icons';
 import { cn } from '@/utils/cn';

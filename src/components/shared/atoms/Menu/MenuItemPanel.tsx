@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import { Transition, Menu } from '@headlessui/react';
 import { cn } from '@/utils/cn';
 
