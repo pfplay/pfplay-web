@@ -9,6 +9,7 @@ import PartyRoomCard from '@/components/features/Parties/PartyRoomCard';
 import Typography from '@/components/shared/atoms/Typography';
 import { mockPlayListItemConfig } from '@/constants/__mock__/mockPlayListItemConfig';
 import { useDialog } from '@/hooks/useDialog';
+import { cn } from '@/utils/cn';
 
 const PartiesPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -31,10 +32,18 @@ const PartiesPage = () => {
       <PartiesSideBar setDrawerOpen={setDrawerOpen} />
       <div className='max-w-desktop mx-auto'>
         <PartiesMainStageCard />
-        <section className='grid grid-cols-3 gap-6 mt-6 overflow-y-auto'>
+        <section
+          className={cn([
+            'grid gap-[1.5rem] mt-6 overflow-y-auto',
+            'grid-rows-[repeat(auto-fit,240px)]',
+            'grid-cols-1',
+            'tablet:grid-cols-[repeat(auto-fit,minmax(calc((100%-1.5rem)/2),1fr))]', // 100%-{COL_GAP}
+            'desktop:grid-cols-[repeat(auto-fit,minmax(calc((100%-3rem)/3),1fr))]', // 100%-({COL_GAP}*2)
+          ])}
+        >
           <button
             onClick={handleClickBeAHostBtn}
-            className='pt-6 bg-gray-900 rounded flexCol px-7 z-0 text-start'
+            className='appearance-none col-span-1 tablet:col-span-2 desktop:col-span-1 pt-6 bg-gray-900 rounded flexCol px-7 z-0 cursor-pointer text-start'
           >
             <div className='items-start gap-3 flexCol'>
               <Typography type='title2' className='text-red-300'>
@@ -53,6 +62,7 @@ const PartiesPage = () => {
               />
             </div>
           </button>
+
           {mockPlayListItemConfig.map((config) => (
             <PartyRoomCard key={config.id} roomId={config.id} playListItemConfig={config} />
           ))}

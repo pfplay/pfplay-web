@@ -29,7 +29,7 @@
     @apply pt-[calc(var(--header-height)+60px)];
   }
   .px-app {
-    @apply px-[20px] tablet:px-[60px] laptop:px-[120px];
+    @apply px-[20px] tablet:px-[40px] laptop:px-[120px];
   }
   .pb-app {
     @apply pb-[calc(var(--footer-bottom)+100px)];

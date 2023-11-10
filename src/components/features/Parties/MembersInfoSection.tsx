@@ -12,14 +12,14 @@ interface MembersInfoSectionProps {
 
 const MembersInfoSection = ({ membersCount, membersImage }: MembersInfoSectionProps) => {
   return (
-    <div className='relative items-center flexRow'>
-      <div className='items-center flexRow gap-[6px]'>
+    <div className='flexRowCenter gap-[45px]'>
+      <div className='flexRowCenter gap-[6px]'>
         <PFPersonFilled width={18} height={18} />
         <Typography type='body3' className='text-gray-50'>
           {membersCount ? membersCount : 0}
         </Typography>
       </div>
-      <ul className='items-center absolute left-[96px] flexRow gap-x-2'>
+      <ul className='flexRowCenter gap-2'>
         {membersImage?.slice(0, 3).map((config, i) => (
           // FIXME: api에서 받아온 정보로 수정
           <li key={i} className='w-6 h-6 rounded-full bg-slate-400'>
