@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFHeadset } from '@/components/shared/icons';
 import { useDialog } from '@/hooks/useDialog';
+import { cn } from '@/utils/cn';
 import MyProfileModalBody from './MyProfileModalBody';
 
 interface PartiesSideBarProps {
@@ -26,7 +27,13 @@ const PartiesSideBar = ({ setDrawerOpen }: PartiesSideBarProps) => {
   };
 
   return (
-    <div className='fixed top-1/2 left-10 transform -translate-y-1/2 flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded z-10'>
+    <aside
+      className={cn([
+        'flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded',
+        'fixed z-10 bottom-8 right-8 transform',
+        'laptop:bottom-[unset] laptop:right-[unset] laptop:top-1/2 laptop:left-8 laptop:-translate-y-1/2',
+      ])}
+    >
       {/* TODO: 프로필 이미지로 변경, href 추가 */}
       <div onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
         <Image
@@ -46,7 +53,7 @@ const PartiesSideBar = ({ setDrawerOpen }: PartiesSideBarProps) => {
           플레이리스트
         </Typography>
       </div>
-    </div>
+    </aside>
   );
 };
 
