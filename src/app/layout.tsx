@@ -6,7 +6,6 @@ import { DomId } from '@/constants/domId';
 import { DialogProvider } from '@/context/DialogProvider';
 import SessionProvider from '@/context/SessionProvider';
 import { pretendardVariable } from '@/styles/fonts';
-import { cn } from '@/utils/cn';
 import SessionCheck from './sessionCheck';
 
 export const metadata: Metadata = {
@@ -20,7 +19,7 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <html lang='en'>
-      <body className={cn('min-h-screen', pretendardVariable.className)}>
+      <body className={pretendardVariable.className}>
         <SessionProvider>
           <SessionCheck>
             <DialogProvider>{children}</DialogProvider>
