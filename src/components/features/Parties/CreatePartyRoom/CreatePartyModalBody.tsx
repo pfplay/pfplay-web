@@ -50,7 +50,6 @@ interface CreatePartyModalBodyProps {
 const CreatePartyModalBody = ({ onModalClose }: CreatePartyModalBodyProps) => {
   const { data } = useSession();
   const router = useRouter();
-  console.log({ data });
 
   const {
     handleSubmit,

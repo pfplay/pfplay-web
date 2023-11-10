@@ -49,7 +49,6 @@ export const authOptions: NextAuthOptions = {
     jwt: ({ token, user }) => {
       if (!user) return token;
 
-      console.log({ user });
       token.accessToken = user.accessToken;
       token.registered = user.registered;
       token.authority = user.authority;
