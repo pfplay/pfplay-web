@@ -3,7 +3,7 @@ import { PropsWithChildren } from 'react';
 const PartyRoomLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
-      <main>{children}</main>
+      <main className='bg-partyRoom'>{children}</main>
     </>
   );
 };
