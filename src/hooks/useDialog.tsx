@@ -53,7 +53,9 @@ export const useDialog = () => {
               {content && <Typography type='body3'>{content}</Typography>}
 
               <Dialog.ButtonGroup>
-                <Dialog.Button onClick={() => onOk(false)}>{cancelText}</Dialog.Button>
+                <Dialog.Button color='secondary' onClick={() => onOk(false)}>
+                  {cancelText}
+                </Dialog.Button>
                 <Dialog.Button onClick={() => onOk(true)}>{okText}</Dialog.Button>
               </Dialog.ButtonGroup>
             </>

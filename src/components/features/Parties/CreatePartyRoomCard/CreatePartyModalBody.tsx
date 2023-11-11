@@ -1,7 +1,11 @@
 'use client';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
 import { z } from 'zod';
+import { PartiesService } from '@/api/services/Parties';
 import DjListItem from '@/components/shared/DjListItem';
 import FormItem from '@/components/shared/FormItem';
 import Button from '@/components/shared/atoms/Button';
@@ -12,19 +16,24 @@ import Tooltip from '@/components/shared/atoms/Tooltip';
 import Typography from '@/components/shared/atoms/Typography';
 
 const createPartyFormSchema = z.object({
-  partyName: z
+  name: z
     .string()
     .min(1, { message: '1자 이상 입력해주세요' })
     .max(30, { message: '한글 30자, 영문 30자 제한 / 띄어쓰기,특수문자 사용 불가' })
     .refine((value) => /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]*$/.test(value), {
       message: '한글 30자, 영문 30자 제한 / 띄어쓰기,특수문자 사용 불가',
     }),
-  introduction: z
+  introduce: z
     .string()
     .min(1, { message: '1자 이상 입력해주세요' })
     .max(50, { message: '한/영 구분 없이 띄어쓰기 포함 50자 제한' }),
-  domain: z.string(),
-  playTimeLimit: z.coerce
+  domain: z
+    .string()
+    .optional()
+    .refine((value) => !value || /^\S*$/.test(value), {
+      message: '도메인에 공백이나 띄어쓰기를 포함할 수 없습니다',
+    }),
+  limit: z.coerce
     .number({ invalid_type_error: '디제잉 1회당 제한 시간은 3분 이상부터 가능해요' })
     .int()
     .nonnegative()
@@ -33,27 +42,56 @@ const createPartyFormSchema = z.object({
 
 type CreatePartyFormValues = z.infer<typeof createPartyFormSchema>;
 
-const CreatePartyModalBody = () => {
+interface CreatePartyModalBodyProps {
+  onModalClose?: () => void;
+}
+
+const CreatePartyModalBody = ({ onModalClose }: CreatePartyModalBodyProps) => {
+  const { data } = useSession();
+  const router = useRouter();
+
   const {
     handleSubmit,
     register,
     formState: { errors, isValid },
+    setError,
   } = useForm<CreatePartyFormValues>({
     mode: 'all',
     resolver: zodResolver(createPartyFormSchema),
     defaultValues: {
-      partyName: '',
-      introduction: '',
+      name: '',
+      introduce: '', // FIXME: BE가 attribute name 수정 하면 수정 필요
       domain: '',
-      playTimeLimit: 7,
+      limit: 7,
     },
   });
 
-  const handleFormSubmit: SubmitHandler<CreatePartyFormValues> = (values) => {
-    console.log({ values, errors });
-  };
-
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
+
+  const handleFormSubmit: SubmitHandler<CreatePartyFormValues> = async ({
+    name,
+    introduce,
+    limit,
+    domain,
+  }) => {
+    try {
+      const response = await PartiesService.createPartyRoom({
+        name,
+        introduce,
+        limit,
+        domain: domain || undefined,
+      });
+
+      onModalClose && onModalClose();
+
+      router.push(`/parties/${domain || response.name}`);
+    } catch (error: unknown) {
+      // FIXME: BE와 api 논의 후 수정 필요. 1. 유저가 이미 파티를 개설한 경우 2. 도메인이 이미 존재하는 경우
+      if (error instanceof AxiosError && error.response?.status === 409) {
+        setError('domain', { message: '이미 존재하는 도메인 주소입니다' });
+      }
+    }
+  };
 
   return (
     <form
@@ -63,12 +101,12 @@ const CreatePartyModalBody = () => {
       <div className=' w-full items-end gap-12 flexCol'>
         <FormItem
           label='파티이름'
-          error={errors.partyName?.message}
+          error={errors.name?.message}
           required
           classNames={{ label: 'text-gray-200', container: 'w-full' }}
         >
           <Input
-            {...register('partyName')}
+            {...register('name')}
             placeholder='한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'
             maxLength={30}
           />
@@ -77,11 +115,11 @@ const CreatePartyModalBody = () => {
         <FormItem
           label='파티 소개'
           required
-          error={errors.introduction && '한/영 구분 없이 띄어쓰기 포함 50자 제한'}
+          error={errors.introduce && '한/영 구분 없이 띄어쓰기 포함 50자 제한'}
           classNames={{ label: 'text-gray-200', container: 'w-full' }}
         >
           <TextArea
-            {...register('introduction')}
+            {...register('introduce')}
             maxLength={50}
             rows={3}
             placeholder='한/영 구분 없이 띄어쓰기 포함 50자 제한'
@@ -98,6 +136,7 @@ const CreatePartyModalBody = () => {
                 </Typography>
               </Typography>
             }
+            error={errors.domain?.message}
             classNames={{ label: 'text-gray-200', container: 'flex-1' }}
           >
             <Input
@@ -113,7 +152,7 @@ const CreatePartyModalBody = () => {
                 label={
                   <Tooltip
                     title='디제잉 1회당 제한 시간은 3분 이상부터 가능해요'
-                    visible={!!errors.playTimeLimit?.message}
+                    visible={!!errors.limit?.message}
                   >
                     <Typography type='body2' className='flexCol items-start'>
                       디제잉
@@ -129,10 +168,7 @@ const CreatePartyModalBody = () => {
                 }
                 classNames={{ label: 'text-gray-200 !w-[80px] pr-0' }}
               >
-                <InputNumber
-                  {...register('playTimeLimit', { valueAsNumber: true })}
-                  initialValue={7}
-                />
+                <InputNumber {...register('limit', { valueAsNumber: true })} initialValue={7} />
                 <Typography as='span' type='detail1' className='text-gray-200 ml-[8px]'>
                   분
                 </Typography>
@@ -149,7 +185,7 @@ const CreatePartyModalBody = () => {
             }
             classNames={{ label: 'text-gray-200' }}
           >
-            <DjListItem userConfig={{ username: 'PFPlay User', src: '' }} />
+            <DjListItem userConfig={{ username: data?.user.name || 'PFPlay User', src: '' }} />
           </FormItem>
 
           <Button

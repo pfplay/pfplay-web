@@ -9,6 +9,22 @@ export interface UserProfile {
   avatarFace?: AvatarParts;
 }
 
+export interface UserPermission {
+  settingProfile: boolean;
+  showPartyListDisplay: boolean;
+  enterMainStage: boolean;
+  chat: boolean;
+  createPlayList: boolean;
+  createWaitDj: boolean;
+  enterPartyRoom: boolean;
+  createPartyRoom: boolean;
+  admin: boolean;
+  communityManager: boolean;
+  moderator: boolean;
+  clubber: boolean;
+  listener: boolean;
+}
+
 export interface UserLoginRequest {
   accessToken: string;
 }
@@ -19,6 +35,7 @@ export interface UserLoginResponse {
   registered: boolean;
   authority: Authority;
   accessToken: string;
+  userPermission: UserPermission;
 }
 
 export interface UserClient {

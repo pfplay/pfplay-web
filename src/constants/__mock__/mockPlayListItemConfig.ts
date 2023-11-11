@@ -5,7 +5,6 @@ export const mockPlayListItemConfig: PlayListItemType[] = [
     id: 1,
     title: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
     duration: '00:00',
-
     alt: 'PlayListItem',
   },
   {

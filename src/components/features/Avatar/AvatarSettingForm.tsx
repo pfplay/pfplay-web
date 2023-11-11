@@ -1,4 +1,3 @@
-'use server';
 import { Fragment, PropsWithChildren, Suspense } from 'react';
 import BackButton from '@/components/shared/BackButton';
 import ButtonLink from '@/components/shared/ButtonLink';
