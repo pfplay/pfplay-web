@@ -80,12 +80,12 @@ const CreatePartyModalBody = ({ onModalClose }: CreatePartyModalBodyProps) => {
         name,
         introduce,
         limit,
-        domain: domain || null,
+        domain,
       });
 
       onModalClose && onModalClose();
 
-      router.push(`/parties/${domain ? domain : response.name}`);
+      router.push(`/parties/${domain || response.name}`);
     } catch (error: unknown) {
       // FIXME: BE와 api 논의 후 수정 필요. 1. 유저가 이미 파티를 개설한 경우 2. 도메인이 이미 존재하는 경우
       if (error instanceof AxiosError && error.response?.status === 409) {

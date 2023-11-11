@@ -4,7 +4,7 @@ import { Authority, PartyRoomStatus, PartyRoomType } from './@enums';
 export interface PartyRoom {
   name: string;
   introduce: string; // FIXME: BE가 attribute name 수정 하면 수정 필요
-  domain: string | null;
+  domain?: string;
   limit: number;
 }
 

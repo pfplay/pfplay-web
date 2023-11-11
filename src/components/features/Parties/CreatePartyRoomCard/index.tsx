@@ -31,7 +31,9 @@ const CreatePartyRoomCard = () => {
   };
 
   return (
-    <article
+    <div
+      role='button'
+      tabIndex={0}
       onClick={() => handleClickBeAHostBtn()}
       className='gap-10 pt-6 bg-gray-900 rounded cursor-pointer flexCol px-7 z-0 pb-[50px]'
     >
@@ -46,7 +48,7 @@ const CreatePartyRoomCard = () => {
       <div className='flex items-center justify-center'>
         <Image src='/images/Background/bigPlus.png' alt='Party Room Add' width={60} height={60} />
       </div>
-    </article>
+    </div>
   );
 };
 
