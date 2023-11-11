@@ -11,7 +11,7 @@ import { mockPlayListItemConfig } from '@/constants/__mock__/mockPlayListItemCon
 import { useDialog } from '@/hooks/useDialog';
 import { cn } from '@/utils/cn';
 
-const PartiesPage = () => {
+const PartyLobbyPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { openDialog } = useDialog();
 
@@ -73,4 +73,4 @@ const PartiesPage = () => {
   );
 };
 
-export default PartiesPage;
+export default PartyLobbyPage;

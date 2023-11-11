@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import Header from '@/components/layouts/Header';
 
-const PartiesLayout = ({ children }: PropsWithChildren) => {
+const PartyLobbyLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
       <Header />
@@ -10,4 +10,4 @@ const PartiesLayout = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default PartiesLayout;
+export default PartyLobbyLayout;

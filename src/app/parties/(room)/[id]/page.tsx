@@ -24,10 +24,12 @@ const PartyRoomPage = async () => {
             <span className='text-gray-300 text-sm'>파티목록</span>
           </button>
         </div>
+
         {/* 채팅, 사람 탭 */}
         <div className='px-7 bg-black'>
           <TempPartiesTab />
         </div>
+
         {/* 채팅창 목록 */}
         <div className='relative w-full bg-gradient-to-r from-black/0 via-black/80 to-black/80'>
           <div className='absolute top-0 left-0 w-full h-6 bg-gradient-to-b from-black to-black/0 z-50'>
@@ -56,6 +58,7 @@ const PartyRoomPage = async () => {
           </div>
         </div>
       </aside>
+
       {/* 가운데 플레이리스트 */}
       <section className='w-[512px] flex flex-col items-center justify-center mx-auto'>
         <div className='mt-11 bg-black px-3 py-2.5 flex items-center w-full border-2 border-gray-800 rounded'>
