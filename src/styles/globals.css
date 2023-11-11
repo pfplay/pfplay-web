@@ -26,13 +26,13 @@
 
 @layer components {
   .pt-app {
-    @apply pt-[calc(var(--header-height)+60px)];
+    @apply pt-[calc(var(--header-height)+20px)] laptop:pt-[calc(var(--header-height)+60px)];
   }
   .px-app {
     @apply px-[20px] tablet:px-[40px] laptop:px-[120px];
   }
   .pb-app {
-    @apply pb-[calc(var(--footer-bottom)+100px)];
+    @apply pb-[calc(var(--footer-bottom)+60px)] laptop:pb-[calc(var(--footer-bottom)+100px)];
   }
 
   .flexRow {
