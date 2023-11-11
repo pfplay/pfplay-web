@@ -80,7 +80,7 @@ const CreatePartyModalBody = ({ onModalClose }: CreatePartyModalBodyProps) => {
         name,
         introduce,
         limit,
-        domain,
+        domain: domain || undefined,
       });
 
       onModalClose && onModalClose();
