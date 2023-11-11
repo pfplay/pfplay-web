@@ -38,6 +38,7 @@ export const authOptions: NextAuthOptions = {
         user.authority = response.authority;
         user.id = response.id;
         user.name = response.name;
+        user.userPermission = response.userPermission;
 
         return true;
       } catch (e) {
@@ -47,11 +48,13 @@ export const authOptions: NextAuthOptions = {
     // 구글 로그인 성공 후 callback
     jwt: ({ token, user }) => {
       if (!user) return token;
+
       token.accessToken = user.accessToken;
       token.registered = user.registered;
       token.authority = user.authority;
       token.id = user.id as number;
       token.name = user.name;
+      token.userPermission = user.userPermission;
 
       return token;
     },
@@ -62,6 +65,7 @@ export const authOptions: NextAuthOptions = {
       session.user.authority = token.authority;
       session.user.id = token.id;
       session.user.name = token.name;
+      session.user.userPermission = token.userPermission;
 
       return session;
     },

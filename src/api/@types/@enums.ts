@@ -8,7 +8,7 @@ export enum PartyRoomStatus {
   INACTIVE = 'INACTIVE',
 }
 
-export enum PartyPermissionRole {
+export enum Authority {
   ADMIN = 'ADMIN',
   COMMUNITY_MANAGER = 'COMMUNITY_MANAGER',
   MODERATOR = 'MODERATOR',
@@ -16,7 +16,7 @@ export enum PartyPermissionRole {
   LISTENER = 'LISTENER',
 }
 
-export enum Authority {
+export enum UserType {
   ROLE_USER = 'ROLE_USER',
   ROLE_GUEST = 'ROLE_GUEST',
   ROLE_WALLET_USER = 'ROLE_WALLET_USER',
