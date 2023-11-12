@@ -1,14 +1,22 @@
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import CreatePartyRoomCard from '@/components/features/Parties/CreatePartyRoomCard';
-import PartiesContainer from '@/components/features/Parties/PartiesContainer';
 import PartiesMainStageCard from '@/components/features/Parties/PartiesMainStageCard';
+import PartiesSideBar from '@/components/features/Parties/PartiesSideBar';
 import PartyRoomList from '@/components/features/Parties/PartyRoomList';
 import Typography from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
 
 const PartyLobbyPage = async () => {
   return (
-    <PartiesContainer>
+    <>
+      <PartiesSideBar
+        className={cn([
+          'flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded',
+          'fixed z-10 bottom-8 right-8 transform',
+          'laptop:bottom-[unset] laptop:right-[unset] laptop:top-1/2 laptop:left-8 laptop:-translate-y-1/2',
+        ])}
+      />
+
       <div className='max-w-desktop mx-auto'>
         <PartiesMainStageCard />
         <section
@@ -33,7 +41,7 @@ const PartyLobbyPage = async () => {
           </Suspense>
         </section>
       </div>
-    </PartiesContainer>
+    </>
   );
 };
 
