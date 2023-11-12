@@ -1,9 +1,10 @@
-import Footer from '@/components/features/Home/Footer';
+import { PropsWithChildren } from 'react';
+import Footer from '@/components/layouts/Footer';
 
-const AuthLayout = ({ children }: React.PropsWithChildren) => {
+const AuthLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
-      {children}
+      <main className='bg-onboarding px-app'>{children}</main>
       <Footer />
     </>
   );

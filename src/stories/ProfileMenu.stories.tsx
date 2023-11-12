@@ -1,5 +1,5 @@
 import type { Meta } from '@storybook/react';
-import ProfileMenu from '@/components/features/Home/ProfileMenu';
+import ProfileMenu from '@/components/features/Profile/ProfileMenu';
 
 const meta = {
   title: 'ui/ProfileMenu',

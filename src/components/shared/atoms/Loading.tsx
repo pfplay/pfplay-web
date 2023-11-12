@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC } from 'react';
+import { CSSProperties, FC } from 'react';
 
 interface LoadingProps {
   size?: CSSProperties['width'];

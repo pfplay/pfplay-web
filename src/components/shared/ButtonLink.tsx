@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import Button, { ButtonProps } from './atoms/Button';
 
-interface CustomLinkProps
+interface ButtonLinkProps
   extends Pick<
     ButtonProps,
     'variant' | 'color' | 'size' | 'typo' | 'Icon' | 'iconPlacement' | 'disabled'
@@ -16,9 +16,9 @@ interface CustomLinkProps
   };
 }
 
-const CustomLink = ({ href, linkTitle, classNames, ...props }: CustomLinkProps) => {
+const ButtonLink = ({ href, linkTitle, classNames, ...props }: ButtonLinkProps) => {
   return (
-    <Link href={href} className={cn('w-fit', classNames?.container)}>
+    <Link href={href} className={cn('max-w-full', classNames?.container)}>
       <Button tabIndex={-1} className={cn(classNames?.button)} {...props}>
         {linkTitle}
       </Button>
@@ -26,4 +26,4 @@ const CustomLink = ({ href, linkTitle, classNames, ...props }: CustomLinkProps) 
   );
 };
 
-export default CustomLink;
+export default ButtonLink;

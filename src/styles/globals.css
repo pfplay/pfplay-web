@@ -3,11 +3,18 @@
 @tailwind utilities;
 
 @layer base {
-  main {
-    @apply min-h-screen bg-cover relative;
+  :root {
+    --header-height: 100px;
+    --footer-bottom: 52px;
   }
   body {
-    color: theme('colors.white');
+    @apply text-white bg-black min-h-screen;
+  }
+  body.scroll-hidden {
+    @apply overflow-hidden;
+  }
+  main {
+    @apply min-h-screen bg-cover relative;
   }
   strong {
     font-weight: inherit;
@@ -21,18 +28,25 @@
 }
 
 @layer components {
+  .pt-app {
+    @apply pt-[calc(var(--header-height)+20px)] laptop:pt-[calc(var(--header-height)+60px)];
+  }
+  .px-app {
+    @apply px-[20px] tablet:px-[40px] laptop:px-[120px];
+  }
+  .pb-app {
+    @apply pb-[calc(var(--footer-bottom)+60px)] laptop:pb-[calc(var(--footer-bottom)+100px)];
+  }
+
   .flexRow {
     @apply flex flex-row;
   }
-
   .flexCol {
     @apply flex flex-col;
   }
-
   .flexRowCenter {
     @apply flexRow justify-center items-center;
   }
-
   .flexColCenter {
     @apply flexCol justify-center items-center;
   }

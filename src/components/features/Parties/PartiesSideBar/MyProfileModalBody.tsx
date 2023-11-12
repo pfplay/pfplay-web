@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 import Button from '@/components/shared/atoms/Button';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFEdit } from '@/components/shared/icons';
@@ -25,7 +24,7 @@ const MyProfileModalBody = () => {
           />
         </div>
         <Button size='sm' variant='outline' onClick={() => router.push('/settings/avatar')}>
-          아바다 설정
+          아바타 설정
         </Button>
       </div>
       <div className='justify-between flex-1 flexCol'>

@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import React from 'react';
 import Typography from '@/components/shared/atoms/Typography';
 import { useDialog } from '@/hooks/useDialog';
 import CreatePartyModalBody from './CreatePartyModalBody';
@@ -31,11 +30,9 @@ const CreatePartyRoomCard = () => {
   };
 
   return (
-    <div
-      role='button'
-      tabIndex={0}
-      onClick={() => handleClickBeAHostBtn()}
-      className='gap-10 pt-6 bg-gray-900 rounded cursor-pointer flexCol px-7 z-0 pb-[50px]'
+    <button
+      onClick={handleClickBeAHostBtn}
+      className='appearance-none col-span-1 tablet:col-span-2 desktop:col-span-1 pt-6 bg-gray-900 rounded flexCol px-7 z-0 cursor-pointer text-start'
     >
       <div className='items-start gap-3 flexCol'>
         <Typography type='title2' className='text-red-300'>
@@ -45,10 +42,10 @@ const CreatePartyRoomCard = () => {
           원하는 테마의 파티를 자유롭게 호스트해보세요!
         </Typography>
       </div>
-      <div className='flex items-center justify-center'>
+      <div className='flex-1 w-full flex items-center justify-center'>
         <Image src='/images/Background/bigPlus.png' alt='Party Room Add' width={60} height={60} />
       </div>
-    </div>
+    </button>
   );
 };
 

@@ -1,5 +1,5 @@
 'use client';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { PFChevronDown, PFChevronUp } from '@/components/shared/icons';
 import { cn } from '@/utils/cn';
@@ -7,7 +7,7 @@ import Typography from './atoms/Typography';
 
 type CollapseListProps = {
   variant?: 'default' | 'accent' | 'outlined';
-  PrefixIcon?: React.ReactNode;
+  PrefixIcon?: ReactNode;
   title: string;
   infoText?: string;
 };

@@ -1,23 +1,25 @@
 import { Metadata } from 'next';
 
 import '@/styles/globals.css';
+import { PropsWithChildren } from 'react';
 import { DomId } from '@/constants/domId';
 import { DialogProvider } from '@/context/DialogProvider';
 import SessionProvider from '@/context/SessionProvider';
 import { pretendardVariable } from '@/styles/fonts';
-import { cn } from '@/utils/cn';
 import SessionCheck from './sessionCheck';
 
 export const metadata: Metadata = {
+  title: 'PFPlay',
+  description: 'PFP Playground for music',
   icons: {
     icon: '/favicon.ico',
   },
 };
 
-const RootLayout = ({ children }: React.PropsWithChildren) => {
+const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <html lang='en'>
-      <body className={cn('min-h-screen', pretendardVariable.className)}>
+      <body className={pretendardVariable.className}>
         <SessionProvider>
           <SessionCheck>
             <DialogProvider>{children}</DialogProvider>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { PartiesService } from '@/api/services/Parties';
 import PartyRoomCard from './PartyRoomCard';
 

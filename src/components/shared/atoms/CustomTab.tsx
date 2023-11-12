@@ -1,5 +1,5 @@
 'use client';
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
 import { cn } from '@/utils/cn';
 import Typography from './Typography';

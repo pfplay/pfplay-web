@@ -1,5 +1,5 @@
 'use client';
-import React, { PropsWithChildren, useCallback } from 'react';
+import { createContext, FC, PropsWithChildren, useCallback, useMemo, useState } from 'react';
 import Dialog, { DialogProps } from '@/components/shared/Dialog';
 import { delay } from '@/utils/delay';
 
@@ -16,7 +16,7 @@ interface DialogOptions extends Omit<DialogProps, 'id'> {
   id: ID;
 }
 
-export const DialogContext = React.createContext(
+export const DialogContext = createContext(
   {} as {
     openDialog: PushDialog;
     closeDialog: PopDialog;
@@ -25,8 +25,8 @@ export const DialogContext = React.createContext(
 
 const generateId = () => `${Date.now()}`;
 
-export const DialogProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [dialogs, setDialogs] = React.useState<DialogOptions[]>([]);
+export const DialogProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [dialogs, setDialogs] = useState<DialogOptions[]>([]);
 
   const pop: PopDialog = useCallback(async (id) => {
     // wait transition
@@ -68,7 +68,7 @@ export const DialogProvider: React.FC<PropsWithChildren> = ({ children }) => {
     [pop]
   );
 
-  const contextValue = React.useMemo(
+  const contextValue = useMemo(
     () => ({
       openDialog: push,
       closeDialog: pop,

@@ -1,4 +1,5 @@
-export const breakPoints: Record<'mobile' | 'tablet' | 'laptop' | 'desktop', string> = {
+type Screen = 'mobile' | 'tablet' | 'laptop' | 'desktop';
+export const breakPoints: Record<Screen, string> = {
   mobile: '400px',
   tablet: '768px',
   laptop: '1024px',
