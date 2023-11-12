@@ -46,7 +46,7 @@ const PartiesSideBar = ({ className, additionalRender }: PartiesSideBarProps) =>
           </Typography>
         </div>
         <div onClick={() => setDrawerOpen(true)} className='flexColCenter gap-2 cursor-pointer'>
-          <PFHeadset width={36} height={36} />
+          <PFHeadset width={36} height={36} className='[&_*]:fill-gray-400' />
           <Typography type='caption1' className='text-gray-200'>
             플레이리스트
           </Typography>
