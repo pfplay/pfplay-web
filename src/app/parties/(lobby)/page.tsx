@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import CreatePartyRoomCard from '@/components/features/Parties/CreatePartyRoomCard';
 import PartiesMainStageCard from '@/components/features/Parties/PartiesMainStageCard';
 import PartiesSideBar from '@/components/features/Parties/PartiesSideBar';
