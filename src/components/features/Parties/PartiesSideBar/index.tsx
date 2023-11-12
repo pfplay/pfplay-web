@@ -1,20 +1,20 @@
 'use client';
 import Image from 'next/image';
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import Typography from '@/components/shared/atoms/Typography';
-import { PFHeadset } from '@/components/shared/icons';
+import { PFDj, PFHeadset } from '@/components/shared/icons';
 import { useDialog } from '@/hooks/useDialog';
 import MyPlaylist from './MyPlaylist';
 import MyProfileModalBody from './MyProfileModalBody';
 
 interface PartiesSideBarProps {
   className: string;
-  additionalRender?: (wrapperClassName: string) => ReactNode;
+  showDJQueue?: boolean;
 }
 
-const PartiesSideBar = ({ className, additionalRender }: PartiesSideBarProps) => {
+const PartiesSideBar = ({ className, showDJQueue }: PartiesSideBarProps) => {
   const { openDialog } = useDialog();
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [showMyPlaylist, setShowMyPlaylist] = useState(false);
 
   const handleClickProfileButton = () => {
     return openDialog(() => ({
@@ -33,7 +33,7 @@ const PartiesSideBar = ({ className, additionalRender }: PartiesSideBarProps) =>
     <>
       <aside className={className}>
         {/* TODO: 프로필 이미지로 변경, href 추가 */}
-        <div onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
+        <button onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
           <Image
             src='/images/Background/profile.png' // TODO: user session에서 프로필 받아와 변경
             alt='profile' // TODO: user session에서 프로필 받아와 변경
@@ -44,18 +44,33 @@ const PartiesSideBar = ({ className, additionalRender }: PartiesSideBarProps) =>
           <Typography type='caption1' className='text-gray-200'>
             내 프로필
           </Typography>
-        </div>
-        <div onClick={() => setDrawerOpen(true)} className='flexColCenter gap-2 cursor-pointer'>
+        </button>
+        <button
+          onClick={() => setShowMyPlaylist(true)}
+          className='flexColCenter gap-2 cursor-pointer'
+        >
           <PFHeadset width={36} height={36} className='[&_*]:fill-gray-400' />
           <Typography type='caption1' className='text-gray-200'>
             플레이리스트
           </Typography>
-        </div>
+        </button>
 
-        {additionalRender?.('flexColCenter gap-2 cursor-pointer')}
+        {showDJQueue && (
+          <button
+            onClick={() => {
+              alert('Not Impl');
+            }}
+            className='flexColCenter gap-2 cursor-pointer'
+          >
+            <PFDj width={36} height={36} className='[&_*]:fill-gray-400' />
+            <Typography type='caption1' className='text-gray-200'>
+              DJ 대기열
+            </Typography>
+          </button>
+        )}
       </aside>
 
-      <MyPlaylist drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+      <MyPlaylist drawerOpen={showMyPlaylist} setDrawerOpen={setShowMyPlaylist} />
     </>
   );
 };
