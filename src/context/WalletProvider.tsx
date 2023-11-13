@@ -11,10 +11,9 @@ const { chains, publicClient } = configureChains(
   [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID as string }), publicProvider()]
 );
 
-const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 const { connectors } = getDefaultWallets({
   appName: 'pfplay',
-  projectId,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
   chains,
 });
 
