@@ -1,17 +1,10 @@
 'use client';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import {
-  connectorsForWallets,
-  darkTheme,
-  getDefaultWallets,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { rainbowWallet, walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
+import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
-import theme from '@/styles/theme';
 
 const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum],
@@ -19,7 +12,7 @@ const { chains, publicClient } = configureChains(
 );
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
-const { wallets } = getDefaultWallets({
+const { connectors } = getDefaultWallets({
   appName: 'pfplay',
   projectId,
   chains,
@@ -28,14 +21,6 @@ const { wallets } = getDefaultWallets({
 const appInfo = {
   appName: 'pfplay',
 };
-
-const connectors = connectorsForWallets([
-  ...wallets,
-  {
-    groupName: 'Recommended',
-    wallets: [rainbowWallet({ projectId, chains }), walletConnectWallet({ projectId, chains })],
-  },
-]);
 
 const wagmiConfig = createConfig({
   autoConnect: false,
@@ -54,12 +39,7 @@ const WalletProvider = ({ children }: PropsWithChildren) => {
         chains={chains}
         appInfo={appInfo}
         modalSize={'compact'}
-        theme={darkTheme({
-          accentColor: theme.colors.gray[700],
-          accentColorForeground: theme.colors.white,
-          borderRadius: 'small',
-          overlayBlur: 'small',
-        })}
+        theme={darkTheme()}
       >
         {mounted && children}
       </RainbowKitProvider>
