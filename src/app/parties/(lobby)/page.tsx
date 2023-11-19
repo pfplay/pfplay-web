@@ -1,9 +1,8 @@
-import { Suspense } from 'react';
 import CreatePartyRoomCard from '@/components/features/Parties/CreatePartyRoomCard';
 import PartiesMainStageCard from '@/components/features/Parties/PartiesMainStageCard';
 import PartiesSideBar from '@/components/features/Parties/PartiesSideBar';
 import PartyRoomList from '@/components/features/Parties/PartyRoomList';
-import Typography from '@/components/shared/atoms/Typography';
+import SuspenseWithErrorBoundary from '@/components/shared/SuspenseWithErrorBoundary';
 import { cn } from '@/utils/cn';
 
 const PartyLobbyPage = async () => {
@@ -29,16 +28,9 @@ const PartyLobbyPage = async () => {
           ])}
         >
           <CreatePartyRoomCard />
-          <Suspense
-            fallback={
-              // TODO: 로딩 skeleton 나오면 수정
-              <div className='flexRow justify-center items-center p-20'>
-                <Typography type='detail1'>로딩중...</Typography>
-              </div>
-            }
-          >
+          <SuspenseWithErrorBoundary enableReload>
             <PartyRoomList />
-          </Suspense>
+          </SuspenseWithErrorBoundary>
         </section>
       </div>
     </>

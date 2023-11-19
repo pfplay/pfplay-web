@@ -1,6 +1,7 @@
-import { Fragment, PropsWithChildren, Suspense } from 'react';
+import { Fragment, PropsWithChildren } from 'react';
 import BackButton from '@/components/shared/BackButton';
 import ButtonLink from '@/components/shared/ButtonLink';
+import SuspenseWithErrorBoundary from '@/components/shared/SuspenseWithErrorBoundary';
 import {
   CustomTab,
   TabGroup,
@@ -8,7 +9,6 @@ import {
   TabPanel,
   TabPanels,
 } from '@/components/shared/atoms/CustomTab';
-import Typography from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
 import AvatarBodyList from './AvatarBodyList';
 import AvatarFaceList from './AvatarFaceList';
@@ -36,29 +36,15 @@ const AvatarSettingForm = ({ withLayout }: Props) => {
               <div className='flex-1 border-b-[1px] border-b-gray-400' />
             </TabList>
             <TabPanels className={'pb-2'}>
-              <TabPanel tabIndex={0} className={'pt-6'}>
-                <Suspense
-                  fallback={
-                    // TODO: 로딩 디자인 나오면 수정
-                    <div className='flexRow justify-center items-center p-20'>
-                      <Typography type='detail1'>로딩중...</Typography>
-                    </div>
-                  }
-                >
+              <TabPanel tabIndex={0} className='pt-6'>
+                <SuspenseWithErrorBoundary>
                   <AvatarBodyList />
-                </Suspense>
+                </SuspenseWithErrorBoundary>
               </TabPanel>
-              <TabPanel tabIndex={1} className={' pt-4 '}>
-                <Suspense
-                  fallback={
-                    // TODO: 로딩 디자인 나오면 수정
-                    <div className='flexRow justify-center items-center p-20'>
-                      <Typography type='detail1'>로딩중...</Typography>
-                    </div>
-                  }
-                >
+              <TabPanel tabIndex={1} className='pt-4'>
+                <SuspenseWithErrorBoundary>
                   <AvatarFaceList />
-                </Suspense>
+                </SuspenseWithErrorBoundary>
               </TabPanel>
             </TabPanels>
           </TabGroup>
