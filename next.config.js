@@ -24,6 +24,21 @@ const nextConfig = {
         hostname: 'postfiles.pstatic.net',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.seadn.io',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.contextcdn.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+      },
     ],
   },
   output: 'standalone',

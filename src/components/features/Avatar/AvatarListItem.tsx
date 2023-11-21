@@ -26,7 +26,7 @@ const AvatarListItem: FC<Props> = ({ avatar, from }) => {
     }
   };
 
-  const selected = (id: number) => {
+  const selected = (id: number | string) => {
     if (from === 'body') {
       return selectedAvatarParts?.body?.id === id;
     } else if (from === 'face') {
