@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { NFTClient } from '../@types/NFT';
 
-// const api_key = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
 const apiKey = process.env.NEXT_PUBLIC_OPENSEA_ID as string;
 const options = (address: string) => ({
   method: 'GET',
@@ -17,7 +16,7 @@ const options = (address: string) => ({
 
 export const NFTService: NFTClient = {
   getNFTs: async (address: string) => {
-    const response = await axios.request(options(address));
+    const response = await axios.request(options(address + '11'));
     return await response.data;
   },
 };

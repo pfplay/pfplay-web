@@ -5,32 +5,13 @@ import { FetchStatus } from '@/api/@types/@shared';
 import { AvatarParts } from '@/api/@types/Avatar';
 import { Asset } from '@/api/@types/NFT';
 import { NFTService } from '@/api/services/NFT';
+import { useDialog } from '@/hooks/useDialog';
 import AvatarListItem from './AvatarListItem';
 import ConnectWalletButton from './ConnectWalletButton';
 
-// export const refineNftData = (nfts: OwnedNfts[]): AvatarParts[] => {
-//   return nfts
-//     .filter((nft) => !!nft.media[0].format && nft.media[0].format !== 'mp4')
-//     .map((nft) => {
-//       return {
-//         id: nft.metadata.name,
-//         image: nft.media[0].thumbnail,
-//         name: nft.metadata.name,
-//       };
-//     });
-// };
-export const refineNftData = (nfts: Asset[]): AvatarParts[] => {
-  return nfts.map((nft) => {
-    return {
-      id: nft.id,
-      image: nft.image_thumbnail_url,
-      name: nft.name,
-    };
-  });
-};
-
 const AvatarFaceList = () => {
   const { isConnected, address } = useAccount();
+  const { openErrorDialog } = useDialog();
 
   const [apiStatus, setApiStatus] = useState<FetchStatus>('idle');
   const [nfts, setNfts] = useState<AvatarParts[]>([]);
@@ -45,14 +26,12 @@ const AvatarFaceList = () => {
           setNfts(refineNftData(data.assets));
           setApiStatus('succeeded');
         } catch (error) {
-          // TODO: Replace with Error Modal
           setApiStatus('failed');
+          await openErrorDialog('Error occurred while fetching NFTs.'); // TODO: Reset error message when decision is made
         }
       })();
     }
-  }, [apiStatus, isConnected, address]);
-
-  console.log({ nft: nfts.length });
+  }, [apiStatus, isConnected, address, openErrorDialog]);
 
   return (
     <div className='flexCol gap-4'>
@@ -60,20 +39,31 @@ const AvatarFaceList = () => {
         <ConnectWalletButton />
       </div>
       <div className='max-h-[416px] grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5  overflow-y-auto styled-scroll'>
-        {nfts.map(({ id, image, name }) => (
-          <AvatarListItem
-            key={id}
-            avatar={{
-              id,
-              image,
-              name,
-            }}
-            from='face'
-          />
-        ))}
+        {apiStatus === 'succeeded' &&
+          nfts.map(({ id, image, name }) => (
+            <AvatarListItem
+              key={id}
+              avatar={{
+                id,
+                image,
+                name,
+              }}
+              from='face'
+            />
+          ))}
       </div>
     </div>
   );
 };
 
 export default AvatarFaceList;
+
+export const refineNftData = (nfts: Asset[]): AvatarParts[] => {
+  return nfts.map((nft) => {
+    return {
+      id: nft.id,
+      image: nft.image_thumbnail_url,
+      name: nft.name,
+    };
+  });
+};

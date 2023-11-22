@@ -6,7 +6,7 @@ const SelectedAvatar = () => {
   const selectedAvatarParts = useSelectedAvatarStore((state) => state.selectedAvatarParts);
 
   return (
-    <div className='flexCol justify-center items-center h-full bg-black pointer-events-none select-none  '>
+    <div className='min-h-[525px] flexCol justify-center items-center h-full bg-black pointer-events-none select-none  '>
       {/*  TODO: Face 이미지 대응 */}
       {!selectedAvatarParts?.body && <div className='bg-black w-[300px] h-[300px]' />}
       {selectedAvatarParts?.body && (

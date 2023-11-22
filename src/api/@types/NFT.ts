@@ -1,65 +1,3 @@
-// export interface OwnedNfts {
-//   contract: {
-//     address: string;
-//   };
-//   id: {
-//     tokenId: string;
-//     tokenMetadata: {
-//       tokenType: string;
-//     };
-//   };
-//   balance: string;
-//   title: string;
-//   description: string;
-//   tokenUri: {
-//     gateway: string;
-//     raw: string;
-//   };
-//   media: {
-//     gateway: string;
-//     thumbnail: string;
-//     raw: string;
-//     format: string;
-//     bytes: number;
-//   }[];
-//   metadata: {
-//     name: string;
-//     description: string;
-//     image: string;
-//     external_url: string;
-//   };
-//   timeLastUpdated: string;
-//   contractMetadata: {
-//     name: string;
-//     symbol: string;
-//     totalSupply: string;
-//     tokenType: string;
-//     contractDeployer: string;
-//     deployedBlockNumber: number;
-//     openSea: {
-//       floorPrice: number;
-//       collectionName: string;
-//       collectionSlug: string;
-//       safelistRequestStatus: string;
-//       imageUrl: string;
-//       description: string;
-//       externalUrl: string;
-//       twitterUsername: string;
-//       lastIngestedAt: string;
-//     };
-//   };
-// }
-// type NFTResponse = {
-//   ownedNfts: OwnedNfts[];
-//   totalCount: number;
-//   blockHash: string;
-// };
-export interface OpenSeaAssetsResponse {
-  next: any;
-  previous: any;
-  assets: Asset[];
-}
-
 export interface Asset {
   id: number;
   token_id: string;
@@ -206,6 +144,13 @@ export interface RarityData {
     unique_attribute_count: number;
   };
 }
+
+export interface OpenSeaAssetsResponse {
+  next: string | null;
+  previous: string | null;
+  assets: Asset[];
+}
+
 export interface NFTClient {
   getNFTs(address: string): Promise<OpenSeaAssetsResponse>;
 }
