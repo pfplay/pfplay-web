@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { NFTClient } from '../@types/NFT';
 
-const OPENSEA_API_KEY = process.env.NEXT_PUBLIC_OPENSEA_ID as string;
-const OPENSEA_BASE_URL = process.env.NEXT_PUBLIC_OPENSEA_BASE_URL as string;
+const OPENSEA_API_KEY = process.env.NEXT_PUBLIC_OPENSEA_ID;
+const OPENSEA_BASE_URL = process.env.NEXT_PUBLIC_OPENSEA_BASE_URL;
 
 const options = (address: string) => ({
   method: 'GET',
