@@ -1,17 +1,19 @@
 import axios from 'axios';
 import { NFTClient } from '../@types/NFT';
 
-const apiKey = process.env.NEXT_PUBLIC_OPENSEA_ID as string;
+const OPENSEA_API_KEY = process.env.NEXT_PUBLIC_OPENSEA_ID as string;
+const OPENSEA_BASE_URL = process.env.NEXT_PUBLIC_OPENSEA_BASE_URL as string;
+
 const options = (address: string) => ({
   method: 'GET',
-  url: 'https://api.opensea.io/api/v1/assets',
+  url: `${OPENSEA_BASE_URL}/v1/assets`,
   params: {
     owner: address,
     order_direction: 'desc',
     limit: '200',
     include_orders: 'false',
   },
-  headers: { accept: 'application/json', 'X-API-KEY': apiKey },
+  headers: { accept: 'application/json', 'X-API-KEY': OPENSEA_API_KEY },
 });
 
 export const NFTService: NFTClient = {
