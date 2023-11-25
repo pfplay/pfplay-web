@@ -5,7 +5,6 @@ import { PropsWithChildren } from 'react';
 import { DomId } from '@/constants/domId';
 import { DialogProvider } from '@/context/DialogProvider';
 import SessionProvider from '@/context/SessionProvider';
-import { WalletProvider } from '@/context/WalletProvider';
 import { pretendardVariable } from '@/styles/fonts';
 import SessionCheck from './sessionCheck';
 
@@ -22,11 +21,9 @@ const RootLayout = ({ children }: PropsWithChildren) => {
     <html lang='en'>
       <body className={pretendardVariable.className}>
         <SessionProvider>
-          <WalletProvider>
-            <SessionCheck>
-              <DialogProvider>{children}</DialogProvider>
-            </SessionCheck>
-          </WalletProvider>
+          <SessionCheck>
+            <DialogProvider>{children}</DialogProvider>
+          </SessionCheck>
         </SessionProvider>
 
         <div id={DomId.TooltipRoot} />
