@@ -48,7 +48,6 @@ const AvatarListItem: FC<Props> = ({ avatar, from }) => {
       </> */}
 
       <Image
-        key={avatar.id}
         src={avatar.image}
         alt={avatar.name}
         fill

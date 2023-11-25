@@ -1,36 +1,3 @@
-export interface Asset {
-  id: number;
-  token_id: string;
-  num_sales: number;
-  background_color: string;
-  image_url: string;
-  image_preview_url: string;
-  image_thumbnail_url: string;
-  image_original_url?: string;
-  animation_url: string;
-  animation_original_url: string;
-  name: string;
-  description?: string;
-  external_link?: string;
-  asset_contract: AssetContract;
-  permalink: string;
-  collection: Collection;
-  decimals: string;
-  token_metadata?: string;
-  is_nsfw: boolean;
-  owner: string;
-  seaport_sell_orders: string;
-  creator: Creator;
-  traits: Trait[];
-  last_sale: string;
-  top_bid: string;
-  listing_date: string;
-  supports_wyvern: boolean;
-  rarity_data?: RarityData;
-  transfer_fee: string;
-  transfer_fee_payment_token: string;
-}
-
 export interface AssetContract {
   address: string;
   asset_contract_type: string;
@@ -143,6 +110,39 @@ export interface RarityData {
   ranking_features: {
     unique_attribute_count: number;
   };
+}
+
+export interface Asset {
+  id: number;
+  token_id: string;
+  num_sales: number;
+  background_color: string;
+  image_url: string;
+  image_preview_url: string;
+  image_thumbnail_url: string;
+  image_original_url?: string;
+  animation_url: string;
+  animation_original_url: string;
+  name: string;
+  description?: string;
+  external_link?: string;
+  asset_contract: AssetContract;
+  permalink: string;
+  collection: Collection;
+  decimals: string;
+  token_metadata?: string;
+  is_nsfw: boolean;
+  owner: string;
+  seaport_sell_orders: string;
+  creator: Creator;
+  traits: Trait[];
+  last_sale: string;
+  top_bid: string;
+  listing_date: string;
+  supports_wyvern: boolean;
+  rarity_data?: RarityData;
+  transfer_fee: string;
+  transfer_fee_payment_token: string;
 }
 
 export interface OpenSeaAssetsResponse {

@@ -16,7 +16,7 @@ const options = (address: string) => ({
 
 export const NFTService: NFTClient = {
   getNFTs: async (address: string) => {
-    const response = await axios.request(options(address + '11'));
+    const response = await axios.request(options(address));
     return await response.data;
   },
 };
