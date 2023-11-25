@@ -21,8 +21,8 @@ const AvatarFaceList = () => {
       (async () => {
         setApiStatus('loading');
         try {
-          const data = await NFTService.getNFTs('0xa4d1D0060eAd119cdF04b7C797A061400C6Ba8a7'); // NOTE:  uncomment and use it for testing
-          // const data = await NFTService.getNFTs(address);
+          // const data = await NFTService.getNFTs('0xa4d1D0060eAd119cdF04b7C797A061400C6Ba8a7'); // NOTE:  uncomment and use it for testing
+          const data = await NFTService.getNFTs(address);
 
           setNfts(refineNftData(data.assets));
           setApiStatus('succeeded');
