@@ -6,7 +6,7 @@ declare global {
       NEXTAUTH_SECRET?: string;
       NEXT_PUBLIC_ALCHEMY_ID?: string;
       NEXT_PUBLIC_OPENSEA_ID?: string;
-      NEXT_PUBLIC_PROJECT_ID?: string;
+      WALLET_PROJECT_ID?: string;
       NEXT_PUBLIC_OPENSEA_BASE_URL?: string;
       GOOGLE_ID?: string;
       GOOGLE_SECRET?: string;
