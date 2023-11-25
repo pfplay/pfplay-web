@@ -7,8 +7,6 @@ jobs:
     name: build test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
       - name: Cache node modules
       - uses: actions/cache@v3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
@@ -18,6 +16,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: '18.17.0'
