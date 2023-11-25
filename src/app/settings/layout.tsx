@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import Header from '@/components/layouts/Header';
-import { WalletProvider } from '@/context/WalletProvider';
+import WalletProvider from '@/context/WalletProvider';
 
 const ProfileEditLayout = ({ children }: PropsWithChildren) => {
   return (

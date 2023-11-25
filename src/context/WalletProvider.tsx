@@ -29,7 +29,7 @@ const wagmiConfig = createConfig({
   publicClient,
 });
 
-export const WalletProvider = ({ children }: PropsWithChildren) => {
+const WalletProvider = ({ children }: PropsWithChildren) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -47,3 +47,5 @@ export const WalletProvider = ({ children }: PropsWithChildren) => {
     </WagmiConfig>
   );
 };
+
+export default WalletProvider;
