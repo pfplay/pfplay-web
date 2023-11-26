@@ -5,6 +5,7 @@ import { PropsWithChildren } from 'react';
 import { DomId } from '@/constants/domId';
 import { DialogProvider } from '@/context/DialogProvider';
 import SessionProvider from '@/context/SessionProvider';
+import WalletProvider from '@/context/WalletProvider';
 import { pretendardVariable } from '@/styles/fonts';
 import SessionCheck from './sessionCheck';
 
@@ -22,7 +23,9 @@ const RootLayout = ({ children }: PropsWithChildren) => {
       <body className={pretendardVariable.className}>
         <SessionProvider>
           <SessionCheck>
-            <DialogProvider>{children}</DialogProvider>
+            <WalletProvider>
+              <DialogProvider>{children}</DialogProvider>
+            </WalletProvider>
           </SessionCheck>
         </SessionProvider>
 
