@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-
+import '@rainbow-me/rainbowkit/styles.css';
 import '@/styles/globals.css';
 import { PropsWithChildren } from 'react';
 import { DomId } from '@/constants/domId';

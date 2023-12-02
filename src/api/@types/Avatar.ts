@@ -1,11 +1,11 @@
 import { AvatarType } from '@/api/@types/@enums';
 
 export interface AvatarParts {
-  id: number;
-  type: AvatarType;
+  id: number | string;
+  type?: AvatarType;
   name: string;
   image: string;
-  point: number;
+  point?: number;
 }
 
 export interface AvatarClient {

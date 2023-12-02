@@ -41,10 +41,8 @@ const AvatarSettingForm = ({ withLayout }: Props) => {
                   <AvatarBodyList />
                 </SuspenseWithErrorBoundary>
               </TabPanel>
-              <TabPanel tabIndex={1} className='pt-4'>
-                <SuspenseWithErrorBoundary>
-                  <AvatarFaceList />
-                </SuspenseWithErrorBoundary>
+              <TabPanel tabIndex={1} className={' pt-4 '}>
+                <AvatarFaceList />
               </TabPanel>
             </TabPanels>
           </TabGroup>
