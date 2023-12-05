@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useAccount } from 'wagmi';
 import { FetchStatus } from '@/api/@types/@shared';
 import { AvatarParts } from '@/api/@types/Avatar';
-import { Asset } from '@/api/@types/NFT';
-import { NFTService } from '@/api/services/NFT';
+import { Asset, OpenSeaAssetsResponse } from '@/api/@types/NFT';
 import { useDialog } from '@/hooks/useDialog';
 import AvatarListItem from './AvatarListItem';
 import ConnectWalletButton from './ConnectWalletButton';
@@ -21,10 +21,13 @@ const AvatarFaceList = () => {
       (async () => {
         setApiStatus('loading');
         try {
-          // const data = await NFTService.getNFTs('0xa4d1D0060eAd119cdF04b7C797A061400C6Ba8a7'); // NOTE:  uncomment and use it for testing
-          const data = await NFTService.getNFTs(address);
+          const response = await axios.get<OpenSeaAssetsResponse>(
+            `/api/nft/0xa4d1D0060eAd119cdF04b7C797A061400C6Ba8a7`
+          ); // NOTE:  uncomment and use it for testing
 
-          setNfts(refineNftData(data.assets));
+          // const response = await axios.get<OpenSeaAssetsResponse>(`/api/nft/${address}`);
+
+          setNfts(refineNftData(response.data.assets));
           setApiStatus('succeeded');
         } catch (error) {
           setApiStatus('failed');
