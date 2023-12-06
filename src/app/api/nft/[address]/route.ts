@@ -1,16 +1,13 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { getNftsPayloadSchema } from '@/api/@types/NFT';
 import { NFTService } from '@/api/services/NFT';
-
-export const getNftsPayloadSchema = z.object({
-  address: z.string(),
-});
 
 export async function GET(_: Request, { params }: { params: { address: string } }) {
   try {
     const { address } = getNftsPayloadSchema.parse(params);
 
-    const data = await NFTService.getNFTs(address);
+    const data = await NFTService.getNFTs({ address });
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
