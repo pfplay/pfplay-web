@@ -2,24 +2,20 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { NFTService } from '@/api/services/NFT';
 
-export const dynamic = 'force-dynamic';
-
 export const getNftsPayloadSchema = z.object({
   address: z.string(),
 });
 
 export async function GET(_: Request, { params }: { params: { address: string } }) {
-  const { address } = getNftsPayloadSchema.parse(params);
-
   try {
+    const { address } = getNftsPayloadSchema.parse(params);
+
     const data = await NFTService.getNFTs(address);
 
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error(error);
-
     if (error instanceof z.ZodError) {
-      return new Response(error.message, { status: 422 });
+      return new Response(error.message, { status: 400 });
     }
 
     if (error instanceof Error) {
