@@ -17,15 +17,23 @@ const AvatarFaceList = () => {
   const [nfts, setNfts] = useState<AvatarParts[]>([]);
 
   useEffect(() => {
+    if (!isConnected) {
+      setApiStatus('idle');
+      setNfts([]);
+    }
+  }, [isConnected, setNfts, setApiStatus]);
+
+  useEffect(() => {
     if (apiStatus === 'idle' && isConnected && address) {
       (async () => {
         setApiStatus('loading');
-        try {
-          const response = await axios.get<OpenSeaAssetsResponse>(
-            `/api/nft/0xa4d1D0060eAd119cdF04b7C797A061400C6Ba8a7`
-          ); // NOTE:  uncomment and use it for testing
 
-          // const response = await axios.get<OpenSeaAssetsResponse>(`/api/nft/${address}`);
+        try {
+          // const response = await axios.get<OpenSeaAssetsResponse>(
+          //   `/api/nft/0xa4d1D0060eAd119cdF04b7C797A061400C6Ba8a7`
+          // ); // NOTE:  uncomment and use it for testing
+
+          const response = await axios.get<OpenSeaAssetsResponse>(`/api/nft/${address}`);
 
           setNfts(refineNftData(response.data.assets));
           setApiStatus('succeeded');
