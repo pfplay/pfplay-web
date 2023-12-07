@@ -157,8 +157,6 @@ export const getNftsPayloadSchema = z.object({
   address: z.string(),
 });
 
-export type GetNftsPayload = z.infer<typeof getNftsPayloadSchema>;
-
 export interface NFTClient {
-  getNFTs(payload: GetNftsPayload): Promise<OpenSeaAssetsResponse>;
+  getNFTs(address: string): Promise<OpenSeaAssetsResponse>;
 }
