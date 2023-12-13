@@ -24,11 +24,8 @@ export async function GET(_: Request, { params }: { params: { address: string } 
 
     const response = await nextAxiosInstance.request(options(address));
 
-    console.log({ response });
-
-    return NextResponse.json(response.data, { status: 200 });
+    return NextResponse.json(response, { status: 200 });
   } catch (error) {
-    console.log({ error });
     if (error instanceof z.ZodError) {
       return new Response(error.message, { status: 400 });
     }

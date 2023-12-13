@@ -29,13 +29,10 @@ const AvatarFaceList = () => {
         setApiStatus('loading');
 
         try {
-          const response = await NFTService.getNFTs(address);
-          console.log(response.assets);
-
-          setNfts(refineNftData(response.assets));
+          const { assets } = await NFTService.getNFTs(address);
+          setNfts(refineNftData(assets));
           setApiStatus('succeeded');
         } catch (error) {
-          console.log({ error });
           setApiStatus('failed');
           // TODO: Reset error message when decision is made
           await openErrorDialog('Error occurred while fetching NFTs.');
@@ -73,7 +70,6 @@ const AvatarFaceList = () => {
 export default AvatarFaceList;
 
 export const refineNftData = (nfts: Asset[]): AvatarParts[] => {
-  console.log({ nfts });
   return nfts.map((nft) => {
     return {
       id: nft.id,

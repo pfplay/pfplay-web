@@ -13,7 +13,6 @@ const createAxiosInstance = (baseURL?: string, options?: CreateAxiosDefaults): A
 };
 
 export const pfpAxiosInstance = createAxiosInstance(process.env.NEXT_PUBLIC_API_HOST_NAME);
-
 pfpAxiosInstance.interceptors.request.use(flow([setAccessToken, logRequest]));
 pfpAxiosInstance.interceptors.response.use(
   flow([logResponse, unwrapResponse]),
@@ -21,8 +20,5 @@ pfpAxiosInstance.interceptors.response.use(
 );
 
 export const nextAxiosInstance = createAxiosInstance('http://localhost:3000/api');
-nextAxiosInstance.interceptors.request.use(flow([setAccessToken, logRequest]));
-// nextAxiosInstance.interceptors.response.use(
-//   flow([logResponse, unwrapResponse]),
-//   flow([logError, processError])
-// );
+nextAxiosInstance.interceptors.request.use(flow([logRequest]));
+nextAxiosInstance.interceptors.response.use(flow([logResponse, unwrapResponse]), logError);
