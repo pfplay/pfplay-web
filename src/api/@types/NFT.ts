@@ -1,5 +1,3 @@
-import { z } from 'zod';
-
 export interface AssetContract {
   address: string;
   asset_contract_type: string;
@@ -152,10 +150,6 @@ export interface OpenSeaAssetsResponse {
   previous: string | null;
   assets: Asset[];
 }
-
-export const getNftsPayloadSchema = z.object({
-  address: z.string(),
-});
 
 export interface NFTClient {
   getNFTs(address: string): Promise<OpenSeaAssetsResponse>;

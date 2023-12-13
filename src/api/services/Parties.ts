@@ -1,13 +1,13 @@
 import { mockPlayListItemConfig } from '@/constants/__mock__/mockPlayListItemConfig';
 import { delay } from '@/utils/delay';
 import { PartiesClient, PartyRoom } from '../@types/Parties';
-import { axiosInstance } from '../client';
+import { pfpAxiosInstance } from '../client';
 
 const ROUTE_V1 = 'v1/party-room';
 
 export const PartiesService: PartiesClient = {
   createPartyRoom: async (partyRoomConfig: PartyRoom) => {
-    return await axiosInstance.post(`${ROUTE_V1}/create`, partyRoomConfig);
+    return await pfpAxiosInstance.post(`${ROUTE_V1}/create`, partyRoomConfig);
   },
   getPartyRoomList: async () => {
     // TODO: API 준비되면 대체

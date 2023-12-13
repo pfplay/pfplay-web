@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { getNftsPayloadSchema } from '@/api/@types/NFT';
-import { axiosInstance } from '@/api/client';
+import { nextAxiosInstance } from '@/api/client';
+
+const getNftsPayloadSchema = z.object({
+  address: z.string(),
+});
 
 const options = (address: string) => ({
   method: 'GET',
@@ -19,9 +22,11 @@ export async function GET(_: Request, { params }: { params: { address: string } 
   try {
     const { address } = getNftsPayloadSchema.parse(params);
 
-    const response = await axiosInstance.request(options(address));
+    const response = await nextAxiosInstance.request(options(address));
 
-    return NextResponse.json(response, { status: 200 });
+    console.log({ response });
+
+    return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
     console.log({ error });
     if (error instanceof z.ZodError) {
