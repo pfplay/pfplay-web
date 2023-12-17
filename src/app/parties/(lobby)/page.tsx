@@ -28,6 +28,7 @@ const PartyLobbyPage = async () => {
           ])}
         >
           <CreatePartyRoomCard />
+
           <SuspenseWithErrorBoundary enableReload>
             <PartyRoomList />
           </SuspenseWithErrorBoundary>

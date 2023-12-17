@@ -5,7 +5,7 @@ import Link from 'next/link';
 import BackdropBlurContainer from '@/components/shared/BackdropBlurContainer';
 import Typography from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
-import MembersInfoSection from './MembersInfoSection';
+import Participants from 'components/features/Parties/Participants';
 
 const PartiesMainStageCard = () => {
   return (
@@ -24,7 +24,7 @@ const PartiesMainStageCard = () => {
               파티에 오신 것을 환영합니다
             </Typography>
           </div>
-          <MembersInfoSection membersCount={50} membersImage={[{}, {}, {}, {}]} />
+          <Participants count={50} participants={[]} /* FIXME */ />
         </div>
         <div className='flex-1 max-w-full min-w-0 flexRow pt-4 border-t border-gray-700'>
           <div className='flexRow gap-[12px] items-center max-w-full'>

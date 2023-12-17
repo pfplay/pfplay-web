@@ -1,15 +1,25 @@
-import { PartiesService } from '@/api/services/Parties';
+'use client';
+
+import { usePartyRoomsSuspenseQuery } from '@/api/react-query/Parties/usePartyRoomsSuspenseQuery';
+import InfiniteScroll from '@/components/shared/InfiniteScroll';
 import PartyRoomCard from './PartyRoomCard';
 
-const PartyRoomList = async () => {
-  const partyRoomList = await PartiesService.getPartyRoomList();
+const PartyRoomList = () => {
+  const {
+    data: partyRooms,
+    fetchNextPage,
+    hasNextPage,
+  } = usePartyRoomsSuspenseQuery({
+    page: 0,
+    size: 10,
+  });
 
   return (
-    <>
-      {partyRoomList.map((config) => (
-        <PartyRoomCard key={config.id} roomId={config.id} playListItemConfig={config} />
+    <InfiniteScroll load={fetchNextPage} hasMore={hasNextPage}>
+      {partyRooms.map((partyRoom) => (
+        <PartyRoomCard key={partyRoom.roomId} roomId={partyRoom.roomId} summary={partyRoom} />
       ))}
-    </>
+    </InfiniteScroll>
   );
 };
 

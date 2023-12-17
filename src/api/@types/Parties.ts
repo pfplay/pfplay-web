@@ -1,4 +1,4 @@
-import { PageRequest, PageResponse } from '@/api/@types/@shared';
+import { PaginationPayload, PaginationResponse } from '@/api/@types/@shared';
 import { Authority, PartyRoomStatus, PartyRoomType } from './@enums';
 
 export interface CreatePartyRoomRequest {
@@ -55,5 +55,5 @@ export interface CreatePartyRoomResponse {
 
 export interface PartiesClient {
   create(request: CreatePartyRoomRequest): Promise<CreatePartyRoomResponse>;
-  getList(request: PageRequest): Promise<PageResponse<PartyRoomSummary>>;
+  getList(request: PaginationPayload): Promise<PaginationResponse<PartyRoomSummary>>;
 }
