@@ -1,9 +1,8 @@
 'use client';
 import Image from 'next/image';
-
+import { MouseEvent } from 'react';
 import DisplayOptionMenuOnHoverListener from '@/components/shared/DisplayOptionMenuOnHoverListener';
 import { PFPlayCircleFilled } from '@/components/shared/icons';
-
 import { cn } from '@/utils/cn';
 import { MenuItem } from './Menu/MenuItemPanel';
 import Typography from './Typography';
@@ -15,16 +14,15 @@ export interface PlayListItemType {
   src?: string;
   alt?: string;
 }
-
-interface UserListItemProps {
+interface PlayListItemProps {
   playListItemConfig: PlayListItemType;
   menuItemList: Array<MenuItem>;
 }
 
-const PlayListItem = ({ playListItemConfig, menuItemList }: UserListItemProps) => {
-  const handlePlayBtnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => {
+const PlayListItem = ({ playListItemConfig, menuItemList }: PlayListItemProps) => {
+  const handlePlayBtnClick = (e: MouseEvent<HTMLDivElement>, id: number) => {
     e.stopPropagation();
-    console.log(`id: ${id}는 향후 비디오 재생 api 연결에 사용될 예정입니다.`);
+    alert(`id: ${id}는 향후 비디오 재생 api 연결에 사용될 예정입니다.`);
   };
 
   return (
