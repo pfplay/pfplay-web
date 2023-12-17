@@ -1,7 +1,7 @@
 import { PlayListItemType } from '@/components/shared/atoms/PlayListItem';
 import { Authority, PartyRoomStatus, PartyRoomType } from './@enums';
 
-export interface PartyRoom {
+export interface CreatePartyRoomRequest {
   name: string;
   introduce: string; // FIXME: BE가 attribute name 수정 하면 수정 필요
   domain?: string;
@@ -41,6 +41,6 @@ export interface CreatePartyRoomResponse {
 }
 
 export interface PartiesClient {
-  createPartyRoom(partyRoomConfig: PartyRoom): Promise<CreatePartyRoomResponse>;
   getPartyRoomList(): Promise<PlayListItemType[]>; // TODO: API 준비되면 return type 수정
+  create(request: CreatePartyRoomRequest): Promise<CreatePartyRoomResponse>;
 }

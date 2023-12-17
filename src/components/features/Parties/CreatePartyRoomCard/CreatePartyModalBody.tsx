@@ -75,7 +75,7 @@ const CreatePartyModalBody = ({ onModalClose }: CreatePartyModalBodyProps) => {
     domain,
   }) => {
     try {
-      const response = await PartiesService.createPartyRoom({
+      const response = await PartiesService.create({
         name,
         introduce,
         limit,
