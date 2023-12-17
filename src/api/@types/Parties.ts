@@ -1,4 +1,4 @@
-import { PlayListItemType } from '@/components/shared/atoms/PlayListItem';
+import { PageRequest, PageResponse } from '@/api/@types/@shared';
 import { Authority, PartyRoomStatus, PartyRoomType } from './@enums';
 
 export interface CreatePartyRoomRequest {
@@ -6,6 +6,20 @@ export interface CreatePartyRoomRequest {
   introduce: string; // FIXME: BE가 attribute name 수정 하면 수정 필요
   domain?: string;
   limit: number;
+}
+
+export interface PartyRoomParticipant {
+  nickname: string;
+  faceUrl: string;
+}
+export interface PartyRoomSummary {
+  roomId: number;
+  introduce: string;
+  name: string;
+  domain: string;
+  createdAt: string;
+  participantTotalCount: number;
+  participants: PartyRoomParticipant[];
 }
 
 export type DefaultPartyPermission = {
@@ -24,7 +38,6 @@ export type DefaultPartyPermission = {
   musicSkip: boolean;
   videoLengthLimit: boolean;
 };
-
 export interface CreatePartyRoomResponse {
   id: number;
   name: string;
@@ -41,6 +54,6 @@ export interface CreatePartyRoomResponse {
 }
 
 export interface PartiesClient {
-  getPartyRoomList(): Promise<PlayListItemType[]>; // TODO: API 준비되면 return type 수정
   create(request: CreatePartyRoomRequest): Promise<CreatePartyRoomResponse>;
+  getList(request: PageRequest): Promise<PageResponse<PartyRoomSummary>>;
 }
