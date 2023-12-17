@@ -12,9 +12,9 @@ export default meta;
 
 const mockData = new Array(50).fill(null).map((_, index) => `Item ${index + 1}`);
 export const Preview: StoryFn<typeof meta> = () => {
-  const [data, setData] = useState(mockData.slice(0, 10));
+  const [data, setData] = useState<string[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [loadCount, setLoadCount] = useState(1);
+  const [loadCount, setLoadCount] = useState(0);
 
   const loadMore = () => {
     if (loadCount >= 3) {
