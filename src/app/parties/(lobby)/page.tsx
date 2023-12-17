@@ -2,7 +2,6 @@ import CreatePartyRoomCard from '@/components/features/Parties/CreatePartyRoomCa
 import PartiesMainStageCard from '@/components/features/Parties/PartiesMainStageCard';
 import PartiesSideBar from '@/components/features/Parties/PartiesSideBar';
 import PartyRoomList from '@/components/features/Parties/PartyRoomList';
-import SuspenseWithErrorBoundary from '@/components/shared/SuspenseWithErrorBoundary';
 import { cn } from '@/utils/cn';
 
 const PartyLobbyPage = async () => {
@@ -20,7 +19,7 @@ const PartyLobbyPage = async () => {
         <PartiesMainStageCard />
         <section
           className={cn([
-            'grid gap-[1.5rem] mt-6 overflow-y-auto',
+            'grid gap-[1.5rem] mt-6',
             'grid-rows-[repeat(auto-fit,240px)]',
             'grid-cols-1',
             'tablet:grid-cols-[repeat(auto-fit,minmax(calc((100%-1.5rem)/2),1fr))]', // 100%-{COL_GAP}
@@ -28,9 +27,7 @@ const PartyLobbyPage = async () => {
           ])}
         >
           <CreatePartyRoomCard />
-          <SuspenseWithErrorBoundary enableReload>
-            <PartyRoomList />
-          </SuspenseWithErrorBoundary>
+          <PartyRoomList />
         </section>
       </div>
     </>
