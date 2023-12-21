@@ -15,7 +15,8 @@
     "lint": "next lint -d src --ext .ts --ext .tsx --fix --quiet",
     "format": "prettier --check .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "openapi": "npx openapi-typescript https://pfplay-api.app/v3/api-docs/api --output ./src/types/api-docs.ts"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
