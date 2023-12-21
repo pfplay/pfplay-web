@@ -31,10 +31,12 @@ type RequestParameters<P extends Path, M extends Method<P>> = RequestParams<P, M
   ? object
   : { params: RequestParams<P, M> };
 
-export type FetcherParameters<P extends Path, M extends Method<P>> = {
+type FetcherParameters<P extends Path, M extends Method<P>> = {
   url: P;
   method: M;
 };
+
+type UnknownObject = { [key: string]: number | string };
 
 export const fetcher = async <P extends Path, M extends Method<P>>({
   method,
@@ -47,17 +49,17 @@ export const fetcher = async <P extends Path, M extends Method<P>>({
   RequestParameters<P, M>) => {
   let _url = url as string;
 
-  if ('params' in rest && 'path' in (rest['params'] as { [key: string]: string | number })) {
+  if ('params' in rest && 'path' in (rest['params'] as UnknownObject)) {
     const { path } = rest.params as {
-      path: { [key: string]: string | number };
+      path: UnknownObject;
     };
 
     _url = url.replace(/\{(\w+)\}/g, (match, key) => String(path[key] || match));
   }
 
-  if ('params' in rest && 'query' in (rest['params'] as { [key: string]: string | number })) {
+  if ('params' in rest && 'query' in (rest['params'] as UnknownObject)) {
     const { query } = rest.params as {
-      query: { [key: string]: string | number };
+      query: UnknownObject;
     };
     _url = `${_url}?${qs.stringify(query)}`;
   }
