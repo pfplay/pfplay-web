@@ -22,6 +22,14 @@ type Response<P extends Path, M extends Method<P>> = paths[P][M] extends {
   responses: { 200: { content: { '*/*': unknown } } };
 }
   ? paths[P][M]['responses'][200]['content']['*/*']
+  : paths[P][M] extends { responses: { 200: { content: { 'application/json': unknown } } } }
+  ? paths[P][M]['responses'][200]['content']['application/json']
+  : paths[P][M] extends {
+      responses: { default: { content: { '*/*': unknown } } };
+    }
+  ? paths[P][M]['responses']['default']['content']['*/*']
+  : paths[P][M] extends { responses: { default: { content: { 'application/json': unknown } } } }
+  ? paths[P][M]['responses']['default']['content']['application/json']
   : undefined;
 
 type BodyParameters<P extends Path, M extends Method<P>> = RequestBody<P, M> extends undefined
