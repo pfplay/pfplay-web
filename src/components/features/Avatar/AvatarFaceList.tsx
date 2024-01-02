@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { FetchStatus } from '@/api/@types/@shared';
 import { AvatarParts } from '@/api/@types/Avatar';
-import { Asset } from '@/api/@types/NFT';
+import { OwnedNft } from '@/api/@types/NFT';
 import { NFTService } from '@/api/services/NFT';
 import { useDialog } from '@/hooks/useDialog';
 import AvatarListItem from './AvatarListItem';
@@ -29,8 +29,10 @@ const AvatarFaceList = () => {
         setApiStatus('loading');
 
         try {
-          const { assets } = await NFTService.getNFTs(address);
-          setNfts(refineNftData(assets));
+          const { ownedNfts } = await NFTService.getNFTs(address);
+          const refinedNfts = await refineNftData(ownedNfts);
+
+          setNfts(refinedNfts);
           setApiStatus('succeeded');
         } catch (error) {
           setApiStatus('failed');
@@ -69,12 +71,33 @@ const AvatarFaceList = () => {
 
 export default AvatarFaceList;
 
-export const refineNftData = (nfts: Asset[]): AvatarParts[] => {
-  return nfts.map((nft) => {
+export const refineNftData = async (nfts: OwnedNft[]): Promise<AvatarParts[]> => {
+  const thumbnailExistNfts = nfts.filter((nft) => !!nft.image?.thumbnailUrl);
+
+  const results = await Promise.allSettled(requestImageUrlHealthCheck(thumbnailExistNfts));
+
+  const refined: OwnedNft[] = [];
+  for (const result of results) {
+    if (result.status === 'fulfilled' && result.value !== null) {
+      refined.push(result.value);
+    }
+  }
+
+  return refined.map((nft) => {
     return {
-      id: nft.id,
-      image: nft.image_thumbnail_url,
+      id: crypto.randomUUID(), //NOTE: Response의 OwnedNft에서 unique한 아이디가 없어서 crypto module 사용
+      image: nft.image.thumbnailUrl as string,
       name: nft.name,
     };
   });
 };
+
+const requestImageUrlHealthCheck = (thumbnailExistNfts: OwnedNft[]) =>
+  thumbnailExistNfts.map(async (nft) => {
+    try {
+      const res = await NFTService.checkImageUrlStatus(nft.image?.thumbnailUrl as string);
+      return res.status === 200 ? nft : null;
+    } catch (error) {
+      return null;
+    }
+  });

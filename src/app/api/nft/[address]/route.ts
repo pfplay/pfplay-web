@@ -8,14 +8,15 @@ const getNftsPayloadSchema = z.object({
 
 const options = (address: string) => ({
   method: 'GET',
-  url: `${process.env.OPENSEA_BASE_URL}/v1/assets`,
+  url: `${process.env.ALCHEMY_BASE_URL}/nft/v3/${process.env.NEXT_PUBLIC_ALCHEMY_ID}/getNFTsForOwner`,
   params: {
     owner: address,
+    withMetadata: true,
     order_direction: 'desc',
-    limit: '200',
-    include_orders: 'false',
+    'excludeFilters[]': 'SPAM',
+    pageSize: '100',
   },
-  headers: { accept: 'application/json', 'X-API-KEY': process.env.OPENSEA_ID },
+  headers: { accept: 'application/json' },
 });
 
 export async function GET(_: Request, { params }: { params: { address: string } }) {
