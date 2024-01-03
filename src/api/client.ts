@@ -1,16 +1,24 @@
-import axios from 'axios';
+import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios';
 import { flow } from '@/utils/flow';
 import { logRequest, setAccessToken } from './interceptors/request';
 import { logError, logResponse, processError, unwrapResponse } from './interceptors/response';
 
-export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_HOST_NAME,
-  timeout: 4000,
-  validateStatus: (status) => status >= 200 && status < 400,
-});
+const createAxiosInstance = (baseURL?: string, options?: CreateAxiosDefaults): AxiosInstance => {
+  return axios.create({
+    baseURL,
+    timeout: 4000,
+    validateStatus: (status) => status >= 200 && status < 400,
+    ...options,
+  });
+};
 
-axiosInstance.interceptors.request.use(flow([setAccessToken, logRequest]));
-axiosInstance.interceptors.response.use(
+export const pfpAxiosInstance = createAxiosInstance(process.env.NEXT_PUBLIC_API_HOST_NAME);
+pfpAxiosInstance.interceptors.request.use(flow([setAccessToken, logRequest]));
+pfpAxiosInstance.interceptors.response.use(
   flow([logResponse, unwrapResponse]),
   flow([logError, processError])
 );
+
+export const nextAxiosInstance = createAxiosInstance(process.env.NEXT_PUBLIC_NEXT_API);
+nextAxiosInstance.interceptors.request.use(flow([logRequest]));
+nextAxiosInstance.interceptors.response.use(flow([logResponse, unwrapResponse]), logError);

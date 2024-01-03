@@ -1,24 +1,15 @@
 import axios from 'axios';
 import { NFTClient } from '../@types/NFT';
-
-const OPENSEA_API_KEY = process.env.NEXT_PUBLIC_OPENSEA_ID;
-const OPENSEA_BASE_URL = process.env.NEXT_PUBLIC_OPENSEA_BASE_URL;
-
-const options = (address: string) => ({
-  method: 'GET',
-  url: `${OPENSEA_BASE_URL}/v1/assets`,
-  params: {
-    owner: address,
-    order_direction: 'desc',
-    limit: '200',
-    include_orders: 'false',
-  },
-  headers: { accept: 'application/json', 'X-API-KEY': OPENSEA_API_KEY },
-});
+import { nextAxiosInstance } from '../client';
 
 export const NFTService: NFTClient = {
-  getNFTs: async (address: string) => {
-    const response = await axios.request(options(address));
-    return await response.data;
+  getNFTs: async (address) => {
+    // NOTE:  uncomment and use it for testing
+    // return await nextAxiosInstance.get(`/nft/0xa4d1D0060eAd119cdF04b7C797A061400C6Ba8a7`);
+
+    return await nextAxiosInstance.get(`/nft/${address}`);
+  },
+  checkImageUrlStatus: async (imageUrl) => {
+    return await axios.get(`${imageUrl}`);
   },
 };

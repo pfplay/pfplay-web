@@ -19,6 +19,41 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'mint.fun',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.opensea.io',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'opensea.io',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'download.ghostsproject.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cybergalzpte.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'mnn.mypinata.cloud',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
         hostname: 'picsum.photos',
         port: '',
       },
@@ -40,6 +75,21 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.hunt.town',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ipfs.io',
+        port: '',
+      },
+      {
+        protocol: 'http',
+        hostname: 'm.thecoffeeclubnft.com',
         port: '',
       },
     ],

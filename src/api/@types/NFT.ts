@@ -1,156 +1,107 @@
-export interface AssetContract {
-  address: string;
-  asset_contract_type: string;
-  chain_identifier: string;
-  created_date: string;
+import { AxiosResponse } from 'axios';
+
+export interface AlchemyNFTsResponse {
+  ownedNfts: OwnedNft[];
+  totalCount: number;
+  validAt: ValidAt;
+  pageKey: string;
+}
+
+export interface OwnedNft {
+  contract: Contract;
+  tokenId: string;
+  tokenType: string;
   name: string;
-  nft_version?: string;
-  opensea_version?: string;
-  owner?: number;
-  schema_name: string;
+  description?: string;
+  tokenUri?: string;
+  image: Image;
+  raw: Raw;
+  collection: Collection;
+  mint: Mint;
+  owners?: string;
+  timeLastUpdated: string;
+  balance: string;
+  acquiredAt: object;
+}
+
+export interface Contract {
+  address: string;
+  name: string;
   symbol: string;
-  total_supply?: string;
+  totalSupply?: string;
+  tokenType: string;
+  contractDeployer: string;
+  deployedBlockNumber: number;
+  openSeaMetadata: OpenSeaMetadata;
+  isSpam: boolean;
+  spamClassifications: string[];
+}
+
+export interface OpenSeaMetadata {
+  floorPrice: number;
+  collectionName: string;
+  collectionSlug: string;
+  safelistRequestStatus: string;
+  imageUrl: string;
   description: string;
-  external_link?: string;
-  image_url?: string;
-  default_to_fiat: boolean;
-  dev_buyer_fee_basis_points: number;
-  dev_seller_fee_basis_points: number;
-  only_proxied_transfers: boolean;
-  opensea_buyer_fee_basis_points: number;
-  opensea_seller_fee_basis_points: number;
-  buyer_fee_basis_points: number;
-  seller_fee_basis_points: number;
-  payout_address?: string;
+  externalUrl?: string;
+  twitterUsername?: string;
+  discordUrl?: string;
+  bannerImageUrl: string;
+  lastIngestedAt: string;
+}
+
+export interface Image {
+  cachedUrl?: string;
+  thumbnailUrl?: string;
+  pngUrl?: string;
+  contentType?: string;
+  size?: string;
+  originalUrl?: string;
+}
+
+export interface Raw {
+  tokenUri?: string;
+  metadata: object;
+  error?: string;
 }
 
 export interface Collection {
-  banner_image_url?: string;
-  chat_url: string | null;
-  created_date: string;
-  default_to_fiat: boolean;
-  description: string;
-  dev_buyer_fee_basis_points: string;
-  dev_seller_fee_basis_points: string;
-  discord_url?: string;
-  display_data: DisplayData;
-  external_url?: string;
-  featured: boolean;
-  featured_image_url?: string;
-  hidden: boolean;
-  safelist_request_status: string;
-  image_url: string;
-  is_subject_to_whitelist: boolean;
-  large_image_url?: string;
-  medium_username: string | null;
   name: string;
-  only_proxied_transfers: boolean;
-  opensea_buyer_fee_basis_points: string;
-  opensea_seller_fee_basis_points: number;
-  payout_address?: string;
-  require_email: boolean;
-  short_description: string | null;
   slug: string;
-  telegram_url: string | null;
-  twitter_username?: string;
-  instagram_username: any;
-  wiki_url: string | null;
-  is_nsfw: boolean;
-  fees: Fees;
-  is_rarity_enabled: boolean;
-  is_creator_fees_enforced: boolean;
+  externalUrl: any;
+  bannerImageUrl: string;
 }
 
-export interface DisplayData {
-  card_display_style: string;
-  images: string[] | null;
+export interface Mint {
+  mintAddress?: string;
+  blockNumber?: number;
+  timestamp?: string;
+  transactionHash?: string;
 }
 
-export interface Fees {
-  seller_fees?: SellerFees;
-  opensea_fees?: OpenseaFees;
+export interface ValidAt {
+  blockNumber: number;
+  blockHash: string;
+  blockTimestamp: string;
 }
 
-export interface SellerFees {
-  [key: string]: number;
-}
-
-export interface OpenseaFees {
-  [key: string]: number;
-}
-
-export interface Creator {
-  user: User;
-  address: string;
-  config: string;
-  profile_img_url: string;
-}
-
-export interface User {
-  username?: string;
-}
-
-export interface Trait {
-  trait_type: string;
-  display_type?: string;
-  max_value: string | number;
-  trait_count: number;
-  order: string;
-  value: string | number;
-}
-
-export interface RarityData {
-  strategy_id: string;
-  strategy_version: string;
-  rank: number;
-  score: number;
-  calculated_at: string;
-  max_rank: number;
-  tokens_scored: number;
-  ranking_features: {
-    unique_attribute_count: number;
-  };
-}
-
-export interface Asset {
-  id: number;
-  token_id: string;
-  num_sales: number;
-  background_color: string;
-  image_url: string;
-  image_preview_url: string;
-  image_thumbnail_url: string;
-  image_original_url?: string;
-  animation_url: string;
-  animation_original_url: string;
+export interface NFT {
+  identifier: string;
+  collection: string;
+  contract: string;
+  token_standard: string;
   name: string;
-  description?: string;
-  external_link?: string;
-  asset_contract: AssetContract;
-  permalink: string;
-  collection: Collection;
-  decimals: string;
-  token_metadata?: string;
+  description: string;
+  image_url: string;
+  metadata_url: string;
+  opensea_url: string;
+  updated_at: string;
+  is_disabled: boolean;
   is_nsfw: boolean;
-  owner: string;
-  seaport_sell_orders: string;
-  creator: Creator;
-  traits: Trait[];
-  last_sale: string;
-  top_bid: string;
-  listing_date: string;
-  supports_wyvern: boolean;
-  rarity_data?: RarityData;
-  transfer_fee: string;
-  transfer_fee_payment_token: string;
-}
-
-export interface OpenSeaAssetsResponse {
-  next: string | null;
-  previous: string | null;
-  assets: Asset[];
 }
 
 export interface NFTClient {
-  getNFTs(address: string): Promise<OpenSeaAssetsResponse>;
+  getNFTs(address: string): Promise<AlchemyNFTsResponse>;
+  checkImageUrlStatus(imageUrl: string): Promise<AxiosResponse>;
 }
