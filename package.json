@@ -15,7 +15,8 @@
     "lint": "next lint -d src --ext .ts --ext .tsx --fix --quiet",
     "format": "prettier --check .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "pathmap": "node ./scripts/pathmap.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -62,6 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
     "autoprefixer": "^10.4.12",
+    "chokidar": "^3.5.3",
     "eslint": "^8.44.0",
     "eslint-config-next": "13.4.6",
     "eslint-config-prettier": "^8.8.0",
