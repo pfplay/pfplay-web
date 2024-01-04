@@ -16,7 +16,7 @@ const ProfileMenu = ({ email }: ProfileMenuProps) => {
           <MenuItemPanel
             menuItemConfig={[
               {
-                label: '로그아웃!',
+                label: '로그아웃',
                 onClickItem: () => signOut({ callbackUrl: '/' }),
               },
             ]}
