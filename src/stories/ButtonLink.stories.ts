@@ -14,7 +14,8 @@ type Story = StoryObj<typeof meta>;
 export const Preview: Story = {
   args: {
     linkTitle: 'ButtonLink',
-    href: 'https://www.naver.com',
+    href: 'https://www.naver.com' as any,
+    path: undefined,
     classNames: { button: 'px-[90px]' },
   },
 };
@@ -22,7 +23,8 @@ export const Preview: Story = {
 export const Disabled: Story = {
   args: {
     linkTitle: 'ButtonLink disabled',
-    href: 'https://www.naver.com',
+    href: 'https://www.naver.com' as any,
+    path: undefined,
     disabled: true,
     classNames: { button: 'px-[40px]' },
   },
