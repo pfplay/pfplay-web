@@ -2,9 +2,9 @@ import { UrlObject } from 'url';
 import Link from 'next/link';
 import React from 'react';
 import { PathMap } from '@/types/pathmap';
-import { Href } from './types';
-import { pathify } from './utils';
+import { parseHref } from './utils';
 
+type Href = keyof PathMap;
 export type PathParams<P extends Href> = PathMap[P] extends {
   path: undefined;
 }
@@ -17,10 +17,7 @@ export type AppLinkProps<P extends Href> = PathParams<P> & {
 } & Omit<React.ComponentProps<typeof Link>, 'href'>;
 
 export const AppLink = <P extends Href>({ children, href, options, ...props }: AppLinkProps<P>) => {
-  let pathname = `${href}`;
-  if ('path' in props && typeof props['path'] !== undefined) {
-    pathname = pathify(href, props.path as Record<string, string | number>);
-  }
+  const pathname = parseHref(href, 'path' in props ? props : {});
 
   return (
     <Link href={{ pathname, ...options }} {...props}>

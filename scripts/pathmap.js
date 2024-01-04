@@ -6,7 +6,7 @@ const chokidar = require('chokidar');
 const isPage = (v) => v === 'page.tsx' || v.includes('page.tsx');
 
 console.log('Start path map generator ');
-const PATH_TYPE = './src/types/pathmap.ts';
+const PATH_TYPE = './src/components/shared/AppLink/types.ts';
 const ROOT_PATH = './src/app/';
 
 const watcher = chokidar.watch('./src/app', {

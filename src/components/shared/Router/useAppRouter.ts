@@ -6,8 +6,9 @@ import {
 } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter } from 'next/navigation';
 import { PathMap } from '@/types/pathmap';
-import { Href } from './types';
 import { parseHref } from './utils';
+
+type Href = keyof PathMap;
 
 type NavigationOptionsWithQuery = NavigateOptions & {
   query?: Record<string, string>;
