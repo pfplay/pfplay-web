@@ -45,6 +45,7 @@ export const useAppRouter = () => {
     const arg = args[0];
     _replace(parseHref(href, arg), arg);
   };
+
   const prefetch = <P extends Href>(href: P, ...args: PrefetchArgs<P>) => {
     const arg = args[0];
 
