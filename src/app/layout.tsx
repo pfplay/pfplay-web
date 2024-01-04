@@ -6,7 +6,6 @@ import { DomId } from '@/constants/domId';
 import { DialogProvider } from '@/context/DialogProvider';
 import SessionProvider from '@/context/SessionProvider';
 import { pretendardVariable } from '@/styles/fonts';
-import SessionCheck from './sessionCheck';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -21,9 +20,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
     <html lang='en'>
       <body className={pretendardVariable.className}>
         <SessionProvider>
-          <SessionCheck>
-            <DialogProvider>{children}</DialogProvider>
-          </SessionCheck>
+          <DialogProvider>{children}</DialogProvider>
         </SessionProvider>
 
         <div id={DomId.TooltipRoot} />
