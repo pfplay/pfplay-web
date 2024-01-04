@@ -1,7 +1,9 @@
 import Image from 'next/image';
+import { getServerSession } from 'next-auth';
 import ButtonLink from '@/components/shared/ButtonLink';
 
-const HomePage = () => {
+const HomePage = async () => {
+  const session = await getServerSession();
   return (
     <>
       <Image
@@ -12,7 +14,7 @@ const HomePage = () => {
         priority
       />
       <ButtonLink
-        href='/sign-in'
+        href={session ? '/parties' : '/sign-in'}
         linkTitle='Let your PFP Play'
         classNames={{
           button: 'w-[360px]',
