@@ -38,6 +38,16 @@ export interface UserLoginResponse {
   userPermission: UserPermission;
 }
 
+export interface ProfileResponse {
+  nickname: string;
+  introduction: string;
+  faceUrl: string;
+  bodyId: number;
+  bodyUrl: string;
+  walletAddress: string;
+}
+
 export interface UserClient {
   login(request: UserLoginRequest): Promise<UserLoginResponse>;
+  getProfile(): Promise<ProfileResponse>;
 }

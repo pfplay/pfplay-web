@@ -7,4 +7,7 @@ export const UserService: UserClient = {
   login: async (request) => {
     return await pfpAxiosInstance.post(`${ROUTE_V1}/info`, request);
   },
+  getProfile: async () => {
+    return await pfpAxiosInstance.get(`${ROUTE_V1}/profile`);
+  },
 };
