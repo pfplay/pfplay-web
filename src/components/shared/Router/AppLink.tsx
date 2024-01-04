@@ -4,7 +4,7 @@ import React from 'react';
 import { PathMap } from '@/types/pathmap';
 import { parseHref } from './utils';
 
-type Href = keyof PathMap;
+export type Href = keyof PathMap;
 export type PathParams<P extends Href> = PathMap[P] extends {
   path: undefined;
 }
