@@ -14,10 +14,8 @@ const SignInPage = () => {
   const router = useAppRouter();
   const { openDialog } = useDialog();
 
-  const signInGoogle = () => {
-    signIn('google', {
-      callbackUrl: '/parties',
-    });
+  const signInGoogle = async () => {
+    signIn('google');
   };
 
   const openLookAroundDialog = () => {
