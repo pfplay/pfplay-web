@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFDj, PFHeadset } from '@/components/shared/icons';
 import { useDialog } from '@/hooks/useDialog';
@@ -17,7 +17,7 @@ const PartiesSideBar = ({ className, showDJQueue }: PartiesSideBarProps) => {
   const [showMyPlaylist, setShowMyPlaylist] = useState(false);
 
   const handleClickProfileButton = () => {
-    return openDialog(() => ({
+    return openDialog((_, onCancel) => ({
       title: '내 프로필 ',
       titleAlign: 'left',
       titleType: 'title2',
@@ -25,7 +25,13 @@ const PartiesSideBar = ({ className, showDJQueue }: PartiesSideBarProps) => {
       classNames: {
         container: 'min-w-[620px] py-7 px-10 bg-black',
       },
-      Body: MyProfileModalBody,
+      Body: (
+        <MyProfileModalBody
+          onAvatarSettingClick={() => {
+            onCancel?.();
+          }}
+        />
+      ),
     }));
   };
 
