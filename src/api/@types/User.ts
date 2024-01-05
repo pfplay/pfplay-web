@@ -1,12 +1,11 @@
 import { Authority } from '@/api/@types/@enums';
-import { AvatarParts } from '@/api/@types/Avatar';
 
-/* FIXME: 임시 타입. 아직 API 에서 Profile DTO 명확힌 안나옴 */
 export interface UserProfile {
-  nickName: string;
+  nickname: string;
   introduction: string;
-  avatarBody?: AvatarParts;
-  avatarFace?: AvatarParts;
+  faceUrl?: string;
+  bodyId?: number;
+  walletAddress?: string;
 }
 
 export interface UserPermission {
@@ -50,5 +49,6 @@ export interface ProfileResponse {
 export interface UserClient {
   login(request: UserLoginRequest): Promise<UserLoginResponse>;
   getProfile(): Promise<ProfileResponse>;
+  updateProfile(request: UserProfile): Promise<UserProfile>;
   getProfileRegisteredStatus(): Promise<{ authorized: boolean; hasProfile: boolean }>;
 }
