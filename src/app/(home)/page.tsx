@@ -1,9 +1,10 @@
 import Image from 'next/image';
-import { getServerSession } from 'next-auth';
+import { UserService } from '@/api/services/User';
 import ButtonLink from '@/components/shared/ButtonLink';
 
 const HomePage = async () => {
-  const session = await getServerSession();
+  const { authorized, hasProfile } = await UserService.getProfileRegisteredStatus();
+
   return (
     <>
       <Image
@@ -14,7 +15,7 @@ const HomePage = async () => {
         priority
       />
       <ButtonLink
-        href={session ? '/parties' : '/sign-in'}
+        href={!authorized ? '/sign-in' : !hasProfile ? '/settings/profile' : '/parties'}
         linkTitle='Let your PFP Play'
         classNames={{
           button: 'w-[360px]',

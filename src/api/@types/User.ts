@@ -50,4 +50,5 @@ export interface ProfileResponse {
 export interface UserClient {
   login(request: UserLoginRequest): Promise<UserLoginResponse>;
   getProfile(): Promise<ProfileResponse>;
+  getProfileRegisteredStatus(): Promise<{ authorized: boolean; hasProfile: boolean }>;
 }
