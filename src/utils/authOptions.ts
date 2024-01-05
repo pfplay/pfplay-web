@@ -39,6 +39,7 @@ export const authOptions: NextAuthOptions = {
         user.id = response.id;
         user.name = response.name;
         user.userPermission = response.userPermission;
+        user.profileUpdated = response.profileUpdated;
 
         return true;
       } catch (e) {
@@ -55,6 +56,7 @@ export const authOptions: NextAuthOptions = {
       token.id = user.id as number;
       token.name = user.name;
       token.userPermission = user.userPermission;
+      token.profileUpdated = user.profileUpdated;
 
       return token;
     },
@@ -66,6 +68,7 @@ export const authOptions: NextAuthOptions = {
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.userPermission = token.userPermission;
+      session.user.profileUpdated = token.profileUpdated;
 
       return session;
     },

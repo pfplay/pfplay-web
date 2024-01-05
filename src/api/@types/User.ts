@@ -35,6 +35,7 @@ export interface UserLoginResponse {
   authority: Authority;
   accessToken: string;
   userPermission: UserPermission;
+  profileUpdated: boolean;
 }
 
 export interface ProfileResponse {
@@ -50,5 +51,4 @@ export interface UserClient {
   login(request: UserLoginRequest): Promise<UserLoginResponse>;
   getProfile(): Promise<ProfileResponse>;
   updateProfile(request: UserProfile): Promise<UserProfile>;
-  getProfileRegisteredStatus(): Promise<{ authorized: boolean; hasProfile: boolean }>;
 }

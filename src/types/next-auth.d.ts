@@ -18,6 +18,7 @@ declare module 'next-auth' {
     email: string;
     accessToken: string;
     userPermission: UserPermission;
+    profileUpdated: boolean;
   }
 
   /**
@@ -38,5 +39,6 @@ declare module 'next-auth/jwt' {
     email: string;
     accessToken: string;
     userPermission: UserPermission;
+    profileUpdated: boolean;
   }
 }
