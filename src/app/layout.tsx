@@ -4,6 +4,7 @@ import '@/styles/globals.css';
 import { PropsWithChildren } from 'react';
 import { DomId } from '@/constants/domId';
 import { DialogProvider } from '@/context/DialogProvider';
+import { ReactQueryProvider } from '@/context/ReactQueryProvider';
 import SessionProvider from '@/context/SessionProvider';
 import { pretendardVariable } from '@/styles/fonts';
 
@@ -19,9 +20,11 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <html lang='en'>
       <body className={pretendardVariable.className}>
-        <SessionProvider>
-          <DialogProvider>{children}</DialogProvider>
-        </SessionProvider>
+        <ReactQueryProvider>
+          <SessionProvider>
+            <DialogProvider>{children}</DialogProvider>
+          </SessionProvider>
+        </ReactQueryProvider>
 
         <div id={DomId.TooltipRoot} />
       </body>
