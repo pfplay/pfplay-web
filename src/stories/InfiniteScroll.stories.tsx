@@ -32,7 +32,7 @@ export const Preview: StoryFn<typeof meta> = () => {
   };
 
   return (
-    <InfiniteScroll load={loadMore} hasMore={hasMore} containerClassName='h-[600px]'>
+    <InfiniteScroll load={loadMore} hasMore={hasMore} className='h-[600px]'>
       {data.map((item) => (
         <div key={item} className='h-[100px]'>
           {item}

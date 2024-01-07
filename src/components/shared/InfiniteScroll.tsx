@@ -7,7 +7,7 @@ interface Props {
   hasMore: boolean;
   endMessage?: ReactNode;
   children?: ReactNode;
-  containerClassName?: string;
+  className?: string;
 }
 
 const InfiniteScroll: FC<Props> = ({
@@ -15,7 +15,7 @@ const InfiniteScroll: FC<Props> = ({
   load,
   hasMore,
   endMessage = 'No more data',
-  containerClassName,
+  className,
 }) => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const observedRef = useRef<HTMLDivElement | null>(null);
@@ -55,7 +55,7 @@ const InfiniteScroll: FC<Props> = ({
   }, [hasMore]);
 
   return (
-    <div className={containerClassName}>
+    <div className={className}>
       {children}
       {(hasMore || endMessage) && (
         <div ref={observedRef} className={cn('h-[300px] flexRowCenter text-[20px]')}>

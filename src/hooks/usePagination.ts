@@ -1,29 +1,29 @@
 import { useQueryState } from 'next-usequerystate';
 import { useEffect, useRef, useState } from 'react';
 import qs from 'qs';
-import { PageRequest, PageResponse } from '@/api/@types/@shared';
+import { PaginationPayload, PageResponse } from '@/api/@types/@shared';
 import { useDialog } from '@/hooks/useDialog';
 import { isPureObject } from '@/utils/isPureObject';
 import { decoder } from '@/utils/qs';
 
-export const DEFAULT_PAGE_REQUEST: PageRequest = {
+export const DEFAULT_PAGE_PAYLOAD: PaginationPayload = {
   page: 0,
   size: 10,
 };
 
-export function usePagination<Req extends PageRequest, Data>(
-  fetchFunc: (request: Req) => Promise<PageResponse<Data>>,
+export function usePagination<Payload extends PaginationPayload, Data>(
+  fetchFunc: (payload: Payload) => Promise<PageResponse<Data>>,
   // @ts-expect-error - ignore subtype error
-  initialRequest: Req = DEFAULT_PAGE_REQUEST
+  initialPayload: Payload = DEFAULT_PAGE_PAYLOAD
 ) {
   const { openErrorDialog } = useDialog();
-  const [queryState, setQueryState] = useQueryState<Req>('q', {
-    defaultValue: initialRequest,
-    parse: (value) => qs.parse(value, { decoder }) as unknown as Req,
+  const [queryState, setQueryState] = useQueryState<Payload>('q', {
+    defaultValue: initialPayload,
+    parse: (value) => qs.parse(value, { decoder }) as unknown as Payload,
     serialize: (value) => qs.stringify(value),
   });
-  const request = { ...initialRequest, ...queryState };
-  const prevRequestRef = useRef<Req>(request);
+  const payload = { ...initialPayload, ...queryState };
+  const prevPayloadRef = useRef<Payload>(payload);
   const [initialFetched, setInitialFetched] = useState(false);
   const initialized = useRef(false);
   const [response, setResponse] = useState<PageResponse<Data>>();
@@ -32,15 +32,15 @@ export function usePagination<Req extends PageRequest, Data>(
   const pageable = {
     totalPages: response?.pagination?.totalPages ?? 0,
     totalElements: response?.pagination?.totalElements ?? 0,
-    isFirstPage: request.page === 0,
-    isLastPage: request.page === (response?.pagination.totalPages ?? 1) - 1 ?? true,
-    currentPage: request.page,
+    isFirstPage: payload.page === 0,
+    isLastPage: payload.page === (response?.pagination.totalPages ?? 1) - 1 ?? true,
+    currentPage: payload.page,
     empty: response?.pagination ? response.pagination.totalElements === 0 : true,
   } as const;
 
-  const fetchData = async (req: Req) => {
+  const fetchData = async (req: Payload) => {
     if (loading) return;
-    if (initialFetched && JSON.stringify(prevRequestRef.current) === JSON.stringify(req)) return;
+    if (initialFetched && JSON.stringify(prevPayloadRef.current) === JSON.stringify(req)) return;
 
     try {
       setLoading(true);
@@ -54,47 +54,49 @@ export function usePagination<Req extends PageRequest, Data>(
     } finally {
       setLoading(false);
       setInitialFetched(true);
-      prevRequestRef.current = req;
+      prevPayloadRef.current = req;
     }
   };
 
-  const setRequest = async (next: Req | ((prev: Req) => Req)) => {
-    const _request = typeof next === 'function' ? next(request) : request;
-    const hasChangedExceptPage = hasDifference(_request, prevRequestRef.current, new Set(['page']));
+  const setPayload = async (next: Payload | ((prev: Payload) => Payload)) => {
+    const _payload = typeof next === 'function' ? next(payload) : payload;
+    const hasChangedExceptPage = hasDifference(_payload, prevPayloadRef.current, new Set(['page']));
 
     if (hasChangedExceptPage) {
       setResponse(undefined);
     }
 
-    const nextRequest = hasChangedExceptPage ? { ..._request, page: 0 } : _request;
-    await setQueryState(nextRequest);
+    const nextPayload = hasChangedExceptPage ? { ..._payload, page: 0 } : _payload;
+    await setQueryState(nextPayload);
   };
 
-  const resetRequest = async () => {
-    await setQueryState(initialRequest);
+  const resetPayload = async () => {
+    await setQueryState(initialPayload);
   };
 
   const prevPage = async () => {
     if (loading || pageable.isFirstPage) return;
-    const nextRequest = { ...request, page: request.page - 1 };
-    await setQueryState(nextRequest);
+    const nextPayload = { ...payload, page: payload.page - 1 };
+    await setQueryState(nextPayload);
   };
 
   const nextPage = async () => {
     if (loading || pageable.isLastPage) return;
-    const nextRequest = { ...request, page: request.page + 1 };
-    await setQueryState(nextRequest);
+    const nextPayload = { ...payload, page: payload.page + 1 };
+    await setQueryState(nextPayload);
   };
 
   useEffect(() => {
+    const nextPayload = { ...initialPayload, ...queryState };
+
     if (!initialized.current) {
       // NOTE: 새로고침 시 page 0 으로 초기화.
-      const nextRequest = { ...initialRequest, ...queryState, page: 0 };
-      setQueryState(nextRequest);
+      setQueryState({ ...nextPayload, page: 0 });
       initialized.current = true;
       return;
     }
-    fetchData({ ...initialRequest, ...queryState });
+
+    fetchData(nextPayload);
   }, [queryState]);
 
   return {
@@ -102,9 +104,9 @@ export function usePagination<Req extends PageRequest, Data>(
     loading,
     prevPage,
     nextPage,
-    request,
-    setRequest,
-    resetRequest,
+    payload,
+    setPayload,
+    resetPayload,
     pageable,
   };
 }

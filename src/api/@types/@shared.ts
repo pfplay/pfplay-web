@@ -1,6 +1,6 @@
 export type FetchStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
 
-export interface PageRequest {
+export interface PaginationPayload {
   page: number;
   size: number;
 }
