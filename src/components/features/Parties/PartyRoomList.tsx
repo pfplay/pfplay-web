@@ -8,7 +8,7 @@ const PartyRoomList = () => {
   const { data, nextPage, pageable } = usePagination(PartiesService.getList);
 
   return (
-    <InfiniteScroll load={nextPage} hasMore={!pageable.isLastPage} endMessage={null}>
+    <InfiniteScroll load={nextPage} hasMore={!pageable.hasMore} endMessage={null}>
       {data?.map((partyRoom) => (
         <PartyRoomCard key={partyRoom.roomId} roomId={partyRoom.roomId} summary={partyRoom} />
       ))}
