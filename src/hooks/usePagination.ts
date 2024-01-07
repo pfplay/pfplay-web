@@ -33,7 +33,7 @@ export function usePagination<Payload extends PaginationPayload, Data>(
     totalPages: response?.pagination?.totalPages ?? 0,
     totalElements: response?.pagination?.totalElements ?? 0,
     isFirstPage: payload.page === 0,
-    isLastPage: payload.page === (response?.pagination.totalPages ?? 1) - 1 ?? true,
+    isLastPage: payload.page === (response?.pagination.totalPages ?? 1) - 1,
     currentPage: payload.page,
     empty: response?.pagination ? response.pagination.totalElements === 0 : true,
   } as const;
