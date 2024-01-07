@@ -2,6 +2,8 @@
 
 ### Web Directory Structure
 
+
+
 > Last Update (23.07.02)
 
 - `public` : nextjs에서 절대경로로 접근할 수 있는 assets을 저장하는 폴더
