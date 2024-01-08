@@ -5,7 +5,7 @@ import Typography from '@/components/shared/atoms/Typography';
 import { PFEdit } from '@/components/shared/icons';
 
 type MyProfileModalBodyProps = {
-  onAvatarSettingClick?(): void;
+  onAvatarSettingClick?: () => void;
 };
 const MyProfileModalBody = ({ onAvatarSettingClick }: MyProfileModalBodyProps) => {
   const router = useAppRouter();
