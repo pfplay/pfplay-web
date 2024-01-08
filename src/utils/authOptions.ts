@@ -1,6 +1,7 @@
 import { NextAuthOptions, getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { UserService } from '@/api/services/User';
+import { Href } from '@/components/shared/Router/AppLink';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -39,8 +40,10 @@ export const authOptions: NextAuthOptions = {
         user.id = response.id;
         user.name = response.name;
         user.userPermission = response.userPermission;
+        user.profileUpdated = response.profileUpdated;
 
-        return true;
+        const redirectTo: Href = response.profileUpdated ? '/parties' : '/settings/profile';
+        return redirectTo;
       } catch (e) {
         return false;
       }
@@ -55,6 +58,7 @@ export const authOptions: NextAuthOptions = {
       token.id = user.id as number;
       token.name = user.name;
       token.userPermission = user.userPermission;
+      token.profileUpdated = user.profileUpdated;
 
       return token;
     },
@@ -66,6 +70,7 @@ export const authOptions: NextAuthOptions = {
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.userPermission = token.userPermission;
+      session.user.profileUpdated = token.profileUpdated;
 
       return session;
     },

@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import Dialog from '@/components/shared/Dialog';
+import { useAppRouter } from '@/components/shared/Router/useAppRouter';
 import Button from '@/components/shared/atoms/Button';
 import TextButton from '@/components/shared/atoms/TextButton';
 import Typography from '@/components/shared/atoms/Typography';
@@ -11,21 +11,15 @@ import { PFClose } from '@/components/shared/icons';
 import { useDialog } from '@/hooks/useDialog';
 
 const SignInPage = () => {
-  const router = useRouter();
+  const router = useAppRouter();
   const { openDialog } = useDialog();
 
-  const signInAnonymous = () => {
-    router.push('/parties');
-  };
-
-  const signInGoogle = () => {
-    signIn('google', {
-      callbackUrl: '/parties',
-    });
+  const signInGoogle = async () => {
+    signIn('google');
   };
 
   const openLookAroundDialog = () => {
-    return openDialog<number>(() => ({
+    return openDialog<number>((_, onClose) => ({
       title: '잠깐만요!',
       Sub: (
         <Typography type='detail1' className='text-gray-300'>
@@ -38,7 +32,11 @@ const SignInPage = () => {
           <Dialog.ButtonGroup>
             <Dialog.Button
               color='secondary'
-              onClick={signInAnonymous}
+              onClick={() => {
+                onClose?.();
+                // 비로그인 유저가 로그인 없이 서비스를 이용할 때에는, 메인스테이지(파티룸)로 바로 뛀궈준다.
+                router.push('/parties/[id]', { path: { id: 1 } });
+              }}
               className='flex-none px-[10.5px]'
             >
               비로그인 입장하기

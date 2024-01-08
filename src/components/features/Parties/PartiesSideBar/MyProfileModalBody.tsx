@@ -1,15 +1,22 @@
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useAppRouter } from '@/components/shared/Router/useAppRouter';
 import Button from '@/components/shared/atoms/Button';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFEdit } from '@/components/shared/icons';
 
-const MyProfileModalBody = () => {
-  const router = useRouter();
-
+type MyProfileModalBodyProps = {
+  onAvatarSettingClick?: () => void;
+};
+const MyProfileModalBody = ({ onAvatarSettingClick }: MyProfileModalBodyProps) => {
+  const router = useAppRouter();
   const handleClickEditButton = () => {
     // TODO: Username 정보 수정 BE integration 필요
     console.log('EditButton Clicked');
+  };
+
+  const handleClickAvatarEditButton = () => {
+    router.push('/settings/avatar');
+    onAvatarSettingClick?.();
   };
 
   return (
@@ -23,7 +30,7 @@ const MyProfileModalBody = () => {
             height={216}
           />
         </div>
-        <Button size='sm' variant='outline' onClick={() => router.push('/settings/avatar')}>
+        <Button size='sm' variant='outline' onClick={handleClickAvatarEditButton}>
           아바타 설정
         </Button>
       </div>

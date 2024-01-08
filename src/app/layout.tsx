@@ -4,9 +4,9 @@ import '@/styles/globals.css';
 import { PropsWithChildren } from 'react';
 import { DomId } from '@/constants/domId';
 import { DialogProvider } from '@/context/DialogProvider';
+import { ReactQueryProvider } from '@/context/ReactQueryProvider';
 import SessionProvider from '@/context/SessionProvider';
 import { pretendardVariable } from '@/styles/fonts';
-import SessionCheck from './sessionCheck';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -20,11 +20,11 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <html lang='en'>
       <body className={pretendardVariable.className}>
-        <SessionProvider>
-          <SessionCheck>
+        <ReactQueryProvider>
+          <SessionProvider>
             <DialogProvider>{children}</DialogProvider>
-          </SessionCheck>
-        </SessionProvider>
+          </SessionProvider>
+        </ReactQueryProvider>
 
         <div id={DomId.TooltipRoot} />
       </body>

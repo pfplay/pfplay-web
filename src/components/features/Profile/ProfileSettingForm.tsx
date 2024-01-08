@@ -1,10 +1,13 @@
 'use client';
-import { useRouter } from 'next/navigation';
 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
+import { UserProfile } from '@/api/@types/User';
+import { UserService } from '@/api/services/User';
 import FormItem from '@/components/shared/FormItem';
+import { useAppRouter } from '@/components/shared/Router/useAppRouter';
 import Button from '@/components/shared/atoms/Button';
 import Input from '@/components/shared/atoms/Input';
 import TextArea from '@/components/shared/atoms/TextArea';
@@ -12,7 +15,7 @@ import { useProfileStore } from '@/store/profile';
 import { cn } from '@/utils/cn';
 
 const profileFormSchema = z.object({
-  nickName: z
+  nickname: z
     .string()
     .min(1, { message: '1자 이상 입력해주세요' })
     .max(16, { message: '16자 제한' })
@@ -28,7 +31,7 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 const ProfileSettingForm = () => {
-  const router = useRouter();
+  const router = useAppRouter();
 
   const setProfile = useProfileStore((state) => state.setProfile);
 
@@ -40,14 +43,29 @@ const ProfileSettingForm = () => {
     mode: 'all',
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      nickName: '',
+      nickname: '',
       introduction: '',
     },
   });
 
-  const handleFormSubmit: SubmitHandler<ProfileFormValues> = ({ nickName, introduction }) => {
-    setProfile({ nickName, introduction });
-    router.push('/settings/avatar');
+  const { mutate: updateProfile, isPending } = useMutation({
+    mutationFn: async (data: UserProfile) => await UserService.updateProfile(data),
+    onSuccess: ({ introduction, nickname }) => {
+      setProfile({ nickname, introduction });
+      router.push('/settings/avatar');
+    },
+  });
+
+  const handleFormSubmit: SubmitHandler<ProfileFormValues> = ({ nickname, introduction }) => {
+    updateProfile({
+      nickname,
+      introduction,
+      // FIXME: 아래는 테스트 데이터
+      faceUrl:
+        'https://assets.website-files.com/637be5d0f2736f32b8ad98cd/638e627f643cfa7dd56beb96_qIsIXihKZeVDop6AZWt1j6gxOnYZ_oGfr09PzlJDL_H4YWasvDrNuTXK8Qrmh0oL6ppWI3RaGU5vMif2gNwO38UdWWei4eZCNhbfdrVlm5qHV3zVYIk6qtBuFvdkoo0HexhmSmvn.jpeg',
+      bodyId: 1,
+      walletAddress: '0xabcdefg',
+    });
   };
 
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
@@ -60,11 +78,11 @@ const ProfileSettingForm = () => {
       <div className='items-end gap-12 flexCol'>
         <Controller
           control={control}
-          name='nickName'
+          name='nickname'
           render={({ field }) => (
             <FormItem
               label='닉네임'
-              error={errors.nickName && '한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'}
+              error={errors.nickname && '한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'}
               required
               classNames={{ label: 'text-gray-200' }}
             >
@@ -109,6 +127,7 @@ const ProfileSettingForm = () => {
         size='xl'
         className={cn('absolute bottom-10 right-[60px] px-[88px]')}
         disabled={btnDisabled}
+        loading={isPending}
       >
         Let&apos;s get in
       </Button>
