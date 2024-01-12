@@ -1,4 +1,4 @@
 export const enum Language {
-  Kor = 'kor',
+  Ko = 'ko',
   En = 'en',
 }

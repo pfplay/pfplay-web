@@ -8,7 +8,7 @@ export const middleware = (req: NextRequest) => {
   const response = NextResponse.next();
 
   if (!req.cookies.get(CookieKey.LangCookie)?.value) {
-    response.cookies.set(CookieKey.LangCookie, Language.Kor, COOKIE_10_YEARS_OPTIONS);
+    response.cookies.set(CookieKey.LangCookie, Language.Ko, COOKIE_10_YEARS_OPTIONS);
 
     setCookieToRequestHeader(req, response);
 
