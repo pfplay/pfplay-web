@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { PropsWithChildren } from 'react';
 import { CookieKey } from '@/constants/cookie';
 import { DomId } from '@/constants/domId';
+import { Language } from '@/constants/lang';
 import { DialogProvider } from '@/context/DialogProvider';
 import { DictionaryProvider } from '@/context/DictionaryProvider';
 import { ReactQueryProvider } from '@/context/ReactQueryProvider';
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }: PropsWithChildren) => {
   const dictionary = await getServerDictionary();
-  const lang = cookies().get(CookieKey.LangCookie)?.value || 'ko';
+  const lang = cookies().get(CookieKey.LangCookie)?.value || Language.Ko;
 
   return (
     <html lang={lang}>
