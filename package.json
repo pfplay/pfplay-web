@@ -16,7 +16,8 @@
     "format": "prettier --check .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "pathmap": "node ./scripts/pathmap.js"
+    "pathmap": "node ./scripts/pathmap.js",
+    "i18n": "node ./scripts/i18n.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -76,6 +77,7 @@
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-storybook": "^0.6.15",
     "eslint-plugin-unused-imports": "3.0.0",
+    "exceljs": "^4.4.0",
     "given2": "^2.1.7",
     "glob": "^10.3.10",
     "husky": "^8.0.0",
