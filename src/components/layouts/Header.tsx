@@ -6,6 +6,9 @@ import { FC } from 'react';
 import ProfileMenu from '@/components/features/Profile/ProfileMenu';
 import IconMenu from '@/components/shared/IconMenu';
 import { PFLanguage } from '@/components/shared/icons';
+import { Language } from '@/constants/lang';
+import { useChangeLanguage } from '@/hooks/useChangeLanguage';
+import { useDictionary } from '@/hooks/useDictionary';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { cn } from '@/utils/cn';
 
@@ -18,6 +21,9 @@ const Header: FC<Props> = ({ withLogo }) => {
   const { isIntersecting: atTopOfPage, setRef: setTopElRef } = useIntersectionObserver({
     threshold: 0.1,
   });
+
+  const dic = useDictionary();
+  const changeLanguage = useChangeLanguage();
 
   return (
     <>
@@ -47,8 +53,14 @@ const Header: FC<Props> = ({ withLogo }) => {
             MenuButtonIcon={<PFLanguage />}
             menuItemPanel={{ size: 'sm' }}
             menuItemConfig={[
-              { label: 'English', onClickItem: () => console.log('English') },
-              { label: '한국어', onClickItem: () => console.log('한국어') },
+              {
+                label: dic['common.btn.eng'],
+                onClickItem: () => changeLanguage(Language.En),
+              },
+              {
+                label: dic['common.btn.kor'],
+                onClickItem: () => changeLanguage(Language.Ko),
+              },
             ]}
           />
         </div>
