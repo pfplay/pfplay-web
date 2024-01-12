@@ -9,10 +9,12 @@ import TextButton from '@/components/shared/atoms/TextButton';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFClose } from '@/components/shared/icons';
 import { useDialog } from '@/hooks/useDialog';
+import { useDictionary } from '@/hooks/useDictionary';
 
 const SignInPage = () => {
   const router = useAppRouter();
   const { openDialog } = useDialog();
+  const dic = useDictionary();
 
   const signInGoogle = async () => {
     signIn('google');
@@ -20,11 +22,10 @@ const SignInPage = () => {
 
   const openLookAroundDialog = () => {
     return openDialog<number>((_, onClose) => ({
-      title: '잠깐만요!',
+      title: dic['onboard.title.moment'],
       Sub: (
         <Typography type='detail1' className='text-gray-300'>
-          비로그인 입장 시 접근 가능한 기능이 제한됩니다
-          <br /> 구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요
+          {dic['onboard.para.guest_limit']}
         </Typography>
       ),
       Body: () => {
@@ -39,9 +40,9 @@ const SignInPage = () => {
               }}
               className='flex-none px-[10.5px]'
             >
-              비로그인 입장하기
+              {dic['onboard.btn.guest']}
             </Dialog.Button>
-            <Dialog.Button onClick={signInGoogle}>구글 연동하기</Dialog.Button>
+            <Dialog.Button onClick={signInGoogle}>{dic['auth.btn.connect_google']}</Dialog.Button>
           </Dialog.ButtonGroup>
         );
       },
@@ -78,7 +79,7 @@ const SignInPage = () => {
         </Button>
 
         <TextButton onClick={openLookAroundDialog} underline>
-          먼저 둘러볼래요
+          {dic['onboard.btn.take_a_look']}
         </TextButton>
       </div>
     </div>
