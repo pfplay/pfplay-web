@@ -21,7 +21,7 @@ const TermsOfService = () => {
             )}
             {Array.isArray(config.content) &&
               config.content.map((contentItem) => (
-                <Typography key={crypto.randomUUID()} type='caption2' className='text-gray-300'>
+                <Typography key={contentItem} type='caption2' className='text-gray-300'>
                   {contentItem}
                 </Typography>
               ))}

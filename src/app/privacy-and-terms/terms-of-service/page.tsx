@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import PrivacyPolicy from '@/components/features/PrivacyAndTerms/PrivacyPolicy';
 import TermsOfService from '@/components/features/PrivacyAndTerms/TermsOfService';
 import SuspenseWithErrorBoundary from '@/components/shared/SuspenseWithErrorBoundary';
 import {
@@ -32,7 +33,7 @@ const TermsOfServicePage = () => {
               </SuspenseWithErrorBoundary>
             </TabPanel>
             <TabPanel tabIndex={1} className={' pt-4 '}>
-              {/* <PrivacyPolicy /> */}
+              <PrivacyPolicy />
             </TabPanel>
           </TabPanels>
         </TabGroup>
