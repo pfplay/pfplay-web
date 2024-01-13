@@ -6,4 +6,6 @@ export type PathMap = {
   '/parties/[id]': { path: { id: string | number } };
   '/settings/avatar': { path: undefined };
   '/settings/profile': { path: undefined };
+  '/privacy-and-terms/privacy-policy': { path: undefined };
+  '/privacy-and-terms/terms-of-service': { path: undefined };
 };
