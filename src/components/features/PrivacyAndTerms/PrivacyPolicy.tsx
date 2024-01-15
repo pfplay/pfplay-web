@@ -1,5 +1,11 @@
 import React from 'react';
-import Article, { ListArticleType } from './Article/NewArticle';
+import {
+  RetainedInfoTableID,
+  retainedInfoBasedOnInternalPolicyTableConfig,
+  retainedInfoBasedOnLawTableConfig,
+} from '@/constants/privacyAndTerms/privaryPolicyTableConfig';
+import ListArticle, { ListArticleType } from './Article/New/ListArticle';
+import ArticleTable, { TableArticleType } from './Article/New/TableArticle';
 export const privacyPolicyConfig = [
   {
     title: '제 1조 (개인정보 처리 목적)',
@@ -36,6 +42,43 @@ export const privacyPolicyConfig = [
               '제휴 서비스 회사로부터의 수집',
             ],
           },
+        ],
+      },
+    ],
+  },
+  {
+    title: '제 2조 (개인정보의 처리 및 보유 기간)',
+    type: 'table',
+    heads: [
+      'PFPlay는 법령에 따른 개인정보 보유 ・ 이용기간 또는 정보주체로부터 개인정보를 수집 시에 동의 받은 개인정보 보유 ・ 이용기간 내에서 개인정보를 처리 ・ 보유합니다.',
+      '고객자의 개인정보는 원칙적으로 개인정보의 수집 및 이용목적이 달성되면 지체 없이 파기합니다. 단, 다음의 정보에 대해서는 아래의 이유로 명시한 기간 동안 보존합니다.',
+    ],
+    contents: [
+      {
+        subTitle: '가. PFPlay 내부 방침에 의한 정보보유 사유',
+        table: {
+          columnConfig: retainedInfoBasedOnInternalPolicyTableConfig.columnConfig,
+          tableData: retainedInfoBasedOnInternalPolicyTableConfig.tableData,
+        },
+        tail: [
+          '다만, 관계 법령 위반에 따른 수사/조사 등이 진행 중인 경우에는 해당 수사/조사 종료 시까지 보유 및 이용합니다.',
+        ],
+      },
+      {
+        subTitle: '나. 관련법령에 의한 정보보유 사유',
+        heads: [
+          '상법, 전자상거래 등에서의 소비자보호에 관한 법률 등 관계법령의 규정에 의하여 보존할 필요가 있는 경우 PFPlay는 관계법령에서 정한 일정한 기간 동안 회원정보를 보관합니다. 이 경우 PFPlay는 보관하는 정보를 그 보관의 목적으로만 이용하며 보존기간은 아래의 예시와 같습니다.',
+        ],
+        table: {
+          columnConfig: retainedInfoBasedOnLawTableConfig.columnConfig,
+          tableData: retainedInfoBasedOnLawTableConfig.tableData,
+        },
+      },
+      {
+        subTitle: '다. 휴면 계정 관련 사항',
+        heads: [
+          '개인정보의 보유 및 이용기간은 서비스 이용계약 체결 시(회원가입)부터 서비스 이용계약 해지(탈퇴신청)까지 입니다. PFPly는 다른 법령에서 별도의 기간을 정하고 있거나 이용자의 요청이 있는 경우를 제외하면, 법령에서 정의하는 기간(1년) 동안 재이용(로그인)하지 아니하는 이용자를 휴면회원으로 정의한다. 휴면회원에 대해서는 개인정보를 파기하거나 다른 이용자의 개인정보와 분리하여 별도로 저장,관리합니다.',
+          '단 기간 만료 30일, 7일 이전까지 개인정보가 파기되거나 분리되어 저장,관리되는 사실과 기간 만료일 및 해당 개인 정보의 항목을 전자우편, 서면, FAX, 전화 또는 이와 유사한 방법 중 어느 하나의 방법으로 이용자에게 알립니다.',
         ],
       },
     ],
@@ -115,14 +158,19 @@ export const privacyPolicyConfig = [
       },
     ],
   },
-] satisfies ListArticleType[];
+] satisfies (ListArticleType | TableArticleType<RetainedInfoTableID>)[];
 
 const PrivacyPolicy = () => {
   return (
     <section className='flexCol gap-10'>
-      {privacyPolicyConfig.map((config, i) => (
-        <Article key={i} {...config} />
-      ))}
+      {privacyPolicyConfig.map((config, i) => {
+        if (config.type === 'list') {
+          return <ListArticle key={i} {...config} />;
+        }
+        if (config.type === 'table') {
+          return <ArticleTable key={i} {...config} />;
+        }
+      })}
       {/* {privacyPolicyConfig.map((config) => (
         <Article key={config.title} title={config.title}>
           {config?.subTitle && (

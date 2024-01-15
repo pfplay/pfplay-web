@@ -27,7 +27,7 @@ export type ListArticleType = {
   tail?: string[];
 };
 
-const Article = (config: ListArticleType) => {
+const ListArticle = (config: ListArticleType) => {
   return (
     <article className='flexCol items-start'>
       {config?.title && (
@@ -98,7 +98,7 @@ const Article = (config: ListArticleType) => {
   );
 };
 
-export default Article;
+export default ListArticle;
 
 export const isInnerListType = (listItem: string | InnerListType): listItem is InnerListType => {
   return typeof listItem === 'object';
