@@ -6,13 +6,13 @@ export const PlaylistService: PlaylistClient = {
   getPlaylist: () => {
     return pfpAxiosInstance.get(`${ROUTE_V1}`);
   },
-  getPlaylistMusic: ({ listId, ...params }) => {
+  getMusicFromPlaylist: (listId, params) => {
     return pfpAxiosInstance.get(`${ROUTE_V1}/${listId}`, { params });
   },
-  getPlaylistYoutubeMusic: (params) => {
+  getYoutubeMusic: (params) => {
     return pfpAxiosInstance.get(`${ROUTE_V1}/youtube/music`, { params });
   },
-  addPlaylistMusic: ({ listId, ...params }) => {
+  addMusicToPlaylist: (listId, params) => {
     return pfpAxiosInstance.post(`${ROUTE_V1}/${listId}`, params);
   },
   createPlaylist: (params) => {

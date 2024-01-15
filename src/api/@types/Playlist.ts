@@ -6,7 +6,6 @@ export interface PlaylistResponse {
 }
 
 export interface PlaylistMusicParameters {
-  listId: string;
   page?: number; // default 0
   pageSize?: string; // default 20
 }
@@ -20,7 +19,7 @@ export interface PlaylistMusicResponse {
   thumbnailImage: string;
 }
 
-export interface PlaylistYoutubeMusicList {
+export interface YoutubeMusicList {
   id: string;
   thumbnailLow: string;
   thumbnailMedium: string;
@@ -29,14 +28,14 @@ export interface PlaylistYoutubeMusicList {
   duration: string;
 }
 
-export interface PlaylistYoutubeMusicParameters {
+export interface YoutubeMusicParameters {
   q: string;
   pageToken?: string;
 }
 
-export interface PlaylistYoutubeMusicResponse {
+export interface YoutubeMusicResponse {
   nextPageToken: string;
-  musicList: PlaylistYoutubeMusicList[];
+  musicList: YoutubeMusicList[];
 }
 
 export interface CreatePlaylistRequestBody {
@@ -55,10 +54,6 @@ export interface AddPlaylistMusicRequestBody {
   thumbnailImage: string;
 }
 
-export interface AddPlaylistMusicPathParameters {
-  listId: string;
-}
-
 export interface AddPlaylistMusicResponse {
   playListId: number;
   musicId: number;
@@ -69,12 +64,14 @@ export interface AddPlaylistMusicResponse {
 
 export interface PlaylistClient {
   getPlaylist: () => Promise<PlaylistResponse>;
-  getPlaylistMusic: (params: PlaylistMusicParameters) => Promise<PlaylistMusicResponse>;
-  getPlaylistYoutubeMusic: (
-    params: PlaylistYoutubeMusicParameters
-  ) => Promise<PlaylistYoutubeMusicResponse>;
+  getMusicFromPlaylist: (
+    listId: number,
+    params?: PlaylistMusicParameters
+  ) => Promise<PlaylistMusicResponse>;
+  getYoutubeMusic: (params: YoutubeMusicParameters) => Promise<YoutubeMusicResponse>;
   createPlaylist: (params: CreatePlaylistRequestBody) => Promise<CreatePlaylistResponse>;
-  addPlaylistMusic: (
-    params: AddPlaylistMusicPathParameters & AddPlaylistMusicRequestBody
+  addMusicToPlaylist: (
+    listId: number,
+    params: AddPlaylistMusicRequestBody
   ) => Promise<AddPlaylistMusicResponse>;
 }
