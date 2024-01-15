@@ -15,7 +15,7 @@ const DefaultArticle = (config: DefaultArticleType) => {
   return (
     <section>
       {config?.title && (
-        <Typography type='body1' className='text-white mb-5'>
+        <Typography type='body1' className='text-white mb-4'>
           {config.title}
         </Typography>
       )}
