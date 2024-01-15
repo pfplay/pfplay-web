@@ -21,7 +21,7 @@ export type TableArticleType<T extends string> = {
 
 const ArticleTable = <T extends string>(config: TableArticleType<T>) => {
   return (
-    <article>
+    <section>
       {config?.title && (
         <Typography type='body1' className='text-white mb-5'>
           {config.title}
@@ -83,7 +83,7 @@ const ArticleTable = <T extends string>(config: TableArticleType<T>) => {
           </article>
         );
       })}
-    </article>
+    </section>
   );
 };
 

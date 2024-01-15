@@ -29,7 +29,7 @@ export type ListArticleType = {
 
 const ListArticle = (config: ListArticleType) => {
   return (
-    <article className='flexCol items-start'>
+    <section className='flexCol items-start'>
       {config?.title && (
         <Typography type='body1' className='text-white mb-5'>
           {config.title}
@@ -44,7 +44,7 @@ const ListArticle = (config: ListArticleType) => {
       })}
       {config.contents?.map((content, i) => {
         return (
-          <div key={i}>
+          <article key={i}>
             {content?.subTitle && (
               <Typography type='detail2' className='mb-3 text-white'>
                 {content.subTitle}
@@ -57,7 +57,7 @@ const ListArticle = (config: ListArticleType) => {
                 </Typography>
               );
             })}
-            <ul className={cn('mb-2', content?.listType)}>
+            <ul className={cn('mb-3', content?.listType)}>
               {content.listItems?.map((listItem, i) => {
                 return (
                   <li className={cn('text-gray-300 ml-4', typoStyleDict.caption2)}>
@@ -91,10 +91,10 @@ const ListArticle = (config: ListArticleType) => {
                 );
               })}
             </ul>
-          </div>
+          </article>
         );
       })}
-    </article>
+    </section>
   );
 };
 

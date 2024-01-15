@@ -4,9 +4,20 @@ import {
   retainedInfoBasedOnInternalPolicyTableConfig,
   retainedInfoBasedOnLawTableConfig,
 } from '@/constants/privacyAndTerms/privaryPolicyTableConfig';
+import DefaultArticle, { DefaultArticleType } from './Article/New/DefaultArticle';
 import ListArticle, { ListArticleType } from './Article/New/ListArticle';
 import ArticleTable, { TableArticleType } from './Article/New/TableArticle';
 export const privacyPolicyConfig = [
+  {
+    title: 'PFPlay 개인정보 처리방침',
+    type: 'default',
+    heads: [
+      'PFPlay DAO (이하 ‘PFPlay’)는 이용자의 개인정보 보호를 매우 중요하게 생각하며, 이용자가 PFPlay DAO의 서비스(PFPlay)를 이용하기 위해 PFPlay에 제공한 개인정보 보호에 최선을 다하고 있습니다.',
+      '이에 PFPlay는 “정보통신망 이용촉진 및 정보보호 등에 관한 법률” , “개인정보보호법” , “통신비밀보호법” , “전기통신사업법” 등 정보통신서비스제공자가 준수하여야 할 관련 법령상의 개인정보보호규정을 준수하고 있습니다.',
+      'PFPlay는 본 개인정보처리방침을 사이트 첫 화면에 공개함으로써 이용자가 언제든지 쉽게 확인할 수 있도록 하고 있습니다. 본 개인정보처리방침은 관계 법령 및 PFPlay의 내부 방침에 따라 변경될 수 있으며, 개정 시 버전 관리를 통하여 개정사항을 쉽게 확인할 수 있도록 하고 있습니다.',
+      '본 개인정보 처리방침은 PFPlay(이하 ‘서비스’)에 적용됩니다.',
+    ],
+  },
   {
     title: '제 1조 (개인정보 처리 목적)',
     type: 'list',
@@ -79,6 +90,28 @@ export const privacyPolicyConfig = [
         heads: [
           '개인정보의 보유 및 이용기간은 서비스 이용계약 체결 시(회원가입)부터 서비스 이용계약 해지(탈퇴신청)까지 입니다. PFPly는 다른 법령에서 별도의 기간을 정하고 있거나 이용자의 요청이 있는 경우를 제외하면, 법령에서 정의하는 기간(1년) 동안 재이용(로그인)하지 아니하는 이용자를 휴면회원으로 정의한다. 휴면회원에 대해서는 개인정보를 파기하거나 다른 이용자의 개인정보와 분리하여 별도로 저장,관리합니다.',
           '단 기간 만료 30일, 7일 이전까지 개인정보가 파기되거나 분리되어 저장,관리되는 사실과 기간 만료일 및 해당 개인 정보의 항목을 전자우편, 서면, FAX, 전화 또는 이와 유사한 방법 중 어느 하나의 방법으로 이용자에게 알립니다.',
+        ],
+      },
+    ],
+  },
+  {
+    type: 'default',
+    title: '제 4조 (고객 및 법정대리인의 권리 ・ 의무 및 행사방법)',
+    contents: [
+      {
+        subTitle: '가. 정보주체의 권리',
+        heads: [
+          '고객은 PFPlay 서비스에 저장되어 있는 자신에 대한 모든 정보를 제공할 것을 언제든지 PFPlay에 요청할 권리가 있습니다.다만, 개인정보보호법 제35조 4항, 제36조 제1항, 제37조 제2항 등 관계 법령에서 정하는 바에 따라 이용자의 개인정보 열람 ・ 정정 ・ 삭제 ・ 처리정지 요구 등의 권리 행사가 제한될 수 있습니다.',
+          '고객은 고객의 개인정보를 수정, 차단, 완료 및 삭제하고, 사용을 제한하고, 데이터를 다른 조직으로 이관하도록 PFPlay 서비스에 요청할 권리가 있습니다. 고객은 고객의 개인정보 처리에 관한 추가 정보를 요청할 권리가 있습니다.',
+          '또한, 고객은 일부 상황에서 PFPlay 서비스의 데이터 처리에 이의를 제기할 권리가 있으며 귀하의 데이터 처리 동의를 요청한 경우 동의를 철회 할 권리가 있습니다. 또한 위에 명시된 권한에 대한 지원을 원하면 개인정보 보호 책임자(gm@pfpaly.io )에게 문의하십시오.',
+        ],
+      },
+      {
+        subTitle: '나. 법정대리인의 권리',
+        heads: [
+          '고객 및 법정대리인은 언제든지 등록되어 있는 자신의 개인정보를 조회, 수정 또는 가입해지를 요청할 수 있습니다. 혹은 개인정보보호책임자에게 서면, 전화 또는 이메일로 연락하시면 지체 없이 조치하겠습니다.',
+          '고객이 개인정보의 오류에 대한 정정을 요청하신 경우에는 정정을 완료하기 전까지 당해 개인정보를 이용 또는 제공하지 않습니다. 또한 잘못된 개인정보를 제3자에게 이미 제공한 경우에는 정정 처리결과를 제3자에게 지체 없이 통지하여 정정이 이루어지도록 하겠습니다.',
+          'PFPlay는 고객 혹은 법정 대리인의 요청에 의해 해지 또는 삭제된 개인정보는 “제2조(개인정보의 처리 및 보유 기간)”에 명시된 바에 따라 처리하고 그 외의 용도로 열람 또는 이용할 수 없도록 처리하고 있습니다.',
         ],
       },
     ],
@@ -158,12 +191,15 @@ export const privacyPolicyConfig = [
       },
     ],
   },
-] satisfies (ListArticleType | TableArticleType<RetainedInfoTableID>)[];
+] satisfies (DefaultArticleType | ListArticleType | TableArticleType<RetainedInfoTableID>)[];
 
 const PrivacyPolicy = () => {
   return (
     <section className='flexCol gap-10'>
       {privacyPolicyConfig.map((config, i) => {
+        if (config.type === 'default') {
+          return <DefaultArticle key={i} {...config} />;
+        }
         if (config.type === 'list') {
           return <ListArticle key={i} {...config} />;
         }
@@ -171,76 +207,6 @@ const PrivacyPolicy = () => {
           return <ArticleTable key={i} {...config} />;
         }
       })}
-      {/* {privacyPolicyConfig.map((config) => (
-        <Article key={config.title} title={config.title}>
-          {config?.subTitle && (
-            <Typography type='detail2' className='mt-4 text-white'>
-              {config.subTitle}
-            </Typography>
-          )}
-
-          <ArticleHead head={config.head} />
-          {config.type === 'default' &&
-            config.items &&
-            config.items.map((item, i) => (
-              <div key={i}>
-                {item.subTitle && (
-                  <Typography type='detail2' className='mt-5 mb-3 text-white'>
-                    {item.subTitle}
-                  </Typography>
-                )}
-                <ArticleHead head={item.head} />
-              </div>
-            ))}
-          {config.type === 'list' && (
-            <ArticleList items={config.items} listType={config.listType} />
-          )}
-          {config.type === 'table' &&
-            config?.items &&
-            config.items.map((config, i) => {
-              return (
-                <div key={i}>
-                  {config.subTitle && (
-                    <Typography type='detail2' className='mt-5 mb-3 text-white'>
-                      {config.subTitle}
-                    </Typography>
-                  )}
-                  <ArticleHead head={config.head} />
-                  {config.columnConfig && config.tableData && (
-                    <Table columnConfig={config.columnConfig} tableData={config.tableData} />
-                  )}
-                  {config.tail && (
-                    <Typography type='caption2' className='mt-4 text-gray-300'>
-                      {config.tail}
-                    </Typography>
-                  )}
-                </div>
-              );
-            })}
-          {config.type === 'default' &&
-            config.items?.map((item, i) => (
-              <div key={i}>
-                {item.subTitle && (
-                  <Typography type='detail2' className='mt-5 mb-3 text-white'>
-                    {item.subTitle}
-                  </Typography>
-                )}
-                {Array.isArray(item.content) &&
-                  item.content?.map((content, i) => (
-                    <Typography key={i} type='caption2' className='text-gray-300'>
-                      {content}
-                    </Typography>
-                  ))}
-              </div>
-            ))}
-
-          {config.tail && (
-            <Typography type='caption2' className='mt-4 text-gray-300'>
-              {config.tail}
-            </Typography>
-          )}
-        </Article>
-      ))} */}
     </section>
   );
 };
