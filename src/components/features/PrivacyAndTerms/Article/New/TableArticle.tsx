@@ -27,18 +27,20 @@ const ArticleTable = <T extends string>(config: TableArticleType<T>) => {
           {config.title}
         </Typography>
       )}
-      {config.heads?.map((head, i) => {
-        return (
-          <Typography key={i} type='caption2' className='text-gray-300'>
-            {head}
-          </Typography>
-        );
-      })}
+      <div className='mb-4'>
+        {config.heads?.map((head, i) => {
+          return (
+            <Typography key={i} type='caption2' className='text-gray-300'>
+              {head}
+            </Typography>
+          );
+        })}
+      </div>
       {config.contents?.map((content, i) => {
         return (
           <article key={i}>
             {content?.subTitle && (
-              <Typography type='detail2' className='mt-5 mb-3 text-white'>
+              <Typography type='detail2' className='mb-3 text-white'>
                 {content.subTitle}
               </Typography>
             )}
@@ -49,7 +51,7 @@ const ArticleTable = <T extends string>(config: TableArticleType<T>) => {
                 </Typography>
               );
             })}
-            <table className='min-w-full table-auto mt-3'>
+            <table className='min-w-full table-auto mt-3 mb-4'>
               <thead className='bg-gray-800 text-white'>
                 <tr>
                   {content.table?.columnConfig?.map((column) => (
@@ -76,7 +78,7 @@ const ArticleTable = <T extends string>(config: TableArticleType<T>) => {
               </tbody>
             </table>
             {content.tail && (
-              <Typography type='caption2' className='mt-4 text-gray-300'>
+              <Typography type='caption2' className='mb-4 text-gray-300'>
                 {content.tail}
               </Typography>
             )}

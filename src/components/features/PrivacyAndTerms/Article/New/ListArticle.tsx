@@ -35,13 +35,15 @@ const ListArticle = (config: ListArticleType) => {
           {config.title}
         </Typography>
       )}
-      {config.heads?.map((head, i) => {
-        return (
-          <Typography key={i} type='caption2' className='text-gray-300'>
-            {head}
-          </Typography>
-        );
-      })}
+      <div className='mb-4'>
+        {config.heads?.map((head, i) => {
+          return (
+            <Typography key={i} type='caption2' className='text-gray-300'>
+              {head}
+            </Typography>
+          );
+        })}
+      </div>
       {config.contents?.map((content, i) => {
         return (
           <article key={i}>
