@@ -13,12 +13,12 @@ export const getServerDictionary: () => ReturnType<DictionaryType['ko']> = async
 
   if (!lang) {
     console.error('empty language in cookie');
-    return dictionary.ko();
+    return dictionary.en();
   }
 
   if (lang !== Language.Ko && lang !== Language.En) {
     console.error(`invalid language in cookie, your language:  ${lang}`);
-    return dictionary.ko();
+    return dictionary.en();
   }
 
   return dictionary[lang]();

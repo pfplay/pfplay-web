@@ -1,7 +1,6 @@
 import { NextAuthOptions, getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { UserService } from '@/api/services/User';
-import { Href } from '@/components/shared/Router/AppLink';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -42,8 +41,8 @@ export const authOptions: NextAuthOptions = {
         user.userPermission = response.userPermission;
         user.profileUpdated = response.profileUpdated;
 
-        const redirectTo: Href = response.profileUpdated ? '/parties' : '/settings/profile';
-        return redirectTo;
+        // const redirectTo: Href = response.profileUpdated ? '/parties' : '/settings/profile';
+        return true;
       } catch (e) {
         return false;
       }
