@@ -7,8 +7,8 @@ import ProfileMenu from '@/components/features/Profile/ProfileMenu';
 import IconMenu from '@/components/shared/IconMenu';
 import { PFLanguage } from '@/components/shared/icons';
 import { Language } from '@/constants/lang';
+import { useDictionary } from '@/context/DictionaryProvider';
 import { useChangeLanguage } from '@/hooks/useChangeLanguage';
-import { useDictionary } from '@/hooks/useDictionary';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { cn } from '@/utils/cn';
 

@@ -8,8 +8,8 @@ import Button from '@/components/shared/atoms/Button';
 import TextButton from '@/components/shared/atoms/TextButton';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFClose } from '@/components/shared/icons';
+import { useDictionary } from '@/context/DictionaryProvider';
 import { useDialog } from '@/hooks/useDialog';
-import { useDictionary } from '@/hooks/useDictionary';
 
 const SignInPage = () => {
   const router = useAppRouter();

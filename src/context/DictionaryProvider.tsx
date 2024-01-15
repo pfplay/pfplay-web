@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useContext } from 'react';
 import type DictionaryType from '../constants/dictionaries/ko.json';
 
 export type DictionaryJSONType = typeof DictionaryType;
@@ -13,3 +13,8 @@ type DictionaryProviderProps = {
 export function DictionaryProvider({ children, dictionary }: DictionaryProviderProps) {
   return <DictionaryContext.Provider value={dictionary}>{children}</DictionaryContext.Provider>;
 }
+
+export const useDictionary = () => {
+  const context = useContext(DictionaryContext);
+  return context;
+};
