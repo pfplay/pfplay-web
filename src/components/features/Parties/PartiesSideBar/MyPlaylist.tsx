@@ -7,6 +7,8 @@ import TextButton from '@/components/shared/atoms/TextButton';
 import { PFAdd } from '@/components/shared/icons';
 import { mockCollapslistConfig } from '@/constants/__mock__/mockCollapslistConfig';
 import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
+import { useDialog } from '@/hooks/useDialog';
+import PlaylistCreateForm from '../../Playlist/PlaylistCreateForm';
 
 interface MyPlaylistProps {
   drawerOpen: boolean;
@@ -14,6 +16,14 @@ interface MyPlaylistProps {
 }
 
 const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
+  const { openDialog } = useDialog();
+
+  const handleAddList = () => {
+    openDialog((_, onCancel) => ({
+      title: '플레이리스트 이름을 입력해주세요',
+      Body: <PlaylistCreateForm onCancel={onCancel} />,
+    }));
+  };
   return (
     <Drawer title='내 플레이리스트' drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}>
       <div className='flexRow justify-between items-center mt-10 mb-6'>
@@ -21,7 +31,13 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
           <Button size='sm' variant='outline' color='secondary' Icon={<PFAdd />}>
             곡 추가
           </Button>
-          <Button size='sm' variant='outline' color='secondary' Icon={<PFAdd />}>
+          <Button
+            size='sm'
+            variant='outline'
+            color='secondary'
+            Icon={<PFAdd />}
+            onClick={handleAddList}
+          >
             리스트 추가
           </Button>
         </div>
