@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { usePlaylistQuery } from '@/api/query-temp/playlist/usePlaylistQuery';
 import useYoutubeInfiniteQuery from '@/api/query-temp/playlist/useYoutubeInfiniteQuery';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFClose } from '@/components/shared/icons';
@@ -10,9 +11,11 @@ type YoutubeSearchFormProps = {
 };
 const YoutubeSearchForm = ({ onClose }: YoutubeSearchFormProps) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const { data, setRef } = useYoutubeInfiniteQuery(searchQuery);
+  const { data: youtubeMusics, setRef } = useYoutubeInfiniteQuery(searchQuery);
+  const { data: playlist } = usePlaylistQuery();
 
-  const pages = data?.pages || [];
+  const pages = youtubeMusics?.pages || [];
+
   return (
     <div>
       <div className='flex items-center'>
@@ -25,7 +28,9 @@ const YoutubeSearchForm = ({ onClose }: YoutubeSearchFormProps) => {
 
       <div className='h-[200px] overflow-scroll'>
         {pages.map((page) => {
-          return page.musicList.map((music) => <YoutubeSearchItem key={music.id} source={music} />);
+          return page.musicList.map((music) => (
+            <YoutubeSearchItem key={music.id} music={music} playlist={playlist} />
+          ));
         })}
 
         <div ref={setRef}>여기야~</div>

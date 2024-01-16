@@ -1,25 +1,54 @@
 import Image from 'next/image';
-import React from 'react';
-import { YoutubeMusicList } from '@/api/@types/Playlist';
+import { useMemo } from 'react';
+import { PlaylistResponse, YoutubeMusicList } from '@/api/@types/Playlist';
+import IconMenu from '@/components/shared/IconMenu';
+import { MenuItem } from '@/components/shared/atoms/Menu/MenuItemPanel';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFAddPlaylist } from '@/components/shared/icons';
 
 type YoutubeSearchCardProps = {
-  source: YoutubeMusicList;
+  music: YoutubeMusicList;
+  playlist?: PlaylistResponse[];
+  onClickPlaylist?: (id: number) => void;
+  onAddPlaylist?: () => void;
 };
 
 const YoutubeSearchItem = ({
-  source: { title, duration, thumbnailMedium },
+  music: { title, duration, thumbnailMedium },
+  playlist = [],
+  onClickPlaylist,
+  onAddPlaylist,
 }: YoutubeSearchCardProps) => {
+  const menuItemConfig: MenuItem[] = useMemo(
+    () =>
+      playlist.map(({ name: label, id }) => ({
+        label,
+        onClickItem: () => {
+          onClickPlaylist?.(id);
+        },
+      })),
+    [playlist, onClickPlaylist]
+  );
+
   return (
     <div className='flex items-center'>
       <Image src={thumbnailMedium} alt={title} width={60} height={60} />
       <Typography className='flex-1'>{title}</Typography>
       <Typography>{duration}</Typography>
 
-      <button>
-        <PFAddPlaylist />
-      </button>
+      <IconMenu
+        MenuButtonIcon={<PFAddPlaylist />}
+        menuItemPanel={{ size: 'sm' }}
+        menuItemConfig={[
+          ...menuItemConfig,
+          {
+            label: '플레이리스트추가',
+            onClickItem: () => {
+              onAddPlaylist?.();
+            },
+          },
+        ]}
+      />
     </div>
   );
 };

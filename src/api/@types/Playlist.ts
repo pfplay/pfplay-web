@@ -63,7 +63,7 @@ export interface AddPlaylistMusicResponse {
 }
 
 export interface PlaylistClient {
-  getPlaylist: () => Promise<PlaylistResponse>;
+  getPlaylist: () => Promise<PlaylistResponse[]>;
   getMusicFromPlaylist: (
     listId: number,
     params?: PlaylistMusicParameters
