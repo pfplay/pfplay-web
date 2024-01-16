@@ -1,4 +1,4 @@
-import Typography, { typoStyleDict } from '@/components/shared/atoms/Typography';
+import Typography from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
 import ArticleHeadContents from './ArticleHeadContents';
 import ArticleSubTitle from './ArticleSubTitle';
@@ -33,18 +33,20 @@ const ListArticle = (config: ListArticleProps) => {
   return (
     <section className='flexCol items-start'>
       {config?.title && <ArticleTitle title={config.title} />}
-      <div className='mb-4'>{config?.heads && <ArticleHeadContents heads={config.heads} />}</div>
+      {config?.heads && <ArticleHeadContents heads={config.heads} />}
 
       {config.contents?.map((content, i) => {
         return (
           <article key={i}>
-            {content?.subTitle && <ArticleSubTitle subTitle={content.subTitle} />}
-            {content?.heads && <ArticleHeadContents heads={content.heads} className='mb-1' />}
+            {content?.subTitle && (
+              <ArticleSubTitle subTitle={content.subTitle} className={'first:mt-3'} />
+            )}
+            {content?.heads && <ArticleHeadContents heads={content.heads} />}
 
-            <ul className={cn(content?.listType)}>
+            <ul className={cn('mb-3', content?.listType)}>
               {content.listItems?.map((listItem, i) => {
                 return (
-                  <li key={i} className={cn('text-gray-300 ml-4', typoStyleDict.caption2)}>
+                  <li key={i} className={cn('text-gray-300 ml-5')}>
                     {typeof listItem === 'string' && (
                       <Typography type='caption2' className='text-gray-300'>
                         {listItem}
@@ -52,7 +54,9 @@ const ListArticle = (config: ListArticleProps) => {
                     )}
                     {isInnerListType(listItem) && (
                       <>
-                        {listItem.outerListItem}
+                        <Typography type='caption2' className='text-gray-300'>
+                          {listItem.outerListItem}
+                        </Typography>
                         <ul className={cn('mb-1', listItem?.innerListType)}>
                           {listItem.innerListItems?.map((innerListItem, i) => {
                             return (
@@ -60,11 +64,12 @@ const ListArticle = (config: ListArticleProps) => {
                                 key={i}
                                 className={cn(
                                   'text-gray-300',
-                                  listItem?.innerListType !== 'list-none' && 'ml-[10px]',
-                                  typoStyleDict.caption2
+                                  listItem?.innerListType !== 'list-none' && 'ml-[10px]'
                                 )}
                               >
-                                {innerListItem}
+                                <Typography type='caption2' className='text-gray-300'>
+                                  {innerListItem}
+                                </Typography>
                               </li>
                             );
                           })}

@@ -5,7 +5,7 @@ import ArticleTable from './Article/TableArticle';
 
 const PrivacyPolicy = () => {
   return (
-    <div className='flexCol gap-10 pt-[6px]'>
+    <div className='flexCol gap-10 pt-[7px]'>
       {privacyPolicyConfig.map((config, i) => {
         if (config.type === 'default') {
           return <DefaultArticle key={i} {...config} />;
