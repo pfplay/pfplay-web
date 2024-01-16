@@ -9,6 +9,7 @@ import { mockCollapslistConfig } from '@/constants/__mock__/mockCollapslistConfi
 import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 import { useDialog } from '@/hooks/useDialog';
 import PlaylistCreateForm from '../../Playlist/PlaylistCreateForm';
+import YoutubeSearchForm from '../../Playlist/YoutubeSearchForm';
 
 interface MyPlaylistProps {
   drawerOpen: boolean;
@@ -24,11 +25,24 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
       Body: <PlaylistCreateForm onCancel={onCancel} />,
     }));
   };
+  const handleAddMusic = () => {
+    openDialog((_) => ({
+      title: '',
+      Body: <YoutubeSearchForm />,
+    }));
+  };
+
   return (
     <Drawer title='내 플레이리스트' drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}>
       <div className='flexRow justify-between items-center mt-10 mb-6'>
         <div className='flexRow gap-3'>
-          <Button size='sm' variant='outline' color='secondary' Icon={<PFAdd />}>
+          <Button
+            size='sm'
+            variant='outline'
+            color='secondary'
+            Icon={<PFAdd />}
+            onClick={handleAddMusic}
+          >
             곡 추가
           </Button>
           <Button
