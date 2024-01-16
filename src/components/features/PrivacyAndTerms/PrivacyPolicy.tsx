@@ -1,4 +1,3 @@
-import React from 'react';
 import { privacyPolicyConfig } from '@/constants/privacyAndTerms/privacyPolicyConfig';
 import DefaultArticle from './Article/DefaultArticle';
 import ListArticle from './Article/ListArticle';

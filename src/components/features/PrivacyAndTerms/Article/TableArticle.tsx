@@ -1,4 +1,3 @@
-import React from 'react';
 import Typography from '@/components/shared/atoms/Typography';
 import ArticleHeadContents from './ArticleHeadContents';
 import ArticleSubTitle from './ArticleSubTitle';

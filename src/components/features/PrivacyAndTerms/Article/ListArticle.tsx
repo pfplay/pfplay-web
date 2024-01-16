@@ -1,4 +1,3 @@
-import React from 'react';
 import Typography, { typoStyleDict } from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
 import ArticleHeadContents from './ArticleHeadContents';
