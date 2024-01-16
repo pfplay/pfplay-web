@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import ButtonLink from '@/components/shared/ButtonLink';
 import { getServerAuthSession } from '@/utils/authOptions';
+import { getServerDictionary } from '@/utils/dictionary';
 
 const HomePage = async () => {
   const session = await getServerAuthSession();
+  const dic = await getServerDictionary();
   return (
     <>
       <Image
@@ -17,7 +19,7 @@ const HomePage = async () => {
         href={
           !session ? '/sign-in' : !session.user.profileUpdated ? '/settings/profile' : '/parties'
         }
-        linkTitle='Let your PFP Play'
+        linkTitle={dic['onboard.btn.pfp_play']}
         classNames={{
           button: 'w-[360px]',
         }}
