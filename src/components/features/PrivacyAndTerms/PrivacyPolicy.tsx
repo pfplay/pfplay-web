@@ -1,8 +1,8 @@
 import React from 'react';
 import { privacyPolicyConfig } from '@/constants/privacyAndTerms/privacyPolicyConfig';
-import DefaultArticle from './Article/New/DefaultArticle';
-import ListArticle from './Article/New/ListArticle';
-import ArticleTable from './Article/New/TableArticle';
+import DefaultArticle from './Article/DefaultArticle';
+import ListArticle from './Article/ListArticle';
+import ArticleTable from './Article/TableArticle';
 
 const PrivacyPolicy = () => {
   return (

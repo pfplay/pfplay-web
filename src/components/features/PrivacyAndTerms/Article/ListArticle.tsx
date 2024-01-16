@@ -1,6 +1,9 @@
 import React from 'react';
 import Typography, { typoStyleDict } from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
+import ArticleHeadContents from './ArticleHeadContents';
+import ArticleSubTitle from './ArticleSubTitle';
+import ArticleTitle from './ArticleTitle';
 
 export type ListType = 'list-none' | 'list-disc' | 'list-decimal' | 'list-inherit' | 'list-latin';
 export type InnerListType = {
@@ -18,53 +21,33 @@ export type ListContentsType = {
   tail?: string[];
 };
 
-export type ListArticleType = {
+export interface ListArticleProps {
   type?: 'list';
-  title?: string;
+  title: string;
   subTitle?: string;
   heads?: string[];
-  contents?: ListContentsType[]; // type과 함께 List Type으로 빼기
+  contents?: ListContentsType[];
   tail?: string[];
-};
+}
 
-const ListArticle = (config: ListArticleType) => {
+const ListArticle = (config: ListArticleProps) => {
   return (
     <section className='flexCol items-start'>
-      {config?.title && (
-        <Typography type='body1' className='text-white mb-5'>
-          {config.title}
-        </Typography>
-      )}
-      <div className='mb-4'>
-        {config.heads?.map((head, i) => {
-          return (
-            <Typography key={i} type='caption2' className='text-gray-300'>
-              {head}
-            </Typography>
-          );
-        })}
-      </div>
+      {config?.title && <ArticleTitle title={config.title} />}
+      <div className='mb-4'>{config?.heads && <ArticleHeadContents heads={config.heads} />}</div>
+
       {config.contents?.map((content, i) => {
         return (
           <article key={i}>
-            {content?.subTitle && (
-              <Typography type='detail2' className='mb-3 text-white'>
-                {content.subTitle}
-              </Typography>
-            )}
-            {content.heads?.map((head, i) => {
-              return (
-                <Typography key={i} type='caption2' className='mb-1 text-gray-300'>
-                  {head}
-                </Typography>
-              );
-            })}
-            <ul className={cn('mb-3', content?.listType)}>
+            {content?.subTitle && <ArticleSubTitle subTitle={content.subTitle} />}
+            {content?.heads && <ArticleHeadContents heads={content.heads} className='mb-1' />}
+
+            <ul className={cn(content?.listType)}>
               {content.listItems?.map((listItem, i) => {
                 return (
-                  <li className={cn('text-gray-300 ml-4', typoStyleDict.caption2)}>
+                  <li key={i} className={cn('text-gray-300 ml-4', typoStyleDict.caption2)}>
                     {typeof listItem === 'string' && (
-                      <Typography key={i} type='caption2' className='text-gray-300'>
+                      <Typography type='caption2' className='text-gray-300'>
                         {listItem}
                       </Typography>
                     )}

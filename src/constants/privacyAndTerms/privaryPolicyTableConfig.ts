@@ -1,4 +1,4 @@
-import { TableProps } from '@/components/features/PrivacyAndTerms/Article/Table';
+import { TableConfigType } from '@/components/features/PrivacyAndTerms/Article/TableArticle';
 
 export enum RetainedInfoTableID {
   RetainedData = '보관하는 정보',
@@ -34,7 +34,7 @@ export const retainedInfoBasedOnInternalPolicyTableConfig = {
       [RetainedInfoTableID.RetentionPeriod]: '유저 탈퇴 시 까지',
     },
   ],
-} satisfies TableProps<RetainedInfoTableID>;
+} satisfies TableConfigType<RetainedInfoTableID>;
 
 export const retainedInfoBasedOnLawTableConfig = {
   columnConfig: [
@@ -53,13 +53,13 @@ export const retainedInfoBasedOnLawTableConfig = {
   ],
   tableData: [
     {
-      [RetainedInfoTableID.RetainedData]: '개인 또는 산업 정보 등에 관한 기록',
-      [RetainedInfoTableID.RetentionReason]: '전자상거래 등에서 소비자 보호에 관한 법률',
+      [RetainedInfoTableID.RetainedData]: '계약 또는 청약 철회 등에 관한 기록',
+      [RetainedInfoTableID.RetentionReason]: '전자상거래 등에서의 소비자 보호에 관한 법률',
       [RetainedInfoTableID.RetentionPeriod]: '5년',
     },
     {
       [RetainedInfoTableID.RetainedData]: '대금결제 및 재화 등의 공급에 대한 기록',
-      [RetainedInfoTableID.RetentionReason]: '전자상거래 등에서 소비자 보호에 관한 법률',
+      [RetainedInfoTableID.RetentionReason]: '전자상거래 등에서의 소비자 보호에 관한 법률',
       [RetainedInfoTableID.RetentionPeriod]: '5년',
     },
     {
@@ -88,4 +88,4 @@ export const retainedInfoBasedOnLawTableConfig = {
       [RetainedInfoTableID.RetentionPeriod]: '3개월',
     },
   ],
-} satisfies TableProps<RetainedInfoTableID>;
+} satisfies TableConfigType<RetainedInfoTableID>;

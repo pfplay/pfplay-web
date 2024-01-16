@@ -1,24 +1,22 @@
 import React from 'react';
 import Typography from '@/components/shared/atoms/Typography';
+import ArticleSubTitle from './ArticleSubTitle';
+import ArticleTitle from './ArticleTitle';
 
-export type DefaultArticleType = {
+export interface DefaultArticleProps {
   type?: 'default';
-  title?: string;
+  title: string;
   heads?: string[];
   contents?: {
     subTitle?: string;
     heads?: string[];
   }[];
-};
+}
 
-const DefaultArticle = (config: DefaultArticleType) => {
+const DefaultArticle = (config: DefaultArticleProps) => {
   return (
     <section>
-      {config?.title && (
-        <Typography type='body1' className='text-white mb-4'>
-          {config.title}
-        </Typography>
-      )}
+      {config?.title && <ArticleTitle title={config.title} />}
       <div className='flexCol space-y-2'>
         {config.heads?.map((head, i) => {
           return (
@@ -30,12 +28,8 @@ const DefaultArticle = (config: DefaultArticleType) => {
       </div>
       {config.contents?.map((content, i) => {
         return (
-          <article key={i} className='mb-4'>
-            {content?.subTitle && (
-              <Typography type='detail2' className='mb-3 text-white'>
-                {content.subTitle}
-              </Typography>
-            )}
+          <article key={i} className='[&:not(:last-child)]:mb-4'>
+            {content?.subTitle && <ArticleSubTitle subTitle={content.subTitle} />}
             {content.heads?.map((head, i) => {
               return (
                 <Typography key={i} type='caption2' className='mb-1 text-gray-300'>

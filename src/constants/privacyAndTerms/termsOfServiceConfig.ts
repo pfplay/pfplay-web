@@ -1,5 +1,5 @@
-import { DefaultArticleType } from '@/components/features/PrivacyAndTerms/Article/New/DefaultArticle';
-import { ListArticleType } from '@/components/features/PrivacyAndTerms/Article/New/ListArticle';
+import { DefaultArticleProps } from '@/components/features/PrivacyAndTerms/Article/DefaultArticle';
+import { ListArticleProps } from '@/components/features/PrivacyAndTerms/Article/ListArticle';
 
 export const termsOfServiceConfig = [
   {
@@ -17,7 +17,6 @@ export const termsOfServiceConfig = [
     type: 'list',
     contents: [
       {
-        subTitle: '가. 수집하는 개인정보의 항목',
         listType: 'list-disc',
         heads: ['귀하는 서비스를 사용하면서 다음과 같은 행위를 하지 않을 것에 동의합니다.'],
         listItems: [
@@ -75,7 +74,7 @@ export const termsOfServiceConfig = [
     type: 'default',
     heads: [
       'PFPlay는 서비스 제공을 돕기 위해 제3자 서비스를 사용할 수 있으나, 이는 PFPlay가 해당 서비스의 행동에 대해 책임을 진다는 것을 의미하지 않습니다. 귀하에게 서비스 제공을 용이하게 하기 위해 제3자 서비스로 연결될 수 있으며, 제3자 서비스의 사용은 해당 서비스의 약관 및 개인정보 보호정책에 따릅니다. PFPlay는 이러한 제3자 서비스와 제휴 여부에 관계없이 이러한 제3자 웹사이트 또는 해당 제3자 웹사이트를 후원하는 조직이나 해당 제품 또는 서비스에 대해 책임을 지지 않으며 이를 보증하지 않습니다. 귀하는 제3자 서비스에서 발생하는 모든 종류의 손실이나 피해에 대해 PFPlay가 책임을 지지 않는다는 데 동의합니다.',
-      'YouTube와 같은 제3자 서비스에서 제공하는 비디오 및 음악을 공유할 수 있으며, 당사 서비스를 이용함으로써 귀하는 YouTube 서비스 약관에도 동의하게 됩니다. YouTube 서비스 약관은 여기(https://www.youtube.com/t/terms) 에서 확인할 수 있습니다 .',
+      'YouTube와 같은 제3자 서비스에서 제공하는 비디오 및 음악을 공유할 수 있으며, 당사 서비스를 이용함으로써 귀하는 YouTube 서비스 약관에도 동의하게 됩니다. YouTube 서비스 약관은 여기(https://www.youtube.com/t/terms)에서 확인할 수 있습니다 .',
     ],
   },
   {
@@ -85,4 +84,4 @@ export const termsOfServiceConfig = [
       '귀하가 저작권, 상표권 또는 기타 소유권으로 보호되는 자료를 서비스에 업로드, 게시, 제출하거나 기타 방법으로 제공할 수 없습니다. PFPlay은 저작권을 존중하며, 타인의 지적 재산권을 침해하는 자료의 업로드, 게시 또는 전송을 금지합니다. 서비스는 PFPlay DAO에 의해 운영되며, gm@pfplay.io 로 이메일을 보내 문의하실 수 있습니다.',
     ],
   },
-] satisfies (DefaultArticleType | ListArticleType)[];
+] satisfies (DefaultArticleProps | ListArticleProps)[];

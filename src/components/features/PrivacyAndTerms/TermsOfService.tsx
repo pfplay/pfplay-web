@@ -1,7 +1,7 @@
 import React from 'react';
 import { termsOfServiceConfig } from '@/constants/privacyAndTerms/termsOfServiceConfig';
-import DefaultArticle from './Article/New/DefaultArticle';
-import ListArticle from './Article/New/ListArticle';
+import DefaultArticle from './Article/DefaultArticle';
+import ListArticle from './Article/ListArticle';
 
 const TermsOfService = () => {
   return (

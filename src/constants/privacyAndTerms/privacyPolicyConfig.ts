@@ -1,6 +1,6 @@
-import { DefaultArticleType } from '@/components/features/PrivacyAndTerms/Article/New/DefaultArticle';
-import { ListArticleType } from '@/components/features/PrivacyAndTerms/Article/New/ListArticle';
-import { TableArticleType } from '@/components/features/PrivacyAndTerms/Article/New/TableArticle';
+import { DefaultArticleProps } from '@/components/features/PrivacyAndTerms/Article/DefaultArticle';
+import { ListArticleProps } from '@/components/features/PrivacyAndTerms/Article/ListArticle';
+import { TableArticleProps } from '@/components/features/PrivacyAndTerms/Article/TableArticle';
 import {
   RetainedInfoTableID,
   retainedInfoBasedOnInternalPolicyTableConfig,
@@ -96,14 +96,21 @@ export const privacyPolicyConfig = [
   },
   {
     type: 'default',
+    title: '제 3조 (개인정보의 제3자 제공에 관한 사항)',
+    heads: [
+      'PFPlay는 고객들의 개인정보를 “제1조(개인정보의 처리목적)”에서 명시한 범위 내에서 사용하며 개인정보 보호법 제 17조 및 제 18조에 해당하는 경우에만 개인정보를 제3자에게 제공합니다. 고객 사전 동의 후 개인정보 제공이 발생하는 경우',
+    ],
+  },
+  {
+    type: 'default',
     title: '제 4조 (고객 및 법정대리인의 권리 ・ 의무 및 행사방법)',
     contents: [
       {
         subTitle: '가. 정보주체의 권리',
         heads: [
-          '고객은 PFPlay 서비스에 저장되어 있는 자신에 대한 모든 정보를 제공할 것을 언제든지 PFPlay에 요청할 권리가 있습니다.다만, 개인정보보호법 제35조 4항, 제36조 제1항, 제37조 제2항 등 관계 법령에서 정하는 바에 따라 이용자의 개인정보 열람 ・ 정정 ・ 삭제 ・ 처리정지 요구 등의 권리 행사가 제한될 수 있습니다.',
+          '고객은 PFPlay 서비스에 저장되어 있는 자신에 대한 모든 정보를 제공할 것을 언제든지 PFPlay에 요청할 권리가 있습니다. 다만, 개인정보보호법 제35조 4항, 제36조 제1항, 제37조 제2항 등 관계 법령에서 정하는 바에 따라 이용자의 개인정보 열람 ・ 정정 ・ 삭제 ・ 처리정지 요구 등의 권리 행사가 제한될 수 있습니다.',
           '고객은 고객의 개인정보를 수정, 차단, 완료 및 삭제하고, 사용을 제한하고, 데이터를 다른 조직으로 이관하도록 PFPlay 서비스에 요청할 권리가 있습니다. 고객은 고객의 개인정보 처리에 관한 추가 정보를 요청할 권리가 있습니다.',
-          '또한, 고객은 일부 상황에서 PFPlay 서비스의 데이터 처리에 이의를 제기할 권리가 있으며 귀하의 데이터 처리 동의를 요청한 경우 동의를 철회 할 권리가 있습니다. 또한 위에 명시된 권한에 대한 지원을 원하면 개인정보 보호 책임자(gm@pfpaly.io )에게 문의하십시오.',
+          '또한, 고객은 일부 상황에서 PFPlay 서비스의 데이터 처리에 이의를 제기할 권리가 있으며 귀하의 데이터 처리 동의를 요청한 경우 동의를 철회 할 권리가 있습니다. 또한 위에 명시된 권한에 대한 지원을 원하면 개인정보 보호 책임자(gm@pfpaly.io)에게 문의하십시오.',
         ],
       },
       {
@@ -151,8 +158,8 @@ export const privacyPolicyConfig = [
           'PFPlay는 시간이 지남에 따라 귀하와 귀하의 탐색 및 기타 사용 활동에 대한 정보를 수집하기 위해 쿠키 또는 기타 기술을 사용할 수 있는 제3자 서비스 제공업체를 이용합니다.',
         ],
         listItems: [
-          'YouTube API 서비스: PFPlay 서비스의 상당 부분은 YouTube API 서비스를 사용하여 작동합니다. 내장된 검색 기능을 사용하면 입력한 데이터(각각 검색어 또는 재생목록 ID)가 YouTube Data API로 전송됩니다. 그러면 YouTube Data API가 관련 결과를 귀하에게 반환합니다. YouTube API 서비스가 데이터를 처리하는 방법은 여기( https://policies.google.com/privacy) 에서 확인할 수 있습니다.',
-          'YouTube 애플리케이션: PFPlay는 YouTube 애플리케이션에서 제공하는 콘텐츠를 표시합니다. YouTube 애플리케이션은 귀하가 PFPlay 사이트의 콘텐츠와 상호 작용하는 방식을 추적하기 위해 쿠키를 사용할 수 있습니다. 위와 유사하게 YouTube 애플리케이션이 데이터를 처리하는 방법은 여기( https://policies.google.com/privacy) 에서 확인할 수 있습니다.',
+          'YouTube API 서비스: PFPlay 서비스의 상당 부분은 YouTube API 서비스를 사용하여 작동합니다. 내장된 검색 기능을 사용하면 입력한 데이터(각각 검색어 또는 재생목록 ID)가 YouTube Data API로 전송됩니다. 그러면 YouTube Data API가 관련 결과를 귀하에게 반환합니다. YouTube API 서비스가 데이터를 처리하는 방법은 여기(https://policies.google.com/privacy)에서 확인할 수 있습니다.',
+          'YouTube 애플리케이션: PFPlay는 YouTube 애플리케이션에서 제공하는 콘텐츠를 표시합니다. YouTube 애플리케이션은 귀하가 PFPlay 사이트의 콘텐츠와 상호 작용하는 방식을 추적하기 위해 쿠키를 사용할 수 있습니다. 위와 유사하게 YouTube 애플리케이션이 데이터를 처리하는 방법은 여기(https://policies.google.com/privacy)에서 확인할 수 있습니다.',
         ],
       },
     ],
@@ -191,4 +198,103 @@ export const privacyPolicyConfig = [
       },
     ],
   },
-] satisfies (DefaultArticleType | ListArticleType | TableArticleType<RetainedInfoTableID>)[];
+  {
+    title: '제 7조 (개인정보 안전성 확보조치에 관한 사항)',
+    heads: [
+      'PFPlay는 고객들의 개인정보를 처리함에 있어 개인정보가 분실, 도난, 누출, 변조 또는 훼손되지 않도록 안전성 확보를 위하여 다음과 같은 기술적/관리적 대책을 강구하고 있습니다.',
+    ],
+    type: 'list',
+    contents: [
+      {
+        subTitle: '가. 비밀번호 암호화',
+        listType: 'list-disc',
+        listItems: [
+          '회원 비밀번호는 암호화되어 저장 및 관리되고 있어 본인만이 알고 있으며, 개인정보의 확인 및 변경도 비밀번호를 알고 있는 본인에 의해서만 가능합니다.',
+        ],
+      },
+      {
+        subTitle: '나. 해킹 등에 대비한 대책',
+        listType: 'list-disc',
+        listItems: [
+          'PFPlay는 해킹이나 컴퓨터 바이러스 등에 의해 회원의 개인정보가 유출되거나 훼손되는 것을 막기 위해 최선을 다하고 있습니다. 개인정보의 훼손에 대비해서 자료를 수시로 백업하고 있고, 최신 백신프로그램을 이용하여 고객들의 개인정보나 자료가 누출되거나 손상되지 않도록 방지하고 있으며, 암호화통신 등을 통하여 네트워크상에서 개인정보를 안전하게 전송할 수 있도록 하고 있습니다. 그리고 침입차단시스템을 이용하여 외부로부터의 무단 접근을 통제하고 있으며, 기타 시스템적으로 보안성을 확보하기 위한 가능한 모든 기술적 장치를 갖추려 노력하고 있습니다.',
+        ],
+      },
+      {
+        subTitle: '다. 개인정보보호 운영',
+        listType: 'list-disc',
+        listItems: [
+          '개인정보처리방침의 이행사항 및 담당자의 준수여부를 확인하여 문제가 발견될 경우 즉시 수정하고 바로 잡을 수 있도록 노력하고 있습니다. 단, PFPlay가 개인정보보호 의무를 다 하였음에도 불구하고 고객 본인의 부주의나 PFPlay가 관리하지 않는 영역에서의 사고 등 PFPlay의 귀책에 기인하지 않은 손해에 대해서는 PFPlay는 책임을 지지 않습니다.',
+        ],
+      },
+    ],
+  },
+  {
+    title: '제 8조 (개인정보 자동 수집 장치의 설치 ・ 운영 및 그 거부에 관한 사항)',
+    type: 'list',
+    contents: [
+      {
+        listType: 'list-disc',
+        subTitle: '가. 쿠키란',
+        listItems: [
+          'PFPlay는 개인화되고 맞춤화된 서비스를 제공하기 위해서 고객의 정보를 저장하고 수시로 불러오는 ‘쿠키(cookie)’를 사용합니다.',
+          '쿠키는 웹사이트를 운영하는데 이용되는 서버가 고객의 브라우저에게 보내는 아주 작은 텍스트 파일로 고객 컴퓨터의 하드디스크에 저장됩니다. 이후 고객이 웹 사이트에 방문할 경우 웹 사이트 서버는 고객의 하드 디스크에 저장되어 있는 쿠키의 내용을 읽어 고객의 환경설정을 유지하고 맞춤화된 서비스를 제공하기 위해 이용됩니다.',
+          '쿠키는 개인을 식별하는 정보를 자동적/능동적으로 수집하지 않으며, 고객은 언제든지 이러한 쿠키의 저장을 거부하거나 삭제할 수 있습니다.',
+        ],
+      },
+      {
+        listType: 'list-disc',
+        subTitle: '나. 쿠키의 사용 목적',
+        listItems: [
+          '고객들이 PFPlay의 서비스와 웹 사이트들에 대한 방문 및 이용형태, 인기 검색어, 고객 규모 등을 파악하여 고객에게 광고를 포함한 최적화된 맞춤형 정보 제공을 위해 사용합니다.',
+        ],
+      },
+      {
+        listType: 'list-disc',
+        subTitle: '다. 쿠키의 설치/운영 및 거부',
+        listItems: [
+          '고객은 쿠키 설치에 대한 선택권을 가지고 있습니다. 따라서 고객은 웹브라우저에서 옵션을 설정함으로써 모든 쿠키를 허용하거나, 쿠키가 저장될 때마다 확인을 거치거나, 아니면 모든 쿠키의 저장을 거부할 수도 있습니다.',
+          '다만, 쿠키의 저장을 거부할 경우에는 로그인이 필요한 PFPlay의 일부 서비스는 이용에 어려움이 있을 수 있습니다',
+          {
+            innerListType: 'list-none',
+            outerListItem: '쿠키 설치 허용 여부를 지정하는 방법은 다음과 같습니다',
+            innerListItems: [
+              '▶︎ Internet Explorer : 도구 메뉴 선택 > 인터넷 옵션 선택 > 개인정보 탭 클릭 > 고급 개인정보 설정 > 쿠키 수준 설정',
+              '▶︎ Chrome : 설정 메뉴 선택 > 고급 설정 표시 선택 > 개인정보 및 보안 > 콘텐츠 설정 선택 > 쿠키 수준 설정',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: '제 9조 개인정보 처리방침 변경에 관한 사항',
+    heads: [
+      '현 개인정보 처리방침의 내용 추가, 삭제 및 수정이 있을 시에는 개정 최소 7일 이전부터 홈페이지 공지사항 을 통해 변경 사실을 고지할 것입니다. 다만, 개인정보의 수집 및 활용, 제 3자 제공 등과 같이 이용자 권리의 중요한 변경이 있을 때는 최소 30일 이전에 알립니다.',
+    ],
+    type: 'list',
+    contents: [
+      {
+        listType: 'list-disc',
+        listItems: [
+          '이 개인정보 처리방침은 2024. 04. 01.부터 적용됩니다.',
+          '이전의 개인정보처리방침은 아래에서 확인하실 수 있습니다.',
+        ],
+      },
+    ],
+  },
+  {
+    title: '제 10조 개인정보 처리방침 변경에 관한 사항',
+    type: 'default',
+    heads: [
+      'PFPlay는 고객의 피드백과 서비스에 대한 변경 사항을 반영하기 위해 필요한 경우 본 개인정보 처리방침을 업데이트합니다. PFPlay는 본 방침의 변경 사항을 게시할 때 방침 상단의 "최종 업데이트" 날짜를 수정할 것입니다. 본 방침에 중대한 변경이 있거나 https://pfplay.io 가 귀하의 개인 데이터를 사용하는 방식이 변경되는 경우, PFPlay는 변경 사항이 적용되기 전에 해당 변경 사항을 눈에 잘 띄게 게시하거나 귀하에게 직접 통지함으로써 귀하에게 통지할 것입니다. 본 개인정보 보호정책을 주기적으로 검토하여 https://pfplay.io 가 귀하의 정보를 어떻게 보호하고 있는지 알아보시기 바랍니다.',
+    ],
+  },
+  {
+    title: '제 11조 PFPlay에 연락하는 방법',
+    type: 'default',
+    heads: [
+      '기술 또는 지원 관련 질문이 있는 경우 gm@pfplay.io 로 이메일을 보내주십시오.',
+      '개인정보 보호 관련 우려 사항, 불만 사항 또는 https://pfplay.io 의 데이터 보호 책임자에 대한 질문이 있는 경우, gm@pfplay.io 으로 이메일을 보내주시면 30일 이내에 질문이나 우려 사항에 대해 답변해 드리겠습니다.',
+    ],
+  },
+] satisfies (DefaultArticleProps | ListArticleProps | TableArticleProps<RetainedInfoTableID>)[];
