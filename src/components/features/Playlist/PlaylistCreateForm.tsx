@@ -2,7 +2,7 @@ import React from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { isAxiosError } from 'axios';
 import { ErrorResponse } from '@/api/@types/@shared';
-import { useCreatePlaylistMutation } from '@/api/query-temp/playlist/useCreatePlaylistMutation.tsx';
+import { useCreatePlaylistMutation } from '@/api/query-temp/playlist/useCreatePlaylistMutation';
 import Dialog from '@/components/shared/Dialog';
 import Typography from '@/components/shared/atoms/Typography';
 import { useDialog } from '@/hooks/useDialog';
