@@ -41,8 +41,7 @@ export const authOptions: NextAuthOptions = {
         user.userPermission = response.userPermission;
         user.profileUpdated = response.profileUpdated;
 
-        // const redirectTo: Href = response.profileUpdated ? '/parties' : '/settings/profile';
-        return true;
+        return response.profileUpdated ? '/parties' : '/settings/profile';
       } catch (e) {
         return false;
       }
