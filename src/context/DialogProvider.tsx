@@ -44,6 +44,8 @@ export const DialogProvider: FC<PropsWithChildren> = ({ children }) => {
   const push: PushDialog = useCallback(
     (dialogFactory) => {
       return new Promise((resolve) => {
+        console.log('generateId', generateId());
+
         const id = generateId();
         const onOk = (value: any) => {
           pop(id);

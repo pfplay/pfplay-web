@@ -1,22 +1,22 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
-import { PlaylistResponse, YoutubeMusicList } from '@/api/@types/Playlist';
+import { PlaylistResponse, YoutubeMusic } from '@/api/@types/Playlist';
 import IconMenu from '@/components/shared/IconMenu';
 import { MenuItem } from '@/components/shared/atoms/Menu/MenuItemPanel';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFAddPlaylist } from '@/components/shared/icons';
 
 type YoutubeSearchCardProps = {
-  music: YoutubeMusicList;
+  music: YoutubeMusic;
   playlist?: PlaylistResponse[];
-  onClickPlaylist?: (id: number) => void;
+  onSelectPlaylist?: (id: number) => void;
   onAddPlaylist?: () => void;
 };
 
 const YoutubeSearchItem = ({
   music: { title, duration, thumbnailMedium },
   playlist = [],
-  onClickPlaylist,
+  onSelectPlaylist,
   onAddPlaylist,
 }: YoutubeSearchCardProps) => {
   const menuItemConfig: MenuItem[] = useMemo(
@@ -24,10 +24,10 @@ const YoutubeSearchItem = ({
       playlist.map(({ name: label, id }) => ({
         label,
         onClickItem: () => {
-          onClickPlaylist?.(id);
+          onSelectPlaylist?.(id);
         },
       })),
-    [playlist, onClickPlaylist]
+    [playlist, onSelectPlaylist]
   );
 
   return (

@@ -19,7 +19,7 @@ export interface PlaylistMusicResponse {
   thumbnailImage: string;
 }
 
-export interface YoutubeMusicList {
+export interface YoutubeMusic {
   id: string;
   thumbnailLow: string;
   thumbnailMedium: string;
@@ -35,7 +35,7 @@ export interface YoutubeMusicParameters {
 
 export interface YoutubeMusicResponse {
   nextPageToken: string;
-  musicList: YoutubeMusicList[];
+  musicList: YoutubeMusic[];
 }
 
 export interface CreatePlaylistRequestBody {

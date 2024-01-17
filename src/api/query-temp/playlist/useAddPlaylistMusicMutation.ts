@@ -3,11 +3,15 @@ import { AddPlaylistMusicRequestBody } from '@/api/@types/Playlist';
 import { PlaylistService } from '@/api/services/Playlist';
 import { useInvalidatePlaylistMusicsQuery } from './usePlaylistMusicsQuery';
 
-export const useAddPlaylistMusicMutation = (listId: number) => {
+export const useAddPlaylistMusicMutation = () => {
   const invalidatePlaylistMusicsQuery = useInvalidatePlaylistMusicsQuery();
   return useMutation({
-    mutationFn: (params: AddPlaylistMusicRequestBody) =>
+    mutationFn: ({ listId, ...params }: AddPlaylistMusicRequestBody & { listId: number }) =>
       PlaylistService.addMusicToPlaylist(listId, params),
-    onSettled: () => invalidatePlaylistMusicsQuery(listId),
+    onSettled: (data) => {
+      if (data?.playListId) {
+        invalidatePlaylistMusicsQuery(data.playListId);
+      }
+    },
   });
 };
