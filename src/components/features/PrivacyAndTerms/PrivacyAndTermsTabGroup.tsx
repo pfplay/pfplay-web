@@ -19,7 +19,7 @@ const PrivacyAndTermsTabGroup = ({ children }: PrivacyAndTermsTabGroupProps) => 
     <TabGroup selectedIndex={selectedIndex}>
       <TabList className={cn('w-full flexRow justify-center ')}>
         {privacyAndTermsTabsConfig.map((config) => (
-          <AppLink key={config.index} href={config.href}>
+          <AppLink key={config.index} href={config.href} replace>
             <CustomTab tabTitle='서비스 이용약관' variant='line' />
           </AppLink>
         ))}
