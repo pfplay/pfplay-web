@@ -34,9 +34,15 @@ export const useInvalidateProfileQuery = () => {
 };
 
 export const useProfileUpdateMutation = () => {
+  // const queryClient = useQueryClient();
   const invalidateProfileQuery = useInvalidateProfileQuery();
+
   return useMutation({
-    mutationFn: (data: UserProfile) => UserService.updateProfile(data),
+    mutationFn: (data: UserProfile) => {
+      // queryClient.getQueryData<UserProfile>([PROFILE_QUERY_KEY]);
+
+      return UserService.updateProfile(data);
+    },
     onSuccess: () => {
       invalidateProfileQuery();
     },
@@ -63,6 +69,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 const ProfileSettingForm = () => {
   const router = useAppRouter();
+  const { data: profile } = useProfileQuery();
 
   const {
     handleSubmit,
@@ -73,8 +80,8 @@ const ProfileSettingForm = () => {
     mode: 'all',
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      nickname: '',
-      introduction: '',
+      nickname: profile?.nickname,
+      introduction: profile?.introduction,
     },
   });
 

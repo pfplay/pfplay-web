@@ -3,6 +3,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import '@/styles/globals.css';
 import { cookies } from 'next/headers';
 import { PropsWithChildren } from 'react';
+import { ProfileHydration } from '@/components/features/Profile/ProfileHydration';
 import { CookieKey } from '@/constants/cookie';
 import { DomId } from '@/constants/domId';
 import { Language } from '@/constants/lang';
@@ -31,7 +32,10 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
         <ReactQueryProvider>
           <SessionProvider>
             <DictionaryProvider dictionary={dictionary}>
-              <DialogProvider>{children}</DialogProvider>
+              <DialogProvider>
+                {/* FIXME: 인증 레이아웃에서만 필요할 수 있음. protect route 처리할 때 옮기기 */}
+                <ProfileHydration>{children}</ProfileHydration>
+              </DialogProvider>
             </DictionaryProvider>
           </SessionProvider>
         </ReactQueryProvider>
