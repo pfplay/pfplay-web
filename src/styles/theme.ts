@@ -48,7 +48,6 @@ const theme = {
     tooltip: '1001',
   },
   listStyleType: {
-    square: 'square',
     latin: 'lower-latin',
     inherit: 'inherit',
   },
