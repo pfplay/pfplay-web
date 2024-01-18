@@ -70,6 +70,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 const ProfileSettingForm = () => {
   const router = useAppRouter();
   const { data: profile } = useProfileQuery();
+  const { data: session, update } = useSession();
 
   const {
     handleSubmit,
@@ -92,9 +93,18 @@ const ProfileSettingForm = () => {
       {
         nickname,
         introduction,
+        bodyId: 1,
+        faceUrl: 'url',
       },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
+          await update({
+            ...session,
+            user: {
+              ...session?.user,
+              profileUpdated: true,
+            },
+          });
           router.push('/settings/avatar');
         },
         onError: (err) => {
