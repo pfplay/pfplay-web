@@ -18,7 +18,7 @@ interface StrWithEmphasis {
 }
 export interface DialogProps {
   open: boolean;
-  title: string | StrWithEmphasis;
+  title?: string | StrWithEmphasis;
   titleAlign?: 'left' | 'center';
   titleType?: TypographyProps['type'];
   Sub?: ReactNode;
@@ -58,6 +58,8 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   classNames,
 }) => {
   const Title = useMemo(() => {
+    if (!title) return null;
+
     const titleProps: PropsWithRef<TypographyProps> = {
       type: titleType,
       className: 'text-gray-50',
@@ -119,30 +121,32 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
                   classNames?.container
                 )}
               >
-                <HUDialog.Title
-                  as='div'
-                  className={cn([
-                    'relative flexCol gap-[12px] mb-[24px]',
-                    {
-                      'items-start': titleAlign === 'left',
-                      'items-center': titleAlign === 'center',
-                    },
-                  ])}
-                >
-                  {showCloseIcon && (
-                    <Button
-                      color='secondary'
-                      variant='outline'
-                      Icon={<PFClose width={24} height={24} />}
-                      className='border-none p-0 absolute top-[2.5px] right-0' /*  */
-                      onClick={handleClose}
-                    />
-                  )}
+                {title && (
+                  <HUDialog.Title
+                    as='div'
+                    className={cn([
+                      'relative flexCol gap-[12px] mb-[24px]',
+                      {
+                        'items-start': titleAlign === 'left',
+                        'items-center': titleAlign === 'center',
+                      },
+                    ])}
+                  >
+                    {showCloseIcon && (
+                      <Button
+                        color='secondary'
+                        variant='outline'
+                        Icon={<PFClose width={24} height={24} />}
+                        className='border-none p-0 absolute top-[2.5px] right-0' /*  */
+                        onClick={handleClose}
+                      />
+                    )}
 
-                  {Title}
+                    {Title}
 
-                  {Sub}
-                </HUDialog.Title>
+                    {Sub}
+                  </HUDialog.Title>
+                )}
 
                 {typeof Body === 'function' ? <Body /> : Body}
               </HUDialog.Panel>
