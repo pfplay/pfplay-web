@@ -4,7 +4,7 @@ import Header from '@/components/layouts/Header';
 import WalletProvider from '@/context/WalletProvider';
 import { getServerAuthSession } from '@/utils/authOptions';
 
-const ProfileEditLayout = async ({ children }: PropsWithChildren) => {
+const SettingsLayout = async ({ children }: PropsWithChildren) => {
   const session = await getServerAuthSession();
 
   if (!session) {
@@ -18,4 +18,4 @@ const ProfileEditLayout = async ({ children }: PropsWithChildren) => {
   );
 };
 
-export default ProfileEditLayout;
+export default SettingsLayout;
