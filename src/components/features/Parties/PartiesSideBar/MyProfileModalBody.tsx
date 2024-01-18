@@ -1,13 +1,22 @@
 'use client';
 
 import Image from 'next/image';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormItemError } from '@/components/shared/FormItem';
 import { useAppRouter } from '@/components/shared/Router/useAppRouter';
 import Button from '@/components/shared/atoms/Button';
+import Input from '@/components/shared/atoms/Input';
+import TextArea from '@/components/shared/atoms/TextArea';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFEdit } from '@/components/shared/icons';
-import { useDialog } from '@/hooks/useDialog';
-import { useProfileQuery } from '../../Profile/ProfileSettingForm';
-import ProfileUpdateDialogBodyForm from '../../Profile/ProfileUpdateDialogBodyForm';
+import {
+  ProfileFormValues,
+  profileFormSchema,
+  useProfileQuery,
+  useProfileUpdateMutation,
+} from '../../Profile/ProfileSettingForm';
 
 type MyProfileModalBodyProps = {
   onAvatarSettingClick?: () => void;
@@ -16,12 +25,31 @@ const MyProfileModalBody = ({ onAvatarSettingClick }: MyProfileModalBodyProps) =
   const router = useAppRouter();
   const { data: profile } = useProfileQuery();
 
-  const { openDialog } = useDialog();
+  const [profileEditMode, setProfileEditMode] = useState(false);
+
+  const { mutate, isPending } = useProfileUpdateMutation();
+
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<ProfileFormValues>({
+    mode: 'all',
+    resolver: zodResolver(profileFormSchema),
+    defaultValues: { ...profile },
+  });
+
+  const onSubmit: SubmitHandler<ProfileFormValues> = (values) => {
+    mutate(values, {
+      onSuccess: () => {
+        setProfileEditMode(false);
+      },
+    });
+  };
+
   const handleClickEditButton = () => {
-    openDialog((_, onClose) => ({
-      title: '',
-      Body: <ProfileUpdateDialogBodyForm onCancel={onClose} onSuccess={onClose} />,
-    }));
+    setProfileEditMode(true);
   };
 
   const handleClickAvatarEditButton = () => {
@@ -29,60 +57,109 @@ const MyProfileModalBody = ({ onAvatarSettingClick }: MyProfileModalBodyProps) =
     onAvatarSettingClick?.();
   };
 
-  return (
-    <div className='gap-5 flexRow'>
-      <div className='flexCol gap-9'>
-        <div className='w-[108px] bg-[#1D1D1D] pointer-events-none select-none'>
-          <Image
-            src={'/images/Background/avatar.png'}
-            alt={'profilePicture'}
-            width={108}
-            height={216}
-          />
-        </div>
-        <Button size='sm' variant='outline' onClick={handleClickAvatarEditButton}>
-          아바타 설정
-        </Button>
-      </div>
-      <div className='justify-between flex-1 flexCol'>
-        <div className='items-start gap-3 flexCol'>
-          <div className='items-center gap-3 flexRow'>
-            <Typography type='body1' className='text-white'>
-              {profile?.nickname}
-            </Typography>
+  const handleCancelEdit = () => {
+    setProfileEditMode(false);
+    reset();
+  };
 
-            <div onClick={() => handleClickEditButton()} className='cursor-pointer'>
-              <PFEdit />
-            </div>
+  const btnDisabled = Object.keys(errors).length > 0 || !isValid;
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className='gap-5 flexRow'>
+        <div className='flexCol gap-9'>
+          <div className='w-[108px] bg-[#1D1D1D] pointer-events-none select-none'>
+            <Image
+              src={'/images/Background/avatar.png'}
+              alt={'profilePicture'}
+              width={108}
+              height={216}
+            />
           </div>
-          <Typography className='text-left text-white'>{profile?.introduction}</Typography>
+
+          {!profileEditMode && (
+            <Button size='sm' variant='outline' onClick={handleClickAvatarEditButton}>
+              아바타 설정
+            </Button>
+          )}
         </div>
-        <div className='items-center justify-between flexRow'>
-          <div className='gap-10 flexRow'>
-            <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
-              포인트
-              {/* FIXME:<p> cannot appear as a descendant of <p>. */}
-              <Typography as='span' type='body3'>
-                76p
-              </Typography>
-            </Typography>
-            <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
-              가입일
-              <Typography as='span' type='body3'>
-                76p
-              </Typography>
-            </Typography>
+        <div className='justify-between flex-1 flexCol'>
+          <div className='items-start gap-3 flexCol'>
+            {profileEditMode ? (
+              <>
+                <div className='flex flex-col gap-1'>
+                  <Input
+                    {...register('nickname')}
+                    maxLength={16}
+                    placeholder='한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'
+                  />
+
+                  {errors.nickname && <FormItemError>{errors.nickname?.message}</FormItemError>}
+                </div>
+                <div className='flex flex-col gap-1 w-full'>
+                  <TextArea
+                    {...register('introduction')}
+                    maxLength={50}
+                    rows={3}
+                    placeholder='한/영 구분 없이 띄어쓰기 포함 50자 제한'
+                  />
+                  {errors.introduction?.message && (
+                    <FormItemError>{errors.introduction?.message}</FormItemError>
+                  )}
+                </div>
+                <div className='flex gap-2 justify-end w-full'>
+                  <Button color='secondary' type='button' onClick={handleCancelEdit}>
+                    취소
+                  </Button>
+                  <Button type='submit' loading={isPending} disabled={btnDisabled}>
+                    저장
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className='flex gap-3 items-center'>
+                  <Typography type='body1' className='text-white'>
+                    {profile?.nickname}
+                  </Typography>
+                  <div onClick={() => handleClickEditButton()} className='cursor-pointer'>
+                    <PFEdit />
+                  </div>
+                </div>
+                <Typography className='text-left text-white'>{profile?.introduction}</Typography>
+              </>
+            )}
           </div>
-          <Image
-            src={'/images/ETC/rainbow.png'}
-            alt='rainbow'
-            width={32}
-            height={32}
-            className='select-none pointer-events-none'
-          />
+
+          {!profileEditMode && (
+            <div className='items-center justify-between flexRow'>
+              <div className='gap-10 flexRow'>
+                <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
+                  포인트
+                  {/* FIXME:<p> cannot appear as a descendant of <p>. */}
+                  <Typography as='span' type='body3'>
+                    76p
+                  </Typography>
+                </Typography>
+                <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
+                  가입일
+                  <Typography as='span' type='body3'>
+                    76p
+                  </Typography>
+                </Typography>
+              </div>
+              <Image
+                src={'/images/ETC/rainbow.png'}
+                alt='rainbow'
+                width={32}
+                height={32}
+                className='select-none pointer-events-none'
+              />
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
