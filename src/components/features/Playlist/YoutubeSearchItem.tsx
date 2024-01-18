@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
-import { PlaylistResponse, YoutubeMusic } from '@/api/@types/Playlist';
+import { Playlist, YoutubeMusic } from '@/api/@types/Playlist';
 import IconMenu from '@/components/shared/IconMenu';
 import { MenuItem } from '@/components/shared/atoms/Menu/MenuItemPanel';
 import Typography from '@/components/shared/atoms/Typography';
@@ -8,7 +8,7 @@ import { PFAddPlaylist } from '@/components/shared/icons';
 
 type YoutubeSearchCardProps = {
   music: YoutubeMusic;
-  playlist?: PlaylistResponse[];
+  playlist?: Playlist[];
   onSelectPlaylist?: (id: number) => void;
   onAddPlaylist?: () => void;
 };
