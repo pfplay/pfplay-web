@@ -8,7 +8,7 @@ import { PFAdd } from '@/components/shared/icons';
 import { useDialog } from '@/hooks/useDialog';
 import MusicsInPlaylist from '../../Playlist/MusicsInPlaylist';
 import PlaylistCreateForm from '../../Playlist/PlaylistCreateForm';
-import YoutubeSearchForm from '../../Playlist/YoutubeSearchForm';
+import YoutubeSearch from '../../Playlist/YoutubeSearch';
 
 interface MyPlaylistProps {
   drawerOpen: boolean;
@@ -27,9 +27,9 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
     }));
   };
   const handleAddMusic = () => {
-    openDialog((_) => ({
-      title: '',
-      Body: <YoutubeSearchForm />,
+    openDialog((_, onClose) => ({
+      classNames: { container: 'px-[40px] pt-[36px] w-[800px]' },
+      Body: <YoutubeSearch onClose={onClose} />,
     }));
   };
 

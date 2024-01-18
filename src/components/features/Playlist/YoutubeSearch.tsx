@@ -10,15 +10,22 @@ import PlaylistCreateForm from './PlaylistCreateForm';
 import YoutubeSearchInput from './YoutubeSearchInput';
 import YoutubeSearchItem from './YoutubeSearchItem';
 
-type YoutubeSearchFormProps = {
+type YoutubeSearchProps = {
   onClose?: () => void;
 };
-const YoutubeSearchForm = ({ onClose }: YoutubeSearchFormProps) => {
+const YoutubeSearch = ({ onClose }: YoutubeSearchProps) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const { data: youtubeMusics, setRef } = useYoutubeInfiniteQuery(searchQuery);
+  const {
+    data: youtubeMusics,
+    setRef,
+    isPending,
+    isFetching,
+  } = useYoutubeInfiniteQuery(searchQuery);
   const { data: playlist } = usePlaylistQuery();
   const { mutate: addMusicToPlaylist } = useAddPlaylistMusicMutation();
   const { openDialog } = useDialog();
+
+  console.log(isPending, isFetching);
 
   const handleAddPlaylist = () => {
     openDialog((_, onCancel) => ({
@@ -40,31 +47,32 @@ const YoutubeSearchForm = ({ onClose }: YoutubeSearchFormProps) => {
 
   return (
     <div>
-      <div className='flex items-center'>
-        <Typography>곡추가</Typography>
+      <div className='flex items-center gap-7 mb-11'>
+        <Typography type='title2'>곡추가</Typography>
         <YoutubeSearchInput onSearch={setSearchQuery} />
         <button onClick={onClose}>
           <PFClose width={24} height={24} />
         </button>
       </div>
 
-      <div className='h-[200px] overflow-scroll'>
+      <div className='h-[340px] overflow-scroll'>
         {pages.map((page) => {
           return page.musicList.map((music) => (
-            <YoutubeSearchItem
-              key={music.id}
-              music={music}
-              playlist={playlist}
-              onAddPlaylist={handleAddPlaylist}
-              onSelectPlaylist={(listId) => handleSelectPlaylist(listId, music)}
-            />
+            <div key={music.id} className='py-3'>
+              <YoutubeSearchItem
+                music={music}
+                playlist={playlist}
+                onAddPlaylist={handleAddPlaylist}
+                onSelectPlaylist={(listId) => handleSelectPlaylist(listId, music)}
+              />
+            </div>
           ));
         })}
 
-        <div ref={setRef}>여기야~</div>
+        <div ref={setRef} />
       </div>
     </div>
   );
 };
 
-export default YoutubeSearchForm;
+export default YoutubeSearch;
