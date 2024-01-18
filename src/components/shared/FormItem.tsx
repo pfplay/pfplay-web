@@ -1,5 +1,4 @@
 import { FC, PropsWithChildren, ReactNode } from 'react';
-import clsx from 'clsx';
 import Typography from '@/components/shared/atoms/Typography';
 import { cn } from '@/utils/cn';
 
@@ -85,16 +84,22 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
             })}
           />
 
-          <Typography
-            type='caption1'
-            overflow='break-keep'
-            className={clsx(['pl-[12px] text-red-300 text-left'])}
-          >
-            {error}
-          </Typography>
+          <FormItemError>{error}</FormItemError>
         </>
       )}
     </label>
+  );
+};
+
+export const FormItemError = ({ children }: PropsWithChildren) => {
+  return (
+    <Typography
+      type='caption1'
+      overflow='break-keep'
+      className={cn(['pl-[12px] text-red-300 text-left'])}
+    >
+      {children}
+    </Typography>
   );
 };
 
