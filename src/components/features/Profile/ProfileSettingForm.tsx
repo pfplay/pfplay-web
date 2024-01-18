@@ -34,14 +34,13 @@ export const useInvalidateProfileQuery = () => {
 };
 
 export const useProfileUpdateMutation = () => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const invalidateProfileQuery = useInvalidateProfileQuery();
 
   return useMutation({
     mutationFn: (data: UserProfile) => {
-      // queryClient.getQueryData<UserProfile>([PROFILE_QUERY_KEY]);
-
-      return UserService.updateProfile(data);
+      const prev = queryClient.getQueryData<UserProfile>([PROFILE_QUERY_KEY]);
+      return UserService.updateProfile({ ...prev, ...data });
     },
     onSuccess: () => {
       invalidateProfileQuery();
@@ -51,7 +50,7 @@ export const useProfileUpdateMutation = () => {
 
 // FIXME: 위 query / mutation 은 다른 폴더로 이동 ===================
 
-const profileFormSchema = z.object({
+export const profileFormSchema = z.object({
   nickname: z
     .string()
     .min(1, { message: '1자 이상 입력해주세요' })
@@ -65,7 +64,7 @@ const profileFormSchema = z.object({
     .max(50, { message: '50자 제한' }),
 });
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>;
+export type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 const ProfileSettingForm = () => {
   const router = useAppRouter();

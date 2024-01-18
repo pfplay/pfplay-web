@@ -1,17 +1,27 @@
+'use client';
+
 import Image from 'next/image';
 import { useAppRouter } from '@/components/shared/Router/useAppRouter';
 import Button from '@/components/shared/atoms/Button';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFEdit } from '@/components/shared/icons';
+import { useDialog } from '@/hooks/useDialog';
+import { useProfileQuery } from '../../Profile/ProfileSettingForm';
+import ProfileUpdateDialogBodyForm from '../../Profile/ProfileUpdateDialogBodyForm';
 
 type MyProfileModalBodyProps = {
   onAvatarSettingClick?: () => void;
 };
 const MyProfileModalBody = ({ onAvatarSettingClick }: MyProfileModalBodyProps) => {
   const router = useAppRouter();
+  const { data: profile } = useProfileQuery();
+
+  const { openDialog } = useDialog();
   const handleClickEditButton = () => {
-    // TODO: Username 정보 수정 BE integration 필요
-    console.log('EditButton Clicked');
+    openDialog((_, onClose) => ({
+      title: '',
+      Body: <ProfileUpdateDialogBodyForm onCancel={onClose} onSuccess={onClose} />,
+    }));
   };
 
   const handleClickAvatarEditButton = () => {
@@ -36,19 +46,16 @@ const MyProfileModalBody = ({ onAvatarSettingClick }: MyProfileModalBodyProps) =
       </div>
       <div className='justify-between flex-1 flexCol'>
         <div className='items-start gap-3 flexCol'>
-          {/* Session에서 user 정보 받아오면 Username UserBio 설정 */}
           <div className='items-center gap-3 flexRow'>
             <Typography type='body1' className='text-white'>
-              USERNAME
+              {profile?.nickname}
             </Typography>
+
             <div onClick={() => handleClickEditButton()} className='cursor-pointer'>
               <PFEdit />
             </div>
           </div>
-          <Typography className='text-left text-white'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia facilis tenetur sequi
-            soluta provident tempora architecto inventore nam ea, consequatur temporibus
-          </Typography>
+          <Typography className='text-left text-white'>{profile?.introduction}</Typography>
         </div>
         <div className='items-center justify-between flexRow'>
           <div className='gap-10 flexRow'>
