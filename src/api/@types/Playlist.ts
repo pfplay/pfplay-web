@@ -1,4 +1,4 @@
-export interface PlaylistResponse {
+export interface Playlist {
   id: number;
   orderNumber: number;
   name: string;
@@ -7,16 +7,21 @@ export interface PlaylistResponse {
 
 export interface PlaylistMusicParameters {
   page?: number; // default 0
-  pageSize?: string; // default 20
+  pageSize?: number; // default 20
 }
 
-export interface PlaylistMusicResponse {
+export interface PlaylistMusic {
   musicId: number;
   uid: string;
   orderNumber: number;
   name: string;
   duration: string;
   thumbnailImage: string;
+}
+
+export interface PlaylistMusicResponse {
+  musicList: PlaylistMusic[];
+  totalPage: number;
 }
 
 export interface YoutubeMusic {
@@ -63,7 +68,7 @@ export interface AddPlaylistMusicResponse {
 }
 
 export interface PlaylistClient {
-  getPlaylist: () => Promise<PlaylistResponse[]>;
+  getPlaylist: () => Promise<Playlist[]>;
   getMusicFromPlaylist: (
     listId: number,
     params?: PlaylistMusicParameters

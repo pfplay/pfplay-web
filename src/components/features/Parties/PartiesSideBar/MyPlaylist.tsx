@@ -1,13 +1,12 @@
 import { Disclosure } from '@headlessui/react';
+import { usePlaylistQuery } from '@/api/query-temp/playlist/usePlaylistQuery';
 import CollapseList from '@/components/shared/CollapseList';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/atoms/Button';
-import PlayListItem from '@/components/shared/atoms/PlayListItem';
 import TextButton from '@/components/shared/atoms/TextButton';
 import { PFAdd } from '@/components/shared/icons';
-import { mockCollapslistConfig } from '@/constants/__mock__/mockCollapslistConfig';
-import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
 import { useDialog } from '@/hooks/useDialog';
+import MusicsInPlaylist from '../../Playlist/MusicsInPlaylist';
 import PlaylistCreateForm from '../../Playlist/PlaylistCreateForm';
 import YoutubeSearchForm from '../../Playlist/YoutubeSearchForm';
 
@@ -18,6 +17,8 @@ interface MyPlaylistProps {
 
 const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
   const { openDialog } = useDialog();
+
+  const { data: playlist } = usePlaylistQuery();
 
   const handleAddList = () => {
     openDialog((_, onCancel) => ({
@@ -58,23 +59,14 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
         <TextButton>설정</TextButton>
       </div>
       <div className='flexCol gap-3'>
-        {/* TODO: endpoint 연결 후 조건 부 렌더 */}
-        <CollapseList title={'상큼 아이'} infoText='24곡'>
-          {/* TODO: endpoint 연결 후 response data로 대체 */}
-          {mockCollapslistConfig.playListPanel.map((config) => (
-            <Disclosure.Panel key={config.id} as='article' className=' text-gray-200'>
-              <PlayListItem playListItemConfig={config} menuItemList={mockMenuConfig} />
+        {playlist?.map(({ id, name }) => (
+          // FIXME: 리스트 res 에 곡 개수 추가 예정 (서버 작업 필요)
+          <CollapseList key={id} title={name} infoText={`${100}곡`}>
+            <Disclosure.Panel as='article' className=' text-gray-200'>
+              <MusicsInPlaylist listId={id} size={100} />
             </Disclosure.Panel>
-          ))}
-        </CollapseList>
-        <CollapseList title={'가사가 좋은 내 취향 인디 노래 모음집'} infoText='24곡'>
-          {/* TODO: endpoint 연결 후 response data로 대체 */}
-          {mockCollapslistConfig.playListPanel.map((config) => (
-            <Disclosure.Panel key={config.id} as='article' className=' text-gray-200'>
-              <PlayListItem playListItemConfig={config} menuItemList={mockMenuConfig} />
-            </Disclosure.Panel>
-          ))}
-        </CollapseList>
+          </CollapseList>
+        ))}
       </div>
     </Drawer>
   );
