@@ -61,7 +61,7 @@ const defaultElDict: Record<TypographyType, keyof Pick<JSX.IntrinsicElements, 'h
   };
 const titleTypes: TypographyType[] = ['title1', 'title2'];
 
-const typoStyleDict: Record<TypographyType, string> = {
+export const typoStyleDict: Record<TypographyType, string> = {
   title1: 'text-[28px] font-bold leading-[1.3]',
   title2: 'text-[24px] font-bold leading-[1.3]',
   body1: 'text-[20px] font-bold leading-[1.5]',

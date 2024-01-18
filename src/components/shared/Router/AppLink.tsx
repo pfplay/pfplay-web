@@ -1,6 +1,5 @@
 import { UrlObject } from 'url';
 import Link from 'next/link';
-import React from 'react';
 import { PathMap } from '@/types/pathmap';
 import { parseHref } from './utils';
 

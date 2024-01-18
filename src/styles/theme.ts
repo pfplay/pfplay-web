@@ -47,6 +47,10 @@ const theme = {
     dialog: '1000',
     tooltip: '1001',
   },
+  listStyleType: {
+    latin: 'lower-latin',
+    inherit: 'inherit',
+  },
   animation: {
     loading: 'loading 2s infinite',
   },
