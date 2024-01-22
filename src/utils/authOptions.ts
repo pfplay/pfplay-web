@@ -41,14 +41,20 @@ export const authOptions: NextAuthOptions = {
         user.userPermission = response.userPermission;
         user.profileUpdated = response.profileUpdated;
 
-        // const redirectTo: Href = response.profileUpdated ? '/parties' : '/settings/profile';
         return true;
       } catch (e) {
         return false;
       }
     },
     // 구글 로그인 성공 후 callback
-    jwt: ({ token, user }) => {
+    jwt: ({ token, user, trigger, session }) => {
+      if (trigger === 'update') {
+        return {
+          ...token,
+          ...session.user,
+        };
+      }
+
       if (!user) return token;
 
       token.accessToken = user.accessToken;
