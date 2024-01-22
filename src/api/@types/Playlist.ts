@@ -3,6 +3,7 @@ export interface Playlist {
   orderNumber: number;
   name: string;
   type: string;
+  count: number;
 }
 
 export interface PlaylistMusicParameters {
