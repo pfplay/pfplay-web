@@ -58,8 +58,8 @@ const MenuItemPanel = ({
             {HeaderIcon}
           </div>
         )}
-        {menuItemConfig.map((config, index) => (
-          <Menu.Item as={Fragment} key={index}>
+        {menuItemConfig.map((config) => (
+          <Menu.Item as={Fragment} key={config.label}>
             {({ active }) => (
               <li
                 onClick={() => handleMenuItemClick(config)}
