@@ -62,7 +62,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
 
     const titleProps: PropsWithRef<TypographyProps> = {
       type: titleType,
-      className: 'text-gray-50',
+      className: 'text-gray-50 whitespace-pre-line',
     };
 
     if (typeof title === 'string') {
