@@ -142,21 +142,18 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
         />
       ) : (
         <div className='flexCol gap-3'>
-          {playlist?.map(({ id, name, count }) => {
-            // FIXME: 리스트 res 에 곡 개수 추가 예정 (서버 작업 필요)
-            return (
-              <CollapseList key={id} title={name} infoText={`${count}곡`}>
-                <Disclosure.Panel as='article' className=' text-gray-200'>
-                  <MusicsInPlaylist
-                    listId={id}
-                    size={count}
-                    onDeleteFromList={handleDeleteMusicFromList}
-                    onMoveToOtherList={handleMoveMusicToOtherList}
-                  />
-                </Disclosure.Panel>
-              </CollapseList>
-            );
-          })}
+          {playlist?.map(({ id, name, count }) => (
+            <CollapseList key={id} title={name} infoText={`${count}곡`}>
+              <Disclosure.Panel as='article' className=' text-gray-200'>
+                <MusicsInPlaylist
+                  listId={id}
+                  size={count}
+                  onDeleteFromList={handleDeleteMusicFromList}
+                  onMoveToOtherList={handleMoveMusicToOtherList}
+                />
+              </Disclosure.Panel>
+            </CollapseList>
+          ))}
         </div>
       )}
     </Drawer>
