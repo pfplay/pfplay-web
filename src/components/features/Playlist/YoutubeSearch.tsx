@@ -18,15 +18,12 @@ const YoutubeSearch = ({ onClose }: YoutubeSearchProps) => {
   const {
     data: youtubeMusics,
     setRef,
-    isPending,
     isLoading,
     isFetching,
   } = useYoutubeInfiniteQuery(searchQuery);
   const { data: playlist } = usePlaylistQuery();
   const { mutate: addMusicToPlaylist } = useAddPlaylistMusicMutation();
   const { openDialog } = useDialog();
-
-  console.log(isPending, isFetching);
 
   const handleAddPlaylist = () => {
     openDialog((_, onCancel) => ({
