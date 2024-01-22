@@ -19,6 +19,7 @@ const YoutubeSearch = ({ onClose }: YoutubeSearchProps) => {
     data: youtubeMusics,
     setRef,
     isPending,
+    isLoading,
     isFetching,
   } = useYoutubeInfiniteQuery(searchQuery);
   const { data: playlist } = usePlaylistQuery();
@@ -69,7 +70,10 @@ const YoutubeSearch = ({ onClose }: YoutubeSearchProps) => {
           ));
         })}
 
-        <div ref={setRef} />
+        {/* TODO: 무한 스크롤 로딩처리 */}
+        {!isLoading && isFetching && <div className='h-5'>음악을 불러오는 중입니다...</div>}
+
+        <div ref={setRef} className='h-3' />
       </div>
     </div>
   );
