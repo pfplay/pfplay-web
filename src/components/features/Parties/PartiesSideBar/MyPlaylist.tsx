@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Disclosure } from '@headlessui/react';
+import { useMutation } from '@tanstack/react-query';
 import { usePlaylistQuery } from '@/api/query-temp/playlist/usePlaylistQuery';
 import CollapseList from '@/components/shared/CollapseList';
+import Dialog from '@/components/shared/Dialog';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/atoms/Button';
 import TextButton from '@/components/shared/atoms/TextButton';
@@ -10,6 +12,7 @@ import { useDialog } from '@/hooks/useDialog';
 import EditablePlaylist from '../../Playlist/EditablePlaylist';
 import MusicsInPlaylist from '../../Playlist/MusicsInPlaylist';
 import PlaylistCreateForm from '../../Playlist/PlaylistCreateForm';
+import PlaylistUpdateForm from '../../Playlist/PlaylistUpdateForm';
 import YoutubeSearch from '../../Playlist/YoutubeSearch';
 
 interface MyPlaylistProps {
@@ -23,11 +26,53 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
   const { data: playlist } = usePlaylistQuery();
 
   const [editMode, setEditMode] = useState(false);
+  const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<number[]>([]);
+
+  // TODO: mutation 위치 수정
+  const { mutate: deletePlaylist } = useMutation({
+    mutationFn: (ids: number[]) => {
+      alert(ids);
+      // TODO: API 연동
+      return Promise.resolve();
+    },
+  });
 
   const handleAddList = () => {
     openDialog((_, onCancel) => ({
       title: '플레이리스트 이름을 입력해주세요',
       Body: <PlaylistCreateForm onCancel={onCancel} />,
+    }));
+  };
+
+  const handleUpdateList = (listId: number) => {
+    openDialog((_, onCancel) => ({
+      title: '플레이리스트 이름을 입력해주세요',
+      Body: <PlaylistUpdateForm listId={listId} onCancel={onCancel} />,
+    }));
+  };
+
+  const handleDeleteList = () => {
+    openDialog((_, onCancel) => ({
+      title: '정말 선택 항목을\n 리스트에서 삭제하시겠어요?',
+      Body: (
+        <Dialog.ButtonGroup>
+          <Dialog.Button color='secondary' onClick={onCancel}>
+            취소
+          </Dialog.Button>
+          <Dialog.Button
+            onClick={() =>
+              deletePlaylist(selectedPlaylistIds, {
+                onSuccess: () => {
+                  onCancel?.();
+                },
+              })
+            }
+          >
+            확인
+          </Dialog.Button>
+        </Dialog.ButtonGroup>
+      ),
+      // Body: <PlaylistCreateForm onCancel={onCancel} />,
     }));
   };
   const handleAddMusic = () => {
@@ -46,7 +91,14 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
       <div className='flexRow justify-between items-center mt-10 mb-6'>
         {editMode ? (
           <>
-            <Button size='sm' Icon={<PFDelete />} variant='outline' color='secondary'>
+            <Button
+              size='sm'
+              Icon={<PFDelete />}
+              variant='outline'
+              color='secondary'
+              disabled={selectedPlaylistIds.length === 0}
+              onClick={handleDeleteList}
+            >
               삭제
             </Button>
             <TextButton className='text-red-300' onClick={handleEditConfirm}>
@@ -81,15 +133,19 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
       </div>
 
       {editMode ? (
-        <EditablePlaylist items={playlist} />
+        <EditablePlaylist
+          items={playlist}
+          onChangeSelectedPlaylist={setSelectedPlaylistIds}
+          onEditPlaylistName={handleUpdateList}
+        />
       ) : (
         <div className='flexCol gap-3'>
-          {playlist?.map(({ id, name }) => {
+          {playlist?.map(({ id, name, count }) => {
             // FIXME: 리스트 res 에 곡 개수 추가 예정 (서버 작업 필요)
             return (
-              <CollapseList key={id} title={name} infoText={`${100}곡`}>
+              <CollapseList key={id} title={name} infoText={`${count}곡`}>
                 <Disclosure.Panel as='article' className=' text-gray-200'>
-                  <MusicsInPlaylist listId={id} size={100} />
+                  <MusicsInPlaylist listId={id} size={count} />
                 </Disclosure.Panel>
               </CollapseList>
             );

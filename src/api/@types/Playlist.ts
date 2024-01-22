@@ -76,6 +76,8 @@ export interface PlaylistClient {
   ) => Promise<PlaylistMusicResponse>;
   getYoutubeMusic: (params: YoutubeMusicParameters) => Promise<YoutubeMusicResponse>;
   createPlaylist: (params: CreatePlaylistRequestBody) => Promise<CreatePlaylistResponse>;
+  // TODO: update api 연동 필요
+  updatePlaylist: (params: any) => Promise<any>;
   addMusicToPlaylist: (
     listId: number,
     params: AddPlaylistMusicRequestBody
