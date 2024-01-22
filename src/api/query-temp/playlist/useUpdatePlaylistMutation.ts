@@ -7,6 +7,6 @@ export const useUpdatePlaylistMutation = () => {
   return useMutation({
     // TODO: API 연동 규격 확인
     mutationFn: (params: any) => PlaylistService.createPlaylist(params),
-    onSettled: () => invalidatePlaylistQuery(),
+    onSuccess: () => invalidatePlaylistQuery(),
   });
 };

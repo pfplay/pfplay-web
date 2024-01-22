@@ -7,6 +7,6 @@ export const useCreatePlaylistMutation = () => {
   const invalidatePlaylistQuery = useInvalidatePlaylistQuery();
   return useMutation({
     mutationFn: (params: CreatePlaylistRequestBody) => PlaylistService.createPlaylist(params),
-    onSettled: () => invalidatePlaylistQuery(),
+    onSuccess: () => invalidatePlaylistQuery(),
   });
 };
