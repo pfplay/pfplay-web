@@ -1,12 +1,20 @@
 import { usePlaylistMusicsQuery } from '@/api/query-temp/playlist/usePlaylistMusicsQuery';
 import PlayListItem from '@/components/shared/atoms/PlayListItem';
-import { mockMenuConfig } from '@/constants/__mock__/mockMenuConfig';
+import { PFAddPlaylist, PFDelete } from '@/components/shared/icons';
 
 type MusicsInPlaylistProps = {
   listId: number;
   size: number;
+
+  onDeleteFromList?: (listId: number) => void;
+  onMoveToOtherList?: (listId: number) => void;
 };
-export const MusicsInPlaylist = ({ listId, size }: MusicsInPlaylistProps) => {
+export const MusicsInPlaylist = ({
+  listId,
+  size,
+  onDeleteFromList,
+  onMoveToOtherList,
+}: MusicsInPlaylistProps) => {
   const { data } = usePlaylistMusicsQuery(listId, { pageSize: size });
 
   const musics = data?.musicList || [];
@@ -22,7 +30,18 @@ export const MusicsInPlaylist = ({ listId, size }: MusicsInPlaylistProps) => {
             alt: name,
             src: thumbnailImage,
           }}
-          menuItemList={mockMenuConfig}
+          menuItemList={[
+            {
+              onClickItem: () => onDeleteFromList?.(listId),
+              label: '재생목록에서 삭제',
+              icon: <PFDelete />,
+            },
+            {
+              onClickItem: () => onMoveToOtherList?.(listId),
+              label: '다른 재생목록으로 이동',
+              icon: <PFAddPlaylist />,
+            },
+          ]}
         />
       ))}
     </div>

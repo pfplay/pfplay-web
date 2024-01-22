@@ -86,6 +86,15 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
     setEditMode(false);
   };
 
+  const handleDeleteMusicFromList = () => {
+    // TODO: API 연동 필요
+    alert('API 연동 필요');
+  };
+  const handleMoveMusicToOtherList = () => {
+    // TODO: API 연동 필요
+    alert('API 연동 필요');
+  };
+
   return (
     <Drawer title='내 플레이리스트' drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}>
       <div className='flexRow justify-between items-center mt-10 mb-6'>
@@ -145,7 +154,12 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
             return (
               <CollapseList key={id} title={name} infoText={`${count}곡`}>
                 <Disclosure.Panel as='article' className=' text-gray-200'>
-                  <MusicsInPlaylist listId={id} size={count} />
+                  <MusicsInPlaylist
+                    listId={id}
+                    size={count}
+                    onDeleteFromList={handleDeleteMusicFromList}
+                    onMoveToOtherList={handleMoveMusicToOtherList}
+                  />
                 </Disclosure.Panel>
               </CollapseList>
             );
