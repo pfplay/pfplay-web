@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Disclosure } from '@headlessui/react';
-import { useMutation } from '@tanstack/react-query';
+import { useDeletePlaylistMutation } from '@/api/query-temp/playlist/useDeletePlaylistMutation';
 import { usePlaylistQuery } from '@/api/query-temp/playlist/usePlaylistQuery';
 import CollapseList from '@/components/shared/CollapseList';
 import Dialog from '@/components/shared/Dialog';
@@ -28,14 +28,7 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
   const [editMode, setEditMode] = useState(false);
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<number[]>([]);
 
-  // TODO: mutation 위치 수정
-  const { mutate: deletePlaylist } = useMutation({
-    mutationFn: (ids: number[]) => {
-      alert(ids);
-      // TODO: API 연동
-      return Promise.resolve();
-    },
-  });
+  const { mutate: deletePlaylist } = useDeletePlaylistMutation();
 
   const handleAddList = () => {
     openDialog((_, onCancel) => ({
