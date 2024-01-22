@@ -4,7 +4,7 @@ import { Playlist, YoutubeMusic } from '@/api/@types/Playlist';
 import IconMenu from '@/components/shared/IconMenu';
 import { MenuItem } from '@/components/shared/atoms/Menu/MenuItemPanel';
 import Typography from '@/components/shared/atoms/Typography';
-import { PFAddPlaylist } from '@/components/shared/icons';
+import { PFAddCircle, PFAddPlaylist } from '@/components/shared/icons';
 
 type YoutubeSearchCardProps = {
   music: YoutubeMusic;
@@ -33,16 +33,17 @@ const YoutubeSearchItem = ({
   return (
     <div className='flex items-center'>
       <Image src={thumbnailMedium} alt={title} width={60} height={60} />
-      <Typography className='flex-1'>{title}</Typography>
+      <Typography className='flex-1 text-left mx-3'>{title}</Typography>
       <Typography>{duration}</Typography>
 
       <IconMenu
         MenuButtonIcon={<PFAddPlaylist />}
-        menuItemPanel={{ size: 'sm' }}
+        menuItemPanel={{ className: 'm-w-[300px] border border-gray-500' }}
         menuItemConfig={[
           ...menuItemConfig,
           {
-            label: '플레이리스트추가',
+            label: '플레이리스트 추가',
+            icon: <PFAddCircle />,
             onClickItem: () => {
               onAddPlaylist?.();
             },

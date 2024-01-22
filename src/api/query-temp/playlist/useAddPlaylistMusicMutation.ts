@@ -10,9 +10,12 @@ export const useAddPlaylistMusicMutation = () => {
   return useMutation({
     mutationFn: ({ listId, ...params }: AddPlaylistMusicRequestBody & { listId: number }) =>
       PlaylistService.addMusicToPlaylist(listId, params),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data?.playListId) {
-        Promise.all([invalidatePlaylistQuery(), invalidatePlaylistMusicsQuery(data.playListId)]);
+        await Promise.all([
+          invalidatePlaylistQuery(),
+          invalidatePlaylistMusicsQuery(data.playListId),
+        ]);
       }
     },
   });
