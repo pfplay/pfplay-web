@@ -3,7 +3,7 @@ import { Transition, Menu } from '@headlessui/react';
 import { cn } from '@/utils/cn';
 
 // TODO: MenuConfig 정해지면 type 재정의하기
-export type MenuItem = { onClickItem: () => void; label: string };
+export type MenuItem = { onClickItem: () => void; label: string; Icon?: React.ReactNode };
 export type MenuItemPanelSize = 'lg' | 'md' | 'sm';
 const MenuItemBoxSize: Record<MenuItemPanelSize, string> = {
   lg: 'w-[330px]',
@@ -70,7 +70,11 @@ const MenuItemPanel = ({
                 )}
               >
                 {MenuItemPrefixIcon && size !== 'sm' && MenuItemPrefixIcon}
-                {config.label}
+
+                <span className='flex items-center gap-2'>
+                  {config.Icon}
+                  {config.label}
+                </span>
               </li>
             )}
           </Menu.Item>

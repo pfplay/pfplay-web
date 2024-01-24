@@ -14,6 +14,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'i.ytimg.com', // 유튜브 검색 결과에 있는 썸네일 이미지
+        port: '',
+      },
+      {
+        protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
         port: '',
       },

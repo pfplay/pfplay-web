@@ -18,7 +18,8 @@ interface StrWithEmphasis {
 }
 export interface DialogProps {
   open: boolean;
-  title: string | StrWithEmphasis;
+  hideDim?: boolean;
+  title?: string | StrWithEmphasis;
   titleAlign?: 'left' | 'center';
   titleType?: TypographyProps['type'];
   Sub?: ReactNode;
@@ -55,12 +56,15 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   titleAlign = 'center',
   titleType = 'body1',
   showCloseIcon,
+  hideDim,
   classNames,
 }) => {
   const Title = useMemo(() => {
+    if (!title) return null;
+
     const titleProps: PropsWithRef<TypographyProps> = {
       type: titleType,
-      className: 'text-gray-50',
+      className: 'text-gray-50 whitespace-pre-line',
     };
 
     if (typeof title === 'string') {
@@ -90,17 +94,19 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   return (
     <Transition appear show={open} as={Fragment}>
       <HUDialog as='div' className='relative z-dialog' onClose={handleClose} id={id}>
-        <Transition.Child
-          as={Fragment}
-          enter='ease-out duration-300'
-          enterFrom='opacity-0'
-          enterTo='opacity-100'
-          leave='ease-in duration-200'
-          leaveFrom='opacity-100'
-          leaveTo='opacity-0'
-        >
-          <div className='fixed inset-0 bg-dim' />
-        </Transition.Child>
+        {!hideDim && (
+          <Transition.Child
+            as={Fragment}
+            enter='ease-out duration-300'
+            enterFrom='opacity-0'
+            enterTo='opacity-100'
+            leave='ease-in duration-200'
+            leaveFrom='opacity-100'
+            leaveTo='opacity-0'
+          >
+            <div className='fixed inset-0 bg-dim' />
+          </Transition.Child>
+        )}
 
         <div className='fixed inset-0 overflow-y-auto'>
           <div className='flex min-h-full items-center justify-center p-4 text-center'>
@@ -119,30 +125,32 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
                   classNames?.container
                 )}
               >
-                <HUDialog.Title
-                  as='div'
-                  className={cn([
-                    'relative flexCol gap-[12px] mb-[24px]',
-                    {
-                      'items-start': titleAlign === 'left',
-                      'items-center': titleAlign === 'center',
-                    },
-                  ])}
-                >
-                  {showCloseIcon && (
-                    <Button
-                      color='secondary'
-                      variant='outline'
-                      Icon={<PFClose width={24} height={24} />}
-                      className='border-none p-0 absolute top-[2.5px] right-0' /*  */
-                      onClick={handleClose}
-                    />
-                  )}
+                {title && (
+                  <HUDialog.Title
+                    as='div'
+                    className={cn([
+                      'relative flexCol gap-[12px] mb-[24px]',
+                      {
+                        'items-start': titleAlign === 'left',
+                        'items-center': titleAlign === 'center',
+                      },
+                    ])}
+                  >
+                    {showCloseIcon && (
+                      <Button
+                        color='secondary'
+                        variant='outline'
+                        Icon={<PFClose width={24} height={24} />}
+                        className='border-none p-0 absolute top-[2.5px] right-0' /*  */
+                        onClick={handleClose}
+                      />
+                    )}
 
-                  {Title}
+                    {Title}
 
-                  {Sub}
-                </HUDialog.Title>
+                    {Sub}
+                  </HUDialog.Title>
+                )}
 
                 {typeof Body === 'function' ? <Body /> : Body}
               </HUDialog.Panel>
