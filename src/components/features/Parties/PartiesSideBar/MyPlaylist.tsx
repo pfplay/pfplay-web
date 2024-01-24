@@ -70,8 +70,9 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
   };
   const handleAddMusic = () => {
     openDialog((_, onClose) => ({
-      classNames: { container: 'px-[40px] pt-[36px] w-[800px]' },
+      classNames: { container: 'px-[40px] pt-[36px] w-[800px] bg-black border-none' },
       Body: <YoutubeSearch onClose={onClose} />,
+      hideDim: true,
     }));
   };
 
