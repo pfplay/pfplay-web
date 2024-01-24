@@ -43,7 +43,7 @@ const YoutubeSearchItem = ({
           ...menuItemConfig,
           {
             label: '플레이리스트 추가',
-            icon: <PFAddCircle />,
+            Icon: <PFAddCircle />,
             onClickItem: () => {
               onAddPlaylist?.();
             },

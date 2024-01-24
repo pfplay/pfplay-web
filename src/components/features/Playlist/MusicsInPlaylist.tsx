@@ -34,12 +34,12 @@ export const MusicsInPlaylist = ({
             {
               onClickItem: () => onDeleteFromList?.(listId),
               label: '재생목록에서 삭제',
-              icon: <PFDelete />,
+              Icon: <PFDelete />,
             },
             {
               onClickItem: () => onMoveToOtherList?.(listId),
               label: '다른 재생목록으로 이동',
-              icon: <PFAddPlaylist />,
+              Icon: <PFAddPlaylist />,
             },
           ]}
         />
