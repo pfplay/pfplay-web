@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Disclosure } from '@headlessui/react';
+import { useDeletePlaylistMusicMutation } from '@/api/query-temp/playlist/useDeletePlaylistMusicMutation';
 import { useDeletePlaylistMutation } from '@/api/query-temp/playlist/useDeletePlaylistMutation';
 import { usePlaylistQuery } from '@/api/query-temp/playlist/usePlaylistQuery';
 import CollapseList from '@/components/shared/CollapseList';
@@ -29,6 +30,7 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<number[]>([]);
 
   const { mutate: deletePlaylist } = useDeletePlaylistMutation();
+  const { mutate: deletePlaylistMusic } = useDeletePlaylistMusicMutation();
 
   const handleAddList = () => {
     openDialog((_, onCancel) => ({
@@ -80,9 +82,8 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
     setEditMode(false);
   };
 
-  const handleDeleteMusicFromList = () => {
-    // TODO: API 연동 필요
-    alert('API 연동 필요');
+  const handleDeleteMusicFromList = (musicId: number) => {
+    deletePlaylistMusic([musicId]);
   };
   const handleMoveMusicToOtherList = () => {
     // TODO: API 연동 필요
