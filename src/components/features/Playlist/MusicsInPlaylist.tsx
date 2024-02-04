@@ -6,8 +6,8 @@ type MusicsInPlaylistProps = {
   listId: number;
   size: number;
 
-  onDeleteFromList?: (listId: number) => void;
-  onMoveToOtherList?: (listId: number) => void;
+  onDeleteFromList?: (musicId: number) => void;
+  onMoveToOtherList?: (musicId: number) => void;
 };
 export const MusicsInPlaylist = ({
   listId,
@@ -32,12 +32,12 @@ export const MusicsInPlaylist = ({
           }}
           menuItemList={[
             {
-              onClickItem: () => onDeleteFromList?.(listId),
+              onClickItem: () => onDeleteFromList?.(musicId),
               label: '재생목록에서 삭제',
               Icon: <PFDelete />,
             },
             {
-              onClickItem: () => onMoveToOtherList?.(listId),
+              onClickItem: () => onMoveToOtherList?.(musicId),
               label: '다른 재생목록으로 이동',
               Icon: <PFAddPlaylist />,
             },

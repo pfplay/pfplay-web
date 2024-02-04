@@ -18,8 +18,13 @@ export const PlaylistService: PlaylistClient = {
   createPlaylist: (params) => {
     return pfpAxiosInstance.post(`${ROUTE_V1}`, params);
   },
-  // TODO: update api 연동 필요
-  updatePlaylist: (params) => {
-    return pfpAxiosInstance.put(`${ROUTE_V1}`, params);
+  updatePlaylist: (listId, params) => {
+    return pfpAxiosInstance.patch(`${ROUTE_V1}/${listId}`, params);
+  },
+  deletePlaylist: (data) => {
+    return pfpAxiosInstance.delete(`${ROUTE_V1}`, { data });
+  },
+  deleteMusicFromPlaylist: (data) => {
+    return pfpAxiosInstance.delete(`${ROUTE_V1}/music`, { data });
   },
 };

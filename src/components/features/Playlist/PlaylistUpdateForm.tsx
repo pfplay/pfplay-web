@@ -8,13 +8,13 @@ type PlaylistUpdateFormProps = Pick<PlaylistFormProps, 'onCancel'> & {
   listId: number;
 };
 const PlaylistUpdateForm = ({ listId, ...props }: PlaylistUpdateFormProps) => {
-  const { mutate } = useUpdatePlaylistMutation();
+  const { mutate: updatePlaylist } = useUpdatePlaylistMutation();
   const { data } = usePlaylistQuery();
 
   const target = data?.find((v) => v.id === listId);
 
   const handleSubmit: SubmitHandler<PlaylistFormType> = async ({ name }) => {
-    mutate(
+    updatePlaylist(
       { listId, name },
       {
         onSettled: () => props.onCancel?.(),
