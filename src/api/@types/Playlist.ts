@@ -68,6 +68,29 @@ export interface AddPlaylistMusicResponse {
   duration: string;
 }
 
+export interface DeletePlaylistRequestBody {
+  listIds: number[];
+}
+export interface DeletePlaylistResponse {
+  listIds: number[];
+}
+
+export interface UpdatePlaylistRequestBody {
+  name: string;
+}
+
+export interface UpdatePlaylistResponse {
+  id: number;
+  name: string;
+}
+
+export interface DeletePlaylistMusicRequestBody {
+  listIds: number[];
+}
+export interface DeletePlaylistMusicResponse {
+  listIds: number[];
+}
+
 export interface PlaylistClient {
   getPlaylist: () => Promise<Playlist[]>;
   getMusicFromPlaylist: (
@@ -76,10 +99,16 @@ export interface PlaylistClient {
   ) => Promise<PlaylistMusicResponse>;
   getYoutubeMusic: (params: YoutubeMusicParameters) => Promise<YoutubeMusicResponse>;
   createPlaylist: (params: CreatePlaylistRequestBody) => Promise<CreatePlaylistResponse>;
-  // TODO: update api 연동 필요
-  updatePlaylist: (params: any) => Promise<any>;
+  updatePlaylist: (
+    listId: number,
+    params: UpdatePlaylistRequestBody
+  ) => Promise<UpdatePlaylistResponse>;
+  deletePlaylist: (params: DeletePlaylistRequestBody) => Promise<DeletePlaylistResponse>;
   addMusicToPlaylist: (
     listId: number,
     params: AddPlaylistMusicRequestBody
   ) => Promise<AddPlaylistMusicResponse>;
+  deleteMusicFromPlaylist: (
+    params: DeletePlaylistMusicRequestBody
+  ) => Promise<DeletePlaylistMusicResponse>;
 }
