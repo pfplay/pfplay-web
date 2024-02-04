@@ -19,7 +19,7 @@ export const PlaylistService: PlaylistClient = {
     return pfpAxiosInstance.post(`${ROUTE_V1}`, params);
   },
   updatePlaylist: (listId, params) => {
-    return pfpAxiosInstance.put(`${ROUTE_V1}/${listId}`, params);
+    return pfpAxiosInstance.patch(`${ROUTE_V1}/${listId}`, params);
   },
   deletePlaylist: (data) => {
     return pfpAxiosInstance.delete(`${ROUTE_V1}`, { data });
