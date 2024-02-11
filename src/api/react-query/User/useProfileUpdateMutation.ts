@@ -7,10 +7,7 @@ export const useProfileUpdateMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: UserProfile) => {
-      const prev = queryClient.getQueryData<UserProfile>([USER_PROFILE_QUERY_KEY]);
-      return UserService.updateProfile({ ...prev, ...data });
-    },
+    mutationFn: (data: UserProfile) => UserService.updateProfile(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [USER_PROFILE_QUERY_KEY],
