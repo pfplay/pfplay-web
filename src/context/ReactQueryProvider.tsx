@@ -16,6 +16,7 @@ const config: QueryClientConfig = {
        *
        */
       staleTime: FIVE_MINUTES,
+      refetchOnWindowFocus: false,
     },
   },
 };
