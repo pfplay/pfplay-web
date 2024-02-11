@@ -3,52 +3,16 @@
 import { useSession } from 'next-auth/react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { z } from 'zod';
-import { UserProfile } from '@/api/@types/User';
-import { UserService } from '@/api/services/User';
+import { useProfileQuery } from '@/api/react-query/User/useProfileQuery';
+import { useProfileUpdateMutation } from '@/api/react-query/User/useProfileUpdateMutation';
 import FormItem from '@/components/shared/FormItem';
 import { useAppRouter } from '@/components/shared/Router/useAppRouter';
 import Button from '@/components/shared/atoms/Button';
 import Input from '@/components/shared/atoms/Input';
 import TextArea from '@/components/shared/atoms/TextArea';
 import { cn } from '@/utils/cn';
-
-// FIXME: 아래 query / mutation 은 다른 폴더로 이동 ===================
-export const PROFILE_QUERY_KEY = 'PROFILE';
-export const useProfileQuery = () => {
-  const session = useSession();
-  return useQuery({
-    queryKey: [PROFILE_QUERY_KEY],
-    queryFn: () => UserService.getProfile(),
-    gcTime: Infinity,
-    staleTime: Infinity,
-    enabled: !!session,
-  });
-};
-
-export const useInvalidateProfileQuery = () => {
-  const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries({ queryKey: [PROFILE_QUERY_KEY] });
-};
-
-export const useProfileUpdateMutation = () => {
-  const queryClient = useQueryClient();
-  const invalidateProfileQuery = useInvalidateProfileQuery();
-
-  return useMutation({
-    mutationFn: (data: UserProfile) => {
-      const prev = queryClient.getQueryData<UserProfile>([PROFILE_QUERY_KEY]);
-      return UserService.updateProfile({ ...prev, ...data });
-    },
-    onSuccess: () => {
-      invalidateProfileQuery();
-    },
-  });
-};
-
-// FIXME: 위 query / mutation 은 다른 폴더로 이동 ===================
 
 export const profileFormSchema = z.object({
   nickname: z
@@ -92,8 +56,8 @@ const ProfileSettingForm = () => {
       {
         nickname,
         introduction,
-        bodyId: 1,
-        faceUrl: 'url',
+        bodyId: 1, // FIXME
+        faceUrl: 'url', // FIXME
       },
       {
         onSuccess: async () => {
