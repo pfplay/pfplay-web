@@ -3,6 +3,7 @@
 import { PropsWithChildren, useRef } from 'react';
 import { QueryClient, QueryClientConfig, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { FIVE_MINUTES } from '@/constants/time';
 
 const config: QueryClientConfig = {
   defaultOptions: {
@@ -14,7 +15,7 @@ const config: QueryClientConfig = {
        * above 0 to avoid refetching immediately on the client
        *
        */
-      staleTime: 60 * 1000,
+      staleTime: FIVE_MINUTES,
     },
   },
 };
