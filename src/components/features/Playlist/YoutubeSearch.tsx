@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { YoutubeMusic } from '@/api/@types/Playlist';
-import { useAddPlaylistMusicMutation } from '@/api/query-temp/playlist/useAddPlaylistMusicMutation';
-import { usePlaylistQuery } from '@/api/query-temp/playlist/usePlaylistQuery';
-import useYoutubeInfiniteQuery from '@/api/query-temp/playlist/useYoutubeInfiniteQuery';
+import { usePlaylistMusicAddMutation } from '@/api/react-query/Playlist/usePlaylistMusicAddMutation';
+import { usePlaylistQuery } from '@/api/react-query/Playlist/usePlaylistQuery';
+import useYoutubeInfiniteQuery from '@/api/react-query/Playlist/useYoutubeInfiniteQuery';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFClose } from '@/components/shared/icons';
 import { useDialog } from '@/hooks/useDialog';
@@ -22,7 +22,7 @@ const YoutubeSearch = ({ onClose }: YoutubeSearchProps) => {
     isFetching,
   } = useYoutubeInfiniteQuery(searchQuery);
   const { data: playlist } = usePlaylistQuery();
-  const { mutate: addMusicToPlaylist } = useAddPlaylistMusicMutation();
+  const { mutate: addMusicToPlaylist } = usePlaylistMusicAddMutation();
   const { openDialog } = useDialog();
 
   const handleAddPlaylist = () => {

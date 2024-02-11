@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { AddPlaylistMusicRequestBody } from '@/api/@types/Playlist';
 import { PlaylistService } from '@/api/services/Playlist';
-import { useInvalidatePlaylistMusicsQuery } from './usePlaylistMusicsQuery';
-import { useInvalidatePlaylistQuery } from './usePlaylistQuery';
+import { useInvalidatePlaylistMusicsQuery } from 'api/react-query/Playlist/usePlaylistMusicsQuery';
+import { useInvalidatePlaylistQuery } from 'api/react-query/Playlist/usePlaylistQuery';
 
-export const useAddPlaylistMusicMutation = () => {
+export const usePlaylistMusicAddMutation = () => {
   const invalidatePlaylistMusicsQuery = useInvalidatePlaylistMusicsQuery();
   const invalidatePlaylistQuery = useInvalidatePlaylistQuery();
   return useMutation({

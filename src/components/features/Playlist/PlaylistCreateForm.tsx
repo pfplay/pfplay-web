@@ -2,7 +2,7 @@ import React from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { isAxiosError } from 'axios';
 import { ErrorResponse } from '@/api/@types/@shared';
-import { useCreatePlaylistMutation } from '@/api/query-temp/playlist/useCreatePlaylistMutation';
+import { usePlaylistCreateMutation } from '@/api/react-query/Playlist/usePlaylistCreateMutation';
 import Dialog from '@/components/shared/Dialog';
 import Typography from '@/components/shared/atoms/Typography';
 import { useDialog } from '@/hooks/useDialog';
@@ -10,7 +10,7 @@ import PlaylistForm, { PlaylistFormProps, PlaylistFormType } from './PlaylistFor
 
 type PlaylistCreateFormProps = Pick<PlaylistFormProps, 'onCancel'>;
 const PlaylistCreateForm = (props: PlaylistCreateFormProps) => {
-  const { mutate } = useCreatePlaylistMutation();
+  const { mutate } = usePlaylistCreateMutation();
   const { openDialog } = useDialog();
 
   const handleConnectWallet = () => {
