@@ -1,11 +1,16 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { PLAYLIST_QUERY_KEY } from '@/api/react-query/Playlist/keys';
 import { PlaylistService } from '@/api/services/Playlist';
-import { useInvalidatePlaylistQuery } from 'api/react-query/Playlist/usePlaylistQuery';
 
 export const usePlaylistDeleteMutation = () => {
-  const invalidatePlaylistQuery = useInvalidatePlaylistQuery();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (listIds: number[]) => PlaylistService.deletePlaylist({ listIds }),
-    onSuccess: () => invalidatePlaylistQuery(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [PLAYLIST_QUERY_KEY],
+      });
+    },
   });
 };

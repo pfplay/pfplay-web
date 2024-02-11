@@ -1,12 +1,17 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CreatePlaylistRequestBody } from '@/api/@types/Playlist';
+import { PLAYLIST_QUERY_KEY } from '@/api/react-query/Playlist/keys';
 import { PlaylistService } from '@/api/services/Playlist';
-import { useInvalidatePlaylistQuery } from 'api/react-query/Playlist/usePlaylistQuery';
 
 export const usePlaylistCreateMutation = () => {
-  const invalidatePlaylistQuery = useInvalidatePlaylistQuery();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (params: CreatePlaylistRequestBody) => PlaylistService.createPlaylist(params),
-    onSuccess: () => invalidatePlaylistQuery(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [PLAYLIST_QUERY_KEY],
+      });
+    },
   });
 };

@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { PlaylistService } from '@/api/services/Playlist';
+import { PLAYLIST_QUERY_KEY } from './keys';
 
-const PLAYLIST_QUERY_KEY = 'PLAYLIST';
 export const usePlaylistQuery = () => {
   return useQuery({
     queryKey: [PLAYLIST_QUERY_KEY],
@@ -9,9 +9,4 @@ export const usePlaylistQuery = () => {
     staleTime: Infinity,
     gcTime: Infinity,
   });
-};
-
-export const useInvalidatePlaylistQuery = () => {
-  const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries({ queryKey: [PLAYLIST_QUERY_KEY] });
 };

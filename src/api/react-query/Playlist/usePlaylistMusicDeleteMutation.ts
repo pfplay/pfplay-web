@@ -1,15 +1,18 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { PLAYLIST_MUSICS_QUERY_KEY } from '@/api/react-query/Playlist/keys';
 import { PlaylistService } from '@/api/services/Playlist';
-import { useInvalidatePlaylistMusicsQuery } from 'api/react-query/Playlist/usePlaylistMusicsQuery';
-import { useInvalidatePlaylistQuery } from 'api/react-query/Playlist/usePlaylistQuery';
 
 export const usePlaylistMusicDeleteMutation = () => {
-  const invalidatePlaylistMusicQuery = useInvalidatePlaylistMusicsQuery();
-  const invalidatePlaylistQuery = useInvalidatePlaylistQuery();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (listIds: number[]) => PlaylistService.deleteMusicFromPlaylist({ listIds }),
     onSuccess: (data) => {
-      Promise.all([invalidatePlaylistQuery(), ...data.listIds.map(invalidatePlaylistMusicQuery)]);
+      data.listIds.forEach((id) => {
+        queryClient.invalidateQueries({
+          queryKey: [PLAYLIST_MUSICS_QUERY_KEY, id],
+        });
+      });
     },
   });
 };

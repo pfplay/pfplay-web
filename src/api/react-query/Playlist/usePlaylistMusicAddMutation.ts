@@ -1,22 +1,18 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AddPlaylistMusicRequestBody } from '@/api/@types/Playlist';
+import { PLAYLIST_MUSICS_QUERY_KEY } from '@/api/react-query/Playlist/keys';
 import { PlaylistService } from '@/api/services/Playlist';
-import { useInvalidatePlaylistMusicsQuery } from 'api/react-query/Playlist/usePlaylistMusicsQuery';
-import { useInvalidatePlaylistQuery } from 'api/react-query/Playlist/usePlaylistQuery';
 
 export const usePlaylistMusicAddMutation = () => {
-  const invalidatePlaylistMusicsQuery = useInvalidatePlaylistMusicsQuery();
-  const invalidatePlaylistQuery = useInvalidatePlaylistQuery();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({ listId, ...params }: AddPlaylistMusicRequestBody & { listId: number }) =>
       PlaylistService.addMusicToPlaylist(listId, params),
-    onSuccess: async (data) => {
-      if (data?.playListId) {
-        await Promise.all([
-          invalidatePlaylistQuery(),
-          invalidatePlaylistMusicsQuery(data.playListId),
-        ]);
-      }
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [PLAYLIST_MUSICS_QUERY_KEY, data.playListId],
+      });
     },
   });
 };

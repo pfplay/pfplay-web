@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { YoutubeMusic } from '@/api/@types/Playlist';
 import { usePlaylistMusicAddMutation } from '@/api/react-query/Playlist/usePlaylistMusicAddMutation';
 import { usePlaylistQuery } from '@/api/react-query/Playlist/usePlaylistQuery';
-import useYoutubeInfiniteQuery from '@/api/react-query/Playlist/useYoutubeInfiniteQuery';
+import { useYoutubeInfiniteQuery } from '@/api/react-query/Playlist/useYoutubeInfiniteQuery';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFClose } from '@/components/shared/icons';
 import { useDialog } from '@/hooks/useDialog';
