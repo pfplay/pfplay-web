@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { nextAxiosInstance } from '@/api/client';
+import { nextAxiosInstance } from '@/api/clients/http/client';
 
 const getNftsPayloadSchema = z.object({
   address: z.string(),
