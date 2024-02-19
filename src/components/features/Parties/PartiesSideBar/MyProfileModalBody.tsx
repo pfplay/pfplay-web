@@ -4,6 +4,12 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useProfileQuery } from '@/api/react-query/User/useProfileQuery';
+import { useProfileUpdateMutation } from '@/api/react-query/User/useProfileUpdateMutation';
+import {
+  profileFormSchema,
+  ProfileFormValues,
+} from '@/components/features/Profile/ProfileSettingForm';
 import { FormItemError } from '@/components/shared/FormItem';
 import { useAppRouter } from '@/components/shared/Router/useAppRouter';
 import Button from '@/components/shared/atoms/Button';
@@ -11,12 +17,6 @@ import Input from '@/components/shared/atoms/Input';
 import TextArea from '@/components/shared/atoms/TextArea';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFEdit } from '@/components/shared/icons';
-import {
-  ProfileFormValues,
-  profileFormSchema,
-  useProfileQuery,
-  useProfileUpdateMutation,
-} from '../../Profile/ProfileSettingForm';
 
 type MyProfileModalBodyProps = {
   onAvatarSettingClick?: () => void;

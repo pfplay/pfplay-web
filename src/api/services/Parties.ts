@@ -1,7 +1,7 @@
+import { PartiesClient, PartyRoom } from '@/api/@types/Parties';
+import { pfpAxiosInstance } from '@/api/clients/http/client';
 import { mockPlayListItemConfig } from '@/constants/__mock__/mockPlayListItemConfig';
 import { delay } from '@/utils/delay';
-import { PartiesClient, PartyRoom } from '../@types/Parties';
-import { pfpAxiosInstance } from '../client';
 
 const ROUTE_V1 = 'v1/party-room';
 

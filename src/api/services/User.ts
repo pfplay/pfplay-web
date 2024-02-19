@@ -1,5 +1,5 @@
 import { UserClient } from '@/api/@types/User';
-import { pfpAxiosInstance } from '@/api/client';
+import { pfpAxiosInstance } from '@/api/clients/http/client';
 
 const ROUTE_V1 = 'v1/user';
 

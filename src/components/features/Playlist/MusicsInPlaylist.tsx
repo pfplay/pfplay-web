@@ -1,4 +1,4 @@
-import { usePlaylistMusicsQuery } from '@/api/query-temp/playlist/usePlaylistMusicsQuery';
+import { usePlaylistMusicsQuery } from '@/api/react-query/Playlist/usePlaylistMusicsQuery';
 import PlayListItem from '@/components/shared/atoms/PlayListItem';
 import { PFAddPlaylist, PFDelete } from '@/components/shared/icons';
 

@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { CookieKey } from './constants/cookie';
 import { Language } from './constants/lang';
-import { YEARS_10 } from './constants/time';
+import { TEN_YEARS } from './constants/time';
 
 export const middleware = (req: NextRequest) => {
   const response = NextResponse.next();
 
   if (!req.cookies.get(CookieKey.LangCookie)?.value) {
-    response.cookies.set(CookieKey.LangCookie, Language.En, { path: '/', maxAge: YEARS_10 });
+    response.cookies.set(CookieKey.LangCookie, Language.En, { path: '/', maxAge: TEN_YEARS });
 
     setCookieToRequestHeader(req, response);
 

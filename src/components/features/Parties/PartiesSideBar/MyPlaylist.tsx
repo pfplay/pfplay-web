@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Disclosure } from '@headlessui/react';
-import { useDeletePlaylistMusicMutation } from '@/api/query-temp/playlist/useDeletePlaylistMusicMutation';
-import { useDeletePlaylistMutation } from '@/api/query-temp/playlist/useDeletePlaylistMutation';
-import { usePlaylistQuery } from '@/api/query-temp/playlist/usePlaylistQuery';
+import { usePlaylistDeleteMutation } from '@/api/react-query/Playlist/usePlaylistDeleteMutation';
+import { usePlaylistMusicDeleteMutation } from '@/api/react-query/Playlist/usePlaylistMusicDeleteMutation';
+import { usePlaylistQuery } from '@/api/react-query/Playlist/usePlaylistQuery';
 import CollapseList from '@/components/shared/CollapseList';
 import Dialog from '@/components/shared/Dialog';
 import Drawer from '@/components/shared/Drawer';
@@ -29,8 +29,8 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
   const [editMode, setEditMode] = useState(false);
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<number[]>([]);
 
-  const { mutate: deletePlaylist } = useDeletePlaylistMutation();
-  const { mutate: deletePlaylistMusic } = useDeletePlaylistMusicMutation();
+  const { mutate: deletePlaylist } = usePlaylistDeleteMutation();
+  const { mutate: deletePlaylistMusic } = usePlaylistMusicDeleteMutation();
 
   const handleAddList = () => {
     openDialog((_, onCancel) => ({

@@ -1,5 +1,5 @@
 import { AvatarClient } from '@/api/@types/Avatar';
-import { pfpAxiosInstance } from '@/api/client';
+import { pfpAxiosInstance } from '@/api/clients/http/client';
 import { mockAvatarPartsList } from '@/constants/__mock__/mockAvatarPartsList';
 import { delay } from '@/utils/delay';
 

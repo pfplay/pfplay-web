@@ -1,5 +1,6 @@
-import { PlaylistClient } from '../@types/Playlist';
-import { pfpAxiosInstance } from '../client';
+import { PlaylistClient } from '@/api/@types/Playlist';
+import { pfpAxiosInstance } from '@/api/clients/http/client';
+
 const ROUTE_V1 = 'v1/play-list';
 
 export const PlaylistService: PlaylistClient = {

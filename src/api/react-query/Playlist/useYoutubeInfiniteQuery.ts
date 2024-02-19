@@ -1,23 +1,24 @@
 import { useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { PlaylistService } from '@/api/services/Playlist';
+import { FIVE_MINUTES } from '@/constants/time';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import { PLAYLIST_YOUTUBE_QUERY_KEY } from './keys';
 
-const YOUTUBE_INFINITE_QUERY_KEY = 'YOUTUBE';
-const useYoutubeInfiniteQuery = (q: string = '') => {
+export const useYoutubeInfiniteQuery = (q: string) => {
   const { setRef, isIntersecting } = useIntersectionObserver();
   const { fetchNextPage, ...query } = useInfiniteQuery({
+    queryKey: [PLAYLIST_YOUTUBE_QUERY_KEY, q],
     queryFn: ({ pageParam }) =>
       PlaylistService.getYoutubeMusic({
         q,
         ...(pageParam && { pageToken: pageParam }),
       }),
-    queryKey: [YOUTUBE_INFINITE_QUERY_KEY, q],
     initialPageParam: '',
-    getNextPageParam: (lastPage) => {
-      return lastPage.nextPageToken;
-    },
+    getNextPageParam: ({ nextPageToken }) => nextPageToken,
     enabled: !!q,
+    staleTime: 0,
+    gcTime: FIVE_MINUTES,
   });
 
   useEffect(() => {
@@ -27,9 +28,7 @@ const useYoutubeInfiniteQuery = (q: string = '') => {
   }, [q, isIntersecting, fetchNextPage]);
 
   return {
-    ...query,
     setRef,
+    ...query,
   };
 };
-
-export default useYoutubeInfiniteQuery;
