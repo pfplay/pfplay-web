@@ -1,5 +1,6 @@
-import { FC, ReactNode, useCallback, useEffect, useRef } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import Loading from '@/components/shared/atoms/Loading';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { cn } from '@/utils/cn';
 
 interface Props {
@@ -17,48 +18,23 @@ const InfiniteScroll: FC<Props> = ({
   endMessage = 'No more data',
   className,
 }) => {
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const observedRef = useRef<HTMLDivElement | null>(null);
-
-  const handleIntersect: IntersectionObserverCallback = useCallback(
-    (entries) => {
-      if (entries[0].isIntersecting && hasMore) {
-        load();
-      }
-    },
-    [load, hasMore]
-  );
+  const { setRef, isIntersecting } = useIntersectionObserver<HTMLDivElement>({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.8,
+  });
 
   useEffect(() => {
-    observerRef.current = new IntersectionObserver(handleIntersect, {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.8,
-    });
-
-    if (observedRef.current) {
-      observerRef.current.observe(observedRef.current);
+    if (isIntersecting && hasMore) {
+      load();
     }
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [handleIntersect]);
-
-  useEffect(() => {
-    if (observerRef.current && observedRef.current) {
-      observerRef.current.disconnect();
-      observerRef.current.observe(observedRef.current);
-    }
-  }, [hasMore]);
+  }, [isIntersecting, hasMore]);
 
   return (
     <div className={className}>
       {children}
       {(hasMore || endMessage) && (
-        <div ref={observedRef} className={cn('h-[300px] flexRowCenter text-[20px]')}>
+        <div ref={setRef} className={cn('h-[300px] flexRowCenter text-[20px]')}>
           {hasMore ? <Loading /> : endMessage}
         </div>
       )}
