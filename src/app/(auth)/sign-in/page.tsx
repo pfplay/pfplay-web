@@ -17,7 +17,7 @@ const SignInPage = () => {
   const dic = useDictionary();
 
   const signInGoogle = async () => {
-    signIn('google');
+    signIn('google', { callbackUrl: '/parties' });
   };
 
   const openLookAroundDialog = () => {

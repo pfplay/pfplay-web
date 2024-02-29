@@ -16,9 +16,11 @@ const HomePage = async () => {
         priority
       />
       <ButtonLink
-        href={
-          !session ? '/sign-in' : !session.user.profileUpdated ? '/settings/profile' : '/parties'
-        }
+        href={(() => {
+          if (!session) return '/sign-in';
+          if (!session.user.profileUpdated) return '/settings/profile';
+          return '/parties';
+        })()}
         linkTitle={dic['onboard.btn.pfp_play']}
         classNames={{
           button: 'w-[360px]',

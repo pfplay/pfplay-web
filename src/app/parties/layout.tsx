@@ -9,7 +9,7 @@ const ProtectedLayout = async ({ children }: PropsWithChildren) => {
    * 로그인은 했지만 프로필을 아직 생성하지 않은 경우
    */
   if (session && !session.user.profileUpdated) {
-    redirect('/profile/settings');
+    redirect('/settings/profile');
   }
 
   return <>{children}</>;

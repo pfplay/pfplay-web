@@ -39,12 +39,12 @@ export interface UserLoginResponse {
 }
 
 export interface ProfileResponse {
-  nickname: string;
-  introduction: string;
+  nickname?: string;
+  introduction?: string;
   faceUrl: string;
   bodyId: number;
   bodyUrl: string;
-  walletAddress: string;
+  walletAddress?: string;
 }
 
 export interface UserClient {
