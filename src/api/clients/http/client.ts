@@ -19,6 +19,6 @@ pfpAxiosInstance.interceptors.response.use(
   flow([logError, processError])
 );
 
-export const nextAxiosInstance = createAxiosInstance(process.env.NEXT_PUBLIC_NEXT_API);
+export const nextAxiosInstance = createAxiosInstance('/api');
 nextAxiosInstance.interceptors.request.use(flow([logRequest]));
 nextAxiosInstance.interceptors.response.use(flow([logResponse, unwrapResponse]), logError);
