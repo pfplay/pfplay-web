@@ -1,7 +1,6 @@
 import React from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { isAxiosError } from 'axios';
-import { ErrorResponse } from '@/api/@types/@shared';
+import { ErrorCode } from '@/api/@types/@shared';
 import { usePlaylistCreateMutation } from '@/api/react-query/Playlist/usePlaylistCreateMutation';
 import Dialog from '@/components/shared/Dialog';
 import Typography from '@/components/shared/atoms/Typography';
@@ -10,7 +9,7 @@ import PlaylistForm, { PlaylistFormProps, PlaylistFormType } from './PlaylistFor
 
 type PlaylistCreateFormProps = Pick<PlaylistFormProps, 'onCancel'>;
 const PlaylistCreateForm = (props: PlaylistCreateFormProps) => {
-  const { mutate } = usePlaylistCreateMutation();
+  const { mutate: createPlayList } = usePlaylistCreateMutation();
   const { openDialog } = useDialog();
 
   const handleConnectWallet = () => {
@@ -46,18 +45,15 @@ const PlaylistCreateForm = (props: PlaylistCreateFormProps) => {
   };
 
   const handleSubmit: SubmitHandler<PlaylistFormType> = async ({ name }) => {
-    mutate(
+    createPlayList(
       { name },
       {
         onError: (err) => {
-          if (isAxiosError<ErrorResponse>(err)) {
-            if (err.response?.data.data.errorCode === 'BR001') {
-              openNeedConnectWalletDialog();
-            }
-
-            if (err.response?.data.data.errorCode === 'BR002') {
-              openLimitDialog();
-            }
+          if (err.response?.data.errorCode === ErrorCode.REQUIRED_WALLET_CONNECT) {
+            openNeedConnectWalletDialog();
+          }
+          if (err.response?.data.errorCode === ErrorCode.PLAYLIST_MAXIMUM_COUNT_EXCEED) {
+            openLimitDialog();
           }
         },
         onSettled: () => props.onCancel?.(),

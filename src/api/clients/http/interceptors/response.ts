@@ -1,5 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { getErrorMessage } from '@/api/helper';
+import { isPureObject } from '@/utils/isPureObject';
 import { printErrorLog, printResponseLog } from '@/utils/log';
 
 export function logResponse(response: AxiosResponse) {
@@ -39,5 +40,10 @@ export function processError(e: AxiosError) {
     // TODO: 에러 없이 로그인 페이지로 리디렉션, next-auth 토큰 제거
     // return;
   }
+
+  if (isPureObject(e.response.data) && 'data' in e.response.data) {
+    e.response.data = e.response.data.data; // unwrap
+  }
+
   return Promise.reject(e);
 }
