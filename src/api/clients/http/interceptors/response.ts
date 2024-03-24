@@ -35,8 +35,12 @@ export function logError(e: AxiosError) {
   return Promise.reject(e);
 }
 
-export function processError(e: AxiosError) {
-  if (e.status === 401 || e.response?.status === 401) {
+export function processError(e: AxiosError<unknown>) {
+  if (!e.response) {
+    return Promise.reject(e);
+  }
+
+  if (e.status === 401 || e.response.status === 401) {
     // TODO: 에러 없이 로그인 페이지로 리디렉션, next-auth 토큰 제거
     // return;
   }
