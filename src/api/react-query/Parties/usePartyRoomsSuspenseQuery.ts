@@ -1,6 +1,7 @@
 import { QueryKey } from '@tanstack/query-core';
-import { DefaultError, useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { PaginationPayload, PaginationResponse } from '@/api/@types/@shared';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { APIError, PaginationPayload, PaginationResponse } from '@/api/@types/@shared';
 import { PartyRoomSummary } from '@/api/@types/Parties';
 import { PartiesService } from '@/api/services/Parties';
 import { ONE_HOUR } from '@/constants/time';
@@ -9,7 +10,7 @@ import { PARTY_ROOMS_QUERY_KEY } from './keys';
 export const usePartyRoomsSuspenseQuery = (initialPagePayload: PaginationPayload) => {
   return useSuspenseInfiniteQuery<
     PaginationResponse<PartyRoomSummary>,
-    DefaultError,
+    AxiosError<APIError>,
     PartyRoomSummary[],
     QueryKey,
     PaginationPayload
