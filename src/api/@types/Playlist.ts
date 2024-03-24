@@ -2,7 +2,7 @@ export interface Playlist {
   id: number;
   orderNumber: number;
   name: string;
-  type: string;
+  type: string; // FIXME: change to enum
   count: number;
 }
 
