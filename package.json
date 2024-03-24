@@ -5,7 +5,7 @@
   "scripts": {
     "svgr": "node scripts/svgr",
     "generate-enums": "node scripts/copyJavaEnums",
-    "prepare": "husky install && npm run svgr",
+    "prepare": "husky install && yarn svgr",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
