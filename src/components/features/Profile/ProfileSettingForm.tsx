@@ -3,7 +3,6 @@
 import { useSession } from 'next-auth/react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { isAxiosError } from 'axios';
 import { z } from 'zod';
 import { useProfileQuery } from '@/api/react-query/User/useProfileQuery';
 import { useProfileUpdateMutation } from '@/api/react-query/User/useProfileUpdateMutation';
@@ -72,10 +71,8 @@ const ProfileSettingForm = () => {
         },
         onError: (err) => {
           // FIXME: 다른 브랜치에서 작업한 server response 를 제네릭으로 변경
-          if (isAxiosError<{ data: { code: number } }>(err)) {
-            if (err.response?.data.data.code === 409) {
-              setError('nickname', { message: '이미 사용중인 이름입니다.' });
-            }
+          if (err.response?.data.code === 409) {
+            setError('nickname', { message: '이미 사용중인 이름입니다.' });
           }
         },
       }
