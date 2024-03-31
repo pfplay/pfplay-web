@@ -1,4 +1,4 @@
-import PrivacyPolicy from '@/components/features/PrivacyAndTerms/PrivacyPolicy';
+import PrivacyPolicy from '@/components/features/privacy-and-terms/privacy-policy.component';
 
 const PrivacyPolicyPage = () => {
   return <PrivacyPolicy />;

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { PropsWithChildren } from 'react';
-import { getServerAuthSession } from '@/utils/authOptions';
+import { getServerAuthSession } from '@/utils/next-auth-options';
 
 const ProtectedLayout = async ({ children }: PropsWithChildren) => {
   const session = await getServerAuthSession();

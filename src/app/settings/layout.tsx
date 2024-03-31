@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation';
 import { PropsWithChildren } from 'react';
-import Header from '@/components/layouts/Header';
-import WalletProvider from '@/context/WalletProvider';
-import { getServerAuthSession } from '@/utils/authOptions';
+import Header from '@/components/layouts/header.component';
+import { WalletProvider } from '@/context/wallet.provider';
+import { getServerAuthSession } from '@/utils/next-auth-options';
 
 const SettingsLayout = async ({ children }: PropsWithChildren) => {
   const session = await getServerAuthSession();

@@ -1,4 +1,4 @@
-import TermsOfService from '@/components/features/PrivacyAndTerms/TermsOfService';
+import TermsOfService from '@/components/features/privacy-and-terms/terms-of-service.component';
 
 const TermsOfServicePage = () => {
   return <TermsOfService />;
