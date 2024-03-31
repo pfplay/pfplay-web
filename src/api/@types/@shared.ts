@@ -14,3 +14,20 @@ export type APIError = {
   message: string; // ex) "인증이 올바르지 않습니다."
   errorCode: ErrorCode; // ex) "BR001", "BR002"
 };
+
+export type PaginationPayload = {
+  page: number;
+  size: number;
+};
+
+type Pagination = {
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+  totalElements: number;
+  hasNext: boolean;
+};
+export type PaginationResponse<T> = {
+  content: T[];
+  pagination: Pagination;
+};

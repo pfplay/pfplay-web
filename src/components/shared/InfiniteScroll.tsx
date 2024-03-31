@@ -34,7 +34,7 @@ const InfiniteScroll: FC<Props> = ({
     <div className={className}>
       {children}
       {(hasMore || endMessage) && (
-        <div ref={setRef} className={cn('h-[300px] flexRowCenter text-[20px]')}>
+        <div ref={setRef} className={cn('h-[300px] max-h-full flexRowCenter text-[20px]')}>
           {hasMore ? <Loading /> : endMessage}
         </div>
       )}

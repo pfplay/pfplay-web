@@ -2,20 +2,19 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { PartyRoomSummary } from '@/api/@types/Parties';
 import BackdropBlurContainer from '@/components/shared/BackdropBlurContainer';
-import { PlayListItemType } from '@/components/shared/atoms/PlayListItem';
 import Typography from '@/components/shared/atoms/Typography';
 import { PFInfoOutline } from '@/components/shared/icons';
 import { cn } from '@/utils/cn';
-import MembersInfoSection from './MembersInfoSection';
+import Participants from 'components/features/Parties/Participants';
 
 interface PartyRoomCardProps {
   roomId: number;
-  // TODO: set proper type for value when api is connected
-  playListItemConfig: PlayListItemType;
+  summary: PartyRoomSummary;
 }
 
-const PartyRoomCard = ({ roomId, playListItemConfig }: PartyRoomCardProps) => {
+const PartyRoomCard = ({ roomId, summary }: PartyRoomCardProps) => {
   return (
     <BackdropBlurContainer>
       <Link
@@ -31,8 +30,9 @@ const PartyRoomCard = ({ roomId, playListItemConfig }: PartyRoomCardProps) => {
             <div className='w-[80px] h-[44px] bg-gray-700'>
               <Image
                 priority
-                src={playListItemConfig?.src ?? '/images/ETC/PlaylistThumbnail.png'}
-                alt={playListItemConfig?.alt ?? playListItemConfig.title}
+                // src={summary?.src ?? '/images/ETC/PlaylistThumbnail.png'}
+                src={'/images/ETC/PlaylistThumbnail.png'}
+                alt={summary.name}
                 width={80}
                 height={44}
                 className={cn('w-full h-full object-contain select-none')}
@@ -43,12 +43,15 @@ const PartyRoomCard = ({ roomId, playListItemConfig }: PartyRoomCardProps) => {
               overflow='ellipsis'
               className='flex-1 select-none text-gray-50'
             >
-              {playListItemConfig?.title}
+              {summary.name}
             </Typography>
           </div>
           <div className='bg-gray-600 h-[1px]' />
           <div className='items-center justify-between flexRow'>
-            <MembersInfoSection membersCount={50} membersImage={[{}, {}, {}, {}]} />
+            <Participants
+              count={summary.participantTotalCount}
+              participants={summary.participants}
+            />
             <PFInfoOutline width={24} height={24} />
           </div>
         </div>
