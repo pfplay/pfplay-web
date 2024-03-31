@@ -1,8 +1,8 @@
-import CreatePartyRoomCard from '@/components/features/Parties/CreatePartyRoomCard';
-import PartiesMainStageCard from '@/components/features/Parties/PartiesMainStageCard';
-import PartiesSideBar from '@/components/features/Parties/PartiesSideBar';
-import PartyRoomList from '@/components/features/Parties/PartyRoomList';
-import SuspenseWithErrorBoundary from '@/components/shared/SuspenseWithErrorBoundary';
+import CreatePartyRoomCard from '@/components/features/parties/create-party-room-card';
+import PartiesMainStageCard from '@/components/features/parties/parties-main-stage-card.component';
+import PartiesSideBar from '@/components/features/parties/parties-side-bar';
+import PartyRoomList from '@/components/features/parties/party-room-list.component';
+import SuspenseWithErrorBoundary from '@/components/shared/suspense-with-error-boundary.component';
 import { cn } from '@/utils/cn';
 
 const PartyLobbyPage = async () => {

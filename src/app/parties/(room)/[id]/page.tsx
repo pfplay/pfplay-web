@@ -1,5 +1,5 @@
-import PartiesSideBar from '@/components/features/Parties/PartiesSideBar';
-import Button from '@/components/shared/atoms/Button';
+import PartiesSideBar from '@/components/features/parties/parties-side-bar';
+import Button from '@/components/shared/atoms/button.component';
 import {
   PFInfoOutline,
   PFCampaign,

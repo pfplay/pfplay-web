@@ -1,4 +1,4 @@
-import AvatarSettingForm from '@/components/features/Avatar/AvatarSettingForm';
+import AvatarSettingForm from '@/components/features/avatar/avatar-setting-form.component';
 export const dynamic = 'force-dynamic';
 
 const AvatarSettingsPage = () => {

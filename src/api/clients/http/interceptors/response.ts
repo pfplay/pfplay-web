@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { getErrorMessage } from '@/api/helper';
-import { isPureObject } from '@/utils/isPureObject';
+import { isPureObject } from '@/utils/is-pure-object';
 import { printErrorLog, printResponseLog } from '@/utils/log';
 
 export function logResponse(response: AxiosResponse) {

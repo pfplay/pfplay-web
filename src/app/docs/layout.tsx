@@ -1,9 +1,9 @@
 import { PropsWithChildren } from 'react';
-import PrivacyAndTermsTabGroup from '@/components/features/PrivacyAndTerms/PrivacyAndTermsTabGroup';
-import Header from '@/components/layouts/Header';
-import { TabPanels, TabPanel } from '@/components/shared/atoms/CustomTab';
-import Typography from '@/components/shared/atoms/Typography';
-import { privacyAndTermsTabsConfig } from '@/constants/privacyAndTerms/privacyAndTermsTabsConfig';
+import PrivacyAndTermsTabGroup from '@/components/features/privacy-and-terms/privacy-and-terms-tab-group.component';
+import Header from '@/components/layouts/header.component';
+import { TabPanels, TabPanel } from '@/components/shared/atoms/custom-tab.component';
+import Typography from '@/components/shared/atoms/typography.component';
+import { privacyAndTermsTabsConfig } from '@/constants/privacy-and-terms/privacy-and-terms-tabs-config';
 
 const PrivacyAndTermsLayout = ({ children }: PropsWithChildren) => {
   return (
