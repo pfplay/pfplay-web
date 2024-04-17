@@ -5,7 +5,7 @@ import {
   PrefetchOptions,
 } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter } from 'next/navigation';
-import { PathMap } from '@/types/pathmap';
+import { PathMap } from 'pathmap';
 import { parseHref } from './utils';
 
 type Href = keyof PathMap;

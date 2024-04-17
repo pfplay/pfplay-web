@@ -1,6 +1,6 @@
+import { PathMap } from 'pathmap';
 import Button, { ButtonProps } from '@/components/shared/atoms/button.component';
 import { AppLink, Href, PathParams } from '@/components/shared/router/app-link.component';
-import { PathMap } from '@/components/shared/router/types';
 import { cn } from '@/utils/cn';
 
 type ButtonLinkProps<P extends Href> = {
