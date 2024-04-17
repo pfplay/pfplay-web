@@ -3,9 +3,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { Meta, StoryObj } from '@storybook/react';
 import { z } from 'zod';
 import { cn } from '@/shared/lib/cn';
-import Button from '@/shared/ui/components/button/button.component';
-import FormItem, { FormItemProps } from '@/shared/ui/components/form-item/form-item.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import FormItem, { FormItemProps } from './form-item.component';
+import { Button } from '../button';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'base/FormItem',

@@ -4,8 +4,8 @@ import PlaylistItem from '@/components/features/playlist/playlist-item.component
 import UserListItem from '@/components/features/user-list-item.component';
 import { fixtureCollapseList } from '@/constants/__fixture__/collapse-list.fixture';
 import { fixtureMenuItems } from '@/constants/__fixture__/menu-items.fixture';
-import CollapseList from '@/shared/ui/components/collapse-list/collapse-list.component';
-import Tag from '@/shared/ui/components/tag/tag.component';
+import CollapseList from './collapse-list.component';
+import { Tag } from '../tag';
 
 const meta = {
   title: 'base/CollapseList',

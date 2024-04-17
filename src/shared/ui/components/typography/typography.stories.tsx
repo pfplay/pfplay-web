@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import Typography, { TypographyType } from '@/shared/ui/components/typography/typography.component';
+import Typography, { TypographyType } from './typography.component';
 
 const meta = {
   title: 'base/Typography',

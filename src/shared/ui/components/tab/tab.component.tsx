@@ -2,7 +2,7 @@
 import { Fragment, JSX } from 'react';
 import { Tab as HeadlessUITab } from '@headlessui/react';
 import { cn } from '@/shared/lib/cn';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Typography } from '../typography';
 
 interface CommonProps {
   tabTitle: string;
@@ -14,9 +14,9 @@ interface BoxProps {
 interface NonBoxProps {
   variant?: 'line' | 'text';
 }
-export type TabProps = CommonProps & (BoxProps | NonBoxProps);
+type TabProps = CommonProps & (BoxProps | NonBoxProps);
 
-export const Tab = (props: TabProps) => {
+const Tab = (props: TabProps) => {
   if (props.variant === 'box') {
     return (
       <HeadlessUITab as={Fragment}>
@@ -63,6 +63,8 @@ const getCommentTabStyle = (selected: boolean) => {
     selected && 'text-red-300 border-red-300'
   );
 };
+
+export default Tab;
 
 export const TabGroup = HeadlessUITab.Group;
 export const TabList = HeadlessUITab.List;

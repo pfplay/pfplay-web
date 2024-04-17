@@ -1,9 +1,9 @@
 import { useState, JSX } from 'react';
 import { cn } from '@/shared/lib/cn';
 import useClickOutside from '@/shared/lib/use-click-outside.hook';
-import IconMenu from '@/shared/ui/components/icon-menu/icon-menu.component';
-import { MenuItem } from '@/shared/ui/components/menu/menu-item-panel.component';
 import { PFMoreVert } from '@/shared/ui/icons';
+import { IconMenu } from '../icon-menu';
+import { MenuItem } from '../menu';
 
 interface DisplayOptionMenuOnHoverListenerProps {
   menuConfig: MenuItem[];

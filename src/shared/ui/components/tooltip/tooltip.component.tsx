@@ -5,12 +5,13 @@ import {
   cloneElement,
   useState,
   useLayoutEffect,
+  FC,
 } from 'react';
 import { createPortal } from 'react-dom';
 import { DomId } from '@/constants/dom-id';
 import { cn } from '@/shared/lib/cn';
 import { repeatAnimationFrame } from '@/shared/lib/repeat-animation-frame';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Typography } from '../typography';
 
 interface Position extends Pick<CSSProperties, 'top' | 'left'> {
   ready: boolean;
@@ -28,13 +29,7 @@ interface TooltipProps {
 /**
  * @description children 이 function component 일 경우 forwardedRef 가 적용되어 있어야 합니다.
  */
-const Tooltip: React.FC<TooltipProps> = ({
-  children,
-  title,
-  visible,
-  color = 'red',
-  spacing = 13,
-}) => {
+const Tooltip: FC<TooltipProps> = ({ children, title, visible, color = 'red', spacing = 13 }) => {
   const [position, setPosition] = useState<Position>({
     top: 0,
     left: 0,

@@ -3,12 +3,12 @@ import { useMemo, useRef, useState } from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
 import { cn } from '@/shared/lib/cn';
 import { delay } from '@/shared/lib/delay';
-import Button from '@/shared/ui/components/button/button.component';
-import Dialog from '@/shared/ui/components/dialog/dialog.component';
-import { useDialog } from '@/shared/ui/components/dialog/use-dialog.hook';
-import FormItem from '@/shared/ui/components/form-item/form-item.component';
-import Tag from '@/shared/ui/components/tag/tag.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import Dialog from './dialog.component';
+import { useDialog } from './use-dialog.hook';
+import { Button } from '../button';
+import { FormItem } from '../form-item';
+import { Tag } from '../tag';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'base/Dialog',

@@ -1,7 +1,7 @@
 import type { Meta } from '@storybook/react';
 import { fixtureMenuItems } from '@/constants/__fixture__/menu-items.fixture';
-import IconMenu from '@/shared/ui/components/icon-menu/icon-menu.component';
 import { PFMoreVert, PFArrowLeft, PFChevronDown } from '@/shared/ui/icons';
+import IconMenu from './icon-menu.component';
 
 const meta = {
   title: 'base/IconMenu',

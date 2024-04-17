@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { getErrorMessage } from '@/api/helper';
-import Typography from '@/shared/ui/components/typography/typography.component';
 import Dialog, { DialogProps } from './dialog.component';
 import { useDialogContext } from './dialog.context';
+import { Typography } from '../typography';
 
 interface AlertDialogParams extends Pick<DialogProps, 'title' | 'Sub'> {
   content?: string;

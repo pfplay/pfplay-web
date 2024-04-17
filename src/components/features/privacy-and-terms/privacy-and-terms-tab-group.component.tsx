@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { privacyAndTermsTabsConfig } from '@/constants/privacy-and-terms/privacy-and-terms-tabs-config';
 import { AppLink } from '@/entities/router';
 import { cn } from '@/shared/lib/cn';
-import { Tab, TabGroup, TabList } from '@/shared/ui/components/tab/tab.component';
+import { Tab, TabGroup, TabList } from '@/shared/ui/components/tab';
 
 interface PrivacyAndTermsTabGroupProps {
   children: ReactNode;

@@ -2,8 +2,8 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
 import { cn } from '@/shared/lib/cn';
-import Loading from '@/shared/ui/components/loading/loading.component';
-import Typography, { TypographyType } from '@/shared/ui/components/typography/typography.component';
+import { Loading } from '../loading';
+import { Typography, TypographyType } from '../typography';
 
 type TextButtonColor = 'basic' | 'primary' | 'secondary';
 

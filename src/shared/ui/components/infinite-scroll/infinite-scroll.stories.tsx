@@ -1,7 +1,7 @@
 // InfiniteScroll.stories.tsx
 import { useState } from 'react';
 import { Meta, StoryFn } from '@storybook/react';
-import InfiniteScroll from '@/shared/ui/components/infinite-scroll/infinite-scroll.component';
+import InfiniteScroll from './infinite-scroll.component';
 
 const meta: Meta<typeof InfiniteScroll> = {
   title: 'base/InfiniteScroll',

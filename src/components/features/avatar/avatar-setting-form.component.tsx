@@ -3,13 +3,7 @@ import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary
 import { cn } from '@/shared/lib/cn';
 import BackButton from '@/shared/ui/components/back-button/back-button.component';
 import ButtonLink from '@/shared/ui/components/button-link/button-link.component';
-import {
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  TabPanels,
-} from '@/shared/ui/components/tab/tab.component';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
 import AvatarBodyList from './avatar-body-list.component';
 import AvatarFaceList from './avatar-face-list.component';
 import SelectedAvatar from './selected-avatar.component';

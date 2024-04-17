@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
-import Button from '@/shared/ui/components/button/button.component';
-import Input from '@/shared/ui/components/input/input.component';
 import { PFHeadset } from '@/shared/ui/icons';
+import Input from './input.component';
+import { Button } from '../button';
 
 const meta: Meta<typeof Input> = {
   title: 'base/Input',

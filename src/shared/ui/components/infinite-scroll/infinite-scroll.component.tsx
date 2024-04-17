@@ -1,7 +1,7 @@
 import { FC, ReactNode, useEffect } from 'react';
 import { cn } from '@/shared/lib/cn';
 import useIntersectionObserver from '@/shared/lib/use-intersection-observer.hook';
-import Loading from '@/shared/ui/components/loading/loading.component';
+import { Loading } from '../loading';
 
 interface Props {
   load: () => void;

@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { Menu } from '@headlessui/react';
 import { cn } from '@/shared/lib/cn';
-import { sizeDict, colorsDict } from '@/shared/ui/components/button/button.component';
+import { buttonColorsDict, buttonSizeDict } from '../button';
 
 interface MenuButtonProps {
   type: 'icon' | 'button';
@@ -21,7 +21,7 @@ export const MenuButton = ({
         'flex h-max items-center justify-center gap-[8px] rounded-[4px]',
         type === 'icon' && 'flex items-center gap-2 text-gray-50 p-1',
         type === 'button' &&
-          `border border-solid px-[16px] h-[36px] ${sizeDict['md']} ${colorsDict['secondary']['outline'].default}`
+          `border border-solid px-[16px] h-[36px] ${buttonSizeDict['md']} ${buttonColorsDict['secondary']['outline'].default}`
       )}
     >
       {children}

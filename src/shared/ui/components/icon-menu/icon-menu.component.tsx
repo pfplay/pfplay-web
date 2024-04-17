@@ -2,11 +2,7 @@
 import { forwardRef, ReactNode } from 'react';
 import { Menu } from '@headlessui/react';
 import { cn } from '@/shared/lib/cn';
-import MenuButton from '@/shared/ui/components/menu/menu-button.component';
-import MenuItemPanel, {
-  MenuItem,
-  MenuItemPanelSize,
-} from '@/shared/ui/components/menu/menu-item-panel.component';
+import { MenuItem, MenuButton, MenuItemPanelSize, MenuItemPanel } from '../menu';
 
 interface IconMenuProps {
   menuItemConfig: Array<MenuItem>;

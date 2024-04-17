@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Button from '@/shared/ui/components/button/button.component';
 import { PFLanguage } from '@/shared/ui/icons';
+import Button from './button.component';
 
 const meta = {
   title: 'base/Button',

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState, ChangeEvent } from 'react';
 
 type UseDebounceOptions = {
   interval?: number;
@@ -20,7 +20,7 @@ export const useDebounce = (
   const [value, setInputValue] = useState<string>('');
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setInputValue(newValue);
 

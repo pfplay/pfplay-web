@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, ReactNode } from 'react';
 import { cn } from '@/shared/lib/cn';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Typography } from '../typography';
 
 type Axis = 'vertical' | 'horizontal';
 export interface FormItemProps {

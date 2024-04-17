@@ -1,7 +1,8 @@
 'use client';
 
+import { ReactNode } from 'react';
 import { cn } from '@/shared/lib/cn';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Typography } from '../typography';
 
 interface CommonProps {
   value: string;
@@ -9,7 +10,7 @@ interface CommonProps {
 }
 interface ProfileProps {
   variant: 'profile';
-  PrefixIcon: React.ReactNode;
+  PrefixIcon: ReactNode;
 }
 interface NonProfileProps {
   variant: 'filled' | 'outlined';

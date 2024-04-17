@@ -3,11 +3,9 @@ import { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo, useR
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import { cn } from '@/shared/lib/cn';
 import { wrapByTag } from '@/shared/lib/wrap-by-tag';
-import Button, { ButtonProps } from '@/shared/ui/components/button/button.component';
-import Typography, {
-  TypographyProps,
-} from '@/shared/ui/components/typography/typography.component';
 import { PFClose } from '@/shared/ui/icons';
+import { Button, ButtonProps } from '../button';
+import { Typography, TypographyProps } from '../typography';
 
 interface DialogComposition {
   ButtonGroup: FC<PropsWithChildren>;

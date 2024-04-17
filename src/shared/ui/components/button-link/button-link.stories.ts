@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ButtonLink from '@/shared/ui/components/button-link/button-link.component';
+import ButtonLink from './button-link.component';
 
 const meta = {
   title: 'base/ButtonLink',

@@ -1,7 +1,7 @@
 'use client';
 import { ComponentProps, ChangeEventHandler, useState, forwardRef } from 'react';
 import { cn } from '@/shared/lib/cn';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Typography } from '../typography';
 
 export interface TextAreaProps extends Omit<ComponentProps<'textarea'>, 'value' | 'className'> {
   initialValue?: string;

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import type { Meta } from '@storybook/react';
-import Tag from '@/shared/ui/components/tag/tag.component';
+import Tag from './tag.component';
 
 const meta = {
   title: 'base/Tag',

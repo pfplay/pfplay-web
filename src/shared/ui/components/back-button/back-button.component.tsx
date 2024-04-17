@@ -2,8 +2,8 @@
 import { useRouter } from 'next/navigation';
 
 import { cn } from '@/shared/lib/cn';
-import TextButton from '@/shared/ui/components/text-button/text-button.component';
 import { PFArrowLeft } from '@/shared/ui/icons';
+import { TextButton } from '../text-button';
 
 interface GoBackButtonProps {
   text: string;

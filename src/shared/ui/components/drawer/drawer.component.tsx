@@ -1,8 +1,8 @@
 'use client';
 import { Fragment, PropsWithChildren, useEffect } from 'react';
 import { Transition } from '@headlessui/react';
-import Typography from '@/shared/ui/components/typography/typography.component';
 import { PFClose } from '@/shared/ui/icons';
+import { Typography } from '../typography';
 
 interface DrawerProps {
   title?: string;

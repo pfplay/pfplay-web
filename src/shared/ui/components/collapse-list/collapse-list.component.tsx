@@ -2,8 +2,8 @@
 import { PropsWithChildren, ReactNode } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { cn } from '@/shared/lib/cn';
-import Typography from '@/shared/ui/components/typography/typography.component';
 import { PFChevronDown, PFChevronUp } from '@/shared/ui/icons';
+import { Typography } from '../typography';
 
 type CollapseListProps = {
   variant?: 'default' | 'accent' | 'outlined';

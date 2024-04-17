@@ -2,8 +2,8 @@
 import { Fragment, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { cn } from '@/shared/lib/cn';
-import Typography from '@/shared/ui/components/typography/typography.component';
 import { PFChevronDown, PFChevronUp } from '@/shared/ui/icons';
+import { Typography } from '../typography';
 
 export type SelectListItem = {
   label: string;

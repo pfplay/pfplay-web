@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 import { cn } from '@/shared/lib/cn';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Typography } from '../typography';
 
 type InputSize = 'md' | 'lg';
 type InputVariant = 'filled' | 'outlined';

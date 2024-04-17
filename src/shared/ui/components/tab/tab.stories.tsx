@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from 'react';
 import type { Meta } from '@storybook/react';
-import { Tab, TabGroup, TabList } from '@/shared/ui/components/tab/tab.component';
+import Tab, { TabGroup, TabList } from './tab.component';
 
 const meta = {
   title: 'base/Tab',
