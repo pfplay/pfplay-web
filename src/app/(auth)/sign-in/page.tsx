@@ -2,14 +2,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import Button from '@/components/shared/atoms/button.component';
-import TextButton from '@/components/shared/atoms/text-button.component';
-import Typography from '@/components/shared/atoms/typography.component';
-import Dialog from '@/components/shared/dialog.component';
-import { PFClose } from '@/components/shared/icons';
-import { useAppRouter } from '@/components/shared/router/use-app-router.hook';
-import { useDictionary } from '@/context/dictionary.context';
-import { useDialog } from '@/hooks/use-dialog.hook';
+import { useDictionary } from '@/entities/localization';
+import { useAppRouter } from '@/entities/router';
+import Button from '@/shared/ui/components/button/button.component';
+import Dialog from '@/shared/ui/components/dialog/dialog.component';
+import { useDialog } from '@/shared/ui/components/dialog/use-dialog.hook';
+import TextButton from '@/shared/ui/components/text-button/text-button.component';
+import Typography from '@/shared/ui/components/typography/typography.component';
+import { PFClose } from '@/shared/ui/icons';
 
 const SignInPage = () => {
   const router = useAppRouter();

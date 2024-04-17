@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import Header from '@/components/layouts/header.component';
+import Header from '@/shared/ui/layouts/header.component';
 
 const PartyLobbyLayout = ({ children }: PropsWithChildren) => {
   return (

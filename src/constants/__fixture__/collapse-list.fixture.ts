@@ -1,5 +1,5 @@
-import { PlaylistItemType } from '@/components/shared/atoms/playlist-item.component';
-import { UserListItemType } from '@/components/shared/user-list-item.component';
+import { PlaylistItemType } from '@/components/features/playlist/playlist-item.component';
+import { UserListItemType } from '@/components/features/user-list-item.component';
 
 export const fixtureCollapseList: {
   playListPanel: PlaylistItemType[];

@@ -1,4 +1,4 @@
-import { PlaylistItemType } from '@/components/shared/atoms/playlist-item.component';
+import { PlaylistItemType } from '@/components/features/playlist/playlist-item.component';
 
 export const playListItemFixture: PlaylistItemType[] = [
   {

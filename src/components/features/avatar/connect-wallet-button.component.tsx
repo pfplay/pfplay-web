@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import Button from '@/components/shared/atoms/button.component';
-import { PFAdd } from '@/components/shared/icons';
-import { cn } from '@/utils/cn';
+import { cn } from '@/shared/lib/cn';
+import Button from '@/shared/ui/components/button/button.component';
+import { PFAdd } from '@/shared/ui/icons';
 
 const ConnectWalletButton = () => {
   return (

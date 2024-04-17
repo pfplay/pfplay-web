@@ -5,7 +5,7 @@ const { glob } = require('glob');
 
 const rootDir = path.resolve(`${__dirname}/../`);
 const svgDir = `${rootDir}/public/icons`;
-const componentDir = `${rootDir}/src/components/shared/icons`;
+const componentDir = `${rootDir}/src/shared/ui/icons`;
 const prettierConfig = fs.readFileSync(`${rootDir}/.prettierrc`, { encoding: 'utf-8' });
 
 const utils = {

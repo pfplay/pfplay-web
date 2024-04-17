@@ -1,5 +1,5 @@
 import ProfileSettingForm from '@/components/features/profile/profile-setting-form.component';
-import BackButton from '@/components/shared/back-button.component';
+import BackButton from '@/shared/ui/components/back-button/back-button.component';
 
 const ProfileSettingsPage = () => {
   return (

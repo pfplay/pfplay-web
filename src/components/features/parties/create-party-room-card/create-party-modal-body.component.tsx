@@ -6,14 +6,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { z } from 'zod';
 import { PartiesService } from '@/api/services/parties';
-import Button from '@/components/shared/atoms/button.component';
-import InputNumber from '@/components/shared/atoms/input-number.component';
-import Input from '@/components/shared/atoms/input.component';
-import TextArea from '@/components/shared/atoms/textarea.component';
-import Tooltip from '@/components/shared/atoms/tooltip.component';
-import Typography from '@/components/shared/atoms/typography.component';
-import DjListItem from '@/components/shared/dj-list-item.component';
-import FormItem from '@/components/shared/form-item.component';
+import Button from '@/shared/ui/components/button/button.component';
+import FormItem from '@/shared/ui/components/form-item/form-item.component';
+import Input from '@/shared/ui/components/input/input.component';
+import InputNumber from '@/shared/ui/components/input-number/input-number.component';
+import TextArea from '@/shared/ui/components/textarea/textarea.component';
+import Tooltip from '@/shared/ui/components/tooltip/tooltip.component';
+import Typography from '@/shared/ui/components/typography/typography.component';
+import DjListItem from './dj-list-item.component';
 
 const createPartyFormSchema = z.object({
   name: z

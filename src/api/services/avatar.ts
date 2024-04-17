@@ -1,7 +1,7 @@
 import { pfpAxiosInstance } from '@/api/clients/http/client';
 import { AvatarClient } from '@/api/types/avatar';
 import { fixtureAvatarPartsList } from '@/constants/__fixture__/avatar-parts-list.fixture';
-import { delay } from '@/utils/delay';
+import { delay } from '@/shared/lib/delay';
 
 const ROUTE_V1 = 'v1/avatar';
 

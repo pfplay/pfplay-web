@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
 import { useState } from 'react';
-import Typography from '@/components/shared/atoms/typography.component';
-import { PFDj, PFHeadset } from '@/components/shared/icons';
-import { useDialog } from '@/hooks/use-dialog.hook';
+import { useDialog } from '@/shared/ui/components/dialog/use-dialog.hook';
+import Typography from '@/shared/ui/components/typography/typography.component';
+import { PFDj, PFHeadset } from '@/shared/ui/icons';
 import MyPlaylist from './my-playlist.component';
 import MyProfileModalBody from './my-profile-modal-body.component';
 

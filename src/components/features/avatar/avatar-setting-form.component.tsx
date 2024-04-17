@@ -1,15 +1,15 @@
 import { Fragment, PropsWithChildren } from 'react';
+import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary.component';
+import { cn } from '@/shared/lib/cn';
+import BackButton from '@/shared/ui/components/back-button/back-button.component';
+import ButtonLink from '@/shared/ui/components/button-link/button-link.component';
 import {
-  CustomTab,
+  Tab,
   TabGroup,
   TabList,
   TabPanel,
   TabPanels,
-} from '@/components/shared/atoms/custom-tab.component';
-import BackButton from '@/components/shared/back-button.component';
-import ButtonLink from '@/components/shared/button-link.component';
-import SuspenseWithErrorBoundary from '@/components/shared/suspense-with-error-boundary.component';
-import { cn } from '@/utils/cn';
+} from '@/shared/ui/components/tab/tab.component';
 import AvatarBodyList from './avatar-body-list.component';
 import AvatarFaceList from './avatar-face-list.component';
 import SelectedAvatar from './selected-avatar.component';
@@ -31,8 +31,8 @@ const AvatarSettingForm = ({ withLayout }: Props) => {
         <div className='w-full flexCol'>
           <TabGroup>
             <TabList className={cn('w-full flexRow')}>
-              <CustomTab tabTitle='body' variant='line' />
-              <CustomTab tabTitle='face' variant='line' />
+              <Tab tabTitle='body' variant='line' />
+              <Tab tabTitle='face' variant='line' />
               <div className='flex-1 border-b-[1px] border-b-gray-400' />
             </TabList>
             <TabPanels className={'pb-2'}>

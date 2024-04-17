@@ -1,10 +1,10 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
-import { CustomTab, TabGroup, TabList } from '@/components/shared/atoms/custom-tab.component';
-import { AppLink } from '@/components/shared/router/app-link.component';
 import { privacyAndTermsTabsConfig } from '@/constants/privacy-and-terms/privacy-and-terms-tabs-config';
-import { cn } from '@/utils/cn';
+import { AppLink } from '@/entities/router';
+import { cn } from '@/shared/lib/cn';
+import { Tab, TabGroup, TabList } from '@/shared/ui/components/tab/tab.component';
 
 interface PrivacyAndTermsTabGroupProps {
   children: ReactNode;
@@ -20,7 +20,7 @@ const PrivacyAndTermsTabGroup = ({ children }: PrivacyAndTermsTabGroupProps) => 
       <TabList className={cn('w-full flexRow justify-center ')}>
         {privacyAndTermsTabsConfig.map((config) => (
           <AppLink key={config.index} href={config.href} replace>
-            <CustomTab tabTitle='서비스 이용약관' variant='line' />
+            <Tab tabTitle='서비스 이용약관' variant='line' />
           </AppLink>
         ))}
         <div className='flex-1 border-b-[1px] border-b-gray-400 hidden mobile:block' />

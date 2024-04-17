@@ -13,7 +13,7 @@ const 다국어_시작_인덱스 = 4;
 
 const SHEET_NAME = 'i18n';
 const EXCEL_FILE = './i18n.xlsx';
-const TARGET = '../src/constants/dictionaries';
+const TARGET = '../src/entities/localization/config/dictionaries';
 
 const workbook = new ExcelJS.Workbook();
 

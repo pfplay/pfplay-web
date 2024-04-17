@@ -3,9 +3,9 @@ import { useAddPlaylistMusic } from '@/api/react-query/playlist/use-add-playlist
 import { useFetchPlaylist } from '@/api/react-query/playlist/use-fetch-playlist.query';
 import { useInfiniteFetchYoutube } from '@/api/react-query/playlist/use-infinite-fetch-youtube.query';
 import { YoutubeMusic } from '@/api/types/playlist';
-import Typography from '@/components/shared/atoms/typography.component';
-import { PFClose } from '@/components/shared/icons';
-import { useDialog } from '@/hooks/use-dialog.hook';
+import { useDialog } from '@/shared/ui/components/dialog/use-dialog.hook';
+import Typography from '@/shared/ui/components/typography/typography.component';
+import { PFClose } from '@/shared/ui/icons';
 import PlaylistCreateForm from './playlist-create-form.component';
 import YoutubeSearchInput from './youtube-search-input.component';
 import YoutubeSearchItem from './youtube-search-item.component';

@@ -1,5 +1,5 @@
-import Typography from '@/components/shared/atoms/typography.component';
-import { cn } from '@/utils/cn';
+import { cn } from '@/shared/lib/cn';
+import Typography from '@/shared/ui/components/typography/typography.component';
 import ArticleHeadContents from './article-head-contents.component';
 import ArticleSubtitle from './article-subtitle.component';
 import ArticleTitle from './article-title.component';

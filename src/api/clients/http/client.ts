@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios';
-import { flow } from '@/utils/flow';
+import { flow } from '@/shared/lib/flow';
 import { logRequest, setAccessToken } from './interceptors/request';
 import { logError, logResponse, processError, unwrapResponse } from './interceptors/response';
 

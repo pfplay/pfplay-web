@@ -5,7 +5,7 @@ import { NFTService } from '@/api/services/nft';
 import { FetchStatus } from '@/api/types/@shared';
 import { AvatarParts } from '@/api/types/avatar';
 import { OwnedNft } from '@/api/types/nft';
-import { useDialog } from '@/hooks/use-dialog.hook';
+import { useDialog } from '@/shared/ui/components/dialog/use-dialog.hook';
 import AvatarListItem from './avatar-list-item.component';
 import ConnectWalletButton from './connect-wallet-button.component';
 
