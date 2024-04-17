@@ -14,9 +14,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["./src/*"]
     },
     "plugins": [
       {
@@ -25,10 +24,9 @@
     ]
   },
   "include": [
-    "next-env.d.ts",
-    "next-auth.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "types/**/*.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules", "**/*.test.ts"]

@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
 const fs = require('fs');
+const { execSync } = require('node:child_process');
 const path = require('path');
 const chokidar = require('chokidar');
 
 const isPage = (v) => v === 'page.tsx' || v.includes('page.tsx');
 
 console.log('Start path map generator ');
-const PATH_TYPE = './src/components/shared/Router/types.ts';
+const TYPE_PATH = './types/pathmap.d.ts';
 const ROOT_PATH = './src/app/';
 
 const watcher = chokidar.watch('./src/app', {
@@ -66,11 +67,16 @@ function renderPathParams(path) {
 }
 
 function writeFile(paths) {
-  const content = `/* eslint-disable prettier/prettier */
-  export type PathMap = { 
-    ${paths.map((path) => `'${path}':{path:${renderPathParams(path)}}`)}}`;
+  const content = `
+declare module 'pathmap' {
+  export type PathMap = {
+${paths.map((path) => `'${path}':{path:${renderPathParams(path)}}\n`)}
+  };
+}
+  `.trim();
 
-  fs.writeFileSync(PATH_TYPE, content);
+  fs.writeFileSync(TYPE_PATH, content);
+  execSync('yarn prettier --write types/pathmap.d.ts');
 }
 
 function start() {

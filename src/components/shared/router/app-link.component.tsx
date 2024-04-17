@@ -1,7 +1,7 @@
 import { UrlObject } from 'url';
 import Link from 'next/link';
 import { ComponentProps } from 'react';
-import { PathMap } from '@/types/pathmap';
+import { PathMap } from 'pathmap';
 import { parseHref } from './utils';
 
 export type Href = keyof PathMap;
