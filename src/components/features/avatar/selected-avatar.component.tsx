@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useSelectedAvatarStore } from '@/store/avatar.store';
+import { useSelectedAvatarStore } from '@/entities/avatar';
 
 const SelectedAvatar = () => {
   const selectedAvatarParts = useSelectedAvatarStore((state) => state.selectedAvatarParts);

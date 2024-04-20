@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
 import { FC } from 'react';
+import { useSelectedAvatarStore } from '@/entities/avatar';
 import { AvatarParts } from '@/shared/api/types/avatar';
 import { cn } from '@/shared/lib/functions/cn';
-import { useSelectedAvatarStore } from '@/store/avatar.store';
 
 interface Props {
   avatar: AvatarParts;
