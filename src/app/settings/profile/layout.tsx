@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { PropsWithChildren } from 'react';
-import { getServerAuthSession } from '@/utils/next-auth-options';
+import { getServerAuthSession } from '@/shared/api/next-auth-options';
 
 const ProfileEditLayout = async ({ children }: PropsWithChildren) => {
   const session = await getServerAuthSession();

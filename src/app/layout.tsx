@@ -1,18 +1,20 @@
 import { Metadata } from 'next';
-import '@rainbow-me/rainbowkit/styles.css';
-import '@/styles/globals.css';
 import { cookies } from 'next/headers';
+
+import '@rainbow-me/rainbowkit/styles.css';
+import '@/shared/ui/foundation/globals.css';
+
 import { PropsWithChildren } from 'react';
 import { ProfileHydration } from '@/components/features/profile/profile-hydration.component';
-import { CookieKey } from '@/constants/cookie';
-import { DomId } from '@/constants/dom-id';
-import { Language } from '@/constants/lang';
-import { DialogProvider } from '@/context/dialog.provider';
-import { DictionaryProvider } from '@/context/dictionary.context';
-import { ReactQueryProvider } from '@/context/react-query.provider';
-import { SessionProvider } from '@/context/session.provider';
-import { pretendardVariable } from '@/styles/fonts';
-import { getServerDictionary } from '@/utils/dictionary';
+import { DomId } from '@/shared/config/dom-id';
+import { Language } from '@/shared/lib/localization/constants';
+import { LANGUAGE_COOKIE_KEY } from '@/shared/lib/localization/constants';
+import { DictionaryProvider } from '@/shared/lib/localization/dictionary.context';
+import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
+import { DialogProvider } from '@/shared/ui/components/dialog';
+import { pretendardVariable } from '@/shared/ui/foundation/fonts';
+import { ReactQueryProvider } from './_providers/react-query.provider';
+import { SessionProvider } from './_providers/session.provider';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }: PropsWithChildren) => {
   const dictionary = await getServerDictionary();
-  const lang = cookies().get(CookieKey.LangCookie)?.value || Language.En;
+  const lang = cookies().get(LANGUAGE_COOKIE_KEY)?.value || Language.En;
 
   return (
     <html lang={lang}>

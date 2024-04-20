@@ -1,5 +1,5 @@
 import type { StorybookConfig } from '@storybook/nextjs';
-import { DomId } from '@/constants/dom-id';
+import { DomId } from '@/shared/config/dom-id';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],

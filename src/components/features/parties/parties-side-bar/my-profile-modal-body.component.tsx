@@ -10,13 +10,13 @@ import {
   profileFormSchema,
   ProfileFormValues,
 } from '@/components/features/profile/profile-setting-form.component';
-import Button from '@/components/shared/atoms/button.component';
-import Input from '@/components/shared/atoms/input.component';
-import TextArea from '@/components/shared/atoms/textarea.component';
-import Typography from '@/components/shared/atoms/typography.component';
-import { FormItemError } from '@/components/shared/form-item.component';
-import { PFEdit } from '@/components/shared/icons';
-import { useAppRouter } from '@/components/shared/router/use-app-router.hook';
+import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
+import { Button } from '@/shared/ui/components/button';
+import { FormItemError } from '@/shared/ui/components/form-item';
+import { Input } from '@/shared/ui/components/input';
+import { TextArea } from '@/shared/ui/components/textarea';
+import { Typography } from '@/shared/ui/components/typography';
+import { PFEdit } from '@/shared/ui/icons';
 
 type MyProfileModalBodyProps = {
   onAvatarSettingClick?: () => void;

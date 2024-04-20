@@ -1,10 +1,9 @@
-import React from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useCreatePlaylist } from '@/api/react-query/playlist/use-create-playlist.mutation';
-import { ErrorCode } from '@/api/types/@shared';
-import Typography from '@/components/shared/atoms/typography.component';
-import Dialog from '@/components/shared/dialog.component';
-import { useDialog } from '@/hooks/use-dialog.hook';
+import { ErrorCode } from '@/shared/api/types/@shared';
+import { Dialog } from '@/shared/ui/components/dialog';
+import { useDialog } from '@/shared/ui/components/dialog';
+import { Typography } from '@/shared/ui/components/typography';
 import PlaylistForm, { PlaylistFormProps, PlaylistFormType } from './playlist-form.component';
 
 type PlaylistCreateFormProps = Pick<PlaylistFormProps, 'onCancel'>;

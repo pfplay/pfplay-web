@@ -1,5 +1,5 @@
-import Typography from '@/components/shared/atoms/typography.component';
-import { cn } from '@/utils/cn';
+import { cn } from '@/shared/lib/functions/cn';
+import { Typography } from '@/shared/ui/components/typography';
 
 interface ArticleSubTitleProps {
   subTitle?: string;

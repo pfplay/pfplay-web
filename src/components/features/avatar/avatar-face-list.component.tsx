@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
-import { NFTService } from '@/api/services/nft';
-import { FetchStatus } from '@/api/types/@shared';
-import { AvatarParts } from '@/api/types/avatar';
-import { OwnedNft } from '@/api/types/nft';
-import { useDialog } from '@/hooks/use-dialog.hook';
+import { NFTService } from '@/shared/api/services/nft';
+import { FetchStatus } from '@/shared/api/types/@shared';
+import { AvatarParts } from '@/shared/api/types/avatar';
+import { OwnedNft } from '@/shared/api/types/nft';
+import { useDialog } from '@/shared/ui/components/dialog';
 import AvatarListItem from './avatar-list-item.component';
 import ConnectWalletButton from './connect-wallet-button.component';
 

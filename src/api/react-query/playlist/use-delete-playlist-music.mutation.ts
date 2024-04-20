@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { PLAYLIST_MUSICS_QUERY_KEY, PLAYLIST_QUERY_KEY } from '@/api/react-query/playlist/keys';
-import { PlaylistService } from '@/api/services/playlist';
+import { PlaylistService } from '@/shared/api/services/playlist';
 
 export const useDeletePlaylistMusic = () => {
   const queryClient = useQueryClient();

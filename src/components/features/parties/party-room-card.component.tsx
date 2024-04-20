@@ -2,11 +2,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { PartyRoomSummary } from '@/api/types/parties';
-import Typography from '@/components/shared/atoms/typography.component';
-import BackdropBlurContainer from '@/components/shared/backdrop-blur-container.component';
-import { PFInfoOutline } from '@/components/shared/icons';
-import { cn } from '@/utils/cn';
+import { PartyRoomSummary } from '@/shared/api/types/parties';
+import { cn } from '@/shared/lib/functions/cn';
+import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
+import { Typography } from '@/shared/ui/components/typography';
+import { PFInfoOutline } from '@/shared/ui/icons';
 import Participants from './participants.component';
 
 interface PartyRoomCardProps {

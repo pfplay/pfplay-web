@@ -1,15 +1,14 @@
 import { RequestCookies, ResponseCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { CookieKey } from './constants/cookie';
-import { Language } from './constants/lang';
-import { TEN_YEARS } from './constants/time';
+import { TEN_YEARS } from 'shared/config/time';
+import { LANGUAGE_COOKIE_KEY, Language } from './shared/lib/localization/constants';
 
 export const middleware = (req: NextRequest) => {
   const response = NextResponse.next();
 
-  if (!req.cookies.get(CookieKey.LangCookie)?.value) {
-    response.cookies.set(CookieKey.LangCookie, Language.En, { path: '/', maxAge: TEN_YEARS });
+  if (!req.cookies.get(LANGUAGE_COOKIE_KEY)?.value) {
+    response.cookies.set(LANGUAGE_COOKIE_KEY, Language.En, { path: '/', maxAge: TEN_YEARS });
 
     setCookieToRequestHeader(req, response);
 

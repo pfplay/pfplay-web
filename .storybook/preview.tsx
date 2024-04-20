@@ -1,8 +1,8 @@
-import '@/styles/globals.css';
+import '@/shared/ui/foundation/globals.css';
 import './styles.css';
 
 import type { Preview } from '@storybook/react';
-import { DialogProvider } from '@/context/dialog.provider';
+import { DialogProvider } from '@/shared/ui/components/dialog';
 
 const preview: Preview = {
   parameters: {

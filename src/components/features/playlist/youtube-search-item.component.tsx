@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
-import { Playlist, YoutubeMusic } from '@/api/types/playlist';
-import { MenuItem } from '@/components/shared/atoms/menu/menu-item-panel.component';
-import Typography from '@/components/shared/atoms/typography.component';
-import IconMenu from '@/components/shared/icon-menu.component';
-import { PFAddCircle, PFAddPlaylist } from '@/components/shared/icons';
+import { Playlist, YoutubeMusic } from '@/shared/api/types/playlist';
+import { IconMenu } from '@/shared/ui/components/icon-menu';
+import { MenuItem } from '@/shared/ui/components/menu';
+import { Typography } from '@/shared/ui/components/typography';
+import { PFAddCircle, PFAddPlaylist } from '@/shared/ui/icons';
 
 type YoutubeSearchCardProps = {
   music: YoutubeMusic;

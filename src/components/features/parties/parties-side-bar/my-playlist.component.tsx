@@ -8,13 +8,13 @@ import MusicsInPlaylist from '@/components/features/playlist/musicsIn-playlist.c
 import PlaylistCreateForm from '@/components/features/playlist/playlist-create-form.component';
 import PlaylistUpdateFormComponent from '@/components/features/playlist/playlist-update-form.component';
 import YoutubeSearch from '@/components/features/playlist/youtube-search.component';
-import Button from '@/components/shared/atoms/button.component';
-import TextButton from '@/components/shared/atoms/text-button.component';
-import CollapseList from '@/components/shared/collapse-list.component';
-import Dialog from '@/components/shared/dialog.component';
-import Drawer from '@/components/shared/drawer.component';
-import { PFAdd, PFDelete } from '@/components/shared/icons';
-import { useDialog } from '@/hooks/use-dialog.hook';
+import { Button } from '@/shared/ui/components/button';
+import { CollapseList } from '@/shared/ui/components/collapse-list';
+import { Dialog } from '@/shared/ui/components/dialog';
+import { useDialog } from '@/shared/ui/components/dialog';
+import { Drawer } from '@/shared/ui/components/drawer';
+import { TextButton } from '@/shared/ui/components/text-button';
+import { PFAdd, PFDelete } from '@/shared/ui/icons';
 
 interface MyPlaylistProps {
   drawerOpen: boolean;

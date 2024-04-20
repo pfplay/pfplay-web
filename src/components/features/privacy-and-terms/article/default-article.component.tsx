@@ -1,4 +1,4 @@
-import Typography from '@/components/shared/atoms/typography.component';
+import { Typography } from '@/shared/ui/components/typography';
 import ArticleSubtitle from './article-subtitle.component';
 import ArticleTitle from './article-title.component';
 

@@ -1,6 +1,6 @@
-import { termsOfServiceConfig } from '@/constants/privacy-and-terms/terms-of-service-config';
 import DefaultArticle from './article/default-article.component';
 import ListArticle from './article/list-article.component';
+import { termsOfServiceConfig } from './terms-of-service-config';
 
 const TermsOfService = () => {
   return (

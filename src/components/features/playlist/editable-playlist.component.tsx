@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Playlist } from '@/api/types/playlist';
-import Typography from '@/components/shared/atoms/typography.component';
-import { Checkbox } from '@/components/shared/checkbox.component';
-import { PFEdit } from '@/components/shared/icons';
+import { Playlist } from '@/shared/api/types/playlist';
+import { Checkbox } from '@/shared/ui/components/checkbox';
+import { Typography } from '@/shared/ui/components/typography';
+import { PFEdit } from '@/shared/ui/icons';
 
 type EditablePlaylistProps = {
   items?: Playlist[];

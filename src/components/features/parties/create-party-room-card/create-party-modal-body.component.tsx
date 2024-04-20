@@ -5,15 +5,15 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { z } from 'zod';
-import { PartiesService } from '@/api/services/parties';
-import Button from '@/components/shared/atoms/button.component';
-import InputNumber from '@/components/shared/atoms/input-number.component';
-import Input from '@/components/shared/atoms/input.component';
-import TextArea from '@/components/shared/atoms/textarea.component';
-import Tooltip from '@/components/shared/atoms/tooltip.component';
-import Typography from '@/components/shared/atoms/typography.component';
-import DjListItem from '@/components/shared/dj-list-item.component';
-import FormItem from '@/components/shared/form-item.component';
+import { PartiesService } from '@/shared/api/services/parties';
+import { Button } from '@/shared/ui/components/button';
+import { FormItem } from '@/shared/ui/components/form-item';
+import { Input } from '@/shared/ui/components/input';
+import { InputNumber } from '@/shared/ui/components/input-number';
+import { TextArea } from '@/shared/ui/components/textarea';
+import { Tooltip } from '@/shared/ui/components/tooltip';
+import { Typography } from '@/shared/ui/components/typography';
+import DjListItem from './dj-list-item.component';
 
 const createPartyFormSchema = z.object({
   name: z

@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { PartyRoomParticipant } from '@/api/types/parties';
-import Typography from '@/components/shared/atoms/typography.component';
-import { PFPersonFilled } from '@/components/shared/icons';
-import { cn } from '@/utils/cn';
+import { PartyRoomParticipant } from '@/shared/api/types/parties';
+import { cn } from '@/shared/lib/functions/cn';
+import { Typography } from '@/shared/ui/components/typography';
+import { PFPersonFilled } from '@/shared/ui/icons';
 
 interface ParticipantsProps {
   count?: number;

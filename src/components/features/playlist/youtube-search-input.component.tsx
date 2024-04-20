@@ -1,7 +1,6 @@
-import React from 'react';
-import Input from '@/components/shared/atoms/input.component';
-import { PFSearch } from '@/components/shared/icons';
-import { useDebounce } from '@/hooks/use-debounce.hook';
+import { useDebounce } from '@/shared/lib/hooks/use-debounce.hook';
+import { Input } from '@/shared/ui/components/input';
+import { PFSearch } from '@/shared/ui/icons';
 
 type YoutubeSearchInputProps = {
   onSearch?(value: string): void;

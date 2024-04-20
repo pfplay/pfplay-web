@@ -1,6 +1,6 @@
 import { Config } from 'tailwindcss';
 import { PluginAPI } from 'tailwindcss/types/config';
-import theme from './src/styles/theme';
+import theme from './src/shared/ui/foundation/theme';
 
 const tailwindConfig: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],

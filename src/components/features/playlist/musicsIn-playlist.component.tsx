@@ -1,6 +1,6 @@
 import { useFetchPlaylistMusics } from '@/api/react-query/playlist/use-fetch-playlist-musics.query';
-import PlaylistItem from '@/components/shared/atoms/playlist-item.component';
-import { PFAddPlaylist, PFDelete } from '@/components/shared/icons';
+import PlaylistItem from '@/components/features/playlist/playlist-item.component';
+import { PFAddPlaylist, PFDelete } from '@/shared/ui/icons';
 
 type MusicsInPlaylistProps = {
   listId: number;

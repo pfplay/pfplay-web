@@ -6,12 +6,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useFetchProfile } from '@/api/react-query/user/use-fetch-profile.query';
 import { useUpdateProfile } from '@/api/react-query/user/use-update-profile.mutation';
-import Button from '@/components/shared/atoms/button.component';
-import Input from '@/components/shared/atoms/input.component';
-import TextArea from '@/components/shared/atoms/textarea.component';
-import FormItem from '@/components/shared/form-item.component';
-import { useAppRouter } from '@/components/shared/router/use-app-router.hook';
-import { cn } from '@/utils/cn';
+import { cn } from '@/shared/lib/functions/cn';
+import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
+import { Button } from '@/shared/ui/components/button';
+import { FormItem } from '@/shared/ui/components/form-item';
+import { Input } from '@/shared/ui/components/input';
+import { TextArea } from '@/shared/ui/components/textarea';
 
 export const profileFormSchema = z.object({
   nickname: z

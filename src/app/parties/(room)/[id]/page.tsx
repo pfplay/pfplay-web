@@ -1,5 +1,6 @@
 import PartiesSideBar from '@/components/features/parties/parties-side-bar';
-import Button from '@/components/shared/atoms/button.component';
+import { cn } from '@/shared/lib/functions/cn';
+import { Button } from '@/shared/ui/components/button';
 import {
   PFInfoOutline,
   PFCampaign,
@@ -8,8 +9,7 @@ import {
   PFThumbUpAlt,
   PFAddPlaylist,
   PFParty,
-} from '@/components/shared/icons';
-import { cn } from '@/utils/cn';
+} from '@/shared/ui/icons';
 
 const PartyRoomPage = async () => {
   // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
