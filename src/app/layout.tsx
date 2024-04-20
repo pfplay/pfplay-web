@@ -11,7 +11,7 @@ import { Language } from '@/shared/lib/localization/constants';
 import { LANGUAGE_COOKIE_KEY } from '@/shared/lib/localization/constants';
 import { DictionaryProvider } from '@/shared/lib/localization/dictionary.context';
 import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
-import { DialogProvider } from '@/shared/ui/components/dialog/dialog.provider';
+import { DialogProvider } from '@/shared/ui/components/dialog';
 import { pretendardVariable } from '@/shared/ui/foundation/fonts';
 import { ReactQueryProvider } from './_providers/react-query.provider';
 import { SessionProvider } from './_providers/session.provider';

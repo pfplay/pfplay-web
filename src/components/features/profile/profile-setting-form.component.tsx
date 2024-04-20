@@ -8,10 +8,10 @@ import { useFetchProfile } from '@/api/react-query/user/use-fetch-profile.query'
 import { useUpdateProfile } from '@/api/react-query/user/use-update-profile.mutation';
 import { cn } from '@/shared/lib/functions/cn';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
-import Button from '@/shared/ui/components/button/button.component';
-import FormItem from '@/shared/ui/components/form-item/form-item.component';
-import Input from '@/shared/ui/components/input/input.component';
-import TextArea from '@/shared/ui/components/textarea/textarea.component';
+import { Button } from '@/shared/ui/components/button';
+import { FormItem } from '@/shared/ui/components/form-item';
+import { Input } from '@/shared/ui/components/input';
+import { TextArea } from '@/shared/ui/components/textarea';
 
 export const profileFormSchema = z.object({
   nickname: z

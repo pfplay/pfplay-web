@@ -1,4 +1,4 @@
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Typography } from '@/shared/ui/components/typography';
 
 interface ArticleTitleProps {
   title?: string;

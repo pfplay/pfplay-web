@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import Dialog from '@/shared/ui/components/dialog/dialog.component';
-import FormItem from '@/shared/ui/components/form-item/form-item.component';
-import Input from '@/shared/ui/components/input/input.component';
+import { Dialog } from '@/shared/ui/components/dialog';
+import { FormItem } from '@/shared/ui/components/form-item';
+import { Input } from '@/shared/ui/components/input';
 
 const PlaylistFormSchema = z.object({
   name: z.string().min(1, { message: '1자 이상 입력해주세요' }).max(20, { message: '20자 제한' }),

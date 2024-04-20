@@ -1,11 +1,11 @@
 import Image from 'next/image';
 
 import { cn } from '@/shared/lib/functions/cn';
-import Button from '@/shared/ui/components/button/button.component';
-import DisplayOptionMenuOnHoverListener from '@/shared/ui/components/display-option-menu-on-hover-listener/display-option-menu-on-hover-listener.component';
-import { MenuItem } from '@/shared/ui/components/menu/menu-item-panel.component';
-import Tag from '@/shared/ui/components/tag/tag.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Button } from '@/shared/ui/components/button';
+import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
+import { MenuItem } from '@/shared/ui/components/menu';
+import { Tag } from '@/shared/ui/components/tag';
+import { Typography } from '@/shared/ui/components/typography';
 
 export type UserListItemType = {
   id: number;

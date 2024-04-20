@@ -1,7 +1,7 @@
 'use client';
 
 import { useSuspenseFetchPartyRooms } from '@/api/react-query/parties/use-suspense-fetch-party-rooms.query';
-import InfiniteScroll from '@/shared/ui/components/infinite-scroll/infinite-scroll.component';
+import { InfiniteScroll } from '@/shared/ui/components/infinite-scroll';
 import PartyRoomCard from './party-room-card.component';
 
 const PartyRoomList = () => {

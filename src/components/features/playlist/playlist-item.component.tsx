@@ -2,9 +2,9 @@
 import Image from 'next/image';
 import { MouseEvent } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
-import DisplayOptionMenuOnHoverListener from '@/shared/ui/components/display-option-menu-on-hover-listener/display-option-menu-on-hover-listener.component';
-import { MenuItem } from '@/shared/ui/components/menu/menu-item-panel.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
+import { MenuItem } from '@/shared/ui/components/menu';
+import { Typography } from '@/shared/ui/components/typography';
 import { PFPlayCircleFilled } from '@/shared/ui/icons';
 
 export interface PlaylistItemType {

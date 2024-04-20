@@ -1,8 +1,8 @@
 import Image from 'next/image';
 
 import { cn } from '@/shared/lib/functions/cn';
-import Tag from '@/shared/ui/components/tag/tag.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Tag } from '@/shared/ui/components/tag';
+import { Typography } from '@/shared/ui/components/typography';
 
 type DjListItemUserConfig = {
   username: string;

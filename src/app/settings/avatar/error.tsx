@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import Dialog from '@/shared/ui/components/dialog/dialog.component';
+import { Dialog } from '@/shared/ui/components/dialog';
 
 // TODO: 디자인 나오면 api error handling 수정과 함께 재 수정
 export default function Error({ error }: { error: Error }) {

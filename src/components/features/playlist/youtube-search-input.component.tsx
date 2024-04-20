@@ -1,5 +1,5 @@
 import { useDebounce } from '@/shared/lib/hooks/use-debounce.hook';
-import Input from '@/shared/ui/components/input/input.component';
+import { Input } from '@/shared/ui/components/input';
 import { PFSearch } from '@/shared/ui/icons';
 
 type YoutubeSearchInputProps = {

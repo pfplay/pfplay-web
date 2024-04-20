@@ -1,1 +1,1 @@
-export { default as FormItem } from './form-item.component';
+export { default as FormItem, FormItemError } from './form-item.component';

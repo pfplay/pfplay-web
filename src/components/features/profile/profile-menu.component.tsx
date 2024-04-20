@@ -1,7 +1,7 @@
 import { signOut } from 'next-auth/react';
 import { Menu } from '@headlessui/react';
-import MenuButton from '@/shared/ui/components/menu/menu-button.component';
-import MenuItemPanel from '@/shared/ui/components/menu/menu-item-panel.component';
+import { MenuButton } from '@/shared/ui/components/menu';
+import { MenuItemPanel } from '@/shared/ui/components/menu';
 
 interface ProfileMenuProps {
   email: string;

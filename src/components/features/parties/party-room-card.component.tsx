@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 import { PartyRoomSummary } from '@/shared/api/types/parties';
 import { cn } from '@/shared/lib/functions/cn';
-import BackdropBlurContainer from '@/shared/ui/components/backdrop-blur-container/backdrop-blur-container.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
+import { Typography } from '@/shared/ui/components/typography';
 import { PFInfoOutline } from '@/shared/ui/icons';
 import Participants from './participants.component';
 

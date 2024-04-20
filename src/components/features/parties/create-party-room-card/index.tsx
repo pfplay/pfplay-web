@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
-import { useDialog } from '@/shared/ui/components/dialog/use-dialog.hook';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { useDialog } from '@/shared/ui/components/dialog';
+import { Typography } from '@/shared/ui/components/typography';
 import CreatePartyModalBody from './create-party-modal-body.component';
 
 const CreatePartyRoomCard = () => {

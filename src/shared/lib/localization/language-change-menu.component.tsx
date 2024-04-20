@@ -1,4 +1,4 @@
-import IconMenu from '@/shared/ui/components/icon-menu/icon-menu.component';
+import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { PFLanguage } from '@/shared/ui/icons';
 import { Language } from './constants';
 import { useDictionary } from './dictionary.context';

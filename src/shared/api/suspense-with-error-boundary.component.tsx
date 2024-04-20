@@ -1,10 +1,10 @@
 'use client';
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import { PropsWithChildren, ReactNode, Suspense, useEffect } from 'react';
-import Button from '@/shared/ui/components/button/button.component';
-import { useDialog } from '@/shared/ui/components/dialog/use-dialog.hook';
-import Loading from '@/shared/ui/components/loading/loading.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Button } from '@/shared/ui/components/button';
+import { useDialog } from '@/shared/ui/components/dialog';
+import { Loading } from '@/shared/ui/components/loading';
+import { Typography } from '@/shared/ui/components/typography';
 
 interface ErrorFallbackProps {
   error: unknown;

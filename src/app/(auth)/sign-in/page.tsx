@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useDictionary } from '@/shared/lib/localization/dictionary.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
-import Button from '@/shared/ui/components/button/button.component';
-import Dialog from '@/shared/ui/components/dialog/dialog.component';
-import { useDialog } from '@/shared/ui/components/dialog/use-dialog.hook';
-import TextButton from '@/shared/ui/components/text-button/text-button.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Button } from '@/shared/ui/components/button';
+import { Dialog } from '@/shared/ui/components/dialog';
+import { useDialog } from '@/shared/ui/components/dialog';
+import { TextButton } from '@/shared/ui/components/text-button';
+import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
 
 const SignInPage = () => {

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { getServerAuthSession } from '@/shared/api/next-auth-options';
 import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
-import ButtonLink from '@/shared/ui/components/button-link/button-link.component';
+import { ButtonLink } from '@/shared/ui/components/button-link';
 
 const HomePage = async () => {
   const session = await getServerAuthSession();

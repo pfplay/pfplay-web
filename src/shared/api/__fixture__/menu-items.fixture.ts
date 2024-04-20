@@ -1,4 +1,4 @@
-import { MenuItem } from '@/shared/ui/components/menu/menu-item-panel.component';
+import { MenuItem } from '@/shared/ui/components/menu';
 
 export const fixtureMenuItems: MenuItem[] = [
   { onClickItem: () => console.log('삭제 clicked'), label: '삭제' },

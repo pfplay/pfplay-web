@@ -6,13 +6,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { z } from 'zod';
 import { PartiesService } from '@/shared/api/services/parties';
-import Button from '@/shared/ui/components/button/button.component';
-import FormItem from '@/shared/ui/components/form-item/form-item.component';
-import Input from '@/shared/ui/components/input/input.component';
-import InputNumber from '@/shared/ui/components/input-number/input-number.component';
-import TextArea from '@/shared/ui/components/textarea/textarea.component';
-import Tooltip from '@/shared/ui/components/tooltip/tooltip.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Button } from '@/shared/ui/components/button';
+import { FormItem } from '@/shared/ui/components/form-item';
+import { Input } from '@/shared/ui/components/input';
+import { InputNumber } from '@/shared/ui/components/input-number';
+import { TextArea } from '@/shared/ui/components/textarea';
+import { Tooltip } from '@/shared/ui/components/tooltip';
+import { Typography } from '@/shared/ui/components/typography';
 import DjListItem from './dj-list-item.component';
 
 const createPartyFormSchema = z.object({

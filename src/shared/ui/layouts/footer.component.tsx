@@ -1,7 +1,7 @@
 import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
 import { AppLink } from '@/shared/lib/router/app-link.component';
-import Button from '@/shared/ui/components/button/button.component';
-import TextButton from '@/shared/ui/components/text-button/text-button.component';
+import { Button } from '@/shared/ui/components/button';
+import { TextButton } from '@/shared/ui/components/text-button';
 import { PFChevronRight } from '@/shared/ui/icons';
 
 const Footer = async () => {

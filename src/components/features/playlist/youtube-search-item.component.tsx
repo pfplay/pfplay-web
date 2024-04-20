@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { Playlist, YoutubeMusic } from '@/shared/api/types/playlist';
-import IconMenu from '@/shared/ui/components/icon-menu/icon-menu.component';
-import { MenuItem } from '@/shared/ui/components/menu/menu-item-panel.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { IconMenu } from '@/shared/ui/components/icon-menu';
+import { MenuItem } from '@/shared/ui/components/menu';
+import { Typography } from '@/shared/ui/components/typography';
 import { PFAddCircle, PFAddPlaylist } from '@/shared/ui/icons';
 
 type YoutubeSearchCardProps = {

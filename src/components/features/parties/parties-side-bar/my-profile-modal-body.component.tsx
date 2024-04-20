@@ -11,11 +11,11 @@ import {
   ProfileFormValues,
 } from '@/components/features/profile/profile-setting-form.component';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
-import Button from '@/shared/ui/components/button/button.component';
-import { FormItemError } from '@/shared/ui/components/form-item/form-item.component';
-import Input from '@/shared/ui/components/input/input.component';
-import TextArea from '@/shared/ui/components/textarea/textarea.component';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Button } from '@/shared/ui/components/button';
+import { FormItemError } from '@/shared/ui/components/form-item';
+import { Input } from '@/shared/ui/components/input';
+import { TextArea } from '@/shared/ui/components/textarea';
+import { Typography } from '@/shared/ui/components/typography';
 import { PFEdit } from '@/shared/ui/icons';
 
 type MyProfileModalBodyProps = {

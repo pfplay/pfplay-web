@@ -1,6 +1,6 @@
 import PartiesSideBar from '@/components/features/parties/parties-side-bar';
 import { cn } from '@/shared/lib/functions/cn';
-import Button from '@/shared/ui/components/button/button.component';
+import { Button } from '@/shared/ui/components/button';
 import {
   PFInfoOutline,
   PFCampaign,

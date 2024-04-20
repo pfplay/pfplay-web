@@ -1,5 +1,5 @@
 import { cn } from '@/shared/lib/functions/cn';
-import Typography from '@/shared/ui/components/typography/typography.component';
+import { Typography } from '@/shared/ui/components/typography';
 
 interface ArticleSubTitleProps {
   subTitle?: string;
