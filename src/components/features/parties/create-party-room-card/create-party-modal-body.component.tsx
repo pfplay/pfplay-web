@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { z } from 'zod';
-import { PartiesService } from '@/api/services/parties';
+import { PartiesService } from '@/shared/api/services/parties';
 import Button from '@/shared/ui/components/button/button.component';
 import FormItem from '@/shared/ui/components/form-item/form-item.component';
 import Input from '@/shared/ui/components/input/input.component';

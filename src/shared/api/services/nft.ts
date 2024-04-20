@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { nextAxiosInstance } from '@/api/clients/http/client';
-import { NFTClient } from '@/api/types/nft';
+import { nextAxiosInstance } from '@/shared/api/clients/http/client';
+import { NFTClient } from '@/shared/api/types/nft';
 
 export const NFTService: NFTClient = {
   getNFTs: async (address) => {

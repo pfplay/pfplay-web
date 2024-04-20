@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { AvatarParts } from '@/api/types/avatar';
+import { AvatarParts } from '@/shared/api/types/avatar';
 
 type SelectedAvatarParts = Partial<{
   body: AvatarParts;

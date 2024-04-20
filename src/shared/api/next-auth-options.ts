@@ -1,6 +1,6 @@
 import { NextAuthOptions, getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { UserService } from '@/api/services/user';
+import { UserService } from '@/shared/api/services/user';
 
 /**
  * @deprecated OAuth 로직 서버 측으로 이전될 예정

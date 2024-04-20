@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { getErrorMessage } from '@/api/helper';
+import { getErrorMessage } from '@/shared/api/get-error-message';
 import Dialog, { DialogProps } from './dialog.component';
 import { useDialogContext } from './dialog.context';
 import { Typography } from '../typography';

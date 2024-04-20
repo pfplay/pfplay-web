@@ -1,9 +1,9 @@
 import { QueryKey } from '@tanstack/query-core';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { PartiesService } from '@/api/services/parties';
-import { APIError, PaginationPayload, PaginationResponse } from '@/api/types/@shared';
-import { PartyRoomSummary } from '@/api/types/parties';
+import { PartiesService } from '@/shared/api/services/parties';
+import { APIError, PaginationPayload, PaginationResponse } from '@/shared/api/types/@shared';
+import { PartyRoomSummary } from '@/shared/api/types/parties';
 import { ONE_HOUR } from '@/shared/config/time';
 import { PARTY_ROOMS_QUERY_KEY } from './keys';
 

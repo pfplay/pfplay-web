@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { PlaylistService } from '@/api/services/playlist';
-import { PlaylistMusicParameters } from '@/api/types/playlist';
+import { PlaylistService } from '@/shared/api/services/playlist';
+import { PlaylistMusicParameters } from '@/shared/api/types/playlist';
 import { FIVE_MINUTES } from '@/shared/config/time';
 import { PLAYLIST_MUSICS_QUERY_KEY } from './keys';
 

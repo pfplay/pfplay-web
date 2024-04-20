@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { UserProfile } from '@/api/types/user';
+import { UserProfile } from '@/shared/api/types/user';
 
 interface ProfileStore {
   profile?: UserProfile;

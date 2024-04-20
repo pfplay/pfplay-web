@@ -1,6 +1,6 @@
 //  TODO: 아바타 이미지 데이터 가져오면 mock arr, file 지우기
-import { AvatarType } from '@/api/types/@enums';
-import { AvatarParts } from '@/api/types/avatar';
+import { AvatarType } from '@/shared/api/types/@enums';
+import { AvatarParts } from '@/shared/api/types/avatar';
 
 export const fixtureAvatarPartsList: AvatarParts[] = [
   {

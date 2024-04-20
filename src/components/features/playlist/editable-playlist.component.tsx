@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Playlist } from '@/api/types/playlist';
+import { Playlist } from '@/shared/api/types/playlist';
 import { Checkbox } from '@/shared/ui/components/checkbox';
 import Typography from '@/shared/ui/components/typography/typography.component';
 import { PFEdit } from '@/shared/ui/icons';

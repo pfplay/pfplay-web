@@ -1,4 +1,4 @@
-import { AvatarType } from '@/api/types/@enums';
+import { AvatarType } from '@/shared/api/types/@enums';
 
 export interface AvatarParts {
   id: number | string;

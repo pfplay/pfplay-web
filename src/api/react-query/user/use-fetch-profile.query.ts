@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react';
 import { useQuery } from '@tanstack/react-query';
-import { UserService } from '@/api/services/user';
+import { UserService } from '@/shared/api/services/user';
 import { THIRTY_MINUTES } from '@/shared/config/time';
 import { USER_PROFILE_QUERY_KEY } from './keys';
 

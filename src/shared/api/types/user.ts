@@ -1,4 +1,4 @@
-import { Authority } from '@/api/types/@enums';
+import { Authority } from '@/shared/api/types/@enums';
 
 export interface UserProfile {
   nickname: string;

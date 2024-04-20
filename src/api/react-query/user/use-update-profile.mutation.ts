@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { USER_PROFILE_QUERY_KEY } from '@/api/react-query/user/keys';
-import { UserService } from '@/api/services/user';
-import { APIError } from '@/api/types/@shared';
-import { UserProfile } from '@/api/types/user';
+import { UserService } from '@/shared/api/services/user';
+import { APIError } from '@/shared/api/types/@shared';
+import { UserProfile } from '@/shared/api/types/user';
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();

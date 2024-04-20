@@ -1,5 +1,5 @@
-import { pfpAxiosInstance } from '@/api/clients/http/client';
-import { PlaylistClient } from '@/api/types/playlist';
+import { pfpAxiosInstance } from '@/shared/api/clients/http/client';
+import { PlaylistClient } from '@/shared/api/types/playlist';
 
 const ROUTE_V1 = 'v1/play-list';
 

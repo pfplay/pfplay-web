@@ -1,4 +1,4 @@
-import { AvatarService } from '@/api/services/avatar';
+import { AvatarService } from '@/shared/api/services/avatar';
 import AvatarListItem from './avatar-list-item.component';
 
 const AvatarBodyList = async () => {

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
-import { Playlist, YoutubeMusic } from '@/api/types/playlist';
+import { Playlist, YoutubeMusic } from '@/shared/api/types/playlist';
 import IconMenu from '@/shared/ui/components/icon-menu/icon-menu.component';
 import { MenuItem } from '@/shared/ui/components/menu/menu-item-panel.component';
 import Typography from '@/shared/ui/components/typography/typography.component';
