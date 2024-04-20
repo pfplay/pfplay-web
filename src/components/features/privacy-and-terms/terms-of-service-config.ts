@@ -1,5 +1,5 @@
-import { DefaultArticleProps } from '@/components/features/privacy-and-terms/article/default-article.component';
-import { ListArticleProps } from '@/components/features/privacy-and-terms/article/list-article.component';
+import { DefaultArticleProps } from './article/default-article.component';
+import { ListArticleProps } from './article/list-article.component';
 
 export const termsOfServiceConfig = [
   {

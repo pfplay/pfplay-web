@@ -1,7 +1,7 @@
 import { RequestCookies, ResponseCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { TEN_YEARS } from './constants/time';
+import { TEN_YEARS } from 'shared/config/time';
 import { LANGUAGE_COOKIE_KEY, Language } from './shared/lib/localization/constants';
 
 export const middleware = (req: NextRequest) => {

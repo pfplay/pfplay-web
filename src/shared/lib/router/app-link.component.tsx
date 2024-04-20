@@ -6,7 +6,7 @@ import { parseHref } from './parse-href';
 
 export type Href = keyof PathMap;
 export type PathParams<P extends Href> = PathMap[P] extends {
-  path: undefined;
+  path?: undefined;
 }
   ? object
   : { path: PathMap[P]['path'] };

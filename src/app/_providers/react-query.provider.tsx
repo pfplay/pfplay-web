@@ -3,7 +3,7 @@
 import { PropsWithChildren, useState } from 'react';
 import { QueryClient, QueryClientConfig, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { FIVE_MINUTES } from '@/constants/time';
+import { FIVE_MINUTES } from '@/shared/config/time';
 
 const config: QueryClientConfig = {
   defaultOptions: {

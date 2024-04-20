@@ -1,10 +1,10 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
-import { privacyAndTermsTabsConfig } from '@/constants/privacy-and-terms/privacy-and-terms-tabs-config';
 import { cn } from '@/shared/lib/functions/cn';
 import { AppLink } from '@/shared/lib/router/app-link.component';
 import { Tab, TabGroup, TabList } from '@/shared/ui/components/tab';
+import { privacyAndTermsTabsConfig } from './privacy-and-terms-tabs-config';
 
 interface PrivacyAndTermsTabGroupProps {
   children: ReactNode;

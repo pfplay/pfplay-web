@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
-import PrivacyAndTermsTabGroup from '@/components/features/privacy-and-terms/privacy-and-terms-tab-group.component';
-import { privacyAndTermsTabsConfig } from '@/constants/privacy-and-terms/privacy-and-terms-tabs-config';
+import { privacyAndTermsTabsConfig } from '@/components/features/privacy-and-terms/privacy-and-terms-tabs-config';
+import PrivacyAndTermsTabGroup from '@/components/features/privacy-and-terms/privacy-and-terms-tabs.component';
 import { TabPanels, TabPanel } from '@/shared/ui/components/tab/tab.component';
 import Typography from '@/shared/ui/components/typography/typography.component';
 import Header from '@/shared/ui/layouts/header.component';

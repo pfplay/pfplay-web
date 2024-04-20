@@ -8,7 +8,7 @@ import {
   FC,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { DomId } from '@/constants/dom-id';
+import { DomId } from '@/shared/config/dom-id';
 import { cn } from '@/shared/lib/functions/cn';
 import { repeatAnimationFrame } from '@/shared/lib/functions/repeat-animation-frame';
 import { Typography } from '../typography';

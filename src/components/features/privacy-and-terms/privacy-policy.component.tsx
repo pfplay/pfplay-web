@@ -1,7 +1,7 @@
-import { privacyPolicyConfig } from '@/constants/privacy-and-terms/privacy-policy-config';
 import ArticleTable from './article/article-table.component';
 import DefaultArticle from './article/default-article.component';
 import ListArticle from './article/list-article.component';
+import { privacyPolicyConfig } from './privacy-policy-config';
 
 const PrivacyPolicy = () => {
   return (

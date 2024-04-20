@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { PlaylistService } from '@/api/services/playlist';
 import { PlaylistMusicParameters } from '@/api/types/playlist';
-import { FIVE_MINUTES } from '@/constants/time';
+import { FIVE_MINUTES } from '@/shared/config/time';
 import { PLAYLIST_MUSICS_QUERY_KEY } from './keys';
 
 export const useFetchPlaylistMusics = (listId: number, params?: PlaylistMusicParameters) => {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import PlaylistItem from '@/components/features/playlist/playlist-item.component';
-import { fixtureMenuItems } from '@/constants/__fixture__/menu-items.fixture';
+import { fixtureMenuItems } from '@/shared/api/__fixture__/menu-items.fixture';
 
 const meta = {
   title: 'features/PlaylistItem',

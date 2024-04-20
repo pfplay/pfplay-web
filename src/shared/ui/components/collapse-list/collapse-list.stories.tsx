@@ -2,8 +2,8 @@ import { Disclosure } from '@headlessui/react';
 import type { Meta } from '@storybook/react';
 import PlaylistItem from '@/components/features/playlist/playlist-item.component';
 import UserListItem from '@/components/features/user-list-item.component';
-import { fixtureCollapseList } from '@/constants/__fixture__/collapse-list.fixture';
-import { fixtureMenuItems } from '@/constants/__fixture__/menu-items.fixture';
+import { fixtureCollapseList } from '@/shared/api/__fixture__/collapse-list.fixture';
+import { fixtureMenuItems } from '@/shared/api/__fixture__/menu-items.fixture';
 import CollapseList from './collapse-list.component';
 import { Tag } from '../tag';
 

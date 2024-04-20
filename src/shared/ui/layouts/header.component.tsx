@@ -30,7 +30,7 @@ const Header: FC<Props> = ({ withLogo }) => {
         )}
       >
         {withLogo && (
-          <Link href='/public'>
+          <Link href='/'>
             <Image
               src='/images/Logo/wordmark_small_white.png'
               width={124}

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { PlaylistService } from '@/api/services/playlist';
-import { FIVE_MINUTES } from '@/constants/time';
+import { FIVE_MINUTES } from '@/shared/config/time';
 import useIntersectionObserver from '@/shared/lib/hooks/use-intersection-observer.hook';
 import { PLAYLIST_YOUTUBE_QUERY_KEY } from './keys';
 
