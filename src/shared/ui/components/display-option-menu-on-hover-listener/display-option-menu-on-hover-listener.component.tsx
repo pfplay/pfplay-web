@@ -1,6 +1,6 @@
 import { useState, JSX } from 'react';
-import { cn } from '@/shared/lib/cn';
-import useClickOutside from '@/shared/lib/use-click-outside.hook';
+import { cn } from '@/shared/lib/functions/cn';
+import useClickOutside from '@/shared/lib/hooks/use-click-outside.hook';
 import { PFMoreVert } from '@/shared/ui/icons';
 import { IconMenu } from '../icon-menu';
 import { MenuItem } from '../menu';

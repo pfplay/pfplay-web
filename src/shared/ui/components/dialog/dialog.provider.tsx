@@ -1,6 +1,6 @@
 'use client';
 import { ReactElement, useCallback, useMemo, useState } from 'react';
-import { delay } from '@/shared/lib/delay';
+import { delay } from '@/shared/lib/functions/delay';
 import Dialog, { DialogProps } from './dialog.component';
 import { DialogContext, type DialogID, type PopDialog, type PushDialog } from './dialog.context';
 

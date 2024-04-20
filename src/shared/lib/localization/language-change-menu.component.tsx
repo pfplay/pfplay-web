@@ -1,8 +1,8 @@
 import IconMenu from '@/shared/ui/components/icon-menu/icon-menu.component';
 import { PFLanguage } from '@/shared/ui/icons';
-import { Language } from '../config/constants';
-import { useDictionary } from '../lib/dictionary.context';
-import { useChangeLanguage } from '../lib/use-change-language.hook';
+import { Language } from './constants';
+import { useDictionary } from './dictionary.context';
+import { useChangeLanguage } from './use-change-language.hook';
 
 export default function LanguageChangeMenu() {
   const dic = useDictionary();

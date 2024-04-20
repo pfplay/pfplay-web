@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { useMemo, useRef, useState } from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
-import { cn } from '@/shared/lib/cn';
-import { delay } from '@/shared/lib/delay';
+import { cn } from '@/shared/lib/functions/cn';
+import { delay } from '@/shared/lib/functions/delay';
 import Dialog from './dialog.component';
 import { useDialog } from './use-dialog.hook';
 import { Button } from '../button';

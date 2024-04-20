@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import { PFArrowLeft } from '@/shared/ui/icons';
 import { TextButton } from '../text-button';
 

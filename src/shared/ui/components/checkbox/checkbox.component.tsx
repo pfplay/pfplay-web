@@ -1,5 +1,5 @@
 import { ComponentProps, ForwardedRef, forwardRef } from 'react';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import { PFCheckMark } from '@/shared/ui/icons';
 
 type CheckboxProps = Omit<ComponentProps<'input'>, 'type'>;

@@ -1,4 +1,4 @@
-import { flow } from 'shared/lib/flow';
+import { flow } from '@/shared/lib/functions/flow';
 describe('utils/flow', () => {
   const wait = <T>(v: T) => {
     return new Promise<T>((resolve) => {

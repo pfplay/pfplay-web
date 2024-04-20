@@ -1,4 +1,4 @@
-import { omit } from 'shared/lib/omit'; // 적절한 파일 경로로 교체하세요
+import { omit } from '@/shared/lib/functions/omit'; // 적절한 파일 경로로 교체하세요
 
 describe('utils/omit', () => {
   test('기본 객체에서 키를 생략', () => {

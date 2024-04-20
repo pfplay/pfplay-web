@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { getServerDictionary } from '@/entities/localization';
 import { getServerAuthSession } from '@/shared/api/next-auth-options';
+import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
 import ButtonLink from '@/shared/ui/components/button-link/button-link.component';
 
 const HomePage = async () => {

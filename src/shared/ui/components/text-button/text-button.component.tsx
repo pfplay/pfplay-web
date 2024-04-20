@@ -1,7 +1,7 @@
 'use client';
 import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import { Loading } from '../loading';
 import { Typography, TypographyType } from '../typography';
 

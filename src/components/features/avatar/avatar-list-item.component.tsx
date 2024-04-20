@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { FC } from 'react';
 import { AvatarParts } from '@/api/types/avatar';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import { useSelectedAvatarStore } from '@/store/avatar.store';
 
 interface Props {

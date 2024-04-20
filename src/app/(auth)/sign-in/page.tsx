@@ -2,8 +2,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import { useDictionary } from '@/entities/localization';
-import { useAppRouter } from '@/entities/router';
+import { useDictionary } from '@/shared/lib/localization/dictionary.context';
+import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import Button from '@/shared/ui/components/button/button.component';
 import Dialog from '@/shared/ui/components/dialog/dialog.component';
 import { useDialog } from '@/shared/ui/components/dialog/use-dialog.hook';

@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Meta, StoryObj } from '@storybook/react';
 import { z } from 'zod';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import FormItem, { FormItemProps } from './form-item.component';
 import { Button } from '../button';
 import { Typography } from '../typography';

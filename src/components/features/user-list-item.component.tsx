@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import Button from '@/shared/ui/components/button/button.component';
 import DisplayOptionMenuOnHoverListener from '@/shared/ui/components/display-option-menu-on-hover-listener/display-option-menu-on-hover-listener.component';
 import { MenuItem } from '@/shared/ui/components/menu/menu-item-panel.component';

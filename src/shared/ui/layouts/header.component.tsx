@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { FC } from 'react';
 import ProfileMenu from '@/components/features/profile/profile-menu.component';
-import { LanguageChangeMenu } from '@/entities/localization';
-import { cn } from '@/shared/lib/cn';
-import useIntersectionObserver from '@/shared/lib/use-intersection-observer.hook';
+import { cn } from '@/shared/lib/functions/cn';
+import useIntersectionObserver from '@/shared/lib/hooks/use-intersection-observer.hook';
+import LanguageChangeMenu from '@/shared/lib/localization/language-change-menu.component';
 
 interface Props {
   withLogo?: boolean;

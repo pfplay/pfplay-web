@@ -1,7 +1,7 @@
 'use client';
 import { Fragment, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import { PFChevronDown, PFChevronUp } from '@/shared/ui/icons';
 import { Typography } from '../typography';
 

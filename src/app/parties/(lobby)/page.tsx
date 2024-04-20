@@ -3,7 +3,7 @@ import PartiesMainStageCard from '@/components/features/parties/parties-main-sta
 import PartiesSideBar from '@/components/features/parties/parties-side-bar';
 import PartyRoomList from '@/components/features/parties/party-room-list.component';
 import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary.component';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 
 const PartyLobbyPage = async () => {
   return (

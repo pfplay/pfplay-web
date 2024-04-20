@@ -1,4 +1,4 @@
-import { isPureObject } from '@/shared/lib/is-pure-object';
+import { isPureObject } from '@/shared/lib/functions/is-pure-object';
 
 test('isPureObject', () => {
   expect(isPureObject({})).toBe(true);

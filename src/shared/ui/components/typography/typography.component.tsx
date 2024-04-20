@@ -1,6 +1,6 @@
 'use client';
 import { JSX, forwardRef, HTMLAttributes, ReactNode } from 'react';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 
 export type TypographyType =
   | 'title1'

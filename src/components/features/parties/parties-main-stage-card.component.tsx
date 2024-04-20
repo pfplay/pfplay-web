@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import BackdropBlurContainer from '@/shared/ui/components/backdrop-blur-container/backdrop-blur-container.component';
 import Typography from '@/shared/ui/components/typography/typography.component';
 import Participants from './participants.component';

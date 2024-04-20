@@ -1,4 +1,4 @@
-import { Href } from '@/entities/router';
+import { Href } from '@/shared/lib/router/app-link.component';
 
 export const privacyAndTermsTabsConfig = [
   {

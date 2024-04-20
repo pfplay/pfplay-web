@@ -1,7 +1,7 @@
 'use client';
 import { forwardRef, ReactNode } from 'react';
 import { Menu } from '@headlessui/react';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import { MenuItem, MenuButton, MenuItemPanelSize, MenuItemPanel } from '../menu';
 
 interface IconMenuProps {

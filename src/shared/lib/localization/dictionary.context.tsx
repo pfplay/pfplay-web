@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, ReactElement, useContext } from 'react';
-import type DictionaryType from '../config/dictionaries/ko.json';
+import type DictionaryType from '@/shared/lib/localization/dictionaries/en.json';
 
 type DictionaryJSONType = typeof DictionaryType;
 

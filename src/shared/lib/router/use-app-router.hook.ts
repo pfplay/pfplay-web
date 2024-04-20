@@ -6,7 +6,7 @@ import {
 } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter } from 'next/navigation';
 import { PathMap } from 'pathmap';
-import { parseHref } from './utils';
+import { parseHref } from './parse-href';
 
 type Href = keyof PathMap;
 

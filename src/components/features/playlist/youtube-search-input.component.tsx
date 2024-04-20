@@ -1,4 +1,4 @@
-import { useDebounce } from '@/shared/lib/use-debounce.hook';
+import { useDebounce } from '@/shared/lib/hooks/use-debounce.hook';
 import Input from '@/shared/ui/components/input/input.component';
 import { PFSearch } from '@/shared/ui/icons';
 

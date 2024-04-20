@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { PropsWithChildren } from 'react';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 
 interface BackdropBlurContainerProps {
   src?: string;

@@ -2,8 +2,8 @@
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
 import { privacyAndTermsTabsConfig } from '@/constants/privacy-and-terms/privacy-and-terms-tabs-config';
-import { AppLink } from '@/entities/router';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
+import { AppLink } from '@/shared/lib/router/app-link.component';
 import { Tab, TabGroup, TabList } from '@/shared/ui/components/tab';
 
 interface PrivacyAndTermsTabGroupProps {

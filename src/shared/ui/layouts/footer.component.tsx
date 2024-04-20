@@ -1,5 +1,5 @@
-import { getServerDictionary } from '@/entities/localization';
-import { AppLink } from '@/entities/router';
+import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
+import { AppLink } from '@/shared/lib/router/app-link.component';
 import Button from '@/shared/ui/components/button/button.component';
 import TextButton from '@/shared/ui/components/text-button/text-button.component';
 import { PFChevronRight } from '@/shared/ui/icons';

@@ -1,6 +1,6 @@
 import { Fragment, PropsWithChildren } from 'react';
 import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary.component';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import BackButton from '@/shared/ui/components/back-button/back-button.component';
 import ButtonLink from '@/shared/ui/components/button-link/button-link.component';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';

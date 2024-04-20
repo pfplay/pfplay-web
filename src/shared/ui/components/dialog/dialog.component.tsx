@@ -1,8 +1,8 @@
 'use client';
 import { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo, useRef } from 'react';
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
-import { cn } from '@/shared/lib/cn';
-import { wrapByTag } from '@/shared/lib/wrap-by-tag';
+import { cn } from '@/shared/lib/functions/cn';
+import { wrapByTag } from '@/shared/lib/functions/wrap-by-tag';
 import { PFClose } from '@/shared/ui/icons';
 import { Button, ButtonProps } from '../button';
 import { Typography, TypographyProps } from '../typography';

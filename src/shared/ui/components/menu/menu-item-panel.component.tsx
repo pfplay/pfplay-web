@@ -1,6 +1,6 @@
 import { Fragment, ReactNode } from 'react';
 import { Transition, Menu } from '@headlessui/react';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 
 // TODO: MenuConfig 정해지면 type 재정의하기
 export type MenuItem = { onClickItem: () => void; label: string; Icon?: ReactNode };

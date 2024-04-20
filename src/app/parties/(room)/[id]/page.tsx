@@ -1,5 +1,5 @@
 import PartiesSideBar from '@/components/features/parties/parties-side-bar';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import Button from '@/shared/ui/components/button/button.component';
 import {
   PFInfoOutline,

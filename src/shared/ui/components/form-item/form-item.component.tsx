@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren, ReactNode } from 'react';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib/functions/cn';
 import { Typography } from '../typography';
 
 type Axis = 'vertical' | 'horizontal';

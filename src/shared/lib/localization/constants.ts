@@ -3,4 +3,4 @@ export const enum Language {
   En = 'en',
 }
 
-export const COOKIE_KEY = 'lang';
+export const LANGUAGE_COOKIE_KEY = 'lang';

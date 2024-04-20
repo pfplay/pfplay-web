@@ -1,4 +1,4 @@
-import { wrapByTag } from 'shared/lib/wrap-by-tag';
+import { wrapByTag } from '@/shared/lib/functions/wrap-by-tag';
 
 describe('utils/wrapByTag', () => {
   test('기본 태그로 문자열 감싸기', () => {

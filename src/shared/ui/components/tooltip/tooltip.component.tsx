@@ -9,8 +9,8 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { DomId } from '@/constants/dom-id';
-import { cn } from '@/shared/lib/cn';
-import { repeatAnimationFrame } from '@/shared/lib/repeat-animation-frame';
+import { cn } from '@/shared/lib/functions/cn';
+import { repeatAnimationFrame } from '@/shared/lib/functions/repeat-animation-frame';
 import { Typography } from '../typography';
 
 interface Position extends Pick<CSSProperties, 'top' | 'left'> {
