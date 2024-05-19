@@ -1,0 +1,2 @@
+- [in 프로필 페이지](https://www.figma.com/file/9I5PR6OqN8cHJ7WVTOKe00/PFPlay-GUI-%EC%84%A4%EA%B3%84%EC%84%9C-%ED%95%A9%EB%B3%B8?type=design&node-id=1-3867&mode=design&t=h07KuAWKYQin7PVC-4)
+- [in 파티룸](https://www.figma.com/file/9I5PR6OqN8cHJ7WVTOKe00/PFPlay-GUI-%EC%84%A4%EA%B3%84%EC%84%9C-%ED%95%A9%EB%B3%B8?type=design&node-id=2257-28401&mode=design&t=h07KuAWKYQin7PVC-4)
