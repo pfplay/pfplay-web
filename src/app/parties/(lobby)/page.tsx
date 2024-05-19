@@ -1,14 +1,13 @@
-import CreatePartyRoomCard from '@/components/features/parties/create-party-room-card';
-import PartiesMainStageCard from '@/components/features/parties/parties-main-stage-card.component';
-import PartiesSideBar from '@/components/features/parties/parties-side-bar';
-import PartyRoomList from '@/components/features/parties/party-room-list.component';
+import { PartyRoomCreateCard } from '@/features/create-party-room';
+import { MainPartyRoomCard, PartyRoomList } from '@/features/list-party-rooms';
 import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary.component';
 import { cn } from '@/shared/lib/functions/cn';
+import { Sidebar } from '@/widgets/sidebar';
 
 const PartyLobbyPage = async () => {
   return (
     <>
-      <PartiesSideBar
+      <Sidebar
         className={cn([
           'flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded',
           'fixed z-10 bottom-8 right-8 transform',
@@ -17,7 +16,8 @@ const PartyLobbyPage = async () => {
       />
 
       <div className='max-w-desktop mx-auto'>
-        <PartiesMainStageCard />
+        <MainPartyRoomCard />
+
         <section
           className={cn([
             'grid gap-[1.5rem] mt-6 overflow-y-auto',
@@ -27,7 +27,7 @@ const PartyLobbyPage = async () => {
             'desktop:grid-cols-[repeat(auto-fit,minmax(calc((100%-3rem)/3),1fr))]', // 100%-({COL_GAP}*2)
           ])}
         >
-          <CreatePartyRoomCard />
+          <PartyRoomCreateCard />
 
           <SuspenseWithErrorBoundary enableReload>
             <PartyRoomList />
