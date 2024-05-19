@@ -1,4 +1,3 @@
-import PartiesSideBar from '@/components/features/parties/parties-side-bar';
 import { cn } from '@/shared/lib/functions/cn';
 import { Button } from '@/shared/ui/components/button';
 import {
@@ -10,6 +9,7 @@ import {
   PFAddPlaylist,
   PFParty,
 } from '@/shared/ui/icons';
+import { Sidebar } from '@/widgets/sidebar';
 
 const PartyRoomPage = async () => {
   // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
@@ -48,7 +48,7 @@ const PartyRoomPage = async () => {
       </div>
 
       {/* 왼쪽 float 메뉴 */}
-      <PartiesSideBar
+      <Sidebar
         className={cn([
           'flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded',
           'absolute top-1/2 left-[40px] transform -translate-y-1/2',

@@ -1,11 +1,11 @@
-import ProfileSettingForm from '@/components/features/profile/profile-setting-form.component';
+import { ProfileEditFormV1 } from '@/features/edit-profile-meta';
 import { BackButton } from '@/shared/ui/components/back-button';
 
 const ProfileSettingsPage = () => {
   return (
     <div className='absolute-user-form-section flexColCenter py-10 px-[60px]'>
       <BackButton text='당신은 누구신가요?' className='absolute self-start top-10' />
-      <ProfileSettingForm />
+      <ProfileEditFormV1 />
     </div>
   );
 };

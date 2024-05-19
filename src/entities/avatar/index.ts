@@ -1,1 +1,1 @@
-export { useSelectedAvatarStore } from './model/avatar.model';
+export { useSelectedAvatarStore } from './lib/avatar.store';

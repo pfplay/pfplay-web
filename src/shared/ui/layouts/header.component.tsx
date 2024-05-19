@@ -1,12 +1,13 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { FC } from 'react';
-import ProfileMenu from '@/components/features/profile/profile-menu.component';
+import { Menu } from '@headlessui/react';
 import { cn } from '@/shared/lib/functions/cn';
 import useIntersectionObserver from '@/shared/lib/hooks/use-intersection-observer.hook';
 import LanguageChangeMenu from '@/shared/lib/localization/language-change-menu.component';
+import { MenuButton, MenuItemPanel } from '@/shared/ui/components/menu';
 
 interface Props {
   withLogo?: boolean;
@@ -41,7 +42,26 @@ const Header: FC<Props> = ({ withLogo }) => {
           </Link>
         )}
         <div className='items-center gap-6 flexRow'>
-          {session.status === 'authenticated' && <ProfileMenu email={session.data.user.email} />}
+          {session.status === 'authenticated' && (
+            <Menu as='section' className={`relative w-fit`}>
+              {({ close }) => (
+                <>
+                  <MenuButton type='button'>{session.data.user.email}</MenuButton>
+                  <MenuItemPanel
+                    menuItemConfig={[
+                      {
+                        label: '로그아웃',
+                        onClickItem: () => signOut({ callbackUrl: '/' }),
+                      },
+                    ]}
+                    close={close}
+                    size='sm'
+                  />
+                </>
+              )}
+            </Menu>
+          )}
+
           <LanguageChangeMenu />
         </div>
       </header>
