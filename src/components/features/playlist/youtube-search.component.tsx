@@ -53,7 +53,7 @@ const YoutubeSearch = ({ onClose }: YoutubeSearchProps) => {
         </button>
       </div>
 
-      <div className='h-[340px] overflow-scroll'>
+      <div className='h-[340px] overflow-y-auto'>
         {pages.map((page) => {
           return page.musicList.map((music) => (
             <div key={music.id} className='py-3'>
