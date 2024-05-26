@@ -19,6 +19,7 @@ const utils = {
         replaceAttrValues: {
           '#fff': 'currentColor',
           '#ffffff': 'currentColor',
+          white: 'currentColor',
         },
         plugins: ['@svgr/plugin-jsx', '@svgr/plugin-prettier'],
       },
