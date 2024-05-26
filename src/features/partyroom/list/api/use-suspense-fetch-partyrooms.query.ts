@@ -1,7 +1,7 @@
 import { QueryKey } from '@tanstack/query-core';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { QueryKeys } from '@/shared/api/react-query-keys';
+import { QueryKeys } from '@/shared/api/react-query/keys';
 import { PartiesService } from '@/shared/api/services/parties';
 import { APIError, PaginationPayload, PaginationResponse } from '@/shared/api/types/@shared';
 import { PartyroomSummary } from '@/shared/api/types/parties';
