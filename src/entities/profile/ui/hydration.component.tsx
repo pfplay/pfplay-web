@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { HydrationBoundary, dehydrate, QueryClient } from '@tanstack/react-query';
 import { getServerAuthSession } from '@/shared/api/next-auth-options';
-import { QueryKeys } from '@/shared/api/react-query-keys';
+import { QueryKeys } from '@/shared/api/react-query/keys';
 import { UserService } from '@/shared/api/services/user';
 import { ProfileResponse } from '@/shared/api/types/user';
 
