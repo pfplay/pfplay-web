@@ -6,7 +6,7 @@ import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-cont
 import { Typography } from '@/shared/ui/components/typography';
 import Participants from './participants.component';
 
-const MainPartyRoomCard = () => {
+const MainPartyroomCard = () => {
   return (
     <BackdropBlurContainer>
       <Link
@@ -52,4 +52,4 @@ const MainPartyRoomCard = () => {
   );
 };
 
-export default MainPartyRoomCard;
+export default MainPartyroomCard;

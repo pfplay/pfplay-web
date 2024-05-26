@@ -34,7 +34,7 @@ const theme = {
   },
   backgroundImage: {
     onboarding: "url('/images/Background/Onboard.png')",
-    partyRoom: "url('/images/Background/PartyRoom.png')",
+    partyRoom: "url('/images/Background/Partyroom.png')",
     'gradient-red': 'linear-gradient(to right top, #780808, #AE001F)',
   },
   width: breakPoints,

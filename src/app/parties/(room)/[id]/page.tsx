@@ -11,7 +11,7 @@ import {
 } from '@/shared/ui/icons';
 import { Sidebar } from '@/widgets/sidebar';
 
-const PartyRoomPage = async () => {
+const PartyroomPage = async () => {
   // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
   return (
     <>
@@ -114,4 +114,4 @@ const PartyRoomPage = async () => {
   );
 };
 
-export default PartyRoomPage;
+export default PartyroomPage;

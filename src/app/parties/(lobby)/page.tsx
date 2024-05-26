@@ -1,5 +1,5 @@
-import { PartyRoomCreateCard } from '@/features/create-party-room';
-import { MainPartyRoomCard, PartyRoomList } from '@/features/list-party-rooms';
+import { PartyroomCreateCard } from '@/features/create-partyroom';
+import { MainPartyroomCard, PartyroomList } from '@/features/list-partyrooms';
 import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary.component';
 import { cn } from '@/shared/lib/functions/cn';
 import { Sidebar } from '@/widgets/sidebar';
@@ -16,7 +16,7 @@ const PartyLobbyPage = async () => {
       />
 
       <div className='max-w-desktop mx-auto'>
-        <MainPartyRoomCard />
+        <MainPartyroomCard />
 
         <section
           className={cn([
@@ -27,10 +27,10 @@ const PartyLobbyPage = async () => {
             'desktop:grid-cols-[repeat(auto-fit,minmax(calc((100%-3rem)/3),1fr))]', // 100%-({COL_GAP}*2)
           ])}
         >
-          <PartyRoomCreateCard />
+          <PartyroomCreateCard />
 
           <SuspenseWithErrorBoundary enableReload>
-            <PartyRoomList />
+            <PartyroomList />
           </SuspenseWithErrorBoundary>
         </section>
       </div>

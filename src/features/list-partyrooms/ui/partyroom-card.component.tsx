@@ -2,19 +2,19 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { PartyRoomSummary } from '@/shared/api/types/parties';
+import { PartyroomSummary } from '@/shared/api/types/parties';
 import { cn } from '@/shared/lib/functions/cn';
 import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFInfoOutline } from '@/shared/ui/icons';
 import Participants from './participants.component';
 
-interface PartyRoomCardProps {
+interface PartyroomCardProps {
   roomId: number;
-  summary: PartyRoomSummary;
+  summary: PartyroomSummary;
 }
 
-const PartyRoomCard = ({ roomId, summary }: PartyRoomCardProps) => {
+const PartyroomCard = ({ roomId, summary }: PartyroomCardProps) => {
   return (
     <BackdropBlurContainer>
       <Link
@@ -60,4 +60,4 @@ const PartyRoomCard = ({ roomId, summary }: PartyRoomCardProps) => {
   );
 };
 
-export default PartyRoomCard;
+export default PartyroomCard;

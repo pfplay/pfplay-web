@@ -2,9 +2,9 @@
 import Image from 'next/image';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
-import CreatePartyRoomForm from './form.component';
+import CreatePartyroomForm from './form.component';
 
-const PartyRoomCreateCard = () => {
+const PartyroomCreateCard = () => {
   const { openDialog, openConfirmDialog } = useDialog();
 
   const handleClickBeAHostBtn = async () => {
@@ -16,7 +16,7 @@ const PartyRoomCreateCard = () => {
       classNames: {
         container: 'w-[800px]',
       },
-      Body: () => <CreatePartyRoomForm onModalClose={onCancel} />,
+      Body: () => <CreatePartyroomForm onModalClose={onCancel} />,
     }));
   };
 
@@ -49,4 +49,4 @@ const PartyRoomCreateCard = () => {
   );
 };
 
-export default PartyRoomCreateCard;
+export default PartyroomCreateCard;

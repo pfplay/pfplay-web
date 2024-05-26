@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 
-const PartyRoomLayout = ({ children }: PropsWithChildren) => {
+const PartyroomLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
       <main className='bg-partyRoom'>{children}</main>
@@ -8,4 +8,4 @@ const PartyRoomLayout = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default PartyRoomLayout;
+export default PartyroomLayout;
