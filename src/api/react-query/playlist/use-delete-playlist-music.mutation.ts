@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { PLAYLIST_MUSICS_QUERY_KEY, PLAYLIST_QUERY_KEY } from '@/api/react-query/playlist/keys';
+import { QueryKeys } from '@/shared/api/react-query-keys';
 import { PlaylistService } from '@/shared/api/services/playlist';
 
 export const useDeletePlaylistMusic = () => {
@@ -10,10 +10,10 @@ export const useDeletePlaylistMusic = () => {
     onSuccess: (data) => {
       data.listIds.forEach((id) => {
         queryClient.invalidateQueries({
-          queryKey: [PLAYLIST_MUSICS_QUERY_KEY, id],
+          queryKey: [QueryKeys.PlaylistMusics, id],
         });
         queryClient.invalidateQueries({
-          queryKey: [PLAYLIST_QUERY_KEY], // for refetch count
+          queryKey: [QueryKeys.Playlist], // for refetch count
         });
       });
     },

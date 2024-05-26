@@ -3,11 +3,13 @@
 import Image from 'next/image';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ProfileForm, useFetchProfile, useUpdateProfile } from '@/features/edit-profile-meta';
 import { Button } from '@/shared/ui/components/button';
 import { FormItemError } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
 import { TextArea } from '@/shared/ui/components/textarea';
+import { useFetchProfile } from '../api/use-fetch-profile.query';
+import { useUpdateProfile } from '../api/use-update-profile.mutation';
+import * as ProfileForm from '../model/form.model';
 
 type V2EditModeProps = {
   changeToViewMode: () => void;

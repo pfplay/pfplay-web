@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { PLAYLIST_QUERY_KEY } from '@/api/react-query/playlist/keys';
+import { QueryKeys } from '@/shared/api/react-query-keys';
 import { PlaylistService } from '@/shared/api/services/playlist';
 import { UpdatePlaylistRequestBody } from '@/shared/api/types/playlist';
 
@@ -11,7 +11,7 @@ export const useUpdatePlaylist = () => {
       PlaylistService.updatePlaylist(listId, params),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [PLAYLIST_QUERY_KEY],
+        queryKey: [QueryKeys.Playlist],
       });
     },
   });
