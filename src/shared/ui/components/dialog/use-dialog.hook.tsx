@@ -25,7 +25,11 @@ export const useDialog = () => {
           Sub,
           Body: () => (
             <>
-              {content && <Typography type='body3'>{content}</Typography>}
+              {content && (
+                <Typography type='body3' overflow='break-words'>
+                  {content}
+                </Typography>
+              )}
 
               <Dialog.ButtonGroup>
                 <Dialog.Button onClick={onCancel}>{okText}</Dialog.Button>
@@ -47,7 +51,11 @@ export const useDialog = () => {
           Sub,
           Body: () => (
             <>
-              {content && <Typography type='body3'>{content}</Typography>}
+              {content && (
+                <Typography type='body3' overflow='break-words'>
+                  {content}
+                </Typography>
+              )}
 
               <Dialog.ButtonGroup>
                 <Dialog.Button color='secondary' onClick={() => onOk(false)}>
@@ -70,7 +78,9 @@ export const useDialog = () => {
           title: { fullPhrase: 'Error', emphasisPhrase: 'Error' },
           Body: () => (
             <>
-              <Typography type='body3'>{getErrorMessage(error)}</Typography>
+              <Typography type='body3' overflow='break-words'>
+                {getErrorMessage(error)}
+              </Typography>
 
               <Dialog.ButtonGroup>
                 <Dialog.Button onClick={onCancel}>확인</Dialog.Button>
