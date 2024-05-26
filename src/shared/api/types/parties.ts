@@ -1,25 +1,25 @@
-import { Authority, PartyRoomStatus, PartyRoomType } from '@/shared/api/types/@enums';
+import { Authority, PartyroomStatus, PartyroomType } from '@/shared/api/types/@enums';
 import { PaginationPayload, PaginationResponse } from '@/shared/api/types/@shared';
 
-export interface CreatePartyRoomRequest {
+export interface CreatePartyroomRequest {
   name: string;
   introduce: string; // FIXME: BE가 attribute name 수정 하면 수정 필요
   domain?: string;
   limit: number;
 }
 
-export interface PartyRoomParticipant {
+export interface PartyroomParticipant {
   nickname: string;
   faceUrl: string;
 }
-export interface PartyRoomSummary {
+export interface PartyroomSummary {
   roomId: number;
   introduce: string;
   name: string;
   domain: string;
   createdAt: string;
   participantTotalCount: number;
-  participants: PartyRoomParticipant[];
+  participants: PartyroomParticipant[];
 }
 
 export type DefaultPartyPermission = {
@@ -38,14 +38,14 @@ export type DefaultPartyPermission = {
   musicSkip: boolean;
   videoLengthLimit: boolean;
 };
-export interface CreatePartyRoomResponse {
+export interface CreatePartyroomResponse {
   id: number;
   name: string;
   introduce: string;
   domain: string;
   djingLimit: number;
-  type: PartyRoomType;
-  status: PartyRoomStatus;
+  type: PartyroomType;
+  status: PartyroomStatus;
   admin: {
     profile: string;
     userName: string;
@@ -54,6 +54,6 @@ export interface CreatePartyRoomResponse {
 }
 
 export interface PartiesClient {
-  create(request: CreatePartyRoomRequest): Promise<CreatePartyRoomResponse>;
-  getList(request: PaginationPayload): Promise<PaginationResponse<PartyRoomSummary>>;
+  create(request: CreatePartyroomRequest): Promise<CreatePartyroomResponse>;
+  getList(request: PaginationPayload): Promise<PaginationResponse<PartyroomSummary>>;
 }

@@ -4,18 +4,18 @@ import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/react-query-keys';
 import { PartiesService } from '@/shared/api/services/parties';
 import { APIError, PaginationPayload, PaginationResponse } from '@/shared/api/types/@shared';
-import { PartyRoomSummary } from '@/shared/api/types/parties';
+import { PartyroomSummary } from '@/shared/api/types/parties';
 import { ONE_HOUR } from '@/shared/config/time';
 
-export const useSuspenseFetchPartyRooms = (initialPagePayload: PaginationPayload) => {
+export const useSuspenseFetchPartyrooms = (initialPagePayload: PaginationPayload) => {
   return useSuspenseInfiniteQuery<
-    PaginationResponse<PartyRoomSummary>,
+    PaginationResponse<PartyroomSummary>,
     AxiosError<APIError>,
-    PartyRoomSummary[],
+    PartyroomSummary[],
     QueryKey,
     PaginationPayload
   >({
-    queryKey: [QueryKeys.PartyRoomList],
+    queryKey: [QueryKeys.PartyroomList],
     queryFn: ({ pageParam }) => PartiesService.getList(pageParam),
     initialPageParam: initialPagePayload,
     getNextPageParam: ({ pagination }) => {

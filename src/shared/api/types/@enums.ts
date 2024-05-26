@@ -1,9 +1,9 @@
-export enum PartyRoomType {
+export enum PartyroomType {
   PARTY = 'PARTY',
   MAIN = 'MAIN',
 }
 
-export enum PartyRoomStatus {
+export enum PartyroomStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }

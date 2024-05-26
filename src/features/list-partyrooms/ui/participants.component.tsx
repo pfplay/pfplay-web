@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import { PartyRoomParticipant } from '@/shared/api/types/parties';
+import { PartyroomParticipant } from '@/shared/api/types/parties';
 import { cn } from '@/shared/lib/functions/cn';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFPersonFilled } from '@/shared/ui/icons';
 
 interface ParticipantsProps {
   count?: number;
-  participants?: PartyRoomParticipant[];
+  participants?: PartyroomParticipant[];
 }
 
 const Participants = ({ count, participants }: ParticipantsProps) => {

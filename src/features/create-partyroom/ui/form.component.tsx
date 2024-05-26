@@ -15,11 +15,11 @@ import { Typography } from '@/shared/ui/components/typography';
 import DjListItem from './dj-list-item.component';
 import * as Form from '../model/form.model';
 
-interface PartyRoomCreationFormProps {
+interface PartyroomCreateFormProps {
   onModalClose?: () => void;
 }
 
-const PartyRoomCreationForm = ({ onModalClose }: PartyRoomCreationFormProps) => {
+const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
   const { data } = useSession();
   const router = useRouter();
 
@@ -176,4 +176,4 @@ const PartyRoomCreationForm = ({ onModalClose }: PartyRoomCreationFormProps) => 
   );
 };
 
-export default PartyRoomCreationForm;
+export default PartyroomCreateForm;
