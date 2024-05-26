@@ -4,19 +4,22 @@ import useIntersectionObserver from '@/shared/lib/hooks/use-intersection-observe
 import { Loading } from '../loading';
 
 interface Props {
-  load: () => void;
+  loadMore: () => void;
   hasMore: boolean;
   endMessage?: ReactNode;
   children?: ReactNode;
-  className?: string;
+  /**
+   * 로딩, end message를 감싸는 컨테이너의 높이입니다.
+   */
+  observedHeight?: number;
 }
 
 const InfiniteScroll: FC<Props> = ({
   children,
-  load,
+  loadMore,
   hasMore,
   endMessage = 'No more data',
-  className,
+  observedHeight = 300,
 }) => {
   const { setRef, isIntersecting } = useIntersectionObserver<HTMLDivElement>({
     root: null,
@@ -26,18 +29,20 @@ const InfiniteScroll: FC<Props> = ({
 
   useEffect(() => {
     if (isIntersecting && hasMore) {
-      load();
+      loadMore();
     }
   }, [isIntersecting, hasMore]);
 
   return (
-    <div className={className}>
+    <div>
       {children}
-      {(hasMore || endMessage) && (
-        <div ref={setRef} className={cn('h-[300px] max-h-full flexRowCenter text-[20px]')}>
-          {hasMore ? <Loading /> : endMessage}
-        </div>
-      )}
+      <div
+        ref={setRef}
+        className={cn('max-h-full flexRowCenter text-[20px]')}
+        style={{ height: observedHeight }}
+      >
+        {hasMore ? <Loading /> : endMessage}
+      </div>
     </div>
   );
 };

@@ -15,7 +15,7 @@ const PartyroomList = () => {
   });
 
   return (
-    <InfiniteScroll load={fetchNextPage} hasMore={hasNextPage}>
+    <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
       {partyRooms.map((partyRoom) => (
         <PartyroomCard key={partyRoom.roomId} roomId={partyRoom.roomId} summary={partyRoom} />
       ))}
