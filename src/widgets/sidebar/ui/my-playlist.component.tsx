@@ -1,88 +1,30 @@
 import { useState } from 'react';
-import { Disclosure } from '@headlessui/react';
-import { useDeletePlaylistMusic } from '@/api/react-query/playlist/use-delete-playlist-music.mutation';
-import { useDeletePlaylist } from '@/api/react-query/playlist/use-delete-playlist.mutation';
-import { useFetchPlaylist } from '@/api/react-query/playlist/use-fetch-playlist.query';
-import EditablePlaylist from '@/components/features/playlist/editable-playlist.component';
-import MusicsInPlaylist from '@/components/features/playlist/musicsIn-playlist.component';
-import PlaylistCreateForm from '@/components/features/playlist/playlist-create-form.component';
-import PlaylistUpdateFormComponent from '@/components/features/playlist/playlist-update-form.component';
-import YoutubeSearch from '@/components/features/playlist/youtube-search.component';
-import { Button } from '@/shared/ui/components/button';
-import { CollapseList } from '@/shared/ui/components/collapse-list';
-import { Dialog } from '@/shared/ui/components/dialog';
-import { useDialog } from '@/shared/ui/components/dialog';
+import { AddPlaylistButton } from '@/features/playlist/add';
+import { AddMusicsToPlaylistButton } from '@/features/playlist/add-musics';
+import { useEditPlaylistDialog } from '@/features/playlist/edit';
+import { CollapsablePlaylists, EditablePlaylists } from '@/features/playlist/list';
+import { MusicsInPlaylist } from '@/features/playlist/list-musics';
+import { RemovePlaylistButton } from '@/features/playlist/remove';
+import { useDeletePlaylistMusic } from '@/features/playlist/remove-musics';
 import { Drawer } from '@/shared/ui/components/drawer';
 import { TextButton } from '@/shared/ui/components/text-button';
-import { PFAdd, PFDelete } from '@/shared/ui/icons';
 
 interface MyPlaylistProps {
   drawerOpen: boolean;
   setDrawerOpen: (open: boolean) => void;
 }
 
-// TODO: feature 혹은 별도 위젯으로 분리
+// TODO: 별도 위젯으로 분리
 const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
-  const { openDialog } = useDialog();
-
-  const { data: playlist } = useFetchPlaylist();
-
   const [editMode, setEditMode] = useState(false);
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<number[]>([]);
 
-  const { mutate: deletePlaylist } = useDeletePlaylist();
   const { mutate: deletePlaylistMusic } = useDeletePlaylistMusic();
-
-  const handleAddList = () => {
-    openDialog((_, onCancel) => ({
-      title: '플레이리스트 이름을 입력해주세요',
-      Body: <PlaylistCreateForm onCancel={onCancel} />,
-    }));
-  };
-
-  const handleUpdateList = (listId: number) => {
-    openDialog((_, onCancel) => ({
-      title: '플레이리스트 이름을 입력해주세요',
-      Body: <PlaylistUpdateFormComponent listId={listId} onCancel={onCancel} />,
-    }));
-  };
-
-  const handleDeleteList = () => {
-    openDialog((_, onCancel) => ({
-      title: '정말 선택 항목을\n 리스트에서 삭제하시겠어요?',
-      Body: (
-        <Dialog.ButtonGroup>
-          <Dialog.Button color='secondary' onClick={onCancel}>
-            취소
-          </Dialog.Button>
-          <Dialog.Button
-            onClick={() =>
-              deletePlaylist(selectedPlaylistIds, {
-                onSuccess: () => {
-                  onCancel?.();
-                },
-              })
-            }
-          >
-            확인
-          </Dialog.Button>
-        </Dialog.ButtonGroup>
-      ),
-      // Body: <PlaylistCreateForm onCancel={onCancel} />,
-    }));
-  };
-  const handleAddMusic = () => {
-    openDialog((_, onClose) => ({
-      classNames: { container: 'px-[40px] pt-[36px] w-[800px] bg-black border border-gray-700' },
-      Body: <YoutubeSearch onClose={onClose} />,
-      hideDim: true,
-    }));
-  };
+  const openEditPlaylistDialog = useEditPlaylistDialog();
 
   const handleEditConfirm = () => {
     setEditMode(false);
   };
-
   const handleDeleteMusicFromList = (musicId: number) => {
     deletePlaylistMusic([musicId]);
   };
@@ -96,16 +38,7 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
       <div className='flexRow justify-between items-center mt-10 mb-6'>
         {editMode ? (
           <>
-            <Button
-              size='sm'
-              Icon={<PFDelete />}
-              variant='outline'
-              color='secondary'
-              disabled={selectedPlaylistIds.length === 0}
-              onClick={handleDeleteList}
-            >
-              삭제
-            </Button>
+            <RemovePlaylistButton targetIds={selectedPlaylistIds} />
             <TextButton className='text-red-300' onClick={handleEditConfirm}>
               완료
             </TextButton>
@@ -113,24 +46,8 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
         ) : (
           <>
             <div className='flexRow gap-3'>
-              <Button
-                size='sm'
-                variant='outline'
-                color='secondary'
-                Icon={<PFAdd />}
-                onClick={handleAddMusic}
-              >
-                곡 추가
-              </Button>
-              <Button
-                size='sm'
-                variant='outline'
-                color='secondary'
-                Icon={<PFAdd />}
-                onClick={handleAddList}
-              >
-                리스트 추가
-              </Button>
+              <AddMusicsToPlaylistButton />
+              <AddPlaylistButton />
             </div>
             <TextButton onClick={() => setEditMode(true)}>설정</TextButton>
           </>
@@ -138,26 +55,20 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
       </div>
 
       {editMode ? (
-        <EditablePlaylist
-          items={playlist}
-          onChangeSelectedPlaylist={setSelectedPlaylistIds}
-          onEditPlaylistName={handleUpdateList}
+        <EditablePlaylists
+          onEditItem={openEditPlaylistDialog}
+          onChangeSelectedItem={setSelectedPlaylistIds}
         />
       ) : (
-        <div className='flexCol gap-3'>
-          {playlist?.map(({ id, name, count }) => (
-            <CollapseList key={id} title={name} infoText={`${count}곡`}>
-              <Disclosure.Panel as='article' className=' text-gray-200'>
-                <MusicsInPlaylist
-                  listId={id}
-                  size={count}
-                  onDeleteFromList={handleDeleteMusicFromList}
-                  onMoveToOtherList={handleMoveMusicToOtherList}
-                />
-              </Disclosure.Panel>
-            </CollapseList>
-          ))}
-        </div>
+        <CollapsablePlaylists
+          musicsRender={(playlist) => (
+            <MusicsInPlaylist
+              playlist={playlist}
+              onDeleteFromList={handleDeleteMusicFromList}
+              onMoveToOtherList={handleMoveMusicToOtherList}
+            />
+          )}
+        />
       )}
     </Drawer>
   );

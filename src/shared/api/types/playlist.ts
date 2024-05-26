@@ -92,7 +92,7 @@ export interface DeletePlaylistMusicResponse {
 }
 
 export interface PlaylistClient {
-  getPlaylist: () => Promise<Playlist[]>;
+  getPlaylists: () => Promise<Playlist[]>;
   getMusicFromPlaylist: (
     listId: number,
     params?: PlaylistMusicParameters
