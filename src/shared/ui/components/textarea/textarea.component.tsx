@@ -45,7 +45,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           className={cn(
             'flex-1 min-h-max py-[12px] pl-[12px] pr-[60px] rounded-[4px]',
             'bg-gray-700 text-gray-50 placeholder:gray-400 caret-red-300',
-            'focus:interaction-outline styled-scroll',
+            'focus:interaction-outline',
             textareaClassName
           )}
           placeholder={placeholder}
