@@ -1,5 +1,5 @@
-import { PartyroomCreateCard } from '@/features/create-partyroom';
-import { MainPartyroomCard, PartyroomList } from '@/features/list-partyrooms';
+import { PartyroomCreateCard } from '@/features/partyroom/create';
+import { MainPartyroomCard, PartyroomList } from '@/features/partyroom/list';
 import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary.component';
 import { cn } from '@/shared/lib/functions/cn';
 import { Sidebar } from '@/widgets/sidebar';

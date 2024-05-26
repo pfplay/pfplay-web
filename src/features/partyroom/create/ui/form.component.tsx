@@ -158,7 +158,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
             }
             classNames={{ label: 'text-gray-200' }}
           >
-            <DjListItem userConfig={{ username: data?.user.name || 'PFPlay User', src: '' }} />
+            <DjListItem userConfig={{ username: data?.user?.name || 'PFPlay User', src: '' }} />
           </FormItem>
 
           <Button

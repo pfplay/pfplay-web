@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useFetchProfile } from '@/features/edit-profile-meta';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFEdit } from '@/shared/ui/icons';
+import { useFetchProfile } from '../api/use-fetch-profile.query';
 
 type V2ViewModeProps = {
   onAvatarSettingClick?: () => void;
