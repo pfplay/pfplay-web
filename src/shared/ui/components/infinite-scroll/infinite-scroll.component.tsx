@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { CSSProperties, FC, ReactNode, useEffect } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
 import useIntersectionObserver from '@/shared/lib/hooks/use-intersection-observer.hook';
 import { Loading } from '../loading';
@@ -9,9 +9,13 @@ interface Props {
   endMessage?: ReactNode;
   children?: ReactNode;
   /**
-   * 로딩, end message를 감싸는 컨테이너의 높이입니다.
+   * 컨테이너의 높이입니다.
    */
-  observedHeight?: number;
+  height?: CSSProperties['height'];
+  /**
+   * 로딩, end message를 감싸는 wrapper의 높이입니다.
+   */
+  observedHeight?: CSSProperties['height'];
 }
 
 const InfiniteScroll: FC<Props> = ({
@@ -19,6 +23,7 @@ const InfiniteScroll: FC<Props> = ({
   loadMore,
   hasMore,
   endMessage = 'No more data',
+  height,
   observedHeight = 300,
 }) => {
   const { setRef, isIntersecting } = useIntersectionObserver<HTMLDivElement>({
@@ -34,7 +39,7 @@ const InfiniteScroll: FC<Props> = ({
   }, [isIntersecting, hasMore]);
 
   return (
-    <div>
+    <div style={{ height }}>
       {children}
       <div
         ref={setRef}

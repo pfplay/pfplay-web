@@ -1,6 +1,6 @@
 'use client';
-import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import { PropsWithChildren, ReactNode, Suspense, useEffect } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Loading } from '@/shared/ui/components/loading';
@@ -58,7 +58,7 @@ const SuspenseWithErrorBoundary = ({
 }: PropsWithChildren<Props>) => {
   return (
     <ErrorBoundary
-      errorComponent={({ error }) => (
+      fallbackRender={({ error }) => (
         <ErrorFallback
           error={error}
           enableReload={enableReload}

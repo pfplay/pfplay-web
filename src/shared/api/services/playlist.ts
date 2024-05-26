@@ -4,7 +4,7 @@ import { PlaylistClient } from '@/shared/api/types/playlist';
 const ROUTE_V1 = 'v1/play-list';
 
 export const PlaylistService: PlaylistClient = {
-  getPlaylist: () => {
+  getPlaylists: () => {
     return pfpAxiosInstance.get(`${ROUTE_V1}`);
   },
   getMusicFromPlaylist: (listId, params) => {
