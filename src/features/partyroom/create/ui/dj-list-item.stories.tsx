@@ -13,21 +13,21 @@ type Story = StoryObj<typeof meta>;
 
 export const Preview: Story = {
   args: {
-    userConfig: { username: 'nickname', src: 'https://source.unsplash.com/user/c_v_r' },
+    userConfig: { username: 'nickname', src: '/images/Background/Profile.png' },
   },
 };
 
 export const DjListItemWithOrder: Story = {
   args: {
     order: '1',
-    userConfig: { username: 'nickname', src: 'https://source.unsplash.com/user/c_v_r' },
+    userConfig: { username: 'nickname', src: '/images/Background/Profile.png' },
   },
 };
 
 export const DjListItemAccentOutline: Story = {
   args: {
     order: '0',
-    userConfig: { username: 'nickname', src: 'https://source.unsplash.com/user/c_v_r' },
+    userConfig: { username: 'nickname', src: '/images/Background/Profile.png' },
     variant: 'outlineAccent',
   },
 };
@@ -35,7 +35,7 @@ export const DjListItemAccentOutline: Story = {
 export const DjListItemWithBackground: Story = {
   args: {
     order: '0',
-    userConfig: { username: 'nickname', src: 'https://source.unsplash.com/user/c_v_r' },
+    userConfig: { username: 'nickname', src: '/images/Background/Profile.png' },
     variant: 'filled',
   },
 };
@@ -43,7 +43,7 @@ export const DjListItemWithBackground: Story = {
 export const DjListItemWithTag: Story = {
   args: {
     order: '0',
-    userConfig: { username: 'nickname', src: 'https://source.unsplash.com/user/c_v_r' },
+    userConfig: { username: 'nickname', src: '/images/Background/Profile.png' },
     variant: 'outlineAccent',
     suffixTagValue: 'Tag',
   },

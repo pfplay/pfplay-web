@@ -17,6 +17,11 @@ const preview: Preview = {
       default: 'dark',
       values: [{ name: 'dark', value: '#111111' }],
     },
+    options: {
+      storySort: {
+        order: ['base', 'features'],
+      },
+    },
   },
   decorators: [
     (Story) => (

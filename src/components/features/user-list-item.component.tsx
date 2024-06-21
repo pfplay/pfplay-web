@@ -1,6 +1,5 @@
 import Image from 'next/image';
 
-import { cn } from '@/shared/lib/functions/cn';
 import { Button } from '@/shared/ui/components/button';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
 import { MenuItem } from '@/shared/ui/components/menu';
@@ -38,12 +37,8 @@ const UserListItem = ({ userListItemConfig, menuItemList, ...suffixProps }: User
       listenerDisabled={suffixProps.suffixType === 'button'}
     >
       {() => (
-        <div
-          className={cn(
-            'relative w-full flexRow justify-between items-center py-2 px-4 rounded-[4px]'
-          )}
-        >
-          <div className={cn('flexRow justify-center items-center gap-2')}>
+        <div className='relative w-full flexRow justify-between items-center py-2 px-4 rounded-[4px]'>
+          <div className='flexRow justify-center items-center gap-2'>
             <Image
               src={userListItemConfig.src ?? '/images/ETC/monkey.png'}
               alt={userListItemConfig?.alt ?? userListItemConfig.username}

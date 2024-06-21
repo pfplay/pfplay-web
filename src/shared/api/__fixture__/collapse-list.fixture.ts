@@ -11,12 +11,12 @@ export const fixtureCollapseList: {
     {
       id: 1,
       username: 'nickname1111',
-      src: 'https://source.unsplash.com/user/c_v_r',
+      src: '/images/Background/Profile.png',
     },
     {
       id: 2,
       username: 'nickname222',
-      src: 'https://source.unsplash.com/user/c_v_r',
+      src: '/images/Background/Profile.png',
     },
   ],
 };

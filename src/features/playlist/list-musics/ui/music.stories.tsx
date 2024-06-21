@@ -11,7 +11,7 @@ const meta = {
       musicId: 1,
       name: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
       duration: '00:00',
-      thumbnailImage: 'https://source.unsplash.com/user/c_v_r',
+      thumbnailImage: '/images/Background/Profile.png',
     },
     menuItems: fixtureMenuItems,
   },

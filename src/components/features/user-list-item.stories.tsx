@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import UserListItem from '@/components/features/user-list-item.component';
 import { fixtureMenuItems } from '@/shared/api/__fixture__/menu-items.fixture';
+import UserListItem from './user-list-item.component';
 
 const meta = {
   title: 'features/UserListItem',
@@ -10,7 +10,7 @@ const meta = {
     userListItemConfig: {
       id: 1,
       username: 'nickname',
-      src: 'https://source.unsplash.com/user/c_v_r',
+      src: '/images/Background/Profile.png',
     },
     menuItemList: fixtureMenuItems,
   },
