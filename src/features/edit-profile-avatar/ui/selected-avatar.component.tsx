@@ -4,7 +4,6 @@ import { useSelectedAvatarStore } from '@/entities/avatar';
 
 const SelectedAvatar = () => {
   const selectedAvatarParts = useSelectedAvatarStore((state) => state.selectedAvatarParts);
-  console.log({ selectedAvatarParts });
 
   return (
     <div className='min-h-[525px] flexCol justify-center items-center h-full bg-black pointer-events-none select-none  '>

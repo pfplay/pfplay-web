@@ -1,5 +1,5 @@
 import { AvatarService } from '@/shared/api/services/avatar';
-import AvatarListItem from './avatar-list-item.component';
+import AvatarListItem from 'features/edit-profile-avatar/ui/avatar-list-item.component';
 
 const AvatarBodyList = async () => {
   const bodyList = await AvatarService.getBodyList();

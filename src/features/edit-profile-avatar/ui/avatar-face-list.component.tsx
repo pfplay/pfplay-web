@@ -6,8 +6,8 @@ import { FetchStatus } from '@/shared/api/types/@shared';
 import { AvatarParts } from '@/shared/api/types/avatar';
 import { OwnedNft } from '@/shared/api/types/nft';
 import { useDialog } from '@/shared/ui/components/dialog';
-import AvatarListItem from './avatar-list-item.component';
-import ConnectWalletButton from './connect-wallet-button.component';
+import AvatarListItem from 'features/edit-profile-avatar/ui/avatar-list-item.component';
+import ConnectWalletButton from 'features/edit-profile-avatar/ui/connect-wallet-button.component';
 
 const AvatarFaceList = () => {
   const { isConnected, address } = useAccount();
@@ -71,7 +71,7 @@ const AvatarFaceList = () => {
 
 export default AvatarFaceList;
 
-export const refineNftData = async (nfts: OwnedNft[]): Promise<AvatarParts[]> => {
+const refineNftData = async (nfts: OwnedNft[]): Promise<AvatarParts[]> => {
   const thumbnailExistNfts = nfts.filter((nft) => !!nft.image?.thumbnailUrl);
 
   const results = await Promise.allSettled(requestImageUrlHealthCheck(thumbnailExistNfts));

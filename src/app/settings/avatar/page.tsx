@@ -1,6 +1,4 @@
-import AvatarBodyList from '@/components/features/avatar/avatar-body-list.component';
-import AvatarFaceList from '@/components/features/avatar/avatar-face-list.component';
-import SelectedAvatar from '@/components/features/avatar/selected-avatar.component';
+import { AvatarBodyList, AvatarFaceList, SelectedAvatar } from '@/features/edit-profile-avatar';
 import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary.component';
 import { cn } from '@/shared/lib/functions/cn';
 import { BackButton } from '@/shared/ui/components/back-button';
