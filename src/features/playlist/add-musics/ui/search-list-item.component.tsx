@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
-import { Playlist, YoutubeMusic } from '@/shared/api/types/playlist';
+import { usePlaylistAction } from '@/entities/playlist';
+import { YoutubeMusic } from '@/shared/api/types/playlist';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
@@ -8,26 +9,28 @@ import { PFAddCircle, PFAddPlaylist } from '@/shared/ui/icons';
 
 type SearchListItemProps = {
   music: YoutubeMusic;
-  playlists?: Playlist[];
   onSelectPlaylist?: (id: number) => void;
-  onAddPlaylist?: () => void;
 };
 
 const SearchListItem = ({
   music: { title, duration, thumbnailMedium },
-  playlists = [],
   onSelectPlaylist,
-  onAddPlaylist,
 }: SearchListItemProps) => {
+  const playlistAction = usePlaylistAction();
+
   const menuItemConfig: MenuItem[] = useMemo(
-    () =>
-      playlists.map(({ name: label, id }) => ({
+    () => [
+      ...playlistAction.list.map(({ name: label, id }) => ({
         label,
-        onClickItem: () => {
-          onSelectPlaylist?.(id);
-        },
+        onClickItem: () => onSelectPlaylist?.(id),
       })),
-    [playlists, onSelectPlaylist]
+      {
+        label: '플레이리스트 추가',
+        Icon: <PFAddCircle />,
+        onClickItem: playlistAction.add,
+      },
+    ],
+    [playlistAction.list, playlistAction.add, onSelectPlaylist]
   );
 
   return (
@@ -41,16 +44,7 @@ const SearchListItem = ({
       <IconMenu
         MenuButtonIcon={<PFAddPlaylist />}
         menuItemPanel={{ className: 'm-w-[300px] border border-gray-500' }}
-        menuItemConfig={[
-          ...menuItemConfig,
-          {
-            label: '플레이리스트 추가',
-            Icon: <PFAddCircle />,
-            onClickItem: () => {
-              onAddPlaylist?.();
-            },
-          },
-        ]}
+        menuItemConfig={menuItemConfig}
       />
     </div>
   );

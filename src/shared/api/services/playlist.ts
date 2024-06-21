@@ -22,10 +22,10 @@ export const PlaylistService: PlaylistClient = {
   updatePlaylist: (listId, params) => {
     return pfpAxiosInstance.patch(`${ROUTE_V1}/${listId}`, params);
   },
-  deletePlaylist: (data) => {
+  removePlaylist: (data) => {
     return pfpAxiosInstance.delete(`${ROUTE_V1}`, { data });
   },
-  deleteMusicFromPlaylist: (data) => {
+  removeMusicFromPlaylist: (data) => {
     return pfpAxiosInstance.delete(`${ROUTE_V1}/music`, { data });
   },
 };

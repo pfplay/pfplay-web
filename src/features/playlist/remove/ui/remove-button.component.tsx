@@ -1,16 +1,17 @@
+import { usePlaylistAction } from '@/entities/playlist';
 import { Playlist } from '@/shared/api/types/playlist';
 import { Button } from '@/shared/ui/components/button';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { PFDelete } from '@/shared/ui/icons';
-import { useDeletePlaylist } from '../api/use-delete-playlist.mutation';
 
 type RemoveButtonProps = {
   targetIds: Playlist['id'][];
+  onSuccess?: () => void;
 };
 
-const RemoveButton = ({ targetIds }: RemoveButtonProps) => {
+const RemoveButton = ({ targetIds, onSuccess }: RemoveButtonProps) => {
   const { openDialog } = useDialog();
-  const { mutate: deletePlaylist } = useDeletePlaylist();
+  const playlistAction = usePlaylistAction();
 
   const handleClick = () => {
     openDialog((_, onCancel) => ({
@@ -22,8 +23,9 @@ const RemoveButton = ({ targetIds }: RemoveButtonProps) => {
           </Dialog.Button>
           <Dialog.Button
             onClick={() =>
-              deletePlaylist(targetIds, {
+              playlistAction.remove(targetIds, {
                 onSuccess: () => {
+                  onSuccess?.();
                   onCancel?.();
                 },
               })

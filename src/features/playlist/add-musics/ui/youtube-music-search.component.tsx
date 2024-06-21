@@ -1,13 +1,10 @@
 import { ReactNode, useState } from 'react';
-import PlaylistCreateForm from '@/features/playlist/add/ui/form.component';
-import { useFetchPlaylists } from '@/features/playlist/list/api/use-fetch-playlist.query';
+import { usePlaylistAction } from '@/entities/playlist';
 import { YoutubeMusic } from '@/shared/api/types/playlist';
-import { useDialog } from '@/shared/ui/components/dialog';
 import { InfiniteScroll } from '@/shared/ui/components/infinite-scroll';
 import { Typography } from '@/shared/ui/components/typography';
 import SearchInput from './search-input.component';
 import SearchListItem from './search-list-item.component';
-import { useAddPlaylistMusic } from '../api/use-add-playlist-music.mutation';
 import { useInfiniteFetchYoutubeMusics } from '../api/use-infinite-fetch-youtube-musics.query';
 
 type YoutubeMusicSearchProps = {
@@ -21,22 +18,10 @@ const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
     isFetchedAfterMount: isFetchedYoutubeMusicsAfterMount,
     hasNextPage: hasNextYoutubeMusicsPage,
   } = useInfiniteFetchYoutubeMusics(search);
-  const { data: playlists } = useFetchPlaylists();
-  const { mutate: addMusicToPlaylist } = useAddPlaylistMusic();
-  const { openDialog } = useDialog();
+  const playlistAction = usePlaylistAction();
 
-  const handleChangeSearch = (search: string) => {
-    setSearch(search);
-  };
-  const handleAddPlaylist = () => {
-    openDialog((_, onCancel) => ({
-      title: '플레이리스트 이름을 입력해주세요',
-      Body: <PlaylistCreateForm onCancel={onCancel} />,
-    }));
-  };
   const handleSelectPlaylist = (listId: number, music: YoutubeMusic) => {
-    addMusicToPlaylist({
-      listId,
+    playlistAction.addMusic(listId, {
       uid: music.id,
       thumbnailImage: music.thumbnailMedium,
       duration: music.duration,
@@ -48,7 +33,7 @@ const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
     <div className='pt-[36px] pb-[12px] pl-[40px] pr-[12px]'>
       <div className='flex items-center gap-7 mb-11 pr-[28px]'>
         <Typography type='title2'>곡 추가</Typography>
-        <SearchInput onSearch={handleChangeSearch} />
+        <SearchInput onSearch={setSearch} />
         {extraAction}
       </div>
 
@@ -71,8 +56,6 @@ const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
               <div key={music.id} className='py-3'>
                 <SearchListItem
                   music={music}
-                  playlists={playlists}
-                  onAddPlaylist={handleAddPlaylist}
                   onSelectPlaylist={(listId) => handleSelectPlaylist(listId, music)}
                 />
               </div>
