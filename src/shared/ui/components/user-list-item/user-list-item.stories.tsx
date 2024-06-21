@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fixtureMenuItems } from '@/shared/api/__fixture__/menu-items.fixture';
-import UserListItem from './user-list-item.component';
+import UserListItem from 'shared/ui/components/user-list-item';
 
 const meta = {
   title: 'features/UserListItem',
