@@ -25,6 +25,7 @@ const Form = ({ defaultValues, onCancel, onSubmit }: FormProps) => {
           {...register('name')}
           placeholder='한/영 구분없이 띄어쓰기 포함 20자 제한'
           maxLength={20}
+          autoComplete='off'
         />
       </FormItem>
       <Dialog.ButtonGroup>

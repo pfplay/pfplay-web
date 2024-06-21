@@ -3,3 +3,4 @@ export {
   type FormProps as PlaylistFormProps,
 } from './ui/playlist-form.component';
 export type { Model as PlaylistFormValues } from './model/playlist-form.model';
+export { PlaylistActionContext, usePlaylistAction } from './lib/playlist-action.context';

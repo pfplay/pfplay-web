@@ -5,6 +5,7 @@ import { ProfileEditFormV2 } from '@/features/edit-profile-meta';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFDj, PFHeadset } from '@/shared/ui/icons';
+import PlaylistActionProvider from 'widgets/sidebar/lib/playlist-action.provider';
 import MyPlaylist from './my-playlist.component';
 
 interface SidebarProps {
@@ -70,7 +71,9 @@ const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
         )}
       </aside>
 
-      <MyPlaylist drawerOpen={showMyPlaylist} setDrawerOpen={setShowMyPlaylist} />
+      <PlaylistActionProvider>
+        <MyPlaylist drawerOpen={showMyPlaylist} setDrawerOpen={setShowMyPlaylist} />
+      </PlaylistActionProvider>
     </>
   );
 };

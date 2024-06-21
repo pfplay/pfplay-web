@@ -1,1 +1,1 @@
-export { useDeletePlaylistMusic } from './api/use-delete-playlist-music.mutation';
+export { useRemovePlaylistMusics } from './api/use-remove-playlist-music.mutation';

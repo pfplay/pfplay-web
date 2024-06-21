@@ -68,10 +68,10 @@ export interface AddPlaylistMusicResponse {
   duration: string;
 }
 
-export interface DeletePlaylistRequestBody {
+export interface RemovePlaylistRequestBody {
   listIds: number[];
 }
-export interface DeletePlaylistResponse {
+export interface RemovePlaylistResponse {
   listIds: number[];
 }
 
@@ -84,10 +84,10 @@ export interface UpdatePlaylistResponse {
   name: string;
 }
 
-export interface DeletePlaylistMusicRequestBody {
+export interface RemovePlaylistMusicRequestBody {
   listIds: number[];
 }
-export interface DeletePlaylistMusicResponse {
+export interface RemovePlaylistMusicResponse {
   listIds: number[];
 }
 
@@ -103,12 +103,12 @@ export interface PlaylistClient {
     listId: number,
     params: UpdatePlaylistRequestBody
   ) => Promise<UpdatePlaylistResponse>;
-  deletePlaylist: (params: DeletePlaylistRequestBody) => Promise<DeletePlaylistResponse>;
+  removePlaylist: (params: RemovePlaylistRequestBody) => Promise<RemovePlaylistResponse>;
   addMusicToPlaylist: (
     listId: number,
     params: AddPlaylistMusicRequestBody
   ) => Promise<AddPlaylistMusicResponse>;
-  deleteMusicFromPlaylist: (
-    params: DeletePlaylistMusicRequestBody
-  ) => Promise<DeletePlaylistMusicResponse>;
+  removeMusicFromPlaylist: (
+    params: RemovePlaylistMusicRequestBody
+  ) => Promise<RemovePlaylistMusicResponse>;
 }

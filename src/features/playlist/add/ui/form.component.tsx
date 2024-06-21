@@ -1,13 +1,24 @@
+import { useCallback } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { PlaylistForm, PlaylistFormProps, PlaylistFormValues } from '@/entities/playlist';
-import { useCreatePlaylist } from '@/features/playlist/add/api/use-create-playlist.mutation';
 import { ErrorCode } from '@/shared/api/types/@shared';
 import { Dialog } from '@/shared/ui/components/dialog';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
+import { useCreatePlaylist } from '../api/use-create-playlist.mutation';
+
+export default function useAddPlaylistDialog() {
+  const { openDialog } = useDialog();
+
+  return useCallback(() => {
+    openDialog((_, onCancel) => ({
+      title: '플레이리스트 이름을 입력해주세요',
+      Body: <Form onCancel={onCancel} />,
+    }));
+  }, []);
+}
 
 type FormProps = Pick<PlaylistFormProps, 'onCancel'>;
-
 const Form = (props: FormProps) => {
   const { mutate: createPlaylist } = useCreatePlaylist();
   const { openDialog } = useDialog();
@@ -63,5 +74,3 @@ const Form = (props: FormProps) => {
 
   return <PlaylistForm onSubmit={handleSubmit} {...props} />;
 };
-
-export default Form;

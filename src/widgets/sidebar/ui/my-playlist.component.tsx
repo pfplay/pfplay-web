@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { AddPlaylistButton } from '@/features/playlist/add';
 import { AddMusicsToPlaylistButton } from '@/features/playlist/add-musics';
-import { useEditPlaylistDialog } from '@/features/playlist/edit';
 import { CollapsablePlaylists, EditablePlaylists } from '@/features/playlist/list';
 import { MusicsInPlaylist } from '@/features/playlist/list-musics';
 import { RemovePlaylistButton } from '@/features/playlist/remove';
-import { useDeletePlaylistMusic } from '@/features/playlist/remove-musics';
 import { Drawer } from '@/shared/ui/components/drawer';
 import { TextButton } from '@/shared/ui/components/text-button';
 
@@ -19,18 +17,8 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
   const [editMode, setEditMode] = useState(false);
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<number[]>([]);
 
-  const { mutate: deletePlaylistMusic } = useDeletePlaylistMusic();
-  const openEditPlaylistDialog = useEditPlaylistDialog();
-
   const handleEditConfirm = () => {
     setEditMode(false);
-  };
-  const handleDeleteMusicFromList = (musicId: number) => {
-    deletePlaylistMusic([musicId]);
-  };
-  const handleMoveMusicToOtherList = () => {
-    // TODO: API 연동 필요
-    alert('API 연동 필요');
   };
 
   return (
@@ -38,7 +26,10 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
       <div className='flexRow justify-between items-center mt-10 mb-6'>
         {editMode ? (
           <>
-            <RemovePlaylistButton targetIds={selectedPlaylistIds} />
+            <RemovePlaylistButton
+              targetIds={selectedPlaylistIds}
+              onSuccess={() => setSelectedPlaylistIds([])}
+            />
             <TextButton className='text-red-300' onClick={handleEditConfirm}>
               완료
             </TextButton>
@@ -55,19 +46,10 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
       </div>
 
       {editMode ? (
-        <EditablePlaylists
-          onEditItem={openEditPlaylistDialog}
-          onChangeSelectedItem={setSelectedPlaylistIds}
-        />
+        <EditablePlaylists onChangeSelectedItem={setSelectedPlaylistIds} />
       ) : (
         <CollapsablePlaylists
-          musicsRender={(playlist) => (
-            <MusicsInPlaylist
-              playlist={playlist}
-              onDeleteFromList={handleDeleteMusicFromList}
-              onMoveToOtherList={handleMoveMusicToOtherList}
-            />
-          )}
+          musicsRender={(playlist) => <MusicsInPlaylist playlist={playlist} />}
         />
       )}
     </Drawer>

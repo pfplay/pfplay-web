@@ -1,7 +1,11 @@
 import { useCallback } from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { PlaylistForm, PlaylistFormProps, PlaylistFormValues } from '@/entities/playlist';
-import { useFetchPlaylists } from '@/features/playlist/list/api/use-fetch-playlist.query';
+import {
+  PlaylistForm,
+  PlaylistFormProps,
+  PlaylistFormValues,
+  usePlaylistAction,
+} from '@/entities/playlist';
 import { Playlist } from '@/shared/api/types/playlist';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { useUpdatePlaylist } from '../api/use-update-playlist.mutation';
@@ -22,8 +26,8 @@ type FormProps = Pick<PlaylistFormProps, 'onCancel'> & {
 };
 const Form = ({ listId, ...props }: FormProps) => {
   const { mutate: updatePlaylist } = useUpdatePlaylist();
-  const { data } = useFetchPlaylists();
-  const target = data?.find((v) => v.id === listId);
+  const playlistAction = usePlaylistAction();
+  const target = playlistAction.list.find((v) => v.id === listId);
 
   const handleSubmit: SubmitHandler<PlaylistFormValues> = async ({ name }) => {
     updatePlaylist(

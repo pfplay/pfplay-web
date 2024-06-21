@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { useFetchPlaylists } from '@/features/playlist/list/api/use-fetch-playlist.query';
+import { useState } from 'react';
+import { usePlaylistAction } from '@/entities/playlist';
 import { Playlist } from '@/shared/api/types/playlist';
 import { Checkbox } from '@/shared/ui/components/checkbox';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFEdit } from '@/shared/ui/icons';
 
 type EditableListProps = {
-  onEditItem?: (id: Playlist['id']) => void;
-  onChangeSelectedItem?: (ids: Playlist['id'][]) => void;
+  onChangeSelectedItem: (ids: Playlist['id'][]) => void;
 };
 
-const EditableList = ({ onEditItem, onChangeSelectedItem }: EditableListProps) => {
-  const { data: playlists } = useFetchPlaylists();
+const EditableList = ({ onChangeSelectedItem }: EditableListProps) => {
+  const playlistAction = usePlaylistAction();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const handleChange = (id: number) => {
@@ -30,12 +29,12 @@ const EditableList = ({ onEditItem, onChangeSelectedItem }: EditableListProps) =
     }
 
     setSelectedIds(newIds);
-    onChangeSelectedItem?.(newIds);
+    onChangeSelectedItem(newIds);
   };
 
   return (
     <div className='flex flex-col gap-3'>
-      {playlists?.map((item) => (
+      {playlistAction.list.map((item) => (
         <div
           key={item.id}
           className='w-full flex gap-2 items-center px-4 py-3 rounded bg-gray-800 text-left text-gray-50 hover:bg-gray-700 '
@@ -47,7 +46,7 @@ const EditableList = ({ onEditItem, onChangeSelectedItem }: EditableListProps) =
           <Typography className='truncate flex-1'>{item.name}</Typography>
 
           <Typography className='text-gray-300'>{item.count}곡</Typography>
-          <button onClick={() => onEditItem?.(item.id)}>
+          <button onClick={() => playlistAction.edit(item.id)}>
             <PFEdit />
           </button>
         </div>
