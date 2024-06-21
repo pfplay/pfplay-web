@@ -1,5 +1,5 @@
-import { UserListItemType } from '@/components/features/user-list-item.component';
 import { PlaylistMusic } from '@/shared/api/types/playlist';
+import { UserListItemType } from '@/shared/ui/components/user-list-item';
 import { fixturePlaylistMusics } from './playlist-musics.fixture';
 
 export const fixtureCollapseList: {
