@@ -1,5 +1,5 @@
-import { DefaultArticleProps } from './article/default-article.component';
-import { ListArticleProps } from './article/list-article.component';
+import { DefaultArticleProps } from '../_ui/default-article.component';
+import { ListArticleProps } from '../_ui/list-article.component';
 
 export const termsOfServiceConfig = [
   {

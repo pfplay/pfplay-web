@@ -1,4 +1,4 @@
-import { TableConfigType } from './article/article-table.component';
+import { TableConfigType } from '../_ui/article-table.component';
 
 export enum RetainedInfoTableID {
   RetainedData = '보관하는 정보',
