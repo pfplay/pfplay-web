@@ -1,1 +1,1 @@
-export { default as UserListItem } from './user-list-item.component';
+export { default as UserListItem, type UserListItemType } from './user-list-item.component';
