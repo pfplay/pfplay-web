@@ -2,10 +2,10 @@ import {
   RetainedInfoTableID,
   retainedInfoBasedOnInternalPolicyTableConfig,
   retainedInfoBasedOnLawTableConfig,
-} from 'components/features/privacy-and-terms/privacy-policy-table-config';
-import { ArticleTableProps } from './article/article-table.component';
-import { DefaultArticleProps } from './article/default-article.component';
-import { ListArticleProps } from './article/list-article.component';
+} from './privacy-policy-table-config';
+import { ArticleTableProps } from '../_ui/article-table.component';
+import { DefaultArticleProps } from '../_ui/default-article.component';
+import { ListArticleProps } from '../_ui/list-article.component';
 
 export const privacyPolicyConfig = [
   {
