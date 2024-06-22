@@ -1,5 +1,8 @@
 import { Fragment } from 'react';
 
+/**
+ * \n이 포함된 문자를 렌더할 때 사용합니다.
+ */
 export const renderBr = (text: string) => {
   return text.split('\n').map((line, index, { length }) => {
     return (
