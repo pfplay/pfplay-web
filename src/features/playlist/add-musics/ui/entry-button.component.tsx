@@ -1,11 +1,13 @@
 import { usePlaylistAction } from '@/entities/playlist';
 import { PlaylistActionBypassProvider } from '@/entities/playlist/lib/playlist-action.context';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { PFAdd, PFClose } from '@/shared/ui/icons';
 import YoutubeMusicSearch from './youtube-music-search.component';
 
 const EntryButton = () => {
+  const t = useI18n();
   const { openDialog } = useDialog();
   const playlistAction = usePlaylistAction();
 
@@ -31,7 +33,7 @@ const EntryButton = () => {
 
   return (
     <Button size='sm' variant='outline' color='secondary' Icon={<PFAdd />} onClick={handleAddMusic}>
-      곡 추가
+      {t.playlist.btn.add_song}
     </Button>
   );
 };

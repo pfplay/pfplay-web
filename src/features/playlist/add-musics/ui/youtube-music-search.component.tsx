@@ -1,6 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
 import { YoutubeMusic } from '@/shared/api/types/playlist';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { InfiniteScroll } from '@/shared/ui/components/infinite-scroll';
 import { Typography } from '@/shared/ui/components/typography';
 import SearchInput from './search-input.component';
@@ -11,6 +12,7 @@ type YoutubeMusicSearchProps = {
   extraAction?: ReactNode;
 };
 const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
+  const t = useI18n();
   const [search, setSearch] = useState('');
   const {
     data: youtubeMusics,
@@ -32,7 +34,7 @@ const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
   return (
     <div className='pt-[36px] pb-[12px] pl-[40px] pr-[12px]'>
       <div className='flex items-center gap-7 mb-11 pr-[28px]'>
-        <Typography type='title2'>곡 추가</Typography>
+        <Typography type='title2'>{t.playlist.btn.add_song}</Typography>
         <SearchInput onSearch={setSearch} />
         {extraAction}
       </div>

@@ -79,13 +79,14 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'unused-imports/no-unused-imports-ts': 2,
     'unused-imports/no-unused-vars-ts': 0,
-    'i18next/no-literal-string': ['warn', { validateTemplate: true }],
+    'i18next/no-literal-string': [1, { validateTemplate: true }],
   },
   overrides: [
     {
       files: ['**/*.stories.*'],
       rules: {
         'import/no-anonymous-default-export': 0,
+        'i18next/no-literal-string': 0,
       },
     },
     {
@@ -97,6 +98,7 @@ module.exports = {
       plugins: ['jest'],
       rules: {
         'jest/no-identical-title': 0,
+        'i18next/no-literal-string': 0,
       },
     },
   ],

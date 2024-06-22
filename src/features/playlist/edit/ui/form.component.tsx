@@ -7,15 +7,17 @@ import {
   usePlaylistAction,
 } from '@/entities/playlist';
 import { Playlist } from '@/shared/api/types/playlist';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { useUpdatePlaylist } from '../api/use-update-playlist.mutation';
 
 export default function useEditPlaylistDialog() {
+  const t = useI18n();
   const { openDialog } = useDialog();
 
   return useCallback((listId: Playlist['id']) => {
     openDialog((_, onCancel) => ({
-      title: '플레이리스트 이름을 입력해주세요',
+      title: t.playlist.para.enter_playlist_name,
       Body: <Form listId={listId} onCancel={onCancel} />,
     }));
   }, []);

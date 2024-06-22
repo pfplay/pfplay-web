@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { PartiesService } from '@/shared/api/services/parties';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { FormItem } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
@@ -20,6 +21,7 @@ interface PartyroomCreateFormProps {
 }
 
 const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
+  const t = useI18n();
   const { data } = useSession();
   const router = useRouter();
 
@@ -103,7 +105,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
           <FormItem
             label={
               <Typography as='span' type='body2' className='text-left'>
-                도메인
+                {t.db.title.domain}
                 <Typography as='span' type='detail2'>
                   (선택)
                 </Typography>
@@ -127,15 +129,12 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
                     title='디제잉 1회당 제한 시간은 3분 이상부터 가능해요'
                     visible={!!errors.limit?.message}
                   >
-                    <Typography type='body2' className='flexCol items-start'>
-                      디제잉
-                      <Typography
-                        as='span'
-                        type='body2'
-                        className="after:ml-[0.2em] after:text-red-300 after:content-['*']"
-                      >
-                        제한시간
-                      </Typography>
+                    <Typography
+                      type='body2'
+                      className="flexCol items-start after:ml-[0.2em] after:text-red-300 after:content-['*']"
+                    >
+                      {/* 줄바꿈 적용 필요*/}
+                      {t.db.title.dj_time_limit}
                     </Typography>
                   </Tooltip>
                 }

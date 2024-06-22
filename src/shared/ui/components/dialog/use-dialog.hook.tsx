@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { getErrorMessage } from '@/shared/api/get-error-message';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import Dialog, { DialogProps } from './dialog.component';
 import { useDialogContext } from './dialog.context';
 import { Typography } from '../typography';
@@ -15,6 +16,7 @@ interface ConfirmDialogParams extends Pick<DialogProps, 'title' | 'Sub'> {
 }
 
 export const useDialog = () => {
+  const t = useI18n();
   const { openDialog, closeDialog } = useDialogContext();
 
   const predefinedDialogs = useMemo(
@@ -83,7 +85,7 @@ export const useDialog = () => {
               </Typography>
 
               <Dialog.ButtonGroup>
-                <Dialog.Button onClick={onCancel}>확인</Dialog.Button>
+                <Dialog.Button onClick={onCancel}>{t.common.btn.confirm}</Dialog.Button>
               </Dialog.ButtonGroup>
             </>
           ),

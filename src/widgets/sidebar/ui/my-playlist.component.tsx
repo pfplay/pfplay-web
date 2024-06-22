@@ -4,6 +4,7 @@ import { AddMusicsToPlaylistButton } from '@/features/playlist/add-musics';
 import { CollapsablePlaylists, EditablePlaylists } from '@/features/playlist/list';
 import { MusicsInPlaylist } from '@/features/playlist/list-musics';
 import { RemovePlaylistButton } from '@/features/playlist/remove';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Drawer } from '@/shared/ui/components/drawer';
 import { TextButton } from '@/shared/ui/components/text-button';
 
@@ -14,6 +15,7 @@ interface MyPlaylistProps {
 
 // TODO: 별도 위젯으로 분리
 const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
+  const t = useI18n();
   const [editMode, setEditMode] = useState(false);
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<number[]>([]);
 
@@ -31,7 +33,7 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
               onSuccess={() => setSelectedPlaylistIds([])}
             />
             <TextButton className='text-red-300' onClick={handleEditConfirm}>
-              완료
+              {t.common.btn.complete}
             </TextButton>
           </>
         ) : (
@@ -40,7 +42,7 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
               <AddMusicsToPlaylistButton />
               <AddPlaylistButton />
             </div>
-            <TextButton onClick={() => setEditMode(true)}>설정</TextButton>
+            <TextButton onClick={() => setEditMode(true)}>{t.common.btn.settings}</TextButton>
           </>
         )}
       </div>

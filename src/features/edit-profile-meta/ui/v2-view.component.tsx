@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
 import { Typography } from '@/shared/ui/components/typography';
@@ -13,6 +14,7 @@ type V2ViewModeProps = {
 };
 
 const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps) => {
+  const t = useI18n();
   const router = useAppRouter();
   const { data: profile } = useFetchProfile();
 
@@ -34,7 +36,7 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
         </div>
 
         <Button size='sm' variant='outline' onClick={handleClickAvatarEditButton}>
-          아바타 설정
+          {t.settings.btn.addi_connection}
         </Button>
       </div>
       <div className='justify-between flex-1 flexCol'>
@@ -53,16 +55,16 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
         <div className='items-center justify-between flexRow'>
           <div className='gap-10 flexRow'>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
-              포인트
+              {t.lobby.title.points}
               {/* FIXME:<p> cannot appear as a descendant of <p>. */}
               <Typography as='span' type='body3'>
-                76p
+                Not Impl
               </Typography>
             </Typography>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
-              가입일
+              {t.lobby.title.join_date}
               <Typography as='span' type='body3'>
-                76p
+                Not Impl
               </Typography>
             </Typography>
           </div>

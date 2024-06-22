@@ -12,7 +12,7 @@ interface ErrorFallbackProps {
   enableErrorDialog?: boolean;
 }
 
-const ErrorFallback = ({ error, enableReload, enableErrorDialog }: ErrorFallbackProps) => {
+const ErrorFallback = async ({ error, enableReload, enableErrorDialog }: ErrorFallbackProps) => {
   const { openErrorDialog } = useDialog();
 
   const message = enableReload
