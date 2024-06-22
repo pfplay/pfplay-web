@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import { useDictionary } from '@/shared/lib/localization/dictionary.context';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
 import { Dialog } from '@/shared/ui/components/dialog';
@@ -14,7 +14,7 @@ import { PFClose } from '@/shared/ui/icons';
 const SignInPage = () => {
   const router = useAppRouter();
   const { openDialog } = useDialog();
-  const dic = useDictionary();
+  const t = useI18n();
 
   const signInGoogle = async () => {
     signIn('google', { callbackUrl: '/parties' });
@@ -22,10 +22,10 @@ const SignInPage = () => {
 
   const openLookAroundDialog = () => {
     return openDialog<number>((_, onClose) => ({
-      title: dic['onboard.title.moment'],
+      title: t.onboard.title.moment,
       Sub: (
         <Typography type='detail1' className='text-gray-300'>
-          {dic['onboard.para.guest_limit']}
+          {t.onboard.para.guest_limit}
         </Typography>
       ),
       Body: () => {
@@ -40,9 +40,9 @@ const SignInPage = () => {
               }}
               className='flex-none px-[10.5px]'
             >
-              {dic['onboard.btn.guest']}
+              {t.onboard.btn.guest}
             </Dialog.Button>
-            <Dialog.Button onClick={signInGoogle}>{dic['auth.btn.connect_google']}</Dialog.Button>
+            <Dialog.Button onClick={signInGoogle}>{t.auth.btn.connect_google}</Dialog.Button>
           </Dialog.ButtonGroup>
         );
       },
@@ -79,7 +79,7 @@ const SignInPage = () => {
         </Button>
 
         <TextButton onClick={openLookAroundDialog} underline>
-          {dic['onboard.btn.take_a_look']}
+          {t.onboard.btn.take_a_look}
         </TextButton>
       </div>
     </div>

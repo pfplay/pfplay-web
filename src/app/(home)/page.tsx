@@ -5,7 +5,8 @@ import { ButtonLink } from '@/shared/ui/components/button-link';
 
 const HomePage = async () => {
   const session = await getServerAuthSession();
-  const dic = await getServerDictionary();
+  const t = await getServerDictionary();
+
   return (
     <>
       <Image
@@ -21,7 +22,7 @@ const HomePage = async () => {
           if (!session.user.profileUpdated) return '/settings/profile';
           return '/parties';
         })()}
-        linkTitle={dic['onboard.btn.pfp_play']}
+        linkTitle={t.onboard.btn.pfp_play}
         classNames={{
           button: 'w-[360px]',
         }}
