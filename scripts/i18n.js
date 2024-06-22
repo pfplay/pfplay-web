@@ -26,20 +26,23 @@ workbook.xlsx.readFile(path.join(__dirname, EXCEL_FILE)).then(() => {
     fs.mkdirSync(targetFolder, { recursive: true });
   }
 
-  fs.writeFileSync(`${targetFolder}/en.json`, JSON.stringify({ ...data['en'] }, null, 2));
-  fs.writeFileSync(`${targetFolder}/ko.json`, JSON.stringify({ ...data['ko'] }, null, 2));
+  const en = data['en'];
+  const ko = fillMissingKeyValues(en, data['ko']);
+
+  fs.writeFileSync(`${targetFolder}/en.json`, getStructuredLocale(en));
+  fs.writeFileSync(`${targetFolder}/ko.json`, getStructuredLocale(ko));
 });
 
-const mergeKeyWithLang = (source, target) => {
+function mergeKeyWithLang(source, target) {
   return Object.entries(source).reduce((prev, [index, key]) => {
     return {
       ...prev,
       [key]: target[index],
     };
   }, {});
-};
+}
 
-const getSheetData = (sheetName) => {
+function getSheetData(sheetName) {
   const worksheet = workbook.getWorksheet(sheetName);
 
   const keyMap = {};
@@ -67,4 +70,56 @@ const getSheetData = (sheetName) => {
     en,
     ko,
   };
+}
+
+/**
+ * en을 기준으로 하며, 다른 언어의 값이 없는 경우 en의 값을 사용하도록 보정합니다.
+ * 원본 객체를 변경합니다.
+ */
+function fillMissingKeyValues(defaultLang, _targetLang) {
+  // targetLang에만 있고 defaultLang에는 없는 키가 있으면 에러를 뿜는다.
+  Object.keys(defaultLang).forEach((key) => {
+    if (defaultLang[key] === null || defaultLang[key] === undefined) {
+      throw new Error(`Missing key in defaultLang: ${key}`);
+    }
+  });
+
+  // defaultLang 기준으로 targetLang에 없는 키를 찾아서 targetLang에 defaultLang의 값으로 추가한다.
+  const targetLang = { ..._targetLang };
+  Object.keys(defaultLang).forEach((key) => {
+    if (targetLang[key] === null || targetLang[key] === undefined) {
+      targetLang[key] = defaultLang[key];
+    }
+  });
+  return targetLang;
+}
+
+/**
+ * 1Depth의 원본 JSON을 개발하기 편하도록 구조화 시킵니다.
+ */
+const getStructuredLocale = (locale) => {
+  const SEPARATOR = '.';
+
+  const resultObj = Object.entries(locale).reduce((acc, [key, value]) => {
+    let current = acc;
+
+    const partKeys = key.split(SEPARATOR);
+
+    partKeys.forEach((partKey, depth) => {
+      if (depth === partKeys.length - 1) {
+        current[partKey] = value;
+        return;
+      }
+
+      if (!current[partKey]) {
+        current[partKey] = {};
+      }
+
+      current = current[partKey];
+    });
+
+    return acc;
+  }, {});
+
+  return JSON.stringify(resultObj, null, 2);
 };

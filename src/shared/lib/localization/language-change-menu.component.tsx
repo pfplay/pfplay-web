@@ -1,11 +1,11 @@
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { PFLanguage } from '@/shared/ui/icons';
+import { useI18n } from 'shared/lib/localization/i18n.context';
 import { Language } from './constants';
-import { useDictionary } from './dictionary.context';
 import { useChangeLanguage } from './use-change-language.hook';
 
 export default function LanguageChangeMenu() {
-  const dic = useDictionary();
+  const t = useI18n();
   const changeLanguage = useChangeLanguage();
 
   return (
@@ -14,11 +14,11 @@ export default function LanguageChangeMenu() {
       menuItemPanel={{ size: 'sm' }}
       menuItemConfig={[
         {
-          label: dic['common.btn.eng'],
+          label: t.common.btn.eng,
           onClickItem: () => changeLanguage(Language.En),
         },
         {
-          label: dic['common.btn.kor'],
+          label: t.common.btn.kor,
           onClickItem: () => changeLanguage(Language.Ko),
         },
       ]}

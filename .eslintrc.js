@@ -7,7 +7,7 @@ module.exports = {
     'prettier',
     'plugin:storybook/recommended',
   ],
-  plugins: ['unused-imports', 'import'],
+  plugins: ['unused-imports', 'import', 'i18next'],
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
     '@typescript-eslint/ban-ts-comment': 1,
@@ -79,6 +79,7 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'unused-imports/no-unused-imports-ts': 2,
     'unused-imports/no-unused-vars-ts': 0,
+    'i18next/no-literal-string': ['warn', { validateTemplate: true }],
   },
   overrides: [
     {
