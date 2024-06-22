@@ -2,10 +2,13 @@
 import Image from 'next/image';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { PFAdd } from '@/shared/ui/icons';
 
 const ConnectWalletButton = () => {
+  const t = useI18n();
+
   return (
     <ConnectButton.Custom>
       {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
@@ -30,7 +33,7 @@ const ConnectWalletButton = () => {
                 className='px-[38px]'
                 onClick={openConnectModal}
               >
-                추가 연결
+                {t.settings.btn.addi_connection}
               </Button>
             ) : (
               <Button

@@ -1,5 +1,6 @@
 import { usePlaylistAction } from '@/entities/playlist';
 import { Playlist } from '@/shared/api/types/playlist';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { PFDelete } from '@/shared/ui/icons';
@@ -10,16 +11,17 @@ type RemoveButtonProps = {
 };
 
 const RemoveButton = ({ targetIds, onSuccess }: RemoveButtonProps) => {
+  const t = useI18n();
   const { openDialog } = useDialog();
   const playlistAction = usePlaylistAction();
 
   const handleClick = () => {
     openDialog((_, onCancel) => ({
-      title: '정말 선택 항목을\n 리스트에서 삭제하시겠어요?',
+      title: t.playlist.para.delete_playlist_confirm,
       Body: (
         <Dialog.ButtonGroup>
           <Dialog.Button color='secondary' onClick={onCancel}>
-            취소
+            {t.common.btn.cancel}
           </Dialog.Button>
           <Dialog.Button
             onClick={() =>
@@ -31,7 +33,7 @@ const RemoveButton = ({ targetIds, onSuccess }: RemoveButtonProps) => {
               })
             }
           >
-            확인
+            {t.common.btn.confirm}
           </Dialog.Button>
         </Dialog.ButtonGroup>
       ),
@@ -47,7 +49,7 @@ const RemoveButton = ({ targetIds, onSuccess }: RemoveButtonProps) => {
       disabled={targetIds.length === 0}
       onClick={handleClick}
     >
-      삭제
+      {t.common.btn.delete}
     </Button>
   );
 };

@@ -1,4 +1,5 @@
 import { cn } from '@/shared/lib/functions/cn';
+import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
 import { Button } from '@/shared/ui/components/button';
 import {
   PFInfoOutline,
@@ -12,6 +13,8 @@ import {
 import { Sidebar } from '@/widgets/sidebar';
 
 const PartyroomPage = async () => {
+  const t = await getServerDictionary();
+
   // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
   return (
     <>
@@ -21,6 +24,7 @@ const PartyroomPage = async () => {
           <div className='mt-11 bg-black px-3 py-2.5 flex items-center w-full border-2 border-gray-800 rounded'>
             <PFCampaign width={20} height={20} />
             <p className='text-white text-xs ml-3'>
+              {/* TODO 공지사항 구현 */}
               회원간 비방 및 친목을 금지합니다. 어길 시 바로 강퇴
             </p>
           </div>
@@ -66,7 +70,7 @@ const PartyroomPage = async () => {
             size='sm'
             className='text-gray-50'
           >
-            파티정보
+            {t.party.title.party_info}
           </Button>
           <Button
             color='secondary'
@@ -75,7 +79,7 @@ const PartyroomPage = async () => {
             size='sm'
             className='text-gray-50'
           >
-            파티목록
+            {t.party.title.party_list}
           </Button>
         </div>
 
@@ -87,6 +91,7 @@ const PartyroomPage = async () => {
           <div className='w-full h-6 bg-gradient-to-b from-black to-black/0'>
             <div className='flex flex-col-reverse space-y-4 overflow-y-auto'>
               {/* user #1 */}
+              {/* TODO 채팅 구현 */}
               <div className='flex gap-x-2'>
                 <div className='w-8 h-8 bg-white rounded-full'></div>
                 <div className='flex flex-col gap-y-0.5'>

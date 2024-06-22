@@ -3,6 +3,8 @@ import './styles.css';
 
 import type { Preview } from '@storybook/react';
 import { DialogProvider } from '@/shared/ui/components/dialog';
+import { I18nProvider } from '@/shared/lib/localization/i18n.context';
+import en from '@/shared/lib/localization/dictionaries/en.json';
 
 const preview: Preview = {
   parameters: {
@@ -25,9 +27,11 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <DialogProvider>
-        <Story />
-      </DialogProvider>
+      <I18nProvider dictionary={en}>
+        <DialogProvider>
+          <Story />
+        </DialogProvider>
+      </I18nProvider>
     ),
   ],
 };

@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Dialog } from '@/shared/ui/components/dialog';
 import { FormItem } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
@@ -12,6 +13,7 @@ export type FormProps = {
 };
 
 const Form = ({ defaultValues, onCancel, onSubmit }: FormProps) => {
+  const t = useI18n();
   const {
     handleSubmit,
     register,
@@ -30,9 +32,9 @@ const Form = ({ defaultValues, onCancel, onSubmit }: FormProps) => {
       </FormItem>
       <Dialog.ButtonGroup>
         <Dialog.Button type='button' color='secondary' onClick={onCancel}>
-          취소
+          {t.common.btn.cancel}
         </Dialog.Button>
-        <Dialog.Button type='submit'>추가하기</Dialog.Button>
+        <Dialog.Button type='submit'>{t.common.btn.add}</Dialog.Button>
       </Dialog.ButtonGroup>
     </form>
   );

@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { ProfileEditFormV2 } from '@/features/edit-profile-meta';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFDj, PFHeadset } from '@/shared/ui/icons';
@@ -14,12 +15,13 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
+  const t = useI18n();
   const { openDialog } = useDialog();
   const [showMyPlaylist, setShowMyPlaylist] = useState(false);
 
   const handleClickProfileButton = () => {
     return openDialog((_, onCancel) => ({
-      title: '내 프로필 ',
+      title: t.common.btn.my_profile,
       titleAlign: 'left',
       titleType: 'title2',
       showCloseIcon: true,
@@ -43,7 +45,7 @@ const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
             className='rounded-[100%] border-gray-500 border border-solid w-[48px] h-[48px]'
           />
           <Typography type='caption1' className='text-gray-200'>
-            내 프로필
+            {t.common.btn.my_profile}
           </Typography>
         </button>
         <button
@@ -52,7 +54,7 @@ const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
         >
           <PFHeadset width={36} height={36} className='[&_*]:fill-gray-400' />
           <Typography type='caption1' className='text-gray-200'>
-            플레이리스트
+            {t.common.btn.playlist}
           </Typography>
         </button>
 
@@ -65,7 +67,7 @@ const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
           >
             <PFDj width={36} height={36} className='[&_*]:fill-gray-400' />
             <Typography type='caption1' className='text-gray-200'>
-              DJ 대기열
+              {t.dj.title.dj_queue}
             </Typography>
           </button>
         )}

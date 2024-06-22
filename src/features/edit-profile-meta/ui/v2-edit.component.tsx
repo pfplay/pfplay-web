@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { FormItemError } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
@@ -16,6 +17,7 @@ type V2EditModeProps = {
 };
 
 const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
+  const t = useI18n();
   const { data: profile } = useFetchProfile();
   const { mutate, isPending } = useUpdateProfile();
 
@@ -80,10 +82,10 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
             </div>
             <div className='flex gap-2 justify-end w-full'>
               <Button color='secondary' type='button' onClick={handleCancelEdit}>
-                취소
+                {t.common.btn.cancel}
               </Button>
               <Button type='submit' loading={isPending} disabled={btnDisabled}>
-                저장
+                {t.common.btn.save}
               </Button>
             </div>
           </div>

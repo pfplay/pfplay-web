@@ -1,10 +1,12 @@
 'use client';
 import Image from 'next/image';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 import CreatePartyroomForm from './form.component';
 
 const PartyroomCreateCard = () => {
+  const t = useI18n();
   const { openDialog, openConfirmDialog } = useDialog();
 
   const handleClickBeAHostBtn = async () => {
@@ -36,10 +38,10 @@ const PartyroomCreateCard = () => {
     >
       <div className='items-start gap-3 flexCol'>
         <Typography type='title2' className='text-red-300'>
-          Be a PFPlay Host
+          {t.lobby.title.be_a_host}
         </Typography>
         <Typography type='detail1' className='text-gray-200'>
-          원하는 테마의 파티를 자유롭게 호스트해보세요!
+          {t.lobby.para.freely_host}
         </Typography>
       </div>
       <div className='flex-1 w-full flex items-center justify-center'>

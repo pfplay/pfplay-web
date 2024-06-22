@@ -75,7 +75,7 @@ const SignInPage = () => {
           onClick={signInGoogle}
           className='w-[320px] h-[56px] mb-[40px]'
         >
-          Sign in With Google
+          {t.auth.btn.connect_google}
         </Button>
 
         <TextButton onClick={openLookAroundDialog} underline>
