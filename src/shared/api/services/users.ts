@@ -4,13 +4,31 @@ import { UsersClient } from '@/shared/api/types/users';
 const ROUTE_V1 = 'v1/users';
 
 export const UsersService: UsersClient = {
-  login: async (request) => {
-    return await pfpAxiosInstance.post(`${ROUTE_V1}/info`, request);
+  getMyInfo: () => {
+    return pfpAxiosInstance.get(`${ROUTE_V1}/me/info`);
   },
-  getProfile: async () => {
-    return await pfpAxiosInstance.get(`${ROUTE_V1}/profile`);
+  getUserProfileSummary: ({ uid }) => {
+    return pfpAxiosInstance.get(`${ROUTE_V1}/${uid}/profile/summary`);
   },
-  updateProfile: async (request) => {
-    return await pfpAxiosInstance.patch(`${ROUTE_V1}/profile`, request);
+  getMyProfileSummary: () => {
+    return pfpAxiosInstance.get(`${ROUTE_V1}/me/profile/summary`);
+  },
+  getMyAvatarBodies: () => {
+    return pfpAxiosInstance.get(`${ROUTE_V1}/me/profile/avatar/bodies`);
+  },
+  getMyAvatarFaces: () => {
+    return pfpAxiosInstance.get(`${ROUTE_V1}/me/profile/avatar/faces`);
+  },
+  updateMyWallet: (request) => {
+    return pfpAxiosInstance.put(`${ROUTE_V1}/me/profile/wallet`, request);
+  },
+  updateMyBio: (request) => {
+    return pfpAxiosInstance.put(`${ROUTE_V1}/me/profile/bio`, request);
+  },
+  updateMyAvatarFace: (request) => {
+    return pfpAxiosInstance.put(`${ROUTE_V1}/me/profile/avatar/face`, request);
+  },
+  updateMyAvatarBody: (request) => {
+    return pfpAxiosInstance.put(`${ROUTE_V1}/me/profile/avatar/body`, request);
   },
 };
