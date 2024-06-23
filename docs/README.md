@@ -56,7 +56,7 @@ Run development server:
 yarn dev
 ```
 
-And then, open `http://localhost:3000` in your browser.
+And then, open `https://localhost:3000` in your browser.
 
 ## Contributing
 

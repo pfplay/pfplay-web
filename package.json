@@ -6,7 +6,7 @@
     "svgr": "node scripts/svgr",
     "generate-enums": "node scripts/copy-java-enums",
     "prepare": "husky install && yarn svgr",
-    "dev": "next dev",
+    "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "test": "NODE_OPTIONS=--experimental-vm-modules TZ=utc jest src",
