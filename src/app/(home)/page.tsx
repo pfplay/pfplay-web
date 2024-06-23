@@ -1,11 +1,13 @@
+'use client';
+
 import Image from 'next/image';
-import { getServerAuthSession } from '@/shared/api/next-auth-options';
-import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
+import { useFetchMe } from '@/entities/me';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { ButtonLink } from '@/shared/ui/components/button-link';
 
-const HomePage = async () => {
-  const session = await getServerAuthSession();
-  const t = await getServerDictionary();
+const HomePage = () => {
+  const t = useI18n();
+  const { data: me } = useFetchMe();
 
   return (
     <>
@@ -18,8 +20,8 @@ const HomePage = async () => {
       />
       <ButtonLink
         href={(() => {
-          if (!session) return '/sign-in';
-          if (!session.user.profileUpdated) return '/settings/profile';
+          if (!me) return '/sign-in';
+          if (!me.profileUpdated) return '/settings/profile';
           return '/parties';
         })()}
         linkTitle={t.onboard.btn.pfp_play}

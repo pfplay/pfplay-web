@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios';
-import { logRequest, setAccessToken } from '@/shared/api/clients/http/interceptors/request';
+import { logRequest } from '@/shared/api/clients/http/interceptors/request';
 import {
   logError,
   logResponse,
@@ -18,7 +18,7 @@ const createAxiosInstance = (baseURL?: string, options?: CreateAxiosDefaults): A
 };
 
 export const pfpAxiosInstance = createAxiosInstance(process.env.NEXT_PUBLIC_API_HOST_NAME);
-pfpAxiosInstance.interceptors.request.use(flow([setAccessToken, logRequest]));
+pfpAxiosInstance.interceptors.request.use(flow([logRequest]));
 pfpAxiosInstance.interceptors.response.use(
   flow([logResponse, unwrapResponse]),
   flow([logError, processError])

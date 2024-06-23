@@ -1,5 +1,5 @@
 export enum QueryKeys {
-  MyProfile = 'my-profile',
+  Me = 'me',
   PartyroomList = 'party-room/list',
   Playlist = 'playlist',
   PlaylistMusics = 'playlist/musics',

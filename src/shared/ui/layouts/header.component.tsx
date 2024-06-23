@@ -1,9 +1,10 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { signOut, useSession } from 'next-auth/react';
 import { FC } from 'react';
 import { Menu } from '@headlessui/react';
+import { useFetchMe } from '@/entities/me';
+import { AuthorityTier } from '@/shared/api/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import useIntersectionObserver from '@/shared/lib/hooks/use-intersection-observer.hook';
 import LanguageChangeMenu from '@/shared/lib/localization/language-change-menu.component';
@@ -14,7 +15,7 @@ interface Props {
 }
 
 const Header: FC<Props> = ({ withLogo }) => {
-  const session = useSession();
+  const { data: me } = useFetchMe();
   const { isIntersecting: atTopOfPage, setRef: setTopElRef } = useIntersectionObserver({
     threshold: 0.1,
   });
@@ -42,16 +43,19 @@ const Header: FC<Props> = ({ withLogo }) => {
           </Link>
         )}
         <div className='items-center gap-6 flexRow'>
-          {session.status === 'authenticated' && (
+          {me && me.authorityTier !== AuthorityTier.GT && (
             <Menu as='section' className={`relative w-fit`}>
               {({ close }) => (
                 <>
-                  <MenuButton type='button'>{session.data.user.email}</MenuButton>
+                  {/* FIXME: API 미작업 */}
+                  {/*<MenuButton type='button'>{me.email}</MenuButton>*/}
+                  <MenuButton type='button'>temp@goolge.com</MenuButton>
                   <MenuItemPanel
                     menuItemConfig={[
                       {
                         label: '로그아웃',
-                        onClickItem: () => signOut({ callbackUrl: '/' }),
+                        /* FIXME: API 미작업 */
+                        onClickItem: () => alert('API 미구현'),
                       },
                     ]}
                     close={close}

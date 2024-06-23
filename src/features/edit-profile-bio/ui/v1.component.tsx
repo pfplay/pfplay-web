@@ -1,23 +1,21 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { cn } from '@/shared/lib/functions/cn';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
 import { FormItem } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
 import { TextArea } from '@/shared/ui/components/textarea';
-import { useFetchProfile } from '../api/use-fetch-profile.query';
-import { useUpdateProfile } from '../api/use-update-profile.mutation';
+import { useUpdateMyBio } from '../api/use-update-my-bio.mutaion';
 import * as Form from '../model/form.model';
 
 const ProfileEditFormV1 = () => {
   const router = useAppRouter();
-  const { data: profile } = useFetchProfile();
-  const { data: session, update } = useSession();
-  const { mutate: updateProfile, isPending } = useUpdateProfile();
+  const { data: me } = useSuspenseFetchMe();
+  const { mutate: updateBio, isPending } = useUpdateMyBio();
 
   const {
     handleSubmit,
@@ -27,36 +25,24 @@ const ProfileEditFormV1 = () => {
   } = useForm<Form.Model>({
     mode: 'all',
     resolver: zodResolver(Form.schema),
-    defaultValues: profile,
+    defaultValues: {
+      nickname: me.nickname,
+      introduction: me.introduction,
+    },
   });
 
-  const handleFormSubmit: SubmitHandler<Form.Model> = ({ nickname, introduction }) => {
-    updateProfile(
-      {
-        nickname,
-        introduction,
-        bodyId: 1, // FIXME
-        faceUrl: 'url', // FIXME
+  const handleFormSubmit: SubmitHandler<Form.Model> = (values) => {
+    updateBio(values, {
+      onSuccess: async () => {
+        router.push('/settings/avatar');
       },
-      {
-        onSuccess: async () => {
-          await update({
-            ...session,
-            user: {
-              ...session?.user,
-              profileUpdated: true,
-            },
-          });
-          router.push('/settings/avatar');
-        },
-        onError: (err) => {
-          // FIXME: 다른 브랜치에서 작업한 server response 를 제네릭으로 변경
-          if (err.response?.data.code === 409) {
-            setError('nickname', { message: '이미 사용중인 이름입니다.' });
-          }
-        },
-      }
-    );
+      onError: (err) => {
+        // FIXME: 다른 브랜치에서 작업한 server response 를 제네릭으로 변경
+        if (err.response?.data.code === 409) {
+          setError('nickname', { message: '이미 사용중인 이름입니다.' });
+        }
+      },
+    });
   };
 
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;

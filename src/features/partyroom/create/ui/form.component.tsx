@@ -1,9 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { PartiesService } from '@/shared/api/services/parties';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
@@ -22,7 +22,7 @@ interface PartyroomCreateFormProps {
 
 const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
   const t = useI18n();
-  const { data } = useSession();
+  const { data: me } = useSuspenseFetchMe();
   const router = useRouter();
 
   const {
@@ -157,7 +157,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
             }
             classNames={{ label: 'text-gray-200' }}
           >
-            <DjListItem userConfig={{ username: data?.user?.name || 'PFPlay User', src: '' }} />
+            <DjListItem userConfig={{ username: me.nickname, src: '' }} />
           </FormItem>
 
           <Button

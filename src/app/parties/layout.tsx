@@ -1,16 +1,21 @@
-import { redirect } from 'next/navigation';
-import { PropsWithChildren } from 'react';
-import { getServerAuthSession } from '@/shared/api/next-auth-options';
+'use client';
 
-const ProtectedLayout = async ({ children }: PropsWithChildren) => {
-  const session = await getServerAuthSession();
+import { useRouter } from 'next/navigation';
+import { PropsWithChildren, useEffect } from 'react';
+import { useSuspenseFetchMe } from '@/entities/me';
 
-  /**
-   * 로그인은 했지만 프로필을 아직 생성하지 않은 경우
-   */
-  if (session && !session.user.profileUpdated) {
-    redirect('/settings/profile');
-  }
+const ProtectedLayout = ({ children }: PropsWithChildren) => {
+  const { data: me } = useSuspenseFetchMe();
+  const router = useRouter();
+
+  useEffect(() => {
+    /**
+     * 로그인은 했지만 프로필을 아직 생성하지 않은 경우
+     */
+    if (!me.profileUpdated) {
+      router.replace('/settings/profile');
+    }
+  }, [me.profileUpdated]);
 
   return <>{children}</>;
 };

@@ -3,16 +3,16 @@ import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/react-query/keys';
 import { UsersService } from '@/shared/api/services/users';
 import { APIError } from '@/shared/api/types/@shared';
-import { UserProfile } from '@/shared/api/types/users';
+import { UpdateMyBioRequest } from '@/shared/api/types/users';
 
-export const useUpdateProfile = () => {
+export const useUpdateMyBio = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<UserProfile, AxiosError<APIError>, UserProfile>({
-    mutationFn: UsersService.updateProfile,
+  return useMutation<void, AxiosError<APIError>, UpdateMyBioRequest>({
+    mutationFn: UsersService.updateMyBio,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QueryKeys.MyProfile],
+        queryKey: [QueryKeys.Me],
       });
     },
   });

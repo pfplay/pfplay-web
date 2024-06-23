@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { AuthService } from '@/shared/api/services/auth';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
@@ -12,12 +12,45 @@ import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
 
 const SignInPage = () => {
+  const t = useI18n();
   const router = useAppRouter();
   const { openDialog } = useDialog();
-  const t = useI18n();
 
   const signInGoogle = async () => {
-    signIn('google', { callbackUrl: '/parties' });
+    // FIXME: API 개발 전 임시 로직
+    return openDialog((_, onClose) => ({
+      title: t.onboard.title.moment,
+      Sub: (
+        <Typography type='detail1' className='text-gray-300'>
+          개발용 로그인입니다. 로그인할 권한을 선택하세요.
+        </Typography>
+      ),
+      Body: () => {
+        return (
+          <Dialog.ButtonGroup>
+            <Dialog.Button
+              color='secondary'
+              onClick={async () => {
+                await AuthService.temporary_SignInFullMember();
+                onClose?.();
+                // router.push('/parties');
+              }}
+            >
+              Full
+            </Dialog.Button>
+            <Dialog.Button
+              onClick={async () => {
+                await AuthService.temporary_SignInAssociateMember();
+                onClose?.();
+                // router.push('/parties');
+              }}
+            >
+              Associate
+            </Dialog.Button>
+          </Dialog.ButtonGroup>
+        );
+      },
+    }));
   };
 
   const openLookAroundDialog = () => {
@@ -36,6 +69,7 @@ const SignInPage = () => {
               onClick={() => {
                 onClose?.();
                 // 비로그인 유저가 로그인 없이 서비스를 이용할 때에는, 메인스테이지(파티룸)로 바로 뛀궈준다.
+                // FIXME: 게스트 로그인 API 호출
                 router.push('/parties/[id]', { path: { id: 1 } });
               }}
               className='flex-none px-[10.5px]'

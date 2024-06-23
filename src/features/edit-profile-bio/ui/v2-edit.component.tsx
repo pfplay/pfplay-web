@@ -3,13 +3,13 @@
 import Image from 'next/image';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { FormItemError } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
 import { TextArea } from '@/shared/ui/components/textarea';
-import { useFetchProfile } from '../api/use-fetch-profile.query';
-import { useUpdateProfile } from '../api/use-update-profile.mutation';
+import { useUpdateMyBio } from '../api/use-update-my-bio.mutaion';
 import * as ProfileForm from '../model/form.model';
 
 type V2EditModeProps = {
@@ -18,8 +18,8 @@ type V2EditModeProps = {
 
 const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
   const t = useI18n();
-  const { data: profile } = useFetchProfile();
-  const { mutate, isPending } = useUpdateProfile();
+  const { data: me } = useSuspenseFetchMe();
+  const { mutate: updateBio, isPending } = useUpdateMyBio();
 
   const {
     handleSubmit,
@@ -29,11 +29,14 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
   } = useForm<ProfileForm.Model>({
     mode: 'all',
     resolver: zodResolver(ProfileForm.schema),
-    defaultValues: profile,
+    defaultValues: {
+      nickname: me.nickname,
+      introduction: me.introduction,
+    },
   });
 
   const onSubmit: SubmitHandler<ProfileForm.Model> = (values) => {
-    mutate(values, {
+    updateBio(values, {
       onSuccess: changeToViewMode,
     });
   };

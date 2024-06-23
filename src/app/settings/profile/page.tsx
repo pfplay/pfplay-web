@@ -1,4 +1,4 @@
-import { ProfileEditFormV1 } from '@/features/edit-profile-meta';
+import { ProfileEditFormV1 } from '@/features/edit-profile-bio';
 import { BackButton } from '@/shared/ui/components/back-button';
 
 const ProfileSettingsPage = () => {
