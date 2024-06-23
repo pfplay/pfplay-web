@@ -1,4 +1,4 @@
-import { Authority } from '@/shared/api/types/@enums';
+import { PartyroomGrade } from '@/shared/api/types/@enums';
 
 export interface UserProfile {
   nickname: string;
@@ -32,7 +32,7 @@ export interface UserLoginResponse {
   id: number;
   name: string;
   registered: boolean;
-  authority: Authority;
+  authority: PartyroomGrade;
   accessToken: string;
   userPermission: UserPermission;
   profileUpdated: boolean;

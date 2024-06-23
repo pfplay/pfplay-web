@@ -4,7 +4,7 @@ const { glob } = require('glob');
 
 const ROOT = `${__dirname}/../..`;
 const BACKEND_DIRNAME = `${__dirname}/api`; // 백엔드의 소스 디렉터리(main/java/com/pfplaybackend/api)를 카피해오세요
-const ENUMS_DIRNAME = `${ROOT}/src/api/types`;
+const ENUMS_DIRNAME = `${ROOT}/src/shared/api/types`;
 const ENUMS_FILENAME = `${ENUMS_DIRNAME}/@enums.ts`;
 const exceptionEnumNames = new Set(['ExceptionEnum', 'ApiHeader', 'Domain']);
 
@@ -29,7 +29,7 @@ function main() {
 
 function extractEnums(content) {
   const enums = [];
-  const enumRegex = /public enum (?<enumName>\w+)\s*{(?<enumBody>[^}]*)}/g;
+  const enumRegex = /public enum (?<enumName>\w+)\s*{(?<enumBody>[^;}]*)/g;
   let match;
 
   while ((match = enumRegex.exec(content)) !== null) {
@@ -43,14 +43,10 @@ function extractEnums(content) {
         const trimmedValue = v.trim();
         if (!trimmedValue) return acc;
 
-        const additionalDataMatch = trimmedValue.match(/(?<key>\w+)\s*\("(?<value>[^"]+)"\)/);
-        const result = additionalDataMatch
-          ? `${additionalDataMatch.groups.key} = "${additionalDataMatch.groups.value}"` // "KEY("VALUE")" 형태의 enum 항목을 처리
-          : /^\w+$/.test(trimmedValue) // "KEY" 형태의 enum 항목을 처리
-          ? `${trimmedValue} = "${trimmedValue}"`
-          : trimmedValue; // 그 외의 형태(주로 주석이나 공백)는 그대로 유지
+        const match = trimmedValue.match(/(?<key>[A-Z_]+).*/);
+        if (!match) return acc;
 
-        acc.push(result);
+        acc.push(`${match.groups.key} = "${match.groups.key}"`);
         return acc;
       }, [])
       .join(', ');
