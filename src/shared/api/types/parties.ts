@@ -1,4 +1,8 @@
-import { Authority, PartyroomStatus, PartyroomType } from '@/shared/api/types/@enums';
+import {
+  PartyroomGrade,
+  PartyroomStatus,
+  RedirectionableLocation,
+} from '@/shared/api/types/@enums';
 import { PaginationPayload, PaginationResponse } from '@/shared/api/types/@shared';
 
 export interface CreatePartyroomRequest {
@@ -23,7 +27,7 @@ export interface PartyroomSummary {
 }
 
 export type DefaultPartyPermission = {
-  authority: Authority;
+  authority: PartyroomGrade;
   partyInfoFetch: boolean;
   partyClose: boolean;
   notice: boolean;
@@ -44,7 +48,7 @@ export interface CreatePartyroomResponse {
   introduce: string;
   domain: string;
   djingLimit: number;
-  type: PartyroomType;
+  type: RedirectionableLocation;
   status: PartyroomStatus;
   admin: {
     profile: string;

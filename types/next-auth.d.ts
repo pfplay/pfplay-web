@@ -1,4 +1,4 @@
-import { Authority } from '@/shared/api/types/@enums';
+import { PartyroomGrade } from '@/shared/api/types/@enums';
 import { UserPermission } from '@/shared/api/types/user';
 
 // NOTE: User, JWT 인터페이스는 UserLoginResponse + 'email' + 'accessToken' 이며,
@@ -14,7 +14,7 @@ declare module 'next-auth' {
     id: number;
     name: string;
     registered: boolean;
-    authority: Authority;
+    authority: PartyroomGrade;
     email: string;
     accessToken: string;
     userPermission: UserPermission;
@@ -35,7 +35,7 @@ declare module 'next-auth/jwt' {
     id: number;
     name: string;
     registered: boolean;
-    authority: Authority;
+    authority: PartyroomGrade;
     email: string;
     accessToken: string;
     userPermission: UserPermission;
