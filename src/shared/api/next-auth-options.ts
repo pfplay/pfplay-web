@@ -1,6 +1,6 @@
 import { NextAuthOptions, getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { UserService } from '@/shared/api/services/user';
+import { UsersService } from '@/shared/api/services/users';
 
 /**
  * @deprecated OAuth 로직 서버 측으로 이전될 예정
@@ -32,7 +32,7 @@ export const nextAuthOptions: NextAuthOptions = {
         if (!account) throw '"account" is null';
         if (!account.access_token) throw '"account.access_token" is undefined';
 
-        const response = await UserService.login({
+        const response = await UsersService.login({
           accessToken: account.access_token,
         });
 

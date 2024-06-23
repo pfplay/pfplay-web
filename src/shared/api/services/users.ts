@@ -1,9 +1,9 @@
 import { pfpAxiosInstance } from '@/shared/api/clients/http/client';
-import { UserClient } from '@/shared/api/types/user';
+import { UsersClient } from '@/shared/api/types/users';
 
-const ROUTE_V1 = 'v1/user';
+const ROUTE_V1 = 'v1/users';
 
-export const UserService: UserClient = {
+export const UsersService: UsersClient = {
   login: async (request) => {
     return await pfpAxiosInstance.post(`${ROUTE_V1}/info`, request);
   },

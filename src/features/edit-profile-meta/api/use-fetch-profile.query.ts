@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import { useQuery } from '@tanstack/react-query';
 import { QueryKeys } from '@/shared/api/react-query/keys';
-import { UserService } from '@/shared/api/services/user';
+import { UsersService } from '@/shared/api/services/users';
 import { THIRTY_MINUTES } from '@/shared/config/time';
 
 export const useFetchProfile = () => {
@@ -9,7 +9,7 @@ export const useFetchProfile = () => {
 
   return useQuery({
     queryKey: [QueryKeys.MyProfile],
-    queryFn: () => UserService.getProfile(),
+    queryFn: () => UsersService.getProfile(),
     staleTime: THIRTY_MINUTES,
     gcTime: Infinity,
     enabled: !!session,

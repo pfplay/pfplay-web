@@ -47,7 +47,7 @@ export interface ProfileResponse {
   walletAddress?: string;
 }
 
-export interface UserClient {
+export interface UsersClient {
   login(request: UserLoginRequest): Promise<UserLoginResponse>;
   getProfile(): Promise<ProfileResponse>;
   updateProfile(request: UserProfile): Promise<UserProfile>;

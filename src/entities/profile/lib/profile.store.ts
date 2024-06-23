@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { UserProfile } from '@/shared/api/types/user';
+import { UserProfile } from '@/shared/api/types/users';
 
 type ProfileStore = {
   profile?: UserProfile;
