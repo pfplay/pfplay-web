@@ -4,12 +4,12 @@ import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/react-query/keys';
 import { PlaylistsService } from '@/shared/api/services/playlists';
 import { APIError } from '@/shared/api/types/@shared';
-import { YoutubeMusic, YoutubeMusicResponse } from '@/shared/api/types/playlists';
+import { YoutubeMusic, YoutubeMusicsResponse } from '@/shared/api/types/playlists';
 import { FIVE_MINUTES } from '@/shared/config/time';
 
 export const useInfiniteFetchYoutubeMusics = (search: string) => {
   return useInfiniteQuery<
-    YoutubeMusicResponse,
+    YoutubeMusicsResponse,
     AxiosError<APIError>,
     YoutubeMusic[],
     QueryKey,
@@ -17,7 +17,7 @@ export const useInfiniteFetchYoutubeMusics = (search: string) => {
   >({
     queryKey: [QueryKeys.PlaylistYoutube, search],
     queryFn: ({ pageParam }) =>
-      PlaylistsService.getYoutubeMusic({
+      PlaylistsService.getYoutubeMusics({
         q: search,
         pageToken: pageParam,
       }),

@@ -13,7 +13,7 @@ type SearchListItemProps = {
 };
 
 const SearchListItem = ({
-  music: { title, duration, thumbnailMedium },
+  music: { videoTitle, runningTime, thumbnailUrl },
   onSelectPlaylist,
 }: SearchListItemProps) => {
   const playlistAction = usePlaylistAction();
@@ -36,9 +36,9 @@ const SearchListItem = ({
   return (
     <div className='flex items-center gap-[32px]'>
       <div className='flex-1 flex items-center gap-[12px]'>
-        <Image src={thumbnailMedium} alt={title} width={60} height={60} />
-        <Typography className='flex-1 text-left mx-3'>{title}</Typography>
-        <Typography>{formatDuration(duration)}</Typography>
+        <Image src={thumbnailUrl} alt={videoTitle} width={60} height={60} />
+        <Typography className='flex-1 text-left mx-3'>{videoTitle}</Typography>
+        <Typography>{formatDuration(runningTime)}</Typography>
       </div>
 
       <IconMenu

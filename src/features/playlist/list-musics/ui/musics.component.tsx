@@ -10,7 +10,8 @@ type MusicsInPlaylistProps = {
 
 const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
   const { data } = useFetchPlaylistMusics(playlist.id, {
-    pageSize: playlist.count,
+    pageNo: 1,
+    pageSize: playlist.musicCount,
   });
   const playlistAction = usePlaylistAction();
 
@@ -22,7 +23,7 @@ const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
           music={music}
           menuItems={[
             {
-              onClickItem: () => playlistAction.removeMusics([music.musicId]),
+              onClickItem: () => playlistAction.removeMusics(playlist.id, [music.musicId]),
               label: '재생목록에서 삭제',
               Icon: <PFDelete />,
             },

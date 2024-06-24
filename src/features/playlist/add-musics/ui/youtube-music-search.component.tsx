@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
 import { YoutubeMusic } from '@/shared/api/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -22,14 +22,17 @@ const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
   } = useInfiniteFetchYoutubeMusics(search);
   const playlistAction = usePlaylistAction();
 
-  const handleSelectPlaylist = (listId: number, music: YoutubeMusic) => {
-    playlistAction.addMusic(listId, {
-      uid: music.id,
-      thumbnailImage: music.thumbnailMedium,
-      duration: music.duration,
-      name: music.title,
-    });
-  };
+  const handleSelectPlaylist = useCallback(
+    (listId: number, music: YoutubeMusic) => {
+      playlistAction.addMusic(listId, {
+        linkId: music.videoId,
+        thumbnailImage: music.thumbnailUrl,
+        duration: music.runningTime,
+        name: music.videoTitle,
+      });
+    },
+    [playlistAction]
+  );
 
   return (
     <div className='pt-[36px] pb-[12px] pl-[40px] pr-[12px]'>
@@ -55,7 +58,7 @@ const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
             observedHeight={120}
           >
             {youtubeMusics?.map((music) => (
-              <div key={music.id} className='py-3'>
+              <div key={music.videoId} className='py-3'>
                 <SearchListItem
                   music={music}
                   onSelectPlaylist={(listId) => handleSelectPlaylist(listId, music)}

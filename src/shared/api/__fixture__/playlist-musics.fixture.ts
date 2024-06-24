@@ -1,6 +1,6 @@
 import { PlaylistMusic } from '@/shared/api/types/playlists';
 
-export const fixturePlaylistMusics: Omit<PlaylistMusic, 'uid' | 'orderNumber'>[] = [
+export const fixturePlaylistMusics: Omit<PlaylistMusic, 'ownerId' | 'orderNumber'>[] = [
   {
     musicId: 1,
     name: 'BLACKPINK(블랙핑크) - Shut Down @인기가요sssss inkigayo 20220925 long long long long long long long longlong long long long text',

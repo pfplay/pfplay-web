@@ -7,25 +7,25 @@ export const PlaylistsService: PlaylistsClient = {
   getPlaylists: () => {
     return pfpAxiosInstance.get(`${ROUTE_V1}`);
   },
-  getMusicFromPlaylist: (listId, params) => {
-    return pfpAxiosInstance.get(`${ROUTE_V1}/${listId}`, { params });
+  getMusicFromPlaylist: (playlistId, params) => {
+    return pfpAxiosInstance.get(`${ROUTE_V1}/${playlistId}/musics`, { params });
   },
-  getYoutubeMusic: (params) => {
-    return pfpAxiosInstance.get(`${ROUTE_V1}/youtube/music`, { params });
-  },
-  addMusicToPlaylist: (listId, params) => {
-    return pfpAxiosInstance.post(`${ROUTE_V1}/${listId}`, params);
+  getYoutubeMusics: (params) => {
+    return pfpAxiosInstance.get(`${ROUTE_V1}/music-search`, { params });
   },
   createPlaylist: (params) => {
     return pfpAxiosInstance.post(`${ROUTE_V1}`, params);
   },
-  updatePlaylist: (listId, params) => {
-    return pfpAxiosInstance.patch(`${ROUTE_V1}/${listId}`, params);
+  updatePlaylist: (playlistId, params) => {
+    return pfpAxiosInstance.patch(`${ROUTE_V1}/${playlistId}`, params);
+  },
+  addMusicToPlaylist: (playlistId, params) => {
+    return pfpAxiosInstance.post(`${ROUTE_V1}/${playlistId}/musics`, params);
   },
   removePlaylist: (data) => {
     return pfpAxiosInstance.delete(`${ROUTE_V1}`, { data });
   },
-  removeMusicFromPlaylist: (data) => {
-    return pfpAxiosInstance.delete(`${ROUTE_V1}/music`, { data });
+  removeMusicFromPlaylist: ({ playlistId, ...data }) => {
+    return pfpAxiosInstance.delete(`${ROUTE_V1}/${playlistId}/musics`, { data });
   },
 };

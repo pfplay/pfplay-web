@@ -48,7 +48,7 @@ const EditableList = ({ onChangeSelectedItem }: EditableListProps) => {
           <Typography className='truncate flex-1'>{item.name}</Typography>
 
           <Typography className='text-gray-300'>
-            {item.count}
+            {item.musicCount}
             {t.playlist.title.song}
           </Typography>
           <button onClick={() => playlistAction.edit(item.id)}>

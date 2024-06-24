@@ -3,7 +3,7 @@ import { UserListItemType } from '@/shared/ui/components/user-list-item';
 import { fixturePlaylistMusics } from './playlist-musics.fixture';
 
 export const fixtureCollapseList: {
-  musics: Omit<PlaylistMusic, 'uid' | 'orderNumber'>[];
+  musics: Omit<PlaylistMusic, 'ownerId' | 'orderNumber'>[];
   userListPanel: UserListItemType[];
 } = {
   musics: fixturePlaylistMusics,
