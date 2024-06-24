@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
-import { Playlist } from '@/shared/api/types/playlist';
+import { Playlist } from '@/shared/api/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Checkbox } from '@/shared/ui/components/checkbox';
 import { Typography } from '@/shared/ui/components/typography';
@@ -48,7 +48,7 @@ const EditableList = ({ onChangeSelectedItem }: EditableListProps) => {
           <Typography className='truncate flex-1'>{item.name}</Typography>
 
           <Typography className='text-gray-300'>
-            {item.count}
+            {item.musicCount}
             {t.playlist.title.song}
           </Typography>
           <button onClick={() => playlistAction.edit(item.id)}>

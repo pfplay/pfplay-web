@@ -7,7 +7,7 @@ import { useEditPlaylistDialog } from '@/features/playlist/edit';
 import { useFetchPlaylists } from '@/features/playlist/list';
 import { useRemovePlaylist } from '@/features/playlist/remove';
 import { useRemovePlaylistMusics } from '@/features/playlist/remove-musics';
-import { AddPlaylistMusicRequestBody, Playlist } from '@/shared/api/types/playlist';
+import { AddPlaylistMusicRequestBody, Playlist } from '@/shared/api/types/playlists';
 
 export default function PlaylistActionProvider({ children }: { children: ReactNode }) {
   const { data: list = [] } = useFetchPlaylists();
@@ -16,7 +16,7 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
   const { mutate: _remove } = useRemovePlaylist();
 
   const { mutate: _addMusic } = useAddPlaylistMusic();
-  const { mutate: removeMusics } = useRemovePlaylistMusics();
+  const { mutate: _removeMusics } = useRemovePlaylistMusics();
 
   const remove = useCallback(
     (targetIds: Playlist['id'][], options?: PlaylistActionrOptions) => {
@@ -35,6 +35,16 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
       });
     },
     [_addMusic]
+  );
+
+  const removeMusics = useCallback(
+    (targetId: Playlist['id'], musicIds: number[]) => {
+      _removeMusics({
+        playlistId: targetId,
+        listIds: musicIds,
+      });
+    },
+    [_removeMusics]
   );
 
   return (

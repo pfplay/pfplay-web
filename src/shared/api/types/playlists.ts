@@ -1,19 +1,27 @@
+import { PlaylistType } from '@/shared/api/types/@enums';
+
 export interface Playlist {
   id: number;
-  orderNumber: number;
   name: string;
-  type: string; // FIXME: change to enum
-  count: number;
+  orderNumber: number;
+  type: PlaylistType;
+  musicCount: number;
 }
 
 export interface PlaylistMusicParameters {
-  page?: number; // default 0
-  pageSize?: number; // default 20
+  /**
+   * @default 0
+   */
+  pageNo: number;
+  /**
+   * @default 20
+   */
+  pageSize: number;
 }
 
 export interface PlaylistMusic {
   musicId: number;
-  uid: string;
+  ownerId: string;
   orderNumber: number;
   name: string;
   duration: string;
@@ -23,23 +31,26 @@ export interface PlaylistMusic {
 export interface PlaylistMusicResponse {
   musicList: PlaylistMusic[];
   totalPage: number;
+  totalElements: number;
 }
 
 export interface YoutubeMusic {
-  id: string;
-  thumbnailLow: string;
-  thumbnailMedium: string;
-  thumbnailHigh: string;
-  title: string;
-  duration: string;
+  videoId: string;
+  videoTitle: string;
+  thumbnailUrl: string;
+  runningTime: string;
 }
 
-export interface YoutubeMusicParameters {
+export interface YoutubeMusicsParameters {
+  /**
+   * TODO: 변경된 명세확인 필요
+   * @see https://pfplay.slack.com/archives/C051N8A0ZSB/p1719248809282169
+   */
   q: string;
   pageToken?: string;
 }
 
-export interface YoutubeMusicResponse {
+export interface YoutubeMusicsResponse {
   nextPageToken: string;
   musicList: YoutubeMusic[];
 }
@@ -54,18 +65,10 @@ export interface CreatePlaylistResponse {
 }
 
 export interface AddPlaylistMusicRequestBody {
-  uid: string;
+  linkId: string;
   name: string;
   duration: string;
   thumbnailImage: string;
-}
-
-export interface AddPlaylistMusicResponse {
-  playListId: number;
-  musicId: number;
-  orderNumber: number;
-  name: string;
-  duration: string;
 }
 
 export interface RemovePlaylistRequestBody {
@@ -85,29 +88,30 @@ export interface UpdatePlaylistResponse {
 }
 
 export interface RemovePlaylistMusicRequestBody {
+  playlistId: number;
   listIds: number[];
 }
 export interface RemovePlaylistMusicResponse {
   listIds: number[];
 }
 
-export interface PlaylistClient {
+export interface PlaylistsClient {
   getPlaylists: () => Promise<Playlist[]>;
   getMusicFromPlaylist: (
-    listId: number,
+    playlistId: Playlist['id'],
     params?: PlaylistMusicParameters
   ) => Promise<PlaylistMusicResponse>;
-  getYoutubeMusic: (params: YoutubeMusicParameters) => Promise<YoutubeMusicResponse>;
+  getYoutubeMusics: (params: YoutubeMusicsParameters) => Promise<YoutubeMusicsResponse>;
   createPlaylist: (params: CreatePlaylistRequestBody) => Promise<CreatePlaylistResponse>;
   updatePlaylist: (
-    listId: number,
+    playlistId: Playlist['id'],
     params: UpdatePlaylistRequestBody
   ) => Promise<UpdatePlaylistResponse>;
-  removePlaylist: (params: RemovePlaylistRequestBody) => Promise<RemovePlaylistResponse>;
   addMusicToPlaylist: (
-    listId: number,
+    playlistId: Playlist['id'],
     params: AddPlaylistMusicRequestBody
-  ) => Promise<AddPlaylistMusicResponse>;
+  ) => Promise<void>;
+  removePlaylist: (params: RemovePlaylistRequestBody) => Promise<RemovePlaylistResponse>;
   removeMusicFromPlaylist: (
     params: RemovePlaylistMusicRequestBody
   ) => Promise<RemovePlaylistMusicResponse>;

@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { MouseEvent } from 'react';
-import { PlaylistMusic } from '@/shared/api/types/playlist';
+import { PlaylistMusic } from '@/shared/api/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
 import { MenuItem } from '@/shared/ui/components/menu';
@@ -9,7 +9,7 @@ import { Typography } from '@/shared/ui/components/typography';
 import { PFPlayCircleFilled } from '@/shared/ui/icons';
 
 type MusicProps = {
-  music: Omit<PlaylistMusic, 'uid' | 'orderNumber'>;
+  music: Omit<PlaylistMusic, 'ownerId' | 'orderNumber'>;
   menuItems: MenuItem[];
 };
 

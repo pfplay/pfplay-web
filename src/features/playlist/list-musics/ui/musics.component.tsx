@@ -1,5 +1,5 @@
 import { usePlaylistAction } from '@/entities/playlist';
-import { Playlist } from '@/shared/api/types/playlist';
+import { Playlist } from '@/shared/api/types/playlists';
 import { PFAddPlaylist, PFDelete } from '@/shared/ui/icons';
 import Music from './music.component';
 import { useFetchPlaylistMusics } from '../api/use-fetch-playlist-musics.query';
@@ -10,7 +10,8 @@ type MusicsInPlaylistProps = {
 
 const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
   const { data } = useFetchPlaylistMusics(playlist.id, {
-    pageSize: playlist.count,
+    pageNo: 1,
+    pageSize: playlist.musicCount,
   });
   const playlistAction = usePlaylistAction();
 
@@ -22,7 +23,7 @@ const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
           music={music}
           menuItems={[
             {
-              onClickItem: () => playlistAction.removeMusics([music.musicId]),
+              onClickItem: () => playlistAction.removeMusics(playlist.id, [music.musicId]),
               label: '재생목록에서 삭제',
               Icon: <PFDelete />,
             },

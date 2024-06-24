@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext } from 'react';
-import { AddPlaylistMusicRequestBody, Playlist, PlaylistMusic } from '@/shared/api/types/playlist';
+import { AddPlaylistMusicRequestBody, Playlist, PlaylistMusic } from '@/shared/api/types/playlists';
 
 export type PlaylistActionrOptions = {
   onSuccess?: () => void;
@@ -13,10 +13,7 @@ type PlaylistAction = {
   remove: (targetIds: Playlist['id'][], options?: PlaylistActionrOptions) => void;
 
   addMusic: (targetId: Playlist['id'], music: AddPlaylistMusicRequestBody) => void;
-  /**
-   * TODO: API 측에 명세 문의 필요 - https://pfplay.slack.com/archives/C051N8A0ZSB/p1718969303410129
-   */
-  removeMusics: (/* targetId: Playlist['id'], */ musicIds: PlaylistMusic['musicId'][]) => void;
+  removeMusics: (targetId: Playlist['id'], musicIds: PlaylistMusic['musicId'][]) => void;
   /**
    * TODO: API 안나옴
    */
