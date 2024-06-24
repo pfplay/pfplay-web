@@ -33,7 +33,7 @@ const SignInPage = () => {
               onClick={async () => {
                 await UsersService.temporary_SignInFullMember();
                 onClose?.();
-                // router.push('/parties');
+                router.push('/parties');
               }}
             >
               Full
@@ -42,7 +42,7 @@ const SignInPage = () => {
               onClick={async () => {
                 await UsersService.temporary_SignInAssociateMember();
                 onClose?.();
-                // router.push('/parties');
+                router.push('/parties');
               }}
             >
               Associate
