@@ -21,6 +21,11 @@ export const printRequestLog = ({
   requestParams,
   config,
 }: PrintRequestLogParams) => {
+  if (typeof window === 'undefined') {
+    console.log(`[REQUEST] ${config.method?.toUpperCase()} ${config.url}`);
+    return;
+  }
+
   if (Object.keys(requestParams ?? {}).length) {
     console.log(
       `%c${method?.toUpperCase()} ${endPoint} [REQ PARAMS]`,
@@ -51,6 +56,11 @@ type PrintResponseLogParams = {
   responseObj?: Record<string, unknown>;
 };
 export const printResponseLog = ({ method, endPoint, responseObj }: PrintResponseLogParams) => {
+  if (typeof window === 'undefined') {
+    console.log(`[RESPONSE SUCCESSFULLY] ${method?.toUpperCase()} ${endPoint}`);
+    return;
+  }
+
   console.log(
     `%c${method?.toUpperCase()} ${endPoint} [RES BODY]`,
     `color: ${color.success};font-weight: bold`,
@@ -70,6 +80,11 @@ export const printErrorLog = ({
   errorMessage,
   errorObj,
 }: PrintErrorLogParams) => {
+  if (typeof window === 'undefined') {
+    console.error(`[ERROR] ${method?.toUpperCase()} ${endPoint}: ${errorMessage}`);
+    return;
+  }
+
   console.log(
     `%c${method?.toUpperCase()} ${endPoint} [ERR]`,
     `color: ${color.error};font-weight: bold`,
