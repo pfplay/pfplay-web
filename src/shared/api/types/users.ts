@@ -1,7 +1,15 @@
 import { ActivityType, AuthorityTier, ObtainmentType } from '@/shared/api/types/@enums';
 
+export interface SignInGuestRequest {
+  userAgent: string;
+}
+
 export interface GetMyInfoResponse {
   uid: string;
+  /**
+   * guest의 경우 email이 비어서 옵니다.
+   */
+  email?: string;
   authorityTier: AuthorityTier;
   /**
    * @example "2024-06-23"
@@ -44,7 +52,7 @@ export interface GetUserProfileSummaryResponse {
   activitySummaries: ActivitySummary[];
 }
 
-export interface AvatarParts {
+export interface AvatarBody {
   id: number;
   name: string;
   resourceUri: string;
@@ -53,6 +61,12 @@ export interface AvatarParts {
   available: boolean;
   combinable: boolean;
   defaultSetting: boolean;
+}
+
+export interface AvatarFace {
+  id: number;
+  name: string;
+  resourceUri: string;
 }
 
 export interface UpdateMyWalletRequest {
@@ -73,17 +87,23 @@ export interface UpdateMyAvatarBodyRequest {
 }
 
 export interface UsersClient {
+  /**
+   * @deprecated 정식 API 개발되기 전 사용할 임시 API입니다.
+   */
+  temporary_SignInFullMember: () => Promise<void>;
+  /**
+   * @deprecated 정식 API 개발되기 전 사용할 임시 API입니다.
+   */
+  temporary_SignInAssociateMember: () => Promise<void>;
+  signInGuest: (request: SignInGuestRequest) => Promise<void>;
+  signOut: () => Promise<void>;
   getMyInfo: () => Promise<GetMyInfoResponse>;
   getMyProfileSummary: () => Promise<GetMyProfileSummaryResponse>;
   getUserProfileSummary: (
     request: GetUserProfileSummaryRequest
   ) => Promise<GetUserProfileSummaryResponse>;
-  getMyAvatarBodies: () => Promise<AvatarParts[]>;
-  /**
-   * 상상으로 추가된 API. 확인 필요
-   * @see https://pfplay.slack.com/archives/C051N8A0ZSB/p1719150774008209?thread_ts=1719140041.990189&cid=C051N8A0ZSB
-   */
-  getMyAvatarFaces: () => Promise<AvatarParts[]>;
+  getMyAvatarBodies: () => Promise<AvatarBody[]>;
+  getMyAvatarFaces: () => Promise<AvatarFace[]>;
   updateMyWallet: (request: UpdateMyWalletRequest) => Promise<void>;
   updateMyBio: (request: UpdateMyBioRequest) => Promise<void>;
   updateMyAvatarFace: (request: UpdateMyAvatarFaceRequest) => Promise<void>;

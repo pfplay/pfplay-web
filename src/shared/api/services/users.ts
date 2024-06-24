@@ -4,6 +4,18 @@ import { UsersClient } from '@/shared/api/types/users';
 const ROUTE_V1 = 'v1/users';
 
 export const UsersService: UsersClient = {
+  signInGuest: () => {
+    return pfpAxiosInstance.post(`${ROUTE_V1}/guests/sign`);
+  },
+  signOut: () => {
+    return pfpAxiosInstance.post(`${ROUTE_V1}/logout`);
+  },
+  temporary_SignInFullMember: () => {
+    return pfpAxiosInstance.post(`${ROUTE_V1}/sign/temporary/full-member`);
+  },
+  temporary_SignInAssociateMember: () => {
+    return pfpAxiosInstance.post(`${ROUTE_V1}/sign/temporary/associate-member`);
+  },
   getMyInfo: () => {
     return pfpAxiosInstance.get(`${ROUTE_V1}/me/info`);
   },

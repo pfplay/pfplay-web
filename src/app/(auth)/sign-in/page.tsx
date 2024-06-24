@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AuthService } from '@/shared/api/services/auth';
+import { UsersService } from '@/shared/api/services/users';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
@@ -31,7 +31,7 @@ const SignInPage = () => {
             <Dialog.Button
               color='secondary'
               onClick={async () => {
-                await AuthService.temporary_SignInFullMember();
+                await UsersService.temporary_SignInFullMember();
                 onClose?.();
                 // router.push('/parties');
               }}
@@ -40,7 +40,7 @@ const SignInPage = () => {
             </Dialog.Button>
             <Dialog.Button
               onClick={async () => {
-                await AuthService.temporary_SignInAssociateMember();
+                await UsersService.temporary_SignInAssociateMember();
                 onClose?.();
                 // router.push('/parties');
               }}
