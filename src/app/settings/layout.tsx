@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import Header from '@/shared/ui/layouts/header.component';
+import { Header } from '@/widgets/layouts';
 import { WalletProvider } from '../_providers/wallet.provider';
 
 const SettingsLayout = ({ children }: PropsWithChildren) => {

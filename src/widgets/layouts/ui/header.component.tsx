@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FC } from 'react';
 import { Menu } from '@headlessui/react';
 import { useFetchMe } from '@/entities/me';
+import { useSignOut } from '@/features/sign-out';
 import { AuthorityTier } from '@/shared/api/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import useIntersectionObserver from '@/shared/lib/hooks/use-intersection-observer.hook';
@@ -19,6 +20,7 @@ const Header: FC<Props> = ({ withLogo }) => {
   const { isIntersecting: atTopOfPage, setRef: setTopElRef } = useIntersectionObserver({
     threshold: 0.1,
   });
+  const { mutate: signOut } = useSignOut();
 
   return (
     <>
@@ -32,7 +34,7 @@ const Header: FC<Props> = ({ withLogo }) => {
         )}
       >
         {withLogo && (
-          <Link href='/'>
+          <Link href='/public'>
             <Image
               src='/images/Logo/wordmark_small_white.png'
               width={124}
@@ -47,15 +49,12 @@ const Header: FC<Props> = ({ withLogo }) => {
             <Menu as='section' className={`relative w-fit`}>
               {({ close }) => (
                 <>
-                  {/* FIXME: API 미작업 */}
-                  {/*<MenuButton type='button'>{me.email}</MenuButton>*/}
-                  <MenuButton type='button'>temp@goolge.com</MenuButton>
+                  <MenuButton type='button'>{me.email ?? 'Guest'}</MenuButton>
                   <MenuItemPanel
                     menuItemConfig={[
                       {
                         label: '로그아웃',
-                        /* FIXME: API 미작업 */
-                        onClickItem: () => alert('API 미구현'),
+                        onClickItem: signOut,
                       },
                     ]}
                     close={close}
