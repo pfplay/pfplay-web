@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext } from 'react';
-import { AddPlaylistMusicRequestBody, Playlist, PlaylistMusic } from '@/shared/api/types/playlist';
+import { AddPlaylistMusicRequestBody, Playlist, PlaylistMusic } from '@/shared/api/types/playlists';
 
 export type PlaylistActionrOptions = {
   onSuccess?: () => void;

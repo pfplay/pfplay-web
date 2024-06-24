@@ -2,9 +2,9 @@ import { QueryKey } from '@tanstack/query-core';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/react-query/keys';
-import { PlaylistService } from '@/shared/api/services/playlist';
+import { PlaylistsService } from '@/shared/api/services/playlists';
 import { APIError } from '@/shared/api/types/@shared';
-import { YoutubeMusic, YoutubeMusicResponse } from '@/shared/api/types/playlist';
+import { YoutubeMusic, YoutubeMusicResponse } from '@/shared/api/types/playlists';
 import { FIVE_MINUTES } from '@/shared/config/time';
 
 export const useInfiniteFetchYoutubeMusics = (search: string) => {
@@ -17,7 +17,7 @@ export const useInfiniteFetchYoutubeMusics = (search: string) => {
   >({
     queryKey: [QueryKeys.PlaylistYoutube, search],
     queryFn: ({ pageParam }) =>
-      PlaylistService.getYoutubeMusic({
+      PlaylistsService.getYoutubeMusic({
         q: search,
         pageToken: pageParam,
       }),

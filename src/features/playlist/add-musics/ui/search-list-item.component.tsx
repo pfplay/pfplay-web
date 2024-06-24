@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
-import { YoutubeMusic } from '@/shared/api/types/playlist';
+import { YoutubeMusic } from '@/shared/api/types/playlists';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';

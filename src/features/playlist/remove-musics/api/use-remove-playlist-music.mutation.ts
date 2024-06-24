@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '@/shared/api/react-query/keys';
-import { PlaylistService } from '@/shared/api/services/playlist';
-import { PlaylistMusic } from '@/shared/api/types/playlist';
+import { PlaylistsService } from '@/shared/api/services/playlists';
+import { PlaylistMusic } from '@/shared/api/types/playlists';
 
 export const useRemovePlaylistMusics = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (musicIds: PlaylistMusic['musicId'][]) =>
-      PlaylistService.removeMusicFromPlaylist({ listIds: musicIds }),
+      PlaylistsService.removeMusicFromPlaylist({ listIds: musicIds }),
     onSuccess: (data) => {
       data.listIds.forEach((id) => {
         queryClient.invalidateQueries({

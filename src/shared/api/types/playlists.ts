@@ -91,7 +91,7 @@ export interface RemovePlaylistMusicResponse {
   listIds: number[];
 }
 
-export interface PlaylistClient {
+export interface PlaylistsClient {
   getPlaylists: () => Promise<Playlist[]>;
   getMusicFromPlaylist: (
     listId: number,

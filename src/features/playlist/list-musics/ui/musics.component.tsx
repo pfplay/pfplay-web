@@ -1,5 +1,5 @@
 import { usePlaylistAction } from '@/entities/playlist';
-import { Playlist } from '@/shared/api/types/playlist';
+import { Playlist } from '@/shared/api/types/playlists';
 import { PFAddPlaylist, PFDelete } from '@/shared/ui/icons';
 import Music from './music.component';
 import { useFetchPlaylistMusics } from '../api/use-fetch-playlist-musics.query';

@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { usePlaylistAction } from '@/entities/playlist';
-import { Playlist } from '@/shared/api/types/playlist';
+import { Playlist } from '@/shared/api/types/playlists';
 import { CollapseList } from '@/shared/ui/components/collapse-list';
 
 type CollapsableListProps = {

@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
-import { YoutubeMusic } from '@/shared/api/types/playlist';
+import { YoutubeMusic } from '@/shared/api/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { InfiniteScroll } from '@/shared/ui/components/infinite-scroll';
 import { Typography } from '@/shared/ui/components/typography';

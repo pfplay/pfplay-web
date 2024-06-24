@@ -1,4 +1,4 @@
-import { PlaylistMusic } from '@/shared/api/types/playlist';
+import { PlaylistMusic } from '@/shared/api/types/playlists';
 
 export const fixturePlaylistMusics: Omit<PlaylistMusic, 'uid' | 'orderNumber'>[] = [
   {

@@ -7,7 +7,7 @@ import { useEditPlaylistDialog } from '@/features/playlist/edit';
 import { useFetchPlaylists } from '@/features/playlist/list';
 import { useRemovePlaylist } from '@/features/playlist/remove';
 import { useRemovePlaylistMusics } from '@/features/playlist/remove-musics';
-import { AddPlaylistMusicRequestBody, Playlist } from '@/shared/api/types/playlist';
+import { AddPlaylistMusicRequestBody, Playlist } from '@/shared/api/types/playlists';
 
 export default function PlaylistActionProvider({ children }: { children: ReactNode }) {
   const { data: list = [] } = useFetchPlaylists();

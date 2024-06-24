@@ -1,4 +1,4 @@
-import { YoutubeMusic } from '@/shared/api/types/playlist';
+import { YoutubeMusic } from '@/shared/api/types/playlists';
 
 export function generateFixtureYoutubeMusics(page: number): YoutubeMusic[] {
   return [

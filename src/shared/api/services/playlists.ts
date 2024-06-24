@@ -1,9 +1,9 @@
 import { pfpAxiosInstance } from '@/shared/api/clients/http/client';
-import { PlaylistClient } from '@/shared/api/types/playlist';
+import { PlaylistsClient } from '@/shared/api/types/playlists';
 
-const ROUTE_V1 = 'v1/play-list';
+const ROUTE_V1 = 'v1/playlists';
 
-export const PlaylistService: PlaylistClient = {
+export const PlaylistsService: PlaylistsClient = {
   getPlaylists: () => {
     return pfpAxiosInstance.get(`${ROUTE_V1}`);
   },
