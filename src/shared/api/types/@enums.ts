@@ -6,9 +6,9 @@ export enum ObtainmentType {
 }
 
 export enum AuthorityTier {
-  FM = 'FM',
-  AM = 'AM',
-  GT = 'GT',
+  FM = 'FM', // Full Member
+  AM = 'AM', // Associate Member
+  GT = 'GT', // Guest
 }
 
 export enum ActivityType {

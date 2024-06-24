@@ -1,12 +1,12 @@
 'use client';
 
 import Image from 'next/image';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFEdit } from '@/shared/ui/icons';
-import { useFetchProfile } from '../api/use-fetch-profile.query';
 
 type V2ViewModeProps = {
   onAvatarSettingClick?: () => void;
@@ -16,7 +16,7 @@ type V2ViewModeProps = {
 const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps) => {
   const t = useI18n();
   const router = useAppRouter();
-  const { data: profile } = useFetchProfile();
+  const { data: me } = useSuspenseFetchMe();
 
   const handleClickAvatarEditButton = () => {
     router.push('/settings/avatar');
@@ -43,13 +43,13 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
         <div className='items-start gap-3 flexCol'>
           <div className='flex gap-3 items-center'>
             <Typography type='body1' className='text-white'>
-              {profile?.nickname}
+              {me.nickname}
             </Typography>
             <div onClick={changeToEditMode} className='cursor-pointer'>
               <PFEdit />
             </div>
           </div>
-          <Typography className='text-left text-white'>{profile?.introduction}</Typography>
+          <Typography className='text-left text-white'>{me.introduction}</Typography>
         </div>
 
         <div className='items-center justify-between flexRow'>

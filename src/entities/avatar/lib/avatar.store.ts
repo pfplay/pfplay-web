@@ -12,6 +12,9 @@ interface SelectedAvatarStore {
   clearSelectedAvatarParts: () => void;
 }
 
+/**
+ * TODO: 사용부에서 local state로 들고 있으면 될 듯. global store로 관리할 필요 없어보임.
+ */
 export const useSelectedAvatarStore = create<SelectedAvatarStore>((set) => ({
   selectedAvatarParts: undefined,
   setSelectedAvatarParts: ({ body, face }: SelectedAvatarParts) =>

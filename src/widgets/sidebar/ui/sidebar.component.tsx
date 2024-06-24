@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useState } from 'react';
-import { ProfileEditFormV2 } from '@/features/edit-profile-meta';
+import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';

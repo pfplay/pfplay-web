@@ -40,11 +40,6 @@ export function processError(e: AxiosError<unknown>) {
     return Promise.reject(e);
   }
 
-  if (e.status === 401 || e.response.status === 401) {
-    // TODO: 에러 없이 로그인 페이지로 리디렉션, next-auth 토큰 제거
-    // return;
-  }
-
   if (isPureObject(e.response.data) && 'data' in e.response.data) {
     e.response.data = e.response.data.data; // unwrap
   }

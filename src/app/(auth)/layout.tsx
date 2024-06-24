@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import Footer from '@/shared/ui/layouts/footer.component';
+import { Footer } from '@/widgets/layouts';
 
 const AuthLayout = ({ children }: PropsWithChildren) => {
   return (
