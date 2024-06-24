@@ -13,6 +13,7 @@ const createAxiosInstance = (baseURL?: string, options?: CreateAxiosDefaults): A
     baseURL,
     timeout: 4000,
     validateStatus: (status) => status >= 200 && status < 400,
+    withCredentials: true,
     ...options,
   });
 };
