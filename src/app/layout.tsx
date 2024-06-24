@@ -13,7 +13,7 @@ import { getServerDictionary } from '@/shared/lib/localization/get-server-dictio
 import { I18nProvider } from '@/shared/lib/localization/i18n.context';
 import { DialogProvider } from '@/shared/ui/components/dialog';
 import { pretendardVariable } from '@/shared/ui/foundation/fonts';
-import { ReactQueryProvider } from './_providers/react-query.provider';
+import ReactQueryProvider from './_providers/react-query.provider';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
