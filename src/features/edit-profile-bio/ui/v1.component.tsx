@@ -1,8 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSuspenseFetchMe } from '@/entities/me';
+import { useFetchMe } from '@/entities/me';
 import { cn } from '@/shared/lib/functions/cn';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
@@ -14,22 +15,20 @@ import * as Form from '../model/form.model';
 
 const ProfileEditFormV1 = () => {
   const router = useAppRouter();
-  const { data: me } = useSuspenseFetchMe();
+  const { data: me } = useFetchMe();
   const { mutate: updateBio, isPending } = useUpdateMyBio();
 
   const {
     handleSubmit,
     control,
+    reset,
     setError,
     formState: { errors, isValid },
   } = useForm<Form.Model>({
     mode: 'all',
     resolver: zodResolver(Form.schema),
-    defaultValues: {
-      nickname: me.nickname,
-      introduction: me.introduction,
-    },
   });
+  const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
   const handleFormSubmit: SubmitHandler<Form.Model> = (values) => {
     updateBio(values, {
@@ -45,7 +44,14 @@ const ProfileEditFormV1 = () => {
     });
   };
 
-  const btnDisabled = Object.keys(errors).length > 0 || !isValid;
+  useEffect(() => {
+    if (me) {
+      reset({
+        nickname: me.nickname,
+        introduction: me.introduction,
+      });
+    }
+  }, [me]);
 
   return (
     <form

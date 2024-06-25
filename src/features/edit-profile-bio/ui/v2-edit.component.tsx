@@ -1,9 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSuspenseFetchMe } from '@/entities/me';
+import { useFetchMe } from '@/entities/me';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { FormItemError } from '@/shared/ui/components/form-item';
@@ -18,7 +19,7 @@ type V2EditModeProps = {
 
 const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
   const t = useI18n();
-  const { data: me } = useSuspenseFetchMe();
+  const { data: me } = useFetchMe();
   const { mutate: updateBio, isPending } = useUpdateMyBio();
 
   const {
@@ -29,11 +30,8 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
   } = useForm<ProfileForm.Model>({
     mode: 'all',
     resolver: zodResolver(ProfileForm.schema),
-    defaultValues: {
-      nickname: me.nickname,
-      introduction: me.introduction,
-    },
   });
+  const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
   const onSubmit: SubmitHandler<ProfileForm.Model> = (values) => {
     updateBio(values, {
@@ -46,7 +44,14 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
     reset();
   };
 
-  const btnDisabled = Object.keys(errors).length > 0 || !isValid;
+  useEffect(() => {
+    if (me) {
+      reset({
+        nickname: me.nickname,
+        introduction: me.introduction,
+      });
+    }
+  }, [me]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

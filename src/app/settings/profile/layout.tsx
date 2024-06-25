@@ -2,19 +2,19 @@
 
 import { router } from 'next/client';
 import { PropsWithChildren, useEffect } from 'react';
-import { useSuspenseFetchMe } from '@/entities/me';
+import { useFetchMe } from '@/entities/me';
 
 const ProfileEditLayout = ({ children }: PropsWithChildren) => {
-  const { data: me } = useSuspenseFetchMe();
+  const { data: me } = useFetchMe();
 
   useEffect(() => {
     /**
      * 프로필을 등록한 사용자의 경우, 접근 불가
      */
-    if (me.profileUpdated) {
+    if (me && me.profileUpdated) {
       router.replace('/parties');
     }
-  }, [me.profileUpdated]);
+  }, [me]);
 
   return <>{children}</>;
 };
