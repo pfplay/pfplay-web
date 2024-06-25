@@ -8,7 +8,7 @@ import { FIVE_MINUTES } from '@/shared/config/time';
 
 export const useSearchMusics = (search: string) => {
   return useQuery<SearchMusicsResponse, AxiosError<APIError>, MusicListItem[]>({
-    queryKey: [QueryKeys.PlaylistYoutube, search],
+    queryKey: [QueryKeys.Musics, search],
     queryFn: () =>
       PlaylistsService.searchMusics({
         q: search,

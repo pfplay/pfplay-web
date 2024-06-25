@@ -8,10 +8,10 @@ import { useSearchMusics } from 'features/playlist/add-musics/api/use-search-mus
 import SearchInput from './search-input.component';
 import SearchListItem from './search-list-item.component';
 
-type YoutubeMusicSearchProps = {
+type MusicSearchProps = {
   extraAction?: ReactNode;
 };
-const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
+const MusicSearch = ({ extraAction }: MusicSearchProps) => {
   const t = useI18n();
   const [search, setSearch] = useState('');
   const { data: musics, isFetching } = useSearchMusics(search);
@@ -54,4 +54,4 @@ const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
   );
 };
 
-export default YoutubeMusicSearch;
+export default MusicSearch;
