@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useMemo } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
 import { MusicListItem } from '@/shared/api/types/playlists';
+import { safeDecodeURI } from '@/shared/lib/functions/safe-decode-uri';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
@@ -36,8 +37,9 @@ const SearchListItem = ({
   return (
     <div className='flex items-center gap-[32px]'>
       <div className='flex-1 flex items-center gap-[12px]'>
-        <Image src={thumbnailUrl} alt={videoTitle} width={60} height={60} />
-        <Typography className='flex-1 text-left mx-3'>{videoTitle}</Typography>
+        <Image src={thumbnailUrl} alt='Video Thumbnail' width={60} height={60} />
+        {/* 일본어, 중국어 등의 정상 렌더링을 위해 url encode, title decode 해줘야 함 */}
+        <Typography className='flex-1 text-left mx-3'>{safeDecodeURI(videoTitle)}</Typography>
         <Typography>{formatDuration(runningTime)}</Typography>
       </div>
 
