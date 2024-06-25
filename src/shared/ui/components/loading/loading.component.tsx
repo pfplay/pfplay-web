@@ -1,6 +1,6 @@
 import { CSSProperties, FC } from 'react';
 
-interface LoadingProps {
+export interface LoadingProps {
   size?: CSSProperties['width'];
   color?: CSSProperties['color'];
 }
