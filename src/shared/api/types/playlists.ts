@@ -8,6 +8,10 @@ export interface Playlist {
   musicCount: number;
 }
 
+export interface GetPlaylistsResponse {
+  playlists: Playlist[];
+}
+
 export interface PlaylistMusicParameters {
   /**
    * @default 0
@@ -96,7 +100,7 @@ export interface RemovePlaylistMusicResponse {
 }
 
 export interface PlaylistsClient {
-  getPlaylists: () => Promise<Playlist[]>;
+  getPlaylists: () => Promise<GetPlaylistsResponse>;
   getMusicFromPlaylist: (
     playlistId: Playlist['id'],
     params?: PlaylistMusicParameters
