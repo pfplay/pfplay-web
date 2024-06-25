@@ -4,7 +4,7 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { PFAdd, PFClose } from '@/shared/ui/icons';
-import YoutubeMusicSearch from './youtube-music-search.component';
+import MusicSearch from './music-search.component';
 
 const EntryButton = () => {
   const t = useI18n();
@@ -18,7 +18,7 @@ const EntryButton = () => {
       },
       Body: (
         <PlaylistActionBypassProvider action={playlistAction}>
-          <YoutubeMusicSearch
+          <MusicSearch
             extraAction={
               <button onClick={onClose}>
                 <PFClose width={24} height={24} />

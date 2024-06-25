@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import LoadingPaenl from './loading-panel.component';
+import LoadingPanel from './loading-panel.component';
 
 const meta = {
   title: 'base/LoadingPanel',
-  component: LoadingPaenl,
+  component: LoadingPanel,
   tags: ['autodocs'],
-} satisfies Meta<typeof LoadingPaenl>;
+} satisfies Meta<typeof LoadingPanel>;
 
 export default meta;
 

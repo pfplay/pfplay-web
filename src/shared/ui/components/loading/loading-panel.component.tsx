@@ -7,7 +7,7 @@ import Loading, { type LoadingProps } from './loading.component';
  * - 부모가 flex column일 경우 - flex-grow: 1
  * - 부모가 flex column이 아닐 경우 - height: 100%
  */
-export default function LoadingPaenl({ size = 24, ...rest }: LoadingProps) {
+export default function LoadingPanel({ size = 24, ...rest }: LoadingProps) {
   const setRef = useVerticalStretch<HTMLDivElement>();
 
   return (

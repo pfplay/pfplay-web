@@ -7,11 +7,11 @@ export const PlaylistsService: PlaylistsClient = {
   getPlaylists: () => {
     return pfpAxiosInstance.get(`${ROUTE_V1}`);
   },
-  getMusicFromPlaylist: (playlistId, params) => {
+  getMusicsFromPlaylist: (playlistId, params) => {
     return pfpAxiosInstance.get(`${ROUTE_V1}/${playlistId}/musics`, { params });
   },
-  getYoutubeMusics: (params) => {
-    return pfpAxiosInstance.get(`${ROUTE_V1}/music-search`, { params });
+  searchMusics: (params) => {
+    return pfpAxiosInstance.get(`v1/music-search`, { params });
   },
   createPlaylist: (params) => {
     return pfpAxiosInstance.post(`${ROUTE_V1}`, params);
@@ -25,7 +25,7 @@ export const PlaylistsService: PlaylistsClient = {
   removePlaylist: (data) => {
     return pfpAxiosInstance.delete(`${ROUTE_V1}`, { data });
   },
-  removeMusicFromPlaylist: ({ playlistId, ...data }) => {
+  removeMusicsFromPlaylist: ({ playlistId, ...data }) => {
     return pfpAxiosInstance.delete(`${ROUTE_V1}/${playlistId}/musics`, { data });
   },
 };

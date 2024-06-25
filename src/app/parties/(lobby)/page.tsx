@@ -4,7 +4,7 @@ import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary
 import { cn } from '@/shared/lib/functions/cn';
 import { Sidebar } from '@/widgets/sidebar';
 
-const PartyLobbyPage = async () => {
+const PartyLobbyPage = () => {
   return (
     <>
       <Sidebar

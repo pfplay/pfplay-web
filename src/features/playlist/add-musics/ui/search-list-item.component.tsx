@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
-import { YoutubeMusic } from '@/shared/api/types/playlists';
+import { MusicListItem } from '@/shared/api/types/playlists';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFAddCircle, PFAddPlaylist } from '@/shared/ui/icons';
 
 type SearchListItemProps = {
-  music: YoutubeMusic;
+  music: MusicListItem;
   onSelectPlaylist?: (id: number) => void;
 };
 
@@ -54,7 +54,7 @@ const SearchListItem = ({
  * Format duration to 'mm:ss'
  */
 function formatDuration(duration: string) {
-  const times = duration.match(/\d+/g);
+  const times = duration?.match(/\d+/g);
   if (!times) return '00:00';
 
   const [minutes, seconds] = times.map((t) => parseInt(t, 10));

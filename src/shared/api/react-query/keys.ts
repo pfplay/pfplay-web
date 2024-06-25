@@ -3,5 +3,5 @@ export enum QueryKeys {
   PartyroomList = 'party-room/list',
   Playlist = 'playlist',
   PlaylistMusics = 'playlist/musics',
-  PlaylistYoutube = 'playlist/youtube',
+  Musics = 'search',
 }

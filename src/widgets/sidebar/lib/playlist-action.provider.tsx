@@ -10,9 +10,9 @@ import { useRemovePlaylistMusics } from '@/features/playlist/remove-musics';
 import { AddPlaylistMusicRequestBody, Playlist } from '@/shared/api/types/playlists';
 
 export default function PlaylistActionProvider({ children }: { children: ReactNode }) {
-  const { data: list = [] } = useFetchPlaylists();
+  const { data: { playlists: list = [] } = {} } = useFetchPlaylists();
   const add = useAddPlaylistDialog();
-  const edit = useEditPlaylistDialog();
+  const edit = useEditPlaylistDialog(list);
   const { mutate: _remove } = useRemovePlaylist();
 
   const { mutate: _addMusic } = useAddPlaylistMusic();

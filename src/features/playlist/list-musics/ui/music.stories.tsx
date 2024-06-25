@@ -9,6 +9,7 @@ const meta = {
   args: {
     music: {
       musicId: 1,
+      orderNumber: 1,
       name: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
       duration: '00:00',
       thumbnailImage: '/images/Background/Profile.png',
