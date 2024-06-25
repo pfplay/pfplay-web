@@ -65,7 +65,10 @@ export interface CreatePlaylistRequestBody {
 
 export interface CreatePlaylistResponse {
   id: number;
+  uid: string;
+  orderNumber: number;
   name: string;
+  type: PlaylistType;
 }
 
 export interface AddPlaylistMusicRequestBody {
