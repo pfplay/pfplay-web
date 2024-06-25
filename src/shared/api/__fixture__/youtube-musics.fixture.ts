@@ -1,6 +1,6 @@
-import { YoutubeMusic } from '@/shared/api/types/playlists';
+import { MusicListItem } from '@/shared/api/types/playlists';
 
-export function generateFixtureYoutubeMusics(page: number): YoutubeMusic[] {
+export function generateFixtureYoutubeMusics(page: number): MusicListItem[] {
   return [
     {
       videoId: `youtube-music-${page}-1`,

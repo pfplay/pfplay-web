@@ -9,7 +9,7 @@ import { Typography } from '@/shared/ui/components/typography';
 import { PFPlayCircleFilled } from '@/shared/ui/icons';
 
 type MusicProps = {
-  music: Omit<PlaylistMusic, 'ownerId' | 'orderNumber'>;
+  music: PlaylistMusic;
   menuItems: MenuItem[];
 };
 

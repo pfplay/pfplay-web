@@ -10,14 +10,14 @@ type MusicsInPlaylistProps = {
 
 const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
   const { data } = useFetchPlaylistMusics(playlist.id, {
-    pageNo: 1,
+    pageNumber: 0,
     pageSize: playlist.musicCount,
   });
   const playlistAction = usePlaylistAction();
 
   return (
     <div className='flex flex-col gap-3'>
-      {data?.musicList?.map((music) => (
+      {data?.content.map((music) => (
         <Music
           key={music.musicId}
           music={music}

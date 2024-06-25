@@ -16,8 +16,8 @@ export type APIError = {
 };
 
 export type PaginationPayload = {
-  page: number;
-  size: number;
+  pageNumber: number;
+  pageSize: number;
 };
 
 type Pagination = {

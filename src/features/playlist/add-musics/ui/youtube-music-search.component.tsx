@@ -1,12 +1,12 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
-import { YoutubeMusic } from '@/shared/api/types/playlists';
+import { MusicListItem } from '@/shared/api/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { InfiniteScroll } from '@/shared/ui/components/infinite-scroll';
+import LoadingPanel from '@/shared/ui/components/loading/loading-panel.component';
 import { Typography } from '@/shared/ui/components/typography';
+import { useSearchMusics } from 'features/playlist/add-musics/api/use-search-musics.query';
 import SearchInput from './search-input.component';
 import SearchListItem from './search-list-item.component';
-import { useInfiniteFetchYoutubeMusics } from '../api/use-infinite-fetch-youtube-musics.query';
 
 type YoutubeMusicSearchProps = {
   extraAction?: ReactNode;
@@ -14,16 +14,11 @@ type YoutubeMusicSearchProps = {
 const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
   const t = useI18n();
   const [search, setSearch] = useState('');
-  const {
-    data: youtubeMusics,
-    fetchNextPage: fetchNextYoutubeMusicsPage,
-    isFetchedAfterMount: isFetchedYoutubeMusicsAfterMount,
-    hasNextPage: hasNextYoutubeMusicsPage,
-  } = useInfiniteFetchYoutubeMusics(search);
+  const { data: musics, isFetching } = useSearchMusics(search);
   const playlistAction = usePlaylistAction();
 
   const handleSelectPlaylist = useCallback(
-    (listId: number, music: YoutubeMusic) => {
+    (listId: number, music: MusicListItem) => {
       playlistAction.addMusic(listId, {
         linkId: music.videoId,
         thumbnailImage: music.thumbnailUrl,
@@ -43,30 +38,17 @@ const YoutubeMusicSearch = ({ extraAction }: YoutubeMusicSearchProps) => {
       </div>
 
       <div className='h-[340px] overflow-y-scroll pr-[8px]'>
-        {!!search && (
-          <InfiniteScroll
-            loadMore={fetchNextYoutubeMusicsPage}
-            hasMore={
-              hasNextYoutubeMusicsPage ||
-              /**
-               * enabled가 false일 때는 hasNextPage 또한 항상 false이기에, 이 땐 hasMore를 true로 취급합니다.
-               * `!!search`대신 isFetchedAfterMount를 사용하는 이유는, search가 truthy가 되어도 react-query 훅이 반응하기 전 일순간은 hasNextPage가 아직 false이기에,
-               * endMessage가 한순간 보이는걸 방지하기 위해서입니다.
-               */
-              !isFetchedYoutubeMusicsAfterMount
-            }
-            observedHeight={120}
-          >
-            {youtubeMusics?.map((music) => (
-              <div key={music.videoId} className='py-3'>
-                <SearchListItem
-                  music={music}
-                  onSelectPlaylist={(listId) => handleSelectPlaylist(listId, music)}
-                />
-              </div>
-            ))}
-          </InfiniteScroll>
-        )}
+        {isFetching && <LoadingPanel />}
+        {!isFetching &&
+          !!search &&
+          musics?.map((music) => (
+            <div key={music.videoId} className='py-3'>
+              <SearchListItem
+                music={music}
+                onSelectPlaylist={(listId) => handleSelectPlaylist(listId, music)}
+              />
+            </div>
+          ))}
       </div>
     </div>
   );

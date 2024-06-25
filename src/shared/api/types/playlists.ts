@@ -1,4 +1,5 @@
 import { PlaylistType } from '@/shared/api/types/@enums';
+import { PaginationResponse } from '@/shared/api/types/@shared';
 
 export interface Playlist {
   id: number;
@@ -12,51 +13,33 @@ export interface GetPlaylistsResponse {
   playlists: Playlist[];
 }
 
-export interface PlaylistMusicParameters {
-  /**
-   * @default 0
-   */
-  pageNo: number;
-  /**
-   * @default 20
-   */
+export interface GetPlaylistMusicsParameters {
+  pageNumber: number;
   pageSize: number;
 }
 
 export interface PlaylistMusic {
   musicId: number;
-  ownerId: string;
   orderNumber: number;
   name: string;
   duration: string;
   thumbnailImage: string;
 }
 
-export interface PlaylistMusicResponse {
-  musicList: PlaylistMusic[];
-  totalPage: number;
-  totalElements: number;
+export interface SearchMusicsRequest {
+  q: string;
+  platform: 'youtube'; // 현재 플랫폼 하나만 있음
 }
 
-export interface YoutubeMusic {
+export interface SearchMusicsResponse {
+  musicList: MusicListItem[];
+}
+
+export interface MusicListItem {
   videoId: string;
   videoTitle: string;
   thumbnailUrl: string;
   runningTime: string;
-}
-
-export interface YoutubeMusicsParameters {
-  /**
-   * TODO: 변경된 명세확인 필요
-   * @see https://pfplay.slack.com/archives/C051N8A0ZSB/p1719248809282169
-   */
-  q: string;
-  pageToken?: string;
-}
-
-export interface YoutubeMusicsResponse {
-  nextPageToken: string;
-  musicList: YoutubeMusic[];
 }
 
 export interface CreatePlaylistRequestBody {
@@ -65,7 +48,6 @@ export interface CreatePlaylistRequestBody {
 
 export interface CreatePlaylistResponse {
   id: number;
-  uid: string;
   orderNumber: number;
   name: string;
   type: PlaylistType;
@@ -104,11 +86,11 @@ export interface RemovePlaylistMusicResponse {
 
 export interface PlaylistsClient {
   getPlaylists: () => Promise<GetPlaylistsResponse>;
-  getMusicFromPlaylist: (
+  getMusicsFromPlaylist: (
     playlistId: Playlist['id'],
-    params?: PlaylistMusicParameters
-  ) => Promise<PlaylistMusicResponse>;
-  getYoutubeMusics: (params: YoutubeMusicsParameters) => Promise<YoutubeMusicsResponse>;
+    params?: GetPlaylistMusicsParameters
+  ) => Promise<PaginationResponse<PlaylistMusic>>;
+  searchMusics: (params: SearchMusicsRequest) => Promise<SearchMusicsResponse>;
   createPlaylist: (params: CreatePlaylistRequestBody) => Promise<CreatePlaylistResponse>;
   updatePlaylist: (
     playlistId: Playlist['id'],
@@ -119,7 +101,7 @@ export interface PlaylistsClient {
     params: AddPlaylistMusicRequestBody
   ) => Promise<void>;
   removePlaylist: (params: RemovePlaylistRequestBody) => Promise<RemovePlaylistResponse>;
-  removeMusicFromPlaylist: (
+  removeMusicsFromPlaylist: (
     params: RemovePlaylistMusicRequestBody
   ) => Promise<RemovePlaylistMusicResponse>;
 }
