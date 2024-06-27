@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useFetchMe } from '@/entities/me';
+import { Me, useFetchMe } from '@/entities/me';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
@@ -56,15 +56,14 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
           <div className='gap-10 flexRow'>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               {t.lobby.title.points}
-              {/* FIXME:<p> cannot appear as a descendant of <p>. */}
               <Typography as='span' type='body3'>
-                Not Impl
+                {me && Me.scoreSum(me)}
               </Typography>
             </Typography>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               {t.lobby.title.join_date}
               <Typography as='span' type='body3'>
-                Not Impl
+                {me && Me.registrationDate(me)}
               </Typography>
             </Typography>
           </div>
