@@ -75,7 +75,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
     >
       <div className=' w-full items-end gap-12 flexCol'>
         <FormItem
-          label='파티이름'
+          label={t.party.title.party_name}
           error={errors.name?.message}
           required
           classNames={{ label: 'text-gray-200', container: 'w-full' }}
@@ -84,7 +84,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
         </FormItem>
 
         <FormItem
-          label='파티 소개'
+          label={t.party.title.party_desc}
           required
           error={errors.introduce && '한/영 구분 없이 띄어쓰기 포함 50자 제한'}
           classNames={{ label: 'text-gray-200', container: 'w-full' }}
