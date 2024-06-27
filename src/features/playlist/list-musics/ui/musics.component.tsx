@@ -1,7 +1,7 @@
 import { usePlaylistAction } from '@/entities/playlist';
 import { Playlist } from '@/shared/api/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { PFAddPlaylist, PFDelete } from '@/shared/ui/icons';
+import { PFDelete } from '@/shared/ui/icons';
 import Music from './music.component';
 import { useFetchPlaylistMusics } from '../api/use-fetch-playlist-musics.query';
 
@@ -29,11 +29,12 @@ const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
               label: t.playlist.btn.delete_playlist,
               Icon: <PFDelete />,
             },
-            {
-              onClickItem: () => alert('Not Impl'),
-              label: t.playlist.btn.move_playlist,
-              Icon: <PFAddPlaylist />,
-            },
+            // TODO: 구현되면 주석 해제
+            // {
+            //   onClickItem: () => alert('Not Impl'),
+            //   label: t.playlist.btn.move_playlist,
+            //   Icon: <PFAddPlaylist />,
+            // },
           ]}
         />
       ))}
