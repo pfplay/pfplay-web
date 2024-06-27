@@ -8,6 +8,7 @@ import { useSignOut } from '@/features/sign-out';
 import { AuthorityTier } from '@/shared/api/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import useIntersectionObserver from '@/shared/lib/hooks/use-intersection-observer.hook';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import LanguageChangeMenu from '@/shared/lib/localization/language-change-menu.component';
 import { MenuButton, MenuItemPanel } from '@/shared/ui/components/menu';
 
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const Header: FC<Props> = ({ withLogo }) => {
+  const t = useI18n();
   const { data: me } = useFetchMe();
   const {
     isIntersecting: atTopOfPage,
@@ -24,7 +26,7 @@ const Header: FC<Props> = ({ withLogo }) => {
   } = useIntersectionObserver({
     threshold: 0.1,
   });
-  const { mutate: signOut } = useSignOut();
+  const signOut = useSignOut();
 
   return (
     <>
@@ -57,7 +59,7 @@ const Header: FC<Props> = ({ withLogo }) => {
                   <MenuItemPanel
                     menuItemConfig={[
                       {
-                        label: '로그아웃',
+                        label: t.common.btn.logout,
                         onClickItem: signOut,
                       },
                     ]}

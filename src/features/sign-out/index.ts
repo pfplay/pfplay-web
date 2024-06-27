@@ -1,1 +1,1 @@
-export { default as useSignOut } from './api/use-sign-out.mutation';
+export { default as useSignOut } from './lib/use-sign-out.hook';
