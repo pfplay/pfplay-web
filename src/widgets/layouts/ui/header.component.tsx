@@ -17,7 +17,11 @@ interface Props {
 
 const Header: FC<Props> = ({ withLogo }) => {
   const { data: me } = useFetchMe();
-  const { isIntersecting: atTopOfPage, setRef: setTopElRef } = useIntersectionObserver({
+  const {
+    isIntersecting: atTopOfPage,
+    setRef: setTopElRef,
+    observed: isTopElObserved,
+  } = useIntersectionObserver({
     threshold: 0.1,
   });
   const { mutate: signOut } = useSignOut();
@@ -30,7 +34,7 @@ const Header: FC<Props> = ({ withLogo }) => {
         className={cn(
           'fixed top-0 w-full h-[var(--header-height)] flex items-center px-app pt-10 pb-6 transition-colors z-20',
           withLogo ? 'justify-between' : 'justify-end',
-          atTopOfPage ? 'bg-transparent' : 'bg-black'
+          isTopElObserved && !atTopOfPage && 'bg-black'
         )}
       >
         {withLogo && (
