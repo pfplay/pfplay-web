@@ -1,29 +1,32 @@
 'use client';
 import Image from 'next/image';
+import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useLang } from '@/shared/lib/localization/lang.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 import CreatePartyroomForm from './form.component';
 
 const PartyroomCreateCard = () => {
   const t = useI18n();
+  const lang = useLang();
   const { openDialog, openConfirmDialog } = useDialog();
 
-  const handleClickBeAHostBtn = async () => {
-    return await openDialog((_, onCancel) => ({
+  const handleClickBeAHostBtn = () => {
+    return openDialog((_, onCancel) => ({
       title: '파티 개설',
       titleAlign: 'left',
       showCloseIcon: true,
       closeConfirm: openCloseConfirmDialog,
       classNames: {
-        container: 'w-[800px]',
+        container: lang === Language.Ko ? 'w-[800px]' : 'w-[900px]',
       },
       Body: () => <CreatePartyroomForm onModalClose={onCancel} />,
     }));
   };
 
-  const openCloseConfirmDialog = async () => {
-    return await openConfirmDialog({
+  const openCloseConfirmDialog = () => {
+    return openConfirmDialog({
       title: '지금까지 작성한 내용은 저장되지 않아요',
       content: '개설을 중단하시겠어요?',
     });

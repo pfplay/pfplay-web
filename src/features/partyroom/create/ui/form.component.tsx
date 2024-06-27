@@ -5,7 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { useFetchMe } from '@/entities/me';
 import { PartiesService } from '@/shared/api/services/parties';
+import { cn } from '@/shared/lib/functions/cn';
+import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useLang } from '@/shared/lib/localization/lang.context';
 import { Button } from '@/shared/ui/components/button';
 import { FormItem } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
@@ -22,6 +25,7 @@ interface PartyroomCreateFormProps {
 
 const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
   const t = useI18n();
+  const lang = useLang();
   const { data: me } = useFetchMe();
   const router = useRouter();
 
@@ -71,7 +75,10 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className='flexCol items-center justify-between mx-auto child-form-labels:w-[100px] pl-[26px] pr-[40px]'
+      className={cn('flexCol items-center justify-between mx-auto pl-[26px] pr-[40px]', {
+        'child-form-labels:w-[100px]': lang === Language.Ko,
+        'child-form-labels:w-[120px]': lang === Language.En,
+      })}
     >
       <div className=' w-full items-end gap-12 flexCol'>
         <FormItem
@@ -120,21 +127,24 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
             <div>
               <FormItem
                 fit
+                required
                 label={
                   <Tooltip
                     title='디제잉 1회당 제한 시간은 3분 이상부터 가능해요'
                     visible={!!errors.limit?.message}
                   >
-                    <Typography
-                      type='body2'
-                      className="flexCol items-start after:ml-[0.2em] after:text-red-300 after:content-['*']"
-                    >
-                      {/* 줄바꿈 적용 필요*/}
+                    <Typography type='body2'>
+                      {/* TODO: 문구 줄바꿈 적용 필요*/}
                       {t.db.title.dj_time_limit}
                     </Typography>
                   </Tooltip>
                 }
-                classNames={{ label: 'text-gray-200 !w-[80px] pr-0' }}
+                classNames={{
+                  label: cn('text-gray-200', {
+                    '!w-[75px]': lang === Language.Ko,
+                    '!w-[100px]': lang === Language.En,
+                  }),
+                }}
               >
                 <InputNumber {...register('limit', { valueAsNumber: true })} initialValue={7} />
                 <Typography as='span' type='detail1' className='text-gray-200 ml-[8px]'>

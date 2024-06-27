@@ -110,7 +110,8 @@ const labelTextStyle = (layout: Axis, required?: boolean) => {
       'text-start text-gray-300': layout === 'vertical',
       'text-right': layout === 'horizontal',
     },
-    required && "after:ml-[0.2em] after:text-red-300 after:content-['*']",
+    required &&
+      'after:content-["*"] after:absolute after:-right-[0.33em] after:top-[0.8em] after:transform after:-translate-x-1/2 after:-translate-y-1/2 after:text-red-300',
   ];
 };
 
