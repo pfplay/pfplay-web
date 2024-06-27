@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
 import { MusicListItem } from '@/shared/api/types/playlists';
 import { safeDecodeURI } from '@/shared/lib/functions/safe-decode-uri';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
@@ -17,6 +18,7 @@ const SearchListItem = ({
   music: { videoTitle, runningTime, thumbnailUrl },
   onSelectPlaylist,
 }: SearchListItemProps) => {
+  const t = useI18n();
   const playlistAction = usePlaylistAction();
 
   const menuItemConfig: MenuItem[] = useMemo(
@@ -26,12 +28,12 @@ const SearchListItem = ({
         onClickItem: () => onSelectPlaylist?.(id),
       })),
       {
-        label: '플레이리스트 추가',
+        label: t.playlist.btn.add_playlist,
         Icon: <PFAddCircle />,
         onClickItem: playlistAction.add,
       },
     ],
-    [playlistAction.list, playlistAction.add, onSelectPlaylist]
+    [playlistAction.list, playlistAction.add, t, onSelectPlaylist]
   );
 
   return (

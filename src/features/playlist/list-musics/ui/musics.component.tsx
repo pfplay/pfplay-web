@@ -1,5 +1,6 @@
 import { usePlaylistAction } from '@/entities/playlist';
 import { Playlist } from '@/shared/api/types/playlists';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { PFAddPlaylist, PFDelete } from '@/shared/ui/icons';
 import Music from './music.component';
 import { useFetchPlaylistMusics } from '../api/use-fetch-playlist-musics.query';
@@ -9,6 +10,7 @@ type MusicsInPlaylistProps = {
 };
 
 const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
+  const t = useI18n();
   const { data } = useFetchPlaylistMusics(playlist.id, {
     pageNumber: 0,
     pageSize: playlist.musicCount,
@@ -24,12 +26,12 @@ const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
           menuItems={[
             {
               onClickItem: () => playlistAction.removeMusics(playlist.id, [music.musicId]),
-              label: '재생목록에서 삭제',
+              label: t.playlist.btn.delete_playlist,
               Icon: <PFDelete />,
             },
             {
               onClickItem: () => alert('Not Impl'),
-              label: '다른 재생목록으로 이동',
+              label: t.playlist.btn.move_playlist,
               Icon: <PFAddPlaylist />,
             },
           ]}

@@ -26,8 +26,6 @@ const PartyroomCreateCard = () => {
     return await openConfirmDialog({
       title: '지금까지 작성한 내용은 저장되지 않아요',
       content: '개설을 중단하시겠어요?',
-      okText: '확인',
-      cancelText: '취소',
     });
   };
 

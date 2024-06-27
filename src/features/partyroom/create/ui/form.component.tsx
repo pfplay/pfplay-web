@@ -80,11 +80,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
           required
           classNames={{ label: 'text-gray-200', container: 'w-full' }}
         >
-          <Input
-            {...register('name')}
-            placeholder='한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'
-            maxLength={30}
-          />
+          <Input {...register('name')} placeholder={t.common.ec.char_limit_12} maxLength={30} />
         </FormItem>
 
         <FormItem
@@ -97,7 +93,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
             {...register('introduce')}
             maxLength={50}
             rows={3}
-            placeholder='한/영 구분 없이 띄어쓰기 포함 50자 제한'
+            placeholder={t.common.ec.char_limit_50}
           />
         </FormItem>
 

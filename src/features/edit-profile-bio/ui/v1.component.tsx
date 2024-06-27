@@ -5,6 +5,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useFetchMe } from '@/entities/me';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
 import { FormItem } from '@/shared/ui/components/form-item';
@@ -14,6 +15,7 @@ import { useUpdateMyBio } from '../api/use-update-my-bio.mutaion';
 import * as Form from '../model/form.model';
 
 const ProfileEditFormV1 = () => {
+  const t = useI18n();
   const router = useAppRouter();
   const { data: me } = useFetchMe();
   const { mutate: updateBio, isPending } = useUpdateMyBio();
@@ -73,7 +75,7 @@ const ProfileEditFormV1 = () => {
               <Input
                 {...field}
                 maxLength={16}
-                placeholder='한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가'
+                placeholder={t.common.ec.char_limit_12}
                 classNames={{
                   container: 'w-[550px]',
                 }}
@@ -94,7 +96,7 @@ const ProfileEditFormV1 = () => {
                 {...field}
                 maxLength={50}
                 rows={3}
-                placeholder='한/영 구분 없이 띄어쓰기 포함 50자 제한'
+                placeholder={t.common.ec.char_limit_50}
                 classNames={{
                   container: 'w-[550px]',
                 }}

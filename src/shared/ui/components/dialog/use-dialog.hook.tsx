@@ -7,12 +7,12 @@ import { Typography } from '../typography';
 
 interface AlertDialogParams extends Pick<DialogProps, 'title' | 'Sub'> {
   content?: string;
-  okText: string;
+  okText?: string;
 }
 interface ConfirmDialogParams extends Pick<DialogProps, 'title' | 'Sub'> {
   content?: string;
-  okText: string;
-  cancelText: string;
+  okText?: string;
+  cancelText?: string;
 }
 
 export const useDialog = () => {
@@ -21,7 +21,12 @@ export const useDialog = () => {
 
   const predefinedDialogs = useMemo(
     () => ({
-      openAlertDialog: async ({ title, Sub, content, okText }: AlertDialogParams) => {
+      openAlertDialog: async ({
+        title,
+        Sub,
+        content,
+        okText = t.common.btn.confirm,
+      }: AlertDialogParams) => {
         await openDialog((_, onCancel) => ({
           title,
           Sub,
@@ -45,8 +50,8 @@ export const useDialog = () => {
         title,
         Sub,
         content,
-        okText,
-        cancelText,
+        okText = t.common.btn.confirm,
+        cancelText = t.common.btn.cancel,
       }: ConfirmDialogParams) => {
         return await openDialog<boolean>((onOk) => ({
           title,
