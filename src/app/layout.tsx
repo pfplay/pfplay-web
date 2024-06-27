@@ -11,6 +11,7 @@ import { Language } from '@/shared/lib/localization/constants';
 import { LANGUAGE_COOKIE_KEY } from '@/shared/lib/localization/constants';
 import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
 import { I18nProvider } from '@/shared/lib/localization/i18n.context';
+import { LangProvider } from '@/shared/lib/localization/lang.context';
 import { DialogProvider } from '@/shared/ui/components/dialog';
 import { pretendardVariable } from '@/shared/ui/foundation/fonts';
 import ReactQueryProvider from './_providers/react-query.provider';
@@ -31,11 +32,13 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
     <html lang={lang}>
       <body className={pretendardVariable.className}>
         <ReactQueryProvider>
-          <I18nProvider dictionary={dictionary}>
-            <DialogProvider>
-              <MeHydration>{children}</MeHydration>
-            </DialogProvider>
-          </I18nProvider>
+          <LangProvider lang={lang as Language}>
+            <I18nProvider dictionary={dictionary}>
+              <DialogProvider>
+                <MeHydration>{children}</MeHydration>
+              </DialogProvider>
+            </I18nProvider>
+          </LangProvider>
         </ReactQueryProvider>
 
         <div id={DomId.TooltipRoot} />
