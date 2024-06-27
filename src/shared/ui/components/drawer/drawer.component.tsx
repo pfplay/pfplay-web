@@ -6,16 +6,16 @@ import { Typography } from '../typography';
 
 interface DrawerProps {
   title?: string;
-  drawerOpen: boolean;
-  setDrawerOpen: (open: boolean) => void;
+  isOpen: boolean;
+  close: () => void;
 }
 
 /**
  * 현재 우측 고정입니다.
  */
-const Drawer = ({ title, drawerOpen, setDrawerOpen, children }: PropsWithChildren<DrawerProps>) => {
+const Drawer = ({ title, isOpen, close, children }: PropsWithChildren<DrawerProps>) => {
   useEffect(() => {
-    if (drawerOpen) {
+    if (isOpen) {
       document.body.classList.add('scroll-hidden');
     } else {
       document.body.classList.remove('scroll-hidden');
@@ -24,10 +24,10 @@ const Drawer = ({ title, drawerOpen, setDrawerOpen, children }: PropsWithChildre
     return () => {
       document.body.classList.remove('scroll-hidden');
     };
-  }, [drawerOpen]);
+  }, [isOpen]);
 
   return (
-    <Transition appear show={drawerOpen} as={Fragment}>
+    <Transition appear show={isOpen} as={Fragment}>
       <div className='relative z-30'>
         <div className='pointer-events-none fixed inset-y-0 right-0 flex max-w-full'>
           <Transition.Child
@@ -44,7 +44,7 @@ const Drawer = ({ title, drawerOpen, setDrawerOpen, children }: PropsWithChildre
                 <Typography type='title2' className='text-white'>
                   {title}
                 </Typography>
-                <div onClick={() => setDrawerOpen(false)} className='cursor-pointer'>
+                <div onClick={close} className='cursor-pointer'>
                   <PFClose width={24} height={24} />
                 </div>
               </div>

@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
 import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
+import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
@@ -17,7 +17,7 @@ interface SidebarProps {
 const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
   const t = useI18n();
   const { openDialog } = useDialog();
-  const [showMyPlaylist, setShowMyPlaylist] = useState(false);
+  const { open: showPlaylist, onClose: hidePlaylist, onToggle: togglePlaylist } = useDisclosure();
 
   const handleClickProfileButton = () => {
     return openDialog((_, onCancel) => ({
@@ -48,10 +48,7 @@ const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
             {t.common.btn.my_profile}
           </Typography>
         </button>
-        <button
-          onClick={() => setShowMyPlaylist(true)}
-          className='flexColCenter gap-2 cursor-pointer'
-        >
+        <button onClick={togglePlaylist} className='flexColCenter gap-2 cursor-pointer'>
           <PFHeadset width={36} height={36} className='[&_*]:fill-gray-400' />
           <Typography type='caption1' className='text-gray-200'>
             {t.common.btn.playlist}
@@ -74,7 +71,7 @@ const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
       </aside>
 
       <PlaylistActionProvider>
-        <MyPlaylist drawerOpen={showMyPlaylist} setDrawerOpen={setShowMyPlaylist} />
+        <MyPlaylist isDrawerOpen={showPlaylist} closeDrawer={hidePlaylist} />
       </PlaylistActionProvider>
     </>
   );

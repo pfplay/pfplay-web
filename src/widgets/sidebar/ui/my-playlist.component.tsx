@@ -9,12 +9,12 @@ import { Drawer } from '@/shared/ui/components/drawer';
 import { TextButton } from '@/shared/ui/components/text-button';
 
 interface MyPlaylistProps {
-  drawerOpen: boolean;
-  setDrawerOpen: (open: boolean) => void;
+  isDrawerOpen: boolean;
+  closeDrawer: () => void;
 }
 
 // TODO: 별도 위젯으로 분리
-const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
+const MyPlaylist = ({ isDrawerOpen, closeDrawer }: MyPlaylistProps) => {
   const t = useI18n();
   const [editMode, setEditMode] = useState(false);
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<number[]>([]);
@@ -24,7 +24,7 @@ const MyPlaylist = ({ drawerOpen, setDrawerOpen }: MyPlaylistProps) => {
   };
 
   return (
-    <Drawer title='내 플레이리스트' drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}>
+    <Drawer title='내 플레이리스트' isOpen={isDrawerOpen} close={closeDrawer}>
       <div className='flexRow justify-between items-center mt-10 mb-6'>
         {editMode ? (
           <>
