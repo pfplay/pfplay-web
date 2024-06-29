@@ -10,8 +10,6 @@ import { BackButton } from '@/shared/ui/components/back-button';
 import { ButtonLink } from '@/shared/ui/components/button-link';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
 
-export const dynamic = 'force-dynamic';
-
 const AvatarSettingsPage = () => {
   return (
     <SelectedAvatarStateProvider>
