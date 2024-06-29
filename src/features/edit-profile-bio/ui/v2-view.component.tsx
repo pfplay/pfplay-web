@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Me, useFetchMe } from '@/entities/me';
+import { ActivityType } from '@/shared/api/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
@@ -57,7 +58,7 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               {t.lobby.title.points}
               <Typography as='span' type='body3'>
-                {me && Me.djScore(me)}
+                {me && `${Me.score(me, ActivityType.DJ_PNT)}p`}
               </Typography>
             </Typography>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>

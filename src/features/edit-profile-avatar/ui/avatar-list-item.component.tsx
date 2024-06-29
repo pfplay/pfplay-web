@@ -35,24 +35,26 @@ const AvatarListItem = ({
         className='bg-gray-800 max-h-[200px] aspect-square select-none'
       />
 
-      {selected && (
+      {!locked && selected && (
         <div className='absolute inset-0 bg-dim z-1 border-[3px] border-red-300 rounded' />
       )}
 
       {locked && (
-        <>
-          <div aria-label='Lock Icon' className='absolute right-[12px] bottom-[12px] z-0'>
+        <div className='absolute inset-0 bg-dim z-1 cursor-not-allowed'>
+          <div aria-label='Lock Icon' className='absolute right-[12px] bottom-[12px]'>
             <PFLock className='text-red-500' width={48} height={48} />
           </div>
 
-          <div className='opacity-0 hover:opacity-100 absolute inset-0 bg-dim z-1'>
-            <div className='p-[12px]'>
-              <Typography type='detail1' className='text-white' overflow='break-words'>
-                {lockedMessage}
-              </Typography>
-            </div>
+          <div className='absolute inset-0 z-1 p-[12px] group'>
+            <Typography
+              type='detail1'
+              className='text-white opacity-0 group-hover:opacity-100'
+              overflow='break-words'
+            >
+              {lockedMessage}
+            </Typography>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

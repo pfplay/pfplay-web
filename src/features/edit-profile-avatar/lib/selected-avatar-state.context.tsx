@@ -3,8 +3,6 @@
 import { createContext, useContext } from 'react';
 import { AvatarBody } from '@/shared/api/types/users';
 
-export type FacePos = { x: number; y: number };
-
 type SelectedAvatarState = {
   body?: AvatarBody;
   setBody: (body: AvatarBody) => void;
