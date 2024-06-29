@@ -1,27 +1,27 @@
 'use client';
 import Image from 'next/image';
+import { Typography } from '@/shared/ui/components/typography';
+import { PFLock } from '@/shared/ui/icons';
 
 interface Props {
   handleClick: () => void;
   imageSrc: string;
   name?: string;
   isSelected: boolean;
+  locked?: boolean;
+  lockedMessage?: string;
 }
 
-const AvatarListItem = ({ handleClick, imageSrc, name, isSelected }: Props) => {
+const AvatarListItem = ({
+  handleClick,
+  imageSrc,
+  name,
+  isSelected,
+  locked,
+  lockedMessage,
+}: Props) => {
   return (
     <div className='relative w-full max-width-[200px] aspect-square cursor-pointer group'>
-      {/* <>
-      // FIXME: BE api 상세에 맞춰 아래 코드 수정 and 해금 안된 이미지 대응
-        <div className='absolute inset-0 flexRow justify-start items-start bg-transparent group-hover:opacity-60 group-hover:bg-black z-30' />
-        <Typography
-          type='detail1'
-          className='absolute inset-3 text-white z-50 opacity-0 group-hover:opacity-100'
-        >
-          DJ 포인트 5점 획득 시 잠금해제 할 수 있어요!
-        </Typography>
-      </> */}
-
       <Image
         role='button'
         tabIndex={-1}
@@ -36,7 +36,23 @@ const AvatarListItem = ({ handleClick, imageSrc, name, isSelected }: Props) => {
       />
 
       {isSelected && (
-        <div className='absolute inset-0 opacity-60 bg-black z-1 outline outline-[3px] -outline-offset-[3px] outline-red-300' />
+        <div className='absolute inset-0 bg-dim z-1 outline outline-[3px] -outline-offset-[3px] outline-red-300' />
+      )}
+
+      {locked && (
+        <>
+          <div aria-label='Lock Icon' className='absolute right-[12px] bottom-[12px] z-0'>
+            <PFLock className='text-red-500' width={48} height={48} />
+          </div>
+
+          <div className='opacity-0 hover:opacity-100 absolute inset-0 bg-dim z-1'>
+            <div className='p-[12px]'>
+              <Typography type='detail1' className='text-white' overflow='break-words'>
+                {lockedMessage}
+              </Typography>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
