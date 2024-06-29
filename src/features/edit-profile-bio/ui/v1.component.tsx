@@ -28,7 +28,7 @@ const ProfileEditFormV1 = () => {
     formState: { errors, isValid },
   } = useForm<Form.Model>({
     mode: 'all',
-    resolver: zodResolver(Form.schema),
+    resolver: zodResolver(Form.getSchema(t)),
   });
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
@@ -66,7 +66,7 @@ const ProfileEditFormV1 = () => {
           name='nickname'
           render={({ field }) => (
             <FormItem
-              label='닉네임'
+              label={t.settings.title.nickname}
               error={errors.nickname?.message}
               required
               classNames={{ label: 'text-gray-200' }}
@@ -88,7 +88,7 @@ const ProfileEditFormV1 = () => {
           name='introduction'
           render={({ field }) => (
             <FormItem
-              label='소개'
+              label={t.settings.title.introduction}
               error={errors.introduction?.message}
               classNames={{ label: 'text-gray-200' }}
             >
