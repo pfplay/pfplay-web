@@ -6,9 +6,10 @@ import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
 
 interface Props {
   meta: AvatarFace;
+  hideSelected: boolean;
 }
 
-const AvatarFaceListItem: FC<Props> = ({ meta }) => {
+const AvatarFaceListItem: FC<Props> = ({ meta, hideSelected }) => {
   const selectedAvatar = useSelectedAvatarState();
 
   const handleAvatarImgClick = () => {
@@ -20,7 +21,7 @@ const AvatarFaceListItem: FC<Props> = ({ meta }) => {
       handleClick={handleAvatarImgClick}
       imageSrc={meta.resourceUri}
       name={meta.name}
-      selected={selectedAvatar.faceUri === meta.resourceUri}
+      selected={!hideSelected && selectedAvatar.faceUri === meta.resourceUri}
     />
   );
 };
