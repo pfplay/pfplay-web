@@ -1,16 +1,7 @@
 import { ActivityType, AuthorityTier, ObtainmentType } from '@/shared/api/types/@enums';
 
-export enum Oauth2Provider {
-  Google = 'google',
-}
-
 export interface SignInRequest {
-  oauth2Provider: Oauth2Provider;
-  /**
-   * FE pathname. 맨 앞에 '/'는 빼기
-   * @example "parties", "settings/profile"
-   */
-  redirectLocation: string;
+  oauth2Provider: 'google';
 }
 
 export interface SignInGuestRequest {

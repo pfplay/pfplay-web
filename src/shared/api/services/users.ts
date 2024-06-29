@@ -8,8 +8,7 @@ export const UsersService: UsersClient = {
     if (typeof window === 'undefined') return;
 
     const url = new URL(`${pfpAxiosInstance.defaults.baseURL}${ROUTE_V1}/members/sign`);
-    url.searchParams.append('oauth2_provider', request.oauth2Provider);
-    url.searchParams.append('redirect_location', request.redirectLocation);
+    url.searchParams.append('oauth2Provider', request.oauth2Provider);
 
     window.location.href = url.toString();
   },
