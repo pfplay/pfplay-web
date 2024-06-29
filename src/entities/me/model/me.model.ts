@@ -1,3 +1,4 @@
+import { ActivityType } from '@/shared/api/types/@enums';
 import { GetMyInfoResponse, GetMyProfileSummaryResponse } from '@/shared/api/types/users';
 
 export type Model = GetMyInfoResponse & GetMyProfileSummaryResponse;
@@ -12,10 +13,14 @@ export const serviceEntry = (model: Model | null): string => {
   return '/parties';
 };
 
-export const scoreSum = (model: Model): string => {
-  const sum = model.activitySummaries.reduce((acc, { score }) => acc + score, 0);
+const getActivityPoint = (model: Model, activityType: ActivityType): string => {
+  const summary = model.activitySummaries.find((summary) => summary.activityType === activityType);
+  const point = summary ? summary.score : 0;
+  return `${point}p`;
+};
 
-  return `${sum}p`;
+export const djScore = (model: Model): string => {
+  return getActivityPoint(model, ActivityType.DJ_PNT);
 };
 
 export const registrationDate = (model: Model): string => {
