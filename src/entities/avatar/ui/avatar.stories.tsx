@@ -73,3 +73,28 @@ export const Sizes: Story = {
     ),
   ],
 };
+
+export const Dance: Story = {
+  args: {
+    height: 160,
+    dance: true,
+    faceUri: mockFace.uri,
+    facePosX: mockBody.facePosX,
+    facePosY: mockBody.facePosY,
+    bodyUri: mockBody.uri,
+  },
+  render: (args) => (
+    <>
+      <Avatar {...args} />
+      <Avatar dance bodyUri={mockBodyWithoutFace.uri} height={160} />
+      <Avatar {...args} />
+    </>
+  ),
+  decorators: [
+    (Story) => (
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16 }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
