@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import { cn } from '@/shared/lib/functions/cn';
 
 interface Props {
   handleClick: () => void;
@@ -33,10 +32,12 @@ const AvatarListItem = ({ handleClick, imageSrc, name, isSelected }: Props) => {
         fill
         objectFit='contain'
         sizes='(max-width:200px) 100vw, 200px'
-        className={cn('bg-gray-800 max-h-[200px] aspect-square select-none', {
-          'outline-none border-[1px] border-red-300': isSelected,
-        })}
+        className='bg-gray-800 max-h-[200px] aspect-square select-none'
       />
+
+      {isSelected && (
+        <div className='absolute inset-0 opacity-60 bg-black z-1 outline outline-[3px] -outline-offset-[3px] outline-red-300' />
+      )}
     </div>
   );
 };
