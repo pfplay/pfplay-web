@@ -12,9 +12,9 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/compone
 
 const AvatarSettingsPage = () => {
   return (
-    <SelectedAvatarStateProvider>
-      <div className='absolute-user-form-section'>
-        <div className='h-full flexRow justify-start max-w-screen-desktop mx-auto gap-5 p-10 px-[60px]'>
+    <div className='absolute-user-form-section'>
+      <div className='h-full flexRow justify-start max-w-screen-desktop mx-auto gap-5 p-10 px-[60px]'>
+        <SelectedAvatarStateProvider>
           <div className='flexCol items-start gap-10'>
             <BackButton text='뭘 입고 놀아볼까요?' />
             <SelectedAvatar />
@@ -46,9 +46,9 @@ const AvatarSettingsPage = () => {
               size='xl'
             />
           </div>
-        </div>
+        </SelectedAvatarStateProvider>
       </div>
-    </SelectedAvatarStateProvider>
+    </div>
   );
 };
 
