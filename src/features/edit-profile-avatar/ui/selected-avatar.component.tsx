@@ -1,21 +1,24 @@
-import Image from 'next/image';
+import { Avatar } from '@/entities/avatar';
 import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
 
 const SelectedAvatar = () => {
   const selectedAvatar = useSelectedAvatarState();
 
   return (
-    <div className='min-h-[525px] flexCol justify-center items-center h-full bg-black select-none'>
-      {/* TODO: face + body 조합한 avatar entity ui 적용 */}
-      {!selectedAvatar.bodyUri && <div className='bg-black w-[300px] h-[300px]' />}
-      {selectedAvatar.bodyUri && (
-        <Image
-          src={selectedAvatar.bodyUri}
-          alt='Selected Avatar Body'
-          width={300}
-          height={300}
-          sizes='(max-width:300px)'
-          className='bg-black min-w-[300px]'
+    <div className='w-[360px] h-full min-h-[500px] flexCol justify-center items-center bg-black select-none'>
+      {selectedAvatar.body && (
+        <Avatar
+          height={400}
+          bodyUri={selectedAvatar.body.resourceUri}
+          /**
+           * NOTE
+           *  combinable이 false라고 해서 선택했던 faceUri를 초기화하진 않고, 단순히 뷰에서만 감춥니다.
+           *  이는 combinable이 다시 true로 변경될 때, 선택했던 faceUri를 다시 적용해주기 위함입니다.
+           *  combinable 상태에 따른 faceUri 변경 여부는 마지막 api 호출 시점에 컨트롤합니다.
+           */
+          faceUri={selectedAvatar.body.combinable ? selectedAvatar.faceUri : undefined}
+          facePosX={selectedAvatar.body.combinePositionX}
+          facePosY={selectedAvatar.body.combinePositionY}
         />
       )}
     </div>

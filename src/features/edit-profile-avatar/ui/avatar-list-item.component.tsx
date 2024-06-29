@@ -1,37 +1,15 @@
 'use client';
 import Image from 'next/image';
-import { FC } from 'react';
-import { SetRequired } from 'type-fest';
-import { AvatarPartsDefaultMeta } from '@/shared/api/types/users';
 import { cn } from '@/shared/lib/functions/cn';
-import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
 
 interface Props {
-  meta: SetRequired<Partial<AvatarPartsDefaultMeta>, 'resourceUri'>;
-  from: 'body' | 'face';
+  handleClick: () => void;
+  imageSrc: string;
+  name?: string;
+  isSelected: boolean;
 }
 
-const AvatarListItem: FC<Props> = ({ meta, from }) => {
-  const selectedAvatar = useSelectedAvatarState();
-
-  const handleAvatarImgClick = () => {
-    if (from === 'body') {
-      selectedAvatar.setBodyUri(meta.resourceUri);
-    }
-    if (from === 'face') {
-      selectedAvatar.setFaceUri(meta.resourceUri);
-    }
-  };
-
-  const isSelected = (() => {
-    if (from === 'body') {
-      return selectedAvatar.bodyUri === meta.resourceUri;
-    }
-    if (from === 'face') {
-      return selectedAvatar.faceUri === meta.resourceUri;
-    }
-  })();
-
+const AvatarListItem = ({ handleClick, imageSrc, name, isSelected }: Props) => {
   return (
     <div className='relative w-full max-width-[200px] aspect-square cursor-pointer group'>
       {/* <>
@@ -48,11 +26,12 @@ const AvatarListItem: FC<Props> = ({ meta, from }) => {
       <Image
         role='button'
         tabIndex={-1}
-        onKeyDown={(e) => e.key === 'Enter' && handleAvatarImgClick()}
-        onClick={handleAvatarImgClick}
-        src={meta.resourceUri}
-        alt={meta.name ? `Avatar Parts - ${meta.name}` : 'Avatar Parts'}
+        onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+        onClick={handleClick}
+        src={imageSrc}
+        alt={name ? `Avatar Parts - ${name}` : 'Avatar Parts'}
         fill
+        objectFit='contain'
         sizes='(max-width:200px) 100vw, 200px'
         className={cn('bg-gray-800 max-h-[200px] aspect-square select-none', {
           'outline-none border-[1px] border-red-300': isSelected,
