@@ -1,6 +1,6 @@
 'use client';
-import AvatarBodyListItem from '@/features/edit-profile-avatar/ui/avatar-body-list-item.component';
-import { useFetchAvatarBodies } from 'features/edit-profile-avatar/api/use-fetch-avatar-bodies.query';
+import AvatarBodyListItem from './avatar-body-list-item.component';
+import { useFetchAvatarBodies } from '../api/use-fetch-avatar-bodies.query';
 
 const AvatarBodyList = () => {
   const { data: bodies = [] } = useFetchAvatarBodies();
