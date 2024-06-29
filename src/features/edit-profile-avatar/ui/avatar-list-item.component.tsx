@@ -24,7 +24,7 @@ const AvatarListItem = ({
     <div className='relative w-full max-width-[200px] aspect-square cursor-pointer group'>
       <Image
         role='button'
-        tabIndex={-1}
+        tabIndex={0}
         onKeyDown={(e) => e.key === 'Enter' && handleClick()}
         onClick={handleClick}
         src={imageSrc}
