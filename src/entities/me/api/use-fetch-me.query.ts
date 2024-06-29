@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { keepPreviousData, useQuery, UseQueryResult } from '@tanstack/react-query';
 import type { UseQueryOptions } from '@tanstack/react-query/src/types';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/react-query/keys';
@@ -24,4 +24,5 @@ export const queryOptions: UseQueryOptions<Me.Model, AxiosError<APIError>> = {
   },
   staleTime: ONE_HOUR,
   gcTime: ONE_HOUR,
+  placeholderData: keepPreviousData,
 };

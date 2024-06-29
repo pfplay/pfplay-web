@@ -1,9 +1,10 @@
 'use client';
-import Image from 'next/image';
+import { useFetchMe } from '@/entities/me';
 import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
+import Profile from '@/shared/ui/components/profile/profile.component';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFDj, PFHeadset } from '@/shared/ui/icons';
 import PlaylistActionProvider from 'widgets/sidebar/lib/playlist-action.provider';
@@ -16,6 +17,7 @@ interface SidebarProps {
 
 const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
   const t = useI18n();
+  const { data: me } = useFetchMe();
   const { openDialog } = useDialog();
   const { open: showPlaylist, onClose: hidePlaylist, onToggle: togglePlaylist } = useDisclosure();
 
@@ -37,13 +39,7 @@ const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
       <aside className={className}>
         {/* TODO: 프로필 이미지로 변경, href 추가 */}
         <button onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
-          <Image
-            src='/images/Background/profile.png' // TODO: user session에서 프로필 받아와 변경
-            alt='profile' // TODO: user session에서 프로필 받아와 변경
-            width={48}
-            height={48}
-            className='rounded-[100%] border-gray-500 border border-solid w-[48px] h-[48px]'
-          />
+          <Profile size={48} src={me?.avatarFaceUri} />
           <Typography type='caption1' className='text-gray-200'>
             {t.common.btn.my_profile}
           </Typography>
