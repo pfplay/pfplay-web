@@ -4,6 +4,15 @@ import { UsersClient } from '@/shared/api/types/users';
 const ROUTE_V1 = 'v1/users';
 
 export const UsersService: UsersClient = {
+  signIn: (request) => {
+    if (typeof window === 'undefined') return;
+
+    const url = new URL(`${pfpAxiosInstance.defaults.baseURL}${ROUTE_V1}/members/sign`);
+    url.searchParams.append('oauth2_provider', request.oauth2Provider);
+    url.searchParams.append('redirect_location', request.redirectLocation);
+
+    window.location.href = url.toString();
+  },
   signInGuest: () => {
     return pfpAxiosInstance.post(`${ROUTE_V1}/guests/sign`);
   },
