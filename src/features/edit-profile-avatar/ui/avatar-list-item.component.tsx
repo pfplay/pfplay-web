@@ -7,7 +7,7 @@ interface Props {
   handleClick: () => void;
   imageSrc: string;
   name?: string;
-  isSelected: boolean;
+  selected: boolean;
   locked?: boolean;
   lockedMessage?: string;
 }
@@ -16,7 +16,7 @@ const AvatarListItem = ({
   handleClick,
   imageSrc,
   name,
-  isSelected,
+  selected,
   locked,
   lockedMessage,
 }: Props) => {
@@ -35,7 +35,7 @@ const AvatarListItem = ({
         className='bg-gray-800 max-h-[200px] aspect-square select-none'
       />
 
-      {isSelected && (
+      {selected && (
         <div className='absolute inset-0 bg-dim z-1 border-[3px] border-red-300 rounded' />
       )}
 

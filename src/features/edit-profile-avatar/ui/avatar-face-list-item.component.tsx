@@ -20,7 +20,7 @@ const AvatarFaceListItem: FC<Props> = ({ meta }) => {
       handleClick={handleAvatarImgClick}
       imageSrc={meta.resourceUri}
       name={meta.name}
-      isSelected={selectedAvatar.faceUri === meta.resourceUri}
+      selected={selectedAvatar.faceUri === meta.resourceUri}
     />
   );
 };
