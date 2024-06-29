@@ -1,5 +1,18 @@
 import { ActivityType, AuthorityTier, ObtainmentType } from '@/shared/api/types/@enums';
 
+export enum Oauth2Provider {
+  Google = 'google',
+}
+
+export interface SignInRequest {
+  oauth2Provider: Oauth2Provider;
+  /**
+   * FE pathname. 맨 앞에 '/'는 빼기
+   * @example "parties", "settings/profile"
+   */
+  redirectLocation: string;
+}
+
 export interface SignInGuestRequest {
   userAgent: string;
 }
@@ -88,13 +101,20 @@ export interface UpdateMyAvatarBodyRequest {
 
 export interface UsersClient {
   /**
-   * @deprecated 정식 API 개발되기 전 사용할 임시 API입니다.
+   * @deprecated 개발용 로그인
    */
   temporary_SignInFullMember: () => Promise<void>;
   /**
-   * @deprecated 정식 API 개발되기 전 사용할 임시 API입니다.
+   * @deprecated 개발용 로그인
    */
   temporary_SignInAssociateMember: () => Promise<void>;
+  /**
+   * OAuth2 로그인
+   */
+  signIn: (request: SignInRequest) => void;
+  /**
+   * 게스트 로그인
+   */
   signInGuest: (request: SignInGuestRequest) => Promise<void>;
   signOut: () => Promise<void>;
   getMyInfo: () => Promise<GetMyInfoResponse>;
