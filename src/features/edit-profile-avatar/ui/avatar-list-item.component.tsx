@@ -1,38 +1,36 @@
 'use client';
 import Image from 'next/image';
 import { FC } from 'react';
-import { useSelectedAvatarStore } from '@/entities/avatar';
-import { AvatarParts } from '@/shared/api/types/avatar';
+import { SetRequired } from 'type-fest';
+import { AvatarPartsDefaultMeta } from '@/shared/api/types/users';
 import { cn } from '@/shared/lib/functions/cn';
+import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
 
 interface Props {
-  avatar: AvatarParts;
+  meta: SetRequired<Partial<AvatarPartsDefaultMeta>, 'resourceUri'>;
   from: 'body' | 'face';
 }
 
-const AvatarListItem: FC<Props> = ({ avatar, from }) => {
-  const [selectedAvatarParts, setSelectedAvatarParts] = useSelectedAvatarStore((state) => [
-    state.selectedAvatarParts,
-    state.setSelectedAvatarParts,
-  ]);
+const AvatarListItem: FC<Props> = ({ meta, from }) => {
+  const selectedAvatar = useSelectedAvatarState();
 
-  const handleAvatarImgClick = (parts: AvatarParts) => {
+  const handleAvatarImgClick = () => {
     if (from === 'body') {
-      setSelectedAvatarParts({ ...selectedAvatarParts, body: parts });
-      return;
-    } else if (from === 'face') {
-      setSelectedAvatarParts({ ...selectedAvatarParts, face: parts });
-      return;
+      selectedAvatar.setBodyUri(meta.resourceUri);
+    }
+    if (from === 'face') {
+      selectedAvatar.setFaceUri(meta.resourceUri);
     }
   };
 
-  const selected = (id: number | string) => {
+  const isSelected = (() => {
     if (from === 'body') {
-      return selectedAvatarParts?.body?.id === id;
-    } else if (from === 'face') {
-      return selectedAvatarParts?.face?.id === id;
+      return selectedAvatar.bodyUri === meta.resourceUri;
     }
-  };
+    if (from === 'face') {
+      return selectedAvatar.faceUri === meta.resourceUri;
+    }
+  })();
 
   return (
     <div className='relative w-full max-width-[200px] aspect-square cursor-pointer group'>
@@ -48,15 +46,17 @@ const AvatarListItem: FC<Props> = ({ avatar, from }) => {
       </> */}
 
       <Image
-        src={avatar.image}
-        alt={avatar.name}
+        role='button'
+        tabIndex={-1}
+        onKeyDown={(e) => e.key === 'Enter' && handleAvatarImgClick()}
+        onClick={handleAvatarImgClick}
+        src={meta.resourceUri}
+        alt={meta.name ? `Avatar Parts - ${meta.name}` : 'Avatar Parts'}
         fill
         sizes='(max-width:200px) 100vw, 200px'
-        onClick={() => handleAvatarImgClick(avatar)}
-        className={cn(
-          'bg-gray-800 max-h-[200px] aspect-square select-none',
-          selected(avatar.id) && 'border-[1px] border-red-300'
-        )}
+        className={cn('bg-gray-800 max-h-[200px] aspect-square select-none', {
+          'outline-none border-[1px] border-red-300': isSelected,
+        })}
       />
     </div>
   );

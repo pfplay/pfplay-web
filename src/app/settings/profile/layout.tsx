@@ -1,11 +1,12 @@
 'use client';
 
-import { router } from 'next/client';
+import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect } from 'react';
 import { useFetchMe } from '@/entities/me';
 
 const ProfileEditLayout = ({ children }: PropsWithChildren) => {
   const { data: me } = useFetchMe();
+  const router = useRouter();
 
   useEffect(() => {
     /**

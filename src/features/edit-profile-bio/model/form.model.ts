@@ -1,17 +1,26 @@
 import { z } from 'zod';
+import { type Dictonary } from '@/shared/lib/localization/i18n.context';
+import { optionalString, requiredString } from '@/shared/lib/zod/string';
 
-export type Model = z.infer<typeof schema>;
+export type Model = z.infer<ReturnType<typeof getSchema>>;
 
-export const schema = z.object({
-  nickname: z
-    .string()
-    .min(1, { message: '1자 이상 입력해주세요' })
-    .max(16, { message: '16자 제한' })
-    .refine((value) => /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]*$/.test(value), {
-      message: '한/영/숫자만 가능하고 띄어쓰기 및 특수문자 사용 불가',
+export const getSchema = (t: Dictonary) =>
+  z.object({
+    nickname: requiredString(
+      z
+        .string()
+        .min(1, {
+          message: '123',
+        })
+        .max(16, {
+          message: t.common.ec.char_limit_12,
+        })
+    ).refine((value) => /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]*$/.test(value), {
+      message: t.common.ec.char_limit_12,
     }),
-  introduction: z
-    .string()
-    .min(1, { message: '1자 이상 입력해주세요' })
-    .max(50, { message: '50자 제한' }),
-});
+    introduction: optionalString(
+      z.string().max(50, {
+        message: t.common.ec.char_limit_50,
+      })
+    ),
+  });

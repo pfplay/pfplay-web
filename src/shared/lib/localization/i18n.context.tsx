@@ -3,13 +3,13 @@
 import { createContext, ReactElement, useContext } from 'react';
 import type DictionaryEN from './dictionaries/en.json';
 
-type I18nJSONType = typeof DictionaryEN;
+export type Dictonary = typeof DictionaryEN;
 
-const I18nContext = createContext<I18nJSONType | null>(null);
+const I18nContext = createContext<Dictonary | null>(null);
 
 type I18nProviderProps = {
   children: ReactElement;
-  dictionary: I18nJSONType;
+  dictionary: Dictonary;
 };
 export function I18nProvider({ children, dictionary }: I18nProviderProps) {
   return <I18nContext.Provider value={dictionary}>{children}</I18nContext.Provider>;

@@ -11,7 +11,7 @@ import { FormItemError } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
 import { TextArea } from '@/shared/ui/components/textarea';
 import { useUpdateMyBio } from '../api/use-update-my-bio.mutaion';
-import * as ProfileForm from '../model/form.model';
+import * as Form from '../model/form.model';
 
 type V2EditModeProps = {
   changeToViewMode: () => void;
@@ -27,13 +27,13 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
     register,
     reset,
     formState: { errors, isValid },
-  } = useForm<ProfileForm.Model>({
+  } = useForm<Form.Model>({
     mode: 'all',
-    resolver: zodResolver(ProfileForm.schema),
+    resolver: zodResolver(Form.getSchema(t)),
   });
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
-  const onSubmit: SubmitHandler<ProfileForm.Model> = (values) => {
+  const onSubmit: SubmitHandler<Form.Model> = (values) => {
     updateBio(values, {
       onSuccess: changeToViewMode,
     });

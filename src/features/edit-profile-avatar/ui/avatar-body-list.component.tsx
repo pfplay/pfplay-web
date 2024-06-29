@@ -1,13 +1,14 @@
-import { AvatarService } from '@/shared/api/services/avatar';
+'use client';
+import { useFetchAvatarBodies } from 'features/edit-profile-avatar/api/use-fetch-avatar-bodies.query';
 import AvatarListItem from './avatar-list-item.component';
 
-const AvatarBodyList = async () => {
-  const bodyList = await AvatarService.getBodyList();
+const AvatarBodyList = () => {
+  const { data: bodies = [] } = useFetchAvatarBodies();
 
   return (
     <div className='max-h-[460px] grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5 overflow-y-auto'>
-      {bodyList.map((avatar) => (
-        <AvatarListItem key={avatar.id} avatar={avatar} from='body' />
+      {bodies.map((body) => (
+        <AvatarListItem key={body.id} meta={body} from='body' />
       ))}
     </div>
   );
