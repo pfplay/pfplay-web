@@ -1,13 +1,13 @@
 export enum ObtainmentType {
   BASIC = 'BASIC',
-  DJ_PNT = 'DJ_PNT',
-  REF_LINK = 'REF_LINK',
-  ROOM_ACT = 'ROOM_ACT',
+  DJ_PNT = 'DJ_PNT', // dj point
+  REF_LINK = 'REF_LINK', // referral link
+  ROOM_ACT = 'ROOM_ACT', // room activition
 }
 
 export enum AuthorityTier {
-  FM = 'FM', // Full Member
-  AM = 'AM', // Associate Member
+  FM = 'FM', // Full Member (지갑인증 - 정회원)
+  AM = 'AM', // Associate Member (지갑인증 x - 준회원)
   GT = 'GT', // Guest
 }
 
