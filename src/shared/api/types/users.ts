@@ -32,6 +32,8 @@ export interface GetMyProfileSummaryResponse {
   introduction?: string;
   avatarBodyUri?: string;
   avatarFaceUri?: string;
+  combinePositionX?: number;
+  combinePositionY?: number;
   walletAddress?: string;
   activitySummaries: ActivitySummary[];
 }
@@ -52,7 +54,9 @@ export interface GetUserProfileSummaryResponse {
   nickname: string;
   introduction?: string;
   avatarBodyUri: string;
-  avatarFaceUri: string;
+  avatarFaceUri?: string;
+  combinePositionX?: number;
+  combinePositionY?: number;
   activitySummaries: ActivitySummary[];
 }
 
@@ -66,6 +70,8 @@ export interface AvatarPartsDefaultMeta {
 export interface AvatarBody extends AvatarPartsDefaultMeta {
   obtainableType: ObtainmentType;
   obtainableScore: number;
+  combinePositionX?: number;
+  combinePositionY?: number;
   combinable: boolean;
   defaultSetting: boolean;
 }
