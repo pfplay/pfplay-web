@@ -1,11 +1,13 @@
 'use client';
 
 import { createContext, useContext } from 'react';
+import { AvatarBody } from '@/shared/api/types/users';
 
 type SelectedAvatarState = {
-  bodyUri?: string;
+  body?: AvatarBody;
+  setBody: (body: AvatarBody) => void;
+
   faceUri?: string;
-  setBodyUri: (uri?: string) => void;
   setFaceUri: (uri?: string) => void;
 };
 

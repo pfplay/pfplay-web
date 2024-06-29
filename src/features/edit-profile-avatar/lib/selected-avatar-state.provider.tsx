@@ -1,29 +1,35 @@
 'use client';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useFetchMe } from '@/entities/me';
+import { useFetchAvatarBodies } from '@/features/edit-profile-avatar/api/use-fetch-avatar-bodies.query';
+import { AvatarBody } from '@/shared/api/types/users';
 import { SelectedAvatarStateContext } from './selected-avatar-state.context';
 
 export default function SelectedAvatarStateProvider({ children }: { children: ReactNode }) {
   const { data: me } = useFetchMe();
-  const [selectedBodyUri, setSelectedBodyUri] = useState<string>();
+  const { data: bodies } = useFetchAvatarBodies();
+  const [selectedBody, setSelectedBody] = useState<AvatarBody>();
   const [selectedFaceUri, setSelectedFaceUri] = useState<string>();
 
   const contextValue = useMemo(
     () => ({
-      bodyUri: selectedBodyUri,
+      body: selectedBody,
+      setBody: setSelectedBody,
       faceUri: selectedFaceUri,
-      setBodyUri: setSelectedBodyUri,
       setFaceUri: setSelectedFaceUri,
     }),
-    [selectedBodyUri, selectedFaceUri]
+    [selectedBody, selectedFaceUri]
   );
 
   useEffect(() => {
-    if (me) {
-      setSelectedBodyUri(me.avatarBodyUri);
+    /**
+     * selectedBody와 selectedFaceUri 초기화
+     */
+    if (me && bodies && !selectedBody) {
+      setSelectedBody(bodies.find((body) => body.resourceUri === me.avatarBodyUri));
       setSelectedFaceUri(me.avatarFaceUri);
     }
-  }, [me]);
+  }, [me, bodies, selectedBody]);
 
   return (
     <SelectedAvatarStateContext.Provider value={contextValue}>

@@ -3,3 +3,4 @@ export { default as SelectedAvatarStateProvider } from './lib/selected-avatar-st
 export { default as AvatarBodyList } from './ui/avatar-body-list.component';
 export { default as AvatarFaceList } from './ui/avatar-face-list.component';
 export { default as SelectedAvatar } from './ui/selected-avatar.component';
+export { default as AvatarEditDone } from './ui/done.component';

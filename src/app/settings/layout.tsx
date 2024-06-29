@@ -6,7 +6,7 @@ const SettingsLayout = ({ children }: PropsWithChildren) => {
   return (
     <WalletProvider>
       <Header />
-      <main className='pt-app pb-app'>{children}</main>
+      <main>{children}</main>
     </WalletProvider>
   );
 };

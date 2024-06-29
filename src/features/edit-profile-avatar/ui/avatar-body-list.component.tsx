@@ -1,14 +1,14 @@
 'use client';
-import { useFetchAvatarBodies } from 'features/edit-profile-avatar/api/use-fetch-avatar-bodies.query';
-import AvatarListItem from './avatar-list-item.component';
+import AvatarBodyListItem from './avatar-body-list-item.component';
+import { useFetchAvatarBodies } from '../api/use-fetch-avatar-bodies.query';
 
 const AvatarBodyList = () => {
   const { data: bodies = [] } = useFetchAvatarBodies();
 
   return (
-    <div className='max-h-[460px] grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5 overflow-y-auto'>
+    <div className='grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5 overflow-y-auto'>
       {bodies.map((body) => (
-        <AvatarListItem key={body.id} meta={body} from='body' />
+        <AvatarBodyListItem key={body.id} meta={body} />
       ))}
     </div>
   );

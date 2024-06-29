@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useFetchMe } from '@/entities/me';
 import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
 import { FormItem } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
@@ -16,7 +15,6 @@ import * as Form from '../model/form.model';
 
 const ProfileEditFormV1 = () => {
   const t = useI18n();
-  const router = useAppRouter();
   const { data: me } = useFetchMe();
   const { mutate: updateBio, isPending } = useUpdateMyBio();
 
@@ -34,9 +32,7 @@ const ProfileEditFormV1 = () => {
 
   const handleFormSubmit: SubmitHandler<Form.Model> = (values) => {
     updateBio(values, {
-      onSuccess: async () => {
-        router.push('/settings/avatar');
-      },
+      // onSuccess 시 어디로 이동할지는, 사용부에서 me 변경따른 effect로 처리
       onError: (err) => {
         // FIXME: 다른 브랜치에서 작업한 server response 를 제네릭으로 변경
         if (err.response?.data.code === 409) {

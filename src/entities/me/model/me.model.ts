@@ -13,14 +13,10 @@ export const serviceEntry = (model: Model | null): string => {
   return '/parties';
 };
 
-const getActivityPoint = (model: Model, activityType: ActivityType): string => {
+export const score = (model: Model, activityType: ActivityType): number => {
   const summary = model.activitySummaries.find((summary) => summary.activityType === activityType);
-  const point = summary ? summary.score : 0;
-  return `${point}p`;
-};
 
-export const djScore = (model: Model): string => {
-  return getActivityPoint(model, ActivityType.DJ_PNT);
+  return summary ? summary.score : 0;
 };
 
 export const registrationDate = (model: Model): string => {
