@@ -36,7 +36,7 @@ const AvatarListItem = ({
       />
 
       {isSelected && (
-        <div className='absolute inset-0 bg-dim z-1 outline outline-[3px] -outline-offset-[3px] outline-red-300' />
+        <div className='absolute inset-0 bg-dim z-1 border-[3px] border-red-300 rounded' />
       )}
 
       {locked && (
