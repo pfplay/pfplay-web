@@ -29,10 +29,10 @@ export interface ActivitySummary {
 
 export interface GetMyProfileSummaryResponse {
   nickname: string;
-  introduction: string;
-  avatarBodyUri: string;
-  avatarFaceUri: string;
-  walletAddress: string;
+  introduction?: string;
+  avatarBodyUri?: string;
+  avatarFaceUri?: string;
+  walletAddress?: string;
   activitySummaries: ActivitySummary[];
 }
 
@@ -50,28 +50,27 @@ export interface GetUserProfileSummaryRequest {
  */
 export interface GetUserProfileSummaryResponse {
   nickname: string;
-  introduction: string;
+  introduction?: string;
   avatarBodyUri: string;
   avatarFaceUri: string;
   activitySummaries: ActivitySummary[];
 }
 
-export interface AvatarBody {
+export interface AvatarPartsDefaultMeta {
   id: number;
   name: string;
   resourceUri: string;
+  available: boolean;
+}
+
+export interface AvatarBody extends AvatarPartsDefaultMeta {
   obtainableType: ObtainmentType;
   obtainableScore: number;
-  available: boolean;
   combinable: boolean;
   defaultSetting: boolean;
 }
 
-export interface AvatarFace {
-  id: number;
-  name: string;
-  resourceUri: string;
-}
+export interface AvatarFace extends AvatarPartsDefaultMeta {}
 
 export interface UpdateMyWalletRequest {
   walletAddress: string;
@@ -79,7 +78,7 @@ export interface UpdateMyWalletRequest {
 
 export interface UpdateMyBioRequest {
   nickname: string;
-  introduction: string;
+  introduction?: string;
 }
 
 export interface UpdateMyAvatarFaceRequest {
