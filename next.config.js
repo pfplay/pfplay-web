@@ -14,6 +14,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com', // api 측 아바타 body 이미지 저장소
+        pathname: '/v0/b/pfplay-firebase.appspot.com/**',
+        port: '',
+      },
+      {
+        protocol: 'https',
         hostname: '**.ytimg.com', // 유튜브 검색 결과에 있는 썸네일 이미지
         port: '',
       },
