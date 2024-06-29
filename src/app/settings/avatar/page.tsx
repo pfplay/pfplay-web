@@ -1,13 +1,14 @@
 'use client';
 import {
   AvatarBodyList,
+  AvatarEditDone,
   AvatarFaceList,
   SelectedAvatar,
   SelectedAvatarStateProvider,
 } from '@/features/edit-profile-avatar';
 import { cn } from '@/shared/lib/functions/cn';
 import { BackButton } from '@/shared/ui/components/back-button';
-import { ButtonLink } from '@/shared/ui/components/button-link';
+import { Button } from '@/shared/ui/components/button';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
 
 const AvatarSettingsPage = () => {
@@ -36,15 +37,19 @@ const AvatarSettingsPage = () => {
               </TabPanels>
             </TabGroup>
 
-            <ButtonLink
-              href='/parties'
-              linkTitle="Let's get in"
-              classNames={{
-                container: 'self-end',
-                button: 'px-[88.5px]',
-              }}
-              size='xl'
-            />
+            <AvatarEditDone>
+              {({ done, canSubmit, loading }) => (
+                <Button
+                  onClick={done}
+                  disabled={!canSubmit}
+                  loading={loading}
+                  className='self-end px-[88.5px]'
+                  size='xl'
+                >
+                  {`Let's get in`}
+                </Button>
+              )}
+            </AvatarEditDone>
           </div>
         </SelectedAvatarStateProvider>
       </div>

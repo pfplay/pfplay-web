@@ -20,6 +20,7 @@ const ButtonLink = <P extends Href>({
   href,
   linkTitle,
   classNames,
+  disabled,
   ...props
 }: ButtonLinkProps<P>) => {
   return (
@@ -27,8 +28,13 @@ const ButtonLink = <P extends Href>({
       href={href}
       path={('path' in props ? props.path : {}) as PathMap[P]['path']}
       className={cn('max-w-full', classNames?.container)}
+      onClick={(e) => {
+        if (disabled) {
+          e.preventDefault();
+        }
+      }}
     >
-      <Button tabIndex={-1} className={cn(classNames?.button)} {...props}>
+      <Button tabIndex={-1} className={cn(classNames?.button)} disabled={disabled} {...props}>
         {linkTitle}
       </Button>
     </AppLink>
