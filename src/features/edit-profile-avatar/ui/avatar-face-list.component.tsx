@@ -14,7 +14,10 @@ const AvatarFaceList = () => {
   const { data: faces = [] } = useFetchAvatarFaces();
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const selectedAvatar = useSelectedAvatarState();
-  const combinable = !!selectedAvatar.body?.combinable;
+  const combinable = (() => {
+    if (!selectedAvatar.body) return true;
+    return selectedAvatar.body.combinable;
+  })();
 
   return (
     <div ref={containerRef} className='flexCol gap-4 overflow-hidden'>
