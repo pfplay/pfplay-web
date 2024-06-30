@@ -28,7 +28,7 @@ const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
       titleType: 'title2',
       showCloseIcon: true,
       classNames: {
-        container: 'min-w-[620px] py-7 px-10 bg-black',
+        container: 'w-[620px] h-[391px] py-7 px-10 bg-black',
       },
       Body: <ProfileEditFormV2 onClickAvatarSetting={onCancel} />,
     }));

@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Avatar } from '@/entities/avatar';
 import { useFetchMe } from '@/entities/me';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
@@ -56,15 +56,16 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className='gap-5 flexRow'>
-        <div className='flexCol gap-9'>
-          <div className='w-[108px] bg-[#1D1D1D] pointer-events-none select-none'>
-            <Image
-              src={'/images/Background/avatar.png'}
-              alt={'profilePicture'}
-              width={108}
-              height={216}
+        <div className='w-max h-[216px] flexRowCenter bg-[#1D1D1D] pointer-events-none select-none'>
+          {!!me?.avatarBodyUri && (
+            <Avatar
+              height={180}
+              bodyUri={me.avatarBodyUri}
+              faceUri={me.avatarFaceUri}
+              facePosX={me.combinePositionX}
+              facePosY={me.combinePositionY}
             />
-          </div>
+          )}
         </div>
         <div className='justify-between flex-1 flexCol'>
           <div className='items-start gap-3 flexCol'>
@@ -80,8 +81,10 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
             <div className='flex flex-col gap-1 w-full'>
               <TextArea
                 {...register('introduction')}
+                classNames={{
+                  container: 'h-[158px]', // FIXME: 야매 고정높이
+                }}
                 maxLength={50}
-                rows={3}
                 placeholder={t.common.ec.char_limit_50}
               />
               {errors.introduction?.message && (

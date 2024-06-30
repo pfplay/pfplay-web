@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { Avatar } from '@/entities/avatar';
 import { Me, useFetchMe } from '@/entities/me';
 import { ActivityType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -27,13 +28,16 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
   return (
     <div className='gap-5 flexRow'>
       <div className='flexCol gap-9'>
-        <div className='w-[108px] bg-[#1D1D1D] pointer-events-none select-none'>
-          <Image
-            src={'/images/Background/avatar.png'}
-            alt={'profilePicture'}
-            width={108}
-            height={216}
-          />
+        <div className='w-max h-[216px] flexRowCenter bg-[#1D1D1D] pointer-events-none select-none'>
+          {!!me?.avatarBodyUri && (
+            <Avatar
+              height={180}
+              bodyUri={me.avatarBodyUri}
+              faceUri={me.avatarFaceUri}
+              facePosX={me.combinePositionX}
+              facePosY={me.combinePositionY}
+            />
+          )}
         </div>
 
         <Button size='sm' variant='outline' onClick={handleClickAvatarEditButton}>
