@@ -1,3 +1,4 @@
+import TempAvatars from '@/app/parties/(room)/[id]/temp-avatars';
 import { cn } from '@/shared/lib/functions/cn';
 import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
 import { Button } from '@/shared/ui/components/button';
@@ -15,6 +16,8 @@ const PartyroomPage = async () => {
   // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
   return (
     <>
+      <TempAvatars />
+
       {/* 가운데 플레이리스트 */}
       <div className='absolute top-[44px] left-1/2 transform -translate-x-1/2 max-w-full w-[calc(512px+(40px*2))] px-[40px]'>
         <PartyroomDisplayBoard width={512} />
