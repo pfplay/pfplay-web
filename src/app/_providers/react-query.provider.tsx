@@ -1,4 +1,5 @@
 'use client';
+import * as process from 'node:process';
 import { ReactNode } from 'react';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -36,7 +37,11 @@ function makeQueryClient() {
          */
         staleTime: FIVE_MINUTES,
         refetchOnWindowFocus: false,
-        retry: process.env.NODE_ENV === 'development' ? false : 3,
+        retry: (failureCount, error) => {
+          if (process.env.NODE_ENV === 'development') return false;
+          if (isAuthError(error)) return false;
+          return failureCount <= 3;
+        },
       },
     },
     queryCache: new QueryCache({
