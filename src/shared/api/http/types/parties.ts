@@ -1,9 +1,5 @@
-import {
-  PartyroomGrade,
-  PartyroomStatus,
-  RedirectionableLocation,
-} from '@/shared/api/types/@enums';
-import { PaginationPayload, PaginationResponse } from '@/shared/api/types/@shared';
+import { PartyroomGrade, PartyroomStatus, RedirectionableLocation } from './@enums';
+import { PaginationPayload, PaginationResponse } from './@shared';
 
 export interface CreatePartyroomRequest {
   name: string;

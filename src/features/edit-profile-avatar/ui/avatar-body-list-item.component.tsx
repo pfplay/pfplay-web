@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Me } from '@/entities/me';
-import { QueryKeys } from '@/shared/api/react-query/keys';
+import { QueryKeys } from '@/shared/api/http/query-keys';
 import AvatarListItem from './avatar-list-item.component';
 import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
 import * as AvatarBody from '../model/avatar-body.model';

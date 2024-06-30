@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
-import { MusicListItem } from '@/shared/api/types/playlists';
+import { MusicListItem } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import LoadingPanel from '@/shared/ui/components/loading/loading-panel.component';
 import { Typography } from '@/shared/ui/components/typography';

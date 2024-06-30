@@ -1,5 +1,5 @@
-import { PlaylistType } from '@/shared/api/types/@enums';
-import { PaginationResponse } from '@/shared/api/types/@shared';
+import { PlaylistType } from './@enums';
+import { PaginationResponse } from './@shared';
 
 export interface Playlist {
   id: number;

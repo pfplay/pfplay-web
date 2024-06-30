@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { MouseEvent } from 'react';
-import { PlaylistMusic } from '@/shared/api/types/playlists';
+import { PlaylistMusic } from '@/shared/api/http/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
 import { MenuItem } from '@/shared/ui/components/menu';

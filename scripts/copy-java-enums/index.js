@@ -4,7 +4,7 @@ const { glob } = require('glob');
 
 const ROOT = `${__dirname}/../..`;
 const BACKEND_DIRNAME = `${__dirname}/api`; // 백엔드의 소스 디렉터리(main/java/com/pfplaybackend/api)를 카피해오세요
-const ENUMS_DIRNAME = `${ROOT}/src/shared/api/types`;
+const ENUMS_DIRNAME = `${ROOT}/src/shared/api/http/types`;
 const ENUMS_FILENAME = `${ENUMS_DIRNAME}/@enums.ts`;
 const exceptionEnumNames = new Set(['ExceptionEnum', 'ApiHeader', 'Domain']);
 

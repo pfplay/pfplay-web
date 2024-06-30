@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect } from 'react';
 import { useFetchMe } from '@/entities/me';
-import { AuthorityTier } from '@/shared/api/types/@enums';
+import { AuthorityTier } from '@/shared/api/http/types/@enums';
 
 const ProfileEditLayout = ({ children }: PropsWithChildren) => {
   const { data: me } = useFetchMe();

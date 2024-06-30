@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
-import { MusicListItem } from '@/shared/api/types/playlists';
+import { MusicListItem } from '@/shared/api/http/types/playlists';
 import { safeDecodeURI } from '@/shared/lib/functions/safe-decode-uri';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { IconMenu } from '@/shared/ui/components/icon-menu';

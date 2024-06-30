@@ -2,7 +2,7 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useFetchMe } from '@/entities/me';
 import { useFetchAvatarBodies } from '@/features/edit-profile-avatar/api/use-fetch-avatar-bodies.query';
-import { AvatarBody } from '@/shared/api/types/users';
+import { AvatarBody } from '@/shared/api/http/types/users';
 import { SelectedAvatarStateContext } from './selected-avatar-state.context';
 
 export default function SelectedAvatarStateProvider({ children }: { children: ReactNode }) {

@@ -1,8 +1,8 @@
 import { Disclosure } from '@headlessui/react';
 import type { Meta } from '@storybook/react';
 import PlaylistItem from '@/features/playlist/list-musics/ui/music.component';
-import { fixtureCollapseList } from '@/shared/api/__fixture__/collapse-list.fixture';
-import { fixtureMenuItems } from '@/shared/api/__fixture__/menu-items.fixture';
+import { fixtureCollapseList } from '@/shared/api/http/__fixture__/collapse-list.fixture';
+import { fixtureMenuItems } from '@/shared/api/http/__fixture__/menu-items.fixture';
 import { UserListItem } from '@/shared/ui/components/user-list-item';
 import CollapseList from './collapse-list.component';
 import { Tag } from '../tag';

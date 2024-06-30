@@ -1,4 +1,4 @@
-import { MusicListItem } from '@/shared/api/types/playlists';
+import { MusicListItem } from '../types/playlists';
 
 export function generateFixtureMusics(page: number): MusicListItem[] {
   return [

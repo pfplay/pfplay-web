@@ -1,6 +1,6 @@
-import { PlaylistMusic } from '@/shared/api/types/playlists';
-import { UserListItemType } from '@/shared/ui/components/user-list-item';
+import type { UserListItemType } from '@/shared/ui/components/user-list-item';
 import { fixturePlaylistMusics } from './playlist-musics.fixture';
+import { PlaylistMusic } from '../types/playlists';
 
 export const fixtureCollapseList: {
   musics: PlaylistMusic[];

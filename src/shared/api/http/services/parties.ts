@@ -1,5 +1,5 @@
-import { pfpAxiosInstance } from '@/shared/api/clients/http/client';
-import { PartiesClient } from '@/shared/api/types/parties';
+import { pfpAxiosInstance } from '../client/client';
+import { PartiesClient } from '../types/parties';
 
 const ROUTE_V1 = 'v1/party-room';
 

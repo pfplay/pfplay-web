@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { PartyroomSummary } from '@/shared/api/types/parties';
+import { PartyroomSummary } from '@/shared/api/http/types/parties';
 import { cn } from '@/shared/lib/functions/cn';
 import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
 import { Typography } from '@/shared/ui/components/typography';

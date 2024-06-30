@@ -1,12 +1,7 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios';
-import { logRequest } from '@/shared/api/clients/http/interceptors/request';
-import {
-  logError,
-  logResponse,
-  processError,
-  unwrapResponse,
-} from '@/shared/api/clients/http/interceptors/response';
 import { flow } from '@/shared/lib/functions/flow';
+import { logRequest } from './interceptors/request';
+import { logError, logResponse, processError, unwrapResponse } from './interceptors/response';
 
 const createAxiosInstance = (baseURL?: string, options?: CreateAxiosDefaults): AxiosInstance => {
   return axios.create({

@@ -1,5 +1,5 @@
-import { ActivityType } from '@/shared/api/types/@enums';
-import { GetMyInfoResponse, GetMyProfileSummaryResponse } from '@/shared/api/types/users';
+import { ActivityType } from '@/shared/api/http/types/@enums';
+import { GetMyInfoResponse, GetMyProfileSummaryResponse } from '@/shared/api/http/types/users';
 
 export type Model = GetMyInfoResponse & GetMyProfileSummaryResponse;
 

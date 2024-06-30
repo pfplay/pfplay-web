@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { Alchemy, Network } from 'alchemy-sdk';
 import { AxiosError } from 'axios';
-import { QueryKeys } from '@/shared/api/react-query/keys';
-import { APIError } from '@/shared/api/types/@shared';
+import { QueryKeys } from '@/shared/api/http/query-keys';
+import { APIError } from '@/shared/api/http/types/@shared';
 import { FIVE_MINUTES, ONE_MINUTE } from '@/shared/config/time';
 import withLog from '@/shared/lib/functions/with-log';
 import * as Nft from '../model/nft.model';

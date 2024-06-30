@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Me, useFetchMe } from '@/entities/me';
-import { ActivityType } from '@/shared/api/types/@enums';
+import { ActivityType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';

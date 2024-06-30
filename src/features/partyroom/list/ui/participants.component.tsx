@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { PartyroomParticipant } from '@/shared/api/types/parties';
+import { PartyroomParticipant } from '@/shared/api/http/types/parties';
 import { cn } from '@/shared/lib/functions/cn';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFPersonFilled } from '@/shared/ui/icons';

@@ -1,4 +1,4 @@
-import { PlaylistMusic } from '@/shared/api/types/playlists';
+import { PlaylistMusic } from '../types/playlists';
 
 export const fixturePlaylistMusics: PlaylistMusic[] = [
   {

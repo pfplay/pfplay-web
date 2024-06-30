@@ -1,4 +1,4 @@
-import { ActivityType, AuthorityTier, ObtainmentType } from '@/shared/api/types/@enums';
+import { ActivityType, AuthorityTier, ObtainmentType } from './@enums';
 
 export interface SignInRequest {
   oauth2Provider: 'google';

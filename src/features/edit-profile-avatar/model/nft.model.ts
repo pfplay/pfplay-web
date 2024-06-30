@@ -1,7 +1,7 @@
 import { OwnedNft } from 'alchemy-sdk/dist/src/types/nft-types';
 import axios from 'axios';
 import { SetOptional } from 'type-fest';
-import { AvatarFace } from '@/shared/api/types/users';
+import { AvatarFace } from '@/shared/api/http/types/users';
 
 export type Model = OwnedNft;
 

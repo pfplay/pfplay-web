@@ -5,7 +5,7 @@ import { FC } from 'react';
 import { Menu } from '@headlessui/react';
 import { useFetchMe } from '@/entities/me';
 import { useSignOut } from '@/features/sign-out';
-import { AuthorityTier } from '@/shared/api/types/@enums';
+import { AuthorityTier } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import useIntersectionObserver from '@/shared/lib/hooks/use-intersection-observer.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';

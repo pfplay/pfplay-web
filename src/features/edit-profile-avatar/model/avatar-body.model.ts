@@ -1,6 +1,6 @@
 import { Me } from '@/entities/me';
-import { ActivityType, ObtainmentType } from '@/shared/api/types/@enums';
-import { AvatarBody } from '@/shared/api/types/users';
+import { ActivityType, ObtainmentType } from '@/shared/api/http/types/@enums';
+import { AvatarBody } from '@/shared/api/http/types/users';
 
 export type Model = AvatarBody;
 

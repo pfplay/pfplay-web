@@ -1,5 +1,5 @@
 import type { Meta } from '@storybook/react';
-import { fixtureMenuItems } from '@/shared/api/__fixture__/menu-items.fixture';
+import { fixtureMenuItems } from '@/shared/api/http/__fixture__/menu-items.fixture';
 import { PFMoreVert, PFArrowLeft, PFChevronDown } from '@/shared/ui/icons';
 import IconMenu from './icon-menu.component';
 

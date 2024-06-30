@@ -1,5 +1,5 @@
 import { usePlaylistAction } from '@/entities/playlist';
-import { Playlist } from '@/shared/api/types/playlists';
+import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { PFDelete } from '@/shared/ui/icons';
 import Music from './music.component';

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '@/shared/api/react-query/keys';
-import { PlaylistsService } from '@/shared/api/services/playlists';
-import { UpdatePlaylistRequestBody } from '@/shared/api/types/playlists';
+import { QueryKeys } from '@/shared/api/http/query-keys';
+import { PlaylistsService } from '@/shared/api/http/services/playlists';
+import { UpdatePlaylistRequestBody } from '@/shared/api/http/types/playlists';
 
 export const useUpdatePlaylist = () => {
   const queryClient = useQueryClient();

@@ -1,10 +1,10 @@
 import { QueryKey } from '@tanstack/query-core';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { QueryKeys } from '@/shared/api/react-query/keys';
-import { PartiesService } from '@/shared/api/services/parties';
-import { APIError, PaginationPayload, PaginationResponse } from '@/shared/api/types/@shared';
-import { PartyroomSummary } from '@/shared/api/types/parties';
+import { QueryKeys } from '@/shared/api/http/query-keys';
+import { PartiesService } from '@/shared/api/http/services/parties';
+import { APIError, PaginationPayload, PaginationResponse } from '@/shared/api/http/types/@shared';
+import { PartyroomSummary } from '@/shared/api/http/types/parties';
 import { ONE_HOUR } from '@/shared/config/time';
 
 export const useFetchPartyrooms = (initialPagePayload: PaginationPayload) => {
