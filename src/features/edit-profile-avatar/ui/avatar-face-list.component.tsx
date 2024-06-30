@@ -8,10 +8,12 @@ import AvatarFaceListItem from './avatar-face-list-item.component';
 import ConnectWalletButton from './connect-wallet-button.component';
 import { useFetchAvatarFaces } from '../api/use-fetch-avatar-faces.query';
 import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
+import useNfts from '../lib/use-nfts.hook';
 
 const AvatarFaceList = () => {
   const t = useI18n();
   const { data: faces = [] } = useFetchAvatarFaces();
+  const { nfts } = useNfts();
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const selectedAvatar = useSelectedAvatarState();
   const combinable = (() => {
@@ -37,6 +39,10 @@ const AvatarFaceList = () => {
 
         {faces.map((face) => (
           <AvatarFaceListItem key={face.resourceUri} meta={face} hideSelected={!combinable} />
+        ))}
+
+        {nfts.map((nft) => (
+          <AvatarFaceListItem key={nft.resourceUri} meta={nft} hideSelected={!combinable} />
         ))}
 
         {!combinable && (

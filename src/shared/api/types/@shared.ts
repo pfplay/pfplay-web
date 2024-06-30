@@ -1,6 +1,11 @@
 export interface Empty {}
 
-export type FetchStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
+export const enum FetchStatus {
+  Idle,
+  Loading,
+  Succeeded,
+  Failed,
+}
 
 // TODO: generate from BE enum
 export enum ErrorCode {

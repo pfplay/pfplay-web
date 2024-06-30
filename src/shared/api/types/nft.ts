@@ -8,23 +8,23 @@ export interface AlchemyNFTsResponse {
 }
 
 export interface OwnedNft {
-  contract: Contract;
+  contract: NftContract;
   tokenId: string;
   tokenType: string;
   name: string;
   description?: string;
   tokenUri?: string;
-  image: Image;
-  raw: Raw;
-  collection: Collection;
-  mint: Mint;
+  image: NftImage;
+  raw: NftRaw;
+  collection: NftCollection;
+  mint: NftMint;
   owners?: string;
   timeLastUpdated: string;
   balance: string;
   acquiredAt: object;
 }
 
-export interface Contract {
+interface NftContract {
   address: string;
   name: string;
   symbol: string;
@@ -37,7 +37,7 @@ export interface Contract {
   spamClassifications: string[];
 }
 
-export interface OpenSeaMetadata {
+interface OpenSeaMetadata {
   floorPrice: number;
   collectionName: string;
   collectionSlug: string;
@@ -51,7 +51,7 @@ export interface OpenSeaMetadata {
   lastIngestedAt: string;
 }
 
-export interface Image {
+interface NftImage {
   cachedUrl?: string;
   thumbnailUrl?: string;
   pngUrl?: string;
@@ -60,45 +60,30 @@ export interface Image {
   originalUrl?: string;
 }
 
-export interface Raw {
+interface NftRaw {
   tokenUri?: string;
   metadata: object;
   error?: string;
 }
 
-export interface Collection {
+interface NftCollection {
   name: string;
   slug: string;
   externalUrl: any;
   bannerImageUrl: string;
 }
 
-export interface Mint {
+interface NftMint {
   mintAddress?: string;
   blockNumber?: number;
   timestamp?: string;
   transactionHash?: string;
 }
 
-export interface ValidAt {
+interface ValidAt {
   blockNumber: number;
   blockHash: string;
   blockTimestamp: string;
-}
-
-export interface Nft {
-  identifier: string;
-  collection: string;
-  contract: string;
-  token_standard: string;
-  name: string;
-  description: string;
-  image_url: string;
-  metadata_url: string;
-  opensea_url: string;
-  updated_at: string;
-  is_disabled: boolean;
-  is_nsfw: boolean;
 }
 
 export interface NFTClient {

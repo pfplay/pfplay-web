@@ -3,9 +3,10 @@ import { FC } from 'react';
 import { AvatarFace } from '@/shared/api/types/users';
 import AvatarListItem from './avatar-list-item.component';
 import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
+import * as Nft from '../model/nft.model';
 
 interface Props {
-  meta: AvatarFace;
+  meta: AvatarFace | Nft.RefinedModel;
   hideSelected: boolean;
 }
 
