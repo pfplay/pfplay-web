@@ -20,6 +20,7 @@ const utils = {
           '#fff': 'currentColor',
           '#ffffff': 'currentColor',
           white: 'currentColor',
+          '#DADADA': 'currentColor',
         },
         plugins: ['@svgr/plugin-jsx', '@svgr/plugin-prettier'],
       },

@@ -1,16 +1,11 @@
 import { cn } from '@/shared/lib/functions/cn';
 import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
 import { Button } from '@/shared/ui/components/button';
-import {
-  PFInfoOutline,
-  PFCampaign,
-  PFSend,
-  PFThumbDownAlt,
-  PFThumbUpAlt,
-  PFAddPlaylist,
-  PFParty,
-} from '@/shared/ui/icons';
+import { PFInfoOutline, PFSend, PFParty } from '@/shared/ui/icons';
+import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { Sidebar } from '@/widgets/sidebar';
+
+export const dynamic = 'force-dynamic';
 
 const PartyroomPage = async () => {
   const t = await getServerDictionary();
@@ -20,35 +15,7 @@ const PartyroomPage = async () => {
     <>
       {/* 가운데 플레이리스트 */}
       <div className='absolute top-[44px] left-1/2 transform -translate-x-1/2 max-w-full w-[calc(512px+(40px*2))] px-[40px]'>
-        <div className='flexColCenter'>
-          <div className='mt-11 bg-black px-3 py-2.5 flex items-center w-full border-2 border-gray-800 rounded'>
-            <PFCampaign width={20} height={20} />
-            <p className='text-white text-xs ml-3'>
-              {/* TODO 공지사항 구현 */}
-              회원간 비방 및 친목을 금지합니다. 어길 시 바로 강퇴
-            </p>
-          </div>
-          <div className='my-2 w-full h-[288px] bg-black border border-gray-800 rounded'></div>
-          <div className='p-5 bg-black w-full flex justify-between border-2 border-gray-800 rounded relative'>
-            <p className='text-white font-bold'>
-              NewJeans &#40;뉴진스&#41; &#39;Hype Boy&#39; Official MV &#40;Performance ver.1&#41;
-            </p>
-            <div className='absolute top-1.5 right-1.5 flex items-center gap-x-1 bg-black'>
-              <div className='bg-gray-800 w-12 py-1 rounded flex items-center justify-center flex-col'>
-                <PFThumbUpAlt width={18} height={18} />
-                <p className='text-white font-bold mt-1'>17</p>
-              </div>
-              <div className='bg-gray-800 w-12 py-1 rounded flex items-center justify-center flex-col'>
-                <PFAddPlaylist width={18} height={18} />
-                <p className='text-white font-bold mt-1'>5</p>
-              </div>
-              <div className='bg-gray-800 w-12 py-1 rounded flex items-center justify-center flex-col'>
-                <PFThumbDownAlt width={18} height={18} />
-                <p className='text-white font-bold mt-1'>3</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <PartyroomDisplayBoard width={512} />
       </div>
 
       {/* 왼쪽 float 메뉴 */}
