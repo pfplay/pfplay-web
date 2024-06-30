@@ -13,7 +13,7 @@ import useNfts from '../lib/use-nfts.hook';
 const AvatarFaceList = () => {
   const t = useI18n();
   const { data: faces = [] } = useFetchAvatarFaces();
-  const { nfts } = useNfts();
+  const nfts = useNfts();
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const selectedAvatar = useSelectedAvatarState();
   const combinable = (() => {

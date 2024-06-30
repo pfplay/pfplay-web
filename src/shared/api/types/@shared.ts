@@ -1,12 +1,5 @@
 export interface Empty {}
 
-export const enum FetchStatus {
-  Idle,
-  Loading,
-  Succeeded,
-  Failed,
-}
-
 // TODO: generate from BE enum
 export enum ErrorCode {
   REQUIRED_WALLET_CONNECT = 'BR001',

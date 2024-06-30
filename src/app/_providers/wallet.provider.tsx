@@ -1,11 +1,9 @@
 'use client';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { darkTheme, RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { RainbowKitProviderProps } from '@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitProvider';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { WagmiProvider, http } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
 
 export const WalletProvider = ({ children }: PropsWithChildren) => {
   const [mounted, setMounted] = useState(false);
@@ -13,33 +11,29 @@ export const WalletProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => setMounted(true), []);
 
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider
-        chains={chains}
-        appInfo={appInfo}
-        modalSize={'compact'}
-        theme={darkTheme()}
-      >
+    <WagmiProvider config={wagmiConfig}>
+      <RainbowKitProvider appInfo={appInfo} modalSize='compact' theme={darkTheme()}>
         {mounted && children}
       </RainbowKitProvider>
-    </WagmiConfig>
+    </WagmiProvider>
   );
 };
 
-const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum],
-  [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID as string }), publicProvider()]
-);
-const { connectors } = getDefaultWallets({
-  appName: 'pfplay',
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
-  chains,
-});
+const APP_NAME = 'pfplay';
+
 const appInfo: RainbowKitProviderProps['appInfo'] = {
-  appName: 'pfplay',
+  appName: APP_NAME,
 };
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
+
+const wagmiConfig = getDefaultConfig({
+  appName: APP_NAME,
+  projectId: process.env.NEXT_PUBLIC_WAGMI_PROJECT_ID as string,
+  chains: [mainnet, polygon, optimism, arbitrum],
+  // ssr: true,
+  transports: {
+    [mainnet.id]: http(),
+    [polygon.id]: http(),
+    [optimism.id]: http(),
+    [arbitrum.id]: http(),
+  },
 });

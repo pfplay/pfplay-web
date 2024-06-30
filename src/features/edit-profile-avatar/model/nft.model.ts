@@ -1,16 +1,16 @@
+import { OwnedNft } from 'alchemy-sdk/dist/src/types/nft-types';
+import axios from 'axios';
 import { SetOptional } from 'type-fest';
-import { NFTService } from '@/shared/api/services/nft';
-import { OwnedNft } from '@/shared/api/types/nft';
 import { AvatarFace } from '@/shared/api/types/users';
 
 export type Model = OwnedNft;
 
-export type RefinedModel = SetOptional<AvatarFace, 'id'>;
+export type RefinedModel = SetOptional<AvatarFace, 'id' | 'name'>;
 
 export async function refineList(models: Model[]): Promise<RefinedModel[]> {
   const refined: OwnedNft[] = [];
 
-  const checkedList = await Promise.allSettled(requestImageUrlHealthCheck(models));
+  const checkedList = await Promise.allSettled(imageHealthCheckMap(models));
 
   for (const checked of checkedList) {
     if (checked.status === 'fulfilled' && checked.value !== null) {
@@ -26,12 +26,12 @@ export async function refineList(models: Model[]): Promise<RefinedModel[]> {
   }));
 }
 
-function requestImageUrlHealthCheck(list: Model[]) {
+function imageHealthCheckMap(list: Model[]) {
   return list.map(async (nft) => {
     if (!nft.image?.thumbnailUrl) return null;
 
     try {
-      const res = await NFTService.checkImageUrlStatus(nft.image.thumbnailUrl);
+      const res = await axios.get(nft.image.thumbnailUrl);
       return res.status === 200 ? nft : null;
     } catch {
       return null;
