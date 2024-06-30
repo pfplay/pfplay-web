@@ -3,6 +3,7 @@ const logColors = {
   success: '#22bb33',
   warn: '#DE793B',
   error: '#C73333',
+  specific: '#CA5CDD',
 };
 
 const logger =
@@ -15,3 +16,4 @@ export const infoLog = logger('info');
 export const successLog = logger('success');
 export const warnLog = logger('warn');
 export const errorLog = logger('error');
+export const specificLog = logger('specific');
