@@ -2,11 +2,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
 import { Typography } from '@/shared/ui/components/typography';
 import Participants from './participants.component';
 
 const MainPartyroomCard = () => {
+  const t = useI18n();
   return (
     <BackdropBlurContainer>
       <Link
@@ -17,10 +19,10 @@ const MainPartyroomCard = () => {
         <div className='flexCol gap-6 tablet:gap-12 pb-[21px]'>
           <div className='gap-3 flexCol'>
             <Typography type='title2' className='text-white'>
-              PFPlay Main Stage
+              {t.lobby.para.pfplay_main_stage}
             </Typography>
             <Typography type='detail1' className='text-gray-200'>
-              파티에 오신 것을 환영합니다
+              {t.lobby.para.welcome_party}
             </Typography>
           </div>
           <Participants count={50} participants={[]} /* FIXME */ />
@@ -30,6 +32,7 @@ const MainPartyroomCard = () => {
             <div className='w-[80px] h-[44px] bg-gray-700'>
               <Image
                 priority
+                /* FIXME - 실 데이터 적용 */
                 src={'/images/ETC/PlaylistThumbnail.png'}
                 alt={'image'}
                 width={80}
@@ -42,8 +45,8 @@ const MainPartyroomCard = () => {
               overflow='ellipsis'
               className='flex-1 select-none text-gray-50'
             >
-              NewJeans (뉴진스) Official MV NewJeans (뉴진스) Official MV NewJeans (뉴진스) NewJeans
-              (뉴진스) Official MV NewJeans (뉴진스) Official MV NewJeans (뉴진스)
+              {/* FIXME - 실 데이터 적용 */}
+              {`NewJeans (뉴진스) 'Hype Boy' Official MV (Performance ver.1)`}
             </Typography>
           </div>
         </div>

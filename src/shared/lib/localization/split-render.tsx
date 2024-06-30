@@ -19,3 +19,9 @@ export const renderLi = (text: string) => {
     return <li key={`${text}_${line}_${index}`}>{line}</li>;
   });
 };
+
+export const replaceVar = (text: string, vars: Record<string, string | number>) => {
+  return Object.entries(vars).reduce((acc, [key, value]) => {
+    return acc.replace(new RegExp(`{${key}}`, 'g'), value.toString());
+  }, text);
+};

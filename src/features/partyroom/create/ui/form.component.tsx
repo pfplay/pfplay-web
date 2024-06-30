@@ -36,7 +36,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
     setError,
   } = useForm<Form.Model>({
     mode: 'all',
-    resolver: zodResolver(Form.schema),
+    resolver: zodResolver(Form.getSchema(t)),
     defaultValues: {
       name: '',
       introduce: '', // FIXME: BE가 attribute name 수정 하면 수정 필요
@@ -67,7 +67,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
     } catch (error: unknown) {
       // FIXME: BE와 api 논의 후 수정 필요. 1. 유저가 이미 파티를 개설한 경우 2. 도메인이 이미 존재하는 경우
       if (error instanceof AxiosError && error.response?.status === 409) {
-        setError('domain', { message: '이미 존재하는 도메인 주소입니다' });
+        setError('domain', { message: t.createparty.para.domain_in_use });
       }
     }
   };
@@ -93,7 +93,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
         <FormItem
           label={t.party.title.party_desc}
           required
-          error={errors.introduce && '한/영 구분 없이 띄어쓰기 포함 50자 제한'}
+          error={errors.introduce && t.common.ec.char_limit_50}
           classNames={{ label: 'text-gray-200', container: 'w-full' }}
         >
           <TextArea
@@ -110,7 +110,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
               <Typography as='span' type='body2' className='text-left'>
                 {t.db.title.domain}
                 <Typography as='span' type='detail2'>
-                  (선택)
+                  {t.createparty.para.select}
                 </Typography>
               </Typography>
             }
@@ -119,7 +119,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
           >
             <Input
               {...register('domain')}
-              placeholder='웹 페이지 주소는 pfplay.io/도메인으로 시작'
+              placeholder='웹 페이지 주소는 pfplay.io/도메인으로 시작' // TODO: i18n
             />
           </FormItem>
 
@@ -130,7 +130,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
                 required
                 label={
                   <Tooltip
-                    title='디제잉 1회당 제한 시간은 3분 이상부터 가능해요'
+                    title={t.createparty.para.noti_djing_limit}
                     visible={!!errors.limit?.message}
                   >
                     <Typography type='body2'>

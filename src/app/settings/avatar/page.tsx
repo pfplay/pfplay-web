@@ -7,17 +7,20 @@ import {
   SelectedAvatarStateProvider,
 } from '@/features/edit-profile-avatar';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { BackButton } from '@/shared/ui/components/back-button';
 import { Button } from '@/shared/ui/components/button';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
 
 const AvatarSettingsPage = () => {
+  const t = useI18n();
+
   return (
     <div className='absolute-user-form-section'>
       <div className='h-full flexRow justify-start max-w-screen-desktop mx-auto gap-5 p-10 px-[60px]'>
         <SelectedAvatarStateProvider>
           <div className='flexCol items-start gap-10'>
-            <BackButton text='뭘 입고 놀아볼까요?' />
+            <BackButton text={t.settings.para.what_wear} />
             <SelectedAvatar />
           </div>
           <div className='w-full h-full flexCol'>

@@ -28,7 +28,7 @@ const Form = (props: FormProps) => {
 
   const handleConnectWallet = () => {
     // TODO: 지갑 연동 기능 추가
-    alert('지갑 연동');
+    alert('Not Impl');
   };
 
   const openNeedConnectWalletDialog = () => {

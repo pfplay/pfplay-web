@@ -24,7 +24,7 @@
       "unlock": "잠금 해제",
       "like": "좋아요",
       "grab": "그랩",
-      "boo": "싫어요 ",
+      "boo": "싫어요",
       "save": "저장",
       "my_profile": "내 프로필",
       "playlist": "플레이리스트",
@@ -38,7 +38,10 @@
       "char_limit_12": "한/영 포함 12자 제한 / 띄어쓰기, 특수문자 사용 불가",
       "char_limit_50": "한/영 구분 없이 띄어쓰기 포함 50자 제한",
       "char_limit_20": "한/영 구분없이 띄어쓰기 포함 20자 제한",
-      "char_up_to_50": "최대 50자까지 등록 가능"
+      "char_up_to_50": "최대 50자까지 등록 가능",
+      "char_limit_60_dash": "영문/숫자/하이픈(-) 포함 3자 이상 60자 제한",
+      "char_limit_30": "한글 30자, 영문 30자 제한/특수문자 사용 불가",
+      "char_field_required": "필수 입력란이에요. 내용을 입력해주세요."
     }
   },
   "auth": {
@@ -47,9 +50,9 @@
       "about_wallet": "지갑이 뭔가요? 어떻게 하는거죠?",
       "linking_google": "PFPlay에선 구글 계정을 연동하면 DJ가 될 수 있어요!",
       "need_google_login": "해당 기능은 구글계정 로그인이 필요해요",
-      "logout_confirm": "로그아웃 하시겠어요?\n로그아웃 시 메인 홈으로 이동합니다",
-      "withdraw_confirm": "정말로 탈퇴하시겠습니까?\n탈퇴 시 미션 포인트, 플레이리스트 등 데이터가 삭제되며 복구는 불가합니다",
-      "withdraw_completed": "탈퇴가 완료되었습니다.\n다음에 다시 만나요!",
+      "logout_confirm": "로그아웃 하시겠어요? 로그아웃 시 메인 홈으로 이동합니다",
+      "withdraw_confirm": "정말로 탈퇴하시겠습니까? 탈퇴 시 미션 포인트, 플레이리스트 등 데이터가 삭제되며 복구는 불가합니다.",
+      "withdraw_completed": "탈퇴가 완료되었습니다. 다음에 다시 만나요!",
       "auth_changed": "권한이 변경되었습니다!",
       "auth_quota_exceeded": "해당 권한의 정원이 초과되었어요",
       "no_change_authority": "상위 계급 유저의 권한은 임의로 변경할 수 없어요"
@@ -59,7 +62,7 @@
       "connect_google": "구글 연동하기"
     },
     "title": {
-      "set_nickname": "nickname' 권한을 설정해주세요",
+      "set_nickname": "$1 권한을 설정해주세요",
       "current": "현재",
       "community_manager": "Community Manager",
       "moderator": "Moderator",
@@ -81,7 +84,7 @@
       "moment": "잠깐만요!"
     },
     "para": {
-      "guest_limit": "비로그인 입장 시 접근 가능한 기능이 제한됩니다\n구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요"
+      "guest_limit": "비로그인 입장 시 접근 가능한 기능이 제한됩니다. 구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요"
     }
   },
   "settings": {
@@ -117,7 +120,26 @@
       "join_date": "가입일"
     },
     "para": {
-      "freely_host": "원하는 테마의 파티를 자유롭게 호스트 해보세요!"
+      "freely_host": "원하는 테마의 파티를 자유롭게 호스트 해보세요!",
+      "pfplay_main_stage": "PFPlay Main Stage",
+      "welcome_party": "파티에 오신 것을 환영해요!"
+    }
+  },
+  "createparty": {
+    "para": {
+      "domain_in_use": "이미 존재하는 도메인 주소에요",
+      "name_in_use": "이미 존재하는 파티 이름이에요",
+      "select": "(선택)",
+      "min": "분",
+      "cancel_confirm": "지금까지 작성한 내용은 저장되지 않아요. \n개설을 중단하시겠어요?",
+      "noti_djing_limit": "디제잉 1회 당 제한 시간은 3분 이상부터 가능해요",
+      "noti_web_address": "내 파티룸의 웹 주소를 입력해주세요"
+    },
+    "btn": {
+      "create_party": "파티 개설하기"
+    },
+    "title": {
+      "create_party": "파티 개설"
     }
   },
   "party": {
@@ -129,17 +151,17 @@
     },
     "para": {
       "party_created": "파티가 개설되었어요!",
-      "auto_close_30days": "30일 간 디제잉 내역이 없으면 파티룸은 자동으로 폐쇄됩니다",
-      "existing_party": "이미 존재하는 파티 이름이에요.",
-      "more_than_3m": "3분 이상 가능",
-      "stop_editing": "지금까지 작성한 내용은 저장되지 않아요. 수정을 그만하시겠어요?",
-      "copy_completed": "복사 완료!",
-      "close_party": "현재 파티룸을 정말로 폐쇄하시겠어요? \n모든 데이터는 저장되지 않습니다.",
-      "enter_confirm": "확인했습니다' 입력",
-      "no_longer_see_chat": "이 방에서 사용자의 채팅을 더이상 보지 않습니다 (나에게만 적용)",
-      "party_rooms": "Party Rooms",
-      "leave_party_confirm": "변경 내용이 저장되지 않아요.\n파티룸으로 나가시겠어요?",
-      "close": "폐쇄하기",
+      "auto_close_30days": "현재 파티룸을 정말로 폐쇄하시겠어요? 모든 데이터는 저장되지 않습니다.",
+      "existing_party": "'확인했습니다' 입력",
+      "more_than_3m": "이 방에서 사용자의 채팅을 더이상 보지 않습니다 (나에게만 적용)",
+      "stop_editing": "Party Rooms",
+      "copy_completed": "변경 내용이 저장되지 않아요. 파티룸으로 나가시겠어요?",
+      "close_party": "폐쇄하기",
+      "enter_confirm": "확인 문구를 입력해주세요",
+      "no_longer_see_chat": "트위터로 공유하기",
+      "party_rooms": "링크 복사",
+      "leave_party_confirm": "현재 디제잉",
+      "close": "DJ 대기열",
       "enter_confirm_phrase": "확인 문구를 입력해주세요"
     },
     "btn": {
@@ -151,7 +173,7 @@
     "title": {
       "current_dj": "현재 디제잉",
       "dj_queue": "DJ 대기열",
-      "time_limit": "디제잉 1회당 제한시간 : n분",
+      "time_limit": "디제잉 1회당 제한시간 : $1분",
       "rule_guide": "디제잉 규칙 안내"
     },
     "btn": {
@@ -161,20 +183,20 @@
       "select_dj_playlist": "디제잉 플레이리스트 선택"
     },
     "para": {
-      "no_dj_member": "현재 디제잉 인원이 없어요\n파티의 흥을 책임질 DJ가 되어보세요!",
+      "no_dj_member": "현재 디제잉 인원이 없어요 파티의 흥을 책임질 DJ가 되어보세요!",
       "create_playlist_first": "대기 등록을 위해 먼저 플레이리스트를 생성해주세요",
-      "cancel_dj_queue": "DJ 대기 등록 취소",
-      "cancel_dj_queue_confirm": "DJ 대기 등록을 취소하시겠습니까?",
-      "lock_dj_queue": "대기열을 잠그시겠어요?\n잠그면 새로운 DJ가 추가되지 않습니다",
-      "skip_dj_song": "현재 곡을 건너뛸까요?",
-      "delete_dj_queue": "DJ 대기열에서 삭제합니다",
-      "write_reason": "사유를 작성해주세요(최소 2자)",
-      "deleted_queue_by_admin": "관리자에 의해 대기열에서 삭제되었습니다",
-      "locked_queue_by_admin": "관리자에 의해 현재 DJ 대기열이 잠금 상태예요",
-      "skipped_song_by_admin": "어드민 정책에 따라 n분 이상의 곡은 자동으로 스킵됩니다",
-      "dj_in_order": "대기 중인 DJ 한명씩 순서대로 음악을 디제잉 합니다",
-      "played_sequentially": "플레이리스트의 가장 상단에 있는 곡부터 순차적으로 한명당 하나씩 플레이됩니다",
-      "empty_dj": "진행 중인 디제잉이 없어요 zZz..."
+      "cancel_dj_queue": "DJ 대기 등록을 취소하시겠습니까?",
+      "cancel_dj_queue_confirm": "\"대기열을 잠그시겠어요? 잠그면 새로운 DJ가 추가되지 않습니다\"",
+      "lock_dj_queue": "현재 곡을 건너뛸까요?",
+      "skip_dj_song": "DJ 대기열에서 삭제합니다",
+      "delete_dj_queue": "사유를 작성해주세요(최소 2자)",
+      "write_reason": "관리자에 의해 대기열에서 삭제되었습니다",
+      "deleted_queue_by_admin": "관리자에 의해 현재 DJ 대기열이 잠금 상태예요",
+      "locked_queue_by_admin": "어드민 정책에 따라 n분 이상의 곡은 자동으로 스킵됩니다",
+      "skipped_song_by_admin": "대기 중인 DJ 한명씩 순서대로 음악을 디제잉 합니다",
+      "dj_in_order": "플레이리스트의 가장 상단에 있는 곡부터 순차적으로 한명당 하나씩 플레이됩니다",
+      "played_sequentially": "진행 중인 디제잉이 없어요 zZz...",
+      "empty_dj": "신규 공지 등록"
     }
   },
   "db": {
@@ -188,19 +210,19 @@
   },
   "ed": {
     "btn": {
-      "regi_notice": "신규 공지 등록"
+      "regi_notice": "Community Manager이상 관리자만 수정 가능해요"
     },
     "para": {
-      "edit_only_admin": "Community Manager이상 관리자만 수정 가능해요",
-      "noti_deleted": "공지 등록 시 기존 공지는 삭제됩니다!"
+      "edit_only_admin": "공지 등록 시 기존 공지는 삭제됩니다!",
+      "noti_deleted": "내 플레이리스트"
     }
   },
   "playlist": {
     "title": {
-      "my_playlist": "내 플레이리스트",
-      "grabbed_song": "그랩한 곡",
+      "my_playlist": "그랩한 곡",
+      "grabbed_song": "곡",
       "song": "곡",
-      "n_song": "n 곡"
+      "n_song": "$1 곡"
     },
     "btn": {
       "add_playlist": "플레이리스트 추가",
@@ -226,18 +248,19 @@
   },
   "partyroom": {
     "loading": {
-      "text_1": "로딩페이지 문구 1",
-      "text_2": "로딩페이지 문구 2",
-      "text_3": "로딩페이지 문구 3",
-      "text_4": "로딩페이지 문구 4",
-      "text_5": "로딩페이지 문구 5",
-      "text_6": "로딩페이지 문구 6",
-      "text_7": "로딩페이지 문구 7",
-      "text_8": "로딩페이지 문구 8"
+      "text_1": "DJ 부스 워밍업 중...",
+      "text_2": "비트 준비... 거의 다 됐어요!",
+      "text_3": "파티가 곧 시작됩니다!",
+      "text_4": "댄스 플로어 조명 점검 중..."
     },
     "ec": {
       "shut_down": "더 이상 존재하지 않는 파티룸이에요",
       "data_load": "데이터를 불러오는데 실패했습니다.\n다시 입장하시겠어요?"
+    }
+  },
+  "chat": {
+    "para": {
+      "start_chat": "무슨 얘기를 해볼까요?"
     }
   }
 }

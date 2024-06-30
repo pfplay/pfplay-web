@@ -10,9 +10,9 @@ export const getSchema = (t: Dictonary) =>
       z
         .string()
         .min(1, {
-          message: '123',
+          message: t.common.ec.char_field_required,
         })
-        .max(16, {
+        .max(12, {
           message: t.common.ec.char_limit_12,
         })
     ).refine((value) => /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]*$/.test(value), {

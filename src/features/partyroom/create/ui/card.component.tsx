@@ -14,7 +14,7 @@ const PartyroomCreateCard = () => {
 
   const handleClickBeAHostBtn = () => {
     return openDialog((_, onCancel) => ({
-      title: '파티 개설',
+      title: t.createparty.title.create_party,
       titleAlign: 'left',
       showCloseIcon: true,
       closeConfirm: openCloseConfirmDialog,
@@ -26,9 +26,11 @@ const PartyroomCreateCard = () => {
   };
 
   const openCloseConfirmDialog = () => {
+    const [title, content] = t.createparty.para.cancel_confirm.split('\n');
+
     return openConfirmDialog({
-      title: '지금까지 작성한 내용은 저장되지 않아요',
-      content: '개설을 중단하시겠어요?',
+      title,
+      content,
     });
   };
 

@@ -1,7 +1,12 @@
 import { z } from 'zod';
+import type { Dictonary } from '@/shared/lib/localization/i18n.context';
 
-export type Model = z.infer<typeof schema>;
+export type Model = z.infer<ReturnType<typeof getSchema>>;
 
-export const schema = z.object({
-  name: z.string().min(1, { message: '1자 이상 입력해주세요' }).max(20, { message: '20자 제한' }),
-});
+export const getSchema = (t: Dictonary) =>
+  z.object({
+    name: z
+      .string()
+      .min(1, { message: t.common.ec.char_field_required })
+      .max(20, { message: t.common.ec.char_limit_20 }),
+  });

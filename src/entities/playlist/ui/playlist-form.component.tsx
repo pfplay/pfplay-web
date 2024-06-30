@@ -18,7 +18,10 @@ const Form = ({ defaultValues, onCancel, onSubmit }: FormProps) => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<PlaylistForm.Model>({ resolver: zodResolver(PlaylistForm.schema), defaultValues });
+  } = useForm<PlaylistForm.Model>({
+    resolver: zodResolver(PlaylistForm.getSchema(t)),
+    defaultValues,
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

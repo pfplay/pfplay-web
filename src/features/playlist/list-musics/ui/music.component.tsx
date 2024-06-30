@@ -14,9 +14,9 @@ type MusicProps = {
 };
 
 const Music = ({ music, menuItems }: MusicProps) => {
-  const handlePlayBtnClick = (e: MouseEvent<HTMLDivElement>, id: number) => {
+  const handlePlayBtnClick = (e: MouseEvent<HTMLDivElement>, _id: number) => {
     e.stopPropagation();
-    alert(`id: ${id}는 향후 비디오 재생 api 연결에 사용될 예정입니다.`);
+    // id는 향후 비디오 재생 api 연결에 사용될 예정입니다.
   };
 
   return (
