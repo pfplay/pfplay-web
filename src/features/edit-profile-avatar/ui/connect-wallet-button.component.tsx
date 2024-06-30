@@ -4,7 +4,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
-import { PFAdd } from '@/shared/ui/icons';
+import { PFAdd, PFInfoOutline } from '@/shared/ui/icons';
 
 const ConnectWalletButton = () => {
   const t = useI18n();
@@ -16,9 +16,15 @@ const ConnectWalletButton = () => {
 
         if (chain?.unsupported) {
           return (
-            <button onClick={openChainModal} type='button'>
-              Wrong network
-            </button>
+            <Button
+              variant='outline'
+              color='primary'
+              className='px-[24px]'
+              Icon={<PFInfoOutline />}
+              onClick={openChainModal}
+            >
+              Wrong Network
+            </Button>
           );
         }
 
@@ -26,21 +32,20 @@ const ConnectWalletButton = () => {
           <div className={cn(!mounted && 'opacity-0 pointer-events-none user-select-none')}>
             {!connected ? (
               <Button
-                type='button'
                 variant='fill'
                 color='secondary'
+                className='px-[24px]'
                 Icon={<PFAdd />}
-                className='px-[38px]'
                 onClick={openConnectModal}
               >
                 {t.settings.btn.addi_connection}
+                {/* FIXME: 추가 연결하기 문구는 지갑 이미 연결했을 때만 보여주기 - https://pfplay.slack.com/archives/C03QTFBU8QG/p1719734409860379?thread_ts=1719722146.310099&cid=C03QTFBU8QG */}
               </Button>
             ) : (
               <Button
-                type='button'
                 variant='outline'
                 color='secondary'
-                className='px-[38px]'
+                className='px-[24px]'
                 Icon={
                   chain.hasIcon &&
                   chain.iconUrl && (
