@@ -32,5 +32,6 @@ export const useFetchPartyrooms = (initialPagePayload: PaginationPayload) => {
     },
     staleTime: ONE_HOUR,
     gcTime: Infinity,
+    enabled: false, // TODO: Onchain 빌더톤 끝나면 제거
   });
 };
