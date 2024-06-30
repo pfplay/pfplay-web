@@ -1,7 +1,7 @@
 'use client';
 import { ReactNode, useEffect, useState } from 'react';
 import { useFetchMe } from '@/entities/me';
-import { PartyroomConnectionContext } from '@/entities/partyroom-connection';
+import { PartyroomClientContext } from '@/entities/partyroom-client';
 import StompClient from '@/shared/api/websocket/client';
 
 export default function PartyroomConnectionProvider({ children }: { children: ReactNode }) {
@@ -15,13 +15,11 @@ export default function PartyroomConnectionProvider({ children }: { children: Re
      * - connect는 라우트는 가리지 않음 라우트를 가리는건 파티룸 sub, unsub 뿐임
      */
     if (me && !client.connected) {
-      client.connect();
+      // client.connect(); // TODO: Onchain 빌더톤 끝나면 주석 해제
     }
   }, [me]);
 
   return (
-    <PartyroomConnectionContext.Provider value={client}>
-      {children}
-    </PartyroomConnectionContext.Provider>
+    <PartyroomClientContext.Provider value={client}>{children}</PartyroomClientContext.Provider>
   );
 }

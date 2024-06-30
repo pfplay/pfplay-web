@@ -1,4 +1,5 @@
 import { Client } from '@stomp/stompjs';
+import { StompSubscription } from '@stomp/stompjs/src/stomp-subscription';
 import { messageCallbackType } from '@stomp/stompjs/src/types';
 import { specificLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
@@ -8,26 +9,24 @@ const log = logger(specificLog);
 
 export default class StompClient {
   private client: Client;
+  private connectListeners: (() => void)[] = [];
+  private subscriptions: StompSubscription[] = [];
 
   public constructor() {
     this.client = new Client({
-      brokerURL: process.env.NEXT_PUBLIC_API_WS_HOST_NAME,
+      brokerURL: process.env.NEXT_PUBLIC_API_WS_HOST_NAME as string,
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
+      debug: log,
     });
-  }
-
-  public get connected() {
-    return this.client.connected;
   }
 
   public connect() {
     if (!this.connected) {
-      log(`[WS] connecting ...`);
-
       this.client.onConnect = () => {
-        log(`[WS] connected`);
+        this.connectListeners.forEach((listener) => listener());
+        this.connectListeners = [];
       };
 
       this.client.activate();
@@ -36,26 +35,46 @@ export default class StompClient {
 
   public async disconnect() {
     if (this.connected) {
-      log(`[WS] disconnecting ...`);
+      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
 
       await this.client.deactivate();
+    }
+  }
 
-      log(`[WS] disconnected`);
+  public registerConnectListener(listener: () => void) {
+    if (this.connected) {
+      listener();
+    } else {
+      this.connectListeners.push(listener);
     }
   }
 
   public subscribe(destination: string, callback: messageCallbackType) {
-    log(`[WS] subscribe - ${destination}`);
+    const subscription = this.client.subscribe(destination, callback);
+    this.subscriptions.push(subscription);
+  }
 
-    return this.client.subscribe(destination, callback);
+  public unsubscribe(destination: string) {
+    this.client.unsubscribe(destination);
+  }
+
+  public unsubscribeAll() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions = [];
   }
 
   public send(destination: string, body: Record<string, unknown>) {
-    log(`[WS] send to "${destination}"`, body);
-
     this.client.publish({
       destination,
       body: JSON.stringify(body),
     });
+  }
+
+  public get connected() {
+    return this.client.connected;
+  }
+
+  public get hasSubscription() {
+    return this.subscriptions.length > 0;
   }
 }
