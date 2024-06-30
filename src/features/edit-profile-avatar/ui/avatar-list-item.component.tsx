@@ -30,7 +30,10 @@ const AvatarListItem = ({
         src={imageSrc}
         alt={name ? `Avatar Parts - ${name}` : 'Avatar Parts'}
         fill
-        objectFit='contain'
+        style={{
+          objectFit: 'contain',
+        }}
+        priority
         sizes='(max-width:200px) 100vw, 200px'
         className='bg-gray-800 max-h-[200px] aspect-square select-none'
       />
