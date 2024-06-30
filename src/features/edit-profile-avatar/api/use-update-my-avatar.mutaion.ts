@@ -12,7 +12,6 @@ export function useUpdateMyAvatar() {
     mutationFn: async ({ body, faceUri }) => {
       if (!body.combinable) {
         await UsersService.updateMyAvatarBody({ avatarBodyUri: body.resourceUri });
-        await UsersService.updateMyAvatarFace({ avatarFaceUri: '' }); // TODO: 명시적인 clear 필요 없는지 재확인 필요 (https://pfplay.slack.com/archives/C051N8A0ZSB/p1719686576907309?thread_ts=1719686253.407909&cid=C051N8A0ZSB)
         return;
       }
       if (!faceUri) {
