@@ -1,6 +1,8 @@
 import { cn } from '@/shared/lib/functions/cn';
 import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
 import { Button } from '@/shared/ui/components/button';
+import { Input } from '@/shared/ui/components/input';
+import { Typography } from '@/shared/ui/components/typography';
 import { PFInfoOutline, PFSend, PFParty } from '@/shared/ui/icons';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { Sidebar } from '@/widgets/sidebar';
@@ -28,7 +30,7 @@ const PartyroomPage = async () => {
       />
 
       {/* 오른쪽 채팅창 */}
-      <div className='absolute top-0 right-0 w-[400px] max-w-full h-screen bg-black pt-8 pb-3 px-7'>
+      <div className='absolute top-0 right-0 w-[400px] max-w-full h-screen flexCol bg-black pt-8 pb-3 px-7'>
         <div className='bg-black grid grid-cols-2 gap-3'>
           <Button
             color='secondary'
@@ -54,31 +56,28 @@ const PartyroomPage = async () => {
         <div className='px-7 bg-black'></div>
 
         {/* 채팅창 목록 */}
-        <div className='flex-1 w-full bg-gradient-to-r from-black/0 via-black/80 to-black/80 mt-6'>
-          <div className='w-full h-6 bg-gradient-to-b from-black to-black/0'>
-            <div className='flex flex-col-reverse space-y-4 overflow-y-auto'>
-              {/* user #1 */}
-              {/* TODO 채팅 구현 */}
-              <div className='flex gap-x-2'>
-                <div className='w-8 h-8 bg-white rounded-full'></div>
-                <div className='flex flex-col gap-y-0.5'>
-                  <span className='text-sm text-white'>FENDI</span>
-                  <p className='text-white p-2 bg-gray-900 rounded-sm text-sm'>
-                    skdjfsldjfldsjfdlf
-                  </p>
-                </div>
-              </div>
+        <div className='flex-1 flexCol w-full bg-gradient-to-r from-black/0 via-black/80 to-black/80 mt-6'>
+          <div className='flex-1 flexCol w-full h-6 bg-gradient-to-b from-black to-black/0'>
+            <div className='flex-1 flexColCenter space-y-4 overflow-y-auto'>
+              <Typography type='detail1' className='text-gray-500 select-none'>
+                Coming Soon :)
+              </Typography>
             </div>
-            <div className='border border-gray-600 p-3 flex items-center gap-x-2 mt-6'>
-              <input
-                type='text'
-                className='block w-full bg-transparent text-white text-sm'
-                placeholder='무슨 얘기를 해볼까요?'
-              />
-              <button className='inline-flex items-center justify-center py-1 px-3 bg-gray-800 rounded-sm'>
-                <PFSend width={20} height={20} />
-              </button>
-            </div>
+
+            <Input
+              size='lg'
+              variant='outlined'
+              placeholder='What would you like to talk about?'
+              Suffix={
+                <Button
+                  color='secondary'
+                  variant='fill'
+                  Icon={<PFSend width={20} height={20} />}
+                  size='sm'
+                  className='text-gray-50'
+                />
+              }
+            />
           </div>
         </div>
       </div>
