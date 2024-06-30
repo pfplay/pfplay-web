@@ -54,7 +54,7 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
               <PFEdit />
             </div>
           </div>
-          <Typography className='text-left text-white'>{me?.introduction}</Typography>
+          <Typography className='text-left text-white'>{me?.introduction || '-'}</Typography>
         </div>
 
         <div className='items-center justify-between flexRow'>

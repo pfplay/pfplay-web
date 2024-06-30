@@ -22,6 +22,6 @@ export const renderLi = (text: string) => {
 
 export const replaceVar = (text: string, vars: Record<string, string | number>) => {
   return Object.entries(vars).reduce((acc, [key, value]) => {
-    return acc.replace(new RegExp(`{${key}}`, 'g'), value.toString());
+    return acc.replace(key, value.toString());
   }, text);
 };

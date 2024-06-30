@@ -148,7 +148,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
               >
                 <InputNumber {...register('limit', { valueAsNumber: true })} initialValue={7} />
                 <Typography as='span' type='detail1' className='text-gray-200 ml-[8px]'>
-                  분
+                  {t.createparty.para.min}
                 </Typography>
               </FormItem>
             </div>
@@ -173,7 +173,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
             className={'px-[74px]'}
             disabled={btnDisabled}
           >
-            파티 개설하기
+            {t.createparty.btn.create_party}
           </Button>
         </div>
       </div>

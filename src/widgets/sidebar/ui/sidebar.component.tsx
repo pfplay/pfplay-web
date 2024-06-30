@@ -18,7 +18,7 @@ interface SidebarProps {
 const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
   const t = useI18n();
   const { data: me } = useFetchMe();
-  const { openDialog } = useDialog();
+  const { openDialog, openAlertDialog } = useDialog();
   const { open: showPlaylist, onClose: hidePlaylist, onToggle: togglePlaylist } = useDisclosure();
 
   const handleClickProfileButton = () => {
@@ -54,7 +54,9 @@ const Sidebar = ({ className, showDJQueue }: SidebarProps) => {
         {showDJQueue && (
           <button
             onClick={() => {
-              alert('Not Impl');
+              openAlertDialog({
+                content: 'Comming Soon :)',
+              });
             }}
             className='flexColCenter gap-2 cursor-pointer'
           >

@@ -10,27 +10,28 @@ import CreatePartyroomForm from './form.component';
 const PartyroomCreateCard = () => {
   const t = useI18n();
   const lang = useLang();
-  const { openDialog, openConfirmDialog } = useDialog();
+  const { openDialog, openAlertDialog } = useDialog();
 
   const handleClickBeAHostBtn = () => {
-    return openDialog((_, onCancel) => ({
+    openDialog((_, onCancel) => ({
       title: t.createparty.title.create_party,
       titleAlign: 'left',
       showCloseIcon: true,
-      closeConfirm: openCloseConfirmDialog,
+      // closeConfirm: () => {
+      //   const [title, content] = t.createparty.para.cancel_confirm.split('\n');
+      //   return openConfirmDialog({
+      //     title,
+      //     content,
+      //   });
+      // },
       classNames: {
         container: lang === Language.Ko ? 'w-[800px]' : 'w-[900px]',
       },
       Body: () => <CreatePartyroomForm onModalClose={onCancel} />,
     }));
-  };
 
-  const openCloseConfirmDialog = () => {
-    const [title, content] = t.createparty.para.cancel_confirm.split('\n');
-
-    return openConfirmDialog({
-      title,
-      content,
+    openAlertDialog({
+      content: 'Partyroom creation is Comming Soon :)',
     });
   };
 

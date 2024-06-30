@@ -38,7 +38,9 @@ const CollapseList = ({
               </Typography>
             </span>
             <span className='flexRow items-center gap-2'>
-              {infoText && <Typography className='text-gray-300'>{infoText}</Typography>}
+              {infoText && (
+                <Typography className='text-gray-300 whitespace-nowrap'>{infoText}</Typography>
+              )}
               {open ? (
                 <PFChevronUp width={16} height={8} />
               ) : (
