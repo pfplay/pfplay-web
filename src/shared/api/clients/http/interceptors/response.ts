@@ -9,7 +9,7 @@ export function logResponse(response: AxiosResponse) {
   printResponseLog({
     method: config?.method,
     endPoint: config?.url,
-    responseObj: data?.data ?? data,
+    response: data?.data ?? data,
   });
 
   return response;
@@ -29,7 +29,7 @@ export function logError(e: AxiosError) {
     method,
     endPoint: url,
     errorMessage,
-    errorObj: e,
+    error: e,
   });
 
   return Promise.reject(e);

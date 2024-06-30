@@ -1,5 +1,3 @@
-import { AxiosError, AxiosRequestConfig } from 'axios';
-
 const color = {
   info: '#0490C8',
   success: '#22bb33',
@@ -10,19 +8,17 @@ const color = {
 type PrintRequestLogParams = {
   method?: string;
   endPoint?: string;
-  requestData?: Record<string, unknown>;
+  requestData?: unknown;
   requestParams?: Record<string, unknown>;
-  config: AxiosRequestConfig;
 };
 export const printRequestLog = ({
   method,
   endPoint,
   requestData,
   requestParams,
-  config,
 }: PrintRequestLogParams) => {
   if (typeof window === 'undefined') {
-    console.log(`[REQUEST] ${config.method?.toUpperCase()} ${config.url}`);
+    console.log(`[REQUEST] ${method?.toUpperCase()} ${endPoint}`);
     return;
   }
 
@@ -38,24 +34,14 @@ export const printRequestLog = ({
     `color: ${color.info};font-weight: bold;`,
     requestData
   );
-  console.log(
-    `%c${method?.toUpperCase()} ${endPoint} [REQ HEADERS]`,
-    `color: ${color.info};font-weight: bold;`,
-    config.headers
-  );
-  console.log(
-    `%c${method?.toUpperCase()} ${endPoint} [REQ CONFIG]`,
-    `color: ${color.info};font-weight: bold;`,
-    config
-  );
 };
 
 type PrintResponseLogParams = {
   method?: string;
   endPoint?: string;
-  responseObj?: Record<string, unknown>;
+  response?: unknown;
 };
-export const printResponseLog = ({ method, endPoint, responseObj }: PrintResponseLogParams) => {
+export const printResponseLog = ({ method, endPoint, response }: PrintResponseLogParams) => {
   if (typeof window === 'undefined') {
     console.log(`[RESPONSE SUCCESSFULLY] ${method?.toUpperCase()} ${endPoint}`);
     return;
@@ -64,7 +50,7 @@ export const printResponseLog = ({ method, endPoint, responseObj }: PrintRespons
   console.log(
     `%c${method?.toUpperCase()} ${endPoint} [RES BODY]`,
     `color: ${color.success};font-weight: bold`,
-    responseObj
+    response
   );
 };
 
@@ -72,14 +58,9 @@ type PrintErrorLogParams = {
   method?: string;
   endPoint?: string;
   errorMessage?: string;
-  errorObj?: AxiosError;
+  error?: unknown;
 };
-export const printErrorLog = ({
-  method,
-  endPoint,
-  errorMessage,
-  errorObj,
-}: PrintErrorLogParams) => {
+export const printErrorLog = ({ method, endPoint, errorMessage, error }: PrintErrorLogParams) => {
   if (typeof window === 'undefined') {
     console.error(`[ERROR] ${method?.toUpperCase()} ${endPoint}: ${errorMessage}`);
     return;
@@ -89,6 +70,6 @@ export const printErrorLog = ({
     `%c${method?.toUpperCase()} ${endPoint} [ERR]`,
     `color: ${color.error};font-weight: bold`,
     errorMessage,
-    errorObj
+    error
   );
 };

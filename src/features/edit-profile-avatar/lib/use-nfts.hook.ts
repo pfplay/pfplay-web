@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Alchemy, Network } from 'alchemy-sdk';
 import { useAccount } from 'wagmi';
+import withLog from '@/shared/lib/functions/with-log';
 import { useDialog } from '@/shared/ui/components/dialog';
 import * as Nft from '../model/nft.model';
 
@@ -27,7 +28,8 @@ export default function useNfts() {
 
     async function fetchNfts() {
       try {
-        const { ownedNfts } = await alchemy.nft.getNftsForOwner(address as string);
+        const getNftsForOwner = withLog(alchemy.nft.getNftsForOwner.bind(alchemy.nft), 'get');
+        const { ownedNfts } = await getNftsForOwner(address as string);
         const refinedNfts = await Nft.refineList(ownedNfts);
 
         setNfts(refinedNfts);

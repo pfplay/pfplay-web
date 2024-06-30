@@ -7,7 +7,6 @@ export function logRequest(config: InternalAxiosRequestConfig) {
     endPoint: config.url,
     requestParams: config.params,
     requestData: config.data,
-    config,
   });
 
   return config;
