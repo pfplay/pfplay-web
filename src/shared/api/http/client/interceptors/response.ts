@@ -1,12 +1,19 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { getErrorMessage } from '@/shared/api/get-error-message';
 import { isPureObject } from '@/shared/lib/functions/is-pure-object';
-import { printErrorLog, printResponseLog } from '@/shared/lib/functions/log';
+import { printErrorLog, printResponseLog } from '@/shared/lib/functions/log/network-log';
+import withDebugger from '@/shared/lib/functions/log/with-debugger';
+
+const logger = withDebugger(0);
+const verboseLogger = withDebugger(1);
+
+const responseLog = verboseLogger(printResponseLog);
+const errorLog = logger(printErrorLog);
 
 export function logResponse(response: AxiosResponse) {
   const { config, data } = response;
 
-  printResponseLog({
+  responseLog({
     method: config?.method,
     endPoint: config?.url,
     response: data?.data ?? data,
@@ -25,7 +32,7 @@ export function logError(e: AxiosError) {
 
   const errorMessage = getErrorMessage(e);
 
-  printErrorLog({
+  errorLog({
     method,
     endPoint: url,
     errorMessage,

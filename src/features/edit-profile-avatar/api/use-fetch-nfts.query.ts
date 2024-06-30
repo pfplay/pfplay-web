@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { FIVE_MINUTES, ONE_MINUTE } from '@/shared/config/time';
-import withLog from '@/shared/lib/functions/with-log';
+import withLog from '@/shared/lib/functions/log/with-log';
 import * as Nft from '../model/nft.model';
 
 const alchemy = new Alchemy({

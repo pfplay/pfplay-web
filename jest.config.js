@@ -13,7 +13,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   transform: { '^.+\\.(t|j)s$': ['@swc/jest', { ...swcConfig }] },
   moduleDirectories: ['node_modules', '<rootDir>/src'],
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
   },

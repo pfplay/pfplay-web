@@ -5,6 +5,12 @@
     "target": "es2015",
     "jsx": "react"
   },
-  "include": ["**/*.test.ts", "**/*.test.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "types/**/*.ts",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -11,4 +11,9 @@ declare global {
       GOOGLE_SECRET: string;
     }
   }
+
+  interface Window {
+    debugLevel: number;
+  }
 }
+export {};
