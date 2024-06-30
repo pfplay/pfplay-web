@@ -14,6 +14,7 @@ import { I18nProvider } from '@/shared/lib/localization/i18n.context';
 import { LangProvider } from '@/shared/lib/localization/lang.context';
 import { DialogProvider } from '@/shared/ui/components/dialog';
 import { pretendardVariable } from '@/shared/ui/foundation/fonts';
+import PartyroomConnectionProvider from './_providers/partyroom-connection.provider';
 import ReactQueryProvider from './_providers/react-query.provider';
 
 export const metadata: Metadata = {
@@ -35,7 +36,9 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
           <LangProvider lang={lang as Language}>
             <I18nProvider dictionary={dictionary}>
               <DialogProvider>
-                <MeHydration>{children}</MeHydration>
+                <MeHydration>
+                  <PartyroomConnectionProvider>{children}</PartyroomConnectionProvider>
+                </MeHydration>
               </DialogProvider>
             </I18nProvider>
           </LangProvider>
