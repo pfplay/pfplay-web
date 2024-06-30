@@ -1,5 +1,4 @@
 'use client';
-import * as process from 'node:process';
 import { ReactNode } from 'react';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
