@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Avatar } from '@/entities/avatar';
-import { Me, useFetchMe } from '@/entities/me';
+import { Me, useSuspenseFetchMe } from '@/entities/me';
 import { ActivityType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
@@ -18,7 +18,7 @@ type V2ViewModeProps = {
 const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps) => {
   const t = useI18n();
   const router = useAppRouter();
-  const { data: me } = useFetchMe();
+  const { data: me } = useSuspenseFetchMe();
 
   const handleClickAvatarEditButton = () => {
     router.push('/settings/avatar');
@@ -29,7 +29,7 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
     <div className='gap-5 flexRow'>
       <div className='flexCol gap-9'>
         <div className='w-max h-[216px] flexRowCenter bg-[#1D1D1D] pointer-events-none select-none'>
-          {!!me?.avatarBodyUri && (
+          {!!me.avatarBodyUri && (
             <Avatar
               height={180}
               bodyUri={me.avatarBodyUri}
@@ -48,13 +48,13 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
         <div className='items-start gap-3 flexCol'>
           <div className='flex gap-3 items-center'>
             <Typography type='body1' className='text-white'>
-              {me?.nickname}
+              {me.nickname}
             </Typography>
             <div onClick={changeToEditMode} className='cursor-pointer'>
               <PFEdit />
             </div>
           </div>
-          <Typography className='text-left text-white'>{me?.introduction || '-'}</Typography>
+          <Typography className='text-left text-white'>{me.introduction || '-'}</Typography>
         </div>
 
         <div className='items-center justify-between flexRow'>
@@ -62,13 +62,13 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               {t.lobby.title.points}
               <Typography as='span' type='body3'>
-                {me && `${Me.score(me, ActivityType.DJ_PNT)}p`}
+                {`${Me.score(me, ActivityType.DJ_PNT)}p`}
               </Typography>
             </Typography>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               {t.lobby.title.join_date}
               <Typography as='span' type='body3'>
-                {me && Me.registrationDate(me)}
+                {Me.registrationDate(me)}
               </Typography>
             </Typography>
           </div>

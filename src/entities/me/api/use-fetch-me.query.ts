@@ -1,4 +1,10 @@
-import { keepPreviousData, useQuery, UseQueryResult } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  UseQueryResult,
+  useSuspenseQuery,
+  UseSuspenseQueryResult,
+} from '@tanstack/react-query';
 import type { UseQueryOptions } from '@tanstack/react-query/src/types';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
@@ -9,6 +15,10 @@ import * as Me from '../model/me.model';
 
 export function useFetchMe(): UseQueryResult<Me.Model, AxiosError<APIError>> {
   return useQuery(queryOptions);
+}
+
+export function useSuspenseFetchMe(): UseSuspenseQueryResult<Me.Model, AxiosError<APIError>> {
+  return useSuspenseQuery(queryOptions);
 }
 
 export const queryOptions: UseQueryOptions<Me.Model, AxiosError<APIError>> = {

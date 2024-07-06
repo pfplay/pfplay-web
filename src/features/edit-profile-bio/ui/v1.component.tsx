@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFetchMe } from '@/entities/me';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
@@ -15,18 +14,21 @@ import * as Form from '../model/form.model';
 
 const ProfileEditFormV1 = () => {
   const t = useI18n();
-  const { data: me } = useFetchMe();
+  const { data: me } = useSuspenseFetchMe();
   const { mutate: updateBio, isPending } = useUpdateMyBio();
 
   const {
     handleSubmit,
     control,
-    reset,
     setError,
     formState: { errors, isValid },
   } = useForm<Form.Model>({
     mode: 'all',
     resolver: zodResolver(Form.getSchema(t)),
+    defaultValues: {
+      nickname: me.nickname,
+      introduction: me.introduction,
+    },
   });
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
@@ -41,15 +43,6 @@ const ProfileEditFormV1 = () => {
       },
     });
   };
-
-  useEffect(() => {
-    if (me) {
-      reset({
-        nickname: me.nickname,
-        introduction: me.introduction,
-      });
-    }
-  }, [me]);
 
   return (
     <form

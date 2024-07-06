@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Avatar } from '@/entities/avatar';
-import { useFetchMe } from '@/entities/me';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { useFetchAvatarBodies } from '@/features/edit-profile-avatar/api/use-fetch-avatar-bodies.query';
 import { useFetchAvatarFaces } from '@/features/edit-profile-avatar/api/use-fetch-avatar-faces.query';
 import { AvatarBody, AvatarFace } from '@/shared/api/http/types/users';
@@ -10,13 +10,13 @@ import { AvatarBody, AvatarFace } from '@/shared/api/http/types/users';
  * @deprecated Onchain 빌더톤용 임시 아바타들 배치
  */
 export default function TempAvatars() {
-  const { data: me } = useFetchMe();
+  const { data: me } = useSuspenseFetchMe();
   const { data: bodies } = useFetchAvatarBodies();
   const { data: faces } = useFetchAvatarFaces();
   const [fakeAvatars, setFakeAvatars] = useState<FakeAvatar[]>([]);
 
   useEffect(() => {
-    if (!me || !bodies || !faces) return;
+    if (!bodies || !faces) return;
     if (fakeAvatars.length > 0) return;
 
     const avatars = makeFakeAvatars({
@@ -28,7 +28,7 @@ export default function TempAvatars() {
     });
 
     setFakeAvatars(avatars);
-  }, [bodies, faces, me]);
+  }, [bodies, faces]);
 
   return (
     <div className='absolute inset-0 z-0 min-w-desktop max-w-[2400px]overflow-hidden'>
@@ -41,7 +41,7 @@ export default function TempAvatars() {
           transform: 'translate(-100%, -100%)',
         }}
       >
-        {!!me?.avatarBodyUri && (
+        {!!me.avatarBodyUri && (
           <Avatar
             height={380}
             bodyUri={me.avatarBodyUri}
