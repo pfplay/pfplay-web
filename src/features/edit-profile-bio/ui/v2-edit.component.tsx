@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Avatar } from '@/entities/avatar';
-import { useFetchMe } from '@/entities/me';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { FormItemError } from '@/shared/ui/components/form-item';
@@ -19,7 +18,7 @@ type V2EditModeProps = {
 
 const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
   const t = useI18n();
-  const { data: me } = useFetchMe();
+  const { data: me } = useSuspenseFetchMe();
   const { mutate: updateBio, isPending } = useUpdateMyBio();
 
   const {
@@ -30,6 +29,10 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
   } = useForm<Form.Model>({
     mode: 'all',
     resolver: zodResolver(Form.getSchema(t)),
+    defaultValues: {
+      nickname: me.nickname,
+      introduction: me.introduction,
+    },
   });
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
@@ -44,20 +47,11 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
     reset();
   };
 
-  useEffect(() => {
-    if (me) {
-      reset({
-        nickname: me.nickname,
-        introduction: me.introduction,
-      });
-    }
-  }, [me]);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className='gap-5 flexRow'>
         <div className='w-max h-[216px] flexRowCenter bg-[#1D1D1D] pointer-events-none select-none'>
-          {!!me?.avatarBodyUri && (
+          {!!me.avatarBodyUri && (
             <Avatar
               height={180}
               bodyUri={me.avatarBodyUri}

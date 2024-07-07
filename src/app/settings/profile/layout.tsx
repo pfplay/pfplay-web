@@ -2,15 +2,15 @@
 
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect } from 'react';
-import { useFetchMe } from '@/entities/me';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { AuthorityTier } from '@/shared/api/http/types/@enums';
 
 const ProfileEditLayout = ({ children }: PropsWithChildren) => {
-  const { data: me } = useFetchMe();
+  const { data: me } = useSuspenseFetchMe();
   const router = useRouter();
 
   useEffect(() => {
-    if (!me || me.authorityTier === AuthorityTier.GT) {
+    if (me.authorityTier === AuthorityTier.GT) {
       router.replace('/');
       return;
     }
