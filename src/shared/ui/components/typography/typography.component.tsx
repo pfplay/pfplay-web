@@ -8,6 +8,7 @@ export type TypographyType =
   | 'body1'
   | 'body2'
   | 'body3'
+  | 'body4'
   | 'detail1'
   | 'detail2'
   | 'caption1'
@@ -54,6 +55,7 @@ const defaultElDict: Record<TypographyType, keyof Pick<JSX.IntrinsicElements, 'h
     body1: 'p',
     body2: 'p',
     body3: 'p',
+    body4: 'p',
     detail1: 'p',
     detail2: 'p',
     caption1: 'p',
@@ -67,6 +69,7 @@ export const typoStyleDict: Record<TypographyType, string> = {
   body1: 'text-[20px] font-bold leading-[1.5]',
   body2: 'text-[18px] font-bold leading-[1.5]',
   body3: 'text-[16px] font-bold leading-[1.5]',
+  body4: 'text-[10px] font-bold leading-[1.5]',
   detail1: 'text-[16px] font-normal leading-[1.5]',
   detail2: 'text-[14px] font-semibold leading-[1.5]',
   caption1: 'text-[14px] font-normal leading-[1.5]',
