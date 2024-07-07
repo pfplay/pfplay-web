@@ -5,7 +5,7 @@ import {
   PlaylistMusic,
 } from '@/shared/api/http/types/playlists';
 
-export type PlaylistActionrOptions = {
+export type PlaylistActionOptions = {
   onSuccess?: () => void;
 };
 
@@ -14,7 +14,7 @@ type PlaylistAction = {
 
   add: () => void;
   edit: (targetId: Playlist['id']) => void;
-  remove: (targetIds: Playlist['id'][], options?: PlaylistActionrOptions) => void;
+  remove: (targetIds: Playlist['id'][], options?: PlaylistActionOptions) => void;
 
   addMusic: (targetId: Playlist['id'], music: AddPlaylistMusicRequestBody) => void;
   removeMusics: (targetId: Playlist['id'], musicIds: PlaylistMusic['musicId'][]) => void;

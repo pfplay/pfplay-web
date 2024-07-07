@@ -63,7 +63,7 @@ function getQueryClient() {
 
 /**
  * TODO: will - alert >> errorDialog 변경
- * 이 파일 내에서 useDialog를 사용하려면 app/lagout.tsx 내 provider의 위게를 변경하여 QueryClientProvider를 DialogProvider 내부로 이동해야 하는데,
+ * 이 파일 내에서 useDialog를 사용하려면 app/logout.tsx 내 provider의 위게를 변경하여 QueryClientProvider를 DialogProvider 내부로 이동해야 하는데,
  * 이러면 다이얼로그 body 내에서 react-query를 사용할 수 없음 (Error: No QueryClient set, use QueryClientProvider to set one)
  * dialog를 provider가 아닌 다른 방식으로 제공하는걸 검토해봐야 할 듯
  */

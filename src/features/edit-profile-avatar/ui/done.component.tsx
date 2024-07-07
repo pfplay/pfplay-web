@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { ReactElement } from 'react';
-import { useUpdateMyAvatar } from '../api/use-update-my-avatar.mutaion';
+import { useUpdateMyAvatar } from '../api/use-update-my-avatar.mutation';
 import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
 
 type ChildrenProps = {

@@ -5,8 +5,8 @@ import { Button } from '@/shared/ui/components/button';
 import { Input } from '@/shared/ui/components/input';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFInfoOutline, PFSend, PFParty } from '@/shared/ui/icons';
-import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { Sidebar } from '@/widgets/sidebar';
+import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board/ui';
 
 export const dynamic = 'force-dynamic';
 
