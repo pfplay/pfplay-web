@@ -2,11 +2,10 @@ import TempAvatars from '@/app/parties/(room)/[id]/temp-avatars';
 import { cn } from '@/shared/lib/functions/cn';
 import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
 import { Button } from '@/shared/ui/components/button';
-import { Input } from '@/shared/ui/components/input';
-import { Typography } from '@/shared/ui/components/typography';
-import { PFInfoOutline, PFSend, PFParty } from '@/shared/ui/icons';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
+import { PFInfoOutline, PFParty, PFChatFilled, PFPersonOutline } from '@/shared/ui/icons';
+import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { Sidebar } from '@/widgets/sidebar';
-import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board/ui';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,7 +33,7 @@ const PartyroomPage = async () => {
 
       {/* 오른쪽 채팅창 */}
       <div className='absolute top-0 right-0 w-[400px] max-w-full h-screen flexCol bg-black pt-8 pb-3 px-7'>
-        <div className='bg-black grid grid-cols-2 gap-3'>
+        <div className='bg-black grid grid-cols-2 gap-3 mb-4'>
           <Button
             color='secondary'
             variant='outline'
@@ -56,10 +55,34 @@ const PartyroomPage = async () => {
         </div>
 
         {/* 채팅, 사람 탭 */}
-        <div className='px-7 bg-black'></div>
+        <div className='w-full'>
+          <TabGroup>
+            <TabList className={cn('w-full flexRow')}>
+              <Tab
+                tabTitle={t.db.title.chat}
+                variant='line'
+                PrefixIcon={<PFChatFilled width={20} height={20} />}
+              />
+              <Tab
+                tabTitle={`${0}`}
+                variant='line'
+                PrefixIcon={<PFPersonOutline width={20} height={20} />}
+              />
+              <div className='flex-1 border-b-[1px] border-b-gray-400' />
+            </TabList>
+            <TabPanels className='flex-1 flexCol pb-2 overflow-hidden'>
+              <TabPanel tabIndex={0} className='flex-1 flexCol pt-6 overflow-hidden'>
+                {/* <AvatarBodyList /> */}
+              </TabPanel>
+              <TabPanel tabIndex={1} className='flex-1 flexCol pt-4 overflow-hidden'>
+                {/* <AvatarFaceList /> */}
+              </TabPanel>
+            </TabPanels>
+          </TabGroup>
+        </div>
 
         {/* 채팅창 목록 */}
-        <div className='flex-1 flexCol w-full bg-gradient-to-r from-black/0 via-black/80 to-black/80 mt-6'>
+        {/* <div className='flex-1 flexCol w-full bg-gradient-to-r from-black/0 via-black/80 to-black/80 mt-6'>
           <div className='flex-1 flexCol w-full h-6 bg-gradient-to-b from-black to-black/0'>
             <div className='flex-1 flexColCenter space-y-4 overflow-y-auto'>
               <Typography type='detail1' className='text-gray-500 select-none'>
@@ -82,7 +105,7 @@ const PartyroomPage = async () => {
               }
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
