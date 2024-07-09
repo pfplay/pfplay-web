@@ -73,7 +73,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         ref={wrapperRef}
         onClick={handleClickWrapper}
         className={cn([
-          'max-w-full flex items-center px-[12px] rounded-[4px] cursor-text',
+          'relative max-w-full flex items-center px-[12px] rounded-[4px] cursor-text',
           sizeDict[size],
           variantDict[variant],
           containerClassName,
