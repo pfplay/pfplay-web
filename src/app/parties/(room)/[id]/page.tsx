@@ -5,6 +5,7 @@ import { Button } from '@/shared/ui/components/button';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
 import { PFInfoOutline, PFParty, PFChatFilled, PFPersonOutline } from '@/shared/ui/icons';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
+import { PartyroomChatTabPanel } from '@/widgets/partyroom-tab-panel';
 import { Sidebar } from '@/widgets/sidebar';
 
 export const dynamic = 'force-dynamic';
@@ -33,7 +34,7 @@ const PartyroomPage = async () => {
 
       {/* 오른쪽 채팅창 */}
       <div className='absolute top-0 right-0 w-[400px] max-w-full h-screen flexCol bg-black pt-8 pb-3 px-7'>
-        <div className='bg-black grid grid-cols-2 gap-3 mb-4'>
+        <div className='bg-black grid grid-cols-2 gap-3 mb-5'>
           <Button
             color='secondary'
             variant='outline'
@@ -70,42 +71,16 @@ const PartyroomPage = async () => {
               />
               <div className='flex-1 border-b-[1px] border-b-gray-400' />
             </TabList>
-            <TabPanels className='flex-1 flexCol pb-2 overflow-hidden'>
-              <TabPanel tabIndex={0} className='flex-1 flexCol pt-6 overflow-hidden'>
-                {/* <AvatarBodyList /> */}
+            <TabPanels className='flex-1 flexCol'>
+              <TabPanel tabIndex={0} className='flex-1 flexCol h-[calc(100vh-112px)]'>
+                <PartyroomChatTabPanel />
               </TabPanel>
-              <TabPanel tabIndex={1} className='flex-1 flexCol pt-4 overflow-hidden'>
+              <TabPanel tabIndex={1} className='flex-1 flexCol overflow-hidden'>
                 {/* <AvatarFaceList /> */}
               </TabPanel>
             </TabPanels>
           </TabGroup>
         </div>
-
-        {/* 채팅창 목록 */}
-        {/* <div className='flex-1 flexCol w-full bg-gradient-to-r from-black/0 via-black/80 to-black/80 mt-6'>
-          <div className='flex-1 flexCol w-full h-6 bg-gradient-to-b from-black to-black/0'>
-            <div className='flex-1 flexColCenter space-y-4 overflow-y-auto'>
-              <Typography type='detail1' className='text-gray-500 select-none'>
-                Coming Soon :)
-              </Typography>
-            </div>
-
-            <Input
-              size='lg'
-              variant='outlined'
-              placeholder='What would you like to talk about?'
-              Suffix={
-                <Button
-                  color='secondary'
-                  variant='fill'
-                  Icon={<PFSend width={20} height={20} />}
-                  size='sm'
-                  className='text-gray-50'
-                />
-              }
-            />
-          </div>
-        </div> */}
       </div>
     </>
   );
