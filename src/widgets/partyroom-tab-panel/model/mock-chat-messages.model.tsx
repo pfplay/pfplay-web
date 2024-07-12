@@ -4,8 +4,14 @@ import { PFAddCircle } from '@/shared/ui/icons';
 
 export const getMockChatMessages = (): ChatItemProps[] => [
   {
+    type: 'received',
+    id: 1,
+    partyroomId: '1',
+    userId: {
+      uid: 'asdf',
+    },
     src: 'https://example.com/profile1.jpg',
-    name: 'User1',
+    nickname: 'User1',
     message:
       'Hello, this is a message from User1.Hello, this is a message from User1. Hello, this is a message from User1.',
     menuItemList: [
@@ -17,11 +23,17 @@ export const getMockChatMessages = (): ChatItemProps[] => [
         },
       },
     ],
-    authority: PartyroomGrade.ADMIN,
+    partyroomGrade: PartyroomGrade.HOST,
   },
   {
+    type: 'received',
+    id: 1,
+    partyroomId: '1',
+    userId: {
+      uid: 'asdf',
+    },
     src: 'https://example.com/profile2.jpg',
-    name: 'User2',
+    nickname: 'User2',
     message: 'Hello, this is a message from User2.',
     menuItemList: [
       {
@@ -32,11 +44,17 @@ export const getMockChatMessages = (): ChatItemProps[] => [
         },
       },
     ],
-    authority: PartyroomGrade.MOD,
+    partyroomGrade: PartyroomGrade.MOD,
   },
   {
+    type: 'received',
+    id: 1,
+    partyroomId: '1',
+    userId: {
+      uid: 'asdf',
+    },
     src: 'https://example.com/profile2.jpg',
-    name: 'User2',
+    nickname: 'User2',
     message: 'Hello, this is a message from User2.',
     menuItemList: [
       {
@@ -47,11 +65,14 @@ export const getMockChatMessages = (): ChatItemProps[] => [
         },
       },
     ],
-    authority: PartyroomGrade.MOD,
+    partyroomGrade: PartyroomGrade.MOD,
   },
   {
+    type: 'sent',
+    partyroomGrade: PartyroomGrade.HOST,
+    partyroomId: '1',
     src: 'https://example.com/profile2.jpg',
-    name: 'User2',
+    nickname: 'User2',
     message: 'Hello, this is a message from User2.',
     menuItemList: [
       {
@@ -64,8 +85,14 @@ export const getMockChatMessages = (): ChatItemProps[] => [
     ],
   },
   {
+    type: 'received',
+    id: 1,
+    partyroomId: '1',
+    userId: {
+      uid: 'asdf',
+    },
     src: 'https://example.com/profile2.jpg',
-    name: 'User2',
+    nickname: 'User2',
     message: 'Hello, this is a message from User2.',
     menuItemList: [
       {
@@ -76,11 +103,17 @@ export const getMockChatMessages = (): ChatItemProps[] => [
         },
       },
     ],
-    authority: PartyroomGrade.MOD,
+    partyroomGrade: PartyroomGrade.MOD,
   },
   {
+    type: 'received',
+    id: 1,
+    partyroomId: '1',
+    userId: {
+      uid: 'asdf',
+    },
     src: 'https://example.com/profile2.jpg',
-    name: 'User2',
+    nickname: 'User2',
     message: 'Hello, this is a message from User2.',
     menuItemList: [
       {
@@ -91,11 +124,17 @@ export const getMockChatMessages = (): ChatItemProps[] => [
         },
       },
     ],
-    authority: PartyroomGrade.MOD,
+    partyroomGrade: PartyroomGrade.MOD,
   },
   {
+    type: 'received',
+    id: 1,
+    partyroomId: '1',
+    userId: {
+      uid: 'asdf',
+    },
     src: 'https://example.com/profile2.jpg',
-    name: 'User2',
+    nickname: 'User2',
     message: 'Hello, this is a message from User2.',
     menuItemList: [
       {
@@ -106,11 +145,17 @@ export const getMockChatMessages = (): ChatItemProps[] => [
         },
       },
     ],
-    authority: PartyroomGrade.MOD,
+    partyroomGrade: PartyroomGrade.MOD,
   },
   {
+    type: 'received',
+    id: 1,
+    partyroomId: '1',
+    userId: {
+      uid: 'asdf',
+    },
     src: 'https://example.com/profile3.jpg',
-    name: 'User3',
+    nickname: 'User3',
     message: 'Hello, this is a message from User3.',
     menuItemList: [
       {
@@ -121,11 +166,17 @@ export const getMockChatMessages = (): ChatItemProps[] => [
         },
       },
     ],
-    authority: PartyroomGrade.CM,
+    partyroomGrade: PartyroomGrade.CM,
   },
   {
+    type: 'received',
+    id: 1,
+    partyroomId: '1',
+    userId: {
+      uid: 'asdf',
+    },
     src: 'https://example.com/profile4.jpg',
-    name: 'User4',
+    nickname: 'User4',
     message: 'Hello, this is a message from User4.',
     menuItemList: [
       {
@@ -136,11 +187,17 @@ export const getMockChatMessages = (): ChatItemProps[] => [
         },
       },
     ],
-    authority: PartyroomGrade.LISTENER,
+    partyroomGrade: PartyroomGrade.LISTENER,
   },
   {
+    type: 'received',
+    id: 1,
+    partyroomId: '1',
+    userId: {
+      uid: 'asdf',
+    },
     src: 'https://example.com/profile5.jpg',
-    name: 'User5',
+    nickname: 'User5',
     message: 'Hello, this is a message from User5.',
     menuItemList: [
       {
@@ -151,11 +208,17 @@ export const getMockChatMessages = (): ChatItemProps[] => [
         },
       },
     ],
-    authority: PartyroomGrade.CLUBBER,
+    partyroomGrade: PartyroomGrade.CLUBBER,
   },
   {
+    type: 'received',
+    id: 1,
+    partyroomId: '1',
+    userId: {
+      uid: 'asdf',
+    },
     src: 'https://example.com/profile6.jpg',
-    name: 'User6',
+    nickname: 'User6',
     message: 'Hello, this is a message from User6.',
     menuItemList: [
       {
@@ -166,6 +229,6 @@ export const getMockChatMessages = (): ChatItemProps[] => [
         },
       },
     ],
-    authority: PartyroomGrade.ADMIN,
+    partyroomGrade: PartyroomGrade.HOST,
   },
 ];
