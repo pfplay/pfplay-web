@@ -1,5 +1,5 @@
 /**
- * fase x, y좌표의 기준이되는 body의 높이와 너비.
+ * face x, y좌표의 기준이되는 body의 높이와 너비.
  */
 export const BODY_BASE_WIDTH = 120;
 export const BODY_BASE_HEIGHT = 160;

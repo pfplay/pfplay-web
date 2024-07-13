@@ -1,22 +1,28 @@
 'use client';
 import React from 'react';
-import ChatItem from '@/entities/chat-item/ui/chat-item.component';
+import { ChatItem } from '@/entities/chat-item';
+import { fixtureChatMessages } from '@/shared/api/websocket/__fixture__/chat-messages.fixture';
 import { Button } from '@/shared/ui/components/button';
 import { Input } from '@/shared/ui/components/input';
 import { PFSend } from '@/shared/ui/icons';
-import { getMockChatMessages } from '../model/mock-chat-messages.model';
+import {
+  CHAT_TAB_PANEL_START_POSITION,
+  CHAT_TAB_PANEL_END_POSITION,
+} from '../config/partyroom-chat-tab-panel-size.config';
+import { refineChatMessages } from '../model/partyroom-chat-tab-panel-messages.model';
 
 const PartyroomChatTabPanel = () => {
-  const mockChatMessages = getMockChatMessages();
+  const chatMessages = refineChatMessages(fixtureChatMessages);
+
   return (
     <>
       <div
-        className='h-full flexCol gap-4 overflow-y-auto py-4'
+        className='flexCol gap-4 overflow-y-auto py-4'
         style={{
-          height: `calc(100vh - ${130 + 96}px`,
+          height: `calc(100vh - ${CHAT_TAB_PANEL_START_POSITION + CHAT_TAB_PANEL_END_POSITION}px`,
         }}
       >
-        {mockChatMessages.map((chat, i) => (
+        {chatMessages.map((chat, i) => (
           <ChatItem key={i} {...chat} />
         ))}
       </div>
@@ -24,6 +30,7 @@ const PartyroomChatTabPanel = () => {
         <Input
           size='lg'
           variant='outlined'
+          // TODO: i18n 적용
           placeholder='What would you like to talk about?'
           Suffix={
             <Button

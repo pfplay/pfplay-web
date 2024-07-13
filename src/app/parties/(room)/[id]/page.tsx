@@ -72,7 +72,7 @@ const PartyroomPage = async () => {
               <div className='flex-1 border-b-[1px] border-b-gray-400' />
             </TabList>
             <TabPanels className='flex-1 flexCol'>
-              <TabPanel tabIndex={0} className='flex-1 flexCol h-[calc(100vh-112px)]'>
+              <TabPanel tabIndex={0} className='flex-1 flexCol'>
                 <PartyroomChatTabPanel />
               </TabPanel>
               <TabPanel tabIndex={1} className='flex-1 flexCol overflow-hidden'>

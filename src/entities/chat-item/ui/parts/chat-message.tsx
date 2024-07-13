@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography } from '@/shared/ui/components/typography';
 
 interface Props {

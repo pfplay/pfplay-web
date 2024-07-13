@@ -35,7 +35,7 @@ export enum PartyroomPenaltyType {
 }
 
 export enum PartyroomGrade {
-  HOST = 'HOST',
+  ADMIN = 'ADMIN',
   CM = 'CM',
   MOD = 'MOD',
   CLUBBER = 'CLUBBER',

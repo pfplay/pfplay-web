@@ -16,10 +16,10 @@ const AuthorityHeadset = ({ authority, className }: Props) => {
   if (noHeadset) return null;
 
   if (authority === PartyroomGrade.CLUBBER) {
-    return <PFHeadsetGray width={40} height={24} className={cn(commonHeadsetStyle, className)} />;
+    return <PFHeadsetGray width={40} height={23} className={cn(commonHeadsetStyle, className)} />;
   }
 
-  return <PFHeadsetRed width={40} height={24} className={cn(commonHeadsetStyle, className)} />;
+  return <PFHeadsetRed width={40} height={23} className={cn(commonHeadsetStyle, className)} />;
 };
 
 export default AuthorityHeadset;

@@ -5,6 +5,6 @@ export const checkHigherLevel = (authority?: PartyroomGrade) => {
   return (
     authority === PartyroomGrade.MOD ||
     authority === PartyroomGrade.CM ||
-    authority === PartyroomGrade.HOST
+    authority === PartyroomGrade.ADMIN
   );
 };

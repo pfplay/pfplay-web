@@ -1,36 +1,19 @@
-import { PartyroomGrade } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
-import { MenuItem } from '@/shared/ui/components/menu';
 import Profile from '@/shared/ui/components/profile/profile.component';
 import { Typography } from '@/shared/ui/components/typography';
+import { ChatItemProps } from '@/widgets/partyroom-tab-panel/model/partyroom-chat-tab-panel-messages.model';
 import AuthorityHeadset from './parts/authority-headset';
 import ChatMessage from './parts/chat-message';
 import { checkHigherLevel } from '../model/chat-item.model';
 
-type SentMessage = {
-  type: 'sent';
-};
-
-type ReceivedMessage = {
-  type: 'received';
-  id?: number;
-  userId: {
-    uid: string;
-  };
-};
-
-export type ChatItemProps = {
-  nickname: string;
-  partyroomId: string;
-  partyroomGrade: PartyroomGrade;
-  message: string;
-  src?: string;
-  menuItemList: MenuItem[];
-} & (SentMessage | ReceivedMessage);
-
 const ChatItem = (props: ChatItemProps) => {
-  const { nickname, message, menuItemList, src, partyroomGrade, type: _ } = props;
+  const {
+    fromUser: { nickname, src, partyroomGrade },
+    message,
+    menuItemList,
+    type: _,
+  } = props;
 
   const isHigherLevel = checkHigherLevel(partyroomGrade);
 
