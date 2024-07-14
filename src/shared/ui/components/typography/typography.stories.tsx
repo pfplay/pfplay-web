@@ -26,6 +26,7 @@ export const Default = () => {
     body3: { weight: 700, size: 16, lineHeight: 1.5 },
     detail1: { weight: 400, size: 16, lineHeight: 1.5 },
     detail2: { weight: 600, size: 14, lineHeight: 1.5 },
+    body4: { weight: 700, size: 14, lineHeight: 1.5 },
     caption1: { weight: 400, size: 14, lineHeight: 1.5 },
     caption2: { weight: 400, size: 12, lineHeight: 1.5 },
   };

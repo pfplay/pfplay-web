@@ -20,8 +20,8 @@
 
 # misc
 .idea/
-.vscode/
 .DS_Store
+.vscode
 *.pem
 Thumbs.db
 

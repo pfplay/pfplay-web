@@ -9,7 +9,7 @@ import { Button } from '@/shared/ui/components/button';
 import { FormItemError } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
 import { TextArea } from '@/shared/ui/components/textarea';
-import { useUpdateMyBio } from '../api/use-update-my-bio.mutaion';
+import { useUpdateMyBio } from '../api/use-update-my-bio.mutation';
 import * as Form from '../model/form.model';
 
 type V2EditModeProps = {

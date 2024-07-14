@@ -46,6 +46,7 @@ export enum MessageType {
   CHAT = 'CHAT',
   PROMOTE = 'PROMOTE',
   PENALTY = 'PENALTY',
+  NOTICE = 'NOTICE',
 }
 
 export enum MemberGrade {
@@ -60,7 +61,7 @@ export enum AccessLevel {
   ROLE_GUEST = 'ROLE_GUEST',
 }
 
-export enum RedirectionableLocation {
+export enum RedirectableLocation {
   MAIN = 'MAIN',
   PARTY_ROOM = 'PARTY_ROOM',
 }

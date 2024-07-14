@@ -1,4 +1,4 @@
-import { PartyroomGrade, PartyroomStatus, RedirectionableLocation } from './@enums';
+import { PartyroomGrade, PartyroomStatus, RedirectableLocation } from './@enums';
 import { PaginationPayload, PaginationResponse } from './@shared';
 
 export interface CreatePartyroomRequest {
@@ -44,7 +44,7 @@ export interface CreatePartyroomResponse {
   introduce: string;
   domain: string;
   djingLimit: number;
-  type: RedirectionableLocation;
+  type: RedirectableLocation;
   status: PartyroomStatus;
   admin: {
     profile: string;

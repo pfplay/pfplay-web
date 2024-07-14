@@ -7,11 +7,11 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
 import { CollapseList } from '@/shared/ui/components/collapse-list';
 
-type CollapsableListProps = {
+type CollapsibleListProps = {
   musicsRender: (playlist: Playlist) => ReactElement;
 };
 
-const CollapsableList = ({ musicsRender }: CollapsableListProps) => {
+const CollapsibleList = ({ musicsRender }: CollapsibleListProps) => {
   const t = useI18n();
   const playlistAction = usePlaylistAction();
 
@@ -32,4 +32,4 @@ const CollapsableList = ({ musicsRender }: CollapsableListProps) => {
   );
 };
 
-export default CollapsableList;
+export default CollapsibleList;

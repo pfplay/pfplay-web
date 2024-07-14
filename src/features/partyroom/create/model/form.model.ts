@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import type { Dictonary } from '@/shared/lib/localization/i18n.context';
+import type { Dictionary } from '@/shared/lib/localization/i18n.context';
 
 export type Model = z.infer<ReturnType<typeof getSchema>>;
 
-export const getSchema = (t: Dictonary) =>
+export const getSchema = (t: Dictionary) =>
   z.object({
     name: z
       .string()

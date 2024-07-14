@@ -1,6 +1,6 @@
 import { ReactNode, useCallback } from 'react';
 import { PlaylistActionContext } from '@/entities/playlist';
-import { PlaylistActionrOptions } from '@/entities/playlist/lib/playlist-action.context';
+import { PlaylistActionOptions } from '@/entities/playlist/lib/playlist-action.context';
 import { useAddPlaylistDialog } from '@/features/playlist/add';
 import { useAddPlaylistMusic } from '@/features/playlist/add-musics';
 import { useEditPlaylistDialog } from '@/features/playlist/edit';
@@ -19,7 +19,7 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
   const { mutate: _removeMusics } = useRemovePlaylistMusics();
 
   const remove = useCallback(
-    (targetIds: Playlist['id'][], options?: PlaylistActionrOptions) => {
+    (targetIds: Playlist['id'][], options?: PlaylistActionOptions) => {
       _remove(targetIds, {
         onSuccess: options?.onSuccess,
       });
