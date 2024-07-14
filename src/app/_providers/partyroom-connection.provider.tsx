@@ -1,11 +1,11 @@
 'use client';
 import { ReactNode, useEffect, useState } from 'react';
-import { useSuspenseFetchMe } from '@/entities/me';
+import { useFetchMe } from '@/entities/me';
 import { PartyroomClientContext } from '@/entities/partyroom-client';
 import StompClient from '@/shared/api/websocket/client';
 
 export default function PartyroomConnectionProvider({ children }: { children: ReactNode }) {
-  const { data: me } = useSuspenseFetchMe();
+  const { data: me } = useFetchMe();
   const [client] = useState(() => new StompClient());
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function PartyroomConnectionProvider({ children }: { children: Re
      * - 즉, “로그인 시점“이 아닌, “인증이 유효하다” 판단 되는 시점에 activate 되어야 함.
      * - connect는 라우트는 가리지 않음 라우트를 가리는건 파티룸 sub, unsub 뿐임
      */
-    if (!client.connected) {
+    if (me && !client.connected) {
       // client.connect(); // TODO: Onchain 빌더톤 끝나면 주석 해제
     }
   }, [me]);
