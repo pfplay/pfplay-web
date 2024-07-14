@@ -7,8 +7,8 @@ import { PFSend } from '@/shared/ui/icons';
 import { ChatItem } from '@/widgets/partyroom-chat-panel/ui/chat-item';
 import { refineChatMessages } from '../model/chat-messages.model';
 
-export const CHAT_TAB_PANEL_START_POSITION = 130;
-export const CHAT_TAB_PANEL_END_POSITION = 96;
+const CHAT_TAB_PANEL_START_POSITION = 130;
+const CHAT_TAB_PANEL_END_POSITION = 96;
 
 const PartyroomChatPanel = () => {
   const chatMessages = refineChatMessages(fixtureChatMessages);
