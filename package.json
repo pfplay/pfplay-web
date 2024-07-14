@@ -1,7 +1,7 @@
 {
   "name": "pfplay",
   "version": "0.1.0",
-  "private": true,
+  "license": "GPL-3.0",
   "scripts": {
     "svgr": "node scripts/svgr",
     "generate-enums": "node scripts/copy-java-enums",
@@ -25,7 +25,7 @@
     "@hookform/resolvers": "^2.9.10",
     "@rainbow-me/rainbowkit": "2.1.2",
     "@stomp/stompjs": "^7.0.0",
-    "@tanstack/react-query": "^5.17.1",
+    "@tanstack/react-query": "^5.45.1",
     "@tanstack/react-query-next-experimental": "^5.46.0",
     "alchemy-sdk": "^3.3.1",
     "axios": "^1.2.0",
@@ -100,11 +100,11 @@
     "type-fest": "^4.20.1"
   },
   "engines": {
-    "node": ">=18.17.0",
-    "npm": ">=9.6.7"
+    "node": ">=18.19.0",
+    "npm": ">=10.2.3"
   },
   "resolutions": {
-    "jackspeak": "2.1.1"
+     "jackspeak": "2.3.5"
   },
   "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
 }
