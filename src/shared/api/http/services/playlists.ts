@@ -1,6 +1,5 @@
 import { PaginationResponse } from '@/shared/api/http/types/@shared';
-import { Singleton } from '@/shared/lib/decorators/singleton';
-import { pfpAxiosInstance } from '../client/client';
+import HTTPClient from '../client/client';
 import {
   GetPlaylistsResponse,
   GetPlaylistMusicsParameters,
@@ -20,52 +19,46 @@ import {
   PlaylistsClient,
 } from '../types/playlists';
 
-@Singleton
-class PlaylistsService implements PlaylistsClient {
+class PlaylistsService extends HTTPClient implements PlaylistsClient {
   private ROUTE_V1 = 'v1/playlists';
 
   public getPlaylists() {
-    return pfpAxiosInstance.get<unknown, GetPlaylistsResponse>(`${this.ROUTE_V1}`);
+    return this.get<GetPlaylistsResponse>(`${this.ROUTE_V1}`);
   }
 
   public getMusicsFromPlaylist(playlistId: Playlist['id'], params?: GetPlaylistMusicsParameters) {
-    return pfpAxiosInstance.get<unknown, PaginationResponse<PlaylistMusic>>(
-      `${this.ROUTE_V1}/${playlistId}/musics`,
-      { params }
-    );
+    return this.get<PaginationResponse<PlaylistMusic>>(`${this.ROUTE_V1}/${playlistId}/musics`, {
+      params,
+    });
   }
 
   public searchMusics(params: SearchMusicsRequest) {
-    return pfpAxiosInstance.get<unknown, SearchMusicsResponse>(`v1/music-search`, { params });
+    return this.get<SearchMusicsResponse>(`v1/music-search`, { params });
   }
 
   public createPlaylist(params: CreatePlaylistRequestBody) {
-    return pfpAxiosInstance.post<unknown, CreatePlaylistResponse>(`${this.ROUTE_V1}`, params);
+    return this.post<CreatePlaylistResponse>(`${this.ROUTE_V1}`, params);
   }
 
   public updatePlaylist(playlistId: Playlist['id'], params: UpdatePlaylistRequestBody) {
-    return pfpAxiosInstance.patch<unknown, UpdatePlaylistResponse>(
-      `${this.ROUTE_V1}/${playlistId}`,
-      params
-    );
+    return this.patch<UpdatePlaylistResponse>(`${this.ROUTE_V1}/${playlistId}`, params);
   }
 
   public addMusicToPlaylist(playlistId: Playlist['id'], params: AddPlaylistMusicRequestBody) {
-    return pfpAxiosInstance.post<unknown, void>(`${this.ROUTE_V1}/${playlistId}/musics`, params);
+    return this.post<void>(`${this.ROUTE_V1}/${playlistId}/musics`, params);
   }
 
   public removePlaylist(params: RemovePlaylistRequestBody) {
-    return pfpAxiosInstance.delete<unknown, RemovePlaylistResponse>(`${this.ROUTE_V1}`, {
+    return this.delete<RemovePlaylistResponse>(`${this.ROUTE_V1}`, {
       data: params,
     });
   }
 
   public removeMusicsFromPlaylist(params: RemovePlaylistMusicRequestBody) {
     const { playlistId, ...data } = params;
-    return pfpAxiosInstance.delete<unknown, RemovePlaylistMusicResponse>(
-      `${this.ROUTE_V1}/${playlistId}/musics`,
-      { data }
-    );
+    return this.delete<RemovePlaylistMusicResponse>(`${this.ROUTE_V1}/${playlistId}/musics`, {
+      data,
+    });
   }
 }
 

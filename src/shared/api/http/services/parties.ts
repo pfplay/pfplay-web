@@ -1,6 +1,5 @@
 import { PaginationPayload, PaginationResponse } from '@/shared/api/http/types/@shared';
-import { Singleton } from '@/shared/lib/decorators/singleton';
-import { pfpAxiosInstance } from '../client/client';
+import HTTPClient from '../client/client';
 import {
   CreatePartyroomRequest,
   CreatePartyroomResponse,
@@ -8,24 +7,17 @@ import {
   PartyroomSummary,
 } from '../types/parties';
 
-@Singleton
-class PartiesService implements PartiesClient {
+class PartiesService extends HTTPClient implements PartiesClient {
   private ROUTE_V1 = 'v1/party-room';
 
   public create(request: CreatePartyroomRequest) {
-    return pfpAxiosInstance.post<unknown, CreatePartyroomResponse>(
-      `${this.ROUTE_V1}/create`,
-      request
-    );
+    return this.post<CreatePartyroomResponse>(`${this.ROUTE_V1}/create`, request);
   }
 
   public getList(request: PaginationPayload) {
-    return pfpAxiosInstance.get<unknown, PaginationResponse<PartyroomSummary>>(
-      `${this.ROUTE_V1}/list`,
-      {
-        params: request,
-      }
-    );
+    return this.get<PaginationResponse<PartyroomSummary>>(`${this.ROUTE_V1}/list`, {
+      params: request,
+    });
   }
 }
 

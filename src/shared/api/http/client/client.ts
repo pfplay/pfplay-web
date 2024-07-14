@@ -1,25 +1,47 @@
-import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios';
+import axios, { AxiosInstance } from 'axios';
+import { Singleton } from '@/shared/lib/decorators/singleton';
 import { flow } from '@/shared/lib/functions/flow';
 import { logRequest } from './interceptors/request';
 import { logError, logResponse, processError, unwrapResponse } from './interceptors/response';
 
-const createAxiosInstance = (baseURL?: string, options?: CreateAxiosDefaults): AxiosInstance => {
-  return axios.create({
-    baseURL,
-    timeout: 4000,
-    validateStatus: (status) => status >= 200 && status < 400,
-    withCredentials: true,
-    ...options,
-  });
-};
+@Singleton
+export default class HTTPClient {
+  protected axiosInstance: AxiosInstance;
 
-export const pfpAxiosInstance = createAxiosInstance(process.env.NEXT_PUBLIC_API_HOST_NAME);
-pfpAxiosInstance.interceptors.request.use(flow([logRequest]));
-pfpAxiosInstance.interceptors.response.use(
-  flow([logResponse, unwrapResponse]),
-  flow([logError, processError])
-);
+  public constructor() {
+    // create axios instance
+    this.axiosInstance = axios.create({
+      baseURL: process.env.NEXT_PUBLIC_API_HOST_NAME,
+      timeout: 4000,
+      validateStatus: (status) => status >= 200 && status < 400,
+      withCredentials: true,
+    });
 
-export const nextAxiosInstance = createAxiosInstance('/api');
-nextAxiosInstance.interceptors.request.use(flow([logRequest]));
-nextAxiosInstance.interceptors.response.use(flow([logResponse, unwrapResponse]), logError);
+    // apply interceptors
+    this.axiosInstance.interceptors.request.use(flow([logRequest]));
+    this.axiosInstance.interceptors.response.use(
+      flow([logResponse, unwrapResponse]),
+      flow([logError, processError])
+    );
+  }
+
+  protected get<T>(...args: Parameters<AxiosInstance['get']>) {
+    return this.axiosInstance.get<T, T>(...args);
+  }
+
+  protected post<T>(...args: Parameters<AxiosInstance['post']>) {
+    return this.axiosInstance.post<T, T>(...args);
+  }
+
+  protected put<T>(...args: Parameters<AxiosInstance['put']>) {
+    return this.axiosInstance.put<T, T>(...args);
+  }
+
+  protected patch<T>(...args: Parameters<AxiosInstance['patch']>) {
+    return this.axiosInstance.patch<T, T>(...args);
+  }
+
+  protected delete<T>(...args: Parameters<AxiosInstance['delete']>) {
+    return this.axiosInstance.delete<T, T>(...args);
+  }
+}
