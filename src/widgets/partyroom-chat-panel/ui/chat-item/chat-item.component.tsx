@@ -2,11 +2,11 @@ import { cn } from '@/shared/lib/functions/cn';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
 import Profile from '@/shared/ui/components/profile/profile.component';
 import { Typography } from '@/shared/ui/components/typography';
-import { galmuriVariable } from '@/shared/ui/foundation/fonts';
-import { ChatItemProps } from '@/widgets/partyroom-tab-panel/model/partyroom-chat-tab-panel-messages.model';
-import AuthorityHeadset from './parts/authority-headset';
-import ChatMessage from './parts/chat-message';
-import { checkHigherLevel } from '../model/chat-item.model';
+import { galmuriFont } from '@/shared/ui/foundation/fonts';
+import { ChatItemProps } from '@/widgets/partyroom-chat-panel/model/chat-messages.model';
+import AuthorityHeadset from './authority-headset.component';
+import ChatMessage from './chat-message.component';
+import { checkHigherGrade } from '../../model/chat-item.model';
 
 const ChatItem = (props: ChatItemProps) => {
   const {
@@ -16,7 +16,7 @@ const ChatItem = (props: ChatItemProps) => {
     type: _,
   } = props;
 
-  const isHigherLevel = checkHigherLevel(partyroomGrade);
+  const isHigherLevel = checkHigherGrade(partyroomGrade);
 
   return (
     <DisplayOptionMenuOnHoverListener
@@ -34,7 +34,7 @@ const ChatItem = (props: ChatItemProps) => {
               <Typography
                 type='body4'
                 className={cn(
-                  galmuriVariable.className,
+                  galmuriFont.className,
                   'text-gray-200 text-center',
                   isHigherLevel && 'text-red-400'
                 )}

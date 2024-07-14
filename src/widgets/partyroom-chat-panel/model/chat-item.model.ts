@@ -1,6 +1,6 @@
 import { PartyroomGrade } from '@/shared/api/http/types/@enums';
 
-export const checkHigherLevel = (authority?: PartyroomGrade) => {
+export const checkHigherGrade = (authority?: PartyroomGrade) => {
   if (!authority) return false;
   return (
     authority === PartyroomGrade.MOD ||

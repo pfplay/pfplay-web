@@ -4,8 +4,8 @@ import { getServerDictionary } from '@/shared/lib/localization/get-server-dictio
 import { Button } from '@/shared/ui/components/button';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
 import { PFInfoOutline, PFParty, PFChatFilled, PFPersonOutline } from '@/shared/ui/icons';
+import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
-import { PartyroomChatTabPanel } from '@/widgets/partyroom-tab-panel';
 import { Sidebar } from '@/widgets/sidebar';
 
 export const dynamic = 'force-dynamic';
@@ -73,7 +73,7 @@ const PartyroomPage = async () => {
             </TabList>
             <TabPanels className='flex-1 flexCol'>
               <TabPanel tabIndex={0} className='flex-1 flexCol'>
-                <PartyroomChatTabPanel />
+                <PartyroomChatPanel />
               </TabPanel>
               <TabPanel tabIndex={1} className='flex-1 flexCol overflow-hidden'>
                 {/* <AvatarFaceList /> */}

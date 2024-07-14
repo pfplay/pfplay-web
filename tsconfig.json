@@ -29,7 +29,8 @@
     "types/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/widgets/partyroom-chat-panel/ui/chat-item/authority-headset.component.tsx"
   ],
   "exclude": ["node_modules", "**/*.test.ts"]
 }

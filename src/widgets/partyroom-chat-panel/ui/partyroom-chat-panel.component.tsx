@@ -1,17 +1,16 @@
 'use client';
 import React from 'react';
-import { ChatItem } from '@/entities/chat-item';
 import { fixtureChatMessages } from '@/shared/api/websocket/__fixture__/chat-messages.fixture';
 import { Button } from '@/shared/ui/components/button';
 import { Input } from '@/shared/ui/components/input';
 import { PFSend } from '@/shared/ui/icons';
-import {
-  CHAT_TAB_PANEL_START_POSITION,
-  CHAT_TAB_PANEL_END_POSITION,
-} from '../config/partyroom-chat-tab-panel-size.config';
-import { refineChatMessages } from '../model/partyroom-chat-tab-panel-messages.model';
+import { ChatItem } from '@/widgets/partyroom-chat-panel/ui/chat-item';
+import { refineChatMessages } from '../model/chat-messages.model';
 
-const PartyroomChatTabPanel = () => {
+export const CHAT_TAB_PANEL_START_POSITION = 130;
+export const CHAT_TAB_PANEL_END_POSITION = 96;
+
+const PartyroomChatPanel = () => {
   const chatMessages = refineChatMessages(fixtureChatMessages);
 
   return (
@@ -47,4 +46,4 @@ const PartyroomChatTabPanel = () => {
   );
 };
 
-export default PartyroomChatTabPanel;
+export default PartyroomChatPanel;
