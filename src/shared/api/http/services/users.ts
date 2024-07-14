@@ -1,5 +1,6 @@
+import { Singleton } from '@/shared/lib/decorators/singleton';
 import HTTPClient from '../client/client';
-import {
+import type {
   SignInRequest,
   SignInGuestRequest,
   GetMyInfoResponse,
@@ -15,6 +16,7 @@ import {
   UsersClient,
 } from '../types/users';
 
+@Singleton
 class UsersService extends HTTPClient implements UsersClient {
   private ROUTE_V1 = 'v1/users';
 

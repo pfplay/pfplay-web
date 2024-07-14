@@ -1,6 +1,7 @@
 import { PaginationResponse } from '@/shared/api/http/types/@shared';
+import { Singleton } from '@/shared/lib/decorators/singleton';
 import HTTPClient from '../client/client';
-import {
+import type {
   GetPlaylistsResponse,
   GetPlaylistMusicsParameters,
   PlaylistMusic,
@@ -19,6 +20,7 @@ import {
   PlaylistsClient,
 } from '../types/playlists';
 
+@Singleton
 class PlaylistsService extends HTTPClient implements PlaylistsClient {
   private ROUTE_V1 = 'v1/playlists';
 

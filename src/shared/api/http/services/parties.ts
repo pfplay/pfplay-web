@@ -1,12 +1,14 @@
 import { PaginationPayload, PaginationResponse } from '@/shared/api/http/types/@shared';
+import { Singleton } from '@/shared/lib/decorators/singleton';
 import HTTPClient from '../client/client';
-import {
+import type {
   CreatePartyroomRequest,
   CreatePartyroomResponse,
   PartiesClient,
   PartyroomSummary,
 } from '../types/parties';
 
+@Singleton
 class PartiesService extends HTTPClient implements PartiesClient {
   private ROUTE_V1 = 'v1/party-room';
 

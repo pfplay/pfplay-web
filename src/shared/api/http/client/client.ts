@@ -1,29 +1,23 @@
 import axios, { AxiosInstance } from 'axios';
-import { Singleton } from '@/shared/lib/decorators/singleton';
 import { flow } from '@/shared/lib/functions/flow';
 import { logRequest } from './interceptors/request';
 import { logError, logResponse, processError, unwrapResponse } from './interceptors/response';
 
-@Singleton
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_HOST_NAME,
+  timeout: 4000,
+  validateStatus: (status) => status >= 200 && status < 400,
+  withCredentials: true,
+});
+
+axiosInstance.interceptors.request.use(flow([logRequest]));
+axiosInstance.interceptors.response.use(
+  flow([logResponse, unwrapResponse]),
+  flow([logError, processError])
+);
+
 export default class HTTPClient {
-  protected axiosInstance: AxiosInstance;
-
-  public constructor() {
-    // create axios instance
-    this.axiosInstance = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_API_HOST_NAME,
-      timeout: 4000,
-      validateStatus: (status) => status >= 200 && status < 400,
-      withCredentials: true,
-    });
-
-    // apply interceptors
-    this.axiosInstance.interceptors.request.use(flow([logRequest]));
-    this.axiosInstance.interceptors.response.use(
-      flow([logResponse, unwrapResponse]),
-      flow([logError, processError])
-    );
-  }
+  protected axiosInstance = axiosInstance;
 
   protected get<T>(...args: Parameters<AxiosInstance['get']>) {
     return this.axiosInstance.get<T, T>(...args);
