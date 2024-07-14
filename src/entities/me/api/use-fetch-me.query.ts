@@ -8,7 +8,7 @@ import {
 import type { UseQueryOptions } from '@tanstack/react-query/src/types';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
-import { UsersService } from '@/shared/api/http/services/users';
+import UsersService from '@/shared/api/http/services/users';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { ONE_HOUR } from '@/shared/config/time';
 import * as Me from '../model/me.model';

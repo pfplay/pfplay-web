@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
-import { PlaylistsService } from '@/shared/api/http/services/playlists';
+import PlaylistsService from '@/shared/api/http/services/playlists';
 import { APIError } from '@/shared/api/http/types/@shared';
 import {
   CreatePlaylistRequestBody,
