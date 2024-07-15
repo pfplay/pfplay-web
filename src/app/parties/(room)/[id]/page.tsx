@@ -12,6 +12,7 @@ import { PartyroomAvatars } from '@/widgets/partyroom-avatars';
 import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
+import { PartyroomUserPanel } from '@/widgets/partyroom-user-panel';
 import { Sidebar } from '@/widgets/sidebar';
 import UserListItem from 'shared/ui/components/user-list-item/user-list-item.component';
 
@@ -74,9 +75,11 @@ const PartyroomPage = () => {
         </div>
 
         {/* 채팅, 사람 탭 */}
-        <div className='flex-1 flexCol'>
-          <TabGroup>
-            <TabList className='flexRow'>
+        <div className='w-full'>
+          <TabGroup
+            defaultIndex={1} // TODO: 사람 탭 ui 완료 후 defaultIndex 0 적용
+          >
+            <TabList className={cn('w-full flexRow')}>
               <Tab
                 tabTitle={t.db.title.chat}
                 variant='line'
@@ -92,9 +95,8 @@ const PartyroomPage = () => {
               <TabPanel tabIndex={0} className='flex-1 flexCol'>
                 <PartyroomChatPanel />
               </TabPanel>
-              <TabPanel tabIndex={1} className='flex-1 flexCol overflow-hidden'>
-                {/* 윤님 작업 완료되면 교체 */}
-                <TempMembers />
+              <TabPanel tabIndex={1} className='flex-1 flexCol'>
+                <PartyroomUserPanel />
               </TabPanel>
             </TabPanels>
           </TabGroup>
