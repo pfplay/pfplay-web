@@ -82,5 +82,6 @@ function handleBubbledError(error: unknown) {
     return;
   }
 
+  console.error(error);
   alert(errorMessage);
 }
