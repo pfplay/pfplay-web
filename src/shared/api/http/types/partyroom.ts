@@ -1,4 +1,4 @@
-import { MemberGrade, PartyroomGrade } from './@enums';
+import { GradeType, PartyroomGrade } from './@enums';
 
 export interface GetPartyroomMemberRequest {
   partyroomId: string;
@@ -9,7 +9,7 @@ export interface PartyroomMember {
   partyroomGrade: PartyroomGrade;
   nickname: string;
   memberId: number;
-  gradeType: MemberGrade;
+  gradeType: GradeType;
   avatarIconUri: string;
 }
 

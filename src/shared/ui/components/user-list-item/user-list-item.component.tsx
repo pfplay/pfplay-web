@@ -24,10 +24,14 @@ type UserListItemWithButton = {
   onButtonClick: (id?: number) => void; // 사용처 정해지면 param 추가/제거 및 타입 수정
 };
 
+type DefaultUserListItem = {
+  suffixType: 'default';
+};
+
 type UserListItemProps = {
   userListItemConfig: UserListItemType;
   menuItemList: MenuItem[];
-} & (UserListItemWithTag | UserListItemWithButton);
+} & (UserListItemWithTag | UserListItemWithButton | DefaultUserListItem);
 
 const UserListItem = ({ userListItemConfig, menuItemList, ...suffixProps }: UserListItemProps) => {
   return (
