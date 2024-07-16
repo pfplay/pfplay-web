@@ -27,7 +27,7 @@ const PartyroomLayout = ({ children }: PropsWithChildren) => {
 
   return (
     <>
-      <main className='bg-partyRoom'>{children}</main>
+      <main className='bg-partyRoom overflow-hidden'>{children}</main>
     </>
   );
 };

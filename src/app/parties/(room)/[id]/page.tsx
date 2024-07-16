@@ -56,9 +56,9 @@ const PartyroomPage = async () => {
         </div>
 
         {/* 채팅, 사람 탭 */}
-        <div className='w-full'>
+        <div className='flex-1 flexCol'>
           <TabGroup>
-            <TabList className={cn('w-full flexRow')}>
+            <TabList className='flexRow'>
               <Tab
                 tabTitle={t.db.title.chat}
                 variant='line'
@@ -69,7 +69,6 @@ const PartyroomPage = async () => {
                 variant='line'
                 PrefixIcon={<PFPersonOutline width={20} height={20} />}
               />
-              <div className='flex-1 border-b-[1px] border-b-gray-400' />
             </TabList>
             <TabPanels className='flex-1 flexCol'>
               <TabPanel tabIndex={0} className='flex-1 flexCol'>
