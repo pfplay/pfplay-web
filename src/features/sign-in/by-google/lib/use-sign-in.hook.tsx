@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { UsersService } from '@/shared/api/http/services/users';
+import UsersService from '@/shared/api/http/services/users';
 
 export default function useSignIn() {
   return useCallback(() => {

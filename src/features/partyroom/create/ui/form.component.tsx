@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { useSuspenseFetchMe } from '@/entities/me';
-import { PartiesService } from '@/shared/api/http/services/parties';
+import PartiesService from '@/shared/api/http/services/parties';
 import { cn } from '@/shared/lib/functions/cn';
 import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';

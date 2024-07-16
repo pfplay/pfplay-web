@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useGetMyServiceEntry } from '@/entities/me';
-import { UsersService } from '@/shared/api/http/services/users';
+import UsersService from '@/shared/api/http/services/users';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';

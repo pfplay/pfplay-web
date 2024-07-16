@@ -1,7 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { QueryKeys } from '@/shared/api/http/query-keys';
-import { PlaylistsService } from '@/shared/api/http/services/playlists';
+import PlaylistsService from '@/shared/api/http/services/playlists';
 import { FIVE_MINUTES, ONE_MINUTE } from '@/shared/config/time';
 import { Language } from '@/shared/lib/localization/constants';
 import { useLang } from '@/shared/lib/localization/lang.context';
