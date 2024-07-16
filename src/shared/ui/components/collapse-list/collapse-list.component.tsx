@@ -9,7 +9,11 @@ type CollapseListProps = {
   variant?: 'default' | 'accent' | 'outlined';
   PrefixIcon?: ReactNode;
   title: string;
-  infoText?: ReactNode;
+  infoText?: string;
+  classNames?: {
+    button?: string;
+    panel?: string;
+  };
 };
 
 const CollapseList = ({
@@ -18,6 +22,7 @@ const CollapseList = ({
   infoText,
   variant = 'default',
   children,
+  classNames,
 }: PropsWithChildren<CollapseListProps>) => {
   return (
     <Disclosure as='div' className='mx-auto w-full max-w-md bg-transparent'>
@@ -28,7 +33,8 @@ const CollapseList = ({
               'w-full flexRow justify-between items-center px-4 py-3 rounded bg-gray-800 text-left text-gray-50 hover:bg-gray-700 ',
               variant === 'default' && 'border-none',
               variant === 'accent' && 'border-[1px] border-red-500',
-              variant === 'outlined' && 'border-[1px] border-gray-500'
+              variant === 'outlined' && 'border-[1px] border-gray-500',
+              classNames?.button
             )}
           >
             <span className='w-4/5 flexRow items-center gap-2'>
@@ -48,7 +54,11 @@ const CollapseList = ({
               )}
             </span>
           </Disclosure.Button>
-          <div className='space-y-3 [&>:first-child]:pt-3'>{children}</div>
+          <div className='space-y-3 [&>:first-child]:pt-3'>
+            <Disclosure.Panel as='article' className={cn(classNames?.panel)}>
+              {children}
+            </Disclosure.Panel>
+          </div>
         </>
       )}
     </Disclosure>

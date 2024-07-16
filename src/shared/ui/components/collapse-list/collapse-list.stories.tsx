@@ -1,4 +1,3 @@
-import { Disclosure } from '@headlessui/react';
 import type { Meta } from '@storybook/react';
 import PlaylistItem from '@/features/playlist/list-musics/ui/music.component';
 import { fixtureCollapseList } from '@/shared/api/http/__fixture__/collapse-list.fixture';
@@ -20,11 +19,9 @@ export default meta;
 
 export const CollapseListDefault = () => {
   return (
-    <CollapseList title={'Do you offer technical support?'}>
+    <CollapseList title={'Do you offer technical support?'} classNames={{ panel: 'text-gray-200' }}>
       {fixtureCollapseList.musics.map((music) => (
-        <Disclosure.Panel key={music.musicId} as='article' className=' text-gray-200'>
-          <PlaylistItem music={music} menuItems={fixtureMenuItems} />
-        </Disclosure.Panel>
+        <PlaylistItem key={music.musicId} music={music} menuItems={fixtureMenuItems} />
       ))}
     </CollapseList>
   );
@@ -32,11 +29,13 @@ export const CollapseListDefault = () => {
 
 export const CollapseListAccent = () => {
   return (
-    <CollapseList variant='accent' title={'Do you offer technical support?'}>
+    <CollapseList
+      variant='accent'
+      title={'Do you offer technical support?'}
+      classNames={{ panel: 'text-gray-200' }}
+    >
       {fixtureCollapseList.musics.map((music) => (
-        <Disclosure.Panel key={music.musicId} as='article' className=' text-gray-200'>
-          <PlaylistItem music={music} menuItems={fixtureMenuItems} />
-        </Disclosure.Panel>
+        <PlaylistItem key={music.musicId} music={music} menuItems={fixtureMenuItems} />
       ))}
     </CollapseList>
   );
@@ -44,11 +43,13 @@ export const CollapseListAccent = () => {
 
 export const CollapseListOutlined = () => {
   return (
-    <CollapseList variant='outlined' title={'Do you offer technical support?'}>
+    <CollapseList
+      variant='outlined'
+      title={'Do you offer technical support?'}
+      classNames={{ panel: 'text-gray-200' }}
+    >
       {fixtureCollapseList.musics.map((music) => (
-        <Disclosure.Panel key={music.musicId} as='article' className=' text-gray-200'>
-          <PlaylistItem music={music} menuItems={fixtureMenuItems} />
-        </Disclosure.Panel>
+        <PlaylistItem key={music.musicId} music={music} menuItems={fixtureMenuItems} />
       ))}
     </CollapseList>
   );
@@ -60,29 +61,31 @@ export const CollapseListForPlaylist = () => {
       PrefixIcon={<Tag value='Tag' variant='outlined' />}
       title={'Do you offer technical support'}
       infoText='24곡'
+      classNames={{ panel: 'text-gray-200' }}
     >
       {fixtureCollapseList.musics.map((music) => (
-        <Disclosure.Panel key={music.musicId} as='article' className=' text-gray-200'>
-          <PlaylistItem music={music} menuItems={fixtureMenuItems} />
-        </Disclosure.Panel>
+        <PlaylistItem key={music.musicId} music={music} menuItems={fixtureMenuItems} />
       ))}
     </CollapseList>
   );
 };
 
-export const CollapseListForUserlist = () => {
+export const CollapseListForUserList = () => {
   return (
-    <CollapseList title={'Do you offer technical support?'} infoText='24곡'>
+    <CollapseList
+      title={'Do you offer technical support?'}
+      infoText='24곡'
+      classNames={{ panel: 'text-gray-200' }}
+    >
       {fixtureCollapseList.userListPanel.map((user) => (
-        <Disclosure.Panel key={user.id} as='article' className=' text-gray-200'>
-          <UserListItem
-            suffixType='button'
-            suffixValue='Click'
-            userListItemConfig={user}
-            menuItemList={fixtureMenuItems}
-            onButtonClick={(id) => console.log(`id: ${id}는 향후 api 연결에 사용될 예정입니다.`)}
-          />
-        </Disclosure.Panel>
+        <UserListItem
+          key={user.id}
+          suffixType='button'
+          suffixValue='Click'
+          userListItemConfig={user}
+          menuItemList={fixtureMenuItems}
+          onButtonClick={(id) => console.log(`id: ${id}는 향후 api 연결에 사용될 예정입니다.`)}
+        />
       ))}
     </CollapseList>
   );
