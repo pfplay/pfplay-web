@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import DisplayBoard from './display-board.component';
 
 const meta = {
-  title: 'features/DisplayBoard',
+  title: 'features/PartyroomDisplayBoard',
   component: DisplayBoard,
   tags: ['autodocs'],
   args: {

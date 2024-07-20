@@ -9,7 +9,7 @@ type CollapseListProps = {
   variant?: 'default' | 'accent' | 'outlined';
   PrefixIcon?: ReactNode;
   title: string;
-  infoText?: string;
+  infoText?: ReactNode;
 };
 
 const CollapseList = ({

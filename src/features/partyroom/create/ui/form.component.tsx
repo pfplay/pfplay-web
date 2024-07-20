@@ -10,13 +10,13 @@ import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useLang } from '@/shared/lib/localization/lang.context';
 import { Button } from '@/shared/ui/components/button';
+import { DjListItem } from '@/shared/ui/components/dj-list-item';
 import { FormItem } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
 import { InputNumber } from '@/shared/ui/components/input-number';
 import { TextArea } from '@/shared/ui/components/textarea';
 import { Tooltip } from '@/shared/ui/components/tooltip';
 import { Typography } from '@/shared/ui/components/typography';
-import DjListItem from './dj-list-item.component';
 import * as Form from '../model/form.model';
 
 interface PartyroomCreateFormProps {

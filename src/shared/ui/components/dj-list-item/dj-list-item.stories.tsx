@@ -19,22 +19,21 @@ export const Preview: Story = {
 
 export const DjListItemWithOrder: Story = {
   args: {
-    order: '1',
+    order: '3',
     userConfig: { username: 'nickname', src: '/images/Temp/nft.png' },
   },
 };
 
-export const DjListItemAccentOutline: Story = {
+export const DjListItemAccent: Story = {
   args: {
-    order: '0',
     userConfig: { username: 'nickname', src: '/images/Temp/nft.png' },
-    variant: 'outlineAccent',
+    variant: 'accent',
   },
 };
 
 export const DjListItemWithBackground: Story = {
   args: {
-    order: '0',
+    order: '3',
     userConfig: { username: 'nickname', src: '/images/Temp/nft.png' },
     variant: 'filled',
   },
@@ -42,9 +41,8 @@ export const DjListItemWithBackground: Story = {
 
 export const DjListItemWithTag: Story = {
   args: {
-    order: '0',
     userConfig: { username: 'nickname', src: '/images/Temp/nft.png' },
-    variant: 'outlineAccent',
+    variant: 'accent',
     suffixTagValue: 'Tag',
   },
 };

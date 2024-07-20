@@ -160,7 +160,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
                         color='secondary'
                         variant='outline'
                         Icon={<PFClose width={24} height={24} />}
-                        className='border-none p-0 absolute top-[2.5px] right-0' /*  */
+                        className='border-none p-0 absolute top-[2.5px] right-0'
                         onClick={handleClose}
                       />
                     )}
