@@ -17,8 +17,8 @@ interface StrWithEmphasis {
   emphasisPhrase: string | string[];
 }
 export interface DialogProps {
+  id?: string;
   open: boolean;
-  hideDim?: boolean;
   title?: string | StrWithEmphasis;
   titleAlign?: 'left' | 'center';
   titleType?: TypographyProps['type'];
@@ -26,9 +26,18 @@ export interface DialogProps {
   Body: FC | ReactNode;
   onClose: () => void;
   closeConfirm?: () => Promise<boolean | undefined>;
+  /**
+   * @default true
+   */
   closeWhenOverlayClicked?: boolean;
-  id?: string;
+  /**
+   * @default false
+   */
   showCloseIcon?: boolean;
+  /**
+   * @default false
+   */
+  hideDim?: boolean;
   classNames?: {
     container?: string;
   };
@@ -57,8 +66,8 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   id,
   titleAlign = 'center',
   titleType = 'body1',
-  showCloseIcon,
-  hideDim,
+  showCloseIcon = false,
+  hideDim = false,
   classNames,
 }) => {
   const Title = useMemo(() => {

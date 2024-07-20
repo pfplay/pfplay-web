@@ -3,6 +3,7 @@ import { useMemo, useRef, useState } from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
 import { cn } from '@/shared/lib/functions/cn';
 import { delay } from '@/shared/lib/functions/delay';
+import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import Dialog from './dialog.component';
 import { useDialog } from './use-dialog.hook';
 import { Button } from '../button';
@@ -199,7 +200,7 @@ export const Multiple: Story = () => {
 
 export const Stream: Story = () => {
   const [count, setCount] = useState(0);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const { open, onOpen, onClose } = useDisclosure();
   const intervalRef = useRef<NodeJS.Timer>();
 
   const streamLike = useMemo(() => {
@@ -219,11 +220,11 @@ export const Stream: Story = () => {
   }, []);
 
   const handleOpenDialog = () => {
-    setDialogOpen(true);
+    onOpen();
     streamLike.startCount();
   };
   const handleCloseDialog = () => {
-    setDialogOpen(false);
+    onClose();
     streamLike.stopCount();
     setCount(0);
   };
@@ -233,7 +234,7 @@ export const Stream: Story = () => {
       <Button onClick={handleOpenDialog}>Click</Button>
 
       <Dialog
-        open={dialogOpen}
+        open={open}
         title='스트림 Like'
         Body={() => (
           <>
