@@ -1,17 +1,23 @@
+'use client';
 import TempAvatars from '@/app/parties/(room)/[id]/temp-avatars';
 import { cn } from '@/shared/lib/functions/cn';
-import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
+import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
-import { PFInfoOutline, PFParty, PFChatFilled, PFPersonOutline } from '@/shared/ui/icons';
+import { PFInfoOutline, PFParty, PFChatFilled, PFPersonOutline, PFDj } from '@/shared/ui/icons';
 import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
+import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
 import { Sidebar } from '@/widgets/sidebar';
 
-export const dynamic = 'force-dynamic';
-
-const PartyroomPage = async () => {
-  const t = await getServerDictionary();
+const PartyroomPage = () => {
+  const t = useI18n();
+  const {
+    open: isDjingDialogOpen,
+    onOpen: openDjingDialog,
+    onClose: closeDjingDialog,
+  } = useDisclosure();
 
   // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
   return (
@@ -29,7 +35,11 @@ const PartyroomPage = async () => {
           'flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded',
           'absolute top-1/2 left-[40px] transform -translate-y-1/2',
         ])}
-        showDJQueue
+        extraButton={{
+          onClick: openDjingDialog,
+          icon: (size, className) => <PFDj width={size} height={size} className={className} />,
+          text: t.dj.title.dj_queue,
+        }}
       />
 
       {/* 오른쪽 채팅창 */}
@@ -81,6 +91,8 @@ const PartyroomPage = async () => {
           </TabGroup>
         </div>
       </div>
+
+      <DjingDialog open={isDjingDialogOpen} close={closeDjingDialog} />
     </>
   );
 };
