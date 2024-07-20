@@ -131,7 +131,7 @@
       "name_in_use": "이미 존재하는 파티 이름이에요",
       "select": "(선택)",
       "min": "분",
-      "cancel_confirm": "지금까지 작성한 내용은 저장되지 않아요. \n개설을 중단하시겠어요?",
+      "cancel_confirm": "지금까지 작성한 내용은 저장되지 않아요.\n개설을 중단하시겠어요?",
       "noti_djing_limit": "디제잉 1회 당 제한 시간은 3분 이상부터 가능해요",
       "noti_web_address": "내 파티룸의 웹 주소를 입력해주세요"
     },
@@ -183,7 +183,7 @@
       "select_dj_playlist": "디제잉 플레이리스트 선택"
     },
     "para": {
-      "no_dj_member": "현재 디제잉 인원이 없어요 파티의 흥을 책임질 DJ가 되어보세요!",
+      "no_dj_member": "현재 디제잉 인원이 없어요\n파티의 흥을 책임질 DJ가 되어보세요!",
       "create_playlist_first": "대기 등록을 위해 먼저 플레이리스트를 생성해주세요",
       "cancel_dj_queue": "DJ 대기 등록 취소",
       "cancel_dj_queue_confirm": "DJ 대기 등록을 취소하시겠습니까?",
