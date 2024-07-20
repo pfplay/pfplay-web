@@ -173,6 +173,30 @@ export const CloseConfirm: Story = () => {
   return <Button onClick={openDialogWithCloseConfirm}>Click</Button>;
 };
 
+export const Multiple: Story = () => {
+  const { openDialog } = useDialog();
+
+  const openMultipleDialog = (order = 1) => {
+    return openDialog((_, onCancel) => ({
+      title: `${order} 번째 다이얼로그`,
+      Body: () => {
+        return (
+          <>
+            <Dialog.ButtonGroup>
+              <Dialog.Button onClick={() => onCancel?.()}>닫기</Dialog.Button>
+              <Dialog.Button onClick={() => openMultipleDialog(order + 1)}>
+                하나 더 열기
+              </Dialog.Button>
+            </Dialog.ButtonGroup>
+          </>
+        );
+      },
+    }));
+  };
+
+  return <Button onClick={() => openMultipleDialog(1)}>Click</Button>;
+};
+
 export const Stream: Story = () => {
   const [count, setCount] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
