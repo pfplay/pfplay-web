@@ -15,7 +15,7 @@ export default function PartyroomConnectionProvider({ children }: { children: Re
      * - connect는 라우트는 가리지 않음 라우트를 가리는건 파티룸 sub, unsub 뿐임
      */
     if (me && !client.connected) {
-      // client.connect(); // TODO: Onchain 빌더톤 끝나면 주석 해제
+      client.connect();
     }
   }, [me]);
 
