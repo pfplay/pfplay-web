@@ -97,7 +97,7 @@ export const useDialog = () => {
         }));
       },
     }),
-    [openDialog]
+    [openDialog, t]
   );
 
   return {

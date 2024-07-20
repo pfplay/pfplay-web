@@ -3,6 +3,7 @@ import { useMemo, useRef, useState } from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
 import { cn } from '@/shared/lib/functions/cn';
 import { delay } from '@/shared/lib/functions/delay';
+import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import Dialog from './dialog.component';
 import { useDialog } from './use-dialog.hook';
 import { Button } from '../button';
@@ -173,9 +174,33 @@ export const CloseConfirm: Story = () => {
   return <Button onClick={openDialogWithCloseConfirm}>Click</Button>;
 };
 
+export const Multiple: Story = () => {
+  const { openDialog } = useDialog();
+
+  const openMultipleDialog = (order = 1) => {
+    return openDialog((_, onCancel) => ({
+      title: `${order} 번째 다이얼로그`,
+      Body: () => {
+        return (
+          <>
+            <Dialog.ButtonGroup>
+              <Dialog.Button onClick={() => onCancel?.()}>닫기</Dialog.Button>
+              <Dialog.Button onClick={() => openMultipleDialog(order + 1)}>
+                하나 더 열기
+              </Dialog.Button>
+            </Dialog.ButtonGroup>
+          </>
+        );
+      },
+    }));
+  };
+
+  return <Button onClick={() => openMultipleDialog(1)}>Click</Button>;
+};
+
 export const Stream: Story = () => {
   const [count, setCount] = useState(0);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const { open, onOpen, onClose } = useDisclosure();
   const intervalRef = useRef<NodeJS.Timer>();
 
   const streamLike = useMemo(() => {
@@ -195,11 +220,11 @@ export const Stream: Story = () => {
   }, []);
 
   const handleOpenDialog = () => {
-    setDialogOpen(true);
+    onOpen();
     streamLike.startCount();
   };
   const handleCloseDialog = () => {
-    setDialogOpen(false);
+    onClose();
     streamLike.stopCount();
     setCount(0);
   };
@@ -209,7 +234,7 @@ export const Stream: Story = () => {
       <Button onClick={handleOpenDialog}>Click</Button>
 
       <Dialog
-        open={dialogOpen}
+        open={open}
         title='스트림 Like'
         Body={() => (
           <>

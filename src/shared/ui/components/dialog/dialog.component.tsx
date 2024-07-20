@@ -17,8 +17,8 @@ interface StrWithEmphasis {
   emphasisPhrase: string | string[];
 }
 export interface DialogProps {
+  id?: string;
   open: boolean;
-  hideDim?: boolean;
   title?: string | StrWithEmphasis;
   titleAlign?: 'left' | 'center';
   titleType?: TypographyProps['type'];
@@ -26,8 +26,18 @@ export interface DialogProps {
   Body: FC | ReactNode;
   onClose: () => void;
   closeConfirm?: () => Promise<boolean | undefined>;
-  id?: string;
+  /**
+   * @default true
+   */
+  closeWhenOverlayClicked?: boolean;
+  /**
+   * @default false
+   */
   showCloseIcon?: boolean;
+  /**
+   * @default false
+   */
+  hideDim?: boolean;
   classNames?: {
     container?: string;
   };
@@ -52,11 +62,12 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   Body,
   onClose,
   closeConfirm,
+  closeWhenOverlayClicked = true,
   id,
   titleAlign = 'center',
   titleType = 'body1',
-  showCloseIcon,
-  hideDim,
+  showCloseIcon = false,
+  hideDim = false,
   classNames,
 }) => {
   const Title = useMemo(() => {
@@ -93,7 +104,15 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
 
   return (
     <Transition appear show={open} as={Fragment}>
-      <HUDialog as='div' className='relative z-dialog' onClose={handleClose} id={id}>
+      <HUDialog
+        as='div'
+        className='relative z-dialog'
+        onClick={closeWhenOverlayClicked ? handleClose : undefined}
+        onClose={
+          () => {} /* 여기 close function 을 넣으면 중첩 모달 띄울 때 중첩 모달 내 인터랙션에 의해 직전 모달이 닫혀 버리는 문제가 있음. 해서 onClick 에서 컨트롤 */
+        }
+        id={id}
+      >
         {!hideDim && (
           <Transition.Child
             as={Fragment}
