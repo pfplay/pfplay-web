@@ -185,18 +185,18 @@
     "para": {
       "no_dj_member": "There are no DJs currently. Become a DJ and keep the party going!",
       "create_playlist_first": "Please create a playlist to register",
-      "cancel_dj_queue": "Are you sure you want to cancel your DJ queue registration?",
-      "cancel_dj_queue_confirm": "Do you want to lock the queue? No new DJs will be added.",
-      "lock_dj_queue": "Do you want to skip the current song?",
-      "skip_dj_song": "Remove from DJ Queue",
-      "delete_dj_queue": "Please provide a reason (at least 2 characters)",
-      "write_reason": "You have been removed from the queue by the administrator",
-      "deleted_queue_by_admin": "The current DJ queue is locked by an admin",
-      "locked_queue_by_admin": "According to the admin policy, songs longer than $1 minutes will be automatically skipped",
-      "skipped_song_by_admin": "DJing one person at a time from the waiting list, in order",
-      "dj_in_order": "Songs from the top of the playlist are played sequentially, one song per person",
-      "played_sequentially": "zZz...No Djing in currently in progress...",
-      "empty_dj": "Register new announcement"
+      "cancel_dj_queue": "Cancel DJ queue registration",
+      "cancel_dj_queue_confirm": "Are you sure you want to cancel your DJ queue registration?",
+      "lock_dj_queue": "Do you want to lock the queue? No new DJs will be added.",
+      "skip_dj_song": "Do you want to skip the current song?",
+      "delete_dj_queue": "Remove from DJ Queue",
+      "write_reason": "Please provide a reason (at least 2 characters)",
+      "deleted_queue_by_admin": "You have been removed from the queue by the administrator",
+      "locked_queue_by_admin": "The current DJ queue is locked by an admin",
+      "skipped_song_by_admin": "According to the admin policy, songs longer than $1 minutes will be automatically skipped",
+      "dj_in_order": "DJing one person at a time from the waiting list, in order",
+      "played_sequentially": "Songs from the top of the playlist are played sequentially, one song per person",
+      "empty_dj": "zZz...No Djing in currently in progress..."
     }
   },
   "db": {
@@ -210,17 +210,17 @@
   },
   "ed": {
     "btn": {
-      "regi_notice": "Only Community Manager and above can make edit action"
+      "regi_notice": "Register new announcement"
     },
     "para": {
-      "edit_only_admin": "Existing notices will be deleted upon registration!",
-      "noti_deleted": "My playlist"
+      "edit_only_admin": "Only Community Manager and above can make edit action",
+      "noti_deleted": "Existing notices will be deleted upon registration!"
     }
   },
   "playlist": {
     "title": {
-      "my_playlist": "Grabbed song",
-      "grabbed_song": "songs",
+      "my_playlist": "My playlist",
+      "grabbed_song": "Grabbed song",
       "song": "song",
       "n_song": "$1 songs"
     },
