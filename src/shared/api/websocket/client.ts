@@ -7,10 +7,15 @@ import withDebugger from '@/shared/lib/functions/log/with-debugger';
 const logger = withDebugger(0);
 const log = logger(specificLog);
 
+interface Subscription extends StompSubscription {
+  destination: string;
+}
+
 export default class StompClient {
   private client: Client;
   private connectListeners: (() => void)[] = [];
-  private subscriptions: StompSubscription[] = [];
+  public subscriptions: Subscription[] = [];
+  private heartbeatInterval: ReturnType<typeof setInterval> | undefined;
 
   public constructor() {
     this.client = new Client({
@@ -25,6 +30,7 @@ export default class StompClient {
   public connect() {
     if (!this.connected) {
       this.client.onConnect = () => {
+        this.startHeartbeat();
         this.connectListeners.forEach((listener) => listener());
         this.connectListeners = [];
       };
@@ -36,6 +42,7 @@ export default class StompClient {
   public async disconnect() {
     if (this.connected) {
       this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+      clearInterval(this.heartbeatInterval);
 
       await this.client.deactivate();
     }
@@ -51,7 +58,10 @@ export default class StompClient {
 
   public subscribe(destination: string, callback: messageCallbackType) {
     const subscription = this.client.subscribe(destination, callback);
-    this.subscriptions.push(subscription);
+    this.subscriptions.push({
+      ...subscription,
+      destination,
+    });
   }
 
   public unsubscribe(destination: string) {
@@ -63,18 +73,22 @@ export default class StompClient {
     this.subscriptions = [];
   }
 
-  public send(destination: string, body: Record<string, unknown>) {
+  public send(destination: string, body: unknown) {
     this.client.publish({
       destination,
       body: JSON.stringify(body),
     });
   }
 
-  public get connected() {
-    return this.client.connected;
+  private startHeartbeat() {
+    this.subscribe('sub/heartbeat', function (_pong) {});
+
+    this.heartbeatInterval = setInterval(() => {
+      this.send('pub/heartbeat', 'PING');
+    }, 4000);
   }
 
-  public get hasSubscription() {
-    return this.subscriptions.length > 0;
+  public get connected() {
+    return this.client.connected;
   }
 }

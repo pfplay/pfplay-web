@@ -10,7 +10,7 @@ const PartyroomLayout = ({ children }: PropsWithChildren) => {
   const client = usePartyroomClient();
 
   useDidMountEffect(() => {
-    if (client.hasSubscription) {
+    if (client.subscriptions.some(({ destination }) => destination.startsWith(`sub/partyrooms/`))) {
       // TODO: 다른 방 연결 끊고 이 방에 연결할래? 라는 문구 출력
       return;
     }
@@ -26,11 +26,7 @@ const PartyroomLayout = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
-  return (
-    <>
-      <main className='bg-partyRoom overflow-hidden'>{children}</main>
-    </>
-  );
+  return <main className='bg-partyRoom overflow-hidden'>{children}</main>;
 };
 
 export default PartyroomLayout;
