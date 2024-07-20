@@ -11,24 +11,12 @@ type Props = {
 export default function DjingDialog({ open, close }: Props) {
   const { djing } = useCurrentPartyroom();
 
-  if (!djing.current) {
-    return (
-      <Dialog
-        open={open}
-        onClose={close}
-        classNames={{ container: containerClassName }}
-        Body={<EmptyBody onCancel={close} />}
-      />
-    );
-  }
   return (
     <Dialog
       open={open}
       onClose={close}
-      classNames={{ container: containerClassName }}
-      Body={<Body onCancel={close} />}
+      classNames={{ container: 'w-[800px] py-[36px] px-[40px] bg-black' }}
+      Body={djing.current ? <Body onCancel={close} /> : <EmptyBody onCancel={close} />}
     />
   );
 }
-
-const containerClassName = 'w-[800px] py-[36px] px-[40px] bg-black';
