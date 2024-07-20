@@ -11,12 +11,12 @@ export const fixtureCollapseList: {
     {
       id: 1,
       username: 'nickname1111',
-      src: '/images/Background/Profile.png',
+      src: '/images/Temp/nft.png',
     },
     {
       id: 2,
       username: 'nickname222',
-      src: '/images/Background/Profile.png',
+      src: '/images/Temp/nft.png',
     },
   ],
 };

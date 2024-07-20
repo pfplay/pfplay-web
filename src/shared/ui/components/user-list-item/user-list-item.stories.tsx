@@ -10,7 +10,7 @@ const meta = {
     userListItemConfig: {
       id: 1,
       username: 'nickname',
-      src: '/images/Background/Profile.png',
+      src: '/images/Temp/nft.png',
     },
     menuItemList: fixtureMenuItems,
   },

@@ -296,9 +296,7 @@ export const CustomStructure: Story = () => {
                 <Tag
                   variant='profile'
                   value='박가든 garden'
-                  PrefixIcon={
-                    <Image src='/images/Temp/ProfileExample.png' alt='' width={20} height={20} />
-                  }
+                  PrefixIcon={<Image src='/images/Temp/nft.png' alt='' width={20} height={20} />}
                 />
               </FormItem>
               <Button size='lg' className='w-[236px]' onClick={() => onOk()}>
