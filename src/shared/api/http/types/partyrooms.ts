@@ -109,6 +109,13 @@ export type GetDjingQueuePayload = {
   partyroomId: number;
 };
 
+export type Dj = {
+  djId: number;
+  orderNumber: number;
+  nickname: string;
+  avatarIconUri: string;
+};
+
 export type DjingQueue = {
   isPlaybackActivated: boolean;
   /**
@@ -119,16 +126,32 @@ export type DjingQueue = {
    * 본인이 대기열에 등록되었는지 여부
    */
   isRegistered: boolean;
-  playback: {
+  playback?: {
     name: string;
     thumbnailImage: string;
   };
-  djs: {
-    djId: number;
-    orderNumber: number;
-    nickname: string;
-    avatarIconUri: string;
-  }[];
+  /**
+   * Dj 대기열에 1명만 존재하는 상황에서 새로운 Dj가 대기열에 추가된다고 가정하면, 현재 재생곡이 끝난다면 새로운 Dj에게 차례를 넘기는 것이 자연스럽다.
+   * 이것은 순서 회전이 곡 완료를 기점으로 연산되어야 한다는 의미이다. 즉, 언제나 orderNumber가 1인 Dj는 현재 재생곡의 Dj이다.
+   */
+  djs: Dj[];
+};
+
+export type EnterPayload = {
+  partyroomId: number;
+};
+
+export type EnterResponse = {
+  uid: string;
+  authorityTier: AuthorityTier;
+  nickname: string;
+  memberId: number;
+  gradeType: GradeType;
+  host: boolean;
+};
+
+export type ExitPayload = {
+  partyroomId: number;
 };
 
 export interface PartyroomsClient {
@@ -146,9 +169,14 @@ export interface PartyroomsClient {
   getMembers: (payload: GetMembersPayload) => Promise<PartyroomMemberSummary[]>;
   /**
    * DJ 대기열 조회
-   *
-   * Dj 대기열에 1명만 존재하는 상황에서 새로운 Dj가 대기열에 추가된다고 가정하면, 현재 재생곡이 끝난다면 새로운 Dj에게 차례를 넘기는 것이 자연스럽다.
-   * 이것은 순서 회전이 곡 완료를 기점으로 연산되어야 한다는 의미이다. 즉, 언제나 orderNumber가 1인 Dj는 현재 재생곡의 Dj이다.
    */
   getDjingQueue: (payload: GetDjingQueuePayload) => Promise<DjingQueue>;
+  /**
+   * 파티룸 입장
+   */
+  enter: (payload: EnterPayload) => Promise<EnterResponse>;
+  /**
+   * 파티룸 퇴장
+   */
+  exit: (payload: ExitPayload) => Promise<void>;
 }

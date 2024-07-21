@@ -1,6 +1,9 @@
 import { Singleton } from '@/shared/lib/decorators/singleton';
-import {
+import type {
   DjingQueue,
+  EnterPayload,
+  EnterResponse,
+  ExitPayload,
   GetDjingQueuePayload,
   GetMembersPayload,
   GetSetupInfoPayload,
@@ -29,6 +32,14 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
 
   public getDjingQueue = ({ partyroomId }: GetDjingQueuePayload) => {
     return this.get<DjingQueue>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`);
+  };
+
+  public enter = ({ partyroomId }: EnterPayload) => {
+    return this.post<EnterResponse>(`${this.ROUTE_V1}/${partyroomId}/enter`);
+  };
+
+  public exit = ({ partyroomId }: ExitPayload) => {
+    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/exit`);
   };
 }
 
