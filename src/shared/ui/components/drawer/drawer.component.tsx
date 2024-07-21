@@ -1,23 +1,33 @@
 'use client';
-import { CSSProperties, Fragment, PropsWithChildren, useEffect } from 'react';
+import { CSSProperties, Fragment, PropsWithChildren, ReactNode, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Transition } from '@headlessui/react';
 import { DomId } from '@/shared/config/dom-id';
+import { cn } from '@/shared/lib/functions/cn';
 import usePortalRoot from '@/shared/lib/hooks/use-portal-root.hook';
+import { TextButton } from '@/shared/ui/components/text-button';
 import { PFClose } from '@/shared/ui/icons';
 import { Typography } from '../typography';
 
-interface DrawerProps {
+export interface DrawerProps {
   title?: string;
   isOpen: boolean;
-  close: () => void;
+  close?: () => void;
+  HeaderExtra?: ReactNode;
   style?: CSSProperties;
 }
 
 /**
  * 현재 우측 고정입니다.
  */
-const Drawer = ({ title, isOpen, close, style, children }: PropsWithChildren<DrawerProps>) => {
+const Drawer = ({
+  title,
+  isOpen,
+  close,
+  HeaderExtra,
+  style,
+  children,
+}: PropsWithChildren<DrawerProps>) => {
   const root = usePortalRoot(DomId.DrawerRoot);
 
   useEffect(() => {
@@ -49,13 +59,20 @@ const Drawer = ({ title, isOpen, close, style, children }: PropsWithChildren<Dra
                 leaveTo='-right-full'
               >
                 <div className='pointer-events-auto relative w-screen max-w-md h-full flexCol px-7 py-14 overflow-y-auto bg-black shadow-xl border-l border-gray-700'>
-                  <div className='flexRow justify-between'>
-                    <Typography type='title2' className='text-white'>
+                  <div className='flexRow justify-between mb-10'>
+                    {HeaderExtra}
+                    <Typography
+                      type='title2'
+                      className={cn('text-white', {
+                        'text-center': !HeaderExtra && !close,
+                        'flex-1': !HeaderExtra && !close,
+                      })}
+                    >
                       {title}
                     </Typography>
-                    <div onClick={close} className='cursor-pointer'>
-                      <PFClose width={24} height={24} />
-                    </div>
+                    {close && (
+                      <TextButton onClick={close} Icon={<PFClose width={24} height={24} />} />
+                    )}
                   </div>
                   {children}
                 </div>

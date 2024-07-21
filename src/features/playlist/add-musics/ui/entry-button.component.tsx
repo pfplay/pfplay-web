@@ -4,6 +4,7 @@ import { useUIState } from '@/entities/ui-state';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
+import { TextButton } from '@/shared/ui/components/text-button';
 import { PFAdd, PFClose } from '@/shared/ui/icons';
 import MusicSearch from './music-search.component';
 
@@ -22,16 +23,10 @@ const EntryButton = () => {
       Body: (
         <PlaylistActionBypassProvider action={playlistAction}>
           <MusicSearch
-            extraAction={
-              <button onClick={onClose}>
-                <PFClose width={24} height={24} />
-              </button>
-            }
+            extraAction={<TextButton onClick={onClose} Icon={<PFClose width={24} height={24} />} />}
           />
         </PlaylistActionBypassProvider>
       ),
-      hideDim: true,
-      closeWhenOverlayClicked: false,
     }));
   };
 

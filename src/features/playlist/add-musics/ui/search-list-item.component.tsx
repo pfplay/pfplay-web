@@ -39,7 +39,7 @@ const SearchListItem = ({
   return (
     <div className='flex items-center gap-[32px]'>
       <div className='flex-1 flex items-center gap-[12px]'>
-        <Image src={thumbnailUrl} alt='Video Thumbnail' width={60} height={60} />
+        <Image src={thumbnailUrl} alt='Video Thumbnail' width={60} height={33.75} />
         {/* 일본어, 중국어 등의 정상 렌더링을 위해 url encode, title decode 해줘야 함 */}
         <Typography className='flex-1 text-left mx-3'>{safeDecodeURI(videoTitle)}</Typography>
         <Typography>{formatDuration(runningTime)}</Typography>

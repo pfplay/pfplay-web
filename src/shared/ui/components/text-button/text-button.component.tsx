@@ -9,7 +9,7 @@ type TextButtonColor = 'basic' | 'primary' | 'secondary';
 
 type ButtonHTMLProps = ComponentProps<'button'>;
 export interface TextButtonProps extends Omit<ButtonHTMLProps, 'color' | 'children'> {
-  children: string;
+  children?: string;
   color?: TextButtonColor;
   Icon?: ReactNode;
   iconPlacement?: 'left' | 'right';
@@ -62,9 +62,11 @@ const TextButton = forwardRef<HTMLButtonElement, TextButtonProps>(
       >
         {loading ? <Loading /> : iconPlacement === 'left' && Icon}
 
-        <Typography type={typographyType} overflow='break-normal'>
-          {children}
-        </Typography>
+        {children && (
+          <Typography type={typographyType} overflow='break-normal'>
+            {children}
+          </Typography>
+        )}
 
         {iconPlacement === 'right' && Icon}
       </button>

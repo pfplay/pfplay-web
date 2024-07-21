@@ -47,26 +47,40 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
         const [selected, setSelected] = useState<Playlist>();
         const { setPlaylistDrawer } = useUIState();
 
-        const handleConfirm = () => {
-          if (!selected) return;
-          onOk(selected);
-        };
-
-        useDidMountEffect(() => {
+        const closePlaylistDrawer = () => {
           setPlaylistDrawer({
             open: false,
           });
+        };
+
+        const playlistDrawerWithSelectPlaylist = (playlist: Playlist) => {
+          setPlaylistDrawer({
+            open: true,
+            interactable: false,
+            zIndex: theme.zIndex.dialog + 1,
+            selectedPlaylist: playlist,
+          });
+        };
+
+        const handleCancel = () => {
+          onCancel?.();
+          closePlaylistDrawer();
+        };
+
+        const handleConfirm = () => {
+          if (!selected) return;
+          onOk(selected);
+          closePlaylistDrawer();
+        };
+
+        useDidMountEffect(() => {
+          closePlaylistDrawer();
         }, []);
 
         useEffect(() => {
           if (!selected) return;
 
-          setPlaylistDrawer({
-            open: true,
-            interactable: false,
-            zIndex: theme.zIndex.dialog + 1,
-            selectedPlaylist: selected.id,
-          });
+          playlistDrawerWithSelectPlaylist(selected);
         }, [selected]);
 
         return (
@@ -79,7 +93,7 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
             </div>
 
             <Dialog.ButtonGroup>
-              <Dialog.Button onClick={onCancel} color='secondary'>
+              <Dialog.Button onClick={handleCancel} color='secondary'>
                 {t.common.btn.cancel}
               </Dialog.Button>
               <Dialog.Button onClick={handleConfirm} disabled={!selected}>
@@ -89,6 +103,7 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
           </>
         );
       },
+      closeWhenOverlayClicked: false, // true가 되면, 드로워가 열리고 overlay를 클릭하여 닫았을때 drawer를 다시는 닫을 수 없게됩니다.
     }));
   };
 

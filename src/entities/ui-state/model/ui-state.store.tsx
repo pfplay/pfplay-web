@@ -18,7 +18,7 @@ const useUIState = create<UIState.Model>((set) => ({
       const updated = update(state.playlistDrawer, v);
 
       if (!updated.open) {
-        resetValues('interactable', 'zIndex');
+        resetValues('interactable', 'zIndex', 'selectedPlaylist');
 
         function resetValues<K extends keyof UIState.Model['playlistDrawer']>(...keys: K[]) {
           keys.forEach((key) => {

@@ -1,1 +1,1 @@
-export { default as Drawer } from './drawer.component';
+export { default as Drawer, type DrawerProps } from './drawer.component';

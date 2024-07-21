@@ -7,7 +7,7 @@ type PlaylistDrawerState = {
   open: boolean;
   interactable: boolean;
   zIndex: number;
-  selectedPlaylist: Playlist['id'] | undefined;
+  selectedPlaylist: Playlist | undefined;
 };
 
 export type Model = {
