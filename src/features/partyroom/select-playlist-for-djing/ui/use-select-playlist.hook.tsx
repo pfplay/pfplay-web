@@ -5,6 +5,7 @@ import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
 import { useDialog } from '@/shared/ui/components/dialog';
+import { Typography } from '@/shared/ui/components/typography';
 import theme from '@/shared/ui/foundation/theme';
 import Dialog from 'shared/ui/components/dialog/dialog.component';
 import SelectPlaylist from './select-playlist.component';
@@ -36,7 +37,12 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
   const selectPlaylist = () => {
     return openDialog<Playlist>((onOk, onCancel) => ({
       title: t.dj.btn.select_dj_playlist,
-      Sub: replaceVar(t.dj.para.skipped_song_by_admin, { $1: 'n' }), // TODO: replace $1 with the actual number of skipped songs
+      Sub: (
+        <Typography type='detail1' className='text-center text-gray-300'>
+          {/* TODO: replace $1 with the actual number of skipped songs */}
+          {replaceVar(t.dj.para.skipped_song_by_admin, { $1: 'n' })}
+        </Typography>
+      ),
       Body: () => {
         const [selected, setSelected] = useState<Playlist>();
         const { setPlaylistDrawer } = useUIState();
