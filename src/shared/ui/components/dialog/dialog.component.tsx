@@ -3,6 +3,7 @@ import { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo, useR
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import { cn } from '@/shared/lib/functions/cn';
 import { wrapByTag } from '@/shared/lib/functions/wrap-by-tag';
+import theme from '@/shared/ui/foundation/theme';
 import { PFClose } from '@/shared/ui/icons';
 import { Button, ButtonProps } from '../button';
 import { Typography, TypographyProps } from '../typography';
@@ -41,6 +42,7 @@ export interface DialogProps {
   classNames?: {
     container?: string;
   };
+  zIndex?: number;
 }
 
 const getEmphasisedInnerHTML = (strWithEmphasis: StrWithEmphasis): string => {
@@ -69,6 +71,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   showCloseIcon = false,
   hideDim = false,
   classNames,
+  zIndex = theme.zIndex.dialog,
 }) => {
   const Title = useMemo(() => {
     if (!title) return null;
@@ -106,7 +109,8 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
     <Transition appear show={open} as={Fragment}>
       <HUDialog
         as='div'
-        className='relative z-dialog'
+        className='relative'
+        style={{ zIndex }}
         onClick={closeWhenOverlayClicked ? handleClose : undefined}
         onClose={
           () => {} /* 여기 close function 을 넣으면 중첩 모달 띄울 때 중첩 모달 내 인터랙션에 의해 직전 모달이 닫혀 버리는 문제가 있음. 해서 onClick 에서 컨트롤 */

@@ -1,4 +1,5 @@
 import { usePlaylistAction } from '@/entities/playlist';
+import { useUIState } from '@/entities/ui-state';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
@@ -14,9 +15,11 @@ const RemoveButton = ({ targetIds, onSuccess }: RemoveButtonProps) => {
   const t = useI18n();
   const { openDialog } = useDialog();
   const playlistAction = usePlaylistAction();
+  const { playlistDrawer } = useUIState();
 
   const handleClick = () => {
     openDialog((_, onCancel) => ({
+      zIndex: playlistDrawer.zIndex + 1,
       title: t.playlist.para.delete_playlist_confirm,
       Body: (
         <Dialog.ButtonGroup>

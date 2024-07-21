@@ -51,6 +51,7 @@ const EditableList = ({ onChangeSelectedItem }: EditableListProps) => {
             {item.musicCount}
             {t.playlist.title.song}
           </Typography>
+
           <button onClick={() => playlistAction.edit(item.id)}>
             <PFEdit />
           </button>

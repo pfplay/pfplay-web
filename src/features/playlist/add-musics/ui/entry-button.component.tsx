@@ -1,5 +1,6 @@
 import { usePlaylistAction } from '@/entities/playlist';
 import { PlaylistActionBypassProvider } from '@/entities/playlist/lib/playlist-action.context';
+import { useUIState } from '@/entities/ui-state';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
@@ -10,9 +11,11 @@ const EntryButton = () => {
   const t = useI18n();
   const { openDialog } = useDialog();
   const playlistAction = usePlaylistAction();
+  const { playlistDrawer } = useUIState();
 
   const handleAddMusic = () => {
     openDialog((_, onClose) => ({
+      zIndex: playlistDrawer.zIndex + 1,
       classNames: {
         container: '!p-[unset] w-[800px] bg-black border border-gray-700',
       },
