@@ -3,8 +3,9 @@ export enum QueryKeys {
   AvatarBodies = 'avatar-bodies',
   AvatarFaces = 'avatar-faces',
   Nfts = 'nfts',
-  PartyroomList = 'party-room/list',
+  PartyroomList = 'partyroom/list',
   Playlist = 'playlist',
   PlaylistMusics = 'playlist/musics',
   Musics = 'musics',
+  DjingQueue = 'partyroom/djing-queue',
 }

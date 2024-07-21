@@ -1,4 +1,5 @@
 'use client';
+import { useParams } from 'next/navigation';
 import TempAvatars from '@/app/parties/(room)/[id]/temp-avatars';
 import { cn } from '@/shared/lib/functions/cn';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
@@ -13,6 +14,7 @@ import { Sidebar } from '@/widgets/sidebar';
 
 const PartyroomPage = () => {
   const t = useI18n();
+  const params = useParams<{ id: string }>();
   const {
     open: isDjingDialogOpen,
     onOpen: openDjingDialog,
@@ -92,7 +94,11 @@ const PartyroomPage = () => {
         </div>
       </div>
 
-      <DjingDialog open={isDjingDialogOpen} close={closeDjingDialog} />
+      <DjingDialog
+        partyroomId={Number(params.id)}
+        open={isDjingDialogOpen}
+        close={closeDjingDialog}
+      />
     </>
   );
 };

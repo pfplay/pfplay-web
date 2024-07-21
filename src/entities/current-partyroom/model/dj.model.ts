@@ -1,12 +1,7 @@
+import type { Dj } from '@/shared/api/http/types/partyrooms';
 import type { DjListItemUserConfig } from '@/shared/ui/components/dj-list-item';
 
-export type Model = {
-  uid: string;
-  username: string;
-  avatarIconUrl: string;
-};
-
-export const toListItemConfig = (model: Model): DjListItemUserConfig => ({
-  username: model.username,
-  src: model.avatarIconUrl,
+export const toListItemConfig = (model: Dj): DjListItemUserConfig => ({
+  username: model.nickname,
+  src: model.avatarIconUri,
 });
