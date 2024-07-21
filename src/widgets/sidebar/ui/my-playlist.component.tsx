@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useUIState } from '@/entities/ui-state';
 import { AddPlaylistButton } from '@/features/playlist/add';
 import { AddMusicsToPlaylistButton } from '@/features/playlist/add-musics';
 import { CollapsablePlaylists, EditablePlaylists } from '@/features/playlist/list';
@@ -8,23 +9,29 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Drawer } from '@/shared/ui/components/drawer';
 import { TextButton } from '@/shared/ui/components/text-button';
 
-interface MyPlaylistProps {
-  isDrawerOpen: boolean;
-  closeDrawer: () => void;
-}
-
-// TODO: 별도 위젯으로 분리
-const MyPlaylist = ({ isDrawerOpen, closeDrawer }: MyPlaylistProps) => {
+const MyPlaylist = () => {
   const t = useI18n();
   const [editMode, setEditMode] = useState(false);
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<number[]>([]);
+  const { playlistDrawer, setPlaylistDrawer } = useUIState();
+
+  const close = () => {
+    setPlaylistDrawer({ open: false });
+  };
 
   const handleEditConfirm = () => {
     setEditMode(false);
   };
 
+  // TODO: interactable 대응
+  // TODO: 아코디언 > 페이지 대응
   return (
-    <Drawer title={t.playlist.title.my_playlist} isOpen={isDrawerOpen} close={closeDrawer}>
+    <Drawer
+      title={t.playlist.title.my_playlist}
+      isOpen={playlistDrawer.open}
+      close={close}
+      style={{ zIndex: playlistDrawer.zIndex }}
+    >
       <div className='flexRow justify-between items-center mt-10 mb-6'>
         {editMode ? (
           <>

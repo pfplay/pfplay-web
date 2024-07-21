@@ -1,8 +1,9 @@
 'use client';
 import { ReactNode } from 'react';
 import { useSuspenseFetchMe } from '@/entities/me';
+import { useUIState } from '@/entities/ui-state';
 import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
-import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
+import { mergeDeep } from '@/shared/lib/functions/merge-deep';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import Profile from '@/shared/ui/components/profile/profile.component';
@@ -24,7 +25,11 @@ const Sidebar = ({ className, extraButton }: SidebarProps) => {
   const t = useI18n();
   const { data: me } = useSuspenseFetchMe();
   const { openDialog } = useDialog();
-  const { open: showPlaylist, onClose: hidePlaylist, onToggle: togglePlaylist } = useDisclosure();
+  const { setPlaylistDrawer } = useUIState();
+
+  const togglePlaylist = () => {
+    setPlaylistDrawer((prev) => mergeDeep(prev, { open: !prev.open }));
+  };
 
   const handleClickProfileButton = () => {
     return openDialog((_, onCancel) => ({
@@ -67,7 +72,7 @@ const Sidebar = ({ className, extraButton }: SidebarProps) => {
       </aside>
 
       <PlaylistActionProvider>
-        <MyPlaylist isDrawerOpen={showPlaylist} closeDrawer={hidePlaylist} />
+        <MyPlaylist />
       </PlaylistActionProvider>
     </>
   );

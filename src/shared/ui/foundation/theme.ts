@@ -44,8 +44,9 @@ const theme = {
   maxHeight: breakPoints,
   screens: breakPoints,
   zIndex: {
-    dialog: '1000',
-    tooltip: '1001',
+    drawer: 30,
+    dialog: 1000,
+    tooltip: 1001,
   },
   listStyleType: {
     latin: 'lower-latin',

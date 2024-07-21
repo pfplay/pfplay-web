@@ -1,5 +1,5 @@
 'use client';
-import { Fragment, PropsWithChildren, useEffect } from 'react';
+import { CSSProperties, Fragment, PropsWithChildren, useEffect } from 'react';
 import { Transition } from '@headlessui/react';
 import { PFClose } from '@/shared/ui/icons';
 import { Typography } from '../typography';
@@ -8,12 +8,13 @@ interface DrawerProps {
   title?: string;
   isOpen: boolean;
   close: () => void;
+  style?: CSSProperties;
 }
 
 /**
  * 현재 우측 고정입니다.
  */
-const Drawer = ({ title, isOpen, close, children }: PropsWithChildren<DrawerProps>) => {
+const Drawer = ({ title, isOpen, close, style, children }: PropsWithChildren<DrawerProps>) => {
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add('scroll-hidden');
@@ -28,7 +29,7 @@ const Drawer = ({ title, isOpen, close, children }: PropsWithChildren<DrawerProp
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <div className='relative z-30'>
+      <div className='relative z-drawer' style={style}>
         <div className='pointer-events-none fixed inset-y-0 right-0 flex max-w-full'>
           <Transition.Child
             as={Fragment}

@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUIState } from '@/entities/ui-state';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
 import { useDialog } from '@/shared/ui/components/dialog';
+import theme from '@/shared/ui/foundation/theme';
 import Dialog from 'shared/ui/components/dialog/dialog.component';
 import SelectPlaylist from './select-playlist.component';
 
 type Props = {
   playlists: Playlist[];
-  onSelect: (playlist: Playlist) => void;
 };
 
-export default function useSelectPlaylist({ playlists, onSelect }: Props) {
+/**
+ * void를 반환한다면 선택을 직접 취소했거나, 선택을 위한 조건을 만족하지 못한 것입니다.
+ */
+export default function useSelectPlaylist({ playlists }: Props): () => Promise<Playlist | void> {
   const t = useI18n();
   const { openConfirmDialog, openDialog } = useDialog();
   const { setPlaylistDrawer } = useUIState();
@@ -27,16 +30,28 @@ export default function useSelectPlaylist({ playlists, onSelect }: Props) {
   };
 
   const selectPlaylist = () => {
-    openDialog((_, onCancel) => ({
+    return openDialog<Playlist>((onOk, onCancel) => ({
       title: t.dj.btn.select_dj_playlist,
       Sub: replaceVar(t.dj.para.skipped_song_by_admin, { $1: 'n' }), // TODO: replace $1 with the actual number of skipped songs
       Body: () => {
         const [selected, setSelected] = useState<Playlist>();
+        const { setPlaylistDrawer } = useUIState();
 
         const handleConfirm = () => {
           if (!selected) return;
-          onSelect(selected);
+          onOk(selected);
         };
+
+        useEffect(() => {
+          if (!selected) return;
+
+          setPlaylistDrawer({
+            open: true,
+            interactable: false,
+            zIndex: theme.zIndex.dialog + 1,
+            selectedPlaylist: selected.id,
+          });
+        }, [selected]);
 
         return (
           <>
