@@ -44,6 +44,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
           </LangProvider>
         </ReactQueryProvider>
 
+        <div id={DomId.DrawerRoot} />
         <div id={DomId.TooltipRoot} />
       </body>
     </html>

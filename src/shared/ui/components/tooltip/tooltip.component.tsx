@@ -11,6 +11,7 @@ import { createPortal } from 'react-dom';
 import { DomId } from '@/shared/config/dom-id';
 import { cn } from '@/shared/lib/functions/cn';
 import { repeatAnimationFrame } from '@/shared/lib/functions/repeat-animation-frame';
+import usePortalRoot from '@/shared/lib/hooks/use-portal-root.hook';
 import { Typography } from '../typography';
 
 interface Position extends Pick<CSSProperties, 'top' | 'left'> {
@@ -35,7 +36,7 @@ const Tooltip: FC<TooltipProps> = ({ children, title, visible, color = 'red', sp
     left: 0,
     ready: false,
   });
-  const tooltipRoot = useRef<HTMLElement>(document.getElementById(DomId.TooltipRoot)).current;
+  const root = usePortalRoot(DomId.TooltipRoot);
   const childRef = useRef<HTMLElement>(null);
   const tooltipRef = useRef<HTMLParagraphElement>(null);
 
@@ -61,9 +62,7 @@ const Tooltip: FC<TooltipProps> = ({ children, title, visible, color = 'red', sp
     updatePosition();
   }, [visible]);
 
-  if (!tooltipRoot) {
-    throw new Error(`Cannot find tooltip root element.`);
-  }
+  if (!root) return null;
   return (
     <>
       {cloneElement(children, { ref: childRef })}
@@ -93,7 +92,7 @@ const Tooltip: FC<TooltipProps> = ({ children, title, visible, color = 'red', sp
         >
           <Typography type='caption1'>{title}</Typography>
         </div>,
-        tooltipRoot
+        root
       )}
     </>
   );

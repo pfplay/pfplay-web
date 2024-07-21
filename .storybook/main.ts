@@ -17,6 +17,7 @@ const config: StorybookConfig = {
   },
   previewBody: (body) => `
     ${body}
+    <div id="${DomId.DrawerRoot}"></div>
     <div id="${DomId.TooltipRoot}"></div>
   `,
   staticDirs: ['../public'],
