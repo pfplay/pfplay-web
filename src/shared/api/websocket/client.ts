@@ -82,7 +82,7 @@ export default class StompClient {
   }
 
   private startHeartbeat() {
-    this.subscribe('/sub/heartbeat', function (_pong) {});
+    this.subscribe('/user/sub/heartbeat', function (_pong) {});
 
     this.heartbeatInterval = setInterval(() => {
       this.send('/pub/heartbeat', 'PING');
