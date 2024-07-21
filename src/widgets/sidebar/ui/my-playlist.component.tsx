@@ -24,7 +24,7 @@ const MyPlaylist = ({ isDrawerOpen, closeDrawer }: MyPlaylistProps) => {
   };
 
   return (
-    <Drawer title='My playlist' /* TODO: i18n */ isOpen={isDrawerOpen} close={closeDrawer}>
+    <Drawer title={t.playlist.title.my_playlist} isOpen={isDrawerOpen} close={closeDrawer}>
       <div className='flexRow justify-between items-center mt-10 mb-6'>
         {editMode ? (
           <>

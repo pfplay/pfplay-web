@@ -28,6 +28,7 @@ const EntryButton = () => {
         </PlaylistActionBypassProvider>
       ),
       hideDim: true,
+      closeWhenOverlayClicked: false,
     }));
   };
 

@@ -1,6 +1,6 @@
 import { useCurrentPartyroom } from '@/entities/current-partyroom';
 import { Dialog } from '@/shared/ui/components/dialog';
-import Body from '@/widgets/partyroom-djing-dialog/ui/body.component';
+import Body from './body.component';
 import EmptyBody from './empty-body.component';
 
 type Props = {

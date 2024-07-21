@@ -14,7 +14,7 @@ export default function ActionButton({ icon, text, active, activeColor }: Props)
     <button
       disabled={active} /* TODO: Onchain 빌더톤 끝나면 이 조건 제거 */
       className={cn(
-        'appearance-none w-[48px] h-[44px] flexColCenter text-center gap-[4px] rouneded bg-gray-800 text-gray-200',
+        'appearance-none w-[48px] h-[44px] flexColCenter text-center gap-[4px] rounded bg-gray-800 text-gray-200',
         {
           'cursor-pointer': !active,
         }
