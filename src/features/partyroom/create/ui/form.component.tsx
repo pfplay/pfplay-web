@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { useSuspenseFetchMe } from '@/entities/me';
-import PartiesService from '@/shared/api/http/services/parties';
+import PartyroomsService from '@/shared/api/http/services/partyrooms';
 import { cn } from '@/shared/lib/functions/cn';
 import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -54,7 +54,9 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
     domain,
   }) => {
     try {
-      const response = await PartiesService.create({
+      // FIXME: 생성 API 서비스에 추가 및 반영 필요
+      // @ts-ignore
+      const response = await PartyroomsService.create({
         name,
         introduce,
         limit,

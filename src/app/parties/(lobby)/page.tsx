@@ -16,7 +16,9 @@ const PartyLobbyPage = () => {
       />
 
       <div className='max-w-desktop mx-auto'>
-        <MainPartyroomCard />
+        <SuspenseWithErrorBoundary enableReload>
+          <MainPartyroomCard />
+        </SuspenseWithErrorBoundary>
 
         <section
           className={cn([
@@ -29,9 +31,7 @@ const PartyLobbyPage = () => {
         >
           <PartyroomCreateCard />
 
-          <SuspenseWithErrorBoundary enableReload>
-            <PartyroomList />
-          </SuspenseWithErrorBoundary>
+          <PartyroomList />
         </section>
       </div>
     </>

@@ -1,15 +1,14 @@
 import Image from 'next/image';
-import { PartyroomParticipant } from '@/shared/api/http/types/parties';
 import { cn } from '@/shared/lib/functions/cn';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFPersonFilled } from '@/shared/ui/icons';
 
-interface ParticipantsProps {
-  count?: number;
-  participants?: PartyroomParticipant[];
-}
+type Props = {
+  count: number;
+  icons: string[];
+};
 
-const Participants = ({ count, participants }: ParticipantsProps) => {
+const Members = ({ count, icons }: Props) => {
   return (
     <div className='flexRowCenter gap-[45px]'>
       <div className='flexRowCenter gap-[6px]'>
@@ -19,12 +18,12 @@ const Participants = ({ count, participants }: ParticipantsProps) => {
         </Typography>
       </div>
       <ul className='flexRowCenter gap-2'>
-        {participants?.slice(0, 3).map((participant, i) => (
+        {icons?.slice(0, 3).map((icon, i) => (
           <li key={i} className='w-6 h-6 rounded-full bg-slate-400'>
             <Image
               priority
-              src={participant.faceUrl || '/images/Background/profile.png'}
-              alt={participant.nickname || 'party member'}
+              src={icon}
+              alt={'party member'}
               width={24}
               height={24}
               className={cn('w-full h-full object-contain select-none')}
@@ -36,4 +35,4 @@ const Participants = ({ count, participants }: ParticipantsProps) => {
   );
 };
 
-export default Participants;
+export default Members;

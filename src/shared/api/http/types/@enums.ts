@@ -1,14 +1,13 @@
+export enum PairType {
+  BODY = 'BODY',
+  FACE = 'FACE',
+}
+
 export enum ObtainmentType {
   BASIC = 'BASIC',
   DJ_PNT = 'DJ_PNT', // dj point
   REF_LINK = 'REF_LINK', // referral link
   ROOM_ACT = 'ROOM_ACT', // room activition
-}
-
-export enum AuthorityTier {
-  FM = 'FM', // Full Member (지갑인증 - 정회원)
-  AM = 'AM', // Associate Member (지갑인증 x - 준회원)
-  GT = 'GT', // Guest
 }
 
 export enum ActivityType {
@@ -27,6 +26,59 @@ export enum PlaylistOrder {
   DESC = 'DESC',
 }
 
+export enum StageType {
+  MAIN = 'MAIN',
+  GENERAL = 'GENERAL',
+}
+
+export enum ReactionType {
+  LIKE = 'LIKE',
+  DISLIKE = 'DISLIKE',
+  GRAB = 'GRAB',
+}
+
+export enum QueueStatus {
+  CLOSE = 'CLOSE',
+  OPEN = 'OPEN',
+}
+
+export enum PenaltyType {
+  CHAT_BAN_ = 'CHAT_BAN_',
+  CHAT_MESSAGE_REMOVAL = 'CHAT_MESSAGE_REMOVAL',
+  ONE_TIME_EXPULSION = 'ONE_TIME_EXPULSION',
+  PERMANENT_EXPULSION = 'PERMANENT_EXPULSION',
+}
+
+export enum MotionType {
+  NONE = 'NONE',
+  DANCE_TYPE_1 = 'DANCE_TYPE_1', // TODO: 현재 스크립트가 숫자 잡아내지 못해서 수동 수정. 스크립트 수정 필요
+  DANCE_TYPE_2 = 'DANCE_TYPE_2',
+}
+
+export enum MessageTopic {
+  DEACTIVATION = 'DEACTIVATION',
+  ACCESS = 'ACCESS',
+  AGGREGATION = 'AGGREGATION',
+  MOTION = 'MOTION',
+  NOTICE = 'NOTICE',
+  REGULATION = 'REGULATION',
+  PLAYBACK = 'PLAYBACK',
+  CHAT = 'CHAT',
+}
+
+export enum GradeType {
+  HOST = 'HOST',
+  COMMUNITY_MANAGER = 'COMMUNITY_MANAGER',
+  MODERATOR = 'MODERATOR',
+  CLUBBER = 'CLUBBER',
+  LISTENER = 'LISTENER',
+}
+
+export enum AccessType {
+  ENTER = 'ENTER',
+  EXIT = 'EXIT',
+}
+
 export enum PartyroomPenaltyType {
   DELETE = 'DELETE',
   GGUL = 'GGUL',
@@ -42,17 +94,18 @@ export enum PartyroomGrade {
   LISTENER = 'LISTENER',
 }
 
+export enum PartymemberGrade {
+  HOST = 'HOST',
+  MANAGER = 'MANAGER',
+  MODERATOR = 'MODERATOR',
+  CLUBBER = 'CLUBBER',
+  LISTENER = 'LISTENER',
+}
+
 export enum MessageType {
   CHAT = 'CHAT',
   PROMOTE = 'PROMOTE',
   PENALTY = 'PENALTY',
-  NOTICE = 'NOTICE',
-}
-
-export enum MemberGrade {
-  HOST = 'HOST',
-  MODERATE = 'MODERATE',
-  CLUBBER = 'CLUBBER',
 }
 
 export enum AccessLevel {
@@ -61,7 +114,7 @@ export enum AccessLevel {
   ROLE_GUEST = 'ROLE_GUEST',
 }
 
-export enum RedirectableLocation {
+export enum RedirectionableLocation {
   MAIN = 'MAIN',
   PARTY_ROOM = 'PARTY_ROOM',
 }
@@ -81,11 +134,8 @@ export enum TokenClaim {
   AUTHORITY_TIER = 'AUTHORITY_TIER',
 }
 
-/**
- * @deprecated
- * 제거된 enum. 관련 API 응답 명세가 아직 나오지 않아 남겨둠
- */
-export enum PartyroomStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
+export enum AuthorityTier {
+  FM = 'FM', // Full Member (지갑인증 - 정회원)
+  AM = 'AM', // Associate Member (지갑인증 x - 준회원)
+  GT = 'GT', // Guest
 }
