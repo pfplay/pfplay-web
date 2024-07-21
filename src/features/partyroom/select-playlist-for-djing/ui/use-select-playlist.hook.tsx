@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useUIState } from '@/entities/ui-state';
 import { Playlist } from '@/shared/api/http/types/playlists';
+import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
 import { useDialog } from '@/shared/ui/components/dialog';
@@ -25,7 +26,10 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
       content: t.dj.para.create_playlist_first,
     });
     if (confirmed) {
-      setPlaylistDrawer({ open: true });
+      setPlaylistDrawer({
+        open: true,
+        zIndex: theme.zIndex.dialog + 1,
+      });
     }
   };
 
@@ -41,6 +45,12 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
           if (!selected) return;
           onOk(selected);
         };
+
+        useDidMountEffect(() => {
+          setPlaylistDrawer({
+            open: false,
+          });
+        }, []);
 
         useEffect(() => {
           if (!selected) return;
@@ -63,7 +73,9 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
             </div>
 
             <Dialog.ButtonGroup>
-              <Dialog.Button onClick={onCancel}>{t.common.btn.cancel}</Dialog.Button>
+              <Dialog.Button onClick={onCancel} color='secondary'>
+                {t.common.btn.cancel}
+              </Dialog.Button>
               <Dialog.Button onClick={handleConfirm} disabled={!selected}>
                 {t.common.btn.confirm}
               </Dialog.Button>
