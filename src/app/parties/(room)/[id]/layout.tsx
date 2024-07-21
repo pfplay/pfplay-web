@@ -16,7 +16,7 @@ const PartyroomLayout = ({ children }: PropsWithChildren) => {
     }
 
     client.registerConnectListener(() => {
-      client.subscribe(`sub/partyrooms/${params.id}`, (message) => {
+      client.subscribe(`/sub/partyrooms/${params.id}`, (message) => {
         console.log(JSON.stringify(message)); // TODO: 메세지 핸들링
       });
     });

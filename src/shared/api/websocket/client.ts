@@ -7,8 +7,9 @@ import withDebugger from '@/shared/lib/functions/log/with-debugger';
 const logger = withDebugger(0);
 const log = logger(specificLog);
 
+type Destination = `/${string}`;
 interface Subscription extends StompSubscription {
-  destination: string;
+  destination: Destination;
 }
 
 export default class StompClient {
@@ -56,7 +57,7 @@ export default class StompClient {
     }
   }
 
-  public subscribe(destination: string, callback: messageCallbackType) {
+  public subscribe(destination: Destination, callback: messageCallbackType) {
     const subscription = this.client.subscribe(destination, callback);
     this.subscriptions.push({
       ...subscription,
@@ -64,7 +65,7 @@ export default class StompClient {
     });
   }
 
-  public unsubscribe(destination: string) {
+  public unsubscribe(destination: Destination) {
     this.client.unsubscribe(destination);
   }
 
@@ -73,7 +74,7 @@ export default class StompClient {
     this.subscriptions = [];
   }
 
-  public send(destination: string, body: unknown) {
+  public send(destination: Destination, body: unknown) {
     this.client.publish({
       destination,
       body: JSON.stringify(body),
@@ -81,10 +82,10 @@ export default class StompClient {
   }
 
   private startHeartbeat() {
-    this.subscribe('sub/heartbeat', function (_pong) {});
+    this.subscribe('/sub/heartbeat', function (_pong) {});
 
     this.heartbeatInterval = setInterval(() => {
-      this.send('pub/heartbeat', 'PING');
+      this.send('/pub/heartbeat', 'PING');
     }, 4000);
   }
 
