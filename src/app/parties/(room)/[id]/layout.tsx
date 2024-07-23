@@ -2,17 +2,13 @@
 
 import { useParams } from 'next/navigation';
 import { PropsWithChildren } from 'react';
-import {
-  getPartyroomDestination,
-  handlePartyroomSubscriptionEvent,
-  isPartyroomSubscription,
-} from '@/entities/current-partyroom';
+import { isPartyroomSubscription } from '@/entities/current-partyroom';
 import { usePartyroomClient } from '@/entities/partyroom-client';
 import { useEnterPartyroom } from '@/features/partyroom/enter';
 import { useExitPartyroom } from '@/features/partyroom/exit';
 import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
 
-const PartyroomLayout = ({ children }: PropsWithChildren) => {
+export default function PartyroomLayout({ children }: PropsWithChildren) {
   const params = useParams<{ id: string }>();
   const partyroomId = Number(params.id);
   const client = usePartyroomClient();
@@ -26,29 +22,13 @@ const PartyroomLayout = ({ children }: PropsWithChildren) => {
     }
 
     client.registerConnectListener(() => {
-      enter(
-        { partyroomId },
-        {
-          onSuccess: () => {
-            client.subscribe(getPartyroomDestination(params.id), handlePartyroomSubscriptionEvent);
-          },
-        }
-      );
+      enter({ partyroomId });
     });
 
     return () => {
-      exit(
-        { partyroomId },
-        {
-          onSuccess: () => {
-            client.unsubscribeAll();
-          },
-        }
-      );
+      exit({ partyroomId });
     };
   }, []);
 
   return <main className='bg-partyRoom overflow-hidden'>{children}</main>;
-};
-
-export default PartyroomLayout;
+}
