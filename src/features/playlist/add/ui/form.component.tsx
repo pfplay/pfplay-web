@@ -12,7 +12,7 @@ import { useCreatePlaylist } from '../api/use-create-playlist.mutation';
 export default function useAddPlaylistDialog() {
   const t = useI18n();
   const { openDialog } = useDialog();
-  const { playlistDrawer } = useUIState();
+  const playlistDrawer = useUIState((state) => state.playlistDrawer);
 
   return useCallback(() => {
     openDialog((_, onCancel) => ({

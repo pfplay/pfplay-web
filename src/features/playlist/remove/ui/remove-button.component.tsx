@@ -15,7 +15,7 @@ const RemoveButton = ({ targetIds, onSuccess }: RemoveButtonProps) => {
   const t = useI18n();
   const { openDialog } = useDialog();
   const playlistAction = usePlaylistAction();
-  const { playlistDrawer } = useUIState();
+  const playlistDrawer = useUIState((state) => state.playlistDrawer);
 
   const handleClick = () => {
     openDialog((_, onCancel) => ({

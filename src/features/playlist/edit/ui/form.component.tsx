@@ -10,7 +10,7 @@ import { useUpdatePlaylist } from '../api/use-update-playlist.mutation';
 export default function useEditPlaylistDialog(playlists: Playlist[]) {
   const t = useI18n();
   const { openDialog } = useDialog();
-  const { playlistDrawer } = useUIState();
+  const playlistDrawer = useUIState((state) => state.playlistDrawer);
 
   return useCallback(
     (listId: Playlist['id']) => {

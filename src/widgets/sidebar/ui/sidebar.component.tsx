@@ -25,7 +25,7 @@ const Sidebar = ({ className, extraButton }: SidebarProps) => {
   const t = useI18n();
   const { data: me } = useSuspenseFetchMe();
   const { openDialog } = useDialog();
-  const { setPlaylistDrawer } = useUIState();
+  const setPlaylistDrawer = useUIState((state) => state.setPlaylistDrawer);
 
   const togglePlaylist = () => {
     setPlaylistDrawer((prev) => mergeDeep(prev, { open: !prev.open }));

@@ -12,7 +12,7 @@ const EntryButton = () => {
   const t = useI18n();
   const { openDialog } = useDialog();
   const playlistAction = usePlaylistAction();
-  const { playlistDrawer } = useUIState();
+  const playlistDrawer = useUIState((state) => state.playlistDrawer);
 
   const handleAddMusic = () => {
     openDialog((_, onClose) => ({

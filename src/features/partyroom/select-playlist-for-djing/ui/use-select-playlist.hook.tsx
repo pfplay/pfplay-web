@@ -20,7 +20,7 @@ type Props = {
 export default function useSelectPlaylist({ playlists }: Props): () => Promise<Playlist | void> {
   const t = useI18n();
   const { openConfirmDialog, openDialog } = useDialog();
-  const { setPlaylistDrawer } = useUIState();
+  const setPlaylistDrawer = useUIState((state) => state.setPlaylistDrawer);
 
   const guidePrepareSelect = async () => {
     const confirmed = await openConfirmDialog({
@@ -45,7 +45,7 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
       ),
       Body: () => {
         const [selected, setSelected] = useState<Playlist>();
-        const { setPlaylistDrawer } = useUIState();
+        const setPlaylistDrawer = useUIState((state) => state.setPlaylistDrawer);
 
         const closePlaylistDrawer = () => {
           setPlaylistDrawer({
