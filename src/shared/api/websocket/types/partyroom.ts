@@ -1,3 +1,5 @@
+import { GradeType } from '@/shared/api/http/types/@enums';
+
 // 재생 비활성화 이벤트
 export type DeactivationEvent = {
   eventType: EventType.DEACTIVATION;
@@ -37,26 +39,40 @@ export type MotionEvent = {
   };
 };
 
-// 멤버 정보
-export type Member = {
-  memberId: number;
-  gradeType?: string;
-  nickname?: string;
-  avatarBodyUri?: string;
-  avatarFaceUri?: string;
-};
-
 // 멤버 출입 이벤트
-export type AccessEvent = {
-  eventType: EventType.ACCESS;
-  accessType: AccessType;
-  member: Member;
-};
+export type AccessEvent =
+  | {
+      eventType: EventType.ACCESS;
+      accessType: AccessType.ENTER;
+      member: {
+        memberId: number;
+        gradeType: GradeType;
+        nickname: string;
+        avatarBodyUri: string;
+        avatarFaceUri?: string;
+      };
+    }
+  | {
+      eventType: EventType.ACCESS;
+      accessType: AccessType.EXIT;
+      member: {
+        memberId: number;
+      };
+    };
 
 // 공지사항 변동 이벤트
 export type NoticeEvent = {
   eventType: EventType.NOTICE;
   content: string;
+};
+
+// 채팅 메시지 이벤트
+export type ChatEvent = {
+  eventType: EventType.CHAT;
+  member: {
+    memberId: number;
+  };
+  message: string;
 };
 
 enum EventType {
@@ -66,6 +82,7 @@ enum EventType {
   MOTION = 'MOTION',
   ACCESS = 'ACCESS',
   NOTICE = 'NOTICE',
+  CHAT = 'CHAT',
 }
 
 enum MotionType {
@@ -84,4 +101,5 @@ export type PartyroomSubEvent =
   | AggregationEvent
   | MotionEvent
   | AccessEvent
-  | NoticeEvent;
+  | NoticeEvent
+  | ChatEvent;
