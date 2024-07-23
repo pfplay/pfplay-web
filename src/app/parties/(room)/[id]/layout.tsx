@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { PropsWithChildren } from 'react';
+import { getPartyroomDestination, isPartyroomSubscription } from '@/entities/current-partyroom';
 import { usePartyroomClient } from '@/entities/partyroom-client';
 import { useEnterPartyroom } from '@/features/partyroom/enter';
 import { useExitPartyroom } from '@/features/partyroom/exit';
@@ -15,7 +16,7 @@ const PartyroomLayout = ({ children }: PropsWithChildren) => {
   const { mutate: exit } = useExitPartyroom();
 
   useDidMountEffect(() => {
-    if (client.subscriptions.some(({ destination }) => destination.startsWith(`sub/partyrooms/`))) {
+    if (client.subscriptions.some(isPartyroomSubscription)) {
       // TODO: 다른 방 연결 끊고 이 방에 연결할래? 라는 문구 출력
       return;
     }
@@ -25,7 +26,7 @@ const PartyroomLayout = ({ children }: PropsWithChildren) => {
         { partyroomId },
         {
           onSuccess: () => {
-            client.subscribe(`/sub/partyrooms/${params.id}`, (message) => {
+            client.subscribe(getPartyroomDestination(params.id), (message) => {
               console.log(JSON.stringify(message)); // TODO: 메세지 핸들링
             });
           },

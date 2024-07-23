@@ -7,8 +7,8 @@ import withDebugger from '@/shared/lib/functions/log/with-debugger';
 const logger = withDebugger(0);
 const log = logger(specificLog);
 
-type Destination = `/${string}`;
-interface Subscription extends StompSubscription {
+export type Destination = `/${string}`;
+export interface Subscription extends StompSubscription {
   destination: Destination;
 }
 
