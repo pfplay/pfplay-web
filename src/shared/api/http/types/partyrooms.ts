@@ -15,7 +15,7 @@ export type PartyroomSummary = {
   /**
    * false 인 경우 playback이 null
    */
-  isPlaybackActivated: boolean;
+  playbackActivated: boolean;
   playback?: {
     name: string;
     thumbnailImage: string;
@@ -86,7 +86,7 @@ export type GetSetUpInfoResponse = {
     /**
      * false 인 경우 playback과 reaction이 null
      */
-    isPlaybackActivated: boolean;
+    playbackActivated: boolean;
     playback?: PartyroomPlayback;
     reaction?: PartyroomReaction;
   };
@@ -117,7 +117,7 @@ export type Dj = {
 };
 
 export type DjingQueue = {
-  isPlaybackActivated: boolean;
+  playbackActivated: boolean;
   /**
    * 대기열 잠금 여부
    */

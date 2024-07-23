@@ -14,7 +14,7 @@ export type CurrentPartyroom = {
   me?: MyPartyroomInfo;
   updateMe: (next: Next<MyPartyroomInfo | undefined>) => void;
 
-  isPlaybackActivated: boolean;
+  playbackActivated: boolean;
   updatePlaybackActivated: (next: boolean | undefined) => void;
 
   playback?: PartyroomPlayback;
@@ -24,7 +24,7 @@ export type CurrentPartyroom = {
   updateReaction: (next: Next<PartyroomReaction | undefined>) => void;
 
   init: (
-    next: Pick<CurrentPartyroom, 'id' | 'me' | 'isPlaybackActivated' | 'playback' | 'reaction'>
+    next: Pick<CurrentPartyroom, 'id' | 'me' | 'playbackActivated' | 'playback' | 'reaction'>
   ) => void;
   reset: () => void;
 };

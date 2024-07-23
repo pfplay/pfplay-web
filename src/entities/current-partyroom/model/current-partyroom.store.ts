@@ -18,13 +18,13 @@ const useCurrentPartyroom = create<CurrentPartyroom>((set) => ({
     });
   },
 
-  isPlaybackActivated: false,
+  playbackActivated: false,
   updatePlaybackActivated: (next) => {
     return set((state) => {
-      const updated = update(state.isPlaybackActivated, next);
+      const updated = update(state.playbackActivated, next);
 
       return {
-        isPlaybackActivated: updated,
+        playbackActivated: updated,
       };
     });
   },
@@ -60,7 +60,7 @@ const useCurrentPartyroom = create<CurrentPartyroom>((set) => ({
       {
         id: undefined,
         me: undefined,
-        isPlaybackActivated: false,
+        playbackActivated: false,
         playback: undefined,
         reaction: undefined,
       },
