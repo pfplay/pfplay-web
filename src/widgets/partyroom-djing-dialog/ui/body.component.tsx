@@ -1,4 +1,4 @@
-import { Dj } from '@/entities/current-partyroom';
+import { Dj, useCurrentPartyroom } from '@/entities/current-partyroom';
 import { DjingQueue } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
@@ -6,6 +6,7 @@ import { Button } from '@/shared/ui/components/button';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
+import UnregisterButton from '@/widgets/partyroom-djing-dialog/ui/unregister-button.component';
 import RegisterButton from './register-button.component';
 
 type Props = {
@@ -19,7 +20,10 @@ export default function Body({ djingQueue, onCancel }: Props) {
   }
 
   const t = useI18n();
+  const myMemberId = useCurrentPartyroom((state) => state.me?.memberId);
+
   const [currentDj, ...queue] = djingQueue.djs;
+  const isMeInQueue = queue.some((dj) => dj.djId === myMemberId);
 
   return (
     <div className='text-start'>
@@ -67,9 +71,30 @@ export default function Body({ djingQueue, onCancel }: Props) {
             </Typography>
           )}
           {!!queue?.length &&
-            queue.map((dj, index) => (
-              <DjListItem order={`${index + 1}`} userConfig={Dj.toListItemConfig(dj)} />
-            ))}
+            queue.map((dj, index) => {
+              const isMe = dj.djId === myMemberId;
+
+              return (
+                <div key={'queue' + dj.djId} className='flex justify-between items-center'>
+                  <DjListItem
+                    order={`${index + 1}`}
+                    userConfig={Dj.toListItemConfig(dj)}
+                    suffixTagValue={isMe ? 'Me' : undefined}
+                  />
+
+                  {isMe && (
+                    <Button
+                      color='primary'
+                      variant='outline'
+                      size='sm'
+                      onClick={() => alert('Not Impl')}
+                    >
+                      {t.playlist.btn.change_playlist}
+                    </Button>
+                  )}
+                </div>
+              );
+            })}
         </div>
       </div>
 
@@ -87,7 +112,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
           })}
         </Typography>
 
-        <RegisterButton />
+        {isMeInQueue ? <UnregisterButton /> : <RegisterButton />}
       </div>
     </div>
   );

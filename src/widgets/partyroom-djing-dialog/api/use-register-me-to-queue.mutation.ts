@@ -10,9 +10,9 @@ export const useRegisterMeToQueue = () => {
 
   return useMutation<void, AxiosError<APIError>, RegisterMeToQueuePayload>({
     mutationFn: DjsService.registerMeToQueue,
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: [QueryKeys.DjingQueue],
+        queryKey: [QueryKeys.DjingQueue, variables.partyroomId],
       });
     },
   });

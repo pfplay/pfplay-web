@@ -7,6 +7,17 @@ import { CurrentPartyroom } from '../model/current-partyroom.model';
 const useCurrentPartyroom = create<CurrentPartyroom>((set) => ({
   id: undefined,
 
+  me: undefined,
+  updateMe: (next) => {
+    return set((state) => {
+      const updated = update(state.me, next);
+
+      return {
+        me: updated,
+      };
+    });
+  },
+
   isPlaybackActivated: false,
   updatePlaybackActivated: (next) => {
     return set((state) => {
@@ -48,6 +59,7 @@ const useCurrentPartyroom = create<CurrentPartyroom>((set) => ({
     return set(
       {
         id: undefined,
+        me: undefined,
         isPlaybackActivated: false,
         playback: undefined,
         reaction: undefined,

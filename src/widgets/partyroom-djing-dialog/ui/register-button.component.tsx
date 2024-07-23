@@ -2,7 +2,7 @@ import { useSelectPlaylistForDjing } from '@/features/partyroom/select-playlist-
 import { useFetchPlaylists } from '@/features/playlist/list';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
-import { useRegisterMeToQueue } from '../api/use-register-me-to.queue';
+import { useRegisterMeToQueue } from '../api/use-register-me-to-queue.mutation';
 import { usePartyroomId } from '../lib/partyroom-id.context';
 
 export default function RegisterButton() {

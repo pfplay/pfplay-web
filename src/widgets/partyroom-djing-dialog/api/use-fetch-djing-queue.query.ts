@@ -8,7 +8,7 @@ import { FIVE_MINUTES } from '@/shared/config/time';
 
 export const useFetchDjingQueue = (payload: GetDjingQueuePayload) => {
   return useQuery<DjingQueue, AxiosError<APIError>>({
-    queryKey: [QueryKeys.DjingQueue],
+    queryKey: [QueryKeys.DjingQueue, payload.partyroomId],
     queryFn: () => PartyroomsService.getDjingQueue(payload),
     staleTime: 0,
     gcTime: FIVE_MINUTES,

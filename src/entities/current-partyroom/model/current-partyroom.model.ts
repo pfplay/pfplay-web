@@ -1,8 +1,18 @@
+import { GradeType } from '@/shared/api/http/types/@enums';
 import { PartyroomPlayback, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import type { Next } from '@/shared/lib/functions/update';
 
+export type MyPartyroomInfo = {
+  memberId: number;
+  gradeType: GradeType;
+  host: boolean;
+};
+
 export type CurrentPartyroom = {
   id?: number;
+
+  me?: MyPartyroomInfo;
+  updateMe: (next: Next<MyPartyroomInfo | undefined>) => void;
 
   isPlaybackActivated: boolean;
   updatePlaybackActivated: (next: boolean | undefined) => void;
@@ -14,7 +24,7 @@ export type CurrentPartyroom = {
   updateReaction: (next: Next<PartyroomReaction | undefined>) => void;
 
   init: (
-    next: Pick<CurrentPartyroom, 'id' | 'isPlaybackActivated' | 'playback' | 'reaction'>
+    next: Pick<CurrentPartyroom, 'id' | 'me' | 'isPlaybackActivated' | 'playback' | 'reaction'>
   ) => void;
   reset: () => void;
 };

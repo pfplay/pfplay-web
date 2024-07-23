@@ -48,6 +48,7 @@ const DjListItem = ({
         <Typography
           type={variant === 'accent' ? 'body3' : 'detail1'}
           className={cn(variant === 'accent' ? 'text-red-300' : 'text-white')}
+          overflow='ellipsis'
         >
           {username}
         </Typography>
