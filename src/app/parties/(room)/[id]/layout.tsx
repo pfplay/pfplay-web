@@ -3,12 +3,16 @@
 import { useParams } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 import { usePartyroomClient } from '@/entities/partyroom-client';
-import PartyroomsService from '@/shared/api/http/services/partyrooms';
+import { useEnterPartyroom } from '@/features/partyroom/enter';
+import { useExitPartyroom } from '@/features/partyroom/exit';
 import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
 
 const PartyroomLayout = ({ children }: PropsWithChildren) => {
   const params = useParams<{ id: string }>();
+  const partyroomId = Number(params.id);
   const client = usePartyroomClient();
+  const { mutate: enter } = useEnterPartyroom();
+  const { mutate: exit } = useExitPartyroom();
 
   useDidMountEffect(() => {
     if (client.subscriptions.some(({ destination }) => destination.startsWith(`sub/partyrooms/`))) {
@@ -16,24 +20,28 @@ const PartyroomLayout = ({ children }: PropsWithChildren) => {
       return;
     }
 
-    client.registerConnectListener(async () => {
-      await PartyroomsService.enter({
-        // TODO: mutation으로 변환하고 feature로 이동
-        partyroomId: Number(params.id),
-      });
-
-      client.subscribe(`/sub/partyrooms/${params.id}`, (message) => {
-        console.log(JSON.stringify(message)); // TODO: 메세지 핸들링
-      });
+    client.registerConnectListener(() => {
+      enter(
+        { partyroomId },
+        {
+          onSuccess: () => {
+            client.subscribe(`/sub/partyrooms/${params.id}`, (message) => {
+              console.log(JSON.stringify(message)); // TODO: 메세지 핸들링
+            });
+          },
+        }
+      );
     });
 
     return () => {
-      client.unsubscribeAll();
-
-      PartyroomsService.exit({
-        // TODO: mutation으로 변환하고 feature로 이동, 파티룸 관련 쿼리들 전부 invalidate 해야함
-        partyroomId: Number(params.id),
-      });
+      exit(
+        { partyroomId },
+        {
+          onSuccess: () => {
+            client.unsubscribeAll();
+          },
+        }
+      );
     };
   }, []);
 
