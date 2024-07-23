@@ -2,7 +2,11 @@
 
 import { useParams } from 'next/navigation';
 import { PropsWithChildren } from 'react';
-import { getPartyroomDestination, isPartyroomSubscription } from '@/entities/current-partyroom';
+import {
+  getPartyroomDestination,
+  handlePartyroomSubscriptionEvent,
+  isPartyroomSubscription,
+} from '@/entities/current-partyroom';
 import { usePartyroomClient } from '@/entities/partyroom-client';
 import { useEnterPartyroom } from '@/features/partyroom/enter';
 import { useExitPartyroom } from '@/features/partyroom/exit';
@@ -26,9 +30,7 @@ const PartyroomLayout = ({ children }: PropsWithChildren) => {
         { partyroomId },
         {
           onSuccess: () => {
-            client.subscribe(getPartyroomDestination(params.id), (message) => {
-              console.log(JSON.stringify(message)); // TODO: 메세지 핸들링
-            });
+            client.subscribe(getPartyroomDestination(params.id), handlePartyroomSubscriptionEvent);
           },
         }
       );
