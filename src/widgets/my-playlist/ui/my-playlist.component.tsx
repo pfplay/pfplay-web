@@ -12,7 +12,7 @@ import { Drawer, DrawerProps } from '@/shared/ui/components/drawer';
 import { TextButton } from '@/shared/ui/components/text-button';
 import { PFArrowLeft } from '@/shared/ui/icons';
 
-const MyPlaylist = () => {
+export default function MyPlaylist() {
   const t = useI18n();
   const { playlistDrawer, setPlaylistDrawer } = useUIState();
   const [editMode, setEditMode] = useState(false);
@@ -118,6 +118,4 @@ const MyPlaylist = () => {
       <Playlists onClickItem={playlistDrawer.interactable ? selectPlaylist : undefined} />
     </Drawer>
   );
-};
-
-export default MyPlaylist;
+}

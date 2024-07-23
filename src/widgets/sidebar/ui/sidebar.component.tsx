@@ -9,8 +9,6 @@ import { useDialog } from '@/shared/ui/components/dialog';
 import Profile from '@/shared/ui/components/profile/profile.component';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFHeadset } from '@/shared/ui/icons';
-import MyPlaylist from './my-playlist.component';
-import PlaylistActionProvider from '../lib/playlist-action.provider';
 
 interface SidebarProps {
   className: string;
@@ -45,36 +43,30 @@ const Sidebar = ({ className, extraButton }: SidebarProps) => {
   };
 
   return (
-    <>
-      <aside className={className}>
-        {/* TODO: 프로필 이미지로 변경, href 추가 */}
-        <button onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
-          <Profile size={48} src={me.avatarFaceUri} />
+    <aside className={className}>
+      {/* TODO: 프로필 이미지로 변경, href 추가 */}
+      <button onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
+        <Profile size={48} src={me.avatarFaceUri} />
+        <Typography type='caption1' className='text-gray-200'>
+          {t.common.btn.my_profile}
+        </Typography>
+      </button>
+      <button onClick={togglePlaylist} className='gap-2 cursor-pointer flexColCenter'>
+        <PFHeadset width={36} height={36} className='[&_*]:fill-gray-400' />
+        <Typography type='caption1' className='text-gray-200'>
+          {t.common.btn.playlist}
+        </Typography>
+      </button>
+
+      {extraButton && (
+        <button onClick={extraButton.onClick} className='gap-2 cursor-pointer flexColCenter'>
+          {extraButton.icon(36, 'text-gray-400')}
           <Typography type='caption1' className='text-gray-200'>
-            {t.common.btn.my_profile}
+            {extraButton.text}
           </Typography>
         </button>
-        <button onClick={togglePlaylist} className='gap-2 cursor-pointer flexColCenter'>
-          <PFHeadset width={36} height={36} className='[&_*]:fill-gray-400' />
-          <Typography type='caption1' className='text-gray-200'>
-            {t.common.btn.playlist}
-          </Typography>
-        </button>
-
-        {extraButton && (
-          <button onClick={extraButton.onClick} className='gap-2 cursor-pointer flexColCenter'>
-            {extraButton.icon(36, 'text-gray-400')}
-            <Typography type='caption1' className='text-gray-200'>
-              {extraButton.text}
-            </Typography>
-          </button>
-        )}
-      </aside>
-
-      <PlaylistActionProvider>
-        <MyPlaylist />
-      </PlaylistActionProvider>
-    </>
+      )}
+    </aside>
   );
 };
 

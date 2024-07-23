@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect } from 'react';
 import { useSuspenseFetchMe } from '@/entities/me';
+import { MyPlaylist } from '@/widgets/my-playlist';
 
 const ProtectedLayout = ({ children }: PropsWithChildren) => {
   const { data: me } = useSuspenseFetchMe();
@@ -17,7 +18,13 @@ const ProtectedLayout = ({ children }: PropsWithChildren) => {
     }
   }, []);
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+
+      <MyPlaylist />
+    </>
+  );
 };
 
 export default ProtectedLayout;
