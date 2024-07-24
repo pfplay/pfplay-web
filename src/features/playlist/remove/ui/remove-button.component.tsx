@@ -1,5 +1,5 @@
+import { useStores } from '@/app/_providers/stores.context';
 import { usePlaylistAction } from '@/entities/playlist';
-import { useUIState } from '@/entities/ui-state';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
@@ -15,6 +15,7 @@ const RemoveButton = ({ targetIds, onSuccess }: RemoveButtonProps) => {
   const t = useI18n();
   const { openDialog } = useDialog();
   const playlistAction = usePlaylistAction();
+  const { useUIState } = useStores();
   const playlistDrawer = useUIState((state) => state.playlistDrawer);
 
   const handleClick = () => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useUIState } from '@/entities/ui-state';
+import { useStores } from '@/app/_providers/stores.context';
 import { AddPlaylistButton } from '@/features/playlist/add';
 import { AddMusicsToPlaylistButton } from '@/features/playlist/add-musics';
 import { Playlists, EditablePlaylists, PlaylistListItem } from '@/features/playlist/list';
@@ -14,6 +14,7 @@ import { PFArrowLeft } from '@/shared/ui/icons';
 
 export default function MyPlaylist() {
   const t = useI18n();
+  const { useUIState } = useStores();
   const { playlistDrawer, setPlaylistDrawer } = useUIState();
   const [editMode, setEditMode] = useState(false);
   const [removeTargets, setRemoveTargets] = useState<Playlist['id'][]>([]);

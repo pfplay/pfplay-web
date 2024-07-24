@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useUIState } from '@/entities/ui-state';
+import { useStores } from '@/app/_providers/stores.context';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -20,6 +20,7 @@ type Props = {
 export default function useSelectPlaylist({ playlists }: Props): () => Promise<Playlist | void> {
   const t = useI18n();
   const { openConfirmDialog, openDialog } = useDialog();
+  const { useUIState } = useStores();
   const setPlaylistDrawer = useUIState((state) => state.setPlaylistDrawer);
 
   const guidePrepareSelect = async () => {
@@ -44,8 +45,9 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
         </Typography>
       ),
       Body: () => {
-        const [selected, setSelected] = useState<Playlist>();
+        const { useUIState } = useStores();
         const setPlaylistDrawer = useUIState((state) => state.setPlaylistDrawer);
+        const [selected, setSelected] = useState<Playlist>();
 
         const closePlaylistDrawer = () => {
           setPlaylistDrawer({

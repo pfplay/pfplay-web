@@ -2,71 +2,71 @@
 
 import { create } from 'zustand';
 import { update } from '@/shared/lib/functions/update';
-import { CurrentPartyroom } from '../model/current-partyroom.model';
+import * as CurrentPartyroom from '../model/current-partyroom.model';
 
-const useCurrentPartyroom = create<CurrentPartyroom>((set) => ({
-  id: undefined,
+export const createCurrentPartyroomStore = () => {
+  return create<CurrentPartyroom.Model>((set) => ({
+    id: undefined,
 
-  me: undefined,
-  updateMe: (next) => {
-    return set((state) => {
-      const updated = update(state.me, next);
+    me: undefined,
+    updateMe: (next) => {
+      return set((state) => {
+        const updated = update(state.me, next);
 
-      return {
-        me: updated,
-      };
-    });
-  },
+        return {
+          me: updated,
+        };
+      });
+    },
 
-  playbackActivated: false,
-  updatePlaybackActivated: (next) => {
-    return set((state) => {
-      const updated = update(state.playbackActivated, next);
+    playbackActivated: false,
+    updatePlaybackActivated: (next) => {
+      return set((state) => {
+        const updated = update(state.playbackActivated, next);
 
-      return {
-        playbackActivated: updated,
-      };
-    });
-  },
+        return {
+          playbackActivated: updated,
+        };
+      });
+    },
 
-  playback: undefined,
-  updatePlayback: (next) => {
-    return set((state) => {
-      const updated = update(state.playback, next);
+    playback: undefined,
+    updatePlayback: (next) => {
+      return set((state) => {
+        const updated = update(state.playback, next);
 
-      return {
-        playback: updated,
-      };
-    });
-  },
+        return {
+          playback: updated,
+        };
+      });
+    },
 
-  reaction: undefined,
-  updateReaction: (next) => {
-    return set((state) => {
-      const updated = update(state.reaction, next);
+    reaction: undefined,
+    updateReaction: (next) => {
+      return set((state) => {
+        const updated = update(state.reaction, next);
 
-      return {
-        reaction: updated,
-      };
-    });
-  },
+        return {
+          reaction: updated,
+        };
+      });
+    },
 
-  init: (next) => {
-    return set(next, true);
-  },
+    init: (next) => {
+      return set(next, true);
+    },
 
-  reset: () => {
-    return set(
-      {
-        id: undefined,
-        me: undefined,
-        playbackActivated: false,
-        playback: undefined,
-        reaction: undefined,
-      },
-      true
-    );
-  },
-}));
-
-export default useCurrentPartyroom;
+    reset: () => {
+      return set(
+        {
+          id: undefined,
+          me: undefined,
+          playbackActivated: false,
+          playback: undefined,
+          reaction: undefined,
+        },
+        true
+      );
+    },
+  }));
+};

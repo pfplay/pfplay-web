@@ -1,6 +1,6 @@
+import { useStores } from '@/app/_providers/stores.context';
 import { usePlaylistAction } from '@/entities/playlist';
 import { PlaylistActionBypassProvider } from '@/entities/playlist/lib/playlist-action.context';
-import { useUIState } from '@/entities/ui-state';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
@@ -12,6 +12,7 @@ const EntryButton = () => {
   const t = useI18n();
   const { openDialog } = useDialog();
   const playlistAction = usePlaylistAction();
+  const { useUIState } = useStores();
   const playlistDrawer = useUIState((state) => state.playlistDrawer);
 
   const handleAddMusic = () => {

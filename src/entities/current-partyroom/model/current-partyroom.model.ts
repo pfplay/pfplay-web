@@ -8,7 +8,7 @@ export type MyPartyroomInfo = {
   host: boolean;
 };
 
-export type CurrentPartyroom = {
+export type Model = {
   id?: number;
 
   me?: MyPartyroomInfo;
@@ -23,8 +23,6 @@ export type CurrentPartyroom = {
   reaction?: PartyroomReaction;
   updateReaction: (next: Next<PartyroomReaction | undefined>) => void;
 
-  init: (
-    next: Pick<CurrentPartyroom, 'id' | 'me' | 'playbackActivated' | 'playback' | 'reaction'>
-  ) => void;
+  init: (next: Pick<Model, 'id' | 'me' | 'playbackActivated' | 'playback' | 'reaction'>) => void;
   reset: () => void;
 };

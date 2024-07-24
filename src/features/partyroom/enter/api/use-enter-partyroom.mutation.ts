@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { useStores } from '@/app/_providers/stores.context';
 import {
   fetchPartyroomSetUpInfo,
   getPartyroomDestination,
-  handlePartyroomSubscriptionEvent,
-  useCurrentPartyroom,
+  useHandlePartyroomSubscriptionEvent,
 } from '@/entities/current-partyroom';
 import { usePartyroomClient } from '@/entities/partyroom-client';
 import PartyroomsService from '@/shared/api/http/services/partyrooms';
@@ -15,9 +15,11 @@ import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { useDialog } from '@/shared/ui/components/dialog';
 
 export function useEnterPartyroom() {
+  const { useCurrentPartyroom } = useStores();
   const initPartyroom = useCurrentPartyroom((state) => state.init);
   const { openErrorDialog } = useDialog();
   const client = usePartyroomClient();
+  const handleEvent = useHandlePartyroomSubscriptionEvent();
 
   const handleSuccess = (enterResponse: EnterResponse, { partyroomId }: EnterPayload) => {
     fetchPartyroomSetUpInfo(partyroomId, {
@@ -37,7 +39,7 @@ export function useEnterPartyroom() {
           reaction: setUpInfo.display.reaction,
         });
 
-        client.subscribe(getPartyroomDestination(partyroomId), handlePartyroomSubscriptionEvent);
+        client.subscribe(getPartyroomDestination(partyroomId), handleEvent);
       },
       onError: (error) => {
         errorLogger(error);

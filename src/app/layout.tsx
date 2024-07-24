@@ -5,6 +5,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import '@/shared/ui/foundation/globals.css';
 
 import { PropsWithChildren } from 'react';
+import StoresProvider from '@/app/_providers/stores.provider';
 import { MeHydration } from '@/entities/me';
 import { DomId } from '@/shared/config/dom-id';
 import { Language } from '@/shared/lib/localization/constants';
@@ -37,7 +38,9 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
             <I18nProvider dictionary={dictionary}>
               <DialogProvider>
                 <MeHydration>
-                  <PartyroomConnectionProvider>{children}</PartyroomConnectionProvider>
+                  <StoresProvider>
+                    <PartyroomConnectionProvider>{children}</PartyroomConnectionProvider>
+                  </StoresProvider>
                 </MeHydration>
               </DialogProvider>
             </I18nProvider>
