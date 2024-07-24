@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useStores } from '@/app/_providers/stores.context';
 import {
   fetchPartyroomSetUpInfo,
   getPartyroomDestination,
@@ -12,6 +11,7 @@ import { APIError } from '@/shared/api/http/types/@shared';
 import { EnterPayload, EnterResponse } from '@/shared/api/http/types/partyrooms';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 
 export function useEnterPartyroom() {

@@ -1,7 +1,7 @@
-import { useStores } from '@/app/_providers/stores.context';
 import { usePlaylistAction } from '@/entities/playlist';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { PFDelete } from '@/shared/ui/icons';

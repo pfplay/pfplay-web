@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useStores } from '@/app/_providers/stores.context';
 import { usePartyroomClient } from '@/entities/partyroom-client';
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import PartyroomsService from '@/shared/api/http/services/partyrooms';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { ExitPayload } from '@/shared/api/http/types/partyrooms';
+import { useStores } from '@/shared/lib/store/stores.context';
 
 export function useExitPartyroom() {
   const queryClient = useQueryClient();

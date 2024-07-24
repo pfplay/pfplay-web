@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { useStores } from '@/app/_providers/stores.context';
 import { PlaylistForm, PlaylistFormProps, PlaylistFormValues } from '@/entities/playlist';
 import { ErrorCode } from '@/shared/api/http/types/@shared';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog } from '@/shared/ui/components/dialog';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';

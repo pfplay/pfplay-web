@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useStores } from '@/app/_providers/stores.context';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 import theme from '@/shared/ui/foundation/theme';

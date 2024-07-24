@@ -1,10 +1,10 @@
 'use client';
 import { ReactNode } from 'react';
-import { useStores } from '@/app/_providers/stores.context';
 import { useSuspenseFetchMe } from '@/entities/me';
 import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
 import { mergeDeep } from '@/shared/lib/functions/merge-deep';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import Profile from '@/shared/ui/components/profile/profile.component';
 import { Typography } from '@/shared/ui/components/typography';
