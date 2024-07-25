@@ -1,10 +1,10 @@
 'use client';
 import { ReactNode } from 'react';
 import { useSuspenseFetchMe } from '@/entities/me';
-import { useUIState } from '@/entities/ui-state';
 import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
 import { mergeDeep } from '@/shared/lib/functions/merge-deep';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import Profile from '@/shared/ui/components/profile/profile.component';
 import { Typography } from '@/shared/ui/components/typography';
@@ -23,6 +23,7 @@ const Sidebar = ({ className, extraButton }: SidebarProps) => {
   const t = useI18n();
   const { data: me } = useSuspenseFetchMe();
   const { openDialog } = useDialog();
+  const { useUIState } = useStores();
   const setPlaylistDrawer = useUIState((state) => state.setPlaylistDrawer);
 
   const togglePlaylist = () => {

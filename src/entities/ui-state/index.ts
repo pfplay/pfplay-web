@@ -1,1 +1,2 @@
-export { default as useUIState } from './model/ui-state.store';
+export * as UIState from './model/ui-state.model';
+export { createUIStateStore } from './model/ui-state.store';

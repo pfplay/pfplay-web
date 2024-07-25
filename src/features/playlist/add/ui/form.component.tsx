@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { PlaylistForm, PlaylistFormProps, PlaylistFormValues } from '@/entities/playlist';
-import { useUIState } from '@/entities/ui-state';
 import { ErrorCode } from '@/shared/api/http/types/@shared';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog } from '@/shared/ui/components/dialog';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
@@ -12,6 +12,7 @@ import { useCreatePlaylist } from '../api/use-create-playlist.mutation';
 export default function useAddPlaylistDialog() {
   const t = useI18n();
   const { openDialog } = useDialog();
+  const { useUIState } = useStores();
   const playlistDrawer = useUIState((state) => state.playlistDrawer);
 
   return useCallback(() => {

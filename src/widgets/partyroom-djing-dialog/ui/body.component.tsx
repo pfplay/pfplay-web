@@ -1,7 +1,8 @@
-import { Dj, useCurrentPartyroom } from '@/entities/current-partyroom';
+import { Dj } from '@/entities/current-partyroom';
 import { DjingQueue } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';
 import { Typography } from '@/shared/ui/components/typography';
@@ -20,6 +21,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
   }
 
   const t = useI18n();
+  const { useCurrentPartyroom } = useStores();
   const myMemberId = useCurrentPartyroom((state) => state.me?.memberId);
 
   const [currentDj, ...queue] = djingQueue.djs;
