@@ -36,13 +36,13 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
         <ReactQueryProvider>
           <LangProvider lang={lang as Language}>
             <I18nProvider dictionary={dictionary}>
-              <DialogProvider>
-                <MeHydration>
-                  <StoresProvider>
+              <StoresProvider>
+                <DialogProvider>
+                  <MeHydration>
                     <PartyroomConnectionProvider>{children}</PartyroomConnectionProvider>
-                  </StoresProvider>
-                </MeHydration>
-              </DialogProvider>
+                  </MeHydration>
+                </DialogProvider>
+              </StoresProvider>
             </I18nProvider>
           </LangProvider>
         </ReactQueryProvider>
