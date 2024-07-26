@@ -5,6 +5,7 @@ import type { Preview } from '@storybook/react';
 import { DialogProvider } from '@/shared/ui/components/dialog';
 import { I18nProvider } from '@/shared/lib/localization/i18n.context';
 import en from '@/shared/lib/localization/dictionaries/en.json';
+import MockStoresProvider from './_providers/mock-stores.provider';
 
 const preview: Preview = {
   parameters: {
@@ -28,9 +29,11 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <I18nProvider dictionary={en}>
-        <DialogProvider>
-          <Story />
-        </DialogProvider>
+        <MockStoresProvider>
+          <DialogProvider>
+            <Story />
+          </DialogProvider>
+        </MockStoresProvider>
       </I18nProvider>
     ),
   ],
