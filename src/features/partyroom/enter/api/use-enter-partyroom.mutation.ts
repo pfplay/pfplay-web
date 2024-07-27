@@ -37,6 +37,7 @@ export function useEnterPartyroom() {
           playbackActivated: setUpInfo.display.playbackActivated,
           playback: setUpInfo.display.playback,
           reaction: setUpInfo.display.reaction,
+          members: setUpInfo.members,
         });
 
         client.subscribe(getPartyroomDestination(partyroomId), handleEvent);
