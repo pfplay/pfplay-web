@@ -1,6 +1,6 @@
 import { DependencyList, EffectCallback, useEffect, useRef } from 'react';
 
-export default function useDidMountEffect(effect: EffectCallback, deps: DependencyList) {
+export default function useDidUpdateEffect(effect: EffectCallback, deps: DependencyList) {
   const didMount = useRef(false);
 
   useEffect(() => {

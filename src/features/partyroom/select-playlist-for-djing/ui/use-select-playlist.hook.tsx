@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Playlist } from '@/shared/api/http/types/playlists';
-import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
+import useDidUpdateEffect from '@/shared/lib/hooks/use-did-update-effect';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -75,7 +75,7 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
           closePlaylistDrawer();
         };
 
-        useDidMountEffect(() => {
+        useDidUpdateEffect(() => {
           closePlaylistDrawer();
         }, []);
 
