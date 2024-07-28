@@ -8,9 +8,9 @@ const meta = {
   component: UserListItem,
   args: {
     userListItemConfig: {
-      id: 1,
-      username: 'nickname',
-      src: '/images/Temp/nft.png',
+      memberId: 1,
+      nickname: 'nickname',
+      avatarIconUri: '/images/Temp/nft.png',
     },
     menuItemList: fixtureMenuItems,
   },

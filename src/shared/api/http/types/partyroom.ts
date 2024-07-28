@@ -4,7 +4,7 @@ export interface GetPartyroomMemberRequest {
   partyroomId: string;
 }
 
-export interface PartyroomMember {
+export interface Participant {
   uid: string;
   partyroomGrade: PartyroomGrade;
   nickname: string;
@@ -13,7 +13,7 @@ export interface PartyroomMember {
   avatarIconUri: string;
 }
 
-export interface GetPartyroomMemberResponse {
+export interface GetParticipantsResponse {
   partyroomId: string;
-  members: PartyroomMember[];
+  members: Participant[];
 }

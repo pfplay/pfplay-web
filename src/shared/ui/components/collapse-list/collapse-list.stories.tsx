@@ -79,7 +79,7 @@ export const CollapseListForUserList = () => {
     >
       {fixtureCollapseList.userListPanel.map((user) => (
         <UserListItem
-          key={user.id}
+          key={user.uid}
           suffixType='button'
           suffixValue='Click'
           userListItemConfig={user}
