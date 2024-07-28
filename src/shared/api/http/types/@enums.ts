@@ -66,6 +66,7 @@ export enum MessageTopic {
   CHAT = 'CHAT',
 }
 
+// GradeType enum은 HOST, COMMUNITY_MANAGER, MODERATOR, CLUBBER, LISTENER 순서대로 정렬
 export enum GradeType {
   HOST = 'HOST',
   COMMUNITY_MANAGER = 'COMMUNITY_MANAGER',

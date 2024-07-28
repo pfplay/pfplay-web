@@ -54,7 +54,7 @@ const CollapseList = ({
               )}
             </span>
           </Disclosure.Button>
-          <div className='space-y-3 [&>:first-child]:pt-3'>
+          <div className='space-y-3'>
             <Disclosure.Panel as='article' className={cn(classNames?.panel)}>
               {children}
             </Disclosure.Panel>
