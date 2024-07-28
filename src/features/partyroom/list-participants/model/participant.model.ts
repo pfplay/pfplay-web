@@ -1,17 +1,11 @@
-// import { chatMessageMenuItems } from '@/shared/api/websocket/__fixture__/chat-messages.fixture';
-// import { ChatMessage } from '@/shared/api/websocket/types/chat';
-// import { MenuItem } from '@/shared/ui/components/menu';
+import { GradeType } from '@/shared/api/http/types/@enums';
+import { Participant } from '@/shared/api/http/types/partyroom';
 
-// export type ChatItemProps = {
-//   menuItemList: MenuItem[];
-// } & ChatMessage;
+const gradeTypeArray = Object.values(GradeType);
 
-// // TODO: 실제 api 연결 후 삭제
-// export const refineChatMessages = (fixturesChatMessages: ChatMessage[]): ChatItemProps[] => {
-//   return fixturesChatMessages.map((fixture, index) => {
-//     return {
-//       ...fixture,
-//       menuItemList: chatMessageMenuItems[index].menuItemList || [],
-//     };
-//   });
-// };
+export const categorizeParticipantsByGrade = (participants: Participant[]) => {
+  return gradeTypeArray.reduce((acc, grade) => {
+    acc[grade] = participants.filter((participant) => participant.gradeType === grade);
+    return acc;
+  }, {} as Record<GradeType, Participant[]>);
+};
