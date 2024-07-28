@@ -3,19 +3,21 @@ import { cn } from '@/shared/lib/functions/cn';
 import useClickOutside from '@/shared/lib/hooks/use-click-outside.hook';
 import { PFMoreVert } from '@/shared/ui/icons';
 import { IconMenu } from '../icon-menu';
-import { MenuItem } from '../menu';
+import { MenuItem, MenuItemPanelSize } from '../menu';
 
 interface DisplayOptionMenuOnHoverListenerProps {
   menuConfig: MenuItem[];
   listenerDisabled?: boolean;
   children: (isHover: boolean) => JSX.Element;
   menuPositionStyle?: string;
+  menuItemPanelSize?: MenuItemPanelSize;
 }
 
 const DisplayOptionMenuOnHoverListener = ({
   menuConfig,
   children,
   menuPositionStyle,
+  menuItemPanelSize = 'md',
   listenerDisabled = false,
 }: DisplayOptionMenuOnHoverListenerProps) => {
   const [isHover, setIsHover] = useState(false);
@@ -50,6 +52,8 @@ const DisplayOptionMenuOnHoverListener = ({
 
   const menuRef = useClickOutside<HTMLDivElement>(handleMenuClose);
 
+  // Fix: 메뉴 열리고 마우스가 빠지면 메뉴가 열린 상태로 사라지고, 다시 hover시에 여전히 열려 있는 상태 해결
+
   return (
     <div
       ref={menuRef} // 마우스 Hover 상태일 때 컴포넌트 내부 클릭 시 hover 상태가 유지되도록 함
@@ -83,7 +87,7 @@ const DisplayOptionMenuOnHoverListener = ({
               menuPositionStyle,
             ])}
             ref={menuRef}
-            menuItemPanel={{ size: 'md' }}
+            menuItemPanel={{ size: menuItemPanelSize }}
           />
         </>
       )}
