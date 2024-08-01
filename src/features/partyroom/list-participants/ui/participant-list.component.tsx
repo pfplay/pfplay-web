@@ -6,7 +6,7 @@ import { fixturePartyroomMembers } from '@/shared/api/http/__fixture__/partyroom
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import { CollapseList } from '@/shared/ui/components/collapse-list';
 import { UserListItem } from '@/shared/ui/components/user-list-item';
-import { getSuffixTagProps } from '../lib/get-suffix-tag-props';
+import { getSuffixTagProps } from '../model/get-suffix-tag-props';
 import { categorizeParticipantsByGrade } from '../model/participant.model';
 
 interface Props {
