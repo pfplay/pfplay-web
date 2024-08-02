@@ -50,8 +50,8 @@ export type PartyroomMember = {
 export type PartyroomPlayback = {
   name: string;
   linkId: string;
-  duration: string;
-  endTime: string;
+  duration: string; // 00:00 형식의 문자열
+  endTime: string; // 00:00:00 형식의 문자열. UTC 기준
 };
 
 export type PartyroomReaction = {
