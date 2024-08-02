@@ -2,21 +2,21 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Me } from '@/entities/me';
 import { fixtureMenuItems } from '@/shared/api/http/__fixture__/menu-items.fixture';
-import { fixturePartyroomMembers } from '@/shared/api/http/__fixture__/partyroom-participants.fixture';
 import { QueryKeys } from '@/shared/api/http/query-keys';
+import { Participant } from '@/shared/api/http/types/partyroom';
+import { Categorized } from '@/shared/lib/functions/categorize';
 import { CollapseList } from '@/shared/ui/components/collapse-list';
 import { UserListItem } from '@/shared/ui/components/user-list-item';
 import { getSuffixTagProps } from '../model/get-suffix-tag-props';
-import { categorizeParticipantsByGrade } from '../model/participant.model';
 
 interface Props {
-  isBanList?: boolean;
+  categorizedParticipants: Categorized<Participant>;
 }
-const ParticipantList = ({ isBanList }: Props) => {
+
+const ParticipantList = ({ categorizedParticipants }: Props) => {
   const queryClient = useQueryClient();
   const me = queryClient.getQueryData<Me.Model>([QueryKeys.Me]);
 
-  const categorizedParticipants = categorizeParticipantsByGrade(fixturePartyroomMembers);
   const djing = false; // api에서 DJing 중 유저 받아오면 제거
 
   return (
@@ -31,14 +31,14 @@ const ParticipantList = ({ isBanList }: Props) => {
                       suffixValue: 'Me', // i18n 적용 필요
                     }
                   : undefined;
-              const ban = isBanList
-                ? {
-                    suffixValue: '해제', // i18n 적용 필요
-                    onButtonClick: () => {
-                      console.log(`${participant.memberId} 해제`);
-                    },
-                  }
-                : undefined;
+              // const ban = isBanList
+              //   ? {
+              //       suffixValue: '해제', // i18n 적용 필요
+              //       onButtonClick: () => {
+              //         console.log(`${participant.memberId} 해제`);
+              //       },
+              //     }
+              //   : undefined;
 
               return (
                 <UserListItem
@@ -49,7 +49,7 @@ const ParticipantList = ({ isBanList }: Props) => {
                   {...getSuffixTagProps({
                     me: isMe,
                     djing,
-                    ban,
+                    // ban,
                   })}
                 />
               );
