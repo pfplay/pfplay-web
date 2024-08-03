@@ -24,7 +24,9 @@ export default function Body({ djingQueue, onCancel }: Props) {
   const { useCurrentPartyroom } = useStores();
   const myMemberId = useCurrentPartyroom((state) => state.me?.memberId);
 
-  const [currentDj, ...queue] = djingQueue.djs;
+  const [currentDj, ...queue] = djingQueue.djs
+    .slice()
+    .sort((a, b) => a.orderNumber - b.orderNumber);
   const isMeInQueue = queue.some((dj) => dj.djId === myMemberId);
 
   return (
