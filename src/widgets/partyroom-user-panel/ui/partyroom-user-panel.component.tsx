@@ -1,7 +1,7 @@
 'use client';
 import { cn } from '@/shared/lib/functions/cn';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
-import { UserListPanel } from './user-list-panel';
+import UserListPanel from './parts/user-list-panel.component';
 
 const PartyroomUserPanel = () => {
   return (
