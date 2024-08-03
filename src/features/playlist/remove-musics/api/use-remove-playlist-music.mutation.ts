@@ -18,9 +18,9 @@ export const useRemovePlaylistMusics = () => {
   >({
     mutationFn: PlaylistsService.removeMusicsFromPlaylist,
     onSuccess: (data) => {
-      data.listIds.forEach((id) => {
+      data.listIds.forEach((listId) => {
         queryClient.invalidateQueries({
-          queryKey: [QueryKeys.PlaylistMusics, id],
+          queryKey: [QueryKeys.PlaylistMusics, listId],
         });
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.Playlist], // for refetch count

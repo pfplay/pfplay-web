@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { usePlaylistAction } from '@/entities/playlist';
 import { AddPlaylistButton } from '@/features/playlist/add';
 import { AddMusicsToPlaylistButton } from '@/features/playlist/add-musics';
 import { Playlists, EditablePlaylists, PlaylistListItem } from '@/features/playlist/list';
@@ -16,6 +17,7 @@ export default function MyPlaylist() {
   const t = useI18n();
   const { useUIState } = useStores();
   const { playlistDrawer, setPlaylistDrawer } = useUIState();
+  const { list: playlists } = usePlaylistAction();
   const [editMode, setEditMode] = useState(false);
   const [removeTargets, setRemoveTargets] = useState<Playlist['id'][]>([]);
 
@@ -55,6 +57,24 @@ export default function MyPlaylist() {
       setEditMode(false);
     }
   }, [playlistDrawer.open]);
+
+  useEffect(() => {
+    /**
+     * playlists가 업데이트 될 때 스토어 내 selectedPlaylist 동기화
+     * 현재 목적은 아래 두 가지임
+     * 1. add musics, remove musics 시에 플레이리스트의 뮤직 카운트를 업데이트하기 위해 get playlists를 다시 호출하는데, 이 때 selectedPlaylist.musicCount도 업데이트 시키기 위함
+     * 2. remove playlist 시에 selectedPlaylist가 삭제되었을 경우, selectedPlaylist을 clear 시킴
+     */
+    if (playlistDrawer.selectedPlaylist) {
+      const recent = playlists.find(
+        (playlist) => playlist.id === playlistDrawer.selectedPlaylist?.id
+      );
+
+      setPlaylistDrawer({
+        selectedPlaylist: recent,
+      });
+    }
+  }, [playlists]);
 
   if (playlistDrawer.selectedPlaylist) {
     return (
