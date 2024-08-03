@@ -1,7 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
 import { cn } from '@/shared/lib/functions/cn';
-import { pick } from '@/shared/lib/functions/pick';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -14,7 +13,6 @@ import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
 import { PartyroomUserPanel } from '@/widgets/partyroom-user-panel';
 import { Sidebar } from '@/widgets/sidebar';
-import UserListItem from 'shared/ui/components/user-list-item/user-list-item.component';
 
 const PartyroomPage = () => {
   const t = useI18n();
@@ -112,41 +110,41 @@ const PartyroomPage = () => {
   );
 };
 
-function TempMembers() {
-  const { useCurrentPartyroom } = useStores();
-  const { members, me, currentDj } = useCurrentPartyroom((state) =>
-    pick(state, ['members', 'me', 'currentDj'])
-  );
+// function TempMembers() {
+//   const { useCurrentPartyroom } = useStores();
+//   const { members, me, currentDj } = useCurrentPartyroom((state) =>
+//     pick(state, ['members', 'me', 'currentDj'])
+//   );
 
-  return (
-    <div className='flexCol pt-4'>
-      {members.map((member, index) => {
-        const suffixValue = (() => {
-          if (member.memberId === currentDj?.memberId) {
-            return 'DJing';
-          }
-          if (member.memberId === me?.memberId) {
-            return 'Me';
-          }
-          return;
-        })();
+//   return (
+//     <div className='flexCol pt-4'>
+//       {members.map((member, index) => {
+//         const suffixValue = (() => {
+//           if (member.memberId === currentDj?.memberId) {
+//             return 'DJing';
+//           }
+//           if (member.memberId === me?.memberId) {
+//             return 'Me';
+//           }
+//           return;
+//         })();
 
-        return (
-          <UserListItem
-            key={member.uid + index}
-            userListItemConfig={{
-              id: member.memberId,
-              username: member.nickname,
-              src: member.avatarFaceUri || '/images/Temp/face.png',
-            }}
-            menuItemList={[]}
-            suffixType='tag'
-            suffixValue={suffixValue}
-          />
-        );
-      })}
-    </div>
-  );
-}
+//         return (
+//           <UserListItem
+//             key={member.uid + index}
+//             userListItemConfig={{
+//               id: member.memberId,
+//               username: member.nickname,
+//               src: member.avatarFaceUri || '/images/Temp/face.png',
+//             }}
+//             menuItemList={[]}
+//             suffixType='tag'
+//             suffixValue={suffixValue}
+//           />
+//         );
+//       })}
+//     </div>
+//   );
+// }
 
 export default PartyroomPage;
