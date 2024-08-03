@@ -53,8 +53,8 @@
       "logout_confirm": "Do you want to log out? If yes, you will be redirected to home",
       "withdraw_confirm": "Are you sure you want to delete your account? Your mission points, playlists, etc. will be deleted and cannot be recovered.",
       "withdraw_completed": "Your account has been deleted. See you next time!",
-      "auth_changed": "Permissions have been changed!",
-      "auth_quota_exceeded": "The limit for this permission has been exceeded",
+      "auth_changed": "Permission has been updated!",
+      "auth_quota_exceeded": "The capacity for this permission has been exceeded",
       "no_change_authority": "You cannot arbitrarily change the permissions of higher-ranking users."
     },
     "btn": {
@@ -151,18 +151,18 @@
     },
     "para": {
       "party_created": "The party has been created!",
-      "auto_close_30days": "Are you sure you want to close the current party room? All data will be deleted.",
-      "existing_party": "Please type 'Confirmed'",
-      "more_than_3m": "You will no longer see this user's chat in this room (only applies to you)",
-      "stop_editing": "Party Rooms",
-      "copy_completed": "Your changes won't be saved. Are you sure you want to leave the party room",
-      "close_party": "Close",
-      "enter_confirm": "Please type 'Confirmed'",
-      "no_longer_see_chat": "Share on Twitter",
-      "party_rooms": "Copy link",
-      "leave_party_confirm": "Current DJing",
-      "close": "DJ queue",
-      "enter_confirm_phrase": "Please enter the confirmation phrase"
+      "auto_close_30days": "If there is no DJing for 30 days, the party room will automatically close",
+      "existing_party": "It's already an existing party name",
+      "more_than_3m": "Available for more than 3 minutes",
+      "stop_editing": "The content written so far is not saved.\nWould you like to stop editing?",
+      "copy_completed": "Copy completed!",
+      "close_party": "Are you sure you want to close the current party room?\nAll data will not be saved.",
+      "enter_confirm": "Enter 'Confirmed'",
+      "no_longer_see_chat": "You will no longer see the user's chat in this room (applies to me only)",
+      "party_rooms": "Party Rooms",
+      "leave_party_confirm": "Your changes won't be saved.\nAre you sure you want to leave the party room?",
+      "close": "Close",
+      "enter_confirm_phrase": "Please type 'Confirmed'"
     },
     "btn": {
       "share_twitter": "Share on Twitter",
@@ -183,10 +183,10 @@
       "select_dj_playlist": "Select DJ Playlist"
     },
     "para": {
-      "no_dj_member": "There are no DJs currently.\nBecome a DJ and keep the party going!",
-      "create_playlist_first": "Please create a playlist to register",
+      "no_dj_member": "No one is djing now.\nWhy not become the DJ and make some noise!",
+      "create_playlist_song": "Before you join the queue, please create a playlist with at least one song.",
       "cancel_dj_queue": "Cancel DJ queue registration",
-      "cancel_dj_queue_confirm": "Are you sure you want to cancel your DJ queue registration?",
+      "cancel_dj_queue_confirm": "Do you want to remove yourself from the DJ queue?",
       "lock_dj_queue": "Do you want to lock the queue? No new DJs will be added.",
       "skip_dj_song": "Do you want to skip the current song?",
       "delete_dj_queue": "Remove from DJ Queue",
@@ -214,7 +214,7 @@
     },
     "para": {
       "edit_only_admin": "Only Community Manager and above can make edit action",
-      "noti_deleted": "Existing notices will be deleted upon registration!"
+      "noti_deleted": "When you add a new announcement, the old one will be removed!"
     }
   },
   "playlist": {
@@ -233,9 +233,9 @@
       "move_playlist": "Move to another playlist"
     },
     "para": {
-      "enter_playlist_name": "Please enter the playlist name",
+      "enter_playlist_name": "Please provide a name for your playlist",
       "delete_playlist_confirm": "Are you sure you want to delete the selected item from the list?",
-      "delete_duplicated_list_confirm": "$1' already has this song! Shall we delete the duplicate song and put it back?",
+      "delete_duplicated_list_confirm": "'$1' already has this song!\nShould we remove the duplicate and add it again?",
       "no_list_yet": "There's no list yet! Try to fill it with your favorite songs.",
       "search_url": "Search for music and URL",
       "up_to_10_if_connect_wallet": "If you connect your wallet, you can create up to 10!"
@@ -243,7 +243,7 @@
     "ec": {
       "exceeded_list_connect_wallet": "You have already exceeded the number of lists that can be created. ",
       "exceeded_list": "Oh no! You have exceeded the number of lists that can be created. You can only create up to 10.",
-      "up_to_100_songs": "You can only add up to 100 songs per playlist"
+      "up_to_100_songs": "You can add a maximum of 100 songs to each playlist"
     }
   },
   "partyroom": {

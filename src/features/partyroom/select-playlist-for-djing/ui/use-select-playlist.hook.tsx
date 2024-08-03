@@ -25,7 +25,7 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
 
   const guidePrepareSelect = async () => {
     const confirmed = await openConfirmDialog({
-      content: t.dj.para.create_playlist_first,
+      content: t.dj.para.create_playlist_song,
     });
     if (confirmed) {
       setPlaylistDrawer({

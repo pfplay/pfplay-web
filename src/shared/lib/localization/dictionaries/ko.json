@@ -151,17 +151,17 @@
     },
     "para": {
       "party_created": "파티가 개설되었어요!",
-      "auto_close_30days": "현재 파티룸을 정말로 폐쇄하시겠어요? 모든 데이터는 저장되지 않습니다.",
-      "existing_party": "'확인했습니다' 입력",
-      "more_than_3m": "이 방에서 사용자의 채팅을 더이상 보지 않습니다 (나에게만 적용)",
-      "stop_editing": "Party Rooms",
-      "copy_completed": "변경 내용이 저장되지 않아요. 파티룸으로 나가시겠어요?",
-      "close_party": "폐쇄하기",
-      "enter_confirm": "확인 문구를 입력해주세요",
-      "no_longer_see_chat": "트위터로 공유하기",
-      "party_rooms": "링크 복사",
-      "leave_party_confirm": "현재 디제잉",
-      "close": "DJ 대기열",
+      "auto_close_30days": "30일 간 디제잉 내역이 없으면 파티룸은 자동으로 폐쇄됩니다",
+      "existing_party": "이미 존재하는 파티 이름이에요",
+      "more_than_3m": "3분 이상 가능",
+      "stop_editing": "지금까지 작성한 내용은 저장되지 않아요.\n수정을 그만하시겠어요?",
+      "copy_completed": "복사 완료!",
+      "close_party": "현재 파티룸을 정말로 폐쇄하시겠어요?\n모든 데이터는 저장되지 않습니다.",
+      "enter_confirm": "'확인했습니다' 입력",
+      "no_longer_see_chat": "이 방에서 사용자의 채팅을 더이상 보지 않습니다 (나에게만 적용)",
+      "party_rooms": "Party Rooms",
+      "leave_party_confirm": "변경 내용이 저장되지 않아요.\n파티룸으로 나가시겠어요?",
+      "close": "폐쇄하기",
       "enter_confirm_phrase": "확인 문구를 입력해주세요"
     },
     "btn": {
@@ -184,7 +184,7 @@
     },
     "para": {
       "no_dj_member": "현재 디제잉 인원이 없어요\n파티의 흥을 책임질 DJ가 되어보세요!",
-      "create_playlist_first": "대기 등록을 위해 먼저 플레이리스트를 생성해주세요",
+      "create_playlist_song": "대기 등록을 위해 최소 1곡이 담긴 플레이리스트가 필요해요",
       "cancel_dj_queue": "DJ 대기 등록 취소",
       "cancel_dj_queue_confirm": "DJ 대기 등록을 취소하시겠습니까?",
       "lock_dj_queue": "대기열을 잠그시겠어요? 잠그면 새로운 DJ가 추가되지 않습니다",
@@ -235,7 +235,7 @@
     "para": {
       "enter_playlist_name": "플레이리스트 이름을 입력해주세요",
       "delete_playlist_confirm": "정말 선택 항목을 리스트에서 삭제하시겠어요?",
-      "delete_duplicated_list_confirm": "$1'에 이미 존재하는 곡입니다! \n중복곡은 삭제하고 다시 담을까요?",
+      "delete_duplicated_list_confirm": "'$1'에 이미 존재하는 곡입니다!\n중복곡은 삭제하고 다시 담을까요?",
       "no_list_yet": "아직 리스트가 없네요!\n취향의 곡을 담아보세요",
       "search_url": "Search for music and URL",
       "up_to_10_if_connect_wallet": "지갑을 연동하시면 10개까지 생성할 수 있어요!"
