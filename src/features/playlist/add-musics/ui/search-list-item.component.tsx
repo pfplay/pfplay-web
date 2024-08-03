@@ -6,12 +6,12 @@ import { Typography } from '@/shared/ui/components/typography';
 
 type SearchListItemProps = {
   music: Pick<MusicListItem, 'videoTitle' | 'runningTime' | 'thumbnailUrl'>;
-  suffix: ReactNode;
+  Suffix: ReactNode;
 };
 
 export default function SearchListItem({
   music: { videoTitle, runningTime, thumbnailUrl },
-  suffix,
+  Suffix,
 }: SearchListItemProps) {
   return (
     <div className='flex items-center gap-[32px]'>
@@ -22,7 +22,7 @@ export default function SearchListItem({
         <Typography>{formatDuration(runningTime)}</Typography>
       </div>
 
-      {suffix}
+      {Suffix}
     </div>
   );
 }

@@ -52,7 +52,7 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
             <div key={music.videoId} className='py-3'>
               <SearchListItem
                 music={music}
-                suffix={
+                Suffix={
                   selectedPlaylist ? (
                     // 선택된 플레이리스트가 있을 경우 해당 플레이리스트에 바로 음악 추가
                     <TextButton
