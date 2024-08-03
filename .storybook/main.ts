@@ -21,6 +21,10 @@ const config: StorybookConfig = {
     <div id="${DomId.TooltipRoot}"></div>
   `,
   staticDirs: ['../public'],
+  babel: async (options) => ({
+    ...options,
+    plugins: [...(options.plugins ?? []), ['@babel/plugin-proposal-decorators', { legacy: true }]],
+  }),
 };
 
 export default config;
