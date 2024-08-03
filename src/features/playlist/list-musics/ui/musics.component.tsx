@@ -11,10 +11,7 @@ type MusicsInPlaylistProps = {
 
 const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
   const t = useI18n();
-  const { data } = useFetchPlaylistMusics(playlist.id, {
-    pageNumber: 0,
-    pageSize: playlist.musicCount,
-  });
+  const { data } = useFetchPlaylistMusics(playlist.id);
   const playlistAction = usePlaylistAction();
 
   return (
