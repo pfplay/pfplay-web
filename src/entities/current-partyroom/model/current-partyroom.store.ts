@@ -52,6 +52,17 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
+    members: [],
+    updateMembers: (next) => {
+      return set((state) => {
+        const updated = update(state.members, next);
+
+        return {
+          members: updated,
+        };
+      });
+    },
+
     init: (next) => {
       return set(next, true);
     },
