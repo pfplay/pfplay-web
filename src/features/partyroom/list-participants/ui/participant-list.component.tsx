@@ -7,7 +7,7 @@ import { Participant } from '@/shared/api/http/types/partyroom';
 import { Categorized } from '@/shared/lib/functions/categorize';
 import { CollapseList } from '@/shared/ui/components/collapse-list';
 import { UserListItem } from '@/shared/ui/components/user-list-item';
-import { getSuffixTagProps } from '../model/get-suffix-tag-props';
+import { renderUserListItemSuffix } from '../model/participant-list.model';
 
 interface Props {
   categorizedParticipants: Categorized<Participant>;
@@ -17,28 +17,18 @@ const ParticipantList = ({ categorizedParticipants }: Props) => {
   const queryClient = useQueryClient();
   const me = queryClient.getQueryData<Me.Model>([QueryKeys.Me]);
 
-  const djing = false; // api에서 DJing 중 유저 받아오면 제거
-
   return (
     <div className='flex flex-col gap-6'>
-      {Object.entries(categorizedParticipants).map(([grade, participants]) => {
+      {Object.entries(categorizedParticipants).map(([category, participants]) => {
         return (
-          <CollapseList key={grade} title={grade}>
+          <CollapseList key={category} title={category}>
             {participants.map((participant) => {
               const isMe =
                 participant.uid === me?.uid
                   ? {
-                      suffixValue: 'Me', // i18n 적용 필요
+                      value: 'Me', // i18n 적용 필요
                     }
                   : undefined;
-              // const ban = isBanList
-              //   ? {
-              //       suffixValue: '해제', // i18n 적용 필요
-              //       onButtonClick: () => {
-              //         console.log(`${participant.memberId} 해제`);
-              //       },
-              //     }
-              //   : undefined;
 
               return (
                 <UserListItem
@@ -46,10 +36,9 @@ const ParticipantList = ({ categorizedParticipants }: Props) => {
                   userListItemConfig={participant}
                   menuItemList={fixtureMenuItems}
                   menuItemPanelSize='sm'
-                  {...getSuffixTagProps({
+                  suffix={renderUserListItemSuffix({
                     me: isMe,
-                    djing,
-                    // ban,
+                    // TODO: djing, ban case 대응
                   })}
                 />
               );

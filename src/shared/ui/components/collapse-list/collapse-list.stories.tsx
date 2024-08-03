@@ -2,7 +2,7 @@ import type { Meta } from '@storybook/react';
 import PlaylistItem from '@/features/playlist/list-musics/ui/music.component';
 import { fixtureCollapseList } from '@/shared/api/http/__fixture__/collapse-list.fixture';
 import { fixtureMenuItems } from '@/shared/api/http/__fixture__/menu-items.fixture';
-import { UserListItem } from '@/shared/ui/components/user-list-item';
+import { UserListItem, UserListItemSuffix } from '@/shared/ui/components/user-list-item';
 import CollapseList from './collapse-list.component';
 import { Tag } from '../tag';
 
@@ -80,11 +80,20 @@ export const CollapseListForUserList = () => {
       {fixtureCollapseList.userListPanel.map((user) => (
         <UserListItem
           key={user.uid}
-          suffixType='button'
-          suffixValue='Click'
           userListItemConfig={user}
           menuItemList={fixtureMenuItems}
-          onButtonClick={(id) => console.log(`id: ${id}는 향후 api 연결에 사용될 예정입니다.`)}
+          suffix={{
+            type: 'button',
+            Component: (
+              <UserListItemSuffix
+                type='button'
+                value='Click'
+                onButtonClick={() =>
+                  console.log(`id: ${user.uid}는 향후 api 연결에 사용될 예정입니다.`)
+                }
+              />
+            ),
+          }}
         />
       ))}
     </CollapseList>

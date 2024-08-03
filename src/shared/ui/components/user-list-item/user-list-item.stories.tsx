@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fixtureMenuItems } from '@/shared/api/http/__fixture__/menu-items.fixture';
-import { UserListItem } from '@/shared/ui/components/user-list-item';
+import { UserListItem, UserListItemSuffix } from '@/shared/ui/components/user-list-item';
 
 const meta = {
   title: 'features/UserListItem',
@@ -31,15 +31,24 @@ export const Preview: Story = {};
 
 export const UserListItemWithTag: Story = {
   args: {
-    suffixType: 'tag',
-    suffixValue: 'Tag',
+    suffix: {
+      type: 'tag',
+      Component: <UserListItemSuffix type='tag' value='Tag' />,
+    },
   },
 };
 
 export const UserListItemWithButton: Story = {
   args: {
-    suffixType: 'button',
-    suffixValue: 'Click',
-    onButtonClick: (id?: number) => console.log(`id: ${id} clicked`),
+    suffix: {
+      type: 'button',
+      Component: (
+        <UserListItemSuffix
+          type='button'
+          value='Click'
+          onButtonClick={(id?: number) => console.log(`id: ${id} clicked`)}
+        />
+      ),
+    },
   },
 };
