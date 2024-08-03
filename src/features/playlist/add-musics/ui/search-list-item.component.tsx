@@ -1,41 +1,18 @@
 import Image from 'next/image';
-import { useMemo } from 'react';
-import { usePlaylistAction } from '@/entities/playlist';
+import { ReactNode } from 'react';
 import { MusicListItem } from '@/shared/api/http/types/playlists';
 import { safeDecodeURI } from '@/shared/lib/functions/safe-decode-uri';
-import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { IconMenu } from '@/shared/ui/components/icon-menu';
-import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
-import { PFAddCircle, PFAddPlaylist } from '@/shared/ui/icons';
 
 type SearchListItemProps = {
-  music: MusicListItem;
-  onSelectPlaylist?: (id: number) => void;
+  music: Pick<MusicListItem, 'videoTitle' | 'runningTime' | 'thumbnailUrl'>;
+  suffix: ReactNode;
 };
 
-const SearchListItem = ({
+export default function SearchListItem({
   music: { videoTitle, runningTime, thumbnailUrl },
-  onSelectPlaylist,
-}: SearchListItemProps) => {
-  const t = useI18n();
-  const playlistAction = usePlaylistAction();
-
-  const menuItemConfig: MenuItem[] = useMemo(
-    () => [
-      ...playlistAction.list.map(({ name: label, id }) => ({
-        label,
-        onClickItem: () => onSelectPlaylist?.(id),
-      })),
-      {
-        label: t.playlist.btn.add_playlist,
-        Icon: <PFAddCircle />,
-        onClickItem: playlistAction.add,
-      },
-    ],
-    [playlistAction.list, playlistAction.add, t, onSelectPlaylist]
-  );
-
+  suffix,
+}: SearchListItemProps) {
   return (
     <div className='flex items-center gap-[32px]'>
       <div className='flex-1 flex items-center gap-[12px]'>
@@ -45,14 +22,10 @@ const SearchListItem = ({
         <Typography>{formatDuration(runningTime)}</Typography>
       </div>
 
-      <IconMenu
-        MenuButtonIcon={<PFAddPlaylist />}
-        menuItemPanel={{ className: 'm-w-[300px] border border-gray-500' }}
-        menuItemConfig={menuItemConfig}
-      />
+      {suffix}
     </div>
   );
-};
+}
 
 /**
  * Format duration to 'mm:ss'
@@ -67,5 +40,3 @@ function formatDuration(duration: string) {
 
   return `${formattedMinutes}:${formattedSeconds}`;
 }
-
-export default SearchListItem;
