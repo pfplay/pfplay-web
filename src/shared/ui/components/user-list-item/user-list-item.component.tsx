@@ -1,45 +1,34 @@
 import Image from 'next/image';
+import { ReactNode } from 'react';
 import { Participant } from '@/shared/api/http/types/partyroom';
-import { Button } from '@/shared/ui/components/button';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
 import { MenuItem, MenuItemPanelSize } from '@/shared/ui/components/menu';
-import { Tag } from '@/shared/ui/components/tag';
 import { Typography } from '@/shared/ui/components/typography';
+import { SuffixType } from './model/user-list-item.model';
 
 export type UserListItemType = Partial<Participant>;
-
-export type UserListItemWithTag = {
-  suffixType: 'tag';
-  suffixValue?: string;
-};
-
-export type UserListItemWithButton = {
-  suffixType: 'button';
-  suffixValue: string;
-  onButtonClick: (id?: number) => void; // 사용처 정해지면 param 추가/제거 및 타입 수정
-};
-
-export type DefaultUserListItem = {
-  suffixType: 'default';
-};
 
 type UserListItemProps = {
   userListItemConfig: UserListItemType;
   menuItemList: MenuItem[];
   menuItemPanelSize?: MenuItemPanelSize;
-} & (UserListItemWithTag | UserListItemWithButton | DefaultUserListItem);
+  suffix?: {
+    type: SuffixType;
+    Component: ReactNode;
+  };
+};
 
 const UserListItem = ({
   userListItemConfig,
   menuItemList,
   menuItemPanelSize,
-  ...suffixProps
+  suffix,
 }: UserListItemProps) => {
   return (
     <DisplayOptionMenuOnHoverListener
       menuConfig={menuItemList}
       menuPositionStyle='top-[8px] right-[12px]'
-      listenerDisabled={suffixProps.suffixType === 'button'}
+      listenerDisabled={suffix?.type === 'button'}
       menuItemPanelSize={menuItemPanelSize}
     >
       {() => (
@@ -57,19 +46,7 @@ const UserListItem = ({
             </Typography>
           </div>
 
-          {suffixProps.suffixType === 'tag' && suffixProps.suffixValue && (
-            <Tag value={suffixProps.suffixValue} variant='filled' />
-          )}
-          {suffixProps.suffixType === 'button' && (
-            <Button
-              variant='outline'
-              color='secondary'
-              onClick={() => suffixProps.onButtonClick(userListItemConfig.memberId)}
-              size='sm'
-            >
-              {suffixProps.suffixValue}
-            </Button>
-          )}
+          {suffix && suffix.Component}
         </div>
       )}
     </DisplayOptionMenuOnHoverListener>
