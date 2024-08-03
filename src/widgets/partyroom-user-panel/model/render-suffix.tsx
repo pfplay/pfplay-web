@@ -1,18 +1,16 @@
 import { ReactElement } from 'react';
+import { Dictionary } from '@/shared/lib/localization/i18n.context';
 import { UserListItemSuffix, UserListItemSuffixProps } from '@/shared/ui/components/user-list-item';
 import { SuffixType } from '@/shared/ui/components/user-list-item/model/user-list-item.model';
 
 type RenderUserListItemParams = {
-  me?: {
-    value: string;
-  };
-  djing?: {
-    value: string;
-  };
-  ban?: {
-    value: string;
-    onButtonClick: (id?: number) => void;
-  };
+  me?: boolean;
+  djing?: boolean;
+  t: Dictionary;
+  // ban?: {
+  //   value: string;
+  //   onButtonClick: (id?: number) => void;
+  // };
 };
 
 type UserListItemSuffixResult =
@@ -25,27 +23,27 @@ type UserListItemSuffixResult =
 export const renderUserListItemSuffix = ({
   me,
   djing,
-  ban,
+  t,
 }: RenderUserListItemParams): UserListItemSuffixResult => {
-  if (ban) {
-    return {
-      type: 'button',
-      Component: (
-        <UserListItemSuffix type='button' value={ban.value} onButtonClick={ban.onButtonClick} />
-      ),
-    };
-  }
+  // if (ban) {
+  //   return {
+  //     type: 'button',
+  //     Component: (
+  //       <UserListItemSuffix type='button' value={ban.value} onButtonClick={ban.onButtonClick} />
+  //     ),
+  //   };
+  // }
 
   if (djing) {
     return {
       type: 'tag',
-      Component: <UserListItemSuffix type='tag' value={djing.value} />,
+      Component: <UserListItemSuffix type='tag' value={t.common.btn.play} />, // FIXME: value djing에 맞게 수정
     };
   }
   if (me) {
     return {
       type: 'tag',
-      Component: <UserListItemSuffix type='tag' value={me.value} />,
+      Component: <UserListItemSuffix type='tag' value={t.common.btn.play} />, // FIXME: value djing에 맞게 수정,
     };
   }
 

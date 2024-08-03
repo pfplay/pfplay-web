@@ -1,1 +1,1 @@
-export { default as ParticipantList } from './ui/participant-list.component';
+export { default as useFetchParticipants } from './api/use-fetch-participants.query';
