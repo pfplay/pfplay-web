@@ -38,5 +38,5 @@ export default function PartyroomLayout({ children }: PropsWithChildren) {
     };
   }, []);
 
-  return <main className='bg-partyRoom overflow-hidden'>{children}</main>;
+  return <main className='bg-partyRoom bg-left-bottom overflow-hidden'>{children}</main>;
 }
