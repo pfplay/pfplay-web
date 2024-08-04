@@ -28,3 +28,10 @@ export function useExitPartyroom() {
     },
   });
 }
+
+/**
+ * 파티룸 내에서 beforeunload 이벤트가 발생하여, onSuccess 내 동작 없이 오직 exit 요청만 보낼 때 사용합니다.
+ */
+export function onBeforePartyroomPageUnload(partyroomId: number) {
+  return PartyroomsService.exit({ partyroomId });
+}

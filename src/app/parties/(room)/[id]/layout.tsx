@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 import { isPartyroomSubscription } from '@/entities/current-partyroom';
 import { usePartyroomClient } from '@/entities/partyroom-client';
 import { useEnterPartyroom } from '@/features/partyroom/enter';
-import { useExitPartyroom } from '@/features/partyroom/exit';
+import { useExitPartyroom, onBeforePartyroomPageUnload } from '@/features/partyroom/exit';
 import useDidUpdateEffect from '@/shared/lib/hooks/use-did-update-effect';
 
 export default function PartyroomLayout({ children }: PropsWithChildren) {
@@ -21,12 +21,20 @@ export default function PartyroomLayout({ children }: PropsWithChildren) {
       return;
     }
 
+    const handleBeforeUnload = () => {
+      onBeforePartyroomPageUnload(partyroomId);
+    };
+
     client.registerConnectListener(() => {
       enter({ partyroomId });
     });
 
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
     return () => {
       exit({ partyroomId });
+
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
 
