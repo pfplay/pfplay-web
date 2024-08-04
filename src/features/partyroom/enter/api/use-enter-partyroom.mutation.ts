@@ -41,6 +41,7 @@ export function useEnterPartyroom() {
           playback: setUpInfo.display.playback,
           reaction: setUpInfo.display.reaction,
           members: setUpInfo.members,
+          currentDj: setUpInfo.display.currentDj,
           notice,
         });
 

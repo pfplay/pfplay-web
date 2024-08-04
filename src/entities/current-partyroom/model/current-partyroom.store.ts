@@ -59,6 +59,13 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
+    currentDj: undefined,
+    updateCurrentDj: (next) => {
+      return set({
+        currentDj: next,
+      });
+    },
+
     notice: '',
     updateNotice: (next) => {
       return set({

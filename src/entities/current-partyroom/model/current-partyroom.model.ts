@@ -29,13 +29,23 @@ export type Model = {
   members: PartyroomMember[];
   updateMembers: (next: Next<PartyroomMember[]>) => void;
 
+  currentDj?: Pick<PartyroomMember, 'memberId'>;
+  updateCurrentDj: (next: Pick<PartyroomMember, 'memberId'> | undefined) => void;
+
   notice: string;
   updateNotice: (next: string) => void;
 
   init: (
     next: Pick<
       Model,
-      'id' | 'me' | 'playbackActivated' | 'playback' | 'reaction' | 'members' | 'notice'
+      | 'id'
+      | 'me'
+      | 'playbackActivated'
+      | 'playback'
+      | 'reaction'
+      | 'members'
+      | 'currentDj'
+      | 'notice'
     >
   ) => void;
   reset: () => void;

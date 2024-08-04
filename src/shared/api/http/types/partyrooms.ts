@@ -89,6 +89,7 @@ export type GetSetUpInfoResponse = {
     playbackActivated: boolean;
     playback?: PartyroomPlayback;
     reaction?: PartyroomReaction;
+    currentDj?: Pick<PartyroomMember, 'memberId'>;
   };
 };
 
