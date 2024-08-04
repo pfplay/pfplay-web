@@ -16,13 +16,16 @@ export function getRandomPoints(length: number, allowArea: Area, denyArea: Area)
 }
 
 export function getRandomPoint(allowArea: Area, denyArea: Area): Point {
+  assertArea(allowArea);
+  assertArea(denyArea);
+
   let point: Point;
   do {
     point = {
       x: getRandomInt(allowArea.from.x, allowArea.to.x),
       y: getRandomInt(allowArea.from.y, allowArea.to.y),
     };
-  } while (!isWithin(point, denyArea));
+  } while (isWithin(point, denyArea));
 
   return point;
 }
@@ -35,4 +38,10 @@ function isWithin(point: Point, area: Area): boolean {
   return (
     point.x >= area.from.x && point.x <= area.to.x && point.y >= area.from.y && point.y <= area.to.y
   );
+}
+
+function assertArea(area: Area) {
+  if (area.from.x > area.to.x || area.from.y > area.to.y) {
+    throw new Error('Invalid area');
+  }
 }
