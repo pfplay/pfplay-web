@@ -11,9 +11,7 @@ type Props = {
 };
 
 export default function DjingDialog({ partyroomId, open, close }: Props) {
-  const { data: djingQueue } = useFetchDjingQueue({
-    partyroomId,
-  });
+  const { data: djingQueue } = useFetchDjingQueue({ partyroomId }, open);
 
   if (!djingQueue) return;
   return (

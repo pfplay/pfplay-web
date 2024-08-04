@@ -6,11 +6,12 @@ import { APIError } from '@/shared/api/http/types/@shared';
 import { DjingQueue, GetDjingQueuePayload } from '@/shared/api/http/types/partyrooms';
 import { FIVE_MINUTES } from '@/shared/config/time';
 
-export const useFetchDjingQueue = (payload: GetDjingQueuePayload) => {
+export const useFetchDjingQueue = (payload: GetDjingQueuePayload, enabled?: boolean) => {
   return useQuery<DjingQueue, AxiosError<APIError>>({
     queryKey: [QueryKeys.DjingQueue, payload.partyroomId],
     queryFn: () => PartyroomsService.getDjingQueue(payload),
     staleTime: 0,
     gcTime: FIVE_MINUTES,
+    enabled,
   });
 };
