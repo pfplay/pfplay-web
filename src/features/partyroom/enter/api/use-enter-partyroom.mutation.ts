@@ -32,7 +32,6 @@ export function useEnterPartyroom() {
           me: {
             memberId: enterResponse.memberId,
             gradeType: enterResponse.gradeType,
-            host: enterResponse.host,
           },
           playbackActivated: setUpInfo.display.playbackActivated,
           playback: setUpInfo.display.playback,

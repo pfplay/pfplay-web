@@ -9,7 +9,6 @@ import type { Next } from '@/shared/lib/functions/update';
 export type MyPartyroomInfo = {
   memberId: number;
   gradeType: GradeType;
-  host: boolean;
 };
 
 export type Model = {

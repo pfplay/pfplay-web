@@ -142,12 +142,8 @@ export type EnterPayload = {
 };
 
 export type EnterResponse = {
-  uid: string;
-  authorityTier: AuthorityTier;
-  nickname: string;
   memberId: number;
   gradeType: GradeType;
-  host: boolean;
 };
 
 export type ExitPayload = {
