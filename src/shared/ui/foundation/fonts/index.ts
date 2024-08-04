@@ -23,9 +23,17 @@ export const pretendardVariable = localFont({
 });
 
 export const galmuriFont = localFont({
-  src: './galmuri11-Bold.woff2',
+  src: [
+    {
+      path: './Galmuri11.woff2',
+      weight: '400',
+    },
+    {
+      path: './Galmuri11-Bold.woff2',
+      weight: '700',
+    },
+  ],
   display: 'fallback',
-  weight: '700',
   style: 'normal',
   fallback: [
     '-apple-system',

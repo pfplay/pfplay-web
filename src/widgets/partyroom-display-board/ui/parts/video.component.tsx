@@ -73,7 +73,7 @@ export default function Video({ width, height = width * DEFAULT_H_RATIO }: Props
     <>
       {!playable && (
         <div style={{ width, height }} className='bg-black'>
-          <LoadingPanel />
+          {!!playback && <LoadingPanel />}
         </div>
       )}
 
