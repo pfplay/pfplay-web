@@ -3,6 +3,7 @@ import { useParams } from 'next/navigation';
 import { cn } from '@/shared/lib/functions/cn';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
 import { PFInfoOutline, PFParty, PFChatFilled, PFPersonOutline, PFDj } from '@/shared/ui/icons';
@@ -20,6 +21,9 @@ const PartyroomPage = () => {
     onOpen: openDjingDialog,
     onClose: closeDjingDialog,
   } = useDisclosure();
+
+  const { useCurrentPartyroom } = useStores();
+  const members = useCurrentPartyroom((state) => state.members);
 
   // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
   return (
@@ -77,7 +81,7 @@ const PartyroomPage = () => {
                 PrefixIcon={<PFChatFilled width={20} height={20} />}
               />
               <Tab
-                tabTitle={`${0}`}
+                tabTitle={members.length.toString()}
                 variant='line'
                 PrefixIcon={<PFPersonOutline width={20} height={20} />}
               />
