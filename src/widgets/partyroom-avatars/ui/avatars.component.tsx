@@ -5,8 +5,9 @@ import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
 import { pick } from '@/shared/lib/functions/pick';
 import useDidUpdateEffect from '@/shared/lib/hooks/use-did-update-effect';
 import { useStores } from '@/shared/lib/store/stores.context';
+import { Area, Point, getRandomPoint, getRandomPoints } from '../model/avatar-position.model';
 
-export default function MemberAvatars() {
+export default function Avatars() {
   const { useCurrentPartyroom } = useStores();
   const { members: storedMembers, currentDj } = useCurrentPartyroom((state) =>
     pick(state, ['members', 'currentDj'])
@@ -30,7 +31,7 @@ export default function MemberAvatars() {
         const newMemberIndex = storedMembers.findIndex(
           (member) => !prevMemberUidSet.has(member.uid)
         );
-        const newPoint = getRandomPoint(MEMBERS_AREA.ALLOW, MEMBERS_AREA.DENY);
+        const newPoint = getRandomPoint(ALLOW_AREA, DENY_AREA);
         setRandomPoints((prev) => {
           const next = [...prev];
           next.splice(newMemberIndex, 0, newPoint);
@@ -63,7 +64,7 @@ export default function MemberAvatars() {
 
     if (!localMembersInitialized) {
       setLocalMembers(storedMembers);
-      setRandomPoints(getRandomPoints(storedMembers.length, MEMBERS_AREA.ALLOW, MEMBERS_AREA.DENY));
+      setRandomPoints(getRandomPoints(storedMembers.length, ALLOW_AREA, DENY_AREA));
       return;
     }
 
@@ -123,48 +124,12 @@ export default function MemberAvatars() {
   );
 }
 
-type Point = {
-  x: number;
-  y: number;
-};
-type Range = {
-  from: Point;
-  to: Point;
+const ALLOW_AREA: Area = {
+  from: { x: 10, y: 60 },
+  to: { x: 80, y: 100 },
 };
 
-function getRandomPoints(length: number, allowArea: Range, denyArea: Range): Point[] {
-  return Array.from({ length }, () => getRandomPoint(allowArea, denyArea));
-}
-
-function getRandomPoint(allowArea: Range, denyArea: Range): Point {
-  let point: Point;
-  do {
-    point = {
-      x: getRandomInt(allowArea.from.x, allowArea.to.x),
-      y: getRandomInt(allowArea.from.y, allowArea.to.y),
-    };
-  } while (!isWithin(point, denyArea));
-
-  return point;
-}
-
-function getRandomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function isWithin(point: Point, area: Range): boolean {
-  return (
-    point.x >= area.from.x && point.x <= area.to.x && point.y >= area.from.y && point.y <= area.to.y
-  );
-}
-
-const MEMBERS_AREA: Record<'ALLOW' | 'DENY', Range> = {
-  ALLOW: {
-    from: { x: 10, y: 50 },
-    to: { x: 70, y: 100 },
-  },
-  DENY: {
-    from: { x: 10, y: 60 },
-    to: { x: 36, y: 100 },
-  },
+const DENY_AREA: Area = {
+  from: { x: 0, y: 0 },
+  to: { x: 40, y: 100 },
 };
