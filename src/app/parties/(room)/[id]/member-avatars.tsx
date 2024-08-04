@@ -11,22 +11,22 @@ export default function MemberAvatars() {
   const { members: storedMembers, currentDj } = useCurrentPartyroom((state) =>
     pick(state, ['members', 'currentDj'])
   );
-  const [localMembers, setLocalMembers] = useState<PartyroomMember[]>(storedMembers);
+  const [localMembers, setLocalMembers] = useState<PartyroomMember[]>([]);
+  const [randomPoints, setRandomPoints] = useState<Point[]>([]);
+
   const dj = currentDj && localMembers.find((member) => member.memberId === currentDj.memberId);
-  const [randomPoints, setRandomPoints] = useState(() =>
-    Array.from({ length: localMembers.length }, () =>
-      getRandomPoint(MEMBERS_AREA.ALLOW, MEMBERS_AREA.DENY)
-    )
-  );
 
-  useDidUpdateEffect(() => {
-    const isAdded = localMembers.length < storedMembers.length;
-    const isRemoved = localMembers.length > storedMembers.length;
+  const storedMembersInitialized = !!storedMembers.length;
+  const localMembersInitialized = !!localMembers.length && !!randomPoints.length;
 
-    setLocalMembers((prev) => {
+  const syncWithStoredMembers = () => {
+    setLocalMembers((prevLocalMembers) => {
+      const isAdded = prevLocalMembers.length < storedMembers.length;
+      const isRemoved = prevLocalMembers.length > storedMembers.length;
+
       if (isAdded) {
         // 추가된 멤버의 index에 맞춰 randomPoints에 새로운 point 추가
-        const prevMemberUidSet = new Set(prev.map((m) => m.uid));
+        const prevMemberUidSet = new Set(prevLocalMembers.map((m) => m.uid));
         const newMemberIndex = storedMembers.findIndex(
           (member) => !prevMemberUidSet.has(member.uid)
         );
@@ -37,19 +37,38 @@ export default function MemberAvatars() {
           return next;
         });
       }
+
       if (isRemoved) {
         // 삭제된 멤버의 index에 맞춰 randomPoints에서 point 제거
         const changedMemberUidSet = new Set(storedMembers.map((m) => m.uid));
-        const removedMemberIndex = prev.findIndex((member) => !changedMemberUidSet.has(member.uid));
+        const removedMemberIndex = prevLocalMembers.findIndex(
+          (member) => !changedMemberUidSet.has(member.uid)
+        );
         setRandomPoints((prev) => {
           const next = [...prev];
           next.splice(removedMemberIndex, 1);
           return next;
         });
       }
+
       return storedMembers;
     });
-  }, [storedMembers]);
+  };
+
+  useDidUpdateEffect(() => {
+    // 파티룸 진입 시 조건문이 순차로 실행된 후, 이후부턴 storedMembers가 변경될 때마다 syncWithStoredMembers가 실행됨
+    if (!storedMembersInitialized) {
+      return;
+    }
+
+    if (!localMembersInitialized) {
+      setLocalMembers(storedMembers);
+      setRandomPoints(getRandomPoints(storedMembers.length, MEMBERS_AREA.ALLOW, MEMBERS_AREA.DENY));
+      return;
+    }
+
+    syncWithStoredMembers();
+  }, [storedMembersInitialized, localMembersInitialized, storedMembers]);
 
   return (
     <div className='absolute inset-0 z-0 min-w-desktop max-w-[2400px] overflow-hidden'>
@@ -74,6 +93,10 @@ export default function MemberAvatars() {
 
       {localMembers.map((member, index) => {
         if (member.memberId === dj?.memberId) {
+          return null;
+        }
+        if (!randomPoints[index]) {
+          /* localMembers와 randomPoints의 length가 동기화 되지 않는 일순간이 있을 수 있음 */
           return null;
         }
         return (
@@ -108,6 +131,10 @@ type Range = {
   from: Point;
   to: Point;
 };
+
+function getRandomPoints(length: number, allowArea: Range, denyArea: Range): Point[] {
+  return Array.from({ length }, () => getRandomPoint(allowArea, denyArea));
+}
 
 function getRandomPoint(allowArea: Range, denyArea: Range): Point {
   let point: Point;
