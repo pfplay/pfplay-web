@@ -137,6 +137,14 @@ export type DjingQueue = {
   djs: Dj[];
 };
 
+export type GetNoticePayload = {
+  partyroomId: number;
+};
+
+export type GetNoticeResponse = {
+  content?: string;
+};
+
 export type EnterPayload = {
   partyroomId: number;
 };
@@ -167,6 +175,10 @@ export interface PartyroomsClient {
    * DJ 대기열 조회
    */
   getDjingQueue: (payload: GetDjingQueuePayload) => Promise<DjingQueue>;
+  /**
+   * 공지사항 조회
+   */
+  getNotice: (payload: GetNoticePayload) => Promise<GetNoticeResponse>;
   /**
    * 파티룸 입장
    */
