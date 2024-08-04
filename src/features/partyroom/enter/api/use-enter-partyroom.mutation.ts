@@ -13,6 +13,7 @@ import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
+import { useFetchNoticeAsync } from './use-fetch-notice.query';
 
 export function useEnterPartyroom() {
   const { useCurrentPartyroom } = useStores();
@@ -20,12 +21,15 @@ export function useEnterPartyroom() {
   const { openErrorDialog } = useDialog();
   const client = usePartyroomClient();
   const handleEvent = useHandlePartyroomSubscriptionEvent();
+  const fetchNoticeAsync = useFetchNoticeAsync();
 
   const handleSuccess = (enterResponse: EnterResponse, { partyroomId }: EnterPayload) => {
     fetchPartyroomSetUpInfo(partyroomId, {
-      onSuccess: (setUpInfo) => {
+      onSuccess: async (setUpInfo) => {
         // TODO: members 작업 시 members 캐시 데이터 세팅해주기
         // queryClient.setQueryData([QueryKeys.PartyroomMembers, partyroomId], setUpInfo.members);
+
+        const notice = await fetchNoticeAsync(partyroomId);
 
         initPartyroom({
           id: partyroomId,
@@ -37,6 +41,7 @@ export function useEnterPartyroom() {
           playback: setUpInfo.display.playback,
           reaction: setUpInfo.display.reaction,
           members: setUpInfo.members,
+          notice,
         });
 
         client.subscribe(getPartyroomDestination(partyroomId), handleEvent);

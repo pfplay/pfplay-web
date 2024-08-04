@@ -18,7 +18,7 @@ export type Model = {
   updateMe: (next: Next<MyPartyroomInfo | undefined>) => void;
 
   playbackActivated: boolean;
-  updatePlaybackActivated: (next: boolean | undefined) => void;
+  updatePlaybackActivated: (next: boolean) => void;
 
   playback?: PartyroomPlayback;
   updatePlayback: (next: Next<PartyroomPlayback | undefined>) => void;
@@ -29,8 +29,14 @@ export type Model = {
   members: PartyroomMember[];
   updateMembers: (next: Next<PartyroomMember[]>) => void;
 
+  notice: string;
+  updateNotice: (next: string) => void;
+
   init: (
-    next: Pick<Model, 'id' | 'me' | 'playbackActivated' | 'playback' | 'reaction' | 'members'>
+    next: Pick<
+      Model,
+      'id' | 'me' | 'playbackActivated' | 'playback' | 'reaction' | 'members' | 'notice'
+    >
   ) => void;
   reset: () => void;
 };
