@@ -48,10 +48,12 @@ export type PartyroomMember = {
 };
 
 export type PartyroomPlayback = {
+  id: number;
   name: string;
   linkId: string;
   duration: string; // 00:00 형식의 문자열
-  endTime: string; // 00:00:00 형식의 문자열. UTC 기준
+  thumbnailImage: string;
+  endTime: number; // UTC 기준 UNIX timestamp, ex) 1722750394821
 };
 
 export type PartyroomReaction = {
