@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { IMessage } from '@stomp/stompjs';
 import { PartyroomEventType, PartyroomSubEvent } from '@/shared/api/websocket/types/partyroom';
-import { warnLog } from '@/shared/lib/functions/log/logger';
+import { specificLog, warnLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import useAccessCallback from './subscription-callbacks/use-access-callback.hook';
 import useAggregationCallback from './subscription-callbacks/use-aggregation-callback.hook';
@@ -13,6 +13,7 @@ import usePlaybackCallback from './subscription-callbacks/use-playback-callback.
 
 const logger = withDebugger(0);
 const warnLogger = logger(warnLog);
+const infoLogger = logger(specificLog);
 
 export default function useHandleSubscriptionEvent() {
   const accessCallback = useAccessCallback();
@@ -36,6 +37,8 @@ export default function useHandleSubscriptionEvent() {
         warnLogger('Unknown event type:', event);
         return;
       }
+
+      infoLogger('Received event:', event);
 
       switch (event.eventType) {
         case PartyroomEventType.ACCESS:
