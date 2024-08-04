@@ -1,4 +1,4 @@
-import { GradeType } from '@/shared/api/http/types/@enums';
+import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
 
 // 재생 비활성화 이벤트
 export type DeactivationEvent = {
@@ -44,20 +44,12 @@ export type AccessEvent =
   | {
       eventType: PartyroomEventType.ACCESS;
       accessType: AccessType.ENTER;
-      member: {
-        memberId: number;
-        gradeType: GradeType;
-        nickname: string;
-        avatarBodyUri: string;
-        avatarFaceUri?: string;
-      };
+      member: PartyroomMember;
     }
   | {
       eventType: PartyroomEventType.ACCESS;
       accessType: AccessType.EXIT;
-      member: {
-        memberId: number;
-      };
+      member: Pick<PartyroomMember, 'memberId'>;
     };
 
 // 공지사항 변동 이벤트
