@@ -24,7 +24,12 @@ export default class StompClient {
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
-      debug: log,
+      debug: (msg) => {
+        // ignore heartbeat logs
+        if (!msg.includes('/heartbeat')) {
+          log(msg);
+        }
+      },
     });
   }
 
