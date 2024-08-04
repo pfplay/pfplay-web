@@ -31,7 +31,7 @@ export const Preview: Story = {
 
 function Render(args: typeof meta.args) {
   const { useCurrentPartyroom } = useStores();
-  const { playback, updatePlayback, updateReaction } = useCurrentPartyroom();
+  const { playback, updatePlayback, updateReaction, updateNotice } = useCurrentPartyroom();
 
   const mockPlaybacks: PartyroomPlayback[] = [
     {
@@ -48,14 +48,16 @@ function Render(args: typeof meta.args) {
     },
   ];
 
-  const initPlayback = () => {
+  const init = () => {
     updatePlayback(mockPlaybacks[0]);
     updateReaction(mockReactions[0]);
+    updateNotice('No slander or socialising between members. Violators will be banned immediately');
   };
 
-  const clearPlayback = () => {
+  const clear = () => {
     updatePlayback(undefined);
     updateReaction(undefined);
+    updateNotice('');
   };
 
   const changePlayback = () => {
@@ -66,9 +68,9 @@ function Render(args: typeof meta.args) {
   };
 
   useEffect(() => {
-    initPlayback();
+    init();
 
-    return clearPlayback;
+    return clear;
   }, []);
 
   return (
@@ -81,13 +83,13 @@ function Render(args: typeof meta.args) {
             <Button onClick={changePlayback} variant='outline' size='xl' color='primary'>
               Change Playback
             </Button>
-            <Button onClick={clearPlayback} variant='outline' size='xl' color='secondary'>
-              Clear Playback
+            <Button onClick={clear} variant='outline' size='xl' color='secondary'>
+              Clear
             </Button>
           </>
         ) : (
-          <Button onClick={initPlayback} variant='outline' size='xl' color='primary'>
-            Init Playback
+          <Button onClick={init} variant='outline' size='xl' color='primary'>
+            Init
           </Button>
         )}
       </div>
