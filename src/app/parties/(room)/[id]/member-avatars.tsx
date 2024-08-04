@@ -2,19 +2,17 @@
 import { useState } from 'react';
 import { Avatar } from '@/entities/avatar';
 import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
+import { pick } from '@/shared/lib/functions/pick';
 import useDidUpdateEffect from '@/shared/lib/hooks/use-did-update-effect';
 import { useStores } from '@/shared/lib/store/stores.context';
 
-/**
- * FIXME: 추후 현재 파티룸의 DJ 정보를 알 수 있게 되면 수정
- */
-const TEMP_DJ_MEMBER_ID = 0;
-
 export default function MemberAvatars() {
   const { useCurrentPartyroom } = useStores();
-  const storedMembers = useCurrentPartyroom((state) => state.members);
+  const { members: storedMembers, currentDj } = useCurrentPartyroom((state) =>
+    pick(state, ['members', 'currentDj'])
+  );
   const [localMembers, setLocalMembers] = useState<PartyroomMember[]>(storedMembers);
-  const dj = localMembers.find((member) => member.memberId === TEMP_DJ_MEMBER_ID);
+  const dj = currentDj && localMembers.find((member) => member.memberId === currentDj.memberId);
   const [randomPoints, setRandomPoints] = useState(() =>
     Array.from({ length: localMembers.length }, () =>
       getRandomPoint(MEMBERS_AREA.ALLOW, MEMBERS_AREA.DENY)
