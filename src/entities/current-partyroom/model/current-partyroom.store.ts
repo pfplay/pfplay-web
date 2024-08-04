@@ -5,7 +5,7 @@ import { update } from '@/shared/lib/functions/update';
 import * as CurrentPartyroom from '../model/current-partyroom.model';
 
 export const createCurrentPartyroomStore = () => {
-  return create<CurrentPartyroom.Model>((set) => ({
+  return create<CurrentPartyroom.Model>((set, _, api) => ({
     id: undefined,
 
     me: undefined,
@@ -74,20 +74,17 @@ export const createCurrentPartyroomStore = () => {
     },
 
     init: (next) => {
-      return set(next, true);
-    },
-
-    reset: () => {
       return set(
         {
-          id: undefined,
-          me: undefined,
-          playbackActivated: false,
-          playback: undefined,
-          reaction: undefined,
+          ...api.getInitialState(),
+          ...next,
         },
         true
       );
+    },
+
+    reset: () => {
+      return set(api.getInitialState(), true);
     },
   }));
 };
