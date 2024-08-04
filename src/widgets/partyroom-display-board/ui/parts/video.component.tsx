@@ -7,6 +7,7 @@ import { Playback } from '@/entities/current-partyroom';
 import { useCompletePlayback } from '@/features/partyroom/complete-playback';
 import { PartyroomPlayback } from '@/shared/api/http/types/partyrooms';
 import { cn } from '@/shared/lib/functions/cn';
+import { pick } from '@/shared/lib/functions/pick';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { LoadingPanel } from '@/shared/ui/components/loading';
 
@@ -37,7 +38,9 @@ type Props = {
  */
 export default function Video({ width, height = width * DEFAULT_H_RATIO }: Props) {
   const { useCurrentPartyroom } = useStores();
-  const playback = useCurrentPartyroom((state) => state.playback);
+  const { playback, currentDj, me } = useCurrentPartyroom((state) =>
+    pick(state, ['playback', 'currentDj', 'me'])
+  );
   const videoId = playback?.linkId;
   const { mutate: completePlayback } = useCompletePlayback();
 
@@ -60,9 +63,8 @@ export default function Video({ width, height = width * DEFAULT_H_RATIO }: Props
   };
 
   const onEnded = () => {
-    if (
-      false /* TODO: 파티룸 현재 DJ 정보 알 수 있게되면, "현재 DJ의 memberId가 나의 memberId와 같다면" 이라는 조건문 추가 */
-    ) {
+    if (!currentDj || !me) return; // 단순 assert 용 return. 두 값은 실제로 이 콜백 실행 시점에 항상 truthy해야 함
+    if (currentDj.memberId === me.memberId) {
       completePlayback();
     }
   };
