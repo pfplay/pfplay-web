@@ -15,7 +15,7 @@ export type UserListItemType = {
 
 type UserListItemWithTag = {
   suffixType: 'tag';
-  suffixValue: string;
+  suffixValue?: string;
 };
 
 type UserListItemWithButton = {
@@ -51,7 +51,7 @@ const UserListItem = ({ userListItemConfig, menuItemList, ...suffixProps }: User
             </Typography>
           </div>
 
-          {suffixProps.suffixType === 'tag' && (
+          {suffixProps.suffixType === 'tag' && suffixProps.suffixValue && (
             <Tag value={suffixProps.suffixValue} variant='filled' />
           )}
           {suffixProps.suffixType === 'button' && (
