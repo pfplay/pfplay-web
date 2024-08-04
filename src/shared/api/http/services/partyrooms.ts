@@ -6,6 +6,8 @@ import type {
   ExitPayload,
   GetDjingQueuePayload,
   GetMembersPayload,
+  GetNoticePayload,
+  GetNoticeResponse,
   GetSetupInfoPayload,
   GetSetUpInfoResponse,
   PartyroomMemberSummary,
@@ -32,6 +34,10 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
 
   public getDjingQueue = ({ partyroomId }: GetDjingQueuePayload) => {
     return this.get<DjingQueue>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`);
+  };
+
+  public getNotice = ({ partyroomId }: GetNoticePayload) => {
+    return this.get<GetNoticeResponse>(`${this.ROUTE_V1}/${partyroomId}/notice`);
   };
 
   public enter = ({ partyroomId }: EnterPayload) => {

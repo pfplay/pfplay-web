@@ -21,12 +21,8 @@ export const createCurrentPartyroomStore = () => {
 
     playbackActivated: false,
     updatePlaybackActivated: (next) => {
-      return set((state) => {
-        const updated = update(state.playbackActivated, next);
-
-        return {
-          playbackActivated: updated,
-        };
+      return set({
+        playbackActivated: next,
       });
     },
 
@@ -60,6 +56,20 @@ export const createCurrentPartyroomStore = () => {
         return {
           members: updated,
         };
+      });
+    },
+
+    currentDj: undefined,
+    updateCurrentDj: (next) => {
+      return set({
+        currentDj: next,
+      });
+    },
+
+    notice: '',
+    updateNotice: (next) => {
+      return set({
+        notice: next,
       });
     },
 

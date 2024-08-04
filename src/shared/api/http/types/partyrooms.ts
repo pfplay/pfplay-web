@@ -48,10 +48,12 @@ export type PartyroomMember = {
 };
 
 export type PartyroomPlayback = {
+  id: number;
   name: string;
   linkId: string;
   duration: string; // 00:00 형식의 문자열
-  endTime: string; // 00:00:00 형식의 문자열. UTC 기준
+  thumbnailImage: string;
+  endTime: number; // UTC 기준 UNIX timestamp, ex) 1722750394821
 };
 
 export type PartyroomReaction = {
@@ -89,6 +91,7 @@ export type GetSetUpInfoResponse = {
     playbackActivated: boolean;
     playback?: PartyroomPlayback;
     reaction?: PartyroomReaction;
+    currentDj?: Pick<PartyroomMember, 'memberId'>;
   };
 };
 
@@ -137,17 +140,21 @@ export type DjingQueue = {
   djs: Dj[];
 };
 
+export type GetNoticePayload = {
+  partyroomId: number;
+};
+
+export type GetNoticeResponse = {
+  content?: string;
+};
+
 export type EnterPayload = {
   partyroomId: number;
 };
 
 export type EnterResponse = {
-  uid: string;
-  authorityTier: AuthorityTier;
-  nickname: string;
   memberId: number;
   gradeType: GradeType;
-  host: boolean;
 };
 
 export type ExitPayload = {
@@ -171,6 +178,10 @@ export interface PartyroomsClient {
    * DJ 대기열 조회
    */
   getDjingQueue: (payload: GetDjingQueuePayload) => Promise<DjingQueue>;
+  /**
+   * 공지사항 조회
+   */
+  getNotice: (payload: GetNoticePayload) => Promise<GetNoticeResponse>;
   /**
    * 파티룸 입장
    */

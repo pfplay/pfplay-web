@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { PartyroomPlayback, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
+import { ONE_MINUTE } from '@/shared/config/time';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import DisplayBoard from './display-board.component';
@@ -31,31 +32,37 @@ export const Preview: Story = {
 
 function Render(args: typeof meta.args) {
   const { useCurrentPartyroom } = useStores();
-  const { playback, updatePlayback, updateReaction } = useCurrentPartyroom();
+  const { playback, updatePlayback, updateReaction, updateNotice } = useCurrentPartyroom();
 
   const mockPlaybacks: PartyroomPlayback[] = [
     {
+      id: 1,
       name: `NewJeans (뉴진스) 'Hype Boy' Official MV (Performance ver.1)`,
       linkId: '11cta61wi0g',
       duration: '03:20',
-      endTime: get_UTC_HHMMSS_WithOffset(120),
+      thumbnailImage: '',
+      endTime: Date.now() + ONE_MINUTE * 2,
     },
     {
+      id: 2,
       name: `COVER | SOLE & THAMA 'Close to you' | Original by The Carpenters`,
       linkId: 'RuORKyaDPCo',
       duration: '02:30',
-      endTime: get_UTC_HHMMSS_WithOffset(100),
+      thumbnailImage: '',
+      endTime: Date.now() + (ONE_MINUTE * 10) / 6,
     },
   ];
 
-  const initPlayback = () => {
+  const init = () => {
     updatePlayback(mockPlaybacks[0]);
     updateReaction(mockReactions[0]);
+    updateNotice('No slander or socialising between members. Violators will be banned immediately');
   };
 
-  const clearPlayback = () => {
+  const clear = () => {
     updatePlayback(undefined);
     updateReaction(undefined);
+    updateNotice('');
   };
 
   const changePlayback = () => {
@@ -66,9 +73,9 @@ function Render(args: typeof meta.args) {
   };
 
   useEffect(() => {
-    initPlayback();
+    init();
 
-    return clearPlayback;
+    return clear;
   }, []);
 
   return (
@@ -81,13 +88,13 @@ function Render(args: typeof meta.args) {
             <Button onClick={changePlayback} variant='outline' size='xl' color='primary'>
               Change Playback
             </Button>
-            <Button onClick={clearPlayback} variant='outline' size='xl' color='secondary'>
-              Clear Playback
+            <Button onClick={clear} variant='outline' size='xl' color='secondary'>
+              Clear
             </Button>
           </>
         ) : (
-          <Button onClick={initPlayback} variant='outline' size='xl' color='primary'>
-            Init Playback
+          <Button onClick={init} variant='outline' size='xl' color='primary'>
+            Init
           </Button>
         )}
       </div>
@@ -104,13 +111,6 @@ function findNextIndex<T>(
   const nextIndex = (index + 1) % array.length;
 
   return array[nextIndex];
-}
-
-function get_UTC_HHMMSS_WithOffset(offsetSeconds: number) {
-  const date = new Date();
-  date.setSeconds(date.getSeconds() + offsetSeconds);
-
-  return date.toISOString().split('T')[1].split('.')[0];
 }
 
 const mockReactions: PartyroomReaction[] = [

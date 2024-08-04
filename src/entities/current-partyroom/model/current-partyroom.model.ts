@@ -9,7 +9,6 @@ import type { Next } from '@/shared/lib/functions/update';
 export type MyPartyroomInfo = {
   memberId: number;
   gradeType: GradeType;
-  host: boolean;
 };
 
 export type Model = {
@@ -19,7 +18,7 @@ export type Model = {
   updateMe: (next: Next<MyPartyroomInfo | undefined>) => void;
 
   playbackActivated: boolean;
-  updatePlaybackActivated: (next: boolean | undefined) => void;
+  updatePlaybackActivated: (next: boolean) => void;
 
   playback?: PartyroomPlayback;
   updatePlayback: (next: Next<PartyroomPlayback | undefined>) => void;
@@ -30,8 +29,24 @@ export type Model = {
   members: PartyroomMember[];
   updateMembers: (next: Next<PartyroomMember[]>) => void;
 
+  currentDj?: Pick<PartyroomMember, 'memberId'>;
+  updateCurrentDj: (next: Pick<PartyroomMember, 'memberId'> | undefined) => void;
+
+  notice: string;
+  updateNotice: (next: string) => void;
+
   init: (
-    next: Pick<Model, 'id' | 'me' | 'playbackActivated' | 'playback' | 'reaction' | 'members'>
+    next: Pick<
+      Model,
+      | 'id'
+      | 'me'
+      | 'playbackActivated'
+      | 'playback'
+      | 'reaction'
+      | 'members'
+      | 'currentDj'
+      | 'notice'
+    >
   ) => void;
   reset: () => void;
 };

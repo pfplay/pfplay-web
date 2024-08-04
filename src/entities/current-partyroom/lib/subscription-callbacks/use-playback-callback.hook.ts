@@ -4,16 +4,16 @@ import { useStores } from '@/shared/lib/store/stores.context';
 
 export default function usePlaybackCallback() {
   const { useCurrentPartyroom } = useStores();
-  const [updatePlaybackActivated, updatePlayback] = useCurrentPartyroom((state) => [
-    state.updatePlaybackActivated,
-    state.updatePlayback,
-  ]);
+  const [updatePlaybackActivated, updatePlayback, updateCurrentDj] = useCurrentPartyroom(
+    (state) => [state.updatePlaybackActivated, state.updatePlayback, state.updateCurrentDj]
+  );
 
   return useCallback(
     (event: PlaybackEvent) => {
       updatePlaybackActivated(true);
       updatePlayback(event.playback);
+      updateCurrentDj({ memberId: event.memberId });
     },
-    [updatePlaybackActivated, updatePlayback]
+    [updatePlaybackActivated, updatePlayback, updateCurrentDj]
   );
 }
