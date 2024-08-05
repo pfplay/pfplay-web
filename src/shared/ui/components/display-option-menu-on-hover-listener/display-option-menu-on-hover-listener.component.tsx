@@ -1,4 +1,4 @@
-import { useState, JSX, useCallback } from 'react';
+import { useState, JSX } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
 import useClickOutside from '@/shared/lib/hooks/use-click-outside.hook';
 import { PFMoreVert } from '@/shared/ui/icons';
@@ -21,14 +21,14 @@ const DisplayOptionMenuOnHoverListener = ({
   const [isHover, setIsHover] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleMenuIconClick = useCallback(() => {
+  const handleMenuIconClick = () => {
     setIsMenuOpen((prev) => !prev);
-  }, []);
+  };
 
-  const handleMenuClose = useCallback(() => {
+  const handleMenuClose = () => {
     setIsMenuOpen(false);
     setIsHover(false);
-  }, []);
+  };
 
   const handleMouseEnter = () => {
     setIsHover(true);
