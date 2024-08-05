@@ -25,28 +25,21 @@ const DisplayOptionMenuOnHoverListener = ({
     setIsMenuOpen(true);
   };
 
+  const handleMouseLeave = () => {
+    setIsHover(false);
+    if (!isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  };
+
   const handleMenuClose = () => {
     setIsMenuOpen(false);
     setIsHover(false);
   };
-
   const menuRef = useClickOutside<HTMLDivElement>(handleMenuClose);
 
   return (
-    <div
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => !isMenuOpen && setIsHover(false)}
-      onClick={(e) => {
-        // when menu is open and click the container, set the hover state to false
-        if (isMenuOpen) {
-          setIsHover(false);
-          return;
-        }
-        // keep the hover state when click the container, unless other CTA is triggered
-        e.stopPropagation();
-      }}
-      className='relative'
-    >
+    <div onMouseEnter={() => setIsHover(true)} onMouseLeave={handleMouseLeave} className='relative'>
       {children(isHover)}
 
       {!listenerDisabled && (
@@ -56,7 +49,7 @@ const DisplayOptionMenuOnHoverListener = ({
               'absolute inset-0',
               'bg-gradient-to-r from-transparent to-black',
               'opacity-from-zero',
-              isHover && 'opacity-100'
+              (isHover || isMenuOpen) && 'opacity-100'
             )}
           />
 
@@ -68,7 +61,7 @@ const DisplayOptionMenuOnHoverListener = ({
             menuContainerStyle={cn([
               'absolute top-[5px] right-0',
               'opacity-from-zero',
-              isHover && 'opacity-100',
+              (isHover || isMenuOpen) && 'opacity-100',
               menuPositionStyle,
             ])}
             ref={menuRef}
