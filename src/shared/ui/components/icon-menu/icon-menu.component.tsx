@@ -16,7 +16,6 @@ interface IconMenuProps {
   MenuButtonIcon: ReactNode;
   onMenuClose?: () => void;
   onMenuIconClick?: () => void;
-  menuOpened: boolean;
 }
 
 const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(

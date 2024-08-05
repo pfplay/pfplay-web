@@ -18,7 +18,7 @@ interface MenuItemPanelProps {
   menuItemPanelStyle?: string;
   size?: MenuItemPanelSize;
   close: () => void;
-  anchorEl: HTMLElement | null;
+  anchorEl?: HTMLElement | null;
 }
 
 const MenuItemPanel = ({
@@ -35,6 +35,8 @@ const MenuItemPanel = ({
   const menuRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
+    if (!anchorEl) return;
+
     // 메뉴의 위치를 동적으로 계산해 화면 밖으로 나가지 않도록 조정
     const updatePosition = () => {
       if (anchorEl && menuRef.current) {
@@ -98,11 +100,13 @@ const MenuItemPanel = ({
           MenuItemBoxSize[size]
         )}
         style={{
-          top: `${menuPosition.top}px`,
-          left: `${menuPosition.left}px`,
-          maxHeight: '80vh', // 메뉴가 화면을 완전히 차지하지 않도록 제한
-          overflowY: 'auto', // 메뉴 내용이 maxHeight를 초과할 경우 세로 스크롤바를 표시
-          visibility: isPositioned ? 'visible' : 'hidden',
+          ...(anchorEl && {
+            top: `${menuPosition.top}px`,
+            left: `${menuPosition.left}px`,
+            maxHeight: '80vh', // 메뉴가 화면을 완전히 차지하지 않도록 제한
+            overflowY: 'auto', // 메뉴 내용이 maxHeight를 초과할 경우 세로 스크롤바를 표시
+            visibility: isPositioned ? 'visible' : 'hidden',
+          }),
         }}
       >
         <ul>

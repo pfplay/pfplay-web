@@ -69,7 +69,6 @@ const DisplayOptionMenuOnHoverListener = ({
             ])}
             ref={menuRef}
             menuItemPanel={{ size: 'md' }}
-            menuOpened={isMenuOpen}
           />
         </>
       )}
