@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, useEffect, useRef, useState } from 'react';
+import { Fragment, ReactNode, useLayoutEffect, useRef, useState } from 'react';
 import { Transition, Menu } from '@headlessui/react';
 import { cn } from '@/shared/lib/functions/cn';
 
@@ -19,7 +19,6 @@ interface MenuItemPanelProps {
   size?: MenuItemPanelSize;
   close: () => void;
   anchorEl: HTMLElement | null;
-  onMenuClose?: () => void;
 }
 
 const MenuItemPanel = ({
@@ -30,12 +29,12 @@ const MenuItemPanel = ({
   size = 'lg',
   close,
   anchorEl,
-  onMenuClose,
 }: MenuItemPanelProps) => {
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const [isPositioned, setIsPositioned] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // 메뉴의 위치를 동적으로 계산해 화면 밖으로 나가지 않도록 조정
     const updatePosition = () => {
       if (anchorEl && menuRef.current) {
@@ -58,12 +57,12 @@ const MenuItemPanel = ({
         }
 
         setMenuPosition({ top, left });
+        setIsPositioned(true);
       }
     };
 
     const handleScroll = () => {
       close();
-      onMenuClose && onMenuClose();
     };
 
     updatePosition();
@@ -74,11 +73,10 @@ const MenuItemPanel = ({
       window.removeEventListener('resize', updatePosition);
       window.addEventListener('scroll', handleScroll, true);
     };
-  }, [anchorEl, close, onMenuClose]);
+  }, [anchorEl, close]);
 
   const handleMenuItemClick = (config: MenuItem) => {
     config.onClickItem();
-    onMenuClose && onMenuClose();
   };
 
   return (
@@ -104,6 +102,7 @@ const MenuItemPanel = ({
           left: `${menuPosition.left}px`,
           maxHeight: '80vh', // 메뉴가 화면을 완전히 차지하지 않도록 제한
           overflowY: 'auto', // 메뉴 내용이 maxHeight를 초과할 경우 세로 스크롤바를 표시
+          visibility: isPositioned ? 'visible' : 'hidden',
         }}
       >
         <ul>

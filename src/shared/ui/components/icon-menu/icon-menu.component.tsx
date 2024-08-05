@@ -1,6 +1,5 @@
 'use client';
 import { forwardRef, ReactNode, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { Menu } from '@headlessui/react';
 import { cn } from '@/shared/lib/functions/cn';
 import { MenuItem, MenuButton, MenuItemPanelSize, MenuItemPanel } from '../menu';
@@ -17,6 +16,7 @@ interface IconMenuProps {
   MenuButtonIcon: ReactNode;
   onMenuClose?: () => void;
   onMenuIconClick?: () => void;
+  menuOpened: boolean;
 }
 
 const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
@@ -39,6 +39,12 @@ const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
       onMenuIconClick && onMenuIconClick();
     };
 
+    const handleMenuClose = (close?: () => void) => {
+      setAnchorEl(null);
+      onMenuClose?.();
+      close?.();
+    };
+
     return (
       <div className={cn(menuContainerStyle)} ref={ref}>
         <Menu as='section' className={`relative w-fit`}>
@@ -47,20 +53,17 @@ const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
               <MenuButton type='icon' onMenuIconClick={handleMenuOpen} ref={buttonRef}>
                 {MenuButtonIcon}
               </MenuButton>
-              {open &&
-                createPortal(
-                  <MenuItemPanel
-                    menuItemConfig={menuItemConfig}
-                    HeaderIcon={HeaderIcon}
-                    MenuItemPrefixIcon={PrefixIcon}
-                    menuItemPanelStyle={className}
-                    size={size}
-                    close={close}
-                    onMenuClose={onMenuClose}
-                    anchorEl={anchorEl}
-                  />,
-                  document.body
-                )}
+              {open && (
+                <MenuItemPanel
+                  menuItemConfig={menuItemConfig}
+                  HeaderIcon={HeaderIcon}
+                  MenuItemPrefixIcon={PrefixIcon}
+                  menuItemPanelStyle={className}
+                  size={size}
+                  close={() => handleMenuClose(close)}
+                  anchorEl={anchorEl}
+                />
+              )}
             </>
           )}
         </Menu>

@@ -1,4 +1,4 @@
-import { useState, JSX } from 'react';
+import { useState, JSX, useCallback } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
 import useClickOutside from '@/shared/lib/hooks/use-click-outside.hook';
 import { PFMoreVert } from '@/shared/ui/icons';
@@ -21,25 +21,28 @@ const DisplayOptionMenuOnHoverListener = ({
   const [isHover, setIsHover] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleMenuIconClick = () => {
-    setIsMenuOpen(true);
-  };
+  const handleMenuIconClick = useCallback(() => {
+    setIsMenuOpen((prev) => !prev);
+  }, []);
 
-  const handleMouseLeave = () => {
-    setIsHover(false);
-    if (!isMenuOpen) {
-      setIsMenuOpen(false);
-    }
-  };
-
-  const handleMenuClose = () => {
+  const handleMenuClose = useCallback(() => {
     setIsMenuOpen(false);
     setIsHover(false);
+  }, []);
+
+  const handleMouseEnter = () => {
+    setIsHover(true);
   };
+
   const menuRef = useClickOutside<HTMLDivElement>(handleMenuClose);
 
   return (
-    <div onMouseEnter={() => setIsHover(true)} onMouseLeave={handleMouseLeave} className='relative'>
+    <div
+      ref={menuRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMenuClose}
+      className='relative'
+    >
       {children(isHover)}
 
       {!listenerDisabled && (
@@ -66,6 +69,7 @@ const DisplayOptionMenuOnHoverListener = ({
             ])}
             ref={menuRef}
             menuItemPanel={{ size: 'md' }}
+            menuOpened={isMenuOpen}
           />
         </>
       )}
