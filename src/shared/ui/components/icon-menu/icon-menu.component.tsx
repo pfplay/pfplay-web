@@ -44,28 +44,26 @@ const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
     };
 
     return (
-      <div className={cn(menuContainerStyle)} ref={ref}>
-        <Menu as='section' className={`relative w-fit`}>
-          {({ open }) => (
-            <>
-              <MenuButton type='icon' onMenuIconClick={handleMenuOpen} ref={buttonRef}>
-                {MenuButtonIcon}
-              </MenuButton>
-              {open && (
-                <MenuItemPanel
-                  menuItemConfig={menuItemConfig}
-                  HeaderIcon={HeaderIcon}
-                  MenuItemPrefixIcon={PrefixIcon}
-                  menuItemPanelStyle={className}
-                  size={size}
-                  close={() => handleMenuClose()}
-                  anchorEl={anchorEl}
-                />
-              )}
-            </>
-          )}
-        </Menu>
-      </div>
+      <Menu as='div' className={cn(menuContainerStyle)} ref={ref}>
+        {({ open }) => (
+          <>
+            <MenuButton type='icon' onMenuIconClick={handleMenuOpen} ref={buttonRef}>
+              {MenuButtonIcon}
+            </MenuButton>
+            {open && (
+              <MenuItemPanel
+                menuItemConfig={menuItemConfig}
+                HeaderIcon={HeaderIcon}
+                MenuItemPrefixIcon={PrefixIcon}
+                menuItemPanelStyle={className}
+                size={size}
+                close={() => handleMenuClose()}
+                anchorEl={anchorEl}
+              />
+            )}
+          </>
+        )}
+      </Menu>
     );
   }
 );
