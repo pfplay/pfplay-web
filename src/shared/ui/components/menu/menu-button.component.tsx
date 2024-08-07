@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { Menu } from '@headlessui/react';
+import { MenuButton as _MenuButton } from '@headlessui/react';
 import { cn } from '@/shared/lib/functions/cn';
 import { buttonColorsDict, buttonSizeDict } from '../button';
 
@@ -13,7 +13,7 @@ export const MenuButton = ({
   onMenuIconClick,
 }: PropsWithChildren<MenuButtonProps>) => {
   return (
-    <Menu.Button
+    <_MenuButton
       onClick={() => {
         onMenuIconClick && onMenuIconClick();
       }}
@@ -25,7 +25,7 @@ export const MenuButton = ({
       )}
     >
       {children}
-    </Menu.Button>
+    </_MenuButton>
   );
 };
 
