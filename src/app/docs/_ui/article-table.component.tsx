@@ -59,7 +59,7 @@ const ArticleTable = <T extends string>(config: ArticleTableProps<T>) => {
                           className='px-4 py-2 border border-gray-700 bg-gray-900'
                         >
                           <Typography type='caption1' className='text-gray-300'>
-                            {data[column.id]}
+                            {String(data[column.id as keyof typeof data])}
                           </Typography>
                         </td>
                       ))}

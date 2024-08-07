@@ -1,5 +1,5 @@
 'use client';
-import { JSX, forwardRef, HTMLAttributes, ReactNode } from 'react';
+import { JSX, forwardRef, HTMLAttributes } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
 
 export type TypographyType =
@@ -16,7 +16,6 @@ export type TypographyType =
 type TypographyOverflow = 'ellipsis' | 'break-words' | 'break-all' | 'break-normal' | 'break-keep';
 
 export interface TypographyProps extends HTMLAttributes<HTMLElement> {
-  children?: ReactNode;
   type?: TypographyType;
   overflow?: TypographyOverflow;
   as?: keyof Pick<JSX.IntrinsicElements, 'h1' | 'h2' | 'p' | 'span'>;
