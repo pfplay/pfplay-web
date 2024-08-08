@@ -21,7 +21,7 @@
     "i18n": "node ./scripts/i18n.js"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.17",
+    "@headlessui/react": "^2.1.2",
     "@hookform/resolvers": "^2.9.10",
     "@rainbow-me/rainbowkit": "2.1.2",
     "@stomp/stompjs": "^7.0.0",

@@ -22,7 +22,7 @@ const DisplayOptionMenuOnHoverListener = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleMenuIconClick = () => {
-    setIsMenuOpen(true);
+    setIsMenuOpen((prev) => !prev);
   };
 
   const handleMenuClose = () => {
@@ -30,21 +30,32 @@ const DisplayOptionMenuOnHoverListener = ({
     setIsHover(false);
   };
 
+  const handleMouseEnter = () => {
+    setIsHover(true);
+  };
+
+  const handleMouseLeave = () => {
+    // Mouse Leave 시 메뉴가 닫혀있을 때만 hover 상태를 끄도록 함
+    if (!isMenuOpen) {
+      setIsHover(false);
+    }
+  };
+
+  const handleClick = () => {
+    // 마우스 Hover 상태일 때 컴포넌트 내부 클릭 시 메뉴가 열려있으면 닫히도록 함
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  };
+
   const menuRef = useClickOutside<HTMLDivElement>(handleMenuClose);
 
   return (
     <div
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => !isMenuOpen && setIsHover(false)}
-      onClick={(e) => {
-        // when menu is open and click the container, set the hover state to false
-        if (isMenuOpen) {
-          setIsHover(false);
-          return;
-        }
-        // keep the hover state when click the container, unless other CTA is triggered
-        e.stopPropagation();
-      }}
+      ref={menuRef} // 마우스 Hover 상태일 때 컴포넌트 내부 클릭 시 hover 상태가 유지되도록 함
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
       className='relative'
     >
       {children(isHover)}
@@ -56,7 +67,7 @@ const DisplayOptionMenuOnHoverListener = ({
               'absolute inset-0',
               'bg-gradient-to-r from-transparent to-black',
               'opacity-from-zero',
-              isHover && 'opacity-100'
+              (isHover || isMenuOpen) && 'opacity-100'
             )}
           />
 
@@ -68,7 +79,7 @@ const DisplayOptionMenuOnHoverListener = ({
             menuContainerStyle={cn([
               'absolute top-[5px] right-0',
               'opacity-from-zero',
-              isHover && 'opacity-100',
+              (isHover || isMenuOpen) && 'opacity-100',
               menuPositionStyle,
             ])}
             ref={menuRef}
