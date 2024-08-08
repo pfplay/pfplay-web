@@ -7,10 +7,6 @@ type RenderUserListItemParams = {
   me?: boolean;
   djing?: boolean;
   t: Dictionary;
-  // ban?: {
-  //   value: string;
-  //   onButtonClick: (id?: number) => void;
-  // };
 };
 
 type UserListItemSuffixResult =
@@ -25,15 +21,6 @@ export const renderUserListItemSuffix = ({
   djing,
   t,
 }: RenderUserListItemParams): UserListItemSuffixResult => {
-  // if (ban) {
-  //   return {
-  //     type: 'button',
-  //     Component: (
-  //       <UserListItemSuffix type='button' value={ban.value} onButtonClick={ban.onButtonClick} />
-  //     ),
-  //   };
-  // }
-
   if (djing) {
     return {
       type: 'tag',

@@ -1,9 +1,9 @@
 'use client';
 import { cn } from '@/shared/lib/functions/cn';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
-import UserListPanel from './parts/user-list-panel.component';
+import UserGradePanel from './parts/user-grade-panel.component';
 
-const PartyroomUserPanel = () => {
+const PartyroomParticipantPanel = () => {
   return (
     <TabGroup defaultIndex={0}>
       <TabList className={cn('w-1/2 flexRow gap-6 justify-start my-6')}>
@@ -20,7 +20,7 @@ const PartyroomUserPanel = () => {
       </TabList>
       <TabPanels className='flex-1 flexCol'>
         <TabPanel tabIndex={0} className='flex-1 flexCol'>
-          <UserListPanel />
+          <UserGradePanel />
         </TabPanel>
         <TabPanel tabIndex={1} className='flex-1 flexCol overflow-hidden'>
           {/* <PartyroomUserPanel /> */}
@@ -30,4 +30,4 @@ const PartyroomUserPanel = () => {
   );
 };
 
-export default PartyroomUserPanel;
+export default PartyroomParticipantPanel;

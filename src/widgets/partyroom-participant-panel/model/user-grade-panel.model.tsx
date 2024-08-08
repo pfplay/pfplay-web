@@ -28,6 +28,7 @@ export const categorizeParticipantsByGrade = ({
   meId?: number;
   djId?: number;
 }): CategorizeParticipantsByGrade => {
+  // TODO:추후 api에서 카테고리화 된 데이터 불러오면 변경. 논의 쓰레드: https://pfplay.slack.com/archives/C051N8A0ZSB/p1722750263738659?thread_ts=1722050726.960859&cid=C051N8A0ZSB
   const categorized = categorize({
     items: participants,
     categoryKey: 'gradeType',

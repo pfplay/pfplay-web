@@ -1,6 +1,6 @@
 'use client';
 import { PropsWithChildren, ReactNode } from 'react';
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { cn } from '@/shared/lib/functions/cn';
 import { PFChevronDown, PFChevronUp } from '@/shared/ui/icons';
 import { Typography } from '../typography';
@@ -28,7 +28,7 @@ const CollapseList = ({
     <Disclosure as='div' className='mx-auto w-full max-w-md bg-transparent'>
       {({ open }) => (
         <>
-          <Disclosure.Button
+          <DisclosureButton
             className={cn(
               'w-full flexRow justify-between items-center px-4 py-3 rounded bg-gray-800 text-left text-gray-50 hover:bg-gray-700 ',
               variant === 'default' && 'border-none',
@@ -48,16 +48,16 @@ const CollapseList = ({
                 <Typography className='text-gray-300 whitespace-nowrap'>{infoText}</Typography>
               )}
               {open ? (
-                <PFChevronUp width={16} height={8} />
+                <PFChevronUp width={24} height={24} />
               ) : (
-                <PFChevronDown width={16} height={8} />
+                <PFChevronDown width={24} height={24} />
               )}
             </span>
-          </Disclosure.Button>
+          </DisclosureButton>
           <div className='space-y-3'>
-            <Disclosure.Panel as='article' className={cn(classNames?.panel)}>
+            <DisclosurePanel as='article' className={cn(classNames?.panel)}>
               {children}
-            </Disclosure.Panel>
+            </DisclosurePanel>
           </div>
         </>
       )}
