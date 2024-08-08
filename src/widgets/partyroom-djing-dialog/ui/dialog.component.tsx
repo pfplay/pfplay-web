@@ -1,5 +1,5 @@
+import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { Dialog } from '@/shared/ui/components/dialog';
-import { useFetchDjingQueue } from '@/widgets/partyroom-djing-dialog/api/use-fetch-djing-queue.query';
 import Body from './body.component';
 import EmptyBody from './empty-body.component';
 import { PartyroomIdContext } from '../lib/partyroom-id.context';
@@ -14,6 +14,7 @@ export default function DjingDialog({ partyroomId, open, close }: Props) {
   const { data: djingQueue } = useFetchDjingQueue({ partyroomId }, open);
 
   if (!djingQueue) return;
+
   return (
     <Dialog
       open={open}

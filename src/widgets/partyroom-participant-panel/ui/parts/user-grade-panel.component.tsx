@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { useFetchParticipants } from '@/features/partyroom/list-participants';
 import { fixtureMenuItems } from '@/shared/api/http/__fixture__/menu-items.fixture';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -11,23 +12,18 @@ import { categorizeParticipantsByGrade } from '../../model/user-grade-panel.mode
 const UserGradePanel = () => {
   const t = useI18n();
   const participants = useFetchParticipants();
-
   const { useCurrentPartyroom } = useStores();
-  const { me } = useCurrentPartyroom();
-  // const { data: djingQueue } = useFetchDjingQueue({ partyroomId }, open);
-
-  // TODO: 임시적용. 추후 dj 정보 Get, partyroom입장시 내 정보 + memberId 받아오는 api 적용 시 수정 필요. 논의 쓰레드: https://pfplay.slack.com/archives/C03Q28EAU66/p1722694732255029
-  const dj = {
-    memberId: 2,
-  };
+  const { me, id } = useCurrentPartyroom();
+  const { data: djingQueue } = useFetchDjingQueue({ partyroomId: Number(id) }, true);
+  const [currentDj] = djingQueue?.djs.slice().sort((a, b) => a.orderNumber - b.orderNumber) ?? [];
 
   const categorizedParticipants = useMemo(() => {
     return categorizeParticipantsByGrade({
       participants,
       meId: me?.memberId,
-      djId: dj.memberId,
+      djId: currentDj?.djId,
     });
-  }, [participants, me?.memberId, dj.memberId]);
+  }, [participants, me?.memberId, currentDj?.djId]);
 
   return (
     <div className='flex flex-col gap-6'>

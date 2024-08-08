@@ -11,7 +11,7 @@ import { PartyroomAvatars } from '@/widgets/partyroom-avatars';
 import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
-import { PartyroomUserPanel } from '@/widgets/partyroom-participant-panel';
+import { PartyroomParticipantPanel } from '@/widgets/partyroom-participant-panel';
 import { Sidebar } from '@/widgets/sidebar';
 
 const PartyroomPage = () => {
@@ -94,7 +94,7 @@ const PartyroomPage = () => {
                 <PartyroomChatPanel />
               </TabPanel>
               <TabPanel tabIndex={1} className='flex-1 flexCol'>
-                <PartyroomUserPanel />
+                <PartyroomParticipantPanel />
               </TabPanel>
             </TabPanels>
           </TabGroup>
