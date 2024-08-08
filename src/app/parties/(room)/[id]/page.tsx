@@ -74,9 +74,7 @@ const PartyroomPage = () => {
 
         {/* 채팅, 사람 탭 */}
         <div className='w-full'>
-          <TabGroup
-            defaultIndex={1} // TODO: 사람 탭 ui 완료 후 defaultIndex 0 적용
-          >
+          <TabGroup defaultIndex={0}>
             <TabList className={cn('w-full flexRow')}>
               <Tab
                 tabTitle={t.db.title.chat}

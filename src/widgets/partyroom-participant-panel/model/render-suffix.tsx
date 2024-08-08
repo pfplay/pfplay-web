@@ -24,13 +24,13 @@ export const renderUserListItemSuffix = ({
   if (djing) {
     return {
       type: 'tag',
-      Component: <UserListItemSuffix type='tag' value={t.common.btn.play} />, // FIXME: value djing에 맞게 수정
+      Component: <UserListItemSuffix type='tag' value={t.common.btn.play} />, // FIXME: i18n 적용, value djing에 맞게 수정
     };
   }
   if (me) {
     return {
       type: 'tag',
-      Component: <UserListItemSuffix type='tag' value={t.common.btn.play} />, // FIXME: value djing에 맞게 수정,
+      Component: <UserListItemSuffix type='tag' value={t.common.btn.play} />, // FIXME: i18n 적용, me value에 맞게 수정
     };
   }
 
