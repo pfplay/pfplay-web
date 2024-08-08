@@ -30,6 +30,11 @@ const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
     },
     ref
   ) => {
+    const handleMenuClose = (close: () => void) => {
+      close();
+      onMenuClose?.();
+    };
+
     return (
       <div className={cn(menuContainerStyle)} ref={ref}>
         <Menu as='section' className={`relative w-fit`}>
@@ -44,8 +49,7 @@ const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
                 MenuItemPrefixIcon={PrefixIcon}
                 menuItemPanelStyle={className}
                 size={size}
-                close={close}
-                onMenuClose={onMenuClose}
+                onMenuClose={() => handleMenuClose(close)}
               />
             </>
           )}

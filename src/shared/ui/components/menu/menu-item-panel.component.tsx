@@ -17,8 +17,7 @@ interface MenuItemPanelProps {
   MenuItemPrefixIcon?: ReactNode;
   menuItemPanelStyle?: string;
   size?: MenuItemPanelSize;
-  close: () => void;
-  onMenuClose?: () => void;
+  onMenuClose: () => void;
 }
 
 const MenuItemPanel = ({
@@ -27,12 +26,11 @@ const MenuItemPanel = ({
   MenuItemPrefixIcon,
   menuItemPanelStyle,
   size = 'lg',
-  close,
   onMenuClose,
 }: MenuItemPanelProps) => {
   const handleMenuItemClick = (config: MenuItem) => {
     config.onClickItem();
-    onMenuClose && onMenuClose();
+    onMenuClose();
   };
 
   return (
@@ -55,7 +53,7 @@ const MenuItemPanel = ({
         )}
       >
         {HeaderIcon && (
-          <div className='px-3 py-[6px]' onClick={() => close()}>
+          <div className='px-3 py-[6px]' onClick={() => onMenuClose()}>
             {HeaderIcon}
           </div>
         )}

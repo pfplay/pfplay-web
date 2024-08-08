@@ -63,7 +63,7 @@ const Header: FC<Props> = ({ withLogo }) => {
                         onClickItem: signOut,
                       },
                     ]}
-                    close={close}
+                    onMenuClose={close}
                     size='sm'
                   />
                 </>
