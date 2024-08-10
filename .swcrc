@@ -10,7 +10,6 @@
     "coreJs": "3"
   },
   "jsc": {
-    // "target": "es5",
     "parser": {
       "syntax": "typescript",
       "tsx": false,
