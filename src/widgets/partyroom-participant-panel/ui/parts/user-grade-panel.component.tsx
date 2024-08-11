@@ -29,7 +29,7 @@ const UserGradePanel = () => {
     <div className='flex flex-col gap-6'>
       {Object.entries(categorizedParticipants).map(([category, participants]) => {
         return (
-          <CollapseList key={category} title={category}>
+          <CollapseList key={category} title={category} displaySuffix={false}>
             {participants.map((participant) => {
               return (
                 <UserListItem

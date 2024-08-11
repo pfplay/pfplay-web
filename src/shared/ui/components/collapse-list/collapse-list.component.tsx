@@ -10,6 +10,7 @@ type CollapseListProps = {
   PrefixIcon?: ReactNode;
   title: string;
   infoText?: string;
+  displaySuffix?: boolean;
   classNames?: {
     button?: string;
     panel?: string;
@@ -22,6 +23,7 @@ const CollapseList = ({
   infoText,
   variant = 'default',
   children,
+  displaySuffix = true,
   classNames,
 }: PropsWithChildren<CollapseListProps>) => {
   return (
@@ -47,11 +49,12 @@ const CollapseList = ({
               {infoText && (
                 <Typography className='text-gray-300 whitespace-nowrap'>{infoText}</Typography>
               )}
-              {open ? (
-                <PFChevronUp width={24} height={24} />
-              ) : (
-                <PFChevronDown width={24} height={24} />
-              )}
+              {displaySuffix &&
+                (open ? (
+                  <PFChevronUp width={24} height={24} />
+                ) : (
+                  <PFChevronDown width={24} height={24} />
+                ))}
             </span>
           </DisclosureButton>
           <div className='space-y-3'>
