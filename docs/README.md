@@ -3,10 +3,10 @@
   <br />
   <br />
   <a aria-label="Node Version" href="https://chequer.slack.com/archives/C046888P2Q0">
-      <img alt="" src="https://img.shields.io/badge/node->=18.19.0-339933?logo=nodedotjs">
+      <img alt="" src="https://img.shields.io/badge/node->=20.16.0-339933?logo=nodedotjs">
   </a>
   <a aria-label="Npm Version" href="https://chequer.slack.com/archives/C046888P2Q0">
-      <img alt="" src="https://img.shields.io/badge/npm->=10.2.3-CB3837?logo=npm">
+      <img alt="" src="https://img.shields.io/badge/yarn->=1.22.22-2c8ebb?logo=yarn">
   </a>
   <br />
   <img alt="badge_react" src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black" />
