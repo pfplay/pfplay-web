@@ -7,7 +7,10 @@ const tailwindConfig: Config = {
   theme: {
     colors: theme.colors,
     screens: theme.screens,
-    extend: theme,
+    extend: {
+      ...theme,
+      zIndex: valuesMap(theme.zIndex, (value) => value.toString()),
+    },
   },
   plugins: [
     require('tailwind-scrollbar-hide'),
@@ -19,3 +22,7 @@ const tailwindConfig: Config = {
 };
 
 export default tailwindConfig;
+
+function valuesMap<T, U>(obj: Record<string, T>, mapper: (value: T) => U): Record<string, U> {
+  return Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, mapper(value)]));
+}
