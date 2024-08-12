@@ -7,10 +7,10 @@ jobs:
     name: eslint test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18.19.0'
-      - run: npm i -g yarn
+          node-version: '20.16.0'
+      - run: npm i -g yarn@1.22.22
       - run: yarn
       - run: yarn lint
