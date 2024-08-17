@@ -44,6 +44,10 @@ const theme = {
   maxHeight: breakPoints,
   screens: breakPoints,
   zIndex: {
+    /**
+     * 테일윈드 config.theme의 zIndex values는 string 타입이여야 하지만,
+     * zIndex는 덧셈 연산 등을 위해 number로 선언 후 나중에 string으로 컨버팅 하도록 함
+     */
     drawer: 30,
     dialog: 1000,
     tooltip: 1001,
