@@ -1,5 +1,5 @@
 import { GradeType, PartyroomGrade } from '../types/@enums';
-import { Participant } from '../types/partyroom';
+import { Participant } from '../types/partyrooms';
 
 export const fixturePartyroomMembers: Participant[] = [
   {

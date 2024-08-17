@@ -1,4 +1,3 @@
-'use client';
 import { cn } from '@/shared/lib/functions/cn';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
 import UserGradePanel from './parts/user-grade-panel.component';

@@ -1,10 +1,8 @@
 import React from 'react';
 import { Button } from '../../button';
 import { Tag } from '../../tag';
-import { SuffixType } from '../model/user-list-item.model';
 
 type BaseSuffixProps = {
-  type: SuffixType;
   value: string;
 };
 

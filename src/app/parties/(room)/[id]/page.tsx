@@ -73,30 +73,28 @@ const PartyroomPage = () => {
         </div>
 
         {/* 채팅, 사람 탭 */}
-        <div className='w-full'>
-          <TabGroup defaultIndex={0}>
-            <TabList className={cn('w-full flexRow')}>
-              <Tab
-                tabTitle={t.db.title.chat}
-                variant='line'
-                PrefixIcon={<PFChatFilled width={20} height={20} />}
-              />
-              <Tab
-                tabTitle={membersCount.toString()}
-                variant='line'
-                PrefixIcon={<PFPersonOutline width={20} height={20} />}
-              />
-            </TabList>
-            <TabPanels className='flex-1 flexCol'>
-              <TabPanel tabIndex={0} className='flex-1 flexCol'>
-                <PartyroomChatPanel />
-              </TabPanel>
-              <TabPanel tabIndex={1} className='flex-1 flexCol'>
-                <PartyroomParticipantPanel />
-              </TabPanel>
-            </TabPanels>
-          </TabGroup>
-        </div>
+        <TabGroup defaultIndex={0} className='flex-1 flexCol'>
+          <TabList className={cn('flexRow')}>
+            <Tab
+              tabTitle={t.db.title.chat}
+              variant='line'
+              PrefixIcon={<PFChatFilled width={20} height={20} />}
+            />
+            <Tab
+              tabTitle={membersCount.toString()}
+              variant='line'
+              PrefixIcon={<PFPersonOutline width={20} height={20} />}
+            />
+          </TabList>
+          <TabPanels className='flex-1 flexCol'>
+            <TabPanel tabIndex={0} className='flex-1 flexCol'>
+              <PartyroomChatPanel />
+            </TabPanel>
+            <TabPanel tabIndex={1} className='flex-1 flexCol'>
+              <PartyroomParticipantPanel />
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
       </div>
 
       <DjingDialog
