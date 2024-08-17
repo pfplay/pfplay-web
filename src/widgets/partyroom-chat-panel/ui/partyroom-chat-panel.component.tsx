@@ -26,8 +26,7 @@ const PartyroomChatPanel = () => {
       <Input
         size='lg'
         variant='outlined'
-        // TODO: i18n 적용
-        placeholder='What would you like to talk about?'
+        placeholder='What would you like to talk about?' // TODO: i18n 적용
         Suffix={
           <Button
             color='secondary'

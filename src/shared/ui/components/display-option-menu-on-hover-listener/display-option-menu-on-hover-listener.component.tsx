@@ -3,19 +3,21 @@ import { cn } from '@/shared/lib/functions/cn';
 import useClickOutside from '@/shared/lib/hooks/use-click-outside.hook';
 import { PFMoreVert } from '@/shared/ui/icons';
 import { IconMenu } from '../icon-menu';
-import { MenuItem } from '../menu';
+import { MenuItem, MenuItemPanelSize } from '../menu';
 
 interface DisplayOptionMenuOnHoverListenerProps {
   menuConfig: MenuItem[];
   listenerDisabled?: boolean;
   children: (isHover: boolean) => JSX.Element;
   menuPositionStyle?: string;
+  menuItemPanelSize?: MenuItemPanelSize;
 }
 
 const DisplayOptionMenuOnHoverListener = ({
   menuConfig,
   children,
   menuPositionStyle,
+  menuItemPanelSize = 'md',
   listenerDisabled = false,
 }: DisplayOptionMenuOnHoverListenerProps) => {
   const [isHover, setIsHover] = useState(false);
@@ -83,7 +85,7 @@ const DisplayOptionMenuOnHoverListener = ({
               menuPositionStyle,
             ])}
             ref={menuRef}
-            menuItemPanel={{ size: 'md' }}
+            menuItemPanel={{ size: menuItemPanelSize }}
           />
         </>
       )}

@@ -2,6 +2,7 @@ import {
   AuthorityTier,
   GradeType,
   MotionType,
+  PartyroomGrade,
   QueueStatus,
   StageType,
 } from '@/shared/api/http/types/@enums';
@@ -119,6 +120,15 @@ export type Dj = {
   avatarIconUri: string;
 };
 
+export interface Participant {
+  uid: string;
+  partyroomGrade: PartyroomGrade;
+  nickname: string;
+  memberId: number;
+  gradeType: GradeType;
+  avatarIconUri: string;
+}
+
 export type DjingQueue = {
   playbackActivated: boolean;
   /**
@@ -160,6 +170,15 @@ export type EnterResponse = {
 export type ExitPayload = {
   partyroomId: number;
 };
+
+export interface GetPartyroomMemberRequest {
+  partyroomId: string;
+}
+
+export interface GetParticipantsResponse {
+  partyroomId: string;
+  members: Participant[];
+}
 
 export interface PartyroomsClient {
   /**

@@ -1,7 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
 import { cn } from '@/shared/lib/functions/cn';
-import { pick } from '@/shared/lib/functions/pick';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -12,8 +11,8 @@ import { PartyroomAvatars } from '@/widgets/partyroom-avatars';
 import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
+import { PartyroomParticipantPanel } from '@/widgets/partyroom-participant-panel';
 import { Sidebar } from '@/widgets/sidebar';
-import UserListItem from 'shared/ui/components/user-list-item/user-list-item.component';
 
 const PartyroomPage = () => {
   const t = useI18n();
@@ -74,31 +73,28 @@ const PartyroomPage = () => {
         </div>
 
         {/* 채팅, 사람 탭 */}
-        <div className='flex-1 flexCol'>
-          <TabGroup>
-            <TabList className='flexRow'>
-              <Tab
-                tabTitle={t.db.title.chat}
-                variant='line'
-                PrefixIcon={<PFChatFilled width={20} height={20} />}
-              />
-              <Tab
-                tabTitle={membersCount.toString()}
-                variant='line'
-                PrefixIcon={<PFPersonOutline width={20} height={20} />}
-              />
-            </TabList>
-            <TabPanels className='flex-1 flexCol'>
-              <TabPanel tabIndex={0} className='flex-1 flexCol'>
-                <PartyroomChatPanel />
-              </TabPanel>
-              <TabPanel tabIndex={1} className='flex-1 flexCol overflow-hidden'>
-                {/* 윤님 작업 완료되면 교체 */}
-                <TempMembers />
-              </TabPanel>
-            </TabPanels>
-          </TabGroup>
-        </div>
+        <TabGroup defaultIndex={0} className='flex-1 flexCol'>
+          <TabList className={cn('flexRow')}>
+            <Tab
+              tabTitle={t.db.title.chat}
+              variant='line'
+              PrefixIcon={<PFChatFilled width={20} height={20} />}
+            />
+            <Tab
+              tabTitle={membersCount.toString()}
+              variant='line'
+              PrefixIcon={<PFPersonOutline width={20} height={20} />}
+            />
+          </TabList>
+          <TabPanels className='flex-1 flexCol'>
+            <TabPanel tabIndex={0} className='flex-1 flexCol'>
+              <PartyroomChatPanel />
+            </TabPanel>
+            <TabPanel tabIndex={1} className='flex-1 flexCol'>
+              <PartyroomParticipantPanel />
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
       </div>
 
       <DjingDialog
@@ -109,42 +105,5 @@ const PartyroomPage = () => {
     </>
   );
 };
-
-function TempMembers() {
-  const { useCurrentPartyroom } = useStores();
-  const { members, me, currentDj } = useCurrentPartyroom((state) =>
-    pick(state, ['members', 'me', 'currentDj'])
-  );
-
-  return (
-    <div className='flexCol pt-4'>
-      {members.map((member, index) => {
-        const suffixValue = (() => {
-          if (member.memberId === currentDj?.memberId) {
-            return 'DJing';
-          }
-          if (member.memberId === me?.memberId) {
-            return 'Me';
-          }
-          return;
-        })();
-
-        return (
-          <UserListItem
-            key={member.uid + index}
-            userListItemConfig={{
-              id: member.memberId,
-              username: member.nickname,
-              src: member.avatarFaceUri || '/images/Temp/face.png',
-            }}
-            menuItemList={[]}
-            suffixType='tag'
-            suffixValue={suffixValue}
-          />
-        );
-      })}
-    </div>
-  );
-}
 
 export default PartyroomPage;

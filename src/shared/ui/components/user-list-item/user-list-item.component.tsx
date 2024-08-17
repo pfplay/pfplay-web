@@ -1,69 +1,52 @@
 import Image from 'next/image';
-
-import { Button } from '@/shared/ui/components/button';
+import { ReactNode } from 'react';
+import { Participant } from '@/shared/api/http/types/partyrooms';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
-import { MenuItem } from '@/shared/ui/components/menu';
-import { Tag } from '@/shared/ui/components/tag';
+import { MenuItem, MenuItemPanelSize } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
+import { SuffixType } from './model/user-list-item.model';
 
-export type UserListItemType = {
-  id: number;
-  username: string;
-  src: string;
-  alt?: string;
-};
-
-type UserListItemWithTag = {
-  suffixType: 'tag';
-  suffixValue?: string;
-};
-
-type UserListItemWithButton = {
-  suffixType: 'button';
-  suffixValue: string;
-  onButtonClick: (id?: number) => void; // 사용처 정해지면 param 추가/제거 및 타입 수정
-};
+export type UserListItemType = Partial<Participant>;
 
 type UserListItemProps = {
   userListItemConfig: UserListItemType;
   menuItemList: MenuItem[];
-} & (UserListItemWithTag | UserListItemWithButton);
+  menuItemPanelSize?: MenuItemPanelSize;
+  suffix?: {
+    type: SuffixType;
+    Component: ReactNode;
+  };
+};
 
-const UserListItem = ({ userListItemConfig, menuItemList, ...suffixProps }: UserListItemProps) => {
+const UserListItem = ({
+  userListItemConfig,
+  menuItemList,
+  menuItemPanelSize,
+  suffix,
+}: UserListItemProps) => {
   return (
     <DisplayOptionMenuOnHoverListener
       menuConfig={menuItemList}
       menuPositionStyle='top-[8px] right-[12px]'
-      listenerDisabled={suffixProps.suffixType === 'button'}
+      listenerDisabled={suffix?.type === 'button'}
+      menuItemPanelSize={menuItemPanelSize}
     >
       {() => (
         <div className='relative w-full flexRow justify-between items-center py-2 px-4 rounded-[4px]'>
           <div className='flexRow justify-center items-center gap-2'>
             <Image
-              src={userListItemConfig.src ?? '/images/ETC/monkey.png'}
-              alt={userListItemConfig?.alt ?? userListItemConfig.username}
+              src={userListItemConfig.avatarIconUri ?? '/images/ETC/monkey.png'}
+              alt={userListItemConfig.nickname ?? ''}
               width={32}
               height={32}
               className='w-8 h-8 rounded-full'
             />
             <Typography type='detail1' className='text-white'>
-              {userListItemConfig.username}
+              {userListItemConfig.nickname}
             </Typography>
           </div>
 
-          {suffixProps.suffixType === 'tag' && suffixProps.suffixValue && (
-            <Tag value={suffixProps.suffixValue} variant='filled' />
-          )}
-          {suffixProps.suffixType === 'button' && (
-            <Button
-              variant='outline'
-              color='secondary'
-              onClick={() => suffixProps.onButtonClick(userListItemConfig.id)}
-              size='sm'
-            >
-              {suffixProps.suffixValue}
-            </Button>
-          )}
+          {suffix && suffix.Component}
         </div>
       )}
     </DisplayOptionMenuOnHoverListener>
