@@ -72,7 +72,11 @@ export default function Avatars() {
   }, [storedMembersInitialized, localMembersInitialized, storedMembers]);
 
   return (
-    <div className='absolute inset-0 z-0 min-w-desktop max-w-[2400px] overflow-hidden'>
+    /*
+     * 파티룸 배경과 같은 aspect ratio, bg-cover, bg-left-bottom, overflow-hidden 를 적용하여,
+     * 화면 신축에 상관 없이 배경 이미지 상 항상 같은 위치에 아바타가 위치하도록 함
+     */
+    <div className='h-screen aspect-partyroom-bg absolute inset-0 z-0 bg-cover bg-left-bottom overflow-hidden'>
       {!!dj && (
         <div
           className='absolute'

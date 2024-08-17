@@ -66,6 +66,9 @@ const theme = {
       '100%': { transform: 'rotateZ(1080deg)' },
     },
   },
+  aspectRatio: {
+    'partyroom-bg': '1920/1080',
+  },
 } as const;
 
 export default theme;
