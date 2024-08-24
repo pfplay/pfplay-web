@@ -3,7 +3,7 @@
 ### vanilla example
 
 ```ts
-import { Chat } from '@/entities/chat';
+import { Chat } from '@/shared/lib/chat';
 
 type ChatMessage = {
   id: number;
@@ -38,7 +38,7 @@ chat.getMessages(); // [{ id: 1, text: 'Hello' }, { id: 2, text: 'Hi' }, { id: 3
 
 ```tsx
 import { useEffect, useState } from 'react';
-import { Chat } from '@/entities/chat';
+import { Chat } from '@/shared/lib/chat';
 
 type Props<Message> = {
   initialMessages: Message[];
