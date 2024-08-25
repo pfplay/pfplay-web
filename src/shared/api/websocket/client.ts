@@ -12,7 +12,7 @@ export interface Subscription extends StompSubscription {
   destination: Destination;
 }
 
-export default class StompClient {
+export default class SocketClient {
   private client: Client;
   private connectListeners: (() => void)[] = [];
   public subscriptions: Subscription[] = [];
@@ -31,6 +31,10 @@ export default class StompClient {
         }
       },
     });
+  }
+
+  public get connected() {
+    return this.client.connected;
   }
 
   public connect() {
@@ -98,9 +102,5 @@ export default class StompClient {
     this.heartbeatInterval = setInterval(() => {
       this.send('/pub/heartbeat', 'PING');
     }, 4000);
-  }
-
-  public get connected() {
-    return this.client.connected;
   }
 }
