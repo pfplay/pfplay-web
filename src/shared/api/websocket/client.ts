@@ -86,8 +86,14 @@ export default class StompClient {
     });
   }
 
+  /**
+   * NOTE: 소켓 커넥션 유지를 위해 heartbeat를 전송합니다.
+   * (60초 동안 클라이언트 측 송신이 없다면 백엔드 측 GCP가 연결을 끊어버립니다)
+   */
   private startHeartbeat() {
-    this.subscribe('/user/sub/heartbeat', function (_pong) {});
+    this.subscribe('/user/sub/heartbeat', (_pong) => {
+      /* Do nothing */
+    });
 
     this.heartbeatInterval = setInterval(() => {
       this.send('/pub/heartbeat', 'PING');
