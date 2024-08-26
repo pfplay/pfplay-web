@@ -16,14 +16,13 @@ export default class SocketClient {
   private client: Client;
   private connectListeners: (() => void)[] = [];
   public subscriptions: Subscription[] = [];
-  private heartbeatInterval: ReturnType<typeof setInterval> | undefined;
+  private heartbeatIntervalId: ReturnType<typeof setInterval> | undefined;
+  private heartbeatSubscription: StompSubscription | undefined;
 
   public constructor() {
     this.client = new Client({
       brokerURL: process.env.NEXT_PUBLIC_API_WS_HOST_NAME as string,
       reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
       debug: (msg) => {
         // ignore heartbeat logs
         if (!msg.includes('/heartbeat')) {
@@ -51,8 +50,8 @@ export default class SocketClient {
 
   public async disconnect() {
     if (this.connected) {
+      this.stopHeartbeat();
       this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-      clearInterval(this.heartbeatInterval);
 
       await this.client.deactivate();
     }
@@ -93,14 +92,26 @@ export default class SocketClient {
   /**
    * NOTE: 소켓 커넥션 유지를 위해 heartbeat를 전송합니다.
    * (60초 동안 클라이언트 측 송신이 없다면 백엔드 측 GCP가 연결을 끊어버립니다)
+   *
+   * 후에 Stomp 내장 heartbeat 기능을 사용하도록 변경할 예정
+   * @see https://pfplay.slack.com/archives/C051N8A0ZSB/p1724609022991849
    */
   private startHeartbeat() {
-    this.subscribe('/user/sub/heartbeat', (_pong) => {
+    const DESTINATION = {
+      SUB: '/user/sub/heartbeat',
+      PUB: '/pub/heartbeat',
+    } as const;
+
+    this.heartbeatSubscription = this.client.subscribe(DESTINATION.SUB, (_pong) => {
       /* Do nothing */
     });
 
-    this.heartbeatInterval = setInterval(() => {
-      this.send('/pub/heartbeat', 'PING');
+    this.heartbeatIntervalId = setInterval(() => {
+      this.send(DESTINATION.PUB, 'PING');
     }, 4000);
+  }
+  private stopHeartbeat() {
+    this.heartbeatSubscription?.unsubscribe();
+    clearInterval(this.heartbeatIntervalId);
   }
 }
