@@ -1,1 +1,1 @@
-export { useEnterPartyroom } from './api/use-enter-partyroom.mutation';
+export { useEnterPartyroom } from './lib/use-enter-partyroom';
