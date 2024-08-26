@@ -1,5 +1,7 @@
-import { useHandlePartyroomSubscriptionEvent } from '@/entities/current-partyroom';
-import { usePartyroomClient } from '@/entities/partyroom-client';
+import {
+  useHandlePartyroomSubscriptionEvent,
+  usePartyroomClient,
+} from '@/entities/partyroom-client';
 import PartyroomsService from '@/shared/api/http/services/partyrooms';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
