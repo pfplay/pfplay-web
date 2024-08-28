@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
-import StompClient from '@/shared/api/websocket/client';
+import PartyroomClient from './partyroom-client';
 
-export const PartyroomClientContext = createContext<StompClient | null>(null);
+export const PartyroomClientContext = createContext<PartyroomClient | null>(null);
 
 export const usePartyroomClient = () => {
   const context = useContext(PartyroomClientContext);

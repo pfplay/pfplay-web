@@ -1,12 +1,11 @@
 'use client';
 import { ReactNode, useEffect, useState } from 'react';
 import { useFetchMe } from '@/entities/me';
-import { PartyroomClientContext } from '@/entities/partyroom-client';
-import StompClient from '@/shared/api/websocket/client';
+import { PartyroomClient, PartyroomClientContext } from '@/entities/partyroom-client';
 
 export default function PartyroomConnectionProvider({ children }: { children: ReactNode }) {
   const { data: me } = useFetchMe();
-  const [client] = useState(() => new StompClient());
+  const [client] = useState(() => new PartyroomClient());
 
   useEffect(() => {
     /**

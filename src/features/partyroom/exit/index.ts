@@ -1,1 +1,1 @@
-export { useExitPartyroom, onBeforePartyroomPageUnload } from './api/use-exit-partyroom.mutation';
+export { useExitPartyroom } from './lib/use-exit-partyroom';
