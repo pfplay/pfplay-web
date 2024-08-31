@@ -1,8 +1,11 @@
-import { useCallback } from 'react';
 import { ChatEvent } from '@/shared/api/websocket/types/partyroom';
+import { useStores } from '@/shared/lib/store/stores.context';
 
 export default function useChatCallback() {
-  return useCallback((event: ChatEvent) => {
-    console.log('ChatEvent:', event);
-  }, []);
+  const { useCurrentPartyroom } = useStores();
+  const appendChatMessage = useCurrentPartyroom((state) => state.appendChatMessage);
+
+  return (event: ChatEvent) => {
+    appendChatMessage(event.member.memberId, event.message);
+  };
 }
