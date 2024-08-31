@@ -4,7 +4,9 @@ import {
   PartyroomPlayback,
   PartyroomReaction,
 } from '@/shared/api/http/types/partyrooms';
+import { Chat } from '@/shared/lib/chat';
 import type { Next } from '@/shared/lib/functions/update';
+import * as ChatMessage from './chat-message.model';
 
 export type MyPartyroomInfo = {
   memberId: number;
@@ -34,6 +36,13 @@ export type Model = {
 
   notice: string;
   updateNotice: (next: string) => void;
+
+  /**
+   * NOTE: chat은 zustand와는 별개의 구독 매커니즘을 가지고 있는 모듈입니다.
+   * chat message list의 리액트 내 구독을 위해선 이 슬라이스에서 제공하는 useCurrentPartyroomChat hook을 사용하세요
+   */
+  chat: Chat<ChatMessage.Model>;
+  appendChatMessage: (memberId: number, content: string) => void;
 
   init: (
     next: Pick<
