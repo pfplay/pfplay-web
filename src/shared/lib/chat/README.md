@@ -32,6 +32,9 @@ chat.removeMessageListener(onMessage);
 
 // message list 조회
 chat.getMessages(); // [{ id: 1, text: 'Hello' }, { id: 2, text: 'Hi' }, { id: 3, text: 'How are you?' }]
+
+// 클리어 (메세지 목록 비우고 listener들 제거)
+chat.clear();
 ```
 
 ### react example (state binding)

@@ -1,6 +1,6 @@
 export default class CircularBuffer<T> {
   private readonly max: number;
-  private readonly buffer: T[];
+  private buffer: T[];
   private start: number;
   private end: number;
   private length: number;
@@ -36,5 +36,12 @@ export default class CircularBuffer<T> {
     }
 
     return result;
+  }
+
+  public clear(): void {
+    this.start = 0;
+    this.end = 0;
+    this.length = 0;
+    this.buffer = new Array<T>(this.max);
   }
 }

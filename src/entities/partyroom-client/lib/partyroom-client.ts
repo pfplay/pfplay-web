@@ -7,6 +7,7 @@ import SocketClient from '@/shared/api/websocket/client';
  */
 export default class PartyroomClient {
   private socketClient: SocketClient;
+  private subscribedRoomId: number | undefined;
 
   public constructor() {
     this.socketClient = new SocketClient();
@@ -31,9 +32,20 @@ export default class PartyroomClient {
     }
 
     this.socketClient.subscribe(`/sub/partyrooms/${partyroomId}`, handler);
+    this.subscribedRoomId = partyroomId;
   }
 
   public unsubscribeCurrentRoom() {
-    this.socketClient.unsubscribeAll();
+    this.socketClient.unsubscribe(`/sub/partyrooms/${this.subscribedRoomId}`);
+    this.subscribedRoomId = undefined;
+  }
+
+  public sendChatMessage(message: string) {
+    if (!this.subscribedRoomId) {
+      throw new Error('Cannot send chat message without subscribing to a partyroom.');
+    }
+    this.socketClient.send(`/pub/groups/${this.subscribedRoomId}/send`, {
+      message,
+    });
   }
 }

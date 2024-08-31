@@ -8,6 +8,7 @@ import {
   ChangeEventHandler,
   forwardRef,
   useState,
+  KeyboardEventHandler,
 } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
 import { Typography } from '../typography';
@@ -18,10 +19,12 @@ type InputVariant = 'filled' | 'outlined';
 export interface InputProps
   extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'size' | 'className'> {
   initialValue?: string;
+  value?: string;
   size?: InputSize;
   variant?: InputVariant;
   Prefix?: ReactNode;
   Suffix?: ReactNode;
+  onPressEnter?: () => void;
   classNames?: {
     container?: string;
     input?: string;
@@ -31,6 +34,7 @@ export interface InputProps
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
+      value: _value,
       initialValue = '',
       onChange,
       maxLength,
@@ -40,14 +44,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       Suffix,
       onFocus,
       onBlur,
+      onPressEnter,
       classNames: { container: containerClassName, input: inputClassName } = {},
       ...rest
     },
     ref
   ) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const [localValue, setLocalValue] = useState<string>(initialValue);
     const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
+    const [localValue, setLocalValue] = useState(initialValue);
+    const value = _value ?? localValue;
 
     const handleClickWrapper: MouseEventHandler<HTMLDivElement> = (e) => {
       if (!(e.target as HTMLElement).closest('button')) {
@@ -66,6 +72,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
       setLocalValue(e.target.value);
       onChange?.(e);
+    };
+
+    const handleKeyDownInput: KeyboardEventHandler<HTMLInputElement> = (e) => {
+      if (
+        e.key === 'Enter' &&
+        !e.nativeEvent.isComposing /* NOTE: isComposing일 땐 Enter가 두 번 트리거됩니다 */
+      ) {
+        onPressEnter?.();
+      }
     };
 
     return (
@@ -95,22 +110,22 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none',
             inputClassName
           )}
+          value={value}
           onChange={handleChangeInput}
           onFocus={handleFocusInput}
           onBlur={handleBlurInput}
+          onKeyDown={handleKeyDownInput}
           {...rest}
         />
 
         {Number.isInteger(maxLength) && (
-          <Typography
-            className={cn('text-gray-400 ml-[12px]', !!localValue.length && 'text-gray-50')}
-          >
+          <Typography className={cn('text-gray-400 ml-[12px]', !!value.length && 'text-gray-50')}>
             <strong
               className={cn({
-                'text-red-300': maxLength && localValue.length > maxLength,
+                'text-red-300': maxLength && value.length > maxLength,
               })}
             >
-              {String(localValue.length).padStart(String(maxLength).length, '0')}
+              {String(value.length).padStart(String(maxLength).length, '0')}
             </strong>
             /{maxLength}
           </Typography>

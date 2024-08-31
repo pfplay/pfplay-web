@@ -11,4 +11,8 @@ export default class CircularBufferAdapter<Message> implements ChatMessages<Mess
   public append(message: Message): void {
     this.buffer.append(message);
   }
+
+  public clear(): void {
+    this.buffer.clear();
+  }
 }

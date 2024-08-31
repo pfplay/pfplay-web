@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { IMessage } from '@stomp/stompjs';
 import { PartyroomEventType, PartyroomSubEvent } from '@/shared/api/websocket/types/partyroom';
 import { specificLog, warnLog } from '@/shared/lib/functions/log/logger';
@@ -24,56 +23,45 @@ export default function useHandleSubscriptionEvent() {
   const playbackCallback = usePlaybackCallback();
   const deactivationCallback = useDeactivationCallback();
 
-  return useCallback(
-    (message: IMessage) => {
-      const event = parseMessage(message);
+  return (message: IMessage) => {
+    const event = parseMessage(message);
 
-      if (!hasEventType(event)) {
-        // It's probably a message that hasn't been processed on the backend.
-        return;
-      }
+    if (!hasEventType(event)) {
+      // It's probably a message that hasn't been processed on the backend.
+      return;
+    }
 
-      if (!isPartyroomSubEvent(event)) {
-        warnLogger('Unknown event type:', event);
-        return;
-      }
+    if (!isPartyroomSubEvent(event)) {
+      warnLogger('Unknown event type:', event);
+      return;
+    }
 
-      infoLogger('Received event:', event);
+    infoLogger('Received event:', event);
 
-      switch (event.eventType) {
-        case PartyroomEventType.ACCESS:
-          accessCallback(event);
-          break;
-        case PartyroomEventType.CHAT:
-          chatCallback(event);
-          break;
-        case PartyroomEventType.MOTION:
-          motionCallback(event);
-          break;
-        case PartyroomEventType.NOTICE:
-          noticeCallback(event);
-          break;
-        case PartyroomEventType.AGGREGATION:
-          aggregationCallback(event);
-          break;
-        case PartyroomEventType.PLAYBACK:
-          playbackCallback(event);
-          break;
-        case PartyroomEventType.DEACTIVATION:
-          deactivationCallback(event);
-          break;
-      }
-    },
-    [
-      accessCallback,
-      aggregationCallback,
-      chatCallback,
-      deactivationCallback,
-      motionCallback,
-      noticeCallback,
-      playbackCallback,
-    ]
-  );
+    switch (event.eventType) {
+      case PartyroomEventType.ACCESS:
+        accessCallback(event);
+        break;
+      case PartyroomEventType.CHAT:
+        chatCallback(event);
+        break;
+      case PartyroomEventType.MOTION:
+        motionCallback(event);
+        break;
+      case PartyroomEventType.NOTICE:
+        noticeCallback(event);
+        break;
+      case PartyroomEventType.AGGREGATION:
+        aggregationCallback(event);
+        break;
+      case PartyroomEventType.PLAYBACK:
+        playbackCallback(event);
+        break;
+      case PartyroomEventType.DEACTIVATION:
+        deactivationCallback(event);
+        break;
+    }
+  };
 }
 
 function hasEventType(event: Record<string, unknown>): event is { eventType: unknown } {

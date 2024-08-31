@@ -10,17 +10,17 @@ export default function PartyroomLayout({ children }: PropsWithChildren) {
   const params = useParams<{ id: string }>();
   const partyroomId = Number(params.id);
   const enter = useEnterPartyroom(partyroomId);
-  const { exit, onBeforeUnload } = useExitPartyroom(partyroomId);
+  const exit = useExitPartyroom(partyroomId);
 
   useDidMountEffect(() => {
     enter();
 
-    window.addEventListener('beforeunload', onBeforeUnload);
+    window.addEventListener('beforeunload', exit);
 
     return () => {
       exit();
 
-      window.removeEventListener('beforeunload', onBeforeUnload);
+      window.removeEventListener('beforeunload', exit);
     };
   });
 

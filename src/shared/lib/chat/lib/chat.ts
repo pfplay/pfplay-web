@@ -34,4 +34,9 @@ export default class Chat<Message> {
   public removeMessageListener(listener: (message: Message) => void): void {
     this.messageListener.deregister(listener);
   }
+
+  public clear(): void {
+    this.messages.clear();
+    this.messageListener.deregisterAll();
+  }
 }

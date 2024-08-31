@@ -1,7 +1,12 @@
 'use client';
 
 import { create } from 'zustand';
+import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
+import { Chat } from '@/shared/lib/chat';
+import { warnLog } from '@/shared/lib/functions/log/logger';
+import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { update } from '@/shared/lib/functions/update';
+import * as ChatMessage from './chat-message.model';
 import * as CurrentPartyroom from '../model/current-partyroom.model';
 
 export const createCurrentPartyroomStore = () => {
@@ -73,6 +78,25 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
+    chat: Chat.create<ChatMessage.Model>([]),
+    appendChatMessage: (memberId, content) => {
+      return set((state) => {
+        const member = state.members.find((member) => member.memberId === memberId);
+        if (!member) {
+          logMemberNotFound(memberId, state.members);
+          return state;
+        }
+
+        state.chat.appendMessage({
+          member,
+          content,
+          receivedAt: Date.now(),
+        });
+
+        return state;
+      });
+    },
+
     init: (next) => {
       return set(
         {
@@ -84,7 +108,24 @@ export const createCurrentPartyroomStore = () => {
     },
 
     reset: () => {
-      return set(api.getInitialState(), true);
+      return set((state) => {
+        state.chat.clear();
+
+        return api.getInitialState(); // chat의 레퍼런스는 변경되지 않을 것으로 기대 중. TODO: 테스트 필요
+      }, true);
     },
   }));
 };
+
+const logger = withDebugger(0);
+const warnLogger = logger(warnLog);
+
+function logMemberNotFound(memberId: number, currentMembers: PartyroomMember[]) {
+  warnLogger(
+    `Cannot find member(memberId: ${memberId}) in stored members for chat. current members: ${JSON.stringify(
+      currentMembers,
+      null,
+      2
+    )}`
+  );
+}
