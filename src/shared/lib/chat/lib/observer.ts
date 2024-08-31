@@ -11,6 +11,10 @@ export default class Observer<T> {
     this.listeners = this.listeners.filter((l) => l !== listener);
   }
 
+  public unsubscribeAll() {
+    this.listeners = [];
+  }
+
   public notify(data: T) {
     for (const listener of this.listeners) {
       listener(data);

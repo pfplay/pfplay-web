@@ -12,6 +12,10 @@ export default class ObserverAdapter<Message> implements ChatMessageListener<Mes
     this.observer.unsubscribe(listener);
   }
 
+  public deregisterAll(): void {
+    this.observer.unsubscribeAll();
+  }
+
   public notify(message: Message): void {
     this.observer.notify(message);
   }
