@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { PlaybackEvent } from '@/shared/api/websocket/types/partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
 
@@ -8,12 +7,9 @@ export default function usePlaybackCallback() {
     (state) => [state.updatePlaybackActivated, state.updatePlayback, state.updateCurrentDj]
   );
 
-  return useCallback(
-    (event: PlaybackEvent) => {
-      updatePlaybackActivated(true);
-      updatePlayback(event.playback);
-      updateCurrentDj({ memberId: event.memberId });
-    },
-    [updatePlaybackActivated, updatePlayback, updateCurrentDj]
-  );
+  return (event: PlaybackEvent) => {
+    updatePlaybackActivated(true);
+    updatePlayback(event.playback);
+    updateCurrentDj({ memberId: event.memberId });
+  };
 }
