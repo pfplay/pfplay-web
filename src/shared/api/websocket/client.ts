@@ -74,7 +74,15 @@ export default class SocketClient {
   }
 
   public unsubscribe(destination: Destination) {
-    this.client.unsubscribe(destination);
+    const subscription = this.subscriptions.find(
+      (subscription) => subscription.destination === destination
+    );
+    if (!subscription) return;
+
+    subscription.unsubscribe();
+    this.subscriptions = this.subscriptions.filter(
+      (subscription) => subscription.destination !== destination
+    );
   }
 
   public unsubscribeAll() {
