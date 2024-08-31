@@ -61,6 +61,9 @@ export type NoticeEvent = {
 // 채팅 메시지 이벤트
 export type ChatEvent = {
   eventType: PartyroomEventType.CHAT;
+  partyroomId: {
+    id: number;
+  };
   member: {
     memberId: number;
   };
