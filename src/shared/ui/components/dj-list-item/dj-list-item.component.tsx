@@ -39,7 +39,7 @@ const DjListItem = ({
 
       <div className={cn('flexRow justify-center items-center gap-2')}>
         <Image
-          src={src || '/images/ETC/monkey.png'}
+          src={src || '/images/Temp/face.png'}
           alt={alt || username}
           width={32}
           height={32}

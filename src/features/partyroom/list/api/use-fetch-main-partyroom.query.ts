@@ -13,6 +13,7 @@ export const useSuspenseFetchMainPartyroom = () => {
     queryFn: PartyroomsService.getList,
     select: (data) => {
       // NOTE: 메인 파티룸은 항상 존재한다고 가정
+      console.log({ data });
       return data.find((partyroom) => partyroom.stageType === StageType.MAIN) as PartyroomSummary;
     },
     staleTime: 0,

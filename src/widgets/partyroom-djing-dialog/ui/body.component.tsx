@@ -9,6 +9,7 @@ import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
 import UnregisterButton from '@/widgets/partyroom-djing-dialog/ui/unregister-button.component';
 import RegisterButton from './register-button.component';
+import SkipPlaybackButton from './skip-playback-button.component';
 
 type Props = {
   djingQueue: DjingQueue;
@@ -23,6 +24,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
   const t = useI18n();
   const { useCurrentPartyroom } = useStores();
   const myMemberId = useCurrentPartyroom((state) => state.me?.memberId);
+  // const { me, currentDj } = useCurrentPartyroom(); //TODO: currentDj, meId 해당 로직으로 대체 가능 여부 확인
 
   const [currentDj, ...queue] = djingQueue.djs
     .slice()
@@ -41,7 +43,11 @@ export default function Body({ djingQueue, onCancel }: Props) {
             <Typography type='body3' className='flex-1'>
               {djingQueue.playback?.name}
             </Typography>
-            <Typography type='detail1'>03:00</Typography>
+            <div className='inline-flex items-center gap-2'>
+              <Typography type='detail1'>03:00</Typography>
+
+              <SkipPlaybackButton />
+            </div>
           </div>
 
           <DjListItem variant='accent' userConfig={Dj.toListItemConfig(currentDj)} />
@@ -80,6 +86,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
 
               return (
                 <div key={'queue' + dj.djId} className='flex justify-between items-center'>
+                  {/* TODO: 각 리스트에 삭제 버튼이 있어야 함. User List Item 컴포넌트로 대체 해야 할 지 고민해보기 */}
                   <DjListItem
                     order={`${index + 1}`}
                     userConfig={Dj.toListItemConfig(dj)}
