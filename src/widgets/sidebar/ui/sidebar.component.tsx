@@ -47,7 +47,7 @@ const Sidebar = ({ className, extraButton }: SidebarProps) => {
     <aside className={className}>
       {/* TODO: 프로필 이미지로 변경, href 추가 */}
       <button onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
-        <Profile size={48} src={me.avatarFaceUri} />
+        <Profile size={48} src={me.avatarIconUri} />
         <Typography type='caption1' className='text-gray-200'>
           {t.common.btn.my_profile}
         </Typography>

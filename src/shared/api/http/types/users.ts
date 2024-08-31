@@ -30,8 +30,9 @@ export interface ActivitySummary {
 export interface GetMyProfileSummaryResponse {
   nickname: string;
   introduction?: string;
-  avatarBodyUri?: string;
-  avatarFaceUri?: string;
+  avatarBodyUri: string;
+  avatarFaceUri: string;
+  avatarIconUri: string;
   combinePositionX?: number;
   combinePositionY?: number;
   walletAddress?: string;
@@ -54,7 +55,7 @@ export interface GetUserProfileSummaryResponse {
   nickname: string;
   introduction?: string;
   avatarBodyUri: string;
-  avatarFaceUri?: string;
+  avatarFaceUri: string;
   combinePositionX?: number;
   combinePositionY?: number;
   activitySummaries: ActivitySummary[];
