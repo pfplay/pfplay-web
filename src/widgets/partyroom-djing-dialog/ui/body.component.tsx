@@ -1,4 +1,5 @@
 import { Dj } from '@/entities/current-partyroom';
+import { GradeType } from '@/shared/api/http/types/@enums';
 import { DjingQueue } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
@@ -22,14 +23,17 @@ export default function Body({ djingQueue, onCancel }: Props) {
   }
 
   const t = useI18n();
-  const { useCurrentPartyroom } = useStores();
-  const myMemberId = useCurrentPartyroom((state) => state.me?.memberId);
-  // const { me, currentDj } = useCurrentPartyroom(); //TODO: currentDj, meId 해당 로직으로 대체 가능 여부 확인
+  const [meId, meGrade] = useStores().useCurrentPartyroom((state) => [
+    state.me?.memberId,
+    state.me?.gradeType,
+  ]);
 
   const [currentDj, ...queue] = djingQueue.djs
     .slice()
     .sort((a, b) => a.orderNumber - b.orderNumber);
-  const isMeInQueue = queue.some((dj) => dj.djId === myMemberId);
+  const isMeInQueue = queue.some((dj) => dj.djId === meId);
+
+  const hasSkipRight = meGrade ? highGradeList.includes(meGrade) : false;
 
   return (
     <div className='text-start'>
@@ -46,7 +50,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
             <div className='inline-flex items-center gap-2'>
               <Typography type='detail1'>03:00</Typography>
 
-              <SkipPlaybackButton />
+              {hasSkipRight && <SkipPlaybackButton />}
             </div>
           </div>
 
@@ -82,7 +86,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
           )}
           {!!queue?.length &&
             queue.map((dj, index) => {
-              const isMe = dj.djId === myMemberId;
+              const isMe = dj.djId === meId;
 
               return (
                 <div key={'queue' + dj.djId} className='flex justify-between items-center'>
@@ -131,3 +135,8 @@ export default function Body({ djingQueue, onCancel }: Props) {
 
 const LEFT_PAD = 150;
 const RIGHT_PAD = 64;
+const highGradeList: readonly GradeType[] = [
+  GradeType.HOST,
+  GradeType.COMMUNITY_MANAGER,
+  GradeType.MODERATOR,
+] as const;

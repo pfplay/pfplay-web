@@ -8,7 +8,7 @@ const GRADE_TYPE_ORDER = [
   GradeType.MODERATOR,
   GradeType.CLUBBER,
   GradeType.LISTENER,
-];
+] satisfies GradeType[];
 
 export type CategorizeParticipantsByGrade = Categorized<Participant>;
 
