@@ -13,7 +13,7 @@ export default function SkipPlaybackButton() {
 
   const handleSkipClick = async () => {
     const confirmed = await openDialog<boolean>((onOk, onCancel) => ({
-      title: '현재 디제잉 곡을 스킵하시겠어요?', // TODO: dictionary에 추가 후 I18n으로 변경
+      title: 'Do you want to skip the current track?', // TODO: dictionary에 추가 후 I18n으로 변경
       titleType: 'body1',
       Body: () => {
         return (
