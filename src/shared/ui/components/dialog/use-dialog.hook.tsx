@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { getErrorMessage } from '@/shared/api/get-error-message';
+import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import Dialog, { DialogProps } from './dialog.component';
 import { useDialogContext } from './dialog.context';
@@ -82,7 +83,11 @@ export const useDialog = () => {
         }
 
         await openDialog((_, onCancel) => ({
-          title: { fullPhrase: 'Error', emphasisPhrase: 'Error' },
+          title: ({ defaultTypoType, defaultClassName }) => (
+            <Typography type={defaultTypoType} className={cn(defaultClassName, 'text-red-300')}>
+              Error
+            </Typography>
+          ),
           Body: () => (
             <>
               <Typography type='body3' overflow='break-words'>

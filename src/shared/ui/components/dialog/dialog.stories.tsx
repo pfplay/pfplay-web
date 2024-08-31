@@ -4,6 +4,7 @@ import type { Meta, StoryFn } from '@storybook/react';
 import { cn } from '@/shared/lib/functions/cn';
 import { delay } from '@/shared/lib/functions/delay';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
+import { replaceVar } from '@/shared/lib/localization/split-render';
 import Dialog from './dialog.component';
 import { useDialog } from './use-dialog.hook';
 import { Button } from '../button';
@@ -40,10 +41,17 @@ export const Simply: Story = () => {
 
 export const Fully: Story = () => {
   const { openDialog } = useDialog();
+  const RESOLVE_VALUE = 1000;
 
   const openFullDialog = () => {
     return openDialog<number>((onOk, onCancel) => ({
-      title: { fullPhrase: '확인을 누르면 1000을 반환합니다', emphasisPhrase: '1000' },
+      title: ({ defaultTypoType, defaultClassName }) => (
+        <Typography type={defaultTypoType} className={defaultClassName}>
+          {replaceVar('확인을 누르면 $1을 반환합니다', {
+            $1: <span className='text-red-300'>{RESOLVE_VALUE}</span>,
+          })}
+        </Typography>
+      ),
       Sub: (
         <Typography type='detail1' className='text-gray-300'>
           취소를 누르면 항상 <span className='text-red-300'>undefined</span> 를 반환해요.
@@ -71,7 +79,7 @@ export const Fully: Story = () => {
               <Dialog.Button color='secondary' onClick={onCancel}>
                 취소
               </Dialog.Button>
-              <Dialog.Button onClick={() => onOk(1000)}>확인</Dialog.Button>
+              <Dialog.Button onClick={() => onOk(RESOLVE_VALUE)}>확인</Dialog.Button>
             </Dialog.ButtonGroup>
           </>
         );

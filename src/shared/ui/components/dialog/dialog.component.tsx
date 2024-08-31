@@ -2,27 +2,29 @@
 import { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo, useRef } from 'react';
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import { cn } from '@/shared/lib/functions/cn';
-import { wrapByTag } from '@/shared/lib/functions/wrap-by-tag';
 import theme from '@/shared/ui/foundation/theme';
 import { PFClose } from '@/shared/ui/icons';
 import { Button, ButtonProps } from '../button';
-import { Typography, TypographyProps } from '../typography';
+import { Typography, TypographyType } from '../typography';
 
-interface DialogComposition {
+type DialogComposition = {
   ButtonGroup: FC<PropsWithChildren>;
   Button: FC<Omit<PropsWithRef<ButtonProps>, 'size'>>;
-}
+};
 
-interface StrWithEmphasis {
-  fullPhrase: string;
-  emphasisPhrase: string | string[];
-}
-export interface DialogProps {
+type TitleProps = {
+  defaultTypoType: TypographyType;
+  defaultClassName: string;
+};
+
+export type DialogProps = {
   id?: string;
   open: boolean;
-  title?: string | StrWithEmphasis;
+  /**
+   * string 타입이면 typography로 래핑됩니다.
+   */
+  title?: string | ((props: TitleProps) => ReactNode);
   titleAlign?: 'left' | 'center';
-  titleType?: TypographyProps['type'];
   Sub?: ReactNode;
   Body: FC | ReactNode;
   onClose: () => void;
@@ -43,18 +45,6 @@ export interface DialogProps {
     container?: string;
   };
   zIndex?: number;
-}
-
-const getEmphasisedInnerHTML = (strWithEmphasis: StrWithEmphasis): string => {
-  const { fullPhrase, emphasisPhrase } = strWithEmphasis;
-  return wrapByTag(
-    fullPhrase,
-    [emphasisPhrase].flat().map((v) => ({
-      targetPhrase: v,
-      tag: 'strong',
-      tagAttr: { class: 'text-red-300' },
-    }))
-  );
 };
 
 const Dialog: FC<DialogProps> & DialogComposition = ({
@@ -67,7 +57,6 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   closeWhenOverlayClicked = true,
   id,
   titleAlign = 'center',
-  titleType = 'body1',
   showCloseIcon = false,
   hideDim = false,
   classNames,
@@ -76,18 +65,21 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   const Title = useMemo(() => {
     if (!title) return null;
 
-    const titleProps: PropsWithRef<TypographyProps> = {
-      type: titleType,
-      className: 'text-gray-50 whitespace-pre-line',
+    const titleProps: TitleProps = {
+      defaultTypoType: 'body1',
+      defaultClassName: 'text-gray-50 whitespace-pre-line',
     };
 
     if (typeof title === 'string') {
-      return <Typography {...titleProps}>{title}</Typography>;
+      return (
+        <Typography type={titleProps.defaultTypoType} className={titleProps.defaultClassName}>
+          {title}
+        </Typography>
+      );
     }
 
-    const titleInnerHTML = getEmphasisedInnerHTML(title);
-    return <Typography {...titleProps} dangerouslySetInnerHTML={{ __html: titleInnerHTML }} />;
-  }, [titleType, title]);
+    return title(titleProps);
+  }, [title]);
 
   const closing = useRef(false);
   const handleClose = async () => {

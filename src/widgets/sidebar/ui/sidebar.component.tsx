@@ -32,9 +32,12 @@ const Sidebar = ({ className, extraButton }: SidebarProps) => {
 
   const handleClickProfileButton = () => {
     return openDialog((_, onCancel) => ({
-      title: t.common.btn.my_profile,
+      title: ({ defaultClassName }) => (
+        <Typography type='title2' className={defaultClassName}>
+          {t.common.btn.my_profile}
+        </Typography>
+      ),
       titleAlign: 'left',
-      titleType: 'title2',
       showCloseIcon: true,
       classNames: {
         container: 'w-[620px] h-[391px] py-7 px-10 bg-black',

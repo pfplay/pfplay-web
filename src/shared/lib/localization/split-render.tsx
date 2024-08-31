@@ -23,7 +23,7 @@ export const renderLi = (text: string) => {
 /**
  * 문자열 내의 $1, $2, ... 등의 변수를 치환합니다.
  */
-export const replaceVar = (text: string, vars: Record<`$${number}`, ReactNode>) => {
+export const replaceVar = (text: string, vars: Record<`$${number}`, ReactNode>): ReactNode => {
   if (Object.keys(vars).some((key) => !key.startsWith('$'))) {
     throw new Error('Key must start with $');
   }
