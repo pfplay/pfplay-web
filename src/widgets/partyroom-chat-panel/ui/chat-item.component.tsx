@@ -20,7 +20,7 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
     <div ref={ref} className='flex justify-start items-start gap-[13px]'>
       <div className='flexCol items-center gap-2 px-[5px] pt-[2px]'>
         <div className='relative'>
-          <Profile src={member.avatarFaceUri} size={32} />
+          <Profile src={member.avatarIconUri} size={32} />
           <AuthorityHeadset grade={member.gradeType} />
         </div>
 

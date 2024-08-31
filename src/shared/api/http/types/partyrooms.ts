@@ -44,6 +44,7 @@ export type PartyroomMember = {
    * not combinable body일 경우 빈 문자열
    */
   avatarFaceUri: string;
+  avatarIconUri: string;
   combinePositionX: number;
   combinePositionY: number;
 };
