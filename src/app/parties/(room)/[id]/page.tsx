@@ -99,8 +99,7 @@ const PartyroomPage = () => {
 
       <DjingDialog
         partyroomId={Number(params.id)}
-        // open={true}
-        open={isDjingDialogOpen} //FIXME: 개발 후 주석 해제
+        open={isDjingDialogOpen}
         close={closeDjingDialog}
       />
     </>
