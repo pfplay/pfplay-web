@@ -3,19 +3,10 @@ import {
   RegisterMeToQueuePayload,
   UnregisterMeFromQueuePayload,
   UnregisterDjFromQueuePayload,
-  CompletePlaybackPayload,
   SkipPlaybackPayload,
   DjsClient,
 } from 'shared/api/http/types/djs';
 import HTTPClient from '../client/client';
-
-/**
- *   registerMeToQueue: (payload: RegisterMeToQueuePayload) => Promise<void>;
- *   unregisterMeFromQueue: (payload: UnregisterMeFromQueuePayload) => Promise<void>;
- *   unregisterDjFromQueue: (payload: UnregisterDjFromQueuePayload) => Promise<void>;
- *   completePlayback: (payload: CompletePlaybackPayload) => Promise<void>;
- *   skipPlayback: (payload: SkipPlaybackPayload) => Promise<void>;
- */
 
 @Singleton
 class DjsService extends HTTPClient implements DjsClient {
@@ -31,10 +22,6 @@ class DjsService extends HTTPClient implements DjsClient {
 
   public unregisterDjFromQueue = ({ partyroomId, djId }: UnregisterDjFromQueuePayload) => {
     return this.delete<void>(`${this.ROUTE_V1}/${partyroomId}/djs/${djId}`);
-  };
-
-  public completePlayback = ({ partyroomId }: CompletePlaybackPayload) => {
-    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/playback/complete`);
   };
 
   public skipPlayback = ({ partyroomId }: SkipPlaybackPayload) => {

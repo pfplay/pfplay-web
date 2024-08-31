@@ -4,7 +4,6 @@ import { useState } from 'react';
 import type TReactPlayer from 'react-player';
 import { YouTubeConfig } from 'react-player/youtube';
 import { Playback } from '@/entities/current-partyroom';
-import { useCompletePlayback } from '@/features/partyroom/complete-playback';
 import { PartyroomPlayback } from '@/shared/api/http/types/partyrooms';
 import { cn } from '@/shared/lib/functions/cn';
 import { pick } from '@/shared/lib/functions/pick';
@@ -38,11 +37,8 @@ type Props = {
  */
 export default function Video({ width, height = width * DEFAULT_H_RATIO }: Props) {
   const { useCurrentPartyroom } = useStores();
-  const { playback, currentDj, me } = useCurrentPartyroom((state) =>
-    pick(state, ['playback', 'currentDj', 'me'])
-  );
+  const { playback } = useCurrentPartyroom((state) => pick(state, ['playback', 'currentDj', 'me']));
   const videoId = playback?.linkId;
-  const { mutate: completePlayback } = useCompletePlayback();
 
   const [played, setPlayed] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
@@ -60,13 +56,6 @@ export default function Video({ width, height = width * DEFAULT_H_RATIO }: Props
 
   const onPlay = () => {
     setPlayed(true);
-  };
-
-  const onEnded = () => {
-    if (!currentDj || !me) return; // 단순 assert 용 return. 두 값은 실제로 이 콜백 실행 시점에 항상 truthy해야 함
-    if (currentDj.memberId === me.memberId) {
-      completePlayback();
-    }
   };
 
   return (
@@ -96,7 +85,6 @@ export default function Video({ width, height = width * DEFAULT_H_RATIO }: Props
           'pointer-events-none': played,
         })}
         onReady={onPlayerReady}
-        onEnded={onEnded}
         onPlay={onPlay}
         config={config}
         pip={false}
