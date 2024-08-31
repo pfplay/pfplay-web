@@ -1,5 +1,5 @@
 import type { Meta } from '@storybook/react';
-import Select, { SelectListItem } from './select.component';
+import Select, { SelectOption } from './select.component';
 import { Typography } from '../typography';
 
 const meta = {
@@ -13,7 +13,7 @@ const meta = {
 
 export default meta;
 
-const selectListConfig: Array<SelectListItem> = [
+const options: SelectOption[] = [
   { label: 'Wade Cooper long long long text', value: 'Wade Cooper2' },
   { label: 'Arlene Mccoy', value: 'Arlene Mccoy2' },
   { label: 'Devon Webb long long long text', value: 'Devon Webb2' },
@@ -23,7 +23,7 @@ const selectListConfig: Array<SelectListItem> = [
 ];
 
 export const SelectDefault = () => {
-  return <Select selectListConfig={selectListConfig} />;
+  return <Select options={options} />;
 };
 
 export const SelectWithInitialValue = () => {
@@ -32,7 +32,7 @@ export const SelectWithInitialValue = () => {
       <Typography type='title2' className='text-white'>
         Select with initial value
       </Typography>
-      <Select selectListConfig={selectListConfig} initialValue={selectListConfig[2]} />
+      <Select options={options} initialValue={options[2]} />
     </>
   );
 };
