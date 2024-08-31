@@ -81,14 +81,14 @@ export const createCurrentPartyroomStore = () => {
     chat: Chat.create<ChatMessage.Model>([]),
     appendChatMessage: (memberId, content) => {
       return set((state) => {
-        const by = state.members.find((member) => member.memberId === memberId);
-        if (!by) {
+        const member = state.members.find((member) => member.memberId === memberId);
+        if (!member) {
           logMemberNotFound(memberId, state.members);
           return state;
         }
 
         state.chat.appendMessage({
-          by,
+          member,
           content,
           receivedAt: Date.now(),
         });

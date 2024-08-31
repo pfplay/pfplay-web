@@ -13,18 +13,18 @@ type ChatItemProps = {
 
 // TODO: 권한 관련 작업 시 menu 추가 (DisplayOptionMenuOnHoverListener)
 const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) => {
-  const by = message.by;
+  const member = message.member;
   const isHigherLevel = ChatMessage.checkHigherGrade(message);
 
   return (
     <div ref={ref} className='flex justify-start items-start gap-[13px]'>
       <div className='flexCol items-center gap-2 px-[5px] pt-[2px]'>
         <div className='relative'>
-          <Profile src={by.avatarFaceUri} size={32} />
-          <AuthorityHeadset grade={by.gradeType} />
+          <Profile src={member.avatarFaceUri} size={32} />
+          <AuthorityHeadset grade={member.gradeType} />
         </div>
 
-        {by.gradeType !== GradeType.LISTENER && (
+        {member.gradeType !== GradeType.LISTENER && (
           <Typography
             type='body4'
             className={cn(
@@ -33,13 +33,13 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
               isHigherLevel ? 'text-red-400' : 'text-gray-200'
             )}
           >
-            {GRADE_TYPE_LABEL[by.gradeType]}
+            {GRADE_TYPE_LABEL[member.gradeType]}
           </Typography>
         )}
       </div>
 
       <div className='flex-1 flexCol items-start gap-1'>
-        <Typography type='detail2'>{by.nickname}</Typography>
+        <Typography type='detail2'>{member.nickname}</Typography>
 
         <Typography
           type='caption1'

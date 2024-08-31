@@ -2,13 +2,13 @@ import { GradeType } from '@/shared/api/http/types/@enums';
 import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
 
 export type Model = {
-  by: PartyroomMember;
+  member: PartyroomMember;
   content: string;
   receivedAt: number;
 };
 
 export const checkHigherGrade = (model: Model) => {
-  const gradeType = model.by.gradeType;
+  const gradeType = model.member.gradeType;
 
   return (
     gradeType === GradeType.MODERATOR ||
@@ -18,5 +18,5 @@ export const checkHigherGrade = (model: Model) => {
 };
 
 export const uniqueId = (model: Model) => {
-  return model.by.memberId + model.by.uid + model.receivedAt;
+  return model.member.memberId + model.member.uid + model.receivedAt;
 };
