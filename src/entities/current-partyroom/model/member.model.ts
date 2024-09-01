@@ -31,7 +31,7 @@ export class Permissions {
     );
   }
 
-  public adjustableGrades() {
+  public get adjustableGrades() {
     return this.comparator.lowerGrades;
   }
 
