@@ -11,6 +11,7 @@ interface DisplayOptionMenuOnHoverListenerProps {
   children: ReactElement | ((isHover: boolean) => ReactElement);
   menuPositionStyle?: string;
   menuItemPanelSize?: MenuItemPanelSize;
+  disabled?: boolean;
 }
 
 const DisplayOptionMenuOnHoverListener = ({
@@ -19,6 +20,7 @@ const DisplayOptionMenuOnHoverListener = ({
   menuPositionStyle,
   menuItemPanelSize = 'md',
   listenerDisabled = false,
+  disabled,
 }: DisplayOptionMenuOnHoverListenerProps) => {
   const [isHover, setIsHover] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,6 +54,9 @@ const DisplayOptionMenuOnHoverListener = ({
 
   const menuRef = useClickOutside<HTMLDivElement>(handleMenuClose);
 
+  if (disabled || !menuConfig.length || menuConfig.every((item) => item.visible === false)) {
+    return typeof children === 'function' ? children(false) : children;
+  }
   return (
     <div
       ref={menuRef} // 마우스 Hover 상태일 때 컴포넌트 내부 클릭 시 hover 상태가 유지되도록 함
