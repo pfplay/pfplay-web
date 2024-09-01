@@ -3,5 +3,6 @@ export * as CurrentPartyroom from './model/current-partyroom.model';
 export * as Dj from './model/dj.model';
 export * as Playback from './model/playback.model';
 export * as ChatMessage from './model/chat-message.model';
+export * as Member from './model/member.model';
 
 export { useChat as useCurrentPartyroomChat } from './lib/use-chat.hook';
