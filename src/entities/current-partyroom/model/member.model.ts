@@ -68,7 +68,7 @@ export class Permissions {
   }
 }
 
-class GradeComparator {
+export class GradeComparator {
   private gradePriorities = Object.freeze<GradeType[]>([
     GradeType.HOST,
     GradeType.COMMUNITY_MANAGER,
