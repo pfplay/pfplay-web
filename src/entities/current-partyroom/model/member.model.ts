@@ -97,8 +97,8 @@ class GradeComparator {
     const aIndex = this.gradePriorities.indexOf(a);
     const bIndex = this.gradePriorities.indexOf(b);
 
-    if (aIndex > bIndex) return 1;
-    if (aIndex < bIndex) return -1;
+    if (aIndex > bIndex) return -1; // a가 낮은 등급
+    if (aIndex < bIndex) return 1; // a가 높은 등급
     return 0;
   }
 }
