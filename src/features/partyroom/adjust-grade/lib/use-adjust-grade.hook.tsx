@@ -1,6 +1,5 @@
 import { Member } from '@/entities/current-partyroom';
-import { errorLog } from '@/shared/lib/functions/log/logger';
-import withDebugger from '@/shared/lib/functions/log/with-debugger';
+import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
@@ -15,29 +14,18 @@ export function useAdjustGrade() {
   const { mutate } = useAdjustGradeMutation();
   const selectGrade = useSelectGrade();
   const { useCurrentPartyroom } = useStores();
-  const { me, members, partyroomId } = useCurrentPartyroom((state) => ({
+  const { me, partyroomId } = useCurrentPartyroom((state) => ({
     me: state.me,
-    members: state.members,
     partyroomId: state.id,
   }));
 
-  return async (targetMemberId: number) => {
+  return async (targetMember: Pick<PartyroomMember, 'nickname' | 'memberId' | 'gradeType'>) => {
     if (!me || !partyroomId) return;
 
-    // Find target member
-    const targetMember = members.find((member) => member.memberId === targetMemberId);
-    if (!targetMember) {
-      errorLogger('Cannot find member');
-      return;
-    }
-
-    // Check permission
     const permissions = Member.Permissions.of(me.gradeType);
-    const canAdjustGrade = permissions.canAdjustGrade(targetMember.gradeType);
-    if (!canAdjustGrade) {
-      errorLogger('Cannot action');
-      return;
-    }
+    const canAdjustGrade = permissions?.canAdjustGrade(targetMember.gradeType);
+
+    if (!canAdjustGrade) return;
 
     // Select grade
     const targetCurrentGrade = targetMember.gradeType;
@@ -53,7 +41,7 @@ export function useAdjustGrade() {
     mutate(
       {
         partyroomId,
-        memberId: targetMemberId,
+        memberId: targetMember.memberId,
         gradeType: selectedGrade,
       },
       {
@@ -72,6 +60,3 @@ export function useAdjustGrade() {
     );
   };
 }
-
-const logger = withDebugger(0);
-const errorLogger = logger(errorLog);
