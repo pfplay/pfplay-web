@@ -18,7 +18,7 @@ export function useExitPartyroom() {
         queryKey: [QueryKeys.DjingQueue],
       });
       queryClient.removeQueries({
-        queryKey: [QueryKeys.Participants],
+        queryKey: [QueryKeys.Members],
       });
     },
   });
