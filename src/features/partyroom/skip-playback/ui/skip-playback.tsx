@@ -12,9 +12,9 @@ export const SkipPlayback = ({ children }: Props) => {
   const t = useI18n();
   const { openConfirmDialog } = useDialog();
   const { mutate: skipPlaybackMutation } = useSkipPlayback();
-  const { id, me } = useStores().useCurrentPartyroom();
+  const [id, me] = useStores().useCurrentPartyroom((state) => [state.id, state.me]);
 
-  if (!me?.gradeType || !Permission.of(me?.gradeType).canSkipPlayback()) {
+  if (!me || !Permission.of(me.gradeType).canSkipPlayback()) {
     return null;
   }
 

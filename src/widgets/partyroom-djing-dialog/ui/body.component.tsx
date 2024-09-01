@@ -23,11 +23,11 @@ export default function Body({ djingQueue, onCancel }: Props) {
   }
 
   const t = useI18n();
-  const meId = useStores().useCurrentPartyroom((state) => state.me?.memberId);
+  const myMemberId = useStores().useCurrentPartyroom((state) => state.me?.memberId);
   const [currentDj, ...queue] = djingQueue.djs
     .slice()
     .sort((a, b) => a.orderNumber - b.orderNumber);
-  const isMeInQueue = queue.some((dj) => dj.djId === meId);
+  const isMeInQueue = queue.some((dj) => dj.djId === myMemberId);
 
   return (
     <div className='text-start'>
@@ -89,7 +89,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
           )}
           {!!queue?.length &&
             queue.map((dj, index) => {
-              const isMe = dj.djId === meId;
+              const isMe = dj.djId === myMemberId;
 
               return (
                 <div key={'queue' + dj.djId} className='flex justify-between items-center'>
