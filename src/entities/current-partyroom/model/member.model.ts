@@ -15,13 +15,19 @@ import { GradeType } from '@/shared/api/http/types/@enums';
 export class Permissions {
   private constructor(private comparator: GradeComparator) {}
 
-  public static of(grade: GradeType) {
-    return new Permissions(GradeComparator.of(grade));
+  private static instances: { [key in GradeType]?: Permissions } = {};
+
+  public static of(base: GradeType) {
+    if (!this.instances[base]) {
+      this.instances[base] = new Permissions(GradeComparator.of(base));
+    }
+    return this.instances[base];
   }
 
   public canAdjustGrade(targetGrade: GradeType) {
     return (
-      this.comparator.isHigherThan(GradeType.MODERATOR) && this.comparator.isHigherThan(targetGrade)
+      this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR) &&
+      this.comparator.isHigherThan(targetGrade)
     );
   }
 
@@ -46,7 +52,7 @@ export class Permissions {
   }
 
   public canSkipPlayback() {
-    return this.comparator.isHigherThan(GradeType.MODERATOR);
+    return this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
   }
 
   public canLockDjingQueue() {
@@ -73,16 +79,29 @@ class GradeComparator {
 
   private constructor(private base: GradeType) {}
 
+  private static instances: { [key in GradeType]?: GradeComparator } = {};
+
   public static of(base: GradeType) {
-    return new GradeComparator(base);
+    if (!this.instances[base]) {
+      this.instances[base] = new GradeComparator(base);
+    }
+    return this.instances[base];
   }
 
   public isHigherThan(target: GradeType) {
     return this.compareGradePriority(this.base, target) === 1;
   }
 
+  public isHigherThanOrEqualTo(target: GradeType) {
+    return this.compareGradePriority(this.base, target) !== -1;
+  }
+
   public isLowerThan(target: GradeType) {
     return this.compareGradePriority(this.base, target) === -1;
+  }
+
+  public isLowerThanOrEqualTo(target: GradeType) {
+    return this.compareGradePriority(this.base, target) !== 1;
   }
 
   public get higherGrades() {
@@ -97,8 +116,8 @@ class GradeComparator {
     const aIndex = this.gradePriorities.indexOf(a);
     const bIndex = this.gradePriorities.indexOf(b);
 
-    if (aIndex > bIndex) return 1;
-    if (aIndex < bIndex) return -1;
+    if (aIndex > bIndex) return -1; // a가 낮은 등급
+    if (aIndex < bIndex) return 1; // a가 높은 등급
     return 0;
   }
 }
