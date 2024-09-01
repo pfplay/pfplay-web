@@ -1,10 +1,12 @@
 import { Dj } from '@/entities/current-partyroom';
+import SkipPlayback from '@/features/partyroom/skip-playback';
 import { DjingQueue } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';
+import { TextButton } from '@/shared/ui/components/text-button';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
 import UnregisterButton from '@/widgets/partyroom-djing-dialog/ui/unregister-button.component';
@@ -21,9 +23,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
   }
 
   const t = useI18n();
-  const { useCurrentPartyroom } = useStores();
-  const myMemberId = useCurrentPartyroom((state) => state.me?.memberId);
-
+  const myMemberId = useStores().useCurrentPartyroom((state) => state.me?.memberId);
   const [currentDj, ...queue] = djingQueue.djs
     .slice()
     .sort((a, b) => a.orderNumber - b.orderNumber);
@@ -41,7 +41,20 @@ export default function Body({ djingQueue, onCancel }: Props) {
             <Typography type='body3' className='flex-1'>
               {djingQueue.playback?.name}
             </Typography>
-            <Typography type='detail1'>03:00</Typography>
+            <div className='inline-flex items-center gap-2'>
+              <Typography type='detail1'>03:00</Typography>
+              <SkipPlayback>
+                {(skipPlayback) => (
+                  <TextButton
+                    onClick={skipPlayback}
+                    className='text-gray-50 px-3'
+                    typographyType='caption1'
+                  >
+                    {t.common.btn.skip}
+                  </TextButton>
+                )}
+              </SkipPlayback>
+            </div>
           </div>
 
           <DjListItem variant='accent' userConfig={Dj.toListItemConfig(currentDj)} />
@@ -80,6 +93,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
 
               return (
                 <div key={'queue' + dj.djId} className='flex justify-between items-center'>
+                  {/* TODO: 각 리스트에 삭제 버튼이 있어야 함. User List Item 컴포넌트로 대체 해야 할 지 고민해보기 */}
                   <DjListItem
                     order={`${index + 1}`}
                     userConfig={Dj.toListItemConfig(dj)}

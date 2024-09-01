@@ -19,7 +19,7 @@ export default function PartyroomChatPanel() {
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
   const me = useStores().useCurrentPartyroom((state) => state.me);
-  const myPermissions = me && Member.Permissions.of(me.gradeType);
+  const myPermissions = me && Member.Permission.of(me.gradeType);
   const { scrollContainerRef, lastItemRef } = useChatMessagesScrollManager<
     HTMLDivElement,
     HTMLDivElement

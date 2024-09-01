@@ -12,14 +12,14 @@ import { GradeType } from '@/shared/api/http/types/@enums';
  * - 특정 멤버를 디제이로 등록
  * - 등록된 디제이 해제
  */
-export class Permissions {
+export class Permission {
   private constructor(private comparator: GradeComparator) {}
 
-  private static instances: { [key in GradeType]?: Permissions } = {};
+  private static instances: { [key in GradeType]?: Permission } = {};
 
   public static of(base: GradeType) {
     if (!this.instances[base]) {
-      this.instances[base] = new Permissions(GradeComparator.of(base));
+      this.instances[base] = new Permission(GradeComparator.of(base));
     }
     return this.instances[base];
   }
@@ -68,14 +68,16 @@ export class Permissions {
   }
 }
 
+export const gradePriorities = Object.freeze<GradeType[]>([
+  GradeType.HOST,
+  GradeType.COMMUNITY_MANAGER,
+  GradeType.MODERATOR,
+  GradeType.CLUBBER,
+  GradeType.LISTENER,
+]);
+
 export class GradeComparator {
-  private gradePriorities = Object.freeze<GradeType[]>([
-    GradeType.HOST,
-    GradeType.COMMUNITY_MANAGER,
-    GradeType.MODERATOR,
-    GradeType.CLUBBER,
-    GradeType.LISTENER,
-  ]);
+  private gradePriorities = gradePriorities;
 
   private constructor(private base: GradeType) {}
 

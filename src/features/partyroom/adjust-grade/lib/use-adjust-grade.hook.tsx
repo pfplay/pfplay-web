@@ -23,7 +23,7 @@ export function useAdjustGrade() {
   return async (targetMember: Pick<PartyroomMember, 'nickname' | 'memberId' | 'gradeType'>) => {
     if (!me || !partyroomId) return;
 
-    const permissions = Member.Permissions.of(me.gradeType);
+    const permissions = Member.Permission.of(me.gradeType);
     const canAdjustGrade = permissions?.canAdjustGrade(targetMember.gradeType);
 
     if (!canAdjustGrade) return;
