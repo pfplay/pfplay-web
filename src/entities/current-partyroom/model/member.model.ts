@@ -68,14 +68,16 @@ export class Permission {
   }
 }
 
+export const gradePriorities = Object.freeze<GradeType[]>([
+  GradeType.HOST,
+  GradeType.COMMUNITY_MANAGER,
+  GradeType.MODERATOR,
+  GradeType.CLUBBER,
+  GradeType.LISTENER,
+]);
+
 class GradeComparator {
-  private gradePriorities = Object.freeze<GradeType[]>([
-    GradeType.HOST,
-    GradeType.COMMUNITY_MANAGER,
-    GradeType.MODERATOR,
-    GradeType.CLUBBER,
-    GradeType.LISTENER,
-  ]);
+  private gradePriorities = gradePriorities;
 
   private constructor(private base: GradeType) {}
 

@@ -1,14 +1,6 @@
-import { GradeType } from '@/shared/api/http/types/@enums';
+import { gradePriorities } from '@/entities/current-partyroom/model/member.model';
 import { Participant } from '@/shared/api/http/types/partyrooms';
 import { categorize, Categorized } from '@/shared/lib/functions/categorize';
-
-const GRADE_TYPE_ORDER = [
-  GradeType.HOST,
-  GradeType.COMMUNITY_MANAGER,
-  GradeType.MODERATOR,
-  GradeType.CLUBBER,
-  GradeType.LISTENER,
-] satisfies GradeType[];
 
 export type CategorizeParticipantsByGrade = Categorized<Participant>;
 
@@ -22,7 +14,7 @@ export const categorizeParticipantsByGrade = ({
     items: participants,
     categoryKey: 'gradeType',
     getCategoryValue: (participant) => participant.gradeType,
-    orderReferenceArr: GRADE_TYPE_ORDER,
+    orderReferenceArr: gradePriorities as string[],
   });
 
   return categorized as CategorizeParticipantsByGrade;
