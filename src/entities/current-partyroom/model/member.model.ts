@@ -15,8 +15,13 @@ import { GradeType } from '@/shared/api/http/types/@enums';
 export class Permissions {
   private constructor(private comparator: GradeComparator) {}
 
-  public static of(grade: GradeType) {
-    return new Permissions(GradeComparator.of(grade));
+  private static instances: { [key in GradeType]?: Permissions } = {};
+
+  public static of(base: GradeType) {
+    if (!this.instances[base]) {
+      this.instances[base] = new Permissions(GradeComparator.of(base));
+    }
+    return this.instances[base];
   }
 
   public canAdjustGrade(targetGrade: GradeType) {
@@ -74,8 +79,13 @@ class GradeComparator {
 
   private constructor(private base: GradeType) {}
 
+  private static instances: { [key in GradeType]?: GradeComparator } = {};
+
   public static of(base: GradeType) {
-    return new GradeComparator(base);
+    if (!this.instances[base]) {
+      this.instances[base] = new GradeComparator(base);
+    }
+    return this.instances[base];
   }
 
   public isHigherThan(target: GradeType) {
