@@ -172,6 +172,12 @@ export type ExitPayload = {
   partyroomId: number;
 };
 
+export type AdjustGradePayload = {
+  partyroomId: number;
+  memberId: number;
+  gradeType: GradeType;
+};
+
 export interface GetPartyroomMemberRequest {
   partyroomId: string;
 }
@@ -210,4 +216,8 @@ export interface PartyroomsClient {
    * 파티룸 퇴장
    */
   exit: (payload: ExitPayload) => Promise<void>;
+  /**
+   * 등급 조정
+   */
+  adjustGrade: (payload: AdjustGradePayload) => Promise<void>;
 }
