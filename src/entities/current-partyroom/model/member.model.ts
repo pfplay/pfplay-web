@@ -1,4 +1,9 @@
-import { GradeType } from '@/shared/api/http/types/@enums';
+import { GradeType, MotionType } from '@/shared/api/http/types/@enums';
+import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
+
+export type Model = PartyroomMember & {
+  motionType: MotionType;
+};
 
 /**
  * 등급에 따른 권한 제어

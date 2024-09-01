@@ -3,6 +3,8 @@ import {
   usePartyroomClient,
 } from '@/entities/partyroom-client';
 import PartyroomsService from '@/shared/api/http/services/partyrooms';
+import { MotionType } from '@/shared/api/http/types/@enums';
+import { PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -36,6 +38,8 @@ export function useEnterPartyroom(partyroomId: number) {
        */
       const notice = await PartyroomsService.getNotice({ partyroomId });
 
+      const motionTypeMap = memberIdToMotionTypeMap(setUpInfo.display.reaction?.motion);
+
       initPartyroom({
         id: partyroomId,
         me: {
@@ -45,7 +49,10 @@ export function useEnterPartyroom(partyroomId: number) {
         playbackActivated: setUpInfo.display.playbackActivated,
         playback: setUpInfo.display.playback,
         reaction: setUpInfo.display.reaction,
-        members: setUpInfo.members,
+        members: setUpInfo.members.map((member) => ({
+          ...member,
+          motionType: motionTypeMap.get(member.memberId) ?? MotionType.NONE,
+        })),
         currentDj: setUpInfo.display.currentDj,
         notice: notice.content ?? '',
       });
@@ -60,4 +67,17 @@ export function useEnterPartyroom(partyroomId: number) {
   return () => {
     client.whenConnected(enter);
   };
+}
+
+function memberIdToMotionTypeMap(motionInfo?: PartyroomReaction['motion']) {
+  if (!motionInfo) {
+    return new Map<number, MotionType>();
+  }
+
+  return motionInfo.reduce((acc, motion) => {
+    motion.memberIds.forEach((memberId) => {
+      acc.set(memberId, motion.motionType);
+    });
+    return acc;
+  }, {} as Map<number, MotionType>);
 }

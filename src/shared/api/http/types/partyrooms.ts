@@ -4,6 +4,7 @@ import {
   MotionType,
   PartyroomGrade,
   QueueStatus,
+  ReactionType,
   StageType,
 } from '@/shared/api/http/types/@enums';
 
@@ -63,9 +64,9 @@ export type PartyroomReaction = {
    * 이전에 '내가' 클릭했는지 여부
    */
   history: {
-    like: boolean;
-    dislike: boolean;
-    grab: boolean;
+    isLiked: boolean;
+    isDisliked: boolean;
+    isGrabbed: boolean;
   };
   /**
    * 현재까지의 반응 수
@@ -187,6 +188,11 @@ export interface GetParticipantsResponse {
   members: Participant[];
 }
 
+export type ReactionPayload = {
+  partyroomId: number;
+  reactionType: ReactionType;
+};
+
 export interface PartyroomsClient {
   /**
    * 파티룸 목록 조회
@@ -216,6 +222,11 @@ export interface PartyroomsClient {
    * 파티룸 퇴장
    */
   exit: (payload: ExitPayload) => Promise<void>;
+  /**
+   * 현재 playback에 대한 반응 (좋아요 / 싫어요 / 찜하기)
+   * 동사형은 라이브러리명과 겹치므로 일부러 안씀
+   */
+  reaction: (payload: ReactionPayload) => Promise<void>;
   /**
    * 등급 조정
    */

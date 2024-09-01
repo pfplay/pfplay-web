@@ -1,4 +1,4 @@
-import { AccessType } from '@/shared/api/http/types/@enums';
+import { AccessType, MotionType } from '@/shared/api/http/types/@enums';
 import { AccessEvent } from '@/shared/api/websocket/types/partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
 
@@ -10,7 +10,13 @@ export default function useAccessCallback() {
     switch (event.accessType) {
       case AccessType.ENTER:
         updateMembers((prev) => {
-          return [...prev, event.member];
+          return [
+            ...prev,
+            {
+              ...event.member,
+              motionType: MotionType.NONE,
+            },
+          ];
         });
         break;
       case AccessType.EXIT:

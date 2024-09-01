@@ -1,12 +1,12 @@
 'use client';
 
 import { create } from 'zustand';
-import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
 import { Chat } from '@/shared/lib/chat';
 import { warnLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { update } from '@/shared/lib/functions/update';
 import * as ChatMessage from './chat-message.model';
+import * as Member from './member.model';
 import * as CurrentPartyroom from '../model/current-partyroom.model';
 
 export const createCurrentPartyroomStore = () => {
@@ -120,7 +120,7 @@ export const createCurrentPartyroomStore = () => {
 const logger = withDebugger(0);
 const warnLogger = logger(warnLog);
 
-function logMemberNotFound(memberId: number, currentMembers: PartyroomMember[]) {
+function logMemberNotFound(memberId: number, currentMembers: Member.Model[]) {
   warnLogger(
     `Cannot find member(memberId: ${memberId}) in stored members for chat. current members: ${JSON.stringify(
       currentMembers,
