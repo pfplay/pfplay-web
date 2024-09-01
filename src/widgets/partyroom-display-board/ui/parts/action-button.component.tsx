@@ -5,14 +5,24 @@ import { Typography } from '@/shared/ui/components/typography';
 type Props = {
   icon: ReactNode;
   text: string | number;
+  disabled?: boolean;
   active: boolean;
   activeColor?: 'red' | 'green' | 'white';
+  onClick: () => void;
 };
 
-export default function ActionButton({ icon, text, active, activeColor }: Props) {
+export default function ActionButton({
+  icon,
+  text,
+  disabled,
+  active,
+  activeColor,
+  onClick,
+}: Props) {
   return (
     <button
-      disabled={active} /* TODO: Onchain 빌더톤 끝나면 이 조건 제거 */
+      disabled={disabled}
+      onClick={onClick}
       className={cn(
         'appearance-none w-[48px] h-[44px] flexColCenter text-center gap-[4px] rounded bg-gray-800 text-gray-200',
         {

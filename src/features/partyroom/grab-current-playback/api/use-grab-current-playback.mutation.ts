@@ -6,9 +6,6 @@ import { ReactionType } from '@/shared/api/http/types/@enums';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { useStores } from '@/shared/lib/store/stores.context';
 
-/**
- * 현재 "그랩하기"만 지원 ("그랩 플레이리스트에서 빼기"는 지원 안함)
- */
 export function useGrabCurrentPlayback() {
   const queryClient = useQueryClient();
   const partyroomId = useStores().useCurrentPartyroom((state) => state.id);
