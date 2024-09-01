@@ -14,7 +14,7 @@ export const SkipPlayback = ({ children }: Props) => {
   const { mutate: skipPlaybackMutation } = useSkipPlayback();
   const { id, me } = useStores().useCurrentPartyroom();
 
-  if (!me?.gradeType || !Permission.of(me.gradeType).canSkipPlayback()) {
+  if (!me?.gradeType || !Permission.of(me?.gradeType).canSkipPlayback()) {
     return null;
   }
 
