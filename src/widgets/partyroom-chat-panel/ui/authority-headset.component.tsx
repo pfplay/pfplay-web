@@ -6,18 +6,13 @@ type Props = {
 };
 
 export default function AuthorityHeadset({ grade }: Props) {
-  const noHeadset =
-    grade === GradeType.COMMUNITY_MANAGER ||
-    grade === GradeType.LISTENER ||
-    grade === GradeType.MODERATOR;
-
-  if (noHeadset) return null;
+  if (grade === GradeType.LISTENER) return null;
 
   if (grade === GradeType.CLUBBER) {
-    return <PFHeadsetGray width={40} height={23} className={commonHeadsetStyle} />;
+    return <PFHeadsetGray width={42} height={25} className={commonHeadsetStyle} />;
   }
 
-  return <PFHeadsetRed width={40} height={23} className={commonHeadsetStyle} />;
+  return <PFHeadsetRed width={42} height={25} className={commonHeadsetStyle} />;
 }
 
-const commonHeadsetStyle = 'absolute -top-[1px] -left-1';
+const commonHeadsetStyle = 'absolute -top-[2px] -left-[5px]';

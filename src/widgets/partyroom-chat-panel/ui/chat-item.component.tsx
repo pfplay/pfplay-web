@@ -11,12 +11,11 @@ type ChatItemProps = {
   message: ChatMessage.Model;
 };
 
-// TODO: 권한 관련 작업 시 menu 추가 (DisplayOptionMenuOnHoverListener)
 const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) => {
   const member = message.member;
-  const gradeComparator = Member.GradeComparator.of(member.gradeType);
-  const showGradeLabel = gradeComparator.isHigherThan(GradeType.LISTENER);
-  const emphasisGradeLabel = gradeComparator.isHigherThan(GradeType.MODERATOR);
+  const myGradeComparator = Member.GradeComparator.of(member.gradeType);
+  const showGradeLabel = myGradeComparator.isHigherThanOrEqualTo(GradeType.CLUBBER);
+  const emphasisGradeLabel = myGradeComparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
 
   return (
     <div ref={ref} className='flex justify-start items-start gap-[13px]'>
