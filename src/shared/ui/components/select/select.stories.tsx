@@ -1,38 +1,58 @@
-import type { Meta } from '@storybook/react';
-import Select, { SelectListItem } from './select.component';
-import { Typography } from '../typography';
+import { useState } from 'react';
+import type { Meta, StoryFn } from '@storybook/react';
+import { Tag } from '@/shared/ui/components/tag';
+import { Typography } from '@/shared/ui/components/typography';
+import Select, { SelectOption } from './select.component';
 
 const meta = {
   title: 'base/Select',
   tags: ['autodocs'],
   component: Select,
   decorators: [
-    (Story) => <div className='w-full h-72 flexCol item-center gap-4 p-4 bg-black'>{Story()}</div>,
+    (Story) => <div className='w-full h-80 flexCol item-center gap-4 p-4 bg-black'>{Story()}</div>,
   ],
 } satisfies Meta<typeof Select>;
 
 export default meta;
+type Story = StoryFn<typeof Select>;
 
-const selectListConfig: Array<SelectListItem> = [
-  { label: 'Wade Cooper long long long text', value: 'Wade Cooper2' },
-  { label: 'Arlene Mccoy', value: 'Arlene Mccoy2' },
-  { label: 'Devon Webb long long long text', value: 'Devon Webb2' },
-  { label: 'Tom Cook', value: 'Tom Cook2' },
-  { label: 'Tanya Fox', value: 'Tanya Fox2' },
-  { label: 'Hellen Schmidt', value: 'Hellen Schmidt2' },
+const options: SelectOption<string>[] = [
+  { label: 'AA', value: 'aa' },
+  { label: 'BB', value: 'bb' },
+  { label: 'CC', value: 'cc' },
+  { label: 'long long long long long long long text', value: 'long' },
 ];
 
-export const SelectDefault = () => {
-  return <Select selectListConfig={selectListConfig} />;
-};
+export const Default: Story = () => {
+  const [selected, setSelected] = useState<string>();
 
-export const SelectWithInitialValue = () => {
   return (
     <>
-      <Typography type='title2' className='text-white'>
-        Select with initial value
+      <Typography>Selected value: {selected}</Typography>
+
+      <Select className='w-[300px]' options={options} onChange={setSelected} />
+    </>
+  );
+};
+
+export const PrefixAndSuffix: Story = () => {
+  const [selected, setSelected] = useState<string>();
+
+  const newOptions = options.map((option) => ({
+    ...option,
+    prefix: <Tag variant='outlined' value='Tag' />,
+    suffix: (
+      <Typography type='caption1' className='text-gray-300'>
+        unit
       </Typography>
-      <Select selectListConfig={selectListConfig} initialValue={selectListConfig[2]} />
+    ),
+  }));
+
+  return (
+    <>
+      <Typography>Selected value: {selected}</Typography>
+
+      <Select className='w-[300px]' options={newOptions} onChange={setSelected} />
     </>
   );
 };
