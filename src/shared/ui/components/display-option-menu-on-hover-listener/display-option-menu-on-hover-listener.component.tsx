@@ -1,4 +1,4 @@
-import { useState, JSX } from 'react';
+import { useState, ReactElement } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
 import useClickOutside from '@/shared/lib/hooks/use-click-outside.hook';
 import { PFMoreVert } from '@/shared/ui/icons';
@@ -8,7 +8,7 @@ import { MenuItem, MenuItemPanelSize } from '../menu';
 interface DisplayOptionMenuOnHoverListenerProps {
   menuConfig: MenuItem[];
   listenerDisabled?: boolean;
-  children: (isHover: boolean) => JSX.Element;
+  children: ReactElement | ((isHover: boolean) => ReactElement);
   menuPositionStyle?: string;
   menuItemPanelSize?: MenuItemPanelSize;
 }
@@ -60,7 +60,7 @@ const DisplayOptionMenuOnHoverListener = ({
       onClick={handleClick}
       className='relative'
     >
-      {children(isHover)}
+      {typeof children === 'function' ? children(isHover) : children}
 
       {!listenerDisabled && (
         <>
