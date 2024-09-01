@@ -21,7 +21,8 @@ export class Permissions {
 
   public canAdjustGrade(targetGrade: GradeType) {
     return (
-      this.comparator.isHigherThan(GradeType.MODERATOR) && this.comparator.isHigherThan(targetGrade)
+      this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR) &&
+      this.comparator.isHigherThan(targetGrade)
     );
   }
 
@@ -46,7 +47,7 @@ export class Permissions {
   }
 
   public canSkipPlayback() {
-    return this.comparator.isHigherThan(GradeType.MODERATOR);
+    return this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
   }
 
   public canLockDjingQueue() {
@@ -81,8 +82,16 @@ class GradeComparator {
     return this.compareGradePriority(this.base, target) === 1;
   }
 
+  public isHigherThanOrEqualTo(target: GradeType) {
+    return this.compareGradePriority(this.base, target) !== -1;
+  }
+
   public isLowerThan(target: GradeType) {
     return this.compareGradePriority(this.base, target) === -1;
+  }
+
+  public isLowerThanOrEqualTo(target: GradeType) {
+    return this.compareGradePriority(this.base, target) !== 1;
   }
 
   public get higherGrades() {
