@@ -3,7 +3,12 @@ import { Transition, MenuItems, MenuItem } from '@headlessui/react';
 import { cn } from '@/shared/lib/functions/cn';
 
 // TODO: MenuConfig 정해지면 type 재정의하기
-export type MenuItem = { onClickItem: () => void; label: string; Icon?: ReactNode };
+export type MenuItem = {
+  onClickItem: () => void;
+  label: string;
+  Icon?: ReactNode;
+  visible?: boolean;
+};
 export type MenuItemPanelSize = 'lg' | 'md' | 'sm';
 const MenuItemBoxSize: Record<MenuItemPanelSize, string> = {
   lg: 'w-[330px]',
@@ -57,27 +62,31 @@ const MenuItemPanel = ({
             {HeaderIcon}
           </div>
         )}
-        {menuItemConfig.map((config) => (
-          <MenuItem as={Fragment} key={config.label}>
-            {({ focus }) => (
-              <li
-                onClick={() => handleMenuItemClick(config)}
-                className={cn(
-                  'w-full flex items-center gap-2 rounded-sm px-4 py-3 cursor-pointer text-gray-50',
-                  focus && 'bg-gray-700',
-                  size === 'sm' && `text-sm`
-                )}
-              >
-                {MenuItemPrefixIcon && size !== 'sm' && MenuItemPrefixIcon}
+        {menuItemConfig.map((config) => {
+          if (config.visible === false) return null;
 
-                <span className='flex items-center gap-2'>
-                  {config.Icon}
-                  {config.label}
-                </span>
-              </li>
-            )}
-          </MenuItem>
-        ))}
+          return (
+            <MenuItem as={Fragment} key={config.label}>
+              {({ focus }) => (
+                <li
+                  onClick={() => handleMenuItemClick(config)}
+                  className={cn(
+                    'w-full flex items-center gap-2 rounded-sm px-4 py-3 cursor-pointer text-gray-50',
+                    focus && 'bg-gray-700',
+                    size === 'sm' && `text-sm`
+                  )}
+                >
+                  {MenuItemPrefixIcon && size !== 'sm' && MenuItemPrefixIcon}
+
+                  <span className='flex items-center gap-2'>
+                    {config.Icon}
+                    {config.label}
+                  </span>
+                </li>
+              )}
+            </MenuItem>
+          );
+        })}
       </MenuItems>
     </Transition>
   );

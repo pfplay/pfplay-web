@@ -31,7 +31,7 @@ export class Permission {
     );
   }
 
-  public adjustableGrades() {
+  public get adjustableGrades() {
     return this.comparator.lowerGrades;
   }
 
@@ -76,7 +76,7 @@ export const gradePriorities = Object.freeze<GradeType[]>([
   GradeType.LISTENER,
 ]);
 
-class GradeComparator {
+export class GradeComparator {
   private gradePriorities = gradePriorities;
 
   private constructor(private base: GradeType) {}

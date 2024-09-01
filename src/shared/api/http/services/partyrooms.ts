@@ -13,6 +13,7 @@ import type {
   PartyroomMemberSummary,
   PartyroomsClient,
   PartyroomSummary,
+  AdjustGradePayload,
 } from 'shared/api/http/types/partyrooms';
 import HTTPClient from '../client/client';
 
@@ -46,6 +47,10 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
 
   public exit = ({ partyroomId }: ExitPayload) => {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/exit`);
+  };
+
+  public adjustGrade = ({ partyroomId, memberId, ...body }: AdjustGradePayload) => {
+    return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/partymembers/${memberId}/grade`, body);
   };
 }
 
