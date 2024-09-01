@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { getErrorMessage } from '@/shared/api/get-error-message';
 import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -7,11 +7,11 @@ import { useDialogContext } from './dialog.context';
 import { Typography } from '../typography';
 
 interface AlertDialogParams extends Pick<DialogProps, 'title' | 'Sub'> {
-  content?: string;
+  content?: ReactNode;
   okText?: string;
 }
 interface ConfirmDialogParams extends Pick<DialogProps, 'title' | 'Sub'> {
-  content?: string;
+  content?: ReactNode;
   okText?: string;
   cancelText?: string;
 }
@@ -33,10 +33,12 @@ export const useDialog = () => {
           Sub,
           Body: () => (
             <>
-              {content && (
+              {typeof content === 'string' ? (
                 <Typography type='body3' overflow='break-words'>
                   {content}
                 </Typography>
+              ) : (
+                content
               )}
 
               <Dialog.ButtonGroup>
@@ -59,10 +61,12 @@ export const useDialog = () => {
           Sub,
           Body: () => (
             <>
-              {content && (
+              {typeof content === 'string' ? (
                 <Typography type='body3' overflow='break-words'>
                   {content}
                 </Typography>
+              ) : (
+                content
               )}
 
               <Dialog.ButtonGroup>

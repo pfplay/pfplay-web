@@ -31,24 +31,22 @@ const UserListItem = ({
       listenerDisabled={suffix?.type === 'button'}
       menuItemPanelSize={menuItemPanelSize}
     >
-      {() => (
-        <div className='relative w-full flexRow justify-between items-center py-2 px-4 rounded-[4px]'>
-          <div className='flexRow justify-center items-center gap-2'>
-            <Image
-              src={userListItemConfig.avatarIconUri ?? '/images/ETC/monkey.png'}
-              alt={userListItemConfig.nickname ?? ''}
-              width={32}
-              height={32}
-              className='w-8 h-8 rounded-full'
-            />
-            <Typography type='detail1' className='text-white'>
-              {userListItemConfig.nickname}
-            </Typography>
-          </div>
-
-          {suffix && suffix.Component}
+      <div className='relative w-full flexRow justify-between items-center py-2 px-4 rounded-[4px]'>
+        <div className='flexRow justify-center items-center gap-2'>
+          <Image
+            src={userListItemConfig.avatarIconUri ?? '/images/ETC/monkey.png'}
+            alt={userListItemConfig.nickname ?? ''}
+            width={32}
+            height={32}
+            className='w-8 h-8 rounded-full'
+          />
+          <Typography type='detail1' className='text-white'>
+            {userListItemConfig.nickname}
+          </Typography>
         </div>
-      )}
+
+        {suffix && suffix.Component}
+      </div>
     </DisplayOptionMenuOnHoverListener>
   );
 };

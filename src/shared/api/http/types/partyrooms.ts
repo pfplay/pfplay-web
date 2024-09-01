@@ -173,6 +173,12 @@ export type ExitPayload = {
   partyroomId: number;
 };
 
+export type AdjustGradePayload = {
+  partyroomId: number;
+  memberId: number;
+  gradeType: GradeType;
+};
+
 export interface GetPartyroomMemberRequest {
   partyroomId: string;
 }
@@ -221,4 +227,8 @@ export interface PartyroomsClient {
    * 동사형은 라이브러리명과 겹치므로 일부러 안씀
    */
   reaction: (payload: ReactionPayload) => Promise<void>;
+  /**
+   * 등급 조정
+   */
+  adjustGrade: (payload: AdjustGradePayload) => Promise<void>;
 }

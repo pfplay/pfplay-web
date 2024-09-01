@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { ChatMessage } from '@/entities/current-partyroom';
+import { ChatMessage, Member } from '@/entities/current-partyroom';
 import { GradeType } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import Profile from '@/shared/ui/components/profile/profile.component';
@@ -11,10 +11,11 @@ type ChatItemProps = {
   message: ChatMessage.Model;
 };
 
-// TODO: 권한 관련 작업 시 menu 추가 (DisplayOptionMenuOnHoverListener)
 const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) => {
   const member = message.member;
-  const isHigherLevel = ChatMessage.checkHigherGrade(message);
+  const myGradeComparator = Member.GradeComparator.of(member.gradeType);
+  const showGradeLabel = myGradeComparator.isHigherThanOrEqualTo(GradeType.CLUBBER);
+  const emphasisGradeLabel = myGradeComparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
 
   return (
     <div ref={ref} className='flex justify-start items-start gap-[13px]'>
@@ -24,13 +25,13 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
           <AuthorityHeadset grade={member.gradeType} />
         </div>
 
-        {member.gradeType !== GradeType.LISTENER && (
+        {showGradeLabel && (
           <Typography
             type='body4'
             className={cn(
               galmuriFont.className,
               'text-center',
-              isHigherLevel ? 'text-red-400' : 'text-gray-200'
+              emphasisGradeLabel ? 'text-red-400' : 'text-gray-200'
             )}
           >
             {GRADE_TYPE_LABEL[member.gradeType]}
@@ -53,11 +54,12 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
   );
 });
 
-const GRADE_TYPE_LABEL: Record<Exclude<GradeType, GradeType.LISTENER>, string> = {
+const GRADE_TYPE_LABEL: Record<GradeType, string> = {
   [GradeType.HOST]: 'Admin',
   [GradeType.COMMUNITY_MANAGER]: 'CM',
   [GradeType.MODERATOR]: 'Mod',
   [GradeType.CLUBBER]: 'Clubber',
+  [GradeType.LISTENER]: 'Listener',
 };
 
 export default ChatItem;
