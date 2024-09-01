@@ -1,12 +1,12 @@
 import { GradeType, PartyroomGrade } from '../types/@enums';
 import { Participant } from '../types/partyrooms';
 
-export const fixturePartyroomMembers: Participant[] = [
+export const fixturePartyroomCrews: Participant[] = [
   {
     uid: '1',
     partyroomGrade: PartyroomGrade.ADMIN,
     nickname: 'AdminUser',
-    memberId: 101,
+    crewId: 101,
     gradeType: GradeType.HOST,
     avatarIconUri: '/images/Temp/nft.png',
   },
@@ -14,7 +14,7 @@ export const fixturePartyroomMembers: Participant[] = [
     uid: '2',
     partyroomGrade: PartyroomGrade.CM,
     nickname: 'CommunityManager',
-    memberId: 102,
+    crewId: 102,
     gradeType: GradeType.COMMUNITY_MANAGER,
     avatarIconUri: '/images/Temp/nft.png',
   },
@@ -22,7 +22,7 @@ export const fixturePartyroomMembers: Participant[] = [
     uid: '3',
     partyroomGrade: PartyroomGrade.MOD,
     nickname: 'ModeratorUser',
-    memberId: 103,
+    crewId: 103,
     gradeType: GradeType.MODERATOR,
     avatarIconUri: '/images/Temp/nft.png',
   },
@@ -30,7 +30,7 @@ export const fixturePartyroomMembers: Participant[] = [
     uid: '4',
     partyroomGrade: PartyroomGrade.CLUBBER,
     nickname: 'ClubberUser',
-    memberId: 104,
+    crewId: 104,
     gradeType: GradeType.CLUBBER,
     avatarIconUri: '/images/Temp/nft.png',
   },
@@ -38,7 +38,7 @@ export const fixturePartyroomMembers: Participant[] = [
     uid: '5',
     partyroomGrade: PartyroomGrade.LISTENER,
     nickname: 'ListenerUser',
-    memberId: 105,
+    crewId: 105,
     gradeType: GradeType.LISTENER,
     avatarIconUri: '/images/Temp/nft.png',
   },

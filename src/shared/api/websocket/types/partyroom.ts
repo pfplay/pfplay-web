@@ -1,4 +1,4 @@
-import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
+import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { AccessType, GradeType, MotionType, RegulationType } from '../../http/types/@enums';
 
 // 재생 비활성화 이벤트
@@ -18,7 +18,7 @@ export type Playback = {
 export type PlaybackEvent = {
   eventType: PartyroomEventType.PLAYBACK;
   playback: Playback;
-  memberId: number;
+  crewId: number;
 };
 
 // 리액션 → 집계 변동 이벤트
@@ -35,8 +35,8 @@ export type AggregationEvent = {
 export type MotionEvent = {
   eventType: PartyroomEventType.MOTION;
   motionType: MotionType;
-  member: {
-    memberId: number;
+  crew: {
+    crewId: number;
   };
 };
 
@@ -45,12 +45,12 @@ export type AccessEvent =
   | {
       eventType: PartyroomEventType.ACCESS;
       accessType: AccessType.ENTER;
-      member: PartyroomMember;
+      crew: PartyroomCrew;
     }
   | {
       eventType: PartyroomEventType.ACCESS;
       accessType: AccessType.EXIT;
-      member: Pick<PartyroomMember, 'memberId'>;
+      crew: Pick<PartyroomCrew, 'crewId'>;
     };
 
 // 공지사항 변동 이벤트
@@ -65,8 +65,8 @@ export type ChatEvent = {
   partyroomId: {
     id: number;
   };
-  member: {
-    memberId: number;
+  crew: {
+    crewId: number;
   };
   message: string;
 };
@@ -75,8 +75,8 @@ export type ChatEvent = {
 export type RegulationEvent = {
   eventType: PartyroomEventType.REGULATION;
   regulationType: RegulationType.GRADE;
-  member: {
-    memberId: number;
+  crew: {
+    crewId: number;
     prevGradeType: GradeType;
     currGradeType: GradeType;
   };

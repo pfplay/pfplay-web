@@ -1,5 +1,5 @@
-import { Member } from '@/entities/current-partyroom';
-import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
+import { Crew } from '@/entities/current-partyroom';
+import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
@@ -20,18 +20,18 @@ export function useAdjustGrade() {
     partyroomId: state.id,
   }));
 
-  return async (targetMember: Pick<PartyroomMember, 'nickname' | 'memberId' | 'gradeType'>) => {
+  return async (targetCrew: Pick<PartyroomCrew, 'nickname' | 'crewId' | 'gradeType'>) => {
     if (!me || !partyroomId) return;
 
-    const permissions = Member.Permission.of(me.gradeType);
-    const canAdjustGrade = permissions?.canAdjustGrade(targetMember.gradeType);
+    const permissions = Crew.Permission.of(me.gradeType);
+    const canAdjustGrade = permissions?.canAdjustGrade(targetCrew.gradeType);
 
     if (!canAdjustGrade) return;
 
     // Select grade
-    const targetCurrentGrade = targetMember.gradeType;
+    const targetCurrentGrade = targetCrew.gradeType;
     const selectedGrade = await selectGrade({
-      targetNickname: targetMember.nickname,
+      targetNickname: targetCrew.nickname,
       options: permissions.adjustableGrades,
       current: targetCurrentGrade,
     });
@@ -42,7 +42,7 @@ export function useAdjustGrade() {
     mutate(
       {
         partyroomId,
-        memberId: targetMember.memberId,
+        crewId: targetCrew.crewId,
         gradeType: selectedGrade,
       },
       {

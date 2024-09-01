@@ -27,7 +27,7 @@ export default function EmptyBody({ onCancel }: { onCancel: () => void | undefin
       <div className='h-[388px] flexRowCenter'>
         <div className='flexColCenter gap-[24px]'>
           <Typography type='body2' className='text-center'>
-            {renderBr(t.dj.para.no_dj_member)}
+            {renderBr(t.dj.para.no_dj_crew)}
           </Typography>
 
           <RegisterButton />

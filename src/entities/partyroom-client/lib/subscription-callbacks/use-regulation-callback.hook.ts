@@ -4,21 +4,21 @@ import { useStores } from '@/shared/lib/store/stores.context';
 
 export default function useRegulationCallback() {
   const { useCurrentPartyroom } = useStores();
-  const updateMembers = useCurrentPartyroom((state) => state.updateMembers);
+  const updateCrews = useCurrentPartyroom((state) => state.updateCrews);
 
   return (event: RegulationEvent) => {
     switch (event.regulationType) {
       case RegulationType.GRADE:
         // TODO: “채팅 공지 알림“과 “대상자에게 모달 알림“ 기능 구현
-        updateMembers((prev) => {
-          return prev.map((member) => {
-            if (member.memberId === event.member.memberId) {
+        updateCrews((prev) => {
+          return prev.map((crew) => {
+            if (crew.crewId === event.crew.crewId) {
               return {
-                ...member,
-                gradeType: event.member.currGradeType,
+                ...crew,
+                gradeType: event.crew.currGradeType,
               };
             }
-            return member;
+            return crew;
           });
         });
         break;

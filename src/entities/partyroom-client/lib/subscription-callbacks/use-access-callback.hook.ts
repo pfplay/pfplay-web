@@ -4,24 +4,24 @@ import { useStores } from '@/shared/lib/store/stores.context';
 
 export default function useAccessCallback() {
   const { useCurrentPartyroom } = useStores();
-  const updateMembers = useCurrentPartyroom((state) => state.updateMembers);
+  const updateCrews = useCurrentPartyroom((state) => state.updateCrews);
 
   return (event: AccessEvent) => {
     switch (event.accessType) {
       case AccessType.ENTER:
-        updateMembers((prev) => {
+        updateCrews((prev) => {
           return [
             ...prev,
             {
-              ...event.member,
+              ...event.crew,
               motionType: MotionType.NONE,
             },
           ];
         });
         break;
       case AccessType.EXIT:
-        updateMembers((prev) => {
-          return prev.filter((member) => member.memberId !== event.member.memberId);
+        updateCrews((prev) => {
+          return prev.filter((crew) => crew.crewId !== event.crew.crewId);
         });
         break;
     }

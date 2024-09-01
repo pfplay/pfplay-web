@@ -1,4 +1,4 @@
-import { Member } from '@/entities/current-partyroom';
+import { Crew } from '@/entities/current-partyroom';
 import { Participant } from '@/shared/api/http/types/partyrooms';
 import { categorize, Categorized } from '@/shared/lib/functions/categorize';
 
@@ -14,7 +14,7 @@ export const categorizeParticipantsByGrade = ({
     items: participants,
     categoryKey: 'gradeType',
     getCategoryValue: (participant) => participant.gradeType,
-    orderReferenceArr: Member.gradePriorities as string[],
+    orderReferenceArr: Crew.gradePriorities as string[],
   });
 
   return categorized as CategorizeParticipantsByGrade;

@@ -183,7 +183,7 @@
       "select_dj_playlist": "Select DJ Playlist"
     },
     "para": {
-      "no_dj_member": "No one is djing now.\nWhy not become the DJ and make some noise!",
+      "no_dj_crew": "No one is djing now.\nWhy not become the DJ and make some noise!",
       "create_playlist_song": "Before you join the queue, please create a playlist with at least one song.",
       "cancel_dj_queue": "Cancel DJ queue registration",
       "cancel_dj_queue_confirm": "Do you want to remove yourself from the DJ queue?",

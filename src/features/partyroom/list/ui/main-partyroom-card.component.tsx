@@ -6,7 +6,7 @@ import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
 import { Typography } from '@/shared/ui/components/typography';
-import Members from './members.component';
+import Crews from './crews.component';
 import { useSuspenseFetchMainPartyroom } from '../api/use-fetch-main-partyroom.query';
 
 export default function MainPartyroomCard() {
@@ -32,8 +32,8 @@ export default function MainPartyroomCard() {
               {t.lobby.para.welcome_party}
             </Typography>
           </div>
-          <Members
-            count={partyroom.memberCount}
+          <Crews
+            count={partyroom.crewCount}
             icons={partyroom.primaryIcons.map((avatar) => avatar.avatarIconUri)}
           />
         </div>

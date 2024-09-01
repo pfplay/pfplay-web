@@ -3,18 +3,18 @@ import { useStores } from '@/shared/lib/store/stores.context';
 
 export default function useMotionCallback() {
   const { useCurrentPartyroom } = useStores();
-  const updateMembers = useCurrentPartyroom((state) => state.updateMembers);
+  const updateCrews = useCurrentPartyroom((state) => state.updateCrews);
 
   return (event: MotionEvent) => {
-    updateMembers((prev) => {
-      return prev.map((member) => {
-        if (member.memberId === event.member.memberId) {
+    updateCrews((prev) => {
+      return prev.map((crew) => {
+        if (crew.crewId === event.crew.crewId) {
           return {
-            ...member,
+            ...crew,
             motionType: event.motionType,
           };
         }
-        return member;
+        return crew;
       });
     });
   };

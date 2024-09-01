@@ -94,7 +94,7 @@ export enum PartyroomGrade {
   LISTENER = 'LISTENER',
 }
 
-export enum PartymemberGrade {
+export enum CrewGrade {
   HOST = 'HOST',
   MANAGER = 'MANAGER',
   MODERATOR = 'MODERATOR',
@@ -110,7 +110,7 @@ export enum MessageType {
 
 export enum AccessLevel {
   ROLE_ADMIN = 'ROLE_ADMIN',
-  ROLE_MEMBER = 'ROLE_MEMBER',
+  ROLE_CREW = 'ROLE_CREW',
   ROLE_GUEST = 'ROLE_GUEST',
 }
 
@@ -135,8 +135,8 @@ export enum TokenClaim {
 }
 
 export enum AuthorityTier {
-  FM = 'FM', // Full Member (지갑인증 - 정회원)
-  AM = 'AM', // Associate Member (지갑인증 x - 준회원)
+  FM = 'FM', // Full Crew (지갑인증 - 정회원)
+  AM = 'AM', // Associate Crew (지갑인증 x - 준회원)
   GT = 'GT', // Guest
 }
 

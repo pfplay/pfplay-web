@@ -7,7 +7,7 @@ import { cn } from '@/shared/lib/functions/cn';
 import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFInfoOutline } from '@/shared/ui/icons';
-import Members from './members.component';
+import Crews from './crews.component';
 
 interface PartyroomCardProps {
   roomId: number;
@@ -49,8 +49,8 @@ const PartyroomCard = ({ roomId, summary }: PartyroomCardProps) => {
           )}
           <div className='bg-gray-600 h-[1px]' />
           <div className='items-center justify-between flexRow'>
-            <Members
-              count={summary.memberCount}
+            <Crews
+              count={summary.crewCount}
               icons={summary.primaryIcons.map((avatar) => avatar.avatarIconUri)}
             />
             <PFInfoOutline width={24} height={24} />

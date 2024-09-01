@@ -9,12 +9,12 @@ export const fixtureCollapseList: {
   musics: fixturePlaylistMusics,
   userListPanel: [
     {
-      memberId: 1,
+      crewId: 1,
       nickname: 'nickname1111',
       avatarIconUri: '/images/Temp/nft.png',
     },
     {
-      memberId: 2,
+      crewId: 2,
       nickname: 'nickname222',
       avatarIconUri: '/images/Temp/nft.png',
     },

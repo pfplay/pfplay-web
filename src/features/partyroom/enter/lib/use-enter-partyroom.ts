@@ -27,8 +27,8 @@ export function useEnterPartyroom(partyroomId: number) {
       const enterResponse = await enterAsync({ partyroomId });
       const setUpInfo = await PartyroomsService.getSetupInfo({ partyroomId });
 
-      // TODO: members 작업 시 members 캐시 데이터 세팅해주기
-      // queryClient.setQueryData([QueryKeys.PartyroomMembers, partyroomId], setUpInfo.members);
+      // TODO: crews 작업 시 crews 캐시 데이터 세팅해주기
+      // queryClient.setQueryData([QueryKeys.PartyroomCrews, partyroomId], setUpInfo.crews);
 
       /**
        * 공지사항은 현재 설계상 enter 시점엔 rest api로 받아오고,
@@ -38,20 +38,20 @@ export function useEnterPartyroom(partyroomId: number) {
        */
       const notice = await PartyroomsService.getNotice({ partyroomId });
 
-      const motionTypeMap = memberIdToMotionTypeMap(setUpInfo.display.reaction?.motion);
+      const motionTypeMap = crewIdToMotionTypeMap(setUpInfo.display.reaction?.motion);
 
       initPartyroom({
         id: partyroomId,
         me: {
-          memberId: enterResponse.memberId,
+          crewId: enterResponse.crewId,
           gradeType: enterResponse.gradeType,
         },
         playbackActivated: setUpInfo.display.playbackActivated,
         playback: setUpInfo.display.playback,
         reaction: setUpInfo.display.reaction,
-        members: setUpInfo.members.map((member) => ({
-          ...member,
-          motionType: motionTypeMap.get(member.memberId) ?? MotionType.NONE,
+        crews: setUpInfo.crews.map((crew) => ({
+          ...crew,
+          motionType: motionTypeMap.get(crew.crewId) ?? MotionType.NONE,
         })),
         currentDj: setUpInfo.display.currentDj,
         notice: notice.content ?? '',
@@ -69,14 +69,14 @@ export function useEnterPartyroom(partyroomId: number) {
   };
 }
 
-function memberIdToMotionTypeMap(motionInfo?: PartyroomReaction['motion']) {
+function crewIdToMotionTypeMap(motionInfo?: PartyroomReaction['motion']) {
   if (!motionInfo) {
     return new Map<number, MotionType>();
   }
 
   return motionInfo.reduce((acc, motion) => {
-    motion.memberIds.forEach((memberId) => {
-      acc.set(memberId, motion.motionType);
+    motion.crewIds.forEach((crewId) => {
+      acc.set(crewId, motion.motionType);
     });
     return acc;
   }, {} as Map<number, MotionType>);
