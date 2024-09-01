@@ -1,12 +1,9 @@
 import { GradeType } from '@/shared/api/http/types/@enums';
-import {
-  PartyroomMember,
-  PartyroomPlayback,
-  PartyroomReaction,
-} from '@/shared/api/http/types/partyrooms';
+import { PartyroomPlayback, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import { Chat } from '@/shared/lib/chat';
 import type { Next } from '@/shared/lib/functions/update';
 import * as ChatMessage from './chat-message.model';
+import * as Member from './member.model';
 
 export type MyPartyroomInfo = {
   memberId: number;
@@ -28,11 +25,11 @@ export type Model = {
   reaction?: PartyroomReaction;
   updateReaction: (next: Next<PartyroomReaction | undefined>) => void;
 
-  members: PartyroomMember[];
-  updateMembers: (next: Next<PartyroomMember[]>) => void;
+  members: Member.Model[];
+  updateMembers: (next: Next<Member.Model[]>) => void;
 
-  currentDj?: Pick<PartyroomMember, 'memberId'>;
-  updateCurrentDj: (next: Pick<PartyroomMember, 'memberId'> | undefined) => void;
+  currentDj?: Pick<Member.Model, 'memberId'>;
+  updateCurrentDj: (next: Pick<Member.Model, 'memberId'> | undefined) => void;
 
   notice: string;
   updateNotice: (next: string) => void;

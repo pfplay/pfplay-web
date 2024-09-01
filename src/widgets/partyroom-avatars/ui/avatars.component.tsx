@@ -1,18 +1,19 @@
 'use client';
 import { useState } from 'react';
 import { Avatar } from '@/entities/avatar';
-import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
+import { Member } from '@/entities/current-partyroom';
+import { MotionType } from '@/shared/api/http/types/@enums';
 import { pick } from '@/shared/lib/functions/pick';
 import useDidUpdateEffect from '@/shared/lib/hooks/use-did-update-effect';
 import { useStores } from '@/shared/lib/store/stores.context';
-import { Area, Point, getRandomPoint, getRandomPoints } from '../model/avatar-position.model';
+import { Area, getRandomPoint, getRandomPoints, Point } from '../model/avatar-position.model';
 
 export default function Avatars() {
   const { useCurrentPartyroom } = useStores();
   const { members: storedMembers, currentDj } = useCurrentPartyroom((state) =>
     pick(state, ['members', 'currentDj'])
   );
-  const [localMembers, setLocalMembers] = useState<PartyroomMember[]>([]);
+  const [localMembers, setLocalMembers] = useState<Member.Model[]>([]);
   const [randomPoints, setRandomPoints] = useState<Point[]>([]);
 
   const dj = currentDj && localMembers.find((member) => member.memberId === currentDj.memberId);
@@ -120,6 +121,7 @@ export default function Avatars() {
               faceUri={member.avatarFaceUri}
               facePosX={member.combinePositionX}
               facePosY={member.combinePositionY}
+              dance={member.motionType !== MotionType.NONE}
             />
           </div>
         );

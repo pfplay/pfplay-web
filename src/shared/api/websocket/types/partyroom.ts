@@ -1,4 +1,5 @@
 import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
+import { AccessType, MotionType } from '../../http/types/@enums';
 
 // 재생 비활성화 이벤트
 export type DeactivationEvent = {
@@ -78,16 +79,6 @@ export enum PartyroomEventType {
   ACCESS = 'ACCESS',
   NOTICE = 'NOTICE',
   CHAT = 'CHAT',
-}
-
-enum MotionType {
-  NONE = 'NONE',
-  MOVE = 'MOVE',
-}
-
-enum AccessType {
-  ENTER = 'ENTER',
-  EXIT = 'EXIT',
 }
 
 export type PartyroomSubEvent =
