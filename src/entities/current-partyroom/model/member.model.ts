@@ -12,7 +12,7 @@ import { GradeType } from '@/shared/api/http/types/@enums';
  * - 특정 멤버를 디제이로 등록
  * - 등록된 디제이 해제
  */
-export class Permissions {
+export class Permission {
   private constructor(private comparator: GradeComparator) {}
 
   private static instances: { [key in GradeType]?: Permissions } = {};
