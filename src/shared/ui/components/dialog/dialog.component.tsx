@@ -13,7 +13,7 @@ type DialogComposition = {
 };
 
 type TitleProps = {
-  defaultTypoType: TypographyType;
+  defaultTypographyType: TypographyType;
   defaultClassName: string;
 };
 
@@ -66,13 +66,13 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
     if (!title) return null;
 
     const titleProps: TitleProps = {
-      defaultTypoType: 'body1',
+      defaultTypographyType: 'body1',
       defaultClassName: 'text-gray-50 whitespace-pre-line',
     };
 
     if (typeof title === 'string') {
       return (
-        <Typography type={titleProps.defaultTypoType} className={titleProps.defaultClassName}>
+        <Typography type={titleProps.defaultTypographyType} className={titleProps.defaultClassName}>
           {title}
         </Typography>
       );

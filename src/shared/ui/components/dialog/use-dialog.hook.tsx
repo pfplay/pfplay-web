@@ -83,8 +83,11 @@ export const useDialog = () => {
         }
 
         await openDialog((_, onCancel) => ({
-          title: ({ defaultTypoType, defaultClassName }) => (
-            <Typography type={defaultTypoType} className={cn(defaultClassName, 'text-red-300')}>
+          title: ({ defaultTypographyType, defaultClassName }) => (
+            <Typography
+              type={defaultTypographyType}
+              className={cn(defaultClassName, 'text-red-300')}
+            >
               Error
             </Typography>
           ),

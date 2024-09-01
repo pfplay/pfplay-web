@@ -45,8 +45,8 @@ export const Fully: Story = () => {
 
   const openFullDialog = () => {
     return openDialog<number>((onOk, onCancel) => ({
-      title: ({ defaultTypoType, defaultClassName }) => (
-        <Typography type={defaultTypoType} className={defaultClassName}>
+      title: ({ defaultTypographyType, defaultClassName }) => (
+        <Typography type={defaultTypographyType} className={defaultClassName}>
           {replaceVar('확인을 누르면 $1을 반환합니다', {
             $1: <b className='text-red-300'>{RESOLVE_VALUE}</b>,
           })}
