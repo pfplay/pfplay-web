@@ -1,6 +1,6 @@
 'use client';
 import { ReactNode } from 'react';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
 import { getErrorMessage } from '@/shared/api/get-error-message';
@@ -44,6 +44,9 @@ function makeQueryClient() {
       },
     },
     queryCache: new QueryCache({
+      onError: handleBubbledError,
+    }),
+    mutationCache: new MutationCache({
       onError: handleBubbledError,
     }),
   });
