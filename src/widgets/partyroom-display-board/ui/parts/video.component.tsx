@@ -67,7 +67,7 @@ export default function Video({ width, height = width * DEFAULT_H_RATIO }: Props
       )}
 
       <YoutubePlayer
-        key={`video-${videoId}-${playerReady}-${played}`} // 상태 변경 시 플레이어 강제 리렌더링을 위한 key
+        key={`video-${videoId}-${playerReady}-${played}-${playback?.endTime}`} // 상태 변경 시 플레이어 강제 리렌더링을 위한 key
         playing={playerReady}
         width={width}
         height={height}
