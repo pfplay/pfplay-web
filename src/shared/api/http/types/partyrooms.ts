@@ -64,9 +64,9 @@ export type PartyroomReaction = {
    * 이전에 '내가' 클릭했는지 여부
    */
   history: {
-    like: boolean;
-    dislike: boolean;
-    grab: boolean;
+    isLiked: boolean;
+    isDisliked: boolean;
+    isGrabbed: boolean;
   };
   /**
    * 현재까지의 반응 수

@@ -116,9 +116,9 @@ function findNextIndex<T>(
 const mockReactions: PartyroomReaction[] = [
   {
     history: {
-      like: true,
-      dislike: false,
-      grab: true,
+      isLiked: true,
+      isDisliked: false,
+      isGrabbed: true,
     },
     aggregation: {
       likeCount: 10,
@@ -129,9 +129,9 @@ const mockReactions: PartyroomReaction[] = [
   },
   {
     history: {
-      like: false,
-      dislike: true,
-      grab: false,
+      isLiked: false,
+      isDisliked: true,
+      isGrabbed: false,
     },
     aggregation: {
       likeCount: 0,

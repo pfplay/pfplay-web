@@ -23,15 +23,15 @@ export default function ActionButtons() {
         icon={<PFThumbUpAlt width={18} height={18} />}
         text={reaction?.aggregation.likeCount ?? 0}
         disabled={!playbackActivated}
-        active={activeState.like}
+        active={activeState.isLiked}
         activeColor='red'
         onClick={() => {
-          if (!playbackActivated || activeState.like) return;
+          if (!playbackActivated || activeState.isLiked) return;
           evaluateCurrentPlayback(ReactionType.LIKE, {
             onSuccess: () => {
               updateActiveState({
-                like: true,
-                dislike: false,
+                isLiked: true,
+                isDisliked: false,
               });
             },
           });
@@ -40,17 +40,17 @@ export default function ActionButtons() {
       <ActionButton
         icon={<PFPlaylistAdd width={18} height={18} />}
         text={reaction?.aggregation.grabCount ?? 0}
-        disabled={!playbackActivated || !!reaction?.history.grab} // NOTE: grab은 끌 수 없음
-        active={activeState.grab}
+        disabled={!playbackActivated || !!reaction?.history.isGrabbed} // NOTE: grab은 끌 수 없음
+        active={activeState.isGrabbed}
         activeColor='green'
         onClick={() => {
-          if (!playbackActivated || activeState.grab) return;
+          if (!playbackActivated || activeState.isGrabbed) return;
           grabCurrentPlayback(undefined, {
             onSuccess: () => {
               updateActiveState({
-                like: true,
-                grab: true,
-                dislike: false,
+                isLiked: true,
+                isGrabbed: true,
+                isDisliked: false,
               });
             },
           });
@@ -60,15 +60,15 @@ export default function ActionButtons() {
         icon={<PFThumbDownAlt width={18} height={18} />}
         text={reaction?.aggregation.dislikeCount ?? 0}
         disabled={!playbackActivated}
-        active={activeState.dislike}
+        active={activeState.isDisliked}
         activeColor='white'
         onClick={() => {
-          if (!playbackActivated || activeState.dislike) return;
+          if (!playbackActivated || activeState.isDisliked) return;
           evaluateCurrentPlayback(ReactionType.DISLIKE, {
             onSuccess: () => {
               updateActiveState({
-                like: false,
-                dislike: true,
+                isLiked: false,
+                isDisliked: true,
               });
             },
           });
@@ -85,9 +85,9 @@ function useActiveState(history?: PartyroomReaction['history']) {
   const initialized = useRef(!!history);
   const [activeState, setActiveState] = useState(
     history ?? {
-      like: false,
-      dislike: false,
-      grab: false,
+      isLiked: false,
+      isDisliked: false,
+      isGrabbed: false,
     }
   );
 
