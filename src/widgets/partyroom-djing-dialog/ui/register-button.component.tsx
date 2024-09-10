@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelectPlaylistForDjing } from '@/features/partyroom/select-playlist-for-djing';
 import { useFetchPlaylists } from '@/features/playlist/list';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -12,21 +13,48 @@ export default function RegisterButton() {
   const partyroomId = usePartyroomId();
   const { mutate: registerMeToQueue } = useRegisterMeToQueue();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+
   const registerMeToDjQueue = async () => {
-    const selectedPlaylist = await selectPlaylist();
-    if (!selectedPlaylist) return; // canceled
+    const playlist = await selectPlaylist();
+    if (!playlist) return;
 
-    // TODO: 디제잉 규칙 안내 팝업 보여주기
+    setSelectedPlaylist(playlist);
+    setIsModalOpen(true);
+  };
 
-    registerMeToQueue({
-      partyroomId,
-      playlistId: selectedPlaylist.id,
-    });
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+
+    if (selectedPlaylist) {
+      registerMeToQueue({
+        partyroomId,
+        playlistId: selectedPlaylist.id,
+      });
+    }
+  };
+
+  const DjRulesModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className='modal-overlay'>
+        <div className='modal-content'>
+          <h2>{t.dj.rules.title}</h2>
+          <p>{t.dj.rules.description}</p>
+          <Button onClick={onClose}>{t.dj.rules.confirm_button}</Button>
+        </div>
+      </div>
+    );
   };
 
   return (
-    <Button size='lg' onClick={registerMeToDjQueue}>
-      {t.dj.btn.register_queue}
-    </Button>
+    <>
+      <Button size='lg' onClick={registerMeToDjQueue}>
+        {t.dj.btn.register_queue}
+      </Button>
+      <DjRulesModal isOpen={isModalOpen} onClose={handleModalClose} />
+    </>
   );
 }
