@@ -164,6 +164,10 @@ export type EnterPayload = {
   partyroomId: number;
 };
 
+export type GetPartyroomSummaryPayload = {
+  partyroomId: number;
+};
+
 export type EnterResponse = {
   memberId: number;
   gradeType: GradeType;
@@ -198,6 +202,10 @@ export interface PartyroomsClient {
    * 파티룸 목록 조회
    */
   getList: () => Promise<PartyroomSummary[]>;
+  /**
+   * 파티룸 정보 조회
+   */
+  getPartyroomSummary: (payload: GetPartyroomSummaryPayload) => Promise<PartyroomSummary>;
   /**
    * 파티룸 초기화 정보 조회
    */

@@ -15,6 +15,7 @@ import type {
   PartyroomSummary,
   ReactionPayload,
   AdjustGradePayload,
+  GetPartyroomSummaryPayload,
 } from 'shared/api/http/types/partyrooms';
 import HTTPClient from '../client/client';
 
@@ -24,6 +25,10 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
 
   public getList = () => {
     return this.get<PartyroomSummary[]>(`${this.ROUTE_V1}`);
+  };
+
+  public getPartyroomSummary = ({ partyroomId }: GetPartyroomSummaryPayload) => {
+    return this.get<PartyroomSummary>(`${this.ROUTE_V1}/${partyroomId}/summary`);
   };
 
   public getSetupInfo = ({ partyroomId }: GetSetupInfoPayload) => {
