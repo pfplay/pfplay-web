@@ -29,6 +29,8 @@ export default function Body({ djingQueue, onCancel }: Props) {
     .sort((a, b) => a.orderNumber - b.orderNumber);
   const isMeInQueue = queue.some((dj) => dj.djId === myMemberId);
 
+  // FIXME: 두 유저가 저 dialog를 열고 한 유저가 Skip 버튼을 눌렀을 때 그 때 다른 유저의 dialog에는 update된 정보가 갱신이 안되는 문제 해결
+
   return (
     <div className='text-start'>
       <header className='flex'>
@@ -42,6 +44,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
               {djingQueue.playback?.name}
             </Typography>
             <div className='inline-flex items-center gap-2'>
+              {/* FIXME: playback 재생 시간 표시 필요 */}
               <Typography type='detail1'>03:00</Typography>
               <SkipPlayback>
                 {(skipPlayback) => (

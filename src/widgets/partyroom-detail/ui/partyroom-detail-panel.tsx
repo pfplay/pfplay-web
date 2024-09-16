@@ -4,7 +4,6 @@ import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { useFetchPartyroomSummary } from '@/features/partyroom/get-summary';
 import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
-import { StageType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
@@ -86,9 +85,7 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
       </div>
       <div className='flexCol gap-2'>
         <Typography type='title2' className='line-clamp-2'>
-          {partyroom?.stageType === StageType.MAIN
-            ? t.lobby.para.pfplay_main_stage
-            : partyroom?.title || ''}
+          {partyroom?.title || ''}
         </Typography>
         <Typography type='caption1' className='text-gray-200'>
           {partyroom?.introduction || ''}
