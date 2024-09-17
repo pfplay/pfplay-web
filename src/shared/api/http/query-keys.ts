@@ -9,4 +9,5 @@ export enum QueryKeys {
   Musics = 'musics',
   DjingQueue = 'partyroom/djing-queue',
   Members = 'partyroom/members',
+  PartyroomSummary = 'partyroom/summary',
 }
