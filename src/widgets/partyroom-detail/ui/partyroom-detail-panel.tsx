@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
-
 import { useState } from 'react';
+import { TwitterShareButton } from 'react-share';
 import { useFetchPartyroomSummary } from '@/features/partyroom/get-summary';
 import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';
@@ -20,8 +21,8 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
   const params = useParams<{ id: string }>();
   const { data: djingQueue } = useFetchDjingQueue({ partyroomId: Number(params.id) }, true);
   const [currentDj] = djingQueue?.djs.slice().sort((a, b) => a.orderNumber - b.orderNumber) || [];
-
   const { data: partyroom } = useFetchPartyroomSummary(Number(params.id));
+  const currentPlayback = useStores().useCurrentPartyroom((state) => state.playback?.name);
 
   const handleShareBtnClick = () => {
     return openDialog(() => ({
@@ -34,7 +35,7 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
       Body: () => {
         const [isCopied, setIsCopied] = useState(false);
 
-        const sharedUrl = `https://pfplay.io/shared/${params.id}`;
+        const sharedUrl = `https://pfplay.io/party/${params.id}`;
 
         const handleCopyLink = () => {
           navigator.clipboard.writeText(sharedUrl);
@@ -45,9 +46,17 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
           <>
             <div className='w-[340px] flexCol gap-3'>
               <div className='w-full h-12 flexRowCenter gap-2 bg-gray-700 rounded cursor-pointer'>
-                <Image src={'/images/ETC/twitter.png'} alt='twitter' width={24} height={24} />
-                {t.party.btn.share_twitter}
+                <TwitterShareButton
+                  title={`I'm listening to ${partyroom?.title} room. Come hang out! Now playing ${currentPlayback} 🎶 `} // TODO: 추후 현재 재생중인 노래가 없을 때의 문구 적용
+                  related={['@pfplay_music']}
+                  url={`@pfplay_music ${sharedUrl}`}
+                  className='w-full h-12 flexRowCenter gap-2 bg-gray-700 rounded cursor-pointer'
+                >
+                  <Image src={'/images/ETC/twitter.png'} alt='twitter' width={24} height={24} />
+                  {t.party.btn.share_twitter}
+                </TwitterShareButton>
               </div>
+
               <div className='flex justify-between items-center gap-3'>
                 <div className='w-[245px] h-12 py-3 pl-3 pr-6 flexRowCenter gap-2 bg-gray-700 rounded'>
                   <Typography type='body3' overflow='ellipsis'>
@@ -95,13 +104,16 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
       <div className='flexCol gap-3 items-start'>
         <Typography type='body3'>{t.dj.title.current_dj}</Typography>
         <div className='w-full h-12 bg-gray-800 rounded'>
-          {currentDj && (
+          {currentDj ? (
             <DjListItem
               userConfig={{
                 username: currentDj.nickname,
                 src: currentDj.avatarIconUri,
               }}
             />
+          ) : (
+            // TODO: 추후 i18n 적용 필요
+            <Typography type='detail1'>진행 중인 디제잉이 없어요 zZz...</Typography>
           )}
         </div>
       </div>
