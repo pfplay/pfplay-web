@@ -19,6 +19,7 @@ import type {
   ReactionResponse,
   GetPlaybackHistoryPayload,
   PlaybackHistoryItem,
+  EnterBySharedLinkPayload,
 } from 'shared/api/http/types/partyrooms';
 import HTTPClient from '../client/client';
 
@@ -68,6 +69,10 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
 
   public adjustGrade = ({ partyroomId, crewId, ...body }: AdjustGradePayload) => {
     return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/grade`, body);
+  };
+
+  public enterBySharedLink = ({ linkDomain }: EnterBySharedLinkPayload) => {
+    return this.get<EnterResponse>(`${this.ROUTE_V1}/link/${linkDomain}/enter`);
   };
 }
 

@@ -198,6 +198,10 @@ export type ReactionPayload = {
   reactionType: ReactionType;
 };
 
+export type EnterBySharedLinkPayload = {
+  linkDomain: string;
+};
+
 export type ReactionResponse = {
   isLiked: boolean;
   isDisliked: boolean;
@@ -250,4 +254,8 @@ export interface PartyroomsClient {
    * 등급 조정
    */
   adjustGrade: (payload: AdjustGradePayload) => Promise<void>;
+  /**
+   * 공유 링크 입장
+   */
+  enterBySharedLink: (payload: EnterBySharedLinkPayload) => Promise<EnterResponse>;
 }
