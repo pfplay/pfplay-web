@@ -9,6 +9,7 @@ import useDeactivationCallback from './subscription-callbacks/use-deactivation-c
 import useMotionCallback from './subscription-callbacks/use-motion-callback.hook';
 import useNoticeCallback from './subscription-callbacks/use-notice-callback.hook';
 import usePlaybackCallback from './subscription-callbacks/use-playback-callback.hook';
+import useRegulationCallback from './subscription-callbacks/use-regulation-callback.hook';
 
 const logger = withDebugger(0);
 const warnLogger = logger(warnLog);
@@ -22,6 +23,7 @@ export default function useHandleSubscriptionEvent() {
   const aggregationCallback = useAggregationCallback();
   const playbackCallback = usePlaybackCallback();
   const deactivationCallback = useDeactivationCallback();
+  const regulationCallback = useRegulationCallback();
 
   return (message: IMessage) => {
     const event = parseMessage(message);
@@ -59,6 +61,9 @@ export default function useHandleSubscriptionEvent() {
         break;
       case PartyroomEventType.DEACTIVATION:
         deactivationCallback(event);
+        break;
+      case PartyroomEventType.REGULATION:
+        regulationCallback(event);
         break;
     }
   };

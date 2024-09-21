@@ -1,5 +1,5 @@
 import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
-import { AccessType, MotionType } from '../../http/types/@enums';
+import { AccessType, GradeType, MotionType, RegulationType } from '../../http/types/@enums';
 
 // 재생 비활성화 이벤트
 export type DeactivationEvent = {
@@ -71,6 +71,17 @@ export type ChatEvent = {
   message: string;
 };
 
+// 멤버 권한 변동 이벤트
+export type RegulationEvent = {
+  eventType: PartyroomEventType.REGULATION;
+  regulationType: RegulationType.GRADE;
+  member: {
+    memberId: number;
+    prevGradeType: GradeType;
+    currGradeType: GradeType;
+  };
+};
+
 export enum PartyroomEventType {
   DEACTIVATION = 'DEACTIVATION',
   PLAYBACK = 'PLAYBACK',
@@ -79,6 +90,7 @@ export enum PartyroomEventType {
   ACCESS = 'ACCESS',
   NOTICE = 'NOTICE',
   CHAT = 'CHAT',
+  REGULATION = 'REGULATION',
 }
 
 export type PartyroomSubEvent =
@@ -88,4 +100,5 @@ export type PartyroomSubEvent =
   | MotionEvent
   | AccessEvent
   | NoticeEvent
-  | ChatEvent;
+  | ChatEvent
+  | RegulationEvent;
