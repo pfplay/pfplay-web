@@ -139,3 +139,8 @@ export enum AuthorityTier {
   AM = 'AM', // Associate Member (지갑인증 x - 준회원)
   GT = 'GT', // Guest
 }
+
+export enum RegulationType {
+  GRADE = 'GRADE',
+  PENALTY = 'PENALTY',
+}
