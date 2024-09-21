@@ -12,9 +12,21 @@ export const SkipPlayback = ({ children }: Props) => {
   const t = useI18n();
   const { openConfirmDialog } = useDialog();
   const { mutate: skipPlaybackMutation } = useSkipPlayback();
-  const [id, me] = useStores().useCurrentPartyroom((state) => [state.id, state.me]);
+  const [id, me, members, currentDj] = useStores().useCurrentPartyroom((state) => [
+    state.id,
+    state.me,
+    state.members,
+    state.currentDj,
+  ]);
+  const currentDjGradeType = members.find(
+    (member) => member.memberId === currentDj?.memberId
+  )?.gradeType;
 
-  if (!me || !Permission.of(me.gradeType).canSkipPlayback()) {
+  if (
+    !me ||
+    !currentDjGradeType ||
+    !Permission.of(me.gradeType).canSkipPlayback(currentDjGradeType)
+  ) {
     return null;
   }
 
