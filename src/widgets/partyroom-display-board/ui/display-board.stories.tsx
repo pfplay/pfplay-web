@@ -56,7 +56,7 @@ function Render(args: typeof meta.args) {
   const init = () => {
     updatePlayback(mockPlaybacks[0]);
     updateReaction(mockReactions[0]);
-    updateNotice('No slander or socialising between members. Violators will be banned immediately');
+    updateNotice('No slander or socialising between crews. Violators will be banned immediately');
   };
 
   const clear = () => {

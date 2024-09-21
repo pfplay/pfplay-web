@@ -8,7 +8,7 @@ type Props = {
   icons: string[];
 };
 
-const Members = ({ count, icons }: Props) => {
+const Crews = ({ count, icons }: Props) => {
   return (
     <div className='flexRowCenter gap-[45px]'>
       <div className='flexRowCenter gap-[6px]'>
@@ -23,7 +23,7 @@ const Members = ({ count, icons }: Props) => {
             <Image
               priority
               src={icon}
-              alt={'party member'}
+              alt={'party crew'}
               width={24}
               height={24}
               className={cn('w-full h-full object-contain select-none')}
@@ -35,4 +35,4 @@ const Members = ({ count, icons }: Props) => {
   );
 };
 
-export default Members;
+export default Crews;

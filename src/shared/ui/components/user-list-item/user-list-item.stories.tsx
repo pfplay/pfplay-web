@@ -8,7 +8,7 @@ const meta = {
   component: UserListItem,
   args: {
     userListItemConfig: {
-      memberId: 1,
+      crewId: 1,
       nickname: 'nickname',
       avatarIconUri: '/images/Temp/nft.png',
     },

@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { ChatMessage, Member } from '@/entities/current-partyroom';
+import { ChatMessage, Crew } from '@/entities/current-partyroom';
 import { GradeType } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import Profile from '@/shared/ui/components/profile/profile.component';
@@ -12,8 +12,8 @@ type ChatItemProps = {
 };
 
 const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) => {
-  const member = message.member;
-  const myGradeComparator = Member.GradeComparator.of(member.gradeType);
+  const crew = message.crew;
+  const myGradeComparator = Crew.GradeComparator.of(crew.gradeType);
   const showGradeLabel = myGradeComparator.isHigherThanOrEqualTo(GradeType.CLUBBER);
   const emphasisGradeLabel = myGradeComparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
 
@@ -21,8 +21,8 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
     <div ref={ref} className='flex justify-start items-start gap-[13px]'>
       <div className='flexCol items-center gap-2 px-[5px] pt-[2px]'>
         <div className='relative'>
-          <Profile src={member.avatarIconUri} size={32} />
-          <AuthorityHeadset grade={member.gradeType} />
+          <Profile src={crew.avatarIconUri} size={32} />
+          <AuthorityHeadset grade={crew.gradeType} />
         </div>
 
         {showGradeLabel && (
@@ -34,13 +34,13 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
               emphasisGradeLabel ? 'text-red-400' : 'text-gray-200'
             )}
           >
-            {GRADE_TYPE_LABEL[member.gradeType]}
+            {GRADE_TYPE_LABEL[crew.gradeType]}
           </Typography>
         )}
       </div>
 
       <div className='flex-1 flexCol items-start gap-1'>
-        <Typography type='detail2'>{member.nickname}</Typography>
+        <Typography type='detail2'>{crew.nickname}</Typography>
 
         <Typography
           type='caption1'

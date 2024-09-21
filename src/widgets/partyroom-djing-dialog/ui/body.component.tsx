@@ -23,11 +23,11 @@ export default function Body({ djingQueue, onCancel }: Props) {
   }
 
   const t = useI18n();
-  const myMemberId = useStores().useCurrentPartyroom((state) => state.me?.memberId);
+  const myCrewId = useStores().useCurrentPartyroom((state) => state.me?.crewId);
   const [currentDj, ...queue] = djingQueue.djs
     .slice()
     .sort((a, b) => a.orderNumber - b.orderNumber);
-  const isMeInQueue = queue.some((dj) => dj.djId === myMemberId);
+  const isMeInQueue = queue.some((dj) => dj.djId === myCrewId);
 
   // FIXME: 두 유저가 저 dialog를 열고 한 유저가 Skip 버튼을 눌렀을 때 그 때 다른 유저의 dialog에는 update된 정보가 갱신이 안되는 문제 해결
 
@@ -92,7 +92,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
           )}
           {!!queue?.length &&
             queue.map((dj, index) => {
-              const isMe = dj.djId === myMemberId;
+              const isMe = dj.djId === myCrewId;
 
               return (
                 <div key={'queue' + dj.djId} className='flex justify-between items-center'>

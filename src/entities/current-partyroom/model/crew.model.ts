@@ -1,7 +1,7 @@
 import { GradeType, MotionType } from '@/shared/api/http/types/@enums';
-import { PartyroomMember } from '@/shared/api/http/types/partyrooms';
+import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 
-export type Model = PartyroomMember & {
+export type Model = PartyroomCrew & {
   motionType: MotionType;
 };
 

@@ -6,7 +6,7 @@ import { warnLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { update } from '@/shared/lib/functions/update';
 import * as ChatMessage from './chat-message.model';
-import * as Member from './member.model';
+import * as Crew from './crew.model';
 import * as CurrentPartyroom from '../model/current-partyroom.model';
 
 export const createCurrentPartyroomStore = () => {
@@ -53,13 +53,13 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
-    members: [],
-    updateMembers: (next) => {
+    crews: [],
+    updateCrews: (next) => {
       return set((state) => {
-        const updated = update(state.members, next);
+        const updated = update(state.crews, next);
 
         return {
-          members: updated,
+          crews: updated,
         };
       });
     },
@@ -79,16 +79,16 @@ export const createCurrentPartyroomStore = () => {
     },
 
     chat: Chat.create<ChatMessage.Model>([]),
-    appendChatMessage: (memberId, content) => {
+    appendChatMessage: (crewId, content) => {
       return set((state) => {
-        const member = state.members.find((member) => member.memberId === memberId);
-        if (!member) {
-          logMemberNotFound(memberId, state.members);
+        const crew = state.crews.find((crew) => crew.crewId === crewId);
+        if (!crew) {
+          logCrewNotFound(crewId, state.crews);
           return state;
         }
 
         state.chat.appendMessage({
-          member,
+          crew,
           content,
           receivedAt: Date.now(),
         });
@@ -120,10 +120,10 @@ export const createCurrentPartyroomStore = () => {
 const logger = withDebugger(0);
 const warnLogger = logger(warnLog);
 
-function logMemberNotFound(memberId: number, currentMembers: Member.Model[]) {
+function logCrewNotFound(crewId: number, currentCrews: Crew.Model[]) {
   warnLogger(
-    `Cannot find member(memberId: ${memberId}) in stored members for chat. current members: ${JSON.stringify(
-      currentMembers,
+    `Cannot find crew(crewId: ${crewId}) in stored crews for chat. current crews: ${JSON.stringify(
+      currentCrews,
       null,
       2
     )}`

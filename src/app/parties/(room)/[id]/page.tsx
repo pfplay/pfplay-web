@@ -25,7 +25,7 @@ const PartyroomPage = () => {
   } = useDisclosure();
 
   const { useCurrentPartyroom } = useStores();
-  const membersCount = useCurrentPartyroom((state) => state.members.length);
+  const crewsCount = useCurrentPartyroom((state) => state.crews.length);
 
   // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
   return (
@@ -74,7 +74,7 @@ const PartyroomPage = () => {
               PrefixIcon={<PFChatFilled width={20} height={20} />}
             />
             <Tab
-              tabTitle={membersCount.toString()}
+              tabTitle={crewsCount.toString()}
               variant='line'
               PrefixIcon={<PFPersonOutline width={20} height={20} />}
             />

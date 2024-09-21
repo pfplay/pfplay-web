@@ -183,7 +183,7 @@
       "select_dj_playlist": "디제잉 플레이리스트 선택"
     },
     "para": {
-      "no_dj_member": "현재 디제잉 인원이 없어요\n파티의 흥을 책임질 DJ가 되어보세요!",
+      "no_dj_crew": "현재 디제잉 인원이 없어요\n파티의 흥을 책임질 DJ가 되어보세요!",
       "create_playlist_song": "대기 등록을 위해 최소 1곡이 담긴 플레이리스트가 필요해요",
       "cancel_dj_queue": "DJ 대기 등록 취소",
       "cancel_dj_queue_confirm": "DJ 대기 등록을 취소하시겠습니까?",

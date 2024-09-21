@@ -26,11 +26,11 @@ const UserGradePanel = () => {
           <CollapseList key={category} title={category} displaySuffix={false}>
             {participants.map((participant) => {
               const Suffix = (() => {
-                if (currentDj?.memberId === participant.memberId) {
+                if (currentDj?.crewId === participant.crewId) {
                   // FIXME: Component value에 i18n 적용, value djing에 맞게 수정
                   return <UserListItemSuffix type='tag' value={t.common.btn.play} />;
                 }
-                if (me?.memberId === participant.memberId) {
+                if (me?.crewId === participant.crewId) {
                   // FIXME: Component value에 i18n 적용, value me 맞게 수정
                   return <UserListItemSuffix type='tag' value={t.common.btn.play} />;
                 }
@@ -38,7 +38,7 @@ const UserGradePanel = () => {
 
               return (
                 <UserListItem
-                  key={participant.memberId}
+                  key={participant.crewId}
                   userListItemConfig={participant}
                   menuItemList={fixtureMenuItems}
                   menuItemPanelSize='sm'

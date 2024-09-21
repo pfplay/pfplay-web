@@ -12,7 +12,7 @@ export default function usePlaybackCallback() {
   return (event: PlaybackEvent) => {
     updatePlaybackActivated(true);
     updatePlayback(event.playback);
-    updateCurrentDj({ memberId: event.memberId });
+    updateCurrentDj({ crewId: event.crewId });
     invalidateDjingQueue();
   };
 }

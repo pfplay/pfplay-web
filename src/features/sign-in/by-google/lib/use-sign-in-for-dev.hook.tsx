@@ -26,7 +26,7 @@ export default function useSignInForDev() {
             <Dialog.Button
               color='secondary'
               onClick={async () => {
-                await UsersService.temporary_SignInFullMember();
+                await UsersService.temporary_SignInFullCrew();
                 onClose?.();
                 router.push(await getMyServiceEntry());
               }}
@@ -35,7 +35,7 @@ export default function useSignInForDev() {
             </Dialog.Button>
             <Dialog.Button
               onClick={async () => {
-                await UsersService.temporary_SignInAssociateMember();
+                await UsersService.temporary_SignInAssociateCrew();
                 onClose?.();
                 router.push(await getMyServiceEntry());
               }}

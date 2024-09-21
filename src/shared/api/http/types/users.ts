@@ -100,11 +100,11 @@ export interface UsersClient {
   /**
    * @deprecated 개발용 로그인
    */
-  temporary_SignInFullMember: () => Promise<void>;
+  temporary_SignInFullCrew: () => Promise<void>;
   /**
    * @deprecated 개발용 로그인
    */
-  temporary_SignInAssociateMember: () => Promise<void>;
+  temporary_SignInAssociateCrew: () => Promise<void>;
   /**
    * OAuth2 로그인
    */

@@ -13,7 +13,7 @@ export type PartyroomSummary = {
   stageType: StageType;
   title: string;
   introduction: string;
-  memberCount: number;
+  crewCount: number;
   /**
    * false 인 경우 playback이 null
    */
@@ -34,10 +34,10 @@ export type GetSetupInfoPayload = {
   partyroomId: number;
 };
 
-export type PartyroomMember = {
+export type PartyroomCrew = {
   uid: string;
   authorityTier: AuthorityTier;
-  memberId: number;
+  crewId: number;
   nickname: string;
   gradeType: GradeType;
   avatarBodyUri: string;
@@ -81,12 +81,12 @@ export type PartyroomReaction = {
    */
   motion: {
     motionType: MotionType;
-    memberIds: number[];
+    crewIds: number[];
   }[];
 };
 
 export type GetSetUpInfoResponse = {
-  members: PartyroomMember[];
+  crews: PartyroomCrew[];
   display: {
     /**
      * false 인 경우 playback과 reaction이 null
@@ -94,18 +94,18 @@ export type GetSetUpInfoResponse = {
     playbackActivated: boolean;
     playback?: PartyroomPlayback;
     reaction?: PartyroomReaction;
-    currentDj?: Pick<PartyroomMember, 'memberId'>;
+    currentDj?: Pick<PartyroomCrew, 'crewId'>;
   };
 };
 
-export type GetMembersPayload = {
+export type GetCrewsPayload = {
   partyroomId: number;
 };
 
-export type PartyroomMemberSummary = {
+export type PartyroomCrewSummary = {
   uid: string;
   authorityTier: AuthorityTier;
-  memberId: number;
+  crewId: number;
   nickname: string;
   gradeType: GradeType;
   avatarIconUri: string;
@@ -126,7 +126,7 @@ export interface Participant {
   uid: string;
   partyroomGrade: PartyroomGrade;
   nickname: string;
-  memberId: number;
+  crewId: number;
   gradeType: GradeType;
   avatarIconUri: string;
 }
@@ -169,7 +169,7 @@ export type GetPartyroomSummaryPayload = {
 };
 
 export type EnterResponse = {
-  memberId: number;
+  crewId: number;
   gradeType: GradeType;
 };
 
@@ -179,17 +179,17 @@ export type ExitPayload = {
 
 export type AdjustGradePayload = {
   partyroomId: number;
-  memberId: number;
+  crewId: number;
   gradeType: GradeType;
 };
 
-export interface GetPartyroomMemberRequest {
+export interface GetPartyroomCrewRequest {
   partyroomId: string;
 }
 
 export interface GetParticipantsResponse {
   partyroomId: string;
-  members: Participant[];
+  crews: Participant[];
 }
 
 export type ReactionPayload = {
@@ -213,7 +213,7 @@ export interface PartyroomsClient {
   /**
    * 우측 사이드 바의 ‘전체’ 탭을 눌렀을 시 호출하는 현재 파티룸 내의 파티 멤버 목록 조회
    */
-  getMembers: (payload: GetMembersPayload) => Promise<PartyroomMemberSummary[]>;
+  getCrews: (payload: GetCrewsPayload) => Promise<PartyroomCrewSummary[]>;
   /**
    * DJ 대기열 조회
    */

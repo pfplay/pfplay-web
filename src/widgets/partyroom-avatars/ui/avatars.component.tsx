@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Avatar } from '@/entities/avatar';
-import { Member } from '@/entities/current-partyroom';
+import { Crew } from '@/entities/current-partyroom';
 import { MotionType } from '@/shared/api/http/types/@enums';
 import { pick } from '@/shared/lib/functions/pick';
 import useDidUpdateEffect from '@/shared/lib/hooks/use-did-update-effect';
@@ -10,67 +10,65 @@ import { Area, getRandomPoint, getRandomPoints, Point } from '../model/avatar-po
 
 export default function Avatars() {
   const { useCurrentPartyroom } = useStores();
-  const { members: storedMembers, currentDj } = useCurrentPartyroom((state) =>
-    pick(state, ['members', 'currentDj'])
+  const { crews: storedCrews, currentDj } = useCurrentPartyroom((state) =>
+    pick(state, ['crews', 'currentDj'])
   );
-  const [localMembers, setLocalMembers] = useState<Member.Model[]>([]);
+  const [localCrews, setLocalCrews] = useState<Crew.Model[]>([]);
   const [randomPoints, setRandomPoints] = useState<Point[]>([]);
 
-  const dj = currentDj && localMembers.find((member) => member.memberId === currentDj.memberId);
+  const dj = currentDj && localCrews.find((crew) => crew.crewId === currentDj.crewId);
 
-  const storedMembersInitialized = !!storedMembers.length;
-  const localMembersInitialized = !!localMembers.length && !!randomPoints.length;
+  const storedCrewsInitialized = !!storedCrews.length;
+  const localCrewsInitialized = !!localCrews.length && !!randomPoints.length;
 
-  const syncWithStoredMembers = () => {
-    setLocalMembers((prevLocalMembers) => {
-      const isAdded = prevLocalMembers.length < storedMembers.length;
-      const isRemoved = prevLocalMembers.length > storedMembers.length;
+  const syncWithStoredCrews = () => {
+    setLocalCrews((prevLocalCrews) => {
+      const isAdded = prevLocalCrews.length < storedCrews.length;
+      const isRemoved = prevLocalCrews.length > storedCrews.length;
 
       if (isAdded) {
         // 추가된 멤버의 index에 맞춰 randomPoints에 새로운 point 추가
-        const prevMemberUidSet = new Set(prevLocalMembers.map((m) => m.uid));
-        const newMemberIndex = storedMembers.findIndex(
-          (member) => !prevMemberUidSet.has(member.uid)
-        );
+        const prevCrewUidSet = new Set(prevLocalCrews.map((m) => m.uid));
+        const newCrewIndex = storedCrews.findIndex((crew) => !prevCrewUidSet.has(crew.uid));
         const newPoint = getRandomPoint(ALLOW_AREA, DENY_AREA);
         setRandomPoints((prev) => {
           const next = [...prev];
-          next.splice(newMemberIndex, 0, newPoint);
+          next.splice(newCrewIndex, 0, newPoint);
           return next;
         });
       }
 
       if (isRemoved) {
         // 삭제된 멤버의 index에 맞춰 randomPoints에서 point 제거
-        const changedMemberUidSet = new Set(storedMembers.map((m) => m.uid));
-        const removedMemberIndex = prevLocalMembers.findIndex(
-          (member) => !changedMemberUidSet.has(member.uid)
+        const changedCrewUidSet = new Set(storedCrews.map((m) => m.uid));
+        const removedCrewIndex = prevLocalCrews.findIndex(
+          (crew) => !changedCrewUidSet.has(crew.uid)
         );
         setRandomPoints((prev) => {
           const next = [...prev];
-          next.splice(removedMemberIndex, 1);
+          next.splice(removedCrewIndex, 1);
           return next;
         });
       }
 
-      return storedMembers;
+      return storedCrews;
     });
   };
 
   useDidUpdateEffect(() => {
-    // 파티룸 진입 시 조건문이 순차로 실행된 후, 이후부턴 storedMembers가 변경될 때마다 syncWithStoredMembers가 실행됨
-    if (!storedMembersInitialized) {
+    // 파티룸 진입 시 조건문이 순차로 실행된 후, 이후부턴 storedCrews가 변경될 때마다 syncWithStoredCrews가 실행됨
+    if (!storedCrewsInitialized) {
       return;
     }
 
-    if (!localMembersInitialized) {
-      setLocalMembers(storedMembers);
-      setRandomPoints(getRandomPoints(storedMembers.length, ALLOW_AREA, DENY_AREA));
+    if (!localCrewsInitialized) {
+      setLocalCrews(storedCrews);
+      setRandomPoints(getRandomPoints(storedCrews.length, ALLOW_AREA, DENY_AREA));
       return;
     }
 
-    syncWithStoredMembers();
-  }, [storedMembersInitialized, localMembersInitialized, storedMembers]);
+    syncWithStoredCrews();
+  }, [storedCrewsInitialized, localCrewsInitialized, storedCrews]);
 
   return (
     /*
@@ -97,17 +95,17 @@ export default function Avatars() {
         </div>
       )}
 
-      {localMembers.map((member, index) => {
-        if (member.memberId === dj?.memberId) {
+      {localCrews.map((crew, index) => {
+        if (crew.crewId === dj?.crewId) {
           return null;
         }
         if (!randomPoints[index]) {
-          /* localMembers와 randomPoints의 length가 동기화 되지 않는 일순간이 있을 수 있음 */
+          /* localCrews와 randomPoints의 length가 동기화 되지 않는 일순간이 있을 수 있음 */
           return null;
         }
         return (
           <div
-            key={'partyroom-member-' + member.uid}
+            key={'partyroom-crew-' + crew.uid}
             className='absolute'
             style={{
               top: `${randomPoints[index].y}%`,
@@ -117,11 +115,11 @@ export default function Avatars() {
           >
             <Avatar
               height={180}
-              bodyUri={member.avatarBodyUri}
-              faceUri={member.avatarFaceUri}
-              facePosX={member.combinePositionX}
-              facePosY={member.combinePositionY}
-              dance={member.motionType !== MotionType.NONE}
+              bodyUri={crew.avatarBodyUri}
+              faceUri={crew.avatarFaceUri}
+              facePosX={crew.combinePositionX}
+              facePosY={crew.combinePositionY}
+              dance={crew.motionType !== MotionType.NONE}
             />
           </div>
         );

@@ -12,7 +12,7 @@ export function useAdjustGrade() {
     mutationFn: PartyroomsService.adjustGrade,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QueryKeys.Members],
+        queryKey: [QueryKeys.Crews],
       });
     },
   });

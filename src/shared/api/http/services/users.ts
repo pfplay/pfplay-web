@@ -23,7 +23,7 @@ class UsersService extends HTTPClient implements UsersClient {
   public signIn = (request: SignInRequest) => {
     if (typeof window === 'undefined') return;
 
-    const url = new URL(`${this.axiosInstance.defaults.baseURL}${this.ROUTE_V1}/members/sign`);
+    const url = new URL(`${this.axiosInstance.defaults.baseURL}${this.ROUTE_V1}/crews/sign`);
     url.searchParams.append('oauth2Provider', request.oauth2Provider);
 
     window.location.href = url.toString();
@@ -37,12 +37,12 @@ class UsersService extends HTTPClient implements UsersClient {
     return this.post<void>(`${this.ROUTE_V1}/logout`);
   };
 
-  public temporary_SignInFullMember = () => {
-    return this.post<void>(`${this.ROUTE_V1}/members/sign/temporary/full-member`);
+  public temporary_SignInFullCrew = () => {
+    return this.post<void>(`${this.ROUTE_V1}/crews/sign/temporary/full-crew`);
   };
 
-  public temporary_SignInAssociateMember = () => {
-    return this.post<void>(`${this.ROUTE_V1}/members/sign/temporary/associate-member`);
+  public temporary_SignInAssociateCrew = () => {
+    return this.post<void>(`${this.ROUTE_V1}/crews/sign/temporary/associate-crew`);
   };
 
   public getMyInfo = () => {

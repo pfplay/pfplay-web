@@ -1,5 +1,5 @@
 'use client';
-import { Member, useCurrentPartyroomChat } from '@/entities/current-partyroom';
+import { Crew, useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import { ChatMessage } from '@/entities/current-partyroom';
 import { useAdjustGrade } from '@/features/partyroom/adjust-grade';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
@@ -19,7 +19,7 @@ export default function PartyroomChatPanel() {
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
   const me = useStores().useCurrentPartyroom((state) => state.me);
-  const myPermissions = me && Member.Permission.of(me.gradeType);
+  const myPermissions = me && Crew.Permission.of(me.gradeType);
   const { scrollContainerRef, lastItemRef } = useChatMessagesScrollManager<
     HTMLDivElement,
     HTMLDivElement
@@ -32,7 +32,7 @@ export default function PartyroomChatPanel() {
       <div ref={scrollContainerRef} className='flex-[1_0_0] flexCol gap-4 overflow-y-auto py-4'>
         {chatMessages.map((message, i) => {
           const isLast = i === chatMessages.length - 1;
-          const isMe = message.member.memberId === me?.memberId;
+          const isMe = message.crew.crewId === me?.crewId;
 
           return (
             <DisplayOptionMenuOnHoverListener
@@ -42,8 +42,8 @@ export default function PartyroomChatPanel() {
               menuConfig={[
                 {
                   label: t.common.btn.authority,
-                  onClickItem: () => adjustGrade(message.member),
-                  visible: !!myPermissions?.canAdjustGrade(message.member.gradeType),
+                  onClickItem: () => adjustGrade(message.crew),
+                  visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
                 },
                 {
                   label: t.common.btn.block,

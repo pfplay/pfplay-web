@@ -5,12 +5,12 @@ import type {
   EnterResponse,
   ExitPayload,
   GetDjingQueuePayload,
-  GetMembersPayload,
+  GetCrewsPayload,
   GetNoticePayload,
   GetNoticeResponse,
   GetSetupInfoPayload,
   GetSetUpInfoResponse,
-  PartyroomMemberSummary,
+  PartyroomCrewSummary,
   PartyroomsClient,
   PartyroomSummary,
   ReactionPayload,
@@ -35,8 +35,8 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
     return this.get<GetSetUpInfoResponse>(`${this.ROUTE_V1}/${partyroomId}/setup`);
   };
 
-  public getMembers = ({ partyroomId }: GetMembersPayload) => {
-    return this.get<PartyroomMemberSummary[]>(`${this.ROUTE_V1}/${partyroomId}/members`);
+  public getCrews = ({ partyroomId }: GetCrewsPayload) => {
+    return this.get<PartyroomCrewSummary[]>(`${this.ROUTE_V1}/${partyroomId}/crews`);
   };
 
   public getDjingQueue = ({ partyroomId }: GetDjingQueuePayload) => {
@@ -59,8 +59,8 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/playback/reaction`, body);
   };
 
-  public adjustGrade = ({ partyroomId, memberId, ...body }: AdjustGradePayload) => {
-    return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/partymembers/${memberId}/grade`, body);
+  public adjustGrade = ({ partyroomId, crewId, ...body }: AdjustGradePayload) => {
+    return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/grade`, body);
   };
 }
 

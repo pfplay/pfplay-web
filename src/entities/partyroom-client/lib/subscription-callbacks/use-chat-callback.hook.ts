@@ -6,6 +6,6 @@ export default function useChatCallback() {
   const appendChatMessage = useCurrentPartyroom((state) => state.appendChatMessage);
 
   return (event: ChatEvent) => {
-    appendChatMessage(event.member.memberId, event.message);
+    appendChatMessage(event.crew.crewId, event.message);
   };
 }

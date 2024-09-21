@@ -12,13 +12,13 @@ export function useExitPartyroom() {
     mutationFn: PartyroomsService.exit,
     onSuccess: () => {
       /**
-       * TODO: 파티 룸 관련 캐시 모두 제거 (members, djingQueue, etc...)
+       * TODO: 파티 룸 관련 캐시 모두 제거 (crews, djingQueue, etc...)
        */
       queryClient.removeQueries({
         queryKey: [QueryKeys.DjingQueue],
       });
       queryClient.removeQueries({
-        queryKey: [QueryKeys.Members],
+        queryKey: [QueryKeys.Crews],
       });
     },
   });

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Permission } from '@/entities/current-partyroom/model/member.model';
+import { Permission } from '@/entities/current-partyroom/model/crew.model';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
