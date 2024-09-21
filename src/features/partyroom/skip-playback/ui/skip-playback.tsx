@@ -15,11 +15,11 @@ export const SkipPlayback = ({ children }: Props) => {
   const [id, me, members, currentDj] = useStores().useCurrentPartyroom((state) => [
     state.id,
     state.me,
-    state.members,
+    state.crews,
     state.currentDj,
   ]);
   const currentDjGradeType = members.find(
-    (member) => member.memberId === currentDj?.memberId
+    (member) => member.crewId === currentDj?.crewId
   )?.gradeType;
 
   if (
