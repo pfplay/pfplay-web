@@ -1,1 +1,1 @@
-export { default as useFetchDjingQueue } from './api/use-djing-queue.query';
+export { default as useFetchDjingQueue } from './api/use-fetch-djing-queue.query';
