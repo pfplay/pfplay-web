@@ -56,8 +56,11 @@ export class Permission {
     throw new Error('Not Impl yet');
   }
 
-  public canSkipPlayback() {
-    return this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
+  public canSkipPlayback(targetGrade: GradeType) {
+    return (
+      this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR) &&
+      this.comparator.isHigherThan(targetGrade)
+    );
   }
 
   public canLockDjingQueue() {
