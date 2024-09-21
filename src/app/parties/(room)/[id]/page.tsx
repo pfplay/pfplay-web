@@ -52,7 +52,7 @@ const PartyroomPage = () => {
 
       {/* 오른쪽 채팅창 */}
       <div className='absolute top-0 right-0 w-[400px] max-w-full h-screen flexCol bg-black pt-8 pb-3 px-7'>
-        <div className='relative bg-black grid grid-cols-2 gap-3 mb-5'>
+        <div className='bg-black grid grid-cols-2 gap-3 mb-5'>
           <PartyroomDetailButton />
           <Button
             color='secondary'
