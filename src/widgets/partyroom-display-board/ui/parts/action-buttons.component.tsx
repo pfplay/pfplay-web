@@ -28,13 +28,9 @@ export default function ActionButtons() {
         active={flag.isLiked}
         activeColor='red'
         onClick={() => {
-          if (!playbackActivated || flag.isLiked) return;
           evaluateCurrentPlayback(ReactionType.LIKE, {
-            onSuccess: () => {
-              updateFlag({
-                isLiked: true,
-                isDisliked: false,
-              });
+            onSuccess: (data) => {
+              updateFlag(data);
             },
           });
         }}
@@ -42,18 +38,13 @@ export default function ActionButtons() {
       <ActionButton
         icon={<PFPlaylistAdd width={18} height={18} />}
         text={reaction?.aggregation.grabCount ?? 0}
-        disabled={!playbackActivated || !!reaction?.history.isGrabbed} // NOTE: grab은 끌 수 없음
+        disabled={!playbackActivated || flag.isGrabbed} // NOTE: grab은 끌 수 없음
         active={flag.isGrabbed}
         activeColor='green'
         onClick={() => {
-          if (!playbackActivated || flag.isGrabbed) return;
           grabCurrentPlayback(undefined, {
-            onSuccess: () => {
-              updateFlag({
-                isLiked: true,
-                isGrabbed: true,
-                isDisliked: false,
-              });
+            onSuccess: (data) => {
+              updateFlag(data);
             },
           });
         }}
@@ -65,13 +56,9 @@ export default function ActionButtons() {
         active={flag.isDisliked}
         activeColor='white'
         onClick={() => {
-          if (!playbackActivated || flag.isDisliked) return;
           evaluateCurrentPlayback(ReactionType.DISLIKE, {
-            onSuccess: () => {
-              updateFlag({
-                isLiked: false,
-                isDisliked: true,
-              });
+            onSuccess: (data) => {
+              updateFlag(data);
             },
           });
         }}
@@ -80,9 +67,6 @@ export default function ActionButtons() {
   );
 }
 
-/**
- * history는 setup에서 받아온 뒤 따로 업데이트 이벤트 등이 오지 않기에, local state로 관리해야합니다.
- */
 type Flag = {
   isLiked: boolean;
   isDisliked: boolean;

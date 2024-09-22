@@ -4,18 +4,19 @@ import { QueryKeys } from '@/shared/api/http/query-keys';
 import PartyroomsService from '@/shared/api/http/services/partyrooms';
 import { ReactionType } from '@/shared/api/http/types/@enums';
 import { APIError } from '@/shared/api/http/types/@shared';
+import type { ReactionResponse } from '@/shared/api/http/types/partyrooms';
 import { useStores } from '@/shared/lib/store/stores.context';
 
 export function useGrabCurrentPlayback() {
   const queryClient = useQueryClient();
   const partyroomId = useStores().useCurrentPartyroom((state) => state.id);
 
-  return useMutation<void, AxiosError<APIError>, void>({
+  return useMutation<ReactionResponse, AxiosError<APIError>, void>({
     mutationFn: async () => {
       if (!partyroomId) {
         throw new Error('partyroomId is not found. maybe you are not in the partyroom.');
       }
-      await PartyroomsService.reaction({
+      return await PartyroomsService.reaction({
         partyroomId,
         reactionType: ReactionType.GRAB,
       });

@@ -16,6 +16,7 @@ import type {
   ReactionPayload,
   AdjustGradePayload,
   GetPartyroomSummaryPayload,
+  ReactionResponse,
 } from 'shared/api/http/types/partyrooms';
 import HTTPClient from '../client/client';
 
@@ -56,7 +57,7 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
   };
 
   public reaction = ({ partyroomId, ...body }: ReactionPayload) => {
-    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/playback/reaction`, body);
+    return this.post<ReactionResponse>(`${this.ROUTE_V1}/${partyroomId}/playback/reaction`, body);
   };
 
   public adjustGrade = ({ partyroomId, crewId, ...body }: AdjustGradePayload) => {
