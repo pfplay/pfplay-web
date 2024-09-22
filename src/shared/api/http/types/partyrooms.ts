@@ -168,6 +168,16 @@ export type GetPartyroomSummaryPayload = {
   partyroomId: number;
 };
 
+export type GetPlaybackHistoryPayload = {
+  partyroomId: number;
+};
+
+export type PlaybackHistoryItem = {
+  musicName: string;
+  nickname: string;
+  avatarIconUri: string;
+};
+
 export type EnterResponse = {
   crewId: number;
   gradeType: GradeType;
@@ -182,15 +192,6 @@ export type AdjustGradePayload = {
   crewId: number;
   gradeType: GradeType;
 };
-
-export interface GetPartyroomCrewRequest {
-  partyroomId: string;
-}
-
-export interface GetParticipantsResponse {
-  partyroomId: string;
-  crews: Participant[];
-}
 
 export type ReactionPayload = {
   partyroomId: number;
@@ -222,6 +223,10 @@ export interface PartyroomsClient {
    * 공지사항 조회
    */
   getNotice: (payload: GetNoticePayload) => Promise<GetNoticeResponse>;
+  /**
+   * 플레이백 히스토리 조회
+   */
+  getPlaybackHistory: (payload: GetPlaybackHistoryPayload) => Promise<PlaybackHistoryItem[]>;
   /**
    * 파티룸 입장
    */

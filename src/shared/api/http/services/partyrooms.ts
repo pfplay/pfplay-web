@@ -16,6 +16,8 @@ import type {
   ReactionPayload,
   AdjustGradePayload,
   GetPartyroomSummaryPayload,
+  GetPlaybackHistoryPayload,
+  PlaybackHistoryItem,
 } from 'shared/api/http/types/partyrooms';
 import HTTPClient from '../client/client';
 
@@ -45,6 +47,10 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
 
   public getNotice = ({ partyroomId }: GetNoticePayload) => {
     return this.get<GetNoticeResponse>(`${this.ROUTE_V1}/${partyroomId}/notice`);
+  };
+
+  public getPlaybackHistory = ({ partyroomId }: GetPlaybackHistoryPayload) => {
+    return this.get<PlaybackHistoryItem[]>(`${this.ROUTE_V1}/${partyroomId}/playbacks/histories`);
   };
 
   public enter = ({ partyroomId }: EnterPayload) => {
