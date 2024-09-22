@@ -54,8 +54,7 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
               }}
             />
           ) : (
-            // TODO: 추후 i18n 적용 필요
-            <Typography type='detail1'>진행 중인 디제잉이 없어요 zZz...</Typography>
+            <Typography type='detail1'>{t.dj.para.empty_dj}</Typography>
           )}
         </div>
       </div>
