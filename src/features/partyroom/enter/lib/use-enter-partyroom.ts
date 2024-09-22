@@ -25,18 +25,14 @@ export function useEnterPartyroom(partyroomId: number) {
   const enter = async () => {
     try {
       const enterResponse = await enterAsync({ partyroomId });
-      const setUpInfo = await PartyroomsService.getSetupInfo({ partyroomId });
+
+      const [setUpInfo, notice] = await Promise.all([
+        PartyroomsService.getSetupInfo({ partyroomId }),
+        PartyroomsService.getNotice({ partyroomId }), // 공지사항은 현재 설계상 enter 시점엔 rest api로 받아오고, 이후 공지 변경이 있을 땐 웹 소켓 이벤트로 수신합니다.
+      ]);
 
       // TODO: crews 작업 시 crews 캐시 데이터 세팅해주기
       // queryClient.setQueryData([QueryKeys.PartyroomCrews, partyroomId], setUpInfo.crews);
-
-      /**
-       * 공지사항은 현재 설계상 enter 시점엔 rest api로 받아오고,
-       * 이후 공지 변경이 있을 땐 웹 소켓 이벤트로 수신합니다.
-       * 때문에 rest api에 대해선 useQuery를 사용하지 않고 fetchQuery를 사용하여, enter 시점 최초 1회만 호출합니다.
-       * 다만 notice fetch가 중요도가 그리 높지 않은데 블락으로 적용하는게 좋아보이진 않아, 이후에 뷰 레이어로 옮기는게 좋아보입니다.
-       */
-      const notice = await PartyroomsService.getNotice({ partyroomId });
 
       const motionTypeMap = crewIdToMotionTypeMap(setUpInfo.display.reaction?.motion);
 
