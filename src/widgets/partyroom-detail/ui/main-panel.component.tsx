@@ -5,15 +5,14 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';
 import { Typography } from '@/shared/ui/components/typography';
-import { PFChevronRight, PFClose, PFLink, PFSettings } from '@/shared/ui/icons';
+import { PFChevronRight, PFLink, PFSettings } from '@/shared/ui/icons';
 import useOpenShareDialog from './use-open-share-dialog.hook';
+import { Panel, usePanelController } from '../lib/panel-controller.context';
 
-interface Props {
-  onClose: () => void;
-}
-export default function PartyroomDetailPanel({ onClose }: Props) {
+export default function MainPanel() {
   const t = useI18n();
   const params = useParams<{ id: string }>();
+  const { goTo } = usePanelController();
 
   const { data: djingQueue } = useFetchDjingQueue({ partyroomId: Number(params.id) }, true);
   const currentDj = djingQueue?.djs.slice().sort((a, b) => a.orderNumber - b.orderNumber)[0];
@@ -22,16 +21,7 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
   const openShareDialog = useOpenShareDialog(partyroomSummary?.title ?? '');
 
   return (
-    <div className='absolute top-3 right-[108%] w-[280px] flexCol gap-6 bg-black py-7 px-5'>
-      <div className='inline-flex justify-between items-center'>
-        <Typography type='body3'>{t.party.title.party_info}</Typography>
-        <PFClose
-          width={24}
-          height={24}
-          onClick={onClose}
-          className='[&_*]:stroke-white cursor-pointer'
-        />
-      </div>
+    <>
       <div className='flexCol gap-2'>
         <Typography type='title2' className='line-clamp-2'>
           {partyroomSummary?.title || ''}
@@ -61,10 +51,18 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
 
       <Divider />
 
-      <div className='flex justify-between items-center'>
+      <div
+        role='button'
+        tabIndex={0}
+        className='flex justify-between items-center'
+        onClick={() => {
+          goTo(Panel.PlaybackHistory);
+        }}
+      >
         <Typography type='body3'>{t.db.title.recent_dj_list}</Typography>
         <PFChevronRight width={24} height={24} />
       </div>
+
       <div className='flexRowCenter gap-3'>
         <Button
           onClick={openShareDialog}
@@ -86,7 +84,7 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
           {t.common.btn.settings}
         </Button>
       </div>
-    </div>
+    </>
   );
 }
 
