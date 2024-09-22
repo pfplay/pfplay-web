@@ -1,1 +1,1 @@
-export { default as PartyroomDetailButton } from './ui/partyroom-detail-button';
+export { default as PartyroomDetailTrigger } from './ui/trigger';
