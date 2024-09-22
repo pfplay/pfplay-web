@@ -21,14 +21,16 @@ export default function MainPanel() {
   const openShareDialog = useOpenShareDialog(partyroomSummary?.title ?? '');
 
   return (
-    <>
+    <div className='flex flex-col gap-6 mt-6'>
       <div className='flexCol gap-2'>
         <Typography type='title2' className='line-clamp-2'>
-          {partyroomSummary?.title || ''}
+          {partyroomSummary?.title || 'Unknown Title'}
         </Typography>
-        <Typography type='caption1' className='text-gray-200'>
-          {partyroomSummary?.introduction || ''}
-        </Typography>
+        {partyroomSummary?.introduction && (
+          <Typography type='caption1' className='text-gray-200'>
+            {partyroomSummary?.introduction}
+          </Typography>
+        )}
       </div>
 
       <Divider />
@@ -84,7 +86,7 @@ export default function MainPanel() {
           {t.common.btn.settings}
         </Button>
       </div>
-    </>
+    </div>
   );
 }
 
