@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useEvaluateCurrentPlayback } from '@/features/partyroom/evaluate-current-playback';
 import { useGrabCurrentPlayback } from '@/features/partyroom/grab-current-playback';
 import { ReactionType } from '@/shared/api/http/types/@enums';
-import { PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import { Next, update } from '@/shared/lib/functions/update';
+import { useIsomorphicLayoutEffect } from '@/shared/lib/hooks/use-isomorphic-layout-effect.hook';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { PFPlaylistAdd, PFThumbDownAlt, PFThumbUpAlt } from '@/shared/ui/icons';
 import ActionButton from './action-button.component';
@@ -15,7 +15,9 @@ export default function ActionButtons() {
     state.reaction,
     state.playbackActivated,
   ]);
-  const [activeState, updateActiveState] = useActiveState(reaction?.history);
+  const [flag, updateFlag] = useAggregationFlag({
+    initialValue: reaction?.history,
+  });
 
   return (
     <>
@@ -23,13 +25,13 @@ export default function ActionButtons() {
         icon={<PFThumbUpAlt width={18} height={18} />}
         text={reaction?.aggregation.likeCount ?? 0}
         disabled={!playbackActivated}
-        active={activeState.isLiked}
+        active={flag.isLiked}
         activeColor='red'
         onClick={() => {
-          if (!playbackActivated || activeState.isLiked) return;
+          if (!playbackActivated || flag.isLiked) return;
           evaluateCurrentPlayback(ReactionType.LIKE, {
             onSuccess: () => {
-              updateActiveState({
+              updateFlag({
                 isLiked: true,
                 isDisliked: false,
               });
@@ -41,13 +43,13 @@ export default function ActionButtons() {
         icon={<PFPlaylistAdd width={18} height={18} />}
         text={reaction?.aggregation.grabCount ?? 0}
         disabled={!playbackActivated || !!reaction?.history.isGrabbed} // NOTE: grab은 끌 수 없음
-        active={activeState.isGrabbed}
+        active={flag.isGrabbed}
         activeColor='green'
         onClick={() => {
-          if (!playbackActivated || activeState.isGrabbed) return;
+          if (!playbackActivated || flag.isGrabbed) return;
           grabCurrentPlayback(undefined, {
             onSuccess: () => {
-              updateActiveState({
+              updateFlag({
                 isLiked: true,
                 isGrabbed: true,
                 isDisliked: false,
@@ -60,13 +62,13 @@ export default function ActionButtons() {
         icon={<PFThumbDownAlt width={18} height={18} />}
         text={reaction?.aggregation.dislikeCount ?? 0}
         disabled={!playbackActivated}
-        active={activeState.isDisliked}
+        active={flag.isDisliked}
         activeColor='white'
         onClick={() => {
-          if (!playbackActivated || activeState.isDisliked) return;
+          if (!playbackActivated || flag.isDisliked) return;
           evaluateCurrentPlayback(ReactionType.DISLIKE, {
             onSuccess: () => {
-              updateActiveState({
+              updateFlag({
                 isLiked: false,
                 isDisliked: true,
               });
@@ -81,28 +83,35 @@ export default function ActionButtons() {
 /**
  * history는 setup에서 받아온 뒤 따로 업데이트 이벤트 등이 오지 않기에, local state로 관리해야합니다.
  */
-function useActiveState(history?: PartyroomReaction['history']) {
-  const initialized = useRef(!!history);
-  const [activeState, setActiveState] = useState(
-    history ?? {
-      isLiked: false,
-      isDisliked: false,
-      isGrabbed: false,
-    }
-  );
+type Flag = {
+  isLiked: boolean;
+  isDisliked: boolean;
+  isGrabbed: boolean;
+};
+type Props = {
+  initialValue: Flag | undefined;
+};
+function useAggregationFlag({ initialValue }: Props) {
+  const entered = useRef(false);
+  const [flag, setFlag] = useState({
+    isLiked: false,
+    isDisliked: false,
+    isGrabbed: false,
+  });
 
-  const updateActiveState = (next: Next<PartyroomReaction['history']>) => {
-    setActiveState((prev) => {
+  const updateFlag = (next: Next<Flag>) => {
+    setFlag((prev) => {
       return update(prev, next);
     });
   };
 
-  useEffect(() => {
-    if (!initialized.current && history) {
-      setActiveState(history);
-      initialized.current = true;
+  // initialValue가 truthy일 때 "파티룸 입장 완료"로 간주하고 상태를 초기화합니다.
+  useIsomorphicLayoutEffect(() => {
+    if (!entered.current && initialValue) {
+      setFlag(initialValue);
+      entered.current = true;
     }
-  }, [history]);
+  }, [initialValue]);
 
-  return [activeState, updateActiveState] as const;
+  return [flag, updateFlag] as const;
 }

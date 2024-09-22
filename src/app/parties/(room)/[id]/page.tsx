@@ -32,7 +32,7 @@ const PartyroomPage = () => {
     <>
       <PartyroomAvatars />
 
-      {/* 가운데 플레이리스트 */}
+      {/* 가운데 전광판 */}
       <div className='absolute top-[44px] left-1/2 transform -translate-x-1/2 max-w-full w-[calc(512px+(40px*2))] px-[40px]'>
         <PartyroomDisplayBoard width={512} />
       </div>
