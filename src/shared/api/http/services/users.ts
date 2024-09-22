@@ -38,11 +38,11 @@ class UsersService extends HTTPClient implements UsersClient {
   };
 
   public temporary_SignInFullCrew = () => {
-    return this.post<void>(`${this.ROUTE_V1}/crews/sign/temporary/full-crew`);
+    return this.post<void>(`${this.ROUTE_V1}/members/sign/temporary/full-member`);
   };
 
   public temporary_SignInAssociateCrew = () => {
-    return this.post<void>(`${this.ROUTE_V1}/crews/sign/temporary/associate-crew`);
+    return this.post<void>(`${this.ROUTE_V1}/members/sign/temporary/associate-member`);
   };
 
   public getMyInfo = () => {
