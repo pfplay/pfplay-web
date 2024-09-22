@@ -2,10 +2,10 @@ import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { PFInfoOutline } from '@/shared/ui/icons';
-import { Panel } from '@/widgets/partyroom-detail/lib/panel-controller.context';
-import { PanelController } from '@/widgets/partyroom-detail/lib/panel-controller.provider';
-import MainPanel from '@/widgets/partyroom-detail/ui/main-panel.component';
-import PanelHeader from '@/widgets/partyroom-detail/ui/panel-header.component';
+import MainPanel from './main-panel.component';
+import PanelHeader from './panel-header.component';
+import { Panel } from '../lib/panel-controller.context';
+import { PanelController } from '../lib/panel-controller.provider';
 
 export default function Trigger() {
   const t = useI18n();
