@@ -1,14 +1,16 @@
 'use client';
-import { useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Avatar } from '@/entities/avatar';
 import { Crew } from '@/entities/current-partyroom';
 import { MotionType } from '@/shared/api/http/types/@enums';
 import { pick } from '@/shared/lib/functions/pick';
-import useDidUpdateEffect from '@/shared/lib/hooks/use-did-update-effect';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Area, getRandomPoint, getRandomPoints, Point } from '../model/avatar-position.model';
 
-export default function Avatars() {
+/**
+ * NOTE:부모 컴포넌트 리렌더에 의해 아바타 포지션이 재계산되는걸 방지하기 위해 memo로 감싸줌
+ */
+const Avatars = memo(() => {
   const { useCurrentPartyroom } = useStores();
   const { crews: storedCrews, currentDj } = useCurrentPartyroom((state) =>
     pick(state, ['crews', 'currentDj'])
@@ -55,7 +57,7 @@ export default function Avatars() {
     });
   };
 
-  useDidUpdateEffect(() => {
+  useEffect(() => {
     // 파티룸 진입 시 조건문이 순차로 실행된 후, 이후부턴 storedCrews가 변경될 때마다 syncWithStoredCrews가 실행됨
     if (!storedCrewsInitialized) {
       return;
@@ -126,7 +128,7 @@ export default function Avatars() {
       })}
     </div>
   );
-}
+});
 
 const ALLOW_AREA: Area = {
   from: { x: 10, y: 60 },
@@ -137,3 +139,5 @@ const DENY_AREA: Area = {
   from: { x: 0, y: 0 },
   to: { x: 40, y: 100 },
 };
+
+export default Avatars;
