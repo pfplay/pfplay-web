@@ -11,10 +11,6 @@ export type Area = {
   to: Point;
 };
 
-export function getRandomPoints(length: number, allowArea: Area, denyArea: Area): Point[] {
-  return Array.from({ length }, () => getRandomPoint(allowArea, denyArea));
-}
-
 export function getRandomPoint(allowArea: Area, denyArea: Area): Point {
   assertArea(allowArea);
   assertArea(denyArea);
