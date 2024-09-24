@@ -116,7 +116,7 @@ export type GetDjingQueuePayload = {
 };
 
 export type Dj = {
-  djId: number;
+  crewId: number;
   orderNumber: number;
   nickname: string;
   avatarIconUri: string;

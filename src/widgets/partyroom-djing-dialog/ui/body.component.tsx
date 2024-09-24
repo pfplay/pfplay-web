@@ -27,9 +27,7 @@ export default function Body({ djingQueue, onCancel }: Props) {
   const [currentDj, ...queue] = djingQueue.djs
     .slice()
     .sort((a, b) => a.orderNumber - b.orderNumber);
-  const isMeInQueue = queue.some((dj) => dj.djId === myCrewId);
-
-  // FIXME: 두 유저가 저 dialog를 열고 한 유저가 Skip 버튼을 눌렀을 때 그 때 다른 유저의 dialog에는 update된 정보가 갱신이 안되는 문제 해결
+  const isMeInQueue = queue.some((dj) => dj.crewId === myCrewId);
 
   return (
     <div className='text-start'>
@@ -92,10 +90,10 @@ export default function Body({ djingQueue, onCancel }: Props) {
           )}
           {!!queue?.length &&
             queue.map((dj, index) => {
-              const isMe = dj.djId === myCrewId;
+              const isMe = dj.crewId === myCrewId;
 
               return (
-                <div key={'queue' + dj.djId} className='flex justify-between items-center'>
+                <div key={'queue' + dj.crewId} className='flex justify-between items-center'>
                   {/* TODO: 각 리스트에 삭제 버튼이 있어야 함. User List Item 컴포넌트로 대체 해야 할 지 고민해보기 */}
                   <DjListItem
                     order={`${index + 1}`}
