@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useEvaluateCurrentPlayback } from '@/features/partyroom/evaluate-current-playback';
 import { useGrabCurrentPlayback } from '@/features/partyroom/grab-current-playback';
 import { ReactionType } from '@/shared/api/http/types/@enums';
@@ -11,13 +11,22 @@ import ActionButton from './action-button.component';
 export default function ActionButtons() {
   const { mutate: grabCurrentPlayback } = useGrabCurrentPlayback();
   const { mutate: evaluateCurrentPlayback } = useEvaluateCurrentPlayback();
-  const [reaction, playbackActivated] = useStores().useCurrentPartyroom((state) => [
+  const [reaction, playbackActivated, playback] = useStores().useCurrentPartyroom((state) => [
     state.reaction,
     state.playbackActivated,
+    state.playback,
   ]);
-  const [flag, updateFlag] = useAggregationFlag({
+  const [flag, updateFlag, resetFlag] = useAggregationFlag({
     initialValue: reaction?.history,
   });
+
+  useEffect(() => {
+    /**
+     * Current Playback은 과거와 동일한 LinkId를 갖는 Music을 재생하더라도 항상 새로운 인스턴스 취급을 받습니다.
+     * 따라서, Playback이 변경될 때마다 Flag는 초기화 되어야 합니다.
+     */
+    resetFlag();
+  }, [playback]);
 
   return (
     <>
@@ -77,16 +86,18 @@ type Props = {
 };
 function useAggregationFlag({ initialValue }: Props) {
   const entered = useRef(false);
-  const [flag, setFlag] = useState({
-    isLiked: false,
-    isDisliked: false,
-    isGrabbed: false,
-  });
+  const [flag, setFlag] = useState<Flag>(defaultFlag);
 
   const updateFlag = (next: Next<Flag>) => {
     setFlag((prev) => {
       return update(prev, next);
     });
+  };
+
+  const resetFlag = () => {
+    if (!entered.current) return;
+
+    setFlag(defaultFlag);
   };
 
   // initialValue가 truthy일 때 "파티룸 입장 완료"로 간주하고 상태를 초기화합니다.
@@ -97,5 +108,10 @@ function useAggregationFlag({ initialValue }: Props) {
     }
   }, [initialValue]);
 
-  return [flag, updateFlag] as const;
+  return [flag, updateFlag, resetFlag] as const;
 }
+const defaultFlag = Object.freeze<Flag>({
+  isLiked: false,
+  isDisliked: false,
+  isGrabbed: false,
+});
