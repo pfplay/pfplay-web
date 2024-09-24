@@ -12,6 +12,11 @@ export default function PanelHeader({ onClose }: Props) {
   const t = useI18n();
   const { currentPanel, goTo } = usePanelController();
 
+  const panelTitleDict: Record<Panel, string> = {
+    [Panel.Main]: t.party.title.party_info,
+    [Panel.PlaybackHistory]: t.db.title.recent_dj_list,
+  };
+
   return (
     <div className='flexRowCenter gap-3'>
       {currentPanel !== Panel.Main && (
@@ -25,7 +30,7 @@ export default function PanelHeader({ onClose }: Props) {
       )}
 
       <Typography type='body3' className='flex-1'>
-        {t.party.title.party_info}
+        {panelTitleDict[currentPanel]}
       </Typography>
 
       <PFClose
