@@ -1,7 +1,7 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import PartyroomsService from '@/shared/api/http/services/partyrooms';
+import { useGetPartyroomIdByDomain } from '@/features/share-link';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { useDialog } from '@/shared/ui/components/dialog';
@@ -23,29 +23,38 @@ export default function SharedLinkPage() {
   const router = useRouter();
   const { openErrorDialog } = useDialog();
 
+  const { mutate: getPartyroomIdByDomain } = useGetPartyroomIdByDomain();
+
   useEffect(() => {
     const enterBySharedLink = async () => {
       if (!domain) {
         throw new Error('Domain is not provided.');
       }
 
-      try {
-        const response = await PartyroomsService.enterBySharedLink({ domain });
-        const { partyroomId } = response;
+      getPartyroomIdByDomain(
+        { domain },
+        {
+          onSuccess: (response) => {
+            const { partyroomId } = response;
 
-        if (!partyroomId) {
-          throw new Error('Partyroom not found.');
+            if (!partyroomId) {
+              throw new Error('Partyroom not found.'); // TODO: i18n 적용
+            }
+
+            router.push(`/parties/${partyroomId}`);
+          },
+          onError: (error) => {
+            errorLogger(error);
+            openErrorDialog(
+              error.message || 'An error occurred while entering the party room. Please try again.' // TODO: i18n 적용
+            );
+          },
         }
-
-        router.push(`/parties/${partyroomId}`);
-      } catch (error) {
-        errorLogger(error);
-        openErrorDialog('An error occurred while entering the party room. Please try again.');
-      }
+      );
     };
 
     enterBySharedLink();
-  }, [domain, router]);
+  }, [domain, router, getPartyroomIdByDomain, openErrorDialog]);
 
   // TODO: 로딩 디자인 적용: (https://www.figma.com/design/9I5PR6OqN8cHJ7WVTOKe00/PFPlay-GUI-%EC%84%A4%EA%B3%84%EC%84%9C-%ED%95%A9%EB%B3%B8?node-id=3019-29522&t=jwbleGJOLe2EfWEW-4)
   return <div>Loading...</div>;

@@ -191,7 +191,7 @@ export type EnterResponse = {
   gradeType: GradeType;
 };
 
-export type EnterBySharedLinkResponse = {
+export type GetRoomIdByDomainResponse = {
   partyroomId: number;
 };
 
@@ -210,7 +210,7 @@ export type ReactionPayload = {
   reactionType: ReactionType;
 };
 
-export type EnterBySharedLinkPayload = {
+export type GetRoomIdByDomainPayload = {
   domain: string;
 };
 
@@ -271,5 +271,5 @@ export interface PartyroomsClient {
   /**
    * 공유 링크 입장
    */
-  enterBySharedLink: (payload: EnterBySharedLinkPayload) => Promise<EnterBySharedLinkResponse>;
+  getRoomIdByDomain: (payload: GetRoomIdByDomainPayload) => Promise<GetRoomIdByDomainResponse>;
 }

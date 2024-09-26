@@ -4,7 +4,7 @@ import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';
-import { Loading } from '@/shared/ui/components/loading';
+import { LoadingPanel } from '@/shared/ui/components/loading';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFChevronRight, PFLink, PFSettings } from '@/shared/ui/icons';
 import useOpenShareDialog from './use-open-share-dialog.hook';
@@ -30,8 +30,8 @@ export default function MainPanel() {
 
   if (isLoading) {
     return (
-      <div className='h-[343px] flex justify-center items-center'>
-        <Loading />
+      <div className='h-[343px]'>
+        <LoadingPanel />
       </div>
     );
   }
