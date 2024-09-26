@@ -12,14 +12,16 @@ import type {
   GetSetUpInfoResponse,
   PartyroomCrewSummary,
   PartyroomsClient,
-  PartyroomSummary,
+  PartyroomDetailSummary,
   ReactionPayload,
   AdjustGradePayload,
-  GetPartyroomSummaryPayload,
+  GetPartyroomDetailSummaryPayload,
   ReactionResponse,
   GetPlaybackHistoryPayload,
   PlaybackHistoryItem,
   EnterBySharedLinkPayload,
+  EnterBySharedLinkResponse,
+  PartyroomSummary,
 } from 'shared/api/http/types/partyrooms';
 import HTTPClient from '../client/client';
 
@@ -31,8 +33,8 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
     return this.get<PartyroomSummary[]>(`${this.ROUTE_V1}`);
   };
 
-  public getPartyroomSummary = ({ partyroomId }: GetPartyroomSummaryPayload) => {
-    return this.get<PartyroomSummary>(`${this.ROUTE_V1}/${partyroomId}/summary`);
+  public getPartyroomDetailSummary = ({ partyroomId }: GetPartyroomDetailSummaryPayload) => {
+    return this.get<PartyroomDetailSummary>(`${this.ROUTE_V1}/${partyroomId}/summary`);
   };
 
   public getSetupInfo = ({ partyroomId }: GetSetupInfoPayload) => {
@@ -71,8 +73,8 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
     return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/grade`, body);
   };
 
-  public enterBySharedLink = ({ linkDomain }: EnterBySharedLinkPayload) => {
-    return this.get<EnterResponse>(`${this.ROUTE_V1}/link/${linkDomain}/enter`);
+  public enterBySharedLink = ({ domain }: EnterBySharedLinkPayload) => {
+    return this.get<EnterBySharedLinkResponse>(`${this.ROUTE_V1}/link/${domain}/enter`);
   };
 }
 

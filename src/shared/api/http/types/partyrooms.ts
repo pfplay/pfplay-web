@@ -8,6 +8,14 @@ import {
   StageType,
 } from '@/shared/api/http/types/@enums';
 
+export type PartyroomDetailSummary = {
+  title: string;
+  introduction: string;
+  linkDomain: string;
+  playbackTimeLimit: number;
+  currentDj: Pick<PartyroomCrew, 'crewId' | 'nickname' | 'avatarIconUri'>;
+};
+
 export type PartyroomSummary = {
   partyroomId: number;
   stageType: StageType;
@@ -164,7 +172,7 @@ export type EnterPayload = {
   partyroomId: number;
 };
 
-export type GetPartyroomSummaryPayload = {
+export type GetPartyroomDetailSummaryPayload = {
   partyroomId: number;
 };
 
@@ -183,6 +191,10 @@ export type EnterResponse = {
   gradeType: GradeType;
 };
 
+export type EnterBySharedLinkResponse = {
+  partyroomId: number;
+};
+
 export type ExitPayload = {
   partyroomId: number;
 };
@@ -199,7 +211,7 @@ export type ReactionPayload = {
 };
 
 export type EnterBySharedLinkPayload = {
-  linkDomain: string;
+  domain: string;
 };
 
 export type ReactionResponse = {
@@ -216,7 +228,9 @@ export interface PartyroomsClient {
   /**
    * 파티룸 정보 조회
    */
-  getPartyroomSummary: (payload: GetPartyroomSummaryPayload) => Promise<PartyroomSummary>;
+  getPartyroomDetailSummary: (
+    payload: GetPartyroomDetailSummaryPayload
+  ) => Promise<PartyroomDetailSummary>;
   /**
    * 파티룸 초기화 정보 조회
    */
@@ -257,5 +271,5 @@ export interface PartyroomsClient {
   /**
    * 공유 링크 입장
    */
-  enterBySharedLink: (payload: EnterBySharedLinkPayload) => Promise<EnterResponse>;
+  enterBySharedLink: (payload: EnterBySharedLinkPayload) => Promise<EnterBySharedLinkResponse>;
 }

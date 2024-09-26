@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { TwitterShareButton } from 'react-share';
-import { useFetchPartyroomSummary } from '@/features/partyroom/get-summary';
+import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
 import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -25,7 +25,7 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
   const params = useParams<{ id: string }>();
   const { data: djingQueue } = useFetchDjingQueue({ partyroomId: Number(params.id) }, true);
   const [currentDj] = djingQueue?.djs.slice().sort((a, b) => a.orderNumber - b.orderNumber) || [];
-  const { data: partyroom } = useFetchPartyroomSummary(Number(params.id));
+  const { data: partyroom } = useFetchPartyroomDetailSummary(Number(params.id));
   const currentPlayback = useStores().useCurrentPartyroom((state) => state.playback?.name);
 
   const handleShareBtnClick = () => {
@@ -39,7 +39,7 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
       Body: () => {
         const [isCopied, setIsCopied] = useState(false);
 
-        const sharedUrl = `${baseUrl}/party/${params.id}`;
+        const sharedUrl = `${baseUrl}/party/${partyroom?.linkDomain}`;
 
         const handleCopyLink = () => {
           navigator.clipboard.writeText(sharedUrl);
@@ -107,7 +107,7 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
       <div className='h-[1px] w-full bg-gray-600' />
       <div className='flexCol gap-3 items-start'>
         <Typography type='body3'>{t.dj.title.current_dj}</Typography>
-        <div className='w-full h-12 bg-gray-800 rounded'>
+        <div className='w-full h-12 bg-gray-800 rounded flex justify-start items-center '>
           {currentDj ? (
             <DjListItem
               userConfig={{
@@ -117,7 +117,9 @@ export default function PartyroomDetailPanel({ onClose }: Props) {
             />
           ) : (
             // TODO: 추후 i18n 적용 필요
-            <Typography type='detail1'>진행 중인 디제잉이 없어요 zZz...</Typography>
+            <Typography type='detail1' className='pl-4 my-auto'>
+              진행 중인 디제잉이 없어요 zZz...
+            </Typography>
           )}
         </div>
       </div>

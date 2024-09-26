@@ -1,1 +1,1 @@
-export { default as useFetchPartyroomSummary } from './api/use-fetch-partyroom-summary.query';
+export { default as useFetchPartyroomDetailSummary } from './api/use-fetch-partyroom-detail-summary.query';
