@@ -29,3 +29,5 @@ export type PaginationResponse<T> = {
   content: T[];
   pagination: Pagination;
 };
+
+export type ApiStatus = 'idle' | 'loading' | 'success' | 'error';
