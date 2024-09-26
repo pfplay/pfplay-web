@@ -6,12 +6,13 @@ import { APIError } from '@/shared/api/http/types/@shared';
 import { PartyroomDetailSummary } from '@/shared/api/http/types/partyrooms';
 import { FIVE_MINUTES } from '@/shared/config/time';
 
-export default function useFetchPartyroomDetailSummary(partyroomId: number) {
+export default function useFetchPartyroomDetailSummary(partyroomId: number, enabled: boolean) {
   return useQuery<PartyroomDetailSummary, AxiosError<APIError>>({
     queryKey: [QueryKeys.PartyroomDetailSummary, partyroomId],
     queryFn: () => PartyroomsService.getPartyroomDetailSummary({ partyroomId }),
     staleTime: 0,
     gcTime: FIVE_MINUTES,
     refetchOnWindowFocus: true,
+    enabled,
   });
 }

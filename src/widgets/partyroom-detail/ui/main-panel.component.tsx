@@ -15,8 +15,14 @@ export default function MainPanel() {
   const params = useParams<{ id: string }>();
   const { goTo } = usePanelController();
 
-  const { data: djingQueue } = useFetchDjingQueue({ partyroomId: Number(params.id) }, !!params.id);
-  const { data: partyroomSummary, isLoading } = useFetchPartyroomDetailSummary(Number(params.id));
+  const { data: djingQueue, isLoading: isDjingQueueLoading } = useFetchDjingQueue(
+    { partyroomId: Number(params.id) },
+    !!params.id
+  );
+  const { data: partyroomSummary, isLoading: isPartyroomSummaryLoading } =
+    useFetchPartyroomDetailSummary(Number(params.id), !!params.id);
+
+  const isLoading = isDjingQueueLoading || isPartyroomSummaryLoading;
 
   const currentDj = djingQueue?.djs.slice().sort((a, b) => a.orderNumber - b.orderNumber)[0];
 
