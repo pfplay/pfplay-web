@@ -11,21 +11,21 @@ type UseDisclosureProps = {
  * @see reference - https://chakra-ui.com/docs/hooks/use-disclosure
  */
 export function useDisclosure(props: UseDisclosureProps = {}) {
-  const [localOpenState, setopen] = useState(props.defaultOpen || false);
+  const [localOpenState, setOpen] = useState(props.defaultOpen || false);
 
   const open = props.open !== undefined ? props.open : localOpenState;
   const isControlled = props.open !== undefined;
 
   const onClose = useCallback(() => {
     if (!isControlled) {
-      setopen(false);
+      setOpen(false);
     }
     props.onClose?.();
   }, [isControlled]);
 
   const onOpen = useCallback(() => {
     if (!isControlled) {
-      setopen(true);
+      setOpen(true);
     }
     props.onOpen?.();
   }, [isControlled]);

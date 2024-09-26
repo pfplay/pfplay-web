@@ -1,13 +1,27 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import PartyroomsService from '@/shared/api/http/services/partyrooms';
-import { ApiStatus } from '@/shared/api/http/types/@shared';
+import { errorLog } from '@/shared/lib/functions/log/logger';
+import withDebugger from '@/shared/lib/functions/log/with-debugger';
+import { useDialog } from '@/shared/ui/components/dialog';
 
+const logger = withDebugger(0);
+const errorLogger = logger(errorLog);
+/**
+ * SharedLinkPage 컴포넌트
+ *
+ * 이 컴포넌트는 공유 링크를 통해 파티룸에 입장할 때 사용됩니다.
+ * 주요 기능:
+ * 1. URL 파라미터로 받은 도메인을 사용하여 파티룸 입장을 시도합니다.
+ * 2. 에러 발생 시 Error 객체를 throw하여 Next.js의 error.tsx에서 처리하도록 합니다.
+ * 3. 파티룸 입장 처리 중에는 로딩 디자인을 렌더링합니다.
+ *
+ */
 export default function SharedLinkPage() {
   const { domain } = useParams<{ domain: string }>();
   const router = useRouter();
-  const [apiStatus, setApiStatus] = useState<ApiStatus>('idle');
+  const { openErrorDialog } = useDialog();
 
   useEffect(() => {
     const enterBySharedLink = async () => {
@@ -16,7 +30,6 @@ export default function SharedLinkPage() {
       }
 
       try {
-        setApiStatus('loading');
         const response = await PartyroomsService.enterBySharedLink({ domain });
         const { partyroomId } = response;
 
@@ -25,25 +38,15 @@ export default function SharedLinkPage() {
         }
 
         router.push(`/parties/${partyroomId}`);
-        setApiStatus('success');
       } catch (error) {
-        console.error('Error occurred while entering the party room:', error);
-        setApiStatus('error');
+        errorLogger(error);
+        openErrorDialog('An error occurred while entering the party room. Please try again.');
       }
     };
 
     enterBySharedLink();
   }, [domain, router]);
 
-  if (apiStatus === 'loading') {
-    // TODO: 로딩 디자인 추가: https://www.figma.com/design/9I5PR6OqN8cHJ7WVTOKe00/PFPlay-GUI-%EC%84%A4%EA%B3%84%EC%84%9C-%ED%95%A9%EB%B3%B8?node-id=3019-29522&t=jwbleGJOLe2EfWEW-4
-    return <div>Loading...</div>;
-  }
-
-  if (apiStatus === 'error') {
-    // TODO: 에러 모달 추가 후 redirection: https://www.figma.com/design/9I5PR6OqN8cHJ7WVTOKe00/PFPlay-GUI-%EC%84%A4%EA%B3%84%EC%84%9C-%ED%95%A9%EB%B3%B8?node-id=3019-29763&t=jwbleGJOLe2EfWEW-4
-    return <div>Error occurred while entering the party room.</div>;
-  }
-
-  return <div>{domain}</div>;
+  // TODO: 로딩 디자인 적용: (https://www.figma.com/design/9I5PR6OqN8cHJ7WVTOKe00/PFPlay-GUI-%EC%84%A4%EA%B3%84%EC%84%9C-%ED%95%A9%EB%B3%B8?node-id=3019-29522&t=jwbleGJOLe2EfWEW-4)
+  return <div>Loading...</div>;
 }
