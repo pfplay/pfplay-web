@@ -2,12 +2,7 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useGetPartyroomIdByDomain } from '@/features/share-link';
-import { errorLog } from '@/shared/lib/functions/log/logger';
-import withDebugger from '@/shared/lib/functions/log/with-debugger';
-import { useDialog } from '@/shared/ui/components/dialog';
 
-const logger = withDebugger(0);
-const errorLogger = logger(errorLog);
 /**
  * SharedLinkPage 컴포넌트
  *
@@ -21,40 +16,24 @@ const errorLogger = logger(errorLog);
 export default function SharedLinkPage() {
   const { domain } = useParams<{ domain: string }>();
   const router = useRouter();
-  const { openErrorDialog } = useDialog();
 
   const { mutate: getPartyroomIdByDomain } = useGetPartyroomIdByDomain();
 
   useEffect(() => {
-    const enterBySharedLink = async () => {
-      if (!domain) {
-        throw new Error('Domain is not provided.');
-      }
-
+    if (domain) {
       getPartyroomIdByDomain(
         { domain },
         {
           onSuccess: (response) => {
             const { partyroomId } = response;
 
-            if (!partyroomId) {
-              throw new Error('Partyroom not found.'); // TODO: i18n 적용
-            }
-
             router.push(`/parties/${partyroomId}`);
           },
-          onError: (error) => {
-            errorLogger(error);
-            openErrorDialog(
-              error.message || 'An error occurred while entering the party room. Please try again.' // TODO: i18n 적용
-            );
-          },
+          // NOTE: partyroomId 없을 때 서버에서 404 에러 발생하면 react-query-provider에서 처리
         }
       );
-    };
-
-    enterBySharedLink();
-  }, [domain, router, getPartyroomIdByDomain, openErrorDialog]);
+    }
+  }, [domain, router, getPartyroomIdByDomain]);
 
   // TODO: 로딩 디자인 적용: (https://www.figma.com/design/9I5PR6OqN8cHJ7WVTOKe00/PFPlay-GUI-%EC%84%A4%EA%B3%84%EC%84%9C-%ED%95%A9%EB%B3%B8?node-id=3019-29522&t=jwbleGJOLe2EfWEW-4)
   return <div>Loading...</div>;
