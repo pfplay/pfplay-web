@@ -3,6 +3,7 @@ import {
   GradeType,
   MotionType,
   PartyroomGrade,
+  PenaltyType,
   QueueStatus,
   ReactionType,
   StageType,
@@ -231,6 +232,17 @@ export type ReactionResponse = {
   isGrabbed: boolean;
 };
 
+export type ImposePenaltyPayload = {
+  partyroomId: number;
+  crewId: number;
+  penaltyType: PenaltyType;
+  reason: string;
+};
+
+export type ImposePenaltyResponse = {
+  data: string;
+};
+
 export interface PartyroomsClient {
   /**
    * 파티룸 생성
@@ -287,4 +299,8 @@ export interface PartyroomsClient {
    * 공유 링크 입장
    */
   getRoomIdByDomain: (payload: GetRoomIdByDomainPayload) => Promise<GetRoomIdByDomainResponse>;
+  /**
+   * 파티룸 패널티 적용
+   */
+  imposePenalty: (payload: ImposePenaltyPayload) => Promise<ImposePenaltyResponse>;
 }
