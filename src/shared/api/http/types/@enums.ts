@@ -42,6 +42,7 @@ export enum QueueStatus {
   OPEN = 'OPEN',
 }
 
+// FIXME: enum auto generation 스크립트 수정 필요
 export enum PenaltyType {
   CHAT_BAN_30_SECONDS = 'CHAT_BAN_30_SECONDS', // 채팅 금지
   CHAT_MESSAGE_REMOVAL = 'CHAT_MESSAGE_REMOVAL', // 채팅 메시지 삭제"
