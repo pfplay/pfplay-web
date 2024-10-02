@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { TwitterShareButton } from 'react-share';
+import { PartyroomDetailSummary } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 
-export default function useOpenShareDialog(partyroomTitle: string) {
+export default function useOpenShareDialog(partyroomSummary?: PartyroomDetailSummary) {
   const t = useI18n();
   const { openDialog } = useDialog();
 
@@ -19,21 +20,25 @@ export default function useOpenShareDialog(partyroomTitle: string) {
       classNames: {
         container: 'w-[420px] py-8 px-10 bg-gray-800',
       },
-      Body: () => <Body partyroomTitle={partyroomTitle} />,
+      Body: () => <Body partyroom={partyroomSummary} />,
     }));
   };
 }
 
-function Body({ partyroomTitle }: { partyroomTitle: string }) {
+function Body({ partyroom }: { partyroom?: PartyroomDetailSummary }) {
+  if (!partyroom?.title) {
+    throw new Error('partyroom summary is not found.');
+  }
+
   const [id, playback] = useStores().useCurrentPartyroom((state) => [state.id, state.playback]);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const t = useI18n();
+  const sharedUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/party/${partyroom?.linkDomain}`;
+
   if (typeof id === 'undefined') {
     throw new Error('partyroomId is not found. maybe you are not in the partyroom.');
   }
-
-  const t = useI18n();
-  const sharedUrl = `https://pfplay.io/party/${id}`;
-
-  const [isCopied, setIsCopied] = useState(false);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(sharedUrl);
@@ -45,7 +50,7 @@ function Body({ partyroomTitle }: { partyroomTitle: string }) {
       <div className='w-[340px] flexCol gap-3'>
         <div className='w-full h-12 flexRowCenter gap-2 bg-gray-700 rounded cursor-pointer'>
           <TwitterShareButton
-            title={`I'm listening to ${partyroomTitle} room. Come hang out! Now playing ${playback?.name} 🎶 `} // TODO: 추후 현재 재생중인 노래가 없을 때의 문구 적용
+            title={`I'm listening to ${partyroom?.title} room. Come hang out! Now playing ${playback?.name} 🎶 `} // TODO: 1.추후 현재 재생중인 노래가 없을 때의 문구 적용, 2. i18n 적용
             related={['@pfplay_music']}
             url={`@pfplay_music ${sharedUrl}`}
             className='w-full h-12 flexRowCenter gap-2 bg-gray-700 rounded cursor-pointer'

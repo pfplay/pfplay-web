@@ -1,9 +1,10 @@
 import { useParams } from 'next/navigation';
-import { useFetchPartyroomSummary } from '@/features/partyroom/get-summary';
+import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
 import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';
+import { LoadingPanel } from '@/shared/ui/components/loading';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFChevronRight, PFLink, PFSettings } from '@/shared/ui/icons';
 import useOpenShareDialog from './use-open-share-dialog.hook';
@@ -14,11 +15,26 @@ export default function MainPanel() {
   const params = useParams<{ id: string }>();
   const { goTo } = usePanelController();
 
-  const { data: djingQueue } = useFetchDjingQueue({ partyroomId: Number(params.id) }, true);
+  const { data: djingQueue, isLoading: isDjingQueueLoading } = useFetchDjingQueue(
+    { partyroomId: Number(params.id) },
+    !!params.id
+  );
+  const { data: partyroomSummary, isLoading: isPartyroomSummaryLoading } =
+    useFetchPartyroomDetailSummary(Number(params.id), !!params.id);
+
+  const isLoading = isDjingQueueLoading || isPartyroomSummaryLoading;
+
   const currentDj = djingQueue?.djs.slice().sort((a, b) => a.orderNumber - b.orderNumber)[0];
 
-  const { data: partyroomSummary } = useFetchPartyroomSummary(Number(params.id));
-  const openShareDialog = useOpenShareDialog(partyroomSummary?.title ?? '');
+  const openShareDialog = useOpenShareDialog(partyroomSummary);
+
+  if (isLoading) {
+    return (
+      <div className='h-[343px]'>
+        <LoadingPanel />
+      </div>
+    );
+  }
 
   return (
     <div className='flex flex-col gap-6 mt-6'>
@@ -37,7 +53,7 @@ export default function MainPanel() {
 
       <div className='flexCol gap-3 items-start'>
         <Typography type='body3'>{t.dj.title.current_dj}</Typography>
-        <div className='w-full h-12 bg-gray-800 rounded'>
+        <div className='w-full h-12 bg-gray-800 rounded flex justify-start items-center '>
           {currentDj ? (
             <DjListItem
               userConfig={{
@@ -46,7 +62,10 @@ export default function MainPanel() {
               }}
             />
           ) : (
-            <Typography type='detail1'>{t.dj.para.empty_dj}</Typography>
+            // TODO: 추후 i18n 적용 필요
+            <Typography type='detail1' className='pl-4 my-auto'>
+              진행 중인 디제잉이 없어요 zZz...
+            </Typography>
           )}
         </div>
       </div>
