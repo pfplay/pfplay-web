@@ -239,10 +239,6 @@ export type ImposePenaltyPayload = {
   reason: string;
 };
 
-export type ImposePenaltyResponse = {
-  data: string;
-};
-
 export interface PartyroomsClient {
   /**
    * 파티룸 생성
@@ -302,5 +298,5 @@ export interface PartyroomsClient {
   /**
    * 파티룸 패널티 적용
    */
-  imposePenalty: (payload: ImposePenaltyPayload) => Promise<ImposePenaltyResponse>;
+  imposePenalty: (payload: ImposePenaltyPayload) => Promise<void>;
 }

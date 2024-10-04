@@ -81,7 +81,8 @@ export const createCurrentPartyroomStore = () => {
     chat: Chat.create<ChatMessage.Model>([]),
     appendChatMessage: (crewId, content) => {
       return set((state) => {
-        const crew = state.crews.find((crew) => crew.crewId === crewId);
+        // @ts-ignore FIXME: BE에서 받아오는 데이터가 crewId 수정될 때 ts-ignore 지우고 crewId 수정
+        const crew = state.crews.find((crew) => crew.memberId === crewId);
         if (!crew) {
           logCrewNotFound(crewId, state.crews);
           return state;
