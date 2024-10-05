@@ -23,10 +23,10 @@ const PartyLobbyPage = () => {
         <section
           className={cn([
             'grid gap-[1.5rem] mt-6 overflow-y-auto',
-            'grid-rows-[repeat(auto-fit,240px)]',
+            'grid-rows-[240px] auto-rows-[240px] grid-flow-row-dense',
             'grid-cols-1',
-            'tablet:grid-cols-[repeat(auto-fit,minmax(calc((100%-1.5rem)/2),1fr))]', // 100%-{COL_GAP}
-            'desktop:grid-cols-[repeat(auto-fit,minmax(calc((100%-3rem)/3),1fr))]', // 100%-({COL_GAP}*2)
+            'tablet:grid-cols-[repeat(auto-fit,calc((100%-1.5rem)/2))]', // 100%-{COL_GAP}
+            'desktop:grid-cols-[repeat(auto-fit,calc((100%-3rem)/3))]', // 100%-({COL_GAP}*2)
           ])}
         >
           <PartyroomCreateCard />
