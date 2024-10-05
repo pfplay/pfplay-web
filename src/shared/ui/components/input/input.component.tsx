@@ -7,8 +7,10 @@ import {
   forwardRef,
   useState,
   KeyboardEventHandler,
+  useRef,
 } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
+import { combineRef } from '@/shared/lib/functions/combine-ref';
 import { Typography } from '../typography';
 
 type InputSize = 'md' | 'lg';
@@ -46,13 +48,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const combinedRef = combineRef([ref, inputRef]);
+
     const [localValue, setLocalValue] = useState(defaultValue);
     const value = _value ?? localValue;
 
     const handleClickWrapper: MouseEventHandler<HTMLDivElement> = (e) => {
       if (!(e.target as HTMLElement).closest('button')) {
-        inputRef?.focus();
+        inputRef.current?.focus();
       }
     };
 
@@ -83,14 +87,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {Prefix && <div className='mr-[12px]'>{Prefix}</div>}
 
         <input
-          ref={(node) => {
-            setInputRef(node);
-            if (typeof ref === 'function') {
-              ref(node);
-            } else if (ref) {
-              ref.current = node;
-            }
-          }}
+          ref={combinedRef}
           type='text'
           className={cn(
             'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none',
