@@ -2,9 +2,13 @@
 import { Crew, useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import { ChatMessage } from '@/entities/current-partyroom';
 import { useAdjustGrade } from '@/features/partyroom/adjust-grade';
-import { useDeleteChatMessageDialog } from '@/features/partyroom/impose-penalty';
+import {
+  useImposePenaltyDialog,
+  useDeleteChatMessageDialog,
+} from '@/features/partyroom/impose-penalty';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
 import { SendChatMessage } from '@/features/partyroom/send-chat-message';
+import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { useVerticalStretch } from '@/shared/lib/hooks/use-vertical-stretch.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -14,64 +18,11 @@ import { Input } from '@/shared/ui/components/input';
 import { PFSend } from '@/shared/ui/icons';
 import ChatItem from './chat-item.component';
 
-// const mockChats = [
-//   {
-//     crew: {
-//       uid: 'a28ae220-c2a7-4d7b-9bc8-51ff3e933aec',
-//       authorityTier: 'FM',
-//       crewId: 15,
-//       gradeType: 'LISTENER',
-//       nickname: 'nickname',
-//       avatarBodyUri: '',
-//       avatarFaceUri: '',
-//       avatarIconUri: '',
-//       combinePositionX: 0,
-//       combinePositionY: 0,
-//       motionType: MotionType.NONE,
-//     },
-//     content: 'hihi',
-//     receivedAt: 1727887126419,
-//   },
-//   {
-//     crew: {
-//       uid: 'e2915d5f-dc2d-4aa8-88ec-6faa18526f9a',
-//       authorityTier: 'FM',
-//       crewId: 16,
-//       gradeType: 'LISTENER',
-//       nickname: 'nickname',
-//       avatarBodyUri: '',
-//       avatarFaceUri: '',
-//       avatarIconUri: '',
-//       combinePositionX: 0,
-//       combinePositionY: 0,
-//       motionType: MotionType.NONE,
-//     },
-//     content: 'hoho',
-//     receivedAt: 1727887132622,
-//   },
-//   {
-//     crew: {
-//       uid: 'e2915d5f-dc2d-4aa8-88ec-6faa18526f9a',
-//       authorityTier: 'FM',
-//       crewId: 16,
-//       gradeType: 'LISTENER',
-//       nickname: 'nickname',
-//       avatarBodyUri: '',
-//       avatarFaceUri: '',
-//       avatarIconUri: '',
-//       combinePositionX: 0,
-//       combinePositionY: 0,
-//       motionType: MotionType.NONE,
-//     },
-//     content: 'hoho',
-//     receivedAt: 1727887142810,
-//   },
-// ] as ReturnType<typeof useCurrentPartyroomChat>;
-
 export default function PartyroomChatPanel() {
   const t = useI18n();
   const adjustGrade = useAdjustGrade();
   const openDeleteChatMessageDialog = useDeleteChatMessageDialog();
+  const openImposePenaltyDialog = useImposePenaltyDialog();
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
   const me = useStores().useCurrentPartyroom((state) => state.me);
@@ -82,8 +33,6 @@ export default function PartyroomChatPanel() {
   >({
     itemsGap: 16,
   });
-
-  console.log({ chatMessages });
 
   return (
     <div ref={containerRef} className='flexCol gap-1'>
@@ -107,10 +56,19 @@ export default function PartyroomChatPanel() {
                 {
                   label: t.common.btn.delete,
                   onClickItem: () => {
-                    // console.log({ crewId: message.crew.memberId });
                     openDeleteChatMessageDialog({
-                      // @ts-ignore FIXME: BE에서 받아오는 데이터가 crewId 수정될 때 ts-ignore 지우고 crewId 수정
-                      crewId: message.crew.memberId,
+                      crewId: message.crew.crewId,
+                    });
+                  },
+                  visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
+                },
+                {
+                  label: 'GGUL', // TODO: i18n 적용
+                  onClickItem: () => {
+                    openImposePenaltyDialog({
+                      crewId: message.crew.crewId,
+                      nickname: message.crew.nickname,
+                      penaltyType: PenaltyType.CHAT_BAN_30_SECONDS,
                     });
                   },
                   // visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
@@ -118,14 +76,24 @@ export default function PartyroomChatPanel() {
                 {
                   label: 'Kick', // TODO: i18n 적용
                   onClickItem: () => {
-                    alert('Not implemented yet.');
+                    openImposePenaltyDialog({
+                      crewId: message.crew.crewId,
+                      nickname: message.crew.nickname,
+                      penaltyType: PenaltyType.ONE_TIME_EXPULSION,
+                    });
                   },
+                  // visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
                 },
                 {
-                  label: t.common.btn.block,
+                  label: 'Ban', // TODO: i18n 적용
                   onClickItem: () => {
-                    alert('Not implemented yet.');
+                    openImposePenaltyDialog({
+                      crewId: message.crew.crewId,
+                      nickname: message.crew.nickname,
+                      penaltyType: PenaltyType.PERMANENT_EXPULSION,
+                    });
                   },
+                  // visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
                 },
               ]}
             >
