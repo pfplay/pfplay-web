@@ -3,6 +3,11 @@ import type { Dictionary } from '@/shared/lib/localization/i18n.context';
 
 export type Model = z.infer<ReturnType<typeof getSchema>>;
 
+export const MAX_LENGTH = {
+  NAME: 30,
+  INTRODUCE: 50,
+};
+
 export const getSchema = (t: Dictionary) =>
   z.object({
     name: z
@@ -23,7 +28,7 @@ export const getSchema = (t: Dictionary) =>
         message: '도메인에 공백이나 띄어쓰기를 포함할 수 없습니다',
       }),
     limit: z.coerce
-      .number({ invalid_type_error: t.createparty.para.noti_djing_limit })
+      .number()
       .int()
       .nonnegative()
       .gte(3, { message: t.createparty.para.noti_djing_limit }),

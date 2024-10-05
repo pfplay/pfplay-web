@@ -7,32 +7,28 @@ import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 import CreatePartyroomForm from './form.component';
 
-const PartyroomCreateCard = () => {
+export default function PartyroomCreateCard() {
   const t = useI18n();
   const lang = useLang();
-  const { openDialog, openAlertDialog } = useDialog();
+  const { openDialog, openConfirmDialog } = useDialog();
 
   const handleClickBeAHostBtn = () => {
     openDialog((_, onCancel) => ({
       title: t.createparty.title.create_party,
       titleAlign: 'left',
       showCloseIcon: true,
-      // closeConfirm: () => {
-      //   const [title, content] = t.createparty.para.cancel_confirm.split('\n');
-      //   return openConfirmDialog({
-      //     title,
-      //     content,
-      //   });
-      // },
+      closeConfirm: () => {
+        const [title, content] = t.createparty.para.cancel_confirm.split('\n');
+        return openConfirmDialog({
+          title,
+          content,
+        });
+      },
       classNames: {
         container: lang === Language.Ko ? 'w-[800px]' : 'w-[900px]',
       },
-      Body: () => <CreatePartyroomForm onModalClose={onCancel} />,
+      Body: () => <CreatePartyroomForm onClose={onCancel} />,
     }));
-
-    openAlertDialog({
-      content: 'Partyroom creation is Comming Soon :)',
-    });
   };
 
   return (
@@ -53,6 +49,4 @@ const PartyroomCreateCard = () => {
       </div>
     </button>
   );
-};
-
-export default PartyroomCreateCard;
+}
