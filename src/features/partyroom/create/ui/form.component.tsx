@@ -148,7 +148,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
                   }),
                 }}
               >
-                <InputNumber {...register('limit', { valueAsNumber: true })} initialValue={7} />
+                <InputNumber {...register('limit', { valueAsNumber: true })} />
                 <Typography as='span' type='detail1' className='text-gray-200 ml-[8px]'>
                   {t.createparty.para.min}
                 </Typography>
