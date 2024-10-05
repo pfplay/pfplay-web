@@ -1,12 +1,12 @@
 import { AccessType, MotionType } from '@/shared/api/http/types/@enums';
-import { AccessEvent } from '@/shared/api/websocket/types/partyroom';
+import { PartyroomAccessEvent } from '@/shared/api/websocket/types/partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
 
-export default function useAccessCallback() {
+export default function usePartyroomAccessCallback() {
   const { useCurrentPartyroom } = useStores();
   const updateCrews = useCurrentPartyroom((state) => state.updateCrews);
 
-  return (event: AccessEvent) => {
+  return (event: PartyroomAccessEvent) => {
     switch (event.accessType) {
       case AccessType.ENTER:
         updateCrews((prev) => {

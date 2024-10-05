@@ -2,28 +2,34 @@ import { IMessage } from '@stomp/stompjs';
 import { PartyroomEventType, PartyroomSubEvent } from '@/shared/api/websocket/types/partyroom';
 import { specificLog, warnLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
-import useAccessCallback from './subscription-callbacks/use-access-callback.hook';
-import useAggregationCallback from './subscription-callbacks/use-aggregation-callback.hook';
 import useChatCallback from './subscription-callbacks/use-chat-callback.hook';
-import useDeactivationCallback from './subscription-callbacks/use-deactivation-callback.hook';
-import useMotionCallback from './subscription-callbacks/use-motion-callback.hook';
-import useNoticeCallback from './subscription-callbacks/use-notice-callback.hook';
-import usePlaybackCallback from './subscription-callbacks/use-playback-callback.hook';
-import useRegulationCallback from './subscription-callbacks/use-regulation-callback.hook';
+import useCrewGradeCallback from './subscription-callbacks/use-crew-grade-callback.hook';
+import useCrewPenaltyCallback from './subscription-callbacks/use-crew-penalty-callback.hook';
+import useCrewProfileCallback from './subscription-callbacks/use-crew-profile-callback.hook';
+import usePartyroomAccessCallback from './subscription-callbacks/use-partyroom-access-callback.hook';
+import usePartyroomDeactivationCallback from './subscription-callbacks/use-partyroom-deactivation-callback.hook';
+import usePartyroomNoticeCallback from './subscription-callbacks/use-partyroom-notice-callback.hook';
+import usePlaybackSkipCallback from './subscription-callbacks/use-playback-skip-callback.hook';
+import usePlaybackStartCallback from './subscription-callbacks/use-playback-start-callback.hook';
+import useReactionAggregationCallback from './subscription-callbacks/use-reaction-aggregation-callback.hook';
+import useReactionMotionCallback from './subscription-callbacks/use-reaction-motion-callback.hook';
 
 const logger = withDebugger(0);
 const warnLogger = logger(warnLog);
 const infoLogger = logger(specificLog);
 
 export default function useHandleSubscriptionEvent() {
-  const accessCallback = useAccessCallback();
+  const partyroomDeactivationCallback = usePartyroomDeactivationCallback();
+  const partyroomAccessCallback = usePartyroomAccessCallback();
+  const partyroomNoticeCallback = usePartyroomNoticeCallback();
+  const reactionAggregationCallback = useReactionAggregationCallback();
+  const reactionMotionCallback = useReactionMotionCallback();
+  const playbackStartCallback = usePlaybackStartCallback();
+  const playbackSkipCallback = usePlaybackSkipCallback();
   const chatCallback = useChatCallback();
-  const motionCallback = useMotionCallback();
-  const noticeCallback = useNoticeCallback();
-  const aggregationCallback = useAggregationCallback();
-  const playbackCallback = usePlaybackCallback();
-  const deactivationCallback = useDeactivationCallback();
-  const regulationCallback = useRegulationCallback();
+  const crewGradeCallback = useCrewGradeCallback();
+  const crewPenaltyCallback = useCrewPenaltyCallback();
+  const crewProfileCallback = useCrewProfileCallback();
 
   return (message: IMessage) => {
     const event = parseMessage(message);
@@ -41,29 +47,38 @@ export default function useHandleSubscriptionEvent() {
     infoLogger('Received event:', event);
 
     switch (event.eventType) {
-      case PartyroomEventType.ACCESS:
-        accessCallback(event);
+      case PartyroomEventType.PARTYROOM_DEACTIVATION:
+        partyroomDeactivationCallback(event);
+        break;
+      case PartyroomEventType.PARTYROOM_ACCESS:
+        partyroomAccessCallback(event);
+        break;
+      case PartyroomEventType.PARTYROOM_NOTICE:
+        partyroomNoticeCallback(event);
+        break;
+      case PartyroomEventType.REACTION_AGGREGATION:
+        reactionAggregationCallback(event);
+        break;
+      case PartyroomEventType.REACTION_MOTION:
+        reactionMotionCallback(event);
+        break;
+      case PartyroomEventType.PLAYBACK_START:
+        playbackStartCallback(event);
+        break;
+      case PartyroomEventType.PLAYBACK_SKIP:
+        playbackSkipCallback(event);
         break;
       case PartyroomEventType.CHAT:
         chatCallback(event);
         break;
-      case PartyroomEventType.MOTION:
-        motionCallback(event);
+      case PartyroomEventType.CREW_GRADE:
+        crewGradeCallback(event);
         break;
-      case PartyroomEventType.NOTICE:
-        noticeCallback(event);
+      case PartyroomEventType.CREW_PENALTY:
+        crewPenaltyCallback(event);
         break;
-      case PartyroomEventType.AGGREGATION:
-        aggregationCallback(event);
-        break;
-      case PartyroomEventType.PLAYBACK:
-        playbackCallback(event);
-        break;
-      case PartyroomEventType.DEACTIVATION:
-        deactivationCallback(event);
-        break;
-      case PartyroomEventType.REGULATION:
-        regulationCallback(event);
+      case PartyroomEventType.CREW_PROFILE:
+        crewProfileCallback(event);
         break;
     }
   };
