@@ -22,12 +22,18 @@ import type {
   GetRoomIdByDomainPayload,
   GetRoomIdByDomainResponse,
   PartyroomSummary,
+  CreatePartyroomPayload,
+  CreatePartyroomResponse,
 } from 'shared/api/http/types/partyrooms';
 import HTTPClient from '../client/client';
 
 @Singleton
 class PartyroomsService extends HTTPClient implements PartyroomsClient {
   private ROUTE_V1 = 'v1/partyrooms';
+
+  public create = (payload: CreatePartyroomPayload) => {
+    return this.post<CreatePartyroomResponse>(this.ROUTE_V1, payload);
+  };
 
   public getList = () => {
     return this.get<PartyroomSummary[]>(`${this.ROUTE_V1}`);
