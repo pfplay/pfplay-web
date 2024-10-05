@@ -85,6 +85,7 @@ export default function useImposePenaltyDialog() {
   };
 }
 
+// TODO: i18n 적용
 function getPenaltyTypeTitle(penaltyType: PenaltyType) {
   return penaltyType === PenaltyType.CHAT_BAN_30_SECONDS
     ? replaceVar('$1합니다', {
