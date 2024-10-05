@@ -17,8 +17,8 @@ type InputSize = 'md' | 'lg';
 type InputVariant = 'filled' | 'outlined';
 
 export interface InputProps
-  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'size' | 'className'> {
-  initialValue?: string;
+  extends Omit<ComponentProps<'input'>, 'type' | 'defaultValue' | 'value' | 'size' | 'className'> {
+  defaultValue?: string;
   value?: string;
   size?: InputSize;
   variant?: InputVariant;
@@ -35,7 +35,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       value: _value,
-      initialValue = '',
+      defaultValue = '',
       onChange,
       maxLength,
       size = 'md',
@@ -52,7 +52,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
-    const [localValue, setLocalValue] = useState(initialValue);
+    const [localValue, setLocalValue] = useState(defaultValue);
     const value = _value ?? localValue;
 
     const handleClickWrapper: MouseEventHandler<HTMLDivElement> = (e) => {
