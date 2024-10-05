@@ -2,9 +2,7 @@
 import {
   ComponentProps,
   ReactNode,
-  useRef,
   MouseEventHandler,
-  FocusEventHandler,
   ChangeEventHandler,
   forwardRef,
   useState,
@@ -42,15 +40,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       variant = 'filled',
       Prefix,
       Suffix,
-      onFocus,
-      onBlur,
       onPressEnter,
       classNames: { container: containerClassName, input: inputClassName } = {},
       ...rest
     },
     ref
   ) => {
-    const wrapperRef = useRef<HTMLDivElement>(null);
     const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
     const [localValue, setLocalValue] = useState(defaultValue);
     const value = _value ?? localValue;
@@ -59,14 +54,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       if (!(e.target as HTMLElement).closest('button')) {
         inputRef?.focus();
       }
-    };
-    const handleFocusInput: FocusEventHandler<HTMLInputElement> = (e) => {
-      onFocus?.(e);
-      wrapperRef.current?.classList.add('interaction-outline');
-    };
-    const handleBlurInput: FocusEventHandler<HTMLInputElement> = (e) => {
-      onBlur?.(e);
-      wrapperRef.current?.classList.remove('interaction-outline');
     };
 
     const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -85,10 +72,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div
-        ref={wrapperRef}
         onClick={handleClickWrapper}
         className={cn([
-          'relative max-w-full flex items-center px-[12px] rounded-[4px] cursor-text',
+          'relative max-w-full flex items-center px-[12px] rounded-[4px] cursor-text focus-within:interaction-outline',
           sizeDict[size],
           variantDict[variant],
           containerClassName,
@@ -112,8 +98,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           value={value}
           onChange={handleChangeInput}
-          onFocus={handleFocusInput}
-          onBlur={handleBlurInput}
           onKeyDown={handleKeyDownInput}
           {...rest}
         />
