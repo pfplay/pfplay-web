@@ -23,9 +23,10 @@ export type PartyroomMutationSubmitHandler = (
 
 type Props = {
   onSubmit: PartyroomMutationSubmitHandler;
+  defaultValues?: Form.Model;
 };
 
-export default function PartyroomMutationForm({ onSubmit }: Props) {
+export default function PartyroomMutationForm({ defaultValues, onSubmit }: Props) {
   const t = useI18n();
   const lang = useLang();
   const { data: me } = useSuspenseFetchMe();
@@ -35,6 +36,7 @@ export default function PartyroomMutationForm({ onSubmit }: Props) {
     resolver: zodResolver(Form.getSchema(t)),
     defaultValues: {
       limit: DEFAULT_LIMIT, // FIXME: placeholder로 표기하고, 값이 비어있을 경우 submit 핸들러에서 DEFAULT_LIMIT을 넣어주도록 수정 - zod schema에서 number에 대해 "비어있거나 3이상일 때 valid" 라는 조건을 설정하는 법을 모르겠음
+      ...defaultValues,
     },
   });
   const {
