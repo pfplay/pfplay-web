@@ -143,6 +143,11 @@ export type GetDjingQueuePayload = {
   partyroomId: number;
 };
 
+export type ChangeDjQueueStatusPayload = {
+  partyroomId: number;
+  queueStatus: QueueStatus;
+};
+
 export type Dj = {
   crewId: number;
   orderNumber: number;
@@ -278,6 +283,10 @@ export interface PartyroomsClient {
    * DJ 대기열 조회
    */
   getDjingQueue: (payload: GetDjingQueuePayload) => Promise<DjingQueue>;
+  /**
+   * DJ 대기열 상태 변경
+   */
+  changeDjQueueStatus: (payload: ChangeDjQueueStatusPayload) => Promise<void>;
   /**
    * 공지사항 조회
    */
