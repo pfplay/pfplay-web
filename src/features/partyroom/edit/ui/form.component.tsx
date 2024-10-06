@@ -1,20 +1,25 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import { PartyroomMutationForm, PartyroomMutationSubmitHandler } from '@/entities/partyroom-info';
+import {
+  PartyroomMutationForm,
+  PartyroomMutationFormModel,
+  PartyroomMutationSubmitHandler,
+} from '@/entities/partyroom-info';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import useCreatePartyroom from '../api/use-create-partyroom.mutation';
+import useEditPartyroom from '../api/use-edit-partyroom.mutation';
 
 type Props = {
   onSuccess?: () => void;
+  defaultValues?: PartyroomMutationFormModel;
 };
 
-export default function PartyroomCreateForm({ onSuccess }: Props) {
+export default function PartyroomEditForm({ onSuccess, defaultValues }: Props) {
   const t = useI18n();
-  const router = useRouter();
-  const { mutate: create } = useCreatePartyroom();
+  const { mutate: edit } = useEditPartyroom();
 
   const handleSubmit: PartyroomMutationSubmitHandler = async (values, formInstance) => {
-    create(
+    // TODO: defaultValues 와 payload 같으면 onSuccess만 호출하고 return
+
+    edit(
       {
         title: values.name,
         introduction: values.introduce,
@@ -22,10 +27,7 @@ export default function PartyroomCreateForm({ onSuccess }: Props) {
         playbackTimeLimit: values.limit,
       },
       {
-        onSuccess: (data) => {
-          onSuccess?.();
-          router.push(`/parties/${data.partyroomId}`);
-        },
+        onSuccess,
         onError: (error) => {
           if (error.response?.status === 409) {
             formInstance.setError('domain', {
@@ -37,5 +39,5 @@ export default function PartyroomCreateForm({ onSuccess }: Props) {
     );
   };
 
-  return <PartyroomMutationForm onSubmit={handleSubmit} />;
+  return <PartyroomMutationForm onSubmit={handleSubmit} defaultValues={defaultValues} />;
 }

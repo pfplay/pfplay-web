@@ -16,6 +16,14 @@ export type CreatePartyroomPayload = {
   playbackTimeLimit: number;
 };
 
+export type EditPartyroomPayload = {
+  partyroomId: number;
+  title: string;
+  introduction: string;
+  linkDomain?: string;
+  playbackTimeLimit: number;
+};
+
 export type CreatePartyroomResponse = {
   partyroomId: number;
 };
@@ -244,6 +252,10 @@ export interface PartyroomsClient {
    * 파티룸 생성
    */
   create(payload: CreatePartyroomPayload): Promise<CreatePartyroomResponse>;
+  /**
+   * 파티룸 수정
+   */
+  edit: (payload: EditPartyroomPayload) => Promise<void>;
   /**
    * 파티룸 목록 조회
    */

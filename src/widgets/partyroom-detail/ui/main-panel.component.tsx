@@ -1,4 +1,5 @@
 import { useParams } from 'next/navigation';
+import { PartyroomEditTrigger, useCanEditCurrentPartyroom } from '@/features/partyroom/edit';
 import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
 import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -28,6 +29,8 @@ export default function MainPanel() {
 
   const openShareDialog = useOpenShareDialog(partyroomSummary);
 
+  const canEditCurrentPartyroom = useCanEditCurrentPartyroom();
+
   if (isLoading) {
     return (
       <div className='h-[343px]'>
@@ -35,17 +38,31 @@ export default function MainPanel() {
       </div>
     );
   }
-
   return (
     <div className='flex flex-col gap-6 mt-6'>
-      <div className='flexCol gap-2'>
-        <Typography type='title2' className='line-clamp-2'>
-          {partyroomSummary?.title || 'Unknown Title'}
-        </Typography>
-        {partyroomSummary?.introduction && (
-          <Typography type='caption1' className='text-gray-200'>
-            {partyroomSummary?.introduction}
+      <div>
+        <div className='flexCol gap-2'>
+          <Typography type='title2' className='line-clamp-2'>
+            {partyroomSummary?.title || 'Unknown Title'}
           </Typography>
+          {partyroomSummary?.introduction && (
+            <Typography type='caption1' className='text-gray-200'>
+              {partyroomSummary?.introduction}
+            </Typography>
+          )}
+        </div>
+
+        {canEditCurrentPartyroom && !!partyroomSummary && (
+          <div className='flex justify-end mt-3'>
+            <PartyroomEditTrigger
+              defaultValues={{
+                name: partyroomSummary.title,
+                introduce: partyroomSummary.introduction,
+                domain: partyroomSummary.linkDomain,
+                limit: partyroomSummary.playbackTimeLimit,
+              }}
+            />
+          </div>
         )}
       </div>
 
