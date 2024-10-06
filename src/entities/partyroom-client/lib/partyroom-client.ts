@@ -45,7 +45,7 @@ export default class PartyroomClient {
       throw new Error('Cannot send chat message without subscribing to a partyroom.');
     }
     this.socketClient.send(`/pub/groups/${this.subscribedRoomId}/send`, {
-      message,
+      content: message,
     });
   }
 }

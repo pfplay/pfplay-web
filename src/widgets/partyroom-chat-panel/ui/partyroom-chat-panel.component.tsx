@@ -55,6 +55,7 @@ export default function PartyroomChatPanel() {
                   onClickItem: () => {
                     openDeleteChatMessage({
                       crewId: message.crew.crewId,
+                      detail: message.message.messageId,
                     });
                   },
                   visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
