@@ -34,13 +34,11 @@ export default function useImposePenalty() {
         </Typography>
       ),
       Body: () => {
-        const [isLoading, setIsLoading] = useState(false);
-        const { mutate: imposePenalty } = useImposePenaltyMutation();
+        const { mutate: imposePenalty, isPending } = useImposePenaltyMutation();
         const [reason, setReason] = useState('');
         const disabled = reason.length < 2;
 
         const handleConfirmBtnClick = () => {
-          setIsLoading(true);
           imposePenalty(
             {
               partyroomId,
@@ -50,7 +48,6 @@ export default function useImposePenalty() {
             },
             {
               onSettled: () => {
-                setIsLoading(false);
                 onOk();
               },
             }
@@ -71,11 +68,11 @@ export default function useImposePenalty() {
                 {t.common.btn.cancel}
               </Dialog.Button>
               <Dialog.Button
-                loading={isLoading}
+                loading={isPending}
                 onClick={handleConfirmBtnClick}
                 disabled={disabled}
               >
-                {!isLoading ? t.common.btn.confirm : ''}
+                {t.common.btn.confirm}
               </Dialog.Button>
             </Dialog.ButtonGroup>
           </>

@@ -114,13 +114,19 @@ export const createCurrentPartyroomStore = () => {
           }
           return message;
         });
-        console.log({ messageId, content, updatedMessages });
 
         return {
           ...state,
           chat: Chat.create(updatedMessages),
           chatUpdated: true,
         };
+      });
+    },
+
+    penaltyNotification: undefined,
+    setPenaltyNotification: (penaltyNotification) => {
+      return set({
+        penaltyNotification,
       });
     },
 
