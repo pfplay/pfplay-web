@@ -2,23 +2,23 @@
 import {
   ComponentProps,
   ReactNode,
-  useRef,
   MouseEventHandler,
-  FocusEventHandler,
   ChangeEventHandler,
   forwardRef,
   useState,
   KeyboardEventHandler,
+  useRef,
 } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
+import { combineRef } from '@/shared/lib/functions/combine-ref';
 import { Typography } from '../typography';
 
 type InputSize = 'md' | 'lg';
 type InputVariant = 'filled' | 'outlined';
 
 export interface InputProps
-  extends Omit<ComponentProps<'input'>, 'type' | 'value' | 'size' | 'className'> {
-  initialValue?: string;
+  extends Omit<ComponentProps<'input'>, 'type' | 'defaultValue' | 'value' | 'size' | 'className'> {
+  defaultValue?: string;
   value?: string;
   size?: InputSize;
   variant?: InputVariant;
@@ -35,38 +35,29 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       value: _value,
-      initialValue = '',
+      defaultValue = '',
       onChange,
       maxLength,
       size = 'md',
       variant = 'filled',
       Prefix,
       Suffix,
-      onFocus,
-      onBlur,
       onPressEnter,
       classNames: { container: containerClassName, input: inputClassName } = {},
       ...rest
     },
     ref
   ) => {
-    const wrapperRef = useRef<HTMLDivElement>(null);
-    const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
-    const [localValue, setLocalValue] = useState(initialValue);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const combinedRef = combineRef([ref, inputRef]);
+
+    const [localValue, setLocalValue] = useState(defaultValue);
     const value = _value ?? localValue;
 
     const handleClickWrapper: MouseEventHandler<HTMLDivElement> = (e) => {
       if (!(e.target as HTMLElement).closest('button')) {
-        inputRef?.focus();
+        inputRef.current?.focus();
       }
-    };
-    const handleFocusInput: FocusEventHandler<HTMLInputElement> = (e) => {
-      onFocus?.(e);
-      wrapperRef.current?.classList.add('interaction-outline');
-    };
-    const handleBlurInput: FocusEventHandler<HTMLInputElement> = (e) => {
-      onBlur?.(e);
-      wrapperRef.current?.classList.remove('interaction-outline');
     };
 
     const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -85,10 +76,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div
-        ref={wrapperRef}
         onClick={handleClickWrapper}
         className={cn([
-          'relative max-w-full flex items-center px-[12px] rounded-[4px] cursor-text',
+          'relative max-w-full flex items-center px-[12px] rounded-[4px] cursor-text focus-within:interaction-outline',
           sizeDict[size],
           variantDict[variant],
           containerClassName,
@@ -97,14 +87,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {Prefix && <div className='mr-[12px]'>{Prefix}</div>}
 
         <input
-          ref={(node) => {
-            setInputRef(node);
-            if (typeof ref === 'function') {
-              ref(node);
-            } else if (ref) {
-              ref.current = node;
-            }
-          }}
+          ref={combinedRef}
           type='text'
           className={cn(
             'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none',
@@ -112,8 +95,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           value={value}
           onChange={handleChangeInput}
-          onFocus={handleFocusInput}
-          onBlur={handleBlurInput}
           onKeyDown={handleKeyDownInput}
           {...rest}
         />

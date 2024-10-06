@@ -18,7 +18,7 @@ const SearchInput = ({ onSearch }: SearchInputProps) => {
       Prefix={<PFSearch />}
       placeholder={t.playlist.para.search_url}
       classNames={{ container: 'flex-1' }}
-      initialValue={value}
+      defaultValue={value}
       onChange={handleChange}
     />
   );

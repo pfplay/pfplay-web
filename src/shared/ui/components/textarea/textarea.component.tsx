@@ -1,6 +1,7 @@
 'use client';
-import { ComponentProps, ChangeEventHandler, useState, forwardRef } from 'react';
+import { ComponentProps, ChangeEventHandler, useState, forwardRef, useRef } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
+import { combineRef } from '@/shared/lib/functions/combine-ref';
 import { Typography } from '../typography';
 
 export interface TextAreaProps extends Omit<ComponentProps<'textarea'>, 'value' | 'className'> {
@@ -24,7 +25,8 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     ref
   ) => {
     const [localValue, setLocalValue] = useState<string>(initialValue);
-    const [_textareaRef, setTextareaRef] = useState<HTMLTextAreaElement | null>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const combinedRef = combineRef([ref, textareaRef]);
 
     const handleChangeTextArea: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
       setLocalValue(e.target.value);
@@ -34,14 +36,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     return (
       <div className={cn('relative flex max-w-full', containerClassName)}>
         <textarea
-          ref={(node) => {
-            setTextareaRef(node);
-            if (typeof ref === 'function') {
-              ref(node);
-            } else if (ref) {
-              ref.current = node;
-            }
-          }}
+          ref={combinedRef}
           className={cn(
             'flex-1 min-h-max py-[12px] pl-[12px] pr-[60px] rounded-[4px]',
             'bg-gray-700 text-gray-50 placeholder:gray-400 caret-red-300',
