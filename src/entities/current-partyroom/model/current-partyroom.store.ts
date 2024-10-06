@@ -97,6 +97,33 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
+    chatUpdated: false,
+    setChatUpdated: (chatUpdated) => set({ chatUpdated }),
+    updateChatMessage: ({ messageId, content }) => {
+      return set((state) => {
+        const updatedMessages = state.chat.getMessages().map((message) => {
+          if (message.message.messageId === messageId) {
+            return {
+              ...message,
+              message: {
+                ...message.message,
+                content,
+              },
+              removed: true,
+            };
+          }
+          return message;
+        });
+        console.log({ messageId, content, updatedMessages });
+
+        return {
+          ...state,
+          chat: Chat.create(updatedMessages),
+          chatUpdated: true,
+        };
+      });
+    },
+
     init: (next) => {
       return set(
         {

@@ -5,6 +5,7 @@ export type Model = {
   crew: PartyroomCrew;
   message: ChatEvent['message'];
   receivedAt: number;
+  removed?: boolean;
 };
 
 export const uniqueId = (model: Model) => {

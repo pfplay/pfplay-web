@@ -12,6 +12,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
 import { Input } from '@/shared/ui/components/input';
+import { Typography } from '@/shared/ui/components/typography';
 import { PFSend } from '@/shared/ui/icons';
 import ChatItem from './chat-item.component';
 
@@ -35,6 +36,14 @@ export default function PartyroomChatPanel() {
     <div ref={containerRef} className='flexCol gap-1'>
       <div ref={scrollContainerRef} className='flex-[1_0_0] flexCol gap-4 overflow-y-auto py-4'>
         {chatMessages.map((message, i) => {
+          if (message.removed) {
+            return (
+              <Typography type='caption1' className='text-red-200 p-2 pl-[58px]'>
+                {message.message.content}
+              </Typography>
+            );
+          }
+
           const isLast = i === chatMessages.length - 1;
           const isMe = message.crew.crewId === me?.crewId;
 

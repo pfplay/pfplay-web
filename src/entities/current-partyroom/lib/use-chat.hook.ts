@@ -9,7 +9,11 @@ import { useStores } from '@/shared/lib/store/stores.context';
  */
 export function useChat() {
   const { useCurrentPartyroom } = useStores();
-  const chat = useCurrentPartyroom((state) => state.chat);
+  const [chat, chatUpdated, setChatUpdated] = useCurrentPartyroom((state) => [
+    state.chat,
+    state.chatUpdated,
+    state.setChatUpdated,
+  ]);
   const [messages, setMessages] = useState(chat.getMessages());
 
   useEffect(() => {
@@ -23,6 +27,13 @@ export function useChat() {
       chat.removeMessageListener(handleMessage);
     };
   }, [chat]);
+
+  useEffect(() => {
+    if (chatUpdated) {
+      setMessages(chat.getMessages());
+      setChatUpdated(false);
+    }
+  }, [chatUpdated]);
 
   return messages;
 }
