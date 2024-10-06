@@ -10,7 +10,7 @@ export default function useDeleteChatMessage() {
   const { openDialog } = useDialog();
   const partyroomId = useStores().useCurrentPartyroom((state) => state.id);
 
-  return ({ crewId }: Pick<ImposePenaltyPayload, 'crewId'>) => {
+  return ({ crewId, detail }: Pick<ImposePenaltyPayload, 'crewId' | 'detail'>) => {
     if (!partyroomId) return;
 
     return openDialog((onOk, onClose) => ({
@@ -24,7 +24,7 @@ export default function useDeleteChatMessage() {
               partyroomId,
               crewId,
               penaltyType: PenaltyType.CHAT_MESSAGE_REMOVAL,
-              reason: '',
+              detail,
             },
             {
               onSettled: () => {

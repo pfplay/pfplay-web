@@ -236,7 +236,7 @@ export type ImposePenaltyPayload = {
   partyroomId: number;
   crewId: number;
   penaltyType: PenaltyType;
-  reason: string;
+  detail: string;
 };
 
 export interface PartyroomsClient {

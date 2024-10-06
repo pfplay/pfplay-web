@@ -46,7 +46,7 @@ export default function useImposePenalty() {
               partyroomId,
               crewId,
               penaltyType,
-              reason,
+              detail: reason,
             },
             {
               onSettled: () => {
