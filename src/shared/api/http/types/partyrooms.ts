@@ -8,6 +8,17 @@ import {
   StageType,
 } from '@/shared/api/http/types/@enums';
 
+export type CreatePartyroomPayload = {
+  title: string;
+  introduction: string;
+  linkDomain?: string;
+  playbackTimeLimit: number;
+};
+
+export type CreatePartyroomResponse = {
+  partyroomId: number;
+};
+
 export type PartyroomDetailSummary = {
   title: string;
   introduction: string;
@@ -221,6 +232,10 @@ export type ReactionResponse = {
 };
 
 export interface PartyroomsClient {
+  /**
+   * 파티룸 생성
+   */
+  create(payload: CreatePartyroomPayload): Promise<CreatePartyroomResponse>;
   /**
    * 파티룸 목록 조회
    */

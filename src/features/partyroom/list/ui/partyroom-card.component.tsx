@@ -20,7 +20,7 @@ const PartyroomCard = ({ roomId, summary }: PartyroomCardProps) => {
       <Link
         /* TODO: set proper route with id */
         href={`/parties/${roomId}`}
-        className='flexCol gap-[61px] py-6 px-7 backdrop-blur-xl bg-backdrop-black/80'
+        className='h-full flexCol justify-between gap-[61px] py-6 px-7 backdrop-blur-xl bg-backdrop-black/80'
       >
         <Typography type='title2' className='text-gray-50'>
           {summary.title}
@@ -53,7 +53,7 @@ const PartyroomCard = ({ roomId, summary }: PartyroomCardProps) => {
               count={summary.crewCount}
               icons={summary.primaryIcons.map((avatar) => avatar.avatarIconUri)}
             />
-            <PFInfoOutline width={24} height={24} />
+            <PFInfoOutline width={24} height={24} role='presentation' />
           </div>
         </div>
       </Link>

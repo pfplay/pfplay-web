@@ -2,9 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosError } from 'axios';
 import { useSuspenseFetchMe } from '@/entities/me';
-import PartyroomsService from '@/shared/api/http/services/partyrooms';
 import { cn } from '@/shared/lib/functions/cn';
 import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -17,17 +15,19 @@ import { InputNumber } from '@/shared/ui/components/input-number';
 import { TextArea } from '@/shared/ui/components/textarea';
 import { Tooltip } from '@/shared/ui/components/tooltip';
 import { Typography } from '@/shared/ui/components/typography';
+import useCreatePartyroom from '../api/use-create-partyroom.mutation';
 import * as Form from '../model/form.model';
 
-interface PartyroomCreateFormProps {
-  onModalClose?: () => void;
-}
+type Props = {
+  onClose?: () => void;
+};
 
-const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
+export default function PartyroomCreateForm({ onClose }: Props) {
   const t = useI18n();
   const lang = useLang();
   const { data: me } = useSuspenseFetchMe();
   const router = useRouter();
+  const { mutate: create } = useCreatePartyroom();
 
   const {
     handleSubmit,
@@ -38,40 +38,34 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
     mode: 'all',
     resolver: zodResolver(Form.getSchema(t)),
     defaultValues: {
-      name: '',
-      introduce: '', // FIXME: BE가 attribute name 수정 하면 수정 필요
-      domain: '',
-      limit: 7,
+      limit: DEFAULT_LIMIT, // FIXME: placeholder로 표기하고, 값이 비어있을 경우 submit 핸들러에서 DEFAULT_LIMIT을 넣어주도록 수정 - zod schema에서 number에 대해 "비어있거나 3이상일 때 valid" 라는 조건을 설정하는 법을 모르겠음
     },
   });
 
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
-  const handleFormSubmit: SubmitHandler<Form.Model> = async ({
-    name,
-    introduce,
-    limit,
-    domain,
-  }) => {
-    try {
-      // FIXME: 생성 API 서비스에 추가 및 반영 필요
-      // @ts-ignore
-      const response = await PartyroomsService.create({
-        name,
-        introduce,
-        limit,
-        domain: domain || undefined,
-      });
-
-      onModalClose && onModalClose();
-
-      router.push(`/parties/${domain || response.name}`);
-    } catch (error: unknown) {
-      // FIXME: BE와 api 논의 후 수정 필요. 1. 유저가 이미 파티를 개설한 경우 2. 도메인이 이미 존재하는 경우
-      if (error instanceof AxiosError && error.response?.status === 409) {
-        setError('domain', { message: t.createparty.para.domain_in_use });
+  const handleFormSubmit: SubmitHandler<Form.Model> = async (values) => {
+    create(
+      {
+        title: values.name,
+        introduction: values.introduce,
+        linkDomain: values.domain,
+        playbackTimeLimit: values.limit,
+      },
+      {
+        onSuccess: (data) => {
+          onClose?.();
+          router.push(`/parties/${data.partyroomId}`);
+        },
+        onError: (error) => {
+          if (error.response?.status === 409) {
+            setError('domain', {
+              message: t.createparty.para.domain_in_use,
+            });
+          }
+        },
       }
-    }
+    );
   };
 
   return (
@@ -82,25 +76,29 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
         'child-form-labels:w-[120px]': lang === Language.En,
       })}
     >
-      <div className=' w-full items-end gap-12 flexCol'>
+      <div className='w-full items-end gap-12 flexCol'>
         <FormItem
           label={t.party.title.party_name}
           error={errors.name?.message}
           required
           classNames={{ label: 'text-gray-200', container: 'w-full' }}
         >
-          <Input {...register('name')} placeholder={t.common.ec.char_limit_12} maxLength={30} />
+          <Input
+            {...register('name')}
+            maxLength={Form.MAX_LENGTH.NAME}
+            placeholder={t.common.ec.char_limit_12}
+          />
         </FormItem>
 
         <FormItem
           label={t.party.title.party_desc}
           required
-          error={errors.introduce && t.common.ec.char_limit_50}
+          error={errors.introduce?.message}
           classNames={{ label: 'text-gray-200', container: 'w-full' }}
         >
           <TextArea
             {...register('introduce')}
-            maxLength={50}
+            maxLength={Form.MAX_LENGTH.INTRODUCE}
             rows={3}
             placeholder={t.common.ec.char_limit_50}
           />
@@ -136,7 +134,7 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
                     visible={!!errors.limit?.message}
                   >
                     <Typography type='body2'>
-                      {/* TODO: 문구 줄바꿈 적용 필요*/}
+                      {/* TODO: i18n - 문구 줄바꿈 적용 필요*/}
                       {t.db.title.dj_time_limit}
                     </Typography>
                   </Tooltip>
@@ -165,14 +163,14 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
             }
             classNames={{ label: 'text-gray-200' }}
           >
-            <DjListItem userConfig={{ username: me.nickname, src: '' }} />
+            <DjListItem userConfig={{ username: me.nickname, src: me.avatarIconUri }} />
           </FormItem>
 
           <Button
             type='submit'
-            variant={'fill'}
+            variant='fill'
             size='lg'
-            className={'px-[74px]'}
+            className='px-[74px]'
             disabled={btnDisabled}
           >
             {t.createparty.btn.create_party}
@@ -181,6 +179,6 @@ const PartyroomCreateForm = ({ onModalClose }: PartyroomCreateFormProps) => {
       </div>
     </form>
   );
-};
+}
 
-export default PartyroomCreateForm;
+const DEFAULT_LIMIT = 7;
