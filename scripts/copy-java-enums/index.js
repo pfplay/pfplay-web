@@ -3,6 +3,7 @@ const fs = require('fs');
 const { glob } = require('glob');
 
 const ROOT = `${__dirname}/../..`;
+// FIXME: 현재 서버단 enum directory가 바뀌었으므로 수정 필요
 const BACKEND_DIRNAME = `${__dirname}/api`; // 백엔드의 소스 디렉터리(main/java/com/pfplaybackend/api)를 카피해오세요
 const ENUMS_DIRNAME = `${ROOT}/src/shared/api/http/types`;
 const ENUMS_FILENAME = `${ENUMS_DIRNAME}/@enums.ts`;
