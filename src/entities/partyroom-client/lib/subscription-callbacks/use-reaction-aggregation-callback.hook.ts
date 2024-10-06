@@ -1,11 +1,11 @@
-import { AggregationEvent } from '@/shared/api/websocket/types/partyroom';
+import { ReactionAggregationEvent } from '@/shared/api/websocket/types/partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
 
-export default function useAggregationCallback() {
+export default function useReactionAggregationCallback() {
   const { useCurrentPartyroom } = useStores();
   const updateReaction = useCurrentPartyroom((state) => state.updateReaction);
 
-  return (event: AggregationEvent) => {
+  return (event: ReactionAggregationEvent) => {
     updateReaction((prev) => {
       if (!prev) return;
 
