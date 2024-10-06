@@ -73,7 +73,10 @@ export type ChatEvent = {
   crew: {
     crewId: number;
   };
-  message: string;
+  message: {
+    messageId: string;
+    content: string;
+  };
 };
 
 // 크루 등급 조정 이벤트
