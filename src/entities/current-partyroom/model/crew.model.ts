@@ -64,7 +64,11 @@ export class Permission {
   }
 
   public canLockDjingQueue() {
-    throw new Error('Not Impl yet');
+    return this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
+  }
+
+  public canUnlockDjingQueue() {
+    return this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
   }
 
   public canRegisterDj() {
