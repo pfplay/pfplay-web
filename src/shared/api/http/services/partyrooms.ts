@@ -24,6 +24,7 @@ import type {
   PartyroomSummary,
   CreatePartyroomPayload,
   CreatePartyroomResponse,
+  ChangeDjQueueStatusPayload,
 } from 'shared/api/http/types/partyrooms';
 import HTTPClient from '../client/client';
 
@@ -53,6 +54,10 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
 
   public getDjingQueue = ({ partyroomId }: GetDjingQueuePayload) => {
     return this.get<DjingQueue>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`);
+  };
+
+  public changeDjQueueStatus = ({ partyroomId, ...body }: ChangeDjQueueStatusPayload) => {
+    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`, body);
   };
 
   public getNotice = ({ partyroomId }: GetNoticePayload) => {
