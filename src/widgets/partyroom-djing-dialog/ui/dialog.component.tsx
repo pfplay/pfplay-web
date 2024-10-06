@@ -2,6 +2,7 @@ import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { Dialog } from '@/shared/ui/components/dialog';
 import Body from './body.component';
 import EmptyBody from './empty-body.component';
+import { DjingQueueContext } from '../lib/djing-queue.context';
 import { PartyroomIdContext } from '../lib/partyroom-id.context';
 
 type Props = {
@@ -22,11 +23,9 @@ export default function DjingDialog({ partyroomId, open, close }: Props) {
       classNames={{ container: 'w-[800px] py-[36px] px-[40px] bg-black' }}
       Body={
         <PartyroomIdContext.Provider value={partyroomId}>
-          {djingQueue.djs.length ? (
-            <Body djingQueue={djingQueue} onCancel={close} />
-          ) : (
-            <EmptyBody onCancel={close} />
-          )}
+          <DjingQueueContext.Provider value={djingQueue}>
+            {djingQueue.djs.length ? <Body onCancel={close} /> : <EmptyBody onCancel={close} />}
+          </DjingQueueContext.Provider>
         </PartyroomIdContext.Provider>
       }
     />

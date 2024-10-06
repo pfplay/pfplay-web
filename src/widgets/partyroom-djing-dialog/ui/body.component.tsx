@@ -6,7 +6,6 @@ import {
   useUnlockDjingQueue,
 } from '@/features/partyroom/unlock-djing-queue';
 import { QueueStatus } from '@/shared/api/http/types/@enums';
-import { DjingQueue } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -17,13 +16,14 @@ import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
 import RegisterButton from './register-button.component';
 import UnregisterButton from './unregister-button.component';
+import { useDjingQueue } from '../lib/djing-queue.context';
 
 type Props = {
-  djingQueue: DjingQueue;
   onCancel: () => void | undefined;
 };
 
-export default function Body({ djingQueue, onCancel }: Props) {
+export default function Body({ onCancel }: Props) {
+  const djingQueue = useDjingQueue();
   if (!djingQueue.djs.length) {
     throw new Error('dj must set before render this component');
   }
