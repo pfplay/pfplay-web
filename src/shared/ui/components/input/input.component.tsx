@@ -35,7 +35,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       value: _value,
-      defaultValue = '',
+      defaultValue,
       onChange,
       maxLength,
       size = 'md',
@@ -53,6 +53,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const [localValue, setLocalValue] = useState(defaultValue);
     const value = _value ?? localValue;
+    const valueLength = value?.length ?? 0;
 
     const handleClickWrapper: MouseEventHandler<HTMLDivElement> = (e) => {
       if (!(e.target as HTMLElement).closest('button')) {
@@ -100,13 +101,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         />
 
         {Number.isInteger(maxLength) && (
-          <Typography className={cn('text-gray-400 ml-[12px]', !!value.length && 'text-gray-50')}>
+          <Typography className={cn('text-gray-400 ml-[12px]', { 'text-gray-50': !!valueLength })}>
             <strong
               className={cn({
-                'text-red-300': maxLength && value.length > maxLength,
+                'text-red-300': maxLength && valueLength > maxLength,
               })}
             >
-              {String(value.length).padStart(String(maxLength).length, '0')}
+              {String(valueLength).padStart(String(maxLength).length, '0')}
             </strong>
             /{maxLength}
           </Typography>
