@@ -1,2 +1,2 @@
-export { default as useDeleteChatMessageDialog } from './lib/use-delete-chat-message-dialog';
-export { default as useImposePenaltyDialog } from './lib/use-impost-penalty-dialog';
+export { default as useDeleteChatMessage } from './lib/use-delete-chat-message';
+export { default as useImposePenalty } from './lib/use-impost-penalty';

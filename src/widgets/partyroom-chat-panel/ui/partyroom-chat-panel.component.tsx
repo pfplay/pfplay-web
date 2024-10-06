@@ -2,10 +2,7 @@
 import { Crew, useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import { ChatMessage } from '@/entities/current-partyroom';
 import { useAdjustGrade } from '@/features/partyroom/adjust-grade';
-import {
-  useImposePenaltyDialog,
-  useDeleteChatMessageDialog,
-} from '@/features/partyroom/impose-penalty';
+import { useDeleteChatMessage, useImposePenalty } from '@/features/partyroom/impose-penalty';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
 import { SendChatMessage } from '@/features/partyroom/send-chat-message';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
@@ -21,8 +18,8 @@ import ChatItem from './chat-item.component';
 export default function PartyroomChatPanel() {
   const t = useI18n();
   const adjustGrade = useAdjustGrade();
-  const openDeleteChatMessageDialog = useDeleteChatMessageDialog();
-  const openImposePenaltyDialog = useImposePenaltyDialog();
+  const openDeleteChatMessage = useDeleteChatMessage();
+  const openImposePenalty = useImposePenalty();
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
   const me = useStores().useCurrentPartyroom((state) => state.me);
@@ -56,7 +53,7 @@ export default function PartyroomChatPanel() {
                 {
                   label: t.common.btn.delete,
                   onClickItem: () => {
-                    openDeleteChatMessageDialog({
+                    openDeleteChatMessage({
                       crewId: message.crew.crewId,
                     });
                   },
@@ -65,7 +62,7 @@ export default function PartyroomChatPanel() {
                 {
                   label: 'GGUL', // TODO: i18n 적용
                   onClickItem: () => {
-                    openImposePenaltyDialog({
+                    openImposePenalty({
                       crewId: message.crew.crewId,
                       nickname: message.crew.nickname,
                       penaltyType: PenaltyType.CHAT_BAN_30_SECONDS,
@@ -76,7 +73,7 @@ export default function PartyroomChatPanel() {
                 {
                   label: 'Kick', // TODO: i18n 적용
                   onClickItem: () => {
-                    openImposePenaltyDialog({
+                    openImposePenalty({
                       crewId: message.crew.crewId,
                       nickname: message.crew.nickname,
                       penaltyType: PenaltyType.ONE_TIME_EXPULSION,
@@ -87,7 +84,7 @@ export default function PartyroomChatPanel() {
                 {
                   label: 'Ban', // TODO: i18n 적용
                   onClickItem: () => {
-                    openImposePenaltyDialog({
+                    openImposePenalty({
                       crewId: message.crew.crewId,
                       nickname: message.crew.nickname,
                       penaltyType: PenaltyType.PERMANENT_EXPULSION,

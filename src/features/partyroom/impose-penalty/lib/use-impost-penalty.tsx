@@ -9,7 +9,7 @@ import { Input } from '@/shared/ui/components/input';
 import { Typography } from '@/shared/ui/components/typography';
 import useImposePenaltyMutation from '../api/use-impose-penalty.mutation';
 
-export default function useImposePenaltyDialog() {
+export default function useImposePenalty() {
   const t = useI18n();
   const { openDialog } = useDialog();
   const partyroomId = useStores().useCurrentPartyroom((state) => state.id);
