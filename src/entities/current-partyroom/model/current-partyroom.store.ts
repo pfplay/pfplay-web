@@ -79,7 +79,7 @@ export const createCurrentPartyroomStore = () => {
     },
 
     chat: Chat.create<ChatMessage.Model>([]),
-    appendChatMessage: (crewId, content) => {
+    appendChatMessage: (crewId, message) => {
       return set((state) => {
         const crew = state.crews.find((crew) => crew.crewId === crewId);
         if (!crew) {
@@ -89,7 +89,7 @@ export const createCurrentPartyroomStore = () => {
 
         state.chat.appendMessage({
           crew,
-          content,
+          message,
           receivedAt: Date.now(),
         });
 

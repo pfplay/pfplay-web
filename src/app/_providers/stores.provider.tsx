@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode, useRef } from 'react';
 import { StoreApi, UseBoundStore } from 'zustand';
 import { UIState, createUIStateStore } from '@/entities/ui-state';
 import { StoresContext, Stores } from '@/shared/lib/store/stores.context';
@@ -14,10 +14,14 @@ declare module '@/shared/lib/store/stores.context' {
 }
 
 export default function StoresProvider({ children }: { children: ReactNode }) {
-  const [stores] = useState<Stores>(() => ({
-    useUIState: createUIStateStore(),
-    useCurrentPartyroom: createCurrentPartyroomStore(),
-  }));
+  const storesRef = useRef<Stores | null>(null);
 
-  return <StoresContext.Provider value={stores}>{children}</StoresContext.Provider>;
+  if (storesRef.current === null) {
+    storesRef.current = {
+      useUIState: createUIStateStore(),
+      useCurrentPartyroom: createCurrentPartyroomStore(),
+    };
+  }
+
+  return <StoresContext.Provider value={storesRef.current}>{children}</StoresContext.Provider>;
 }
