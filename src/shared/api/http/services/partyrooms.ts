@@ -25,6 +25,7 @@ import type {
   CreatePartyroomPayload,
   CreatePartyroomResponse,
   ImposePenaltyPayload,
+  EditPartyroomPayload,
 } from 'shared/api/http/types/partyrooms';
 import HTTPClient from '../client/client';
 
@@ -34,6 +35,10 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
 
   public create = (payload: CreatePartyroomPayload) => {
     return this.post<CreatePartyroomResponse>(this.ROUTE_V1, payload);
+  };
+
+  public edit = ({ partyroomId, ...body }: EditPartyroomPayload) => {
+    return this.put<void>(`${this.ROUTE_V1}/${partyroomId}`, body);
   };
 
   public getList = () => {
