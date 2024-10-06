@@ -42,11 +42,12 @@ export enum QueueStatus {
   OPEN = 'OPEN',
 }
 
+// FIXME: enum auto generation 스크립트 수정 필요
 export enum PenaltyType {
-  CHAT_BAN_ = 'CHAT_BAN_',
-  CHAT_MESSAGE_REMOVAL = 'CHAT_MESSAGE_REMOVAL',
-  ONE_TIME_EXPULSION = 'ONE_TIME_EXPULSION',
-  PERMANENT_EXPULSION = 'PERMANENT_EXPULSION',
+  CHAT_BAN_30_SECONDS = 'CHAT_BAN_30_SECONDS', // 채팅 금지
+  CHAT_MESSAGE_REMOVAL = 'CHAT_MESSAGE_REMOVAL', // 채팅 메시지 삭제"
+  ONE_TIME_EXPULSION = 'ONE_TIME_EXPULSION', // 일회성 강제 퇴장
+  PERMANENT_EXPULSION = 'PERMANENT_EXPULSION', // 영구 강제 퇴장
 }
 
 export enum MotionType {

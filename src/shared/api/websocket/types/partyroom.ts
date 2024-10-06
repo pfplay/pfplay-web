@@ -73,7 +73,10 @@ export type ChatEvent = {
   crew: {
     crewId: number;
   };
-  message: string;
+  message: {
+    messageId: string;
+    content: string;
+  };
 };
 
 // 크루 등급 조정 이벤트
@@ -93,7 +96,7 @@ export type CrewGradeEvent = {
 export type CrewPenaltyEvent = {
   eventType: PartyroomEventType.CREW_PENALTY;
   penaltyType: PenaltyType;
-  reason: string;
+  detail: string; // penaltyType이 CHAT_BAN_30_SECONDS 일 때는 삭제되어야 할 messageId, 그 외 경우에는 제재 이유
   punisher: {
     crewId: number;
   };

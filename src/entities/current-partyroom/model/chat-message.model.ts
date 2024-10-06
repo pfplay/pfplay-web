@@ -1,8 +1,9 @@
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
+import { ChatEvent } from '@/shared/api/websocket/types/partyroom';
 
 export type Model = {
   crew: PartyroomCrew;
-  content: string;
+  message: ChatEvent['message'];
   receivedAt: number;
 };
 

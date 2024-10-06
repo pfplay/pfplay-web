@@ -47,7 +47,7 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
           className='bg-gray-900 p-2 rounded-sm text-white'
           style={{ wordBreak: 'break-word' }}
         >
-          {message.content}
+          {message.message.content}
         </Typography>
       </div>
     </div>
