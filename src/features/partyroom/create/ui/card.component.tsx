@@ -27,7 +27,7 @@ export default function PartyroomCreateCard() {
       classNames: {
         container: lang === Language.Ko ? 'w-[800px]' : 'w-[900px]',
       },
-      Body: () => <CreatePartyroomForm onClose={onCancel} />,
+      Body: () => <CreatePartyroomForm onSuccess={onCancel} />,
     }));
   };
 
