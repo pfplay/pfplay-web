@@ -12,6 +12,7 @@ import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
 import { PartyroomDetailTrigger } from '@/widgets/partyroom-detail';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
+import PenaltyNotificationDialog from '@/widgets/partyroom-djing-dialog/ui/penalty-notification-dialog.component';
 import { PartyroomParticipantPanel } from '@/widgets/partyroom-participant-panel';
 import { Sidebar } from '@/widgets/sidebar';
 
@@ -95,6 +96,8 @@ const PartyroomPage = () => {
         open={isDjingDialogOpen}
         close={closeDjingDialog}
       />
+
+      <PenaltyNotificationDialog />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { GradeType } from '@/shared/api/http/types/@enums';
+import { GradeType, PenaltyType } from '@/shared/api/http/types/@enums';
 import { PartyroomPlayback, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import { ChatEvent } from '@/shared/api/websocket/types/partyroom';
 import { Chat } from '@/shared/lib/chat';
@@ -9,6 +9,12 @@ import * as Crew from './crew.model';
 export type MyPartyroomInfo = {
   crewId: number;
   gradeType: GradeType;
+};
+
+export type PenaltyNotification = {
+  punishedId: number;
+  penaltyType: PenaltyType;
+  detail: string;
 };
 
 export type Model = {
@@ -41,6 +47,24 @@ export type Model = {
    */
   chat: Chat<ChatMessage.Model>;
   appendChatMessage: (crewId: number, message: ChatEvent['message']) => void;
+
+  /**
+   *  chatUpdated는 채팅 메세지 삭제 시 useChat.hook.ts에서 chatMessages에 대체된 메세지를 리렌더 하기 위해 'updateChatMessage' action에서 호출되는 함수입니다.
+   */
+
+  chatUpdated: boolean;
+  setChatUpdated: (updated: boolean) => void;
+
+  /**
+   * 채팅 메세지 삭제 시 호출되는 함수입니다
+   */
+  updateChatMessage: ({ messageId, content }: { messageId: string; content: string }) => void;
+
+  /**
+   * 패널티 전파
+   */
+  penaltyNotification?: PenaltyNotification;
+  setPenaltyNotification: (notification: PenaltyNotification | undefined) => void;
 
   init: (
     next: Pick<

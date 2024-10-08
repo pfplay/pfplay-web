@@ -34,7 +34,8 @@ function Body({ partyroom }: { partyroom?: PartyroomDetailSummary }) {
   const [isCopied, setIsCopied] = useState(false);
 
   const t = useI18n();
-  const sharedUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/party/${partyroom?.linkDomain}`;
+  // 개발환경에서는 브라우저 주소창에 사용하는 localhost를 붙이고 나머지 path 입력해서 테스트. e.g) https://localhost:3000/party/...
+  const sharedUrl = `https://pfplay.io/party/${partyroom?.linkDomain}`;
 
   if (typeof id === 'undefined') {
     throw new Error('partyroomId is not found. maybe you are not in the partyroom.');
