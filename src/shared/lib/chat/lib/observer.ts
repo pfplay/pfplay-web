@@ -1,4 +1,6 @@
-type Listener<T> = (data: T) => void;
+export type ObserverChatEvent<Message> = { type: 'add' | 'update'; message: Message };
+
+type Listener<T> = (data: ObserverChatEvent<T>) => void;
 
 export default class Observer<T> {
   private listeners: Listener<T>[] = [];
@@ -15,9 +17,9 @@ export default class Observer<T> {
     this.listeners = [];
   }
 
-  public notify(data: T) {
+  public notify(event: ObserverChatEvent<T>) {
     for (const listener of this.listeners) {
-      listener(data);
+      listener(event);
     }
   }
 }

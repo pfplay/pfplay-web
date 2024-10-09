@@ -49,13 +49,6 @@ export type Model = {
   appendChatMessage: (crewId: number, message: ChatEvent['message']) => void;
 
   /**
-   *  chatUpdated는 채팅 메세지 삭제 시 useChat.hook.ts에서 chatMessages에 대체된 메세지를 리렌더 하기 위해 'updateChatMessage' action에서 호출되는 함수입니다.
-   */
-
-  chatUpdated: boolean;
-  setChatUpdated: (updated: boolean) => void;
-
-  /**
    * 채팅 메세지 삭제 시 호출되는 함수입니다
    */
   updateChatMessage: ({ messageId, content }: { messageId: string; content: string }) => void;

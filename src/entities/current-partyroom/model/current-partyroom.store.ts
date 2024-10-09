@@ -98,26 +98,17 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
-    chatUpdated: false,
-    setChatUpdated: (chatUpdated) => set({ chatUpdated }),
     updateChatMessage: ({ messageId, content }) => {
       return set((state) => {
-        const updatedMessages = state.chat.getMessages().map((message) => {
-          if (message.from === 'user' && message.message.messageId === messageId) {
-            return {
-              from: 'system',
-              content,
-            };
-          }
+        state.chat.updateMessage(
+          (message) => message.from === 'user' && message.message.messageId === messageId,
+          () => ({
+            from: 'system',
+            content,
+          })
+        );
 
-          return message;
-        });
-
-        return {
-          ...state,
-          chat: Chat.create(updatedMessages),
-          chatUpdated: true,
-        };
+        return state;
       });
     },
 

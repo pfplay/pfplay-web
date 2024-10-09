@@ -13,14 +13,14 @@ export default class Chat<Message> {
 
   public static create<Message>(initialMessages: Message[]): Chat<Message> {
     return new Chat(
-      new CircularBufferAdapter(new CircularBuffer<Message>(initialMessages, 1000)),
+      new CircularBufferAdapter(new CircularBuffer<Message>(initialMessages, 500)), // 최대 메세지 개수 500개로 제한
       new ObserverAdapter(new Observer<Message>())
     );
   }
 
   public appendMessage(message: Message): void {
     this.messages.append(message);
-    this.messageListener.notify(message);
+    this.messageListener.notifyAppend(message);
   }
 
   public getMessages(): Message[] {
@@ -33,6 +33,28 @@ export default class Chat<Message> {
 
   public removeMessageListener(listener: (message: Message) => void): void {
     this.messageListener.deregister(listener);
+  }
+
+  public updateMessage(
+    predicate: (message: Message) => boolean,
+    updater: (message: Message) => Message
+  ): void {
+    const updatedMessages: Message[] = [];
+
+    this.messages.update(predicate, (message: Message) => {
+      const updatedMessage = updater(message);
+      updatedMessages.push(updatedMessage);
+      return updatedMessage;
+    });
+
+    // 업데이트된 메시지들에 대해 리스너들에게 알림
+    this.notifyMessageUpdates(updatedMessages);
+  }
+
+  private notifyMessageUpdates(updatedMessages: Message[]): void {
+    updatedMessages.forEach((message) => {
+      this.messageListener.notifyUpdate(message);
+    });
   }
 
   public clear(): void {

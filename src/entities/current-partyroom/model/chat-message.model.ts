@@ -16,7 +16,3 @@ export type UserChat = {
 };
 
 export type Model = SystemChat | UserChat;
-
-export const uniqueId = () => {
-  return crypto.randomUUID();
-};

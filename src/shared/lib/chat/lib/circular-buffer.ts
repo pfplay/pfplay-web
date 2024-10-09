@@ -44,4 +44,26 @@ export default class CircularBuffer<T> {
     this.length = 0;
     this.buffer = new Array<T>(this.max);
   }
+
+  /**
+   * 순환 버퍼의 요소들을 업데이트합니다.
+   *
+   * @param predicate 업데이트할 항목을 결정하는 조건 함수입니다. true를 반환하면 해당 항목이 업데이트됩니다.
+   * @param updater 조건에 맞는 항목을 업데이트하는 함수입니다. 현재 항목을 입력받아 업데이트된 항목을 반환해야 합니다.
+   *
+   * @example
+   * // 짝수 번째 항목의 값을 두 배로 만듭니다.
+   * circularBuffer.update(
+   *   (item) => item % 2 === 0,
+   *   (item) => item * 2
+   * );
+   */
+  public update(predicate: (item: T) => boolean, updater: (item: T) => T): void {
+    for (let i = 0; i < this.length; i++) {
+      const index = (this.start + i) % this.max;
+      if (predicate(this.buffer[index])) {
+        this.buffer[index] = updater(this.buffer[index]);
+      }
+    }
+  }
 }
