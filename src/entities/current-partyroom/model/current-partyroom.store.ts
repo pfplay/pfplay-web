@@ -88,6 +88,7 @@ export const createCurrentPartyroomStore = () => {
         }
 
         state.chat.appendMessage({
+          from: 'user',
           crew,
           message,
           receivedAt: Date.now(),
@@ -102,16 +103,13 @@ export const createCurrentPartyroomStore = () => {
     updateChatMessage: ({ messageId, content }) => {
       return set((state) => {
         const updatedMessages = state.chat.getMessages().map((message) => {
-          if (message.message.messageId === messageId) {
+          if (message.from === 'user' && message.message.messageId === messageId) {
             return {
-              ...message,
-              message: {
-                ...message.message,
-                content,
-              },
-              removed: true,
+              from: 'system',
+              content,
             };
           }
+
           return message;
         });
 

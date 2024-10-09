@@ -1,13 +1,22 @@
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { ChatEvent } from '@/shared/api/websocket/types/partyroom';
 
-export type Model = {
+export type ChatType = 'user' | 'system';
+
+export type SystemChat = {
+  from: 'system';
+  content: string;
+};
+
+export type UserChat = {
+  from: 'user';
   crew: PartyroomCrew;
   message: ChatEvent['message'];
   receivedAt: number;
-  removed?: boolean;
 };
 
-export const uniqueId = (model: Model) => {
-  return model.crew.crewId + model.crew.uid + model.receivedAt;
+export type Model = SystemChat | UserChat;
+
+export const uniqueId = () => {
+  return crypto.randomUUID();
 };
