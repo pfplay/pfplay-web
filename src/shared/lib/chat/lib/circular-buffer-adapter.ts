@@ -15,6 +15,7 @@ export default class CircularBufferAdapter<Message> implements ChatMessages<Mess
   public clear(): void {
     this.buffer.clear();
   }
+
   public update(
     predicate: (message: Message) => boolean,
     updater: (message: Message) => Message

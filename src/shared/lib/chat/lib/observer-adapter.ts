@@ -1,17 +1,17 @@
-import Observer, { ObserverChatEvent } from './observer';
-import type { ChatMessageListener } from '../model/chat-message-listener.model';
+import Observer from './observer';
+import { ChatMessageListener, ChatObserverEvent } from '../model/chat-message-listener.model';
 
 export default class ObserverAdapter<Message> implements ChatMessageListener<Message> {
-  public constructor(private observer: Observer<Message>) {}
+  public constructor(private observer: Observer<ChatObserverEvent<Message>>) {}
 
   public register(listener: (message: Message) => void): void {
-    this.observer.subscribe((event: ObserverChatEvent<Message>) => {
+    this.observer.subscribe((event: ChatObserverEvent<Message>) => {
       listener(event.message);
     });
   }
 
   public deregister(listener: (message: Message) => void): void {
-    this.observer.unsubscribe((event: ObserverChatEvent<Message>) => {
+    this.observer.unsubscribe((event: ChatObserverEvent<Message>) => {
       listener(event.message);
     });
   }
@@ -20,11 +20,7 @@ export default class ObserverAdapter<Message> implements ChatMessageListener<Mes
     this.observer.unsubscribeAll();
   }
 
-  public notifyAppend(message: Message): void {
-    this.observer.notify({ type: 'add', message });
-  }
-
-  public notifyUpdate(message: Message): void {
-    this.observer.notify({ type: 'update', message });
+  public notify(event: ChatObserverEvent<Message>): void {
+    this.observer.notify(event);
   }
 }

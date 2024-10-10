@@ -1,3 +1,4 @@
+import { ChatMessage } from '@/entities/current-partyroom';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { CrewPenaltyEvent } from '@/shared/api/websocket/types/partyroom';
 import { errorLog } from '@/shared/lib/functions/log/logger';
@@ -31,10 +32,15 @@ export default function useCrewPenaltyCallback() {
         return;
       }
 
-      updateChatMessage({
-        messageId: event.detail,
-        content: `'${punisher?.nickname}'(이)가 '${punished?.nickname}'의 채팅을 삭제했습니다.`, // TODO: i18n 적용
-      });
+      updateChatMessage(
+        (message: ChatMessage.Model) =>
+          message.from === 'user' && message.message.messageId === event.detail,
+        () => ({
+          from: 'system',
+          content: `'${punisher?.nickname}'(이)가 '${punished?.nickname}'의 채팅을 삭제했습니다.`, // TODO: i18n 적용
+          messageId: event.detail,
+        })
+      );
     } else {
       setPenaltyNotification({
         punishedId: event.punished.crewId,

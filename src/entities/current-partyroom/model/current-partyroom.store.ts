@@ -98,16 +98,9 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
-    updateChatMessage: ({ messageId, content }) => {
+    updateChatMessage: (predicate, updater) => {
       return set((state) => {
-        state.chat.updateMessage(
-          (message) => message.from === 'user' && message.message.messageId === messageId,
-          () => ({
-            from: 'system',
-            content,
-          })
-        );
-
+        state.chat.updateMessage(predicate, updater);
         return state;
       });
     },

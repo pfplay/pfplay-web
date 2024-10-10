@@ -51,7 +51,10 @@ export type Model = {
   /**
    * 채팅 메세지 삭제 시 호출되는 함수입니다
    */
-  updateChatMessage: ({ messageId, content }: { messageId: string; content: string }) => void;
+  updateChatMessage: (
+    predicate: (message: ChatMessage.Model) => boolean,
+    updater: (message: ChatMessage.Model) => ChatMessage.Model
+  ) => void;
 
   /**
    * 패널티 전파
