@@ -37,11 +37,7 @@ export default function PartyroomChatPanel() {
         {chatMessages.map((message, i) => {
           if (message.from === 'system') {
             return (
-              <Typography
-                key={message.messageId}
-                type='caption1'
-                className='text-red-200 p-2 pl-[58px]'
-              >
+              <Typography type='caption1' className='text-red-200 p-2 pl-[58px]'>
                 {message.content}
               </Typography>
             );

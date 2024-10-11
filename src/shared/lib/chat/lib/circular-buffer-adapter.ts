@@ -19,7 +19,7 @@ export default class CircularBufferAdapter<Message> implements ChatMessages<Mess
   public update(
     predicate: (message: Message) => boolean,
     updater: (message: Message) => Message
-  ): void {
-    this.buffer.update(predicate, updater);
+  ): Message | undefined {
+    return this.buffer.update(predicate, updater);
   }
 }

@@ -6,7 +6,6 @@ export type ChatType = 'user' | 'system';
 export type SystemChat = {
   from: 'system';
   content: string;
-  messageId: ChatEvent['message']['messageId'];
 };
 
 export type UserChat = {

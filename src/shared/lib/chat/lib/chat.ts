@@ -40,16 +40,7 @@ export default class Chat<Message> {
     predicate: (message: Message) => boolean,
     updater: (message: Message) => Message
   ): void {
-    let updatedMessage: Message | undefined;
-
-    this.messages.update(predicate, (message: Message) => {
-      if (!updatedMessage) {
-        updatedMessage = updater(message);
-        return updatedMessage;
-      }
-      return message;
-    });
-
+    const updatedMessage = this.messages.update(predicate, updater);
     if (updatedMessage) {
       this.messageListener.notify({ type: 'update', message: updatedMessage });
     }
