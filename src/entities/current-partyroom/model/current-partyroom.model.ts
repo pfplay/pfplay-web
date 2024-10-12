@@ -1,6 +1,5 @@
 import { GradeType, PenaltyType } from '@/shared/api/http/types/@enums';
 import { PartyroomPlayback, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
-import { ChatEvent } from '@/shared/api/websocket/types/partyroom';
 import { Chat } from '@/shared/lib/chat';
 import type { Next } from '@/shared/lib/functions/update';
 import * as ChatMessage from './chat-message.model';
@@ -46,8 +45,10 @@ export type Model = {
    * chat message list의 리액트 내 구독을 위해선 이 슬라이스에서 제공하는 useCurrentPartyroomChat hook을 사용하세요
    */
   chat: Chat<ChatMessage.Model>;
-  appendChatMessage: (crewId: number, message: ChatEvent['message']) => void;
-
+  /**
+   * 채팅 메세지 추가 시 호출되는 함수입니다
+   */
+  appendChatMessage: (message: ChatMessage.Model) => void;
   /**
    * 채팅 메세지 삭제 시 호출되는 함수입니다
    */

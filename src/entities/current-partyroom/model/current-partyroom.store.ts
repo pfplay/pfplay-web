@@ -2,11 +2,8 @@
 
 import { create } from 'zustand';
 import { Chat } from '@/shared/lib/chat';
-import { warnLog } from '@/shared/lib/functions/log/logger';
-import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { update } from '@/shared/lib/functions/update';
 import * as ChatMessage from './chat-message.model';
-import * as Crew from './crew.model';
 import * as CurrentPartyroom from '../model/current-partyroom.model';
 
 export const createCurrentPartyroomStore = () => {
@@ -79,25 +76,12 @@ export const createCurrentPartyroomStore = () => {
     },
 
     chat: Chat.create<ChatMessage.Model>([]),
-    appendChatMessage: (crewId, message) => {
+    appendChatMessage: (newChat) => {
       return set((state) => {
-        const crew = state.crews.find((crew) => crew.crewId === crewId);
-        if (!crew) {
-          logCrewNotFound(crewId, state.crews);
-          return state;
-        }
-
-        state.chat.appendMessage({
-          from: 'user',
-          crew,
-          message,
-          receivedAt: Date.now(),
-        });
-
+        state.chat.appendMessage(newChat);
         return state;
       });
     },
-
     updateChatMessage: (predicate, updater) => {
       return set((state) => {
         state.chat.updateMessage(predicate, updater);
@@ -131,16 +115,3 @@ export const createCurrentPartyroomStore = () => {
     },
   }));
 };
-
-const logger = withDebugger(0);
-const warnLogger = logger(warnLog);
-
-function logCrewNotFound(crewId: number, currentCrews: Crew.Model[]) {
-  warnLogger(
-    `Cannot find crew(crewId: ${crewId}) in stored crews for chat. current crews: ${JSON.stringify(
-      currentCrews,
-      null,
-      2
-    )}`
-  );
-}
