@@ -30,7 +30,7 @@ export default function useAssignAvatarPositions({
 
     if (removed.length) {
       setPositionedCrews((prev) =>
-        prev.filter((crew) => !removed.some((removedCrew) => removedCrew.uid === crew.uid))
+        prev.filter((crew) => !removed.some((removedCrew) => removedCrew.crewId === crew.crewId))
       );
     }
   }, [originCrews]);
@@ -48,11 +48,11 @@ function diffCrews(
   prevCrews: Crew.Model[],
   nextCrews: Crew.Model[]
 ): { added: Crew.Model[]; removed: Crew.Model[] } {
-  const prevCrewSet = new Set(prevCrews.map((crew) => crew.uid));
-  const nextCrewSet = new Set(nextCrews.map((crew) => crew.uid));
+  const prevCrewSet = new Set(prevCrews.map((crew) => crew.crewId));
+  const nextCrewSet = new Set(nextCrews.map((crew) => crew.crewId));
 
-  const added = nextCrews.filter((crew) => !prevCrewSet.has(crew.uid));
-  const removed = prevCrews.filter((crew) => !nextCrewSet.has(crew.uid));
+  const added = nextCrews.filter((crew) => !prevCrewSet.has(crew.crewId));
+  const removed = prevCrews.filter((crew) => !nextCrewSet.has(crew.crewId));
 
   return { added, removed };
 }
