@@ -63,8 +63,6 @@ export type GetSetupInfoPayload = {
 };
 
 export type PartyroomCrew = {
-  uid: string;
-  authorityTier: AuthorityTier;
   crewId: number;
   nickname: string;
   gradeType: GradeType;

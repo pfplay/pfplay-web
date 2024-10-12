@@ -50,7 +50,7 @@ export default function Avatars() {
 
         return (
           <div
-            key={'partyroom-crew-' + crew.uid}
+            key={'partyroom-crew-' + crew.crewId}
             className='absolute'
             style={{
               top: `${crew.position.y}%`,
