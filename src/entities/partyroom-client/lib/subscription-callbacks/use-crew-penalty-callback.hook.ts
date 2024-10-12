@@ -25,7 +25,7 @@ export default function useCrewPenaltyCallback() {
       const punished = crews.find((crew) => crew.crewId === event.punished.crewId);
 
       if (!punisher || !punished) {
-        errorLogger('Punisher and Punished not found');
+        errorLogger('Punisher or Punished not found');
         return;
       }
 
