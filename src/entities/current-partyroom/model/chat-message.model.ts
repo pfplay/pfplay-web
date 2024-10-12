@@ -4,6 +4,7 @@ import { ChatEvent } from '@/shared/api/websocket/types/partyroom';
 export type SystemChat = {
   from: 'system';
   content: string;
+  receivedAt: number;
 };
 
 export type UserChat = {
