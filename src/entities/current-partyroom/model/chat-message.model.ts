@@ -1,8 +1,6 @@
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { ChatEvent } from '@/shared/api/websocket/types/partyroom';
 
-export type ChatType = 'user' | 'system';
-
 export type SystemChat = {
   from: 'system';
   content: string;
