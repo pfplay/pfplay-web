@@ -1,18 +1,34 @@
 'use client';
 import Image from 'next/image';
+import { useEffect } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useSuspenseFetchMe } from '@/entities/me';
 import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { PFAdd, PFInfoOutline } from '@/shared/ui/icons';
+import { useUpdateMyWallet } from '../api/use-update-my-walllet.mutation';
 
 const ConnectWalletButton = () => {
   const t = useI18n();
+  const { data: me } = useSuspenseFetchMe();
+  const { mutate: updateMyWallet } = useUpdateMyWallet();
 
   return (
     <ConnectButton.Custom>
       {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
-        const connected = mounted && account && chain;
+        const connected = mounted && !!account && !!chain;
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+          if (!me.walletAddress && connected) {
+            updateMyWallet({ walletAddress: account.address });
+          }
+          if (!!me.walletAddress && !connected) {
+            // TODO: 지갑연결 해제 시 api 나오면 대응
+            // https://pfplay.slack.com/archives/C051N8A0ZSB/p1728730320680689?thread_ts=1728728907.644159&cid=C051N8A0ZSB
+          }
+        }, [connected]);
 
         if (chain?.unsupported) {
           return (
