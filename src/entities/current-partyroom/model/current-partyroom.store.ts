@@ -88,6 +88,7 @@ export const createCurrentPartyroomStore = () => {
         }
 
         state.chat.appendMessage({
+          from: 'user',
           crew,
           message,
           receivedAt: Date.now(),
@@ -97,29 +98,10 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
-    chatUpdated: false,
-    setChatUpdated: (chatUpdated) => set({ chatUpdated }),
-    updateChatMessage: ({ messageId, content }) => {
+    updateChatMessage: (predicate, updater) => {
       return set((state) => {
-        const updatedMessages = state.chat.getMessages().map((message) => {
-          if (message.message.messageId === messageId) {
-            return {
-              ...message,
-              message: {
-                ...message.message,
-                content,
-              },
-              removed: true,
-            };
-          }
-          return message;
-        });
-
-        return {
-          ...state,
-          chat: Chat.create(updatedMessages),
-          chatUpdated: true,
-        };
+        state.chat.updateMessage(predicate, updater);
+        return state;
       });
     },
 

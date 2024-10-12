@@ -15,9 +15,9 @@ export default class Observer<T> {
     this.listeners = [];
   }
 
-  public notify(data: T) {
+  public notify(event: T) {
     for (const listener of this.listeners) {
-      listener(data);
+      listener(event);
     }
   }
 }

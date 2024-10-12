@@ -8,7 +8,7 @@ import { galmuriFont } from '@/shared/ui/foundation/fonts';
 import AuthorityHeadset from './authority-headset.component';
 
 type ChatItemProps = {
-  message: ChatMessage.Model;
+  message: Extract<ChatMessage.Model, { from: 'user' }>;
 };
 
 const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) => {

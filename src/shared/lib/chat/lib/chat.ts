@@ -1,8 +1,9 @@
+import { MAX_MESSAGE_AMOUNT } from '@/shared/config/max-message-amount';
 import CircularBuffer from './circular-buffer';
 import CircularBufferAdapter from './circular-buffer-adapter';
 import Observer from './observer';
 import ObserverAdapter from './observer-adapter';
-import type { ChatMessageListener } from '../model/chat-message-listener.model';
+import type { ChatMessageListener, ChatObserverEvent } from '../model/chat-message-listener.model';
 import type { ChatMessages } from '../model/chat-messages.model';
 
 export default class Chat<Message> {
@@ -13,14 +14,14 @@ export default class Chat<Message> {
 
   public static create<Message>(initialMessages: Message[]): Chat<Message> {
     return new Chat(
-      new CircularBufferAdapter(new CircularBuffer<Message>(initialMessages, 1000)),
-      new ObserverAdapter(new Observer<Message>())
+      new CircularBufferAdapter(new CircularBuffer<Message>(initialMessages, MAX_MESSAGE_AMOUNT)),
+      new ObserverAdapter(new Observer<ChatObserverEvent<Message>>())
     );
   }
 
   public appendMessage(message: Message): void {
     this.messages.append(message);
-    this.messageListener.notify(message);
+    this.messageListener.notify({ type: 'add', message });
   }
 
   public getMessages(): Message[] {
@@ -33,6 +34,16 @@ export default class Chat<Message> {
 
   public removeMessageListener(listener: (message: Message) => void): void {
     this.messageListener.deregister(listener);
+  }
+
+  public updateMessage(
+    predicate: (message: Message) => boolean,
+    updater: (message: Message) => Message
+  ): void {
+    const updatedMessage = this.messages.update(predicate, updater);
+    if (updatedMessage) {
+      this.messageListener.notify({ type: 'update', message: updatedMessage });
+    }
   }
 
   public clear(): void {

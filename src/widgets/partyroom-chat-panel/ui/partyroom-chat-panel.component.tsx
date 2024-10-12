@@ -1,6 +1,5 @@
 'use client';
 import { Crew, useCurrentPartyroomChat } from '@/entities/current-partyroom';
-import { ChatMessage } from '@/entities/current-partyroom';
 import { useAdjustGrade } from '@/features/partyroom/adjust-grade';
 import { useDeleteChatMessage, useImposePenalty } from '@/features/partyroom/impose-penalty';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
@@ -36,10 +35,10 @@ export default function PartyroomChatPanel() {
     <div ref={containerRef} className='flexCol gap-1'>
       <div ref={scrollContainerRef} className='flex-[1_0_0] flexCol gap-4 overflow-y-auto py-4'>
         {chatMessages.map((message, i) => {
-          if (message.removed) {
+          if (message.from === 'system') {
             return (
               <Typography type='caption1' className='text-red-200 p-2 pl-[58px]'>
-                {message.message.content}
+                {message.content}
               </Typography>
             );
           }
@@ -49,7 +48,7 @@ export default function PartyroomChatPanel() {
 
           return (
             <DisplayOptionMenuOnHoverListener
-              key={ChatMessage.uniqueId(message)}
+              key={message.message.messageId}
               disabled={isMe}
               menuPositionStyle='top-[8px] right-[12px]'
               menuItemPanelSize='sm'
