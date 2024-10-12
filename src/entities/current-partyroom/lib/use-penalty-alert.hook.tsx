@@ -1,18 +1,27 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
-import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
-import type { AlertMessage } from '../model/alert.model';
+import useAlert from './use-alert.hook';
 
 export default function usePenaltyAlert() {
+  const openPenaltyAlertDialog = useOpenPenaltyAlertDialog();
+
+  useAlert({
+    predicate: useCallback((message) => Object.values(PenaltyType).includes(message.type), []),
+    callback: useCallback((message) => {
+      openPenaltyAlertDialog(message.type, message.reason);
+    }, []),
+  });
+}
+
+function useOpenPenaltyAlertDialog() {
   const t = useI18n();
-  const alert = useStores().useCurrentPartyroom((state) => state.alert);
   const { openDialog } = useDialog();
 
-  const openPenaltyAlertDialog = (penaltyType: PenaltyType, reason: ReactNode) => {
+  return (penaltyType: PenaltyType, reason: ReactNode) => {
     openDialog((_, onCancel) => ({
       title: ({ defaultTypographyType, defaultClassName }) => (
         <Typography type={defaultTypographyType} className={defaultClassName}>
@@ -32,20 +41,6 @@ export default function usePenaltyAlert() {
       ),
     }));
   };
-
-  useEffect(() => {
-    const callback = (message: AlertMessage) => {
-      if (Object.values(PenaltyType).includes(message.type)) {
-        openPenaltyAlertDialog(message.type, message.reason);
-      }
-    };
-
-    alert.subscribe(callback);
-
-    return () => {
-      alert.unsubscribe(callback);
-    };
-  }, []);
 }
 
 // TODO: i18n 적용
