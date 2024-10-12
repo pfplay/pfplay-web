@@ -1,4 +1,5 @@
 'use client';
+import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary.component';
 import { cn } from '@/shared/lib/functions/cn';
 import { useVerticalStretch } from '@/shared/lib/hooks/use-vertical-stretch.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -24,7 +25,9 @@ const AvatarFaceList = () => {
   return (
     <div ref={containerRef} className='flexCol gap-4 overflow-hidden'>
       <div className='flexRow justify-end items-center gap-3'>
-        <ConnectWalletButton />
+        <SuspenseWithErrorBoundary>
+          <ConnectWalletButton />
+        </SuspenseWithErrorBoundary>
       </div>
       <div
         className={cn(
