@@ -23,7 +23,7 @@ class UsersService extends HTTPClient implements UsersClient {
   public signIn = (request: SignInRequest) => {
     if (typeof window === 'undefined') return;
 
-    const url = new URL(`${this.axiosInstance.defaults.baseURL}${this.ROUTE_V1}/crews/sign`);
+    const url = new URL(`${this.axiosInstance.defaults.baseURL}${this.ROUTE_V1}/members/sign`);
     url.searchParams.append('oauth2Provider', request.oauth2Provider);
 
     window.location.href = url.toString();
