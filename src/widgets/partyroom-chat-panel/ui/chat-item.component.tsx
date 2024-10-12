@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import { ChatMessage, Crew } from '@/entities/current-partyroom';
+import { GRADE_TYPE_LABEL } from '@/entities/partyroom-client';
 import { GradeType } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import Profile from '@/shared/ui/components/profile/profile.component';
@@ -53,13 +54,5 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
     </div>
   );
 });
-
-const GRADE_TYPE_LABEL: Record<GradeType, string> = {
-  [GradeType.HOST]: 'Admin',
-  [GradeType.COMMUNITY_MANAGER]: 'CM',
-  [GradeType.MODERATOR]: 'Mod',
-  [GradeType.CLUBBER]: 'Clubber',
-  [GradeType.LISTENER]: 'Listener',
-};
 
 export default ChatItem;
