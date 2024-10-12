@@ -83,7 +83,7 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
   };
 
   public reaction = ({ partyroomId, ...body }: ReactionPayload) => {
-    return this.post<ReactionResponse>(`${this.ROUTE_V1}/${partyroomId}/playback/reaction`, body);
+    return this.post<ReactionResponse>(`${this.ROUTE_V1}/${partyroomId}/playbacks/reaction`, body);
   };
 
   public adjustGrade = ({ partyroomId, crewId, ...body }: AdjustGradePayload) => {
