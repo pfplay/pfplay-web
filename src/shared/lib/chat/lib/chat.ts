@@ -1,8 +1,8 @@
 import { MAX_MESSAGE_AMOUNT } from '@/shared/config/max-message-amount';
 import CircularBuffer from './circular-buffer';
 import CircularBufferAdapter from './circular-buffer-adapter';
-import Observer from './observer';
 import ObserverAdapter from './observer-adapter';
+import Observer from '../../functions/observer';
 import type { ChatMessageListener, ChatObserverEvent } from '../model/chat-message-listener.model';
 import type { ChatMessages } from '../model/chat-messages.model';
 
