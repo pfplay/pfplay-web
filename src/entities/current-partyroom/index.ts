@@ -6,3 +6,4 @@ export * as ChatMessage from './model/chat-message.model';
 export * as Crew from './model/crew.model';
 
 export { useChat as useCurrentPartyroomChat } from './lib/use-chat.hook';
+export { default as usePartyroomPenaltyAlert } from './lib/use-penalty-alert.hook';

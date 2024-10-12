@@ -5,6 +5,7 @@ import { Chat } from '@/shared/lib/chat';
 import { warnLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { update } from '@/shared/lib/functions/update';
+import Alert from './alert.model';
 import * as ChatMessage from './chat-message.model';
 import * as Crew from './crew.model';
 import * as CurrentPartyroom from '../model/current-partyroom.model';
@@ -105,12 +106,7 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
-    penaltyNotification: undefined,
-    setPenaltyNotification: (penaltyNotification) => {
-      return set({
-        penaltyNotification,
-      });
-    },
+    alert: new Alert(),
 
     init: (next) => {
       return set(

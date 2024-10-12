@@ -1,5 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
+import { usePartyroomPenaltyAlert } from '@/entities/current-partyroom';
 import { cn } from '@/shared/lib/functions/cn';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -12,7 +13,6 @@ import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
 import { PartyroomDetailTrigger } from '@/widgets/partyroom-detail';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
-import PenaltyNotificationDialog from '@/widgets/partyroom-djing-dialog/ui/penalty-notification-dialog.component';
 import { PartyroomParticipantPanel } from '@/widgets/partyroom-participant-panel';
 import { Sidebar } from '@/widgets/sidebar';
 
@@ -27,6 +27,8 @@ const PartyroomPage = () => {
 
   const { useCurrentPartyroom } = useStores();
   const crewsCount = useCurrentPartyroom((state) => state.crews.length);
+
+  usePartyroomPenaltyAlert();
 
   // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
   return (
@@ -96,8 +98,6 @@ const PartyroomPage = () => {
         open={isDjingDialogOpen}
         close={closeDjingDialog}
       />
-
-      <PenaltyNotificationDialog />
     </>
   );
 };
