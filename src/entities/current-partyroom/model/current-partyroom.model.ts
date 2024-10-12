@@ -1,19 +1,14 @@
-import { GradeType, PenaltyType } from '@/shared/api/http/types/@enums';
+import { GradeType } from '@/shared/api/http/types/@enums';
 import { PartyroomPlayback, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import { Chat } from '@/shared/lib/chat';
 import type { Next } from '@/shared/lib/functions/update';
+import Alert from './alert.model';
 import * as ChatMessage from './chat-message.model';
 import * as Crew from './crew.model';
 
 export type MyPartyroomInfo = {
   crewId: number;
   gradeType: GradeType;
-};
-
-export type PenaltyNotification = {
-  punishedId: number;
-  penaltyType: PenaltyType;
-  detail: string;
 };
 
 export type Model = {
@@ -81,10 +76,11 @@ export type Model = {
   ) => void;
 
   /**
-   * 패널티 전파
+   * 알리미 모듈
+   * 킥, 꿀, 밴, grade 조정 등의 이벤트 발생 시 대상자에게 알림을 보내기 위한 모듈입니다.
+   * 대개 이벤트 콜백에서 알림을 호출하며, 뷰 레이어에서 이를 구독하여 처리합니다.
    */
-  penaltyNotification?: PenaltyNotification;
-  setPenaltyNotification: (notification: PenaltyNotification | undefined) => void;
+  alert: Alert;
 
   /**
    * 파티룸 입장 시 초기화하는 함수

@@ -1,4 +1,4 @@
-import Observer from './observer';
+import Observer from '../../functions/observer';
 import { ChatMessageListener, ChatObserverEvent } from '../model/chat-message-listener.model';
 
 export default class ObserverAdapter<Message> implements ChatMessageListener<Message> {

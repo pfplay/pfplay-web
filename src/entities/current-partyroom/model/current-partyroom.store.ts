@@ -3,6 +3,7 @@
 import { create } from 'zustand';
 import { Chat } from '@/shared/lib/chat';
 import { update } from '@/shared/lib/functions/update';
+import Alert from './alert.model';
 import * as ChatMessage from './chat-message.model';
 import * as CurrentPartyroom from '../model/current-partyroom.model';
 
@@ -89,12 +90,7 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
-    penaltyNotification: undefined,
-    setPenaltyNotification: (penaltyNotification) => {
-      return set({
-        penaltyNotification,
-      });
-    },
+    alert: new Alert(),
 
     init: (next) => {
       return set(
