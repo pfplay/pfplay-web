@@ -17,7 +17,7 @@ export default function ActionButtons() {
     state.playback,
   ]);
   const [flag, updateFlag, resetFlag] = useAggregationFlag({
-    initialValue: reaction?.history,
+    initialValue: reaction.history,
   });
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function ActionButtons() {
     <>
       <ActionButton
         icon={<PFThumbUpAlt width={18} height={18} />}
-        text={reaction?.aggregation.likeCount ?? 0}
+        text={reaction.aggregation.likeCount}
         disabled={!playbackActivated}
         active={flag.isLiked}
         activeColor='red'
@@ -46,7 +46,7 @@ export default function ActionButtons() {
       />
       <ActionButton
         icon={<PFPlaylistAdd width={18} height={18} />}
-        text={reaction?.aggregation.grabCount ?? 0}
+        text={reaction.aggregation.grabCount}
         disabled={!playbackActivated || flag.isGrabbed} // NOTE: grab은 끌 수 없음
         active={flag.isGrabbed}
         activeColor='green'
@@ -60,7 +60,7 @@ export default function ActionButtons() {
       />
       <ActionButton
         icon={<PFThumbDownAlt width={18} height={18} />}
-        text={reaction?.aggregation.dislikeCount ?? 0}
+        text={reaction.aggregation.dislikeCount}
         disabled={!playbackActivated}
         active={flag.isDisliked}
         activeColor='white'

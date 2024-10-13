@@ -6,13 +6,9 @@ export default function useReactionAggregationCallback() {
   const updateReaction = useCurrentPartyroom((state) => state.updateReaction);
 
   return (event: ReactionAggregationEvent) => {
-    updateReaction((prev) => {
-      if (!prev) return;
-
-      return {
-        ...prev,
-        aggregation: event.aggregation,
-      };
-    });
+    updateReaction((prev) => ({
+      ...prev,
+      aggregation: event.aggregation,
+    }));
   };
 }
