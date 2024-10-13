@@ -5,7 +5,6 @@ import '@rainbow-me/rainbowkit/styles.css';
 import '@/shared/ui/foundation/globals.css';
 
 import { PropsWithChildren } from 'react';
-import StoresProvider from '@/app/_providers/stores.provider';
 import { MeHydration } from '@/entities/me';
 import { DomId } from '@/shared/config/dom-id';
 import { Language } from '@/shared/lib/localization/constants';
@@ -17,6 +16,8 @@ import { DialogProvider } from '@/shared/ui/components/dialog';
 import { pretendardVariable } from '@/shared/ui/foundation/fonts';
 import PartyroomConnectionProvider from './_providers/partyroom-connection.provider';
 import ReactQueryProvider from './_providers/react-query.provider';
+import StoresProvider from './_providers/stores.provider';
+import { WalletProvider } from './_providers/wallet.provider';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -37,11 +38,13 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
           <LangProvider lang={lang as Language}>
             <I18nProvider dictionary={dictionary}>
               <StoresProvider>
-                <DialogProvider>
-                  <MeHydration>
-                    <PartyroomConnectionProvider>{children}</PartyroomConnectionProvider>
-                  </MeHydration>
-                </DialogProvider>
+                <WalletProvider>
+                  <DialogProvider>
+                    <MeHydration>
+                      <PartyroomConnectionProvider>{children}</PartyroomConnectionProvider>
+                    </MeHydration>
+                  </DialogProvider>
+                </WalletProvider>
               </StoresProvider>
             </I18nProvider>
           </LangProvider>

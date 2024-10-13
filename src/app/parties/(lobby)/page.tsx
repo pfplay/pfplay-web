@@ -1,13 +1,20 @@
+'use client';
 import { PartyroomCreateCard } from '@/features/partyroom/create';
 import { MainPartyroomCard, PartyroomList } from '@/features/partyroom/list';
 import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary.component';
 import { cn } from '@/shared/lib/functions/cn';
+import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Sidebar } from '@/widgets/sidebar';
 
 const PartyLobbyPage = () => {
+  const router = useAppRouter();
+
   return (
     <>
       <Sidebar
+        onClickAvatarSetting={() => {
+          router.push('/settings/avatar');
+        }}
         className={cn([
           'flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded',
           'fixed z-10 bottom-8 right-8 transform',
