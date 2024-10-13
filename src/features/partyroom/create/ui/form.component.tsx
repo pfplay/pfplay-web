@@ -37,5 +37,7 @@ export default function PartyroomCreateForm({ onSuccess }: Props) {
     );
   };
 
-  return <PartyroomMutationForm onSubmit={handleSubmit} />;
+  return (
+    <PartyroomMutationForm onSubmit={handleSubmit} submitText={t.createparty.btn.create_party} />
+  );
 }
