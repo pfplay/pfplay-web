@@ -34,12 +34,12 @@ function Body({ partyroom }: { partyroom?: PartyroomDetailSummary }) {
   const [isCopied, setIsCopied] = useState(false);
 
   const t = useI18n();
-  // 개발환경에서는 브라우저 주소창에 사용하는 localhost를 붙이고 나머지 path 입력해서 테스트. e.g) https://localhost:3000/party/...
 
   if (partyroom?.linkDomain === 'undefined') {
     throw new Error('Partyroom domain is not found. maybe you are not in the partyroom.');
   }
 
+  // 개발환경에서는 브라우저 주소창에 사용하는 localhost를 붙이고 나머지 path 입력해서 테스트. e.g) https://localhost:3000/party/...
   const sharedUrl = `https://pfplay.io/party/${partyroom.linkDomain}`;
 
   const handleCopyLink = () => {
