@@ -26,7 +26,19 @@ export default function useCrewGradeCallback() {
       return;
     }
 
-    updateCrews(crews.map((crew) => (crew.crewId === adjusted.crewId ? adjusted : crew)));
+    updateCrews(
+      crews.map((crew) => {
+        if (crew.crewId === event.adjusted.crewId) {
+          return {
+            ...crew,
+            gradeType: event.adjusted.currGradeType,
+          };
+        }
+
+        return crew;
+      })
+    );
+
     appendChatMessage({
       from: 'system',
       content: (() => {
