@@ -39,5 +39,11 @@ export default function PartyroomEditForm({ onSuccess, defaultValues }: Props) {
     );
   };
 
-  return <PartyroomMutationForm onSubmit={handleSubmit} defaultValues={defaultValues} />;
+  return (
+    <PartyroomMutationForm
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
+      submitText={t.common.btn.save}
+    />
+  );
 }

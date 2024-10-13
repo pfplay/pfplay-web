@@ -24,9 +24,10 @@ export type PartyroomMutationSubmitHandler = (
 type Props = {
   onSubmit: PartyroomMutationSubmitHandler;
   defaultValues?: Form.Model;
+  submitText: string;
 };
 
-export default function PartyroomMutationForm({ defaultValues, onSubmit }: Props) {
+export default function PartyroomMutationForm({ defaultValues, onSubmit, submitText }: Props) {
   const t = useI18n();
   const lang = useLang();
   const { data: me } = useSuspenseFetchMe();
@@ -152,7 +153,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit }: Props
             className='px-[74px]'
             disabled={btnDisabled}
           >
-            {t.createparty.btn.create_party}
+            {submitText}
           </Button>
         </div>
       </div>
