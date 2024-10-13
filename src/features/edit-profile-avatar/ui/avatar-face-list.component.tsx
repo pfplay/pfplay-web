@@ -31,7 +31,7 @@ const AvatarFaceList = () => {
       </div>
       <div
         className={cn(
-          'relative flex-1 grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5 grid-rows-max auto-rows-max',
+          'relative flex-1 grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5 grid-rows-max auto-rows-max overflow-auto',
           {
             'overflow-y-auto': combinable,
             'overflow-hidden': !combinable,

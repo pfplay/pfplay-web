@@ -12,7 +12,7 @@ export default function useOpenEditProfileAvatarDialog() {
   return () => {
     return openDialog((onOk, onCancel) => ({
       classNames: {
-        container: 'w-[1680px]',
+        container: 'w-[1680px] h-[800px] p-0 bg-gray-900',
       },
       Body: (
         <ProfileAvatarEditPanel

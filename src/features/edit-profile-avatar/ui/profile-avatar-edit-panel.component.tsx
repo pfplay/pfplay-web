@@ -30,7 +30,7 @@ export default function ProfileAvatarEditPanel({ titleRender, actions }: Props) 
           <SelectedAvatar />
         </div>
         <div className='flex-1 h-full flexCol gap-2'>
-          <TabGroup className='flex-1 flexCol'>
+          <TabGroup className='flex-1 flexCol overflow-hidden'>
             <TabList className='w-full flexRow'>
               <Tab tabTitle='body' variant='line' className='w-auto' />
               <Tab tabTitle='face' variant='line' className='w-auto' />
@@ -38,10 +38,10 @@ export default function ProfileAvatarEditPanel({ titleRender, actions }: Props) 
             </TabList>
             <TabPanels className='flex-1 flexCol pb-2 overflow-hidden'>
               {/* FIXME: 각 패널 overflow auto 안 먹고 있음 */}
-              <TabPanel tabIndex={0} className='flex-1 flexCol pt-6'>
+              <TabPanel tabIndex={0} className='flex-1 flexCol mt-6 overflow-auto'>
                 <AvatarBodyList />
               </TabPanel>
-              <TabPanel tabIndex={1} className='flex-1 flexCol pt-4'>
+              <TabPanel tabIndex={1} className='flex-1 flexCol mt-4 overflow-auto'>
                 <AvatarFaceList />
               </TabPanel>
             </TabPanels>
