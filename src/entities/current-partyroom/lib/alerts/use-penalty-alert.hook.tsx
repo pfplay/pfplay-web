@@ -28,8 +28,8 @@ function useOpenPenaltyAlertDialog() {
 
   const afterConfirm = (penaltyType: PenaltyType) => {
     switch (penaltyType) {
-      case PenaltyType.CHAT_MESSAGE_REMOVAL:
       case PenaltyType.ONE_TIME_EXPULSION:
+      case PenaltyType.PERMANENT_EXPULSION:
         // TODO: 강제 퇴출 시 백단에서 exit 처리가 되기에, 파티룸 페이지에 걸린 unload 이벤트 리스너에 의해 떠날 때 exit이 호출되고 이 때 404 에러 얼럿이 뜰거임. 예외 처리 필요
         // @see https://pfplay.slack.com/archives/C03Q28EAU66/p1728818068967889?thread_ts=1728817067.685869&cid=C03Q28EAU66
         location.href = '/parties';
