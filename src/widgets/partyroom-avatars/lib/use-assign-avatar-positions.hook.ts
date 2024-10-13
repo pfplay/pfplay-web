@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Crew } from '@/entities/current-partyroom';
+import { deepEqual } from '@/shared/lib/functions/deep-equal';
 import { Area, getRandomPoint, Point } from '../model/avatar-position.model';
 
 type Props = {
@@ -22,15 +23,40 @@ export default function useAssignAvatarPositions({
   useEffect(() => {
     const { added, removed } = diffCrews(positionedCrews, originCrews);
 
-    if (added.length) {
-      const newCrews = added.map((crew) => assignPositionToCrew(crew, allowArea, denyArea));
+    if (added.length || removed.length) {
+      if (added.length) {
+        const newCrews = added.map((crew) => assignPositionToCrew(crew, allowArea, denyArea));
 
-      setPositionedCrews((prev) => [...prev, ...newCrews]);
+        setPositionedCrews((prev) => [...prev, ...newCrews]);
+      }
+
+      if (removed.length) {
+        setPositionedCrews((prev) =>
+          prev.filter((crew) => !removed.some((removedCrew) => removedCrew.crewId === crew.crewId))
+        );
+      }
+
+      return;
     }
 
-    if (removed.length) {
+    const { modified } = deepDiffCrews(positionedCrews, originCrews);
+
+    if (modified.length) {
+      const modifiedCrewMap = new Map(modified.map((crew) => [crew.crewId, crew]));
+
       setPositionedCrews((prev) =>
-        prev.filter((crew) => !removed.some((removedCrew) => removedCrew.crewId === crew.crewId))
+        prev.map((prevPositionedCrew) => {
+          const modifiedCrew = modifiedCrewMap.get(prevPositionedCrew.crewId);
+
+          if (!modifiedCrew) {
+            return prevPositionedCrew;
+          }
+
+          return {
+            ...modifiedCrew,
+            position: prevPositionedCrew.position,
+          };
+        })
       );
     }
   }, [originCrews]);
@@ -51,8 +77,23 @@ function diffCrews(
   const prevCrewSet = new Set(prevCrews.map((crew) => crew.crewId));
   const nextCrewSet = new Set(nextCrews.map((crew) => crew.crewId));
 
-  const added = nextCrews.filter((crew) => !prevCrewSet.has(crew.crewId));
-  const removed = prevCrews.filter((crew) => !nextCrewSet.has(crew.crewId));
+  return {
+    added: nextCrews.filter((crew) => !prevCrewSet.has(crew.crewId)),
+    removed: prevCrews.filter((crew) => !nextCrewSet.has(crew.crewId)),
+  };
+}
 
-  return { added, removed };
+function deepDiffCrews(
+  prevCrews: Crew.Model[],
+  nextCrews: Crew.Model[]
+): { modified: Crew.Model[] } {
+  const prevCrewMap = new Map(prevCrews.map((crew) => [crew.crewId, crew]));
+
+  return {
+    modified: nextCrews.filter((crew) => {
+      const prevCrew = prevCrewMap.get(crew.crewId);
+
+      return prevCrew && !deepEqual(prevCrew, crew);
+    }),
+  };
 }
