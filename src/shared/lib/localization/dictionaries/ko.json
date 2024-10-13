@@ -162,7 +162,8 @@
       "party_rooms": "Party Rooms",
       "leave_party_confirm": "변경 내용이 저장되지 않아요.\n파티룸으로 나가시겠어요?",
       "close": "폐쇄하기",
-      "enter_confirm_phrase": "확인 문구를 입력해주세요"
+      "enter_confirm_phrase": "확인 문구를 입력해주세요",
+      "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
     },
     "btn": {
       "share_twitter": "트위터로 공유하기",

@@ -30,30 +30,35 @@ function Body({ partyroom }: { partyroom?: PartyroomDetailSummary }) {
     throw new Error('partyroom summary is not found.');
   }
 
-  const [id, playback] = useStores().useCurrentPartyroom((state) => [state.id, state.playback]);
+  const [playback] = useStores().useCurrentPartyroom((state) => [state.playback]);
   const [isCopied, setIsCopied] = useState(false);
 
   const t = useI18n();
-  // 개발환경에서는 브라우저 주소창에 사용하는 localhost를 붙이고 나머지 path 입력해서 테스트. e.g) https://localhost:3000/party/...
-  const sharedUrl = `https://pfplay.io/party/${partyroom?.linkDomain}`;
 
-  if (typeof id === 'undefined') {
-    throw new Error('partyroomId is not found. maybe you are not in the partyroom.');
+  if (typeof partyroom?.linkDomain === 'undefined') {
+    throw new Error('Partyroom domain is not found. maybe you are not in the partyroom.');
   }
+
+  // 개발환경에서는 브라우저 주소창에 사용하는 localhost를 붙이고 나머지 path 입력해서 테스트. e.g) https://localhost:3000/party/...
+  const sharedUrl = `https://pfplay.io/party/${partyroom.linkDomain}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(sharedUrl);
     setIsCopied(true);
   };
 
+  const refinedSentence =
+    t.party.para.share_x_partyroom.replace('{partyroom_name}', partyroom.title) +
+    `${playback?.name ? ` Now playing {${playback.name}} 🎶` : ''}`;
+
   return (
     <>
       <div className='w-[340px] flexCol gap-3'>
         <div className='w-full h-12 flexRowCenter gap-2 bg-gray-700 rounded cursor-pointer'>
           <TwitterShareButton
-            title={`I'm listening to ${partyroom?.title} room. Come hang out! Now playing ${playback?.name} 🎶 `} // TODO: 1.추후 현재 재생중인 노래가 없을 때의 문구 적용, 2. i18n 적용
+            title={refinedSentence}
             related={['@pfplay_music']}
-            url={`@pfplay_music ${sharedUrl}`}
+            url={`@pfplay_music #pfplay ${sharedUrl}`}
             className='w-full h-12 flexRowCenter gap-2 bg-gray-700 rounded cursor-pointer'
           >
             <Image src={'/images/ETC/twitter.png'} alt='twitter' width={24} height={24} />
@@ -74,7 +79,6 @@ function Body({ partyroom }: { partyroom?: PartyroomDetailSummary }) {
             className='w-[83px]'
             onClick={handleCopyLink}
           >
-            {/* 추후 i18n (en) Copy/Copied!로 변경 되면 btn text overflow 되는 ui defect 사라짐 */}
             {isCopied ? t.party.para.copy_completed : t.party.btn.copy_link}
           </Button>
         </div>

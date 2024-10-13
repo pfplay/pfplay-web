@@ -155,18 +155,19 @@
       "existing_party": "It's already an existing party name",
       "more_than_3m": "Available for more than 3 minutes",
       "stop_editing": "The content written so far is not saved.\nWould you like to stop editing?",
-      "copy_completed": "Copy completed!",
+      "copy_completed": "Copied!",
       "close_party": "Are you sure you want to close the current party room?\nAll data will not be saved.",
       "enter_confirm": "Enter 'Confirmed'",
       "no_longer_see_chat": "You will no longer see the user's chat in this room (applies to me only)",
       "party_rooms": "Party Rooms",
       "leave_party_confirm": "Your changes won't be saved.\nAre you sure you want to leave the party room?",
       "close": "Close",
-      "enter_confirm_phrase": "Please type 'Confirmed'"
+      "enter_confirm_phrase": "Please type 'Confirmed'",
+      "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
     },
     "btn": {
       "share_twitter": "Share on Twitter",
-      "copy_link": "Copy link"
+      "copy_link": "Copy"
     }
   },
   "dj": {
