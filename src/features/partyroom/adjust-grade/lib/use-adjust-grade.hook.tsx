@@ -8,8 +8,7 @@ export function useAdjustGrade() {
   const openGradeAdjustmentAlertDialog = useOpenGradeAdjustmentAlertDialog();
   const { mutate } = useAdjustGradeMutation();
   const selectGrade = useSelectGrade();
-  const { useCurrentPartyroom } = useStores();
-  const { me, partyroomId } = useCurrentPartyroom((state) => ({
+  const { me, partyroomId } = useStores().useCurrentPartyroom((state) => ({
     me: state.me,
     partyroomId: state.id,
   }));
@@ -23,14 +22,14 @@ export function useAdjustGrade() {
     if (!canAdjustGrade) return;
 
     // Select grade
-    const targetCurrentGrade = targetCrew.gradeType;
+    const currentGrade = targetCrew.gradeType;
     const selectedGrade = await selectGrade({
       targetNickname: targetCrew.nickname,
       options: permissions.adjustableGrades,
-      current: targetCurrentGrade,
+      current: currentGrade,
     });
     if (!selectedGrade) return; // Cancel
-    if (selectedGrade === targetCurrentGrade) return; // Selected same grade
+    if (selectedGrade === currentGrade) return; // Selected same grade
 
     // Adjust grade
     mutate(
@@ -41,7 +40,7 @@ export function useAdjustGrade() {
       },
       {
         onSuccess: () => {
-          openGradeAdjustmentAlertDialog(targetCurrentGrade, selectedGrade);
+          openGradeAdjustmentAlertDialog(currentGrade, selectedGrade);
         },
       }
     );
