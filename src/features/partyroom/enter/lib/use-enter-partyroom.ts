@@ -36,22 +36,24 @@ export function useEnterPartyroom(partyroomId: number) {
 
       const motionTypeMap = crewIdToMotionTypeMap(setUpInfo.display.reaction?.motion);
 
-      initPartyroom({
-        id: partyroomId,
-        me: {
-          crewId: enterResponse.crewId,
-          gradeType: enterResponse.gradeType,
-        },
-        playbackActivated: setUpInfo.display.playbackActivated,
-        playback: setUpInfo.display.playback,
-        reaction: setUpInfo.display.reaction,
-        crews: setUpInfo.crews.map((crew) => ({
-          ...crew,
-          motionType: motionTypeMap.get(crew.crewId) ?? MotionType.NONE,
-        })),
-        currentDj: setUpInfo.display.currentDj,
-        notice: notice.content ?? '',
-      });
+      initPartyroom(
+        omitNullables({
+          id: partyroomId,
+          me: {
+            crewId: enterResponse.crewId,
+            gradeType: enterResponse.gradeType,
+          },
+          playbackActivated: setUpInfo.display.playbackActivated,
+          playback: setUpInfo.display.playback,
+          reaction: setUpInfo.display.reaction,
+          crews: setUpInfo.crews.map((crew) => ({
+            ...crew,
+            motionType: motionTypeMap.get(crew.crewId) ?? MotionType.NONE,
+          })),
+          currentDj: setUpInfo.display.currentDj,
+          notice: notice.content ?? '',
+        })
+      );
 
       client.subscribe(partyroomId, handleEvent);
     } catch (e) {
@@ -76,4 +78,14 @@ function crewIdToMotionTypeMap(motionInfo?: PartyroomReaction['motion']) {
     });
     return acc;
   }, {} as Map<number, MotionType>);
+}
+
+/**
+ * api 응답으로 온 nullable 필드들이 스토어 내 required로 초기화된 필드들을 덮어 씌우지 않도록 하기 위해 사용합니다
+ * 예시로 reaction 필드가 있습니다.
+ */
+function omitNullables<T extends Record<string, unknown>>(obj: T): T {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, value]) => value !== null && value !== undefined)
+  ) as T;
 }

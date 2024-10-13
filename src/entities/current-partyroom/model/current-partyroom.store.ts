@@ -40,7 +40,19 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
-    reaction: undefined,
+    reaction: {
+      history: {
+        isLiked: false,
+        isDisliked: false,
+        isGrabbed: false,
+      },
+      aggregation: {
+        likeCount: 0,
+        dislikeCount: 0,
+        grabCount: 0,
+      },
+      motion: [],
+    },
     updateReaction: (next) => {
       return set((state) => {
         const updated = update(state.reaction, next);
@@ -48,6 +60,13 @@ export const createCurrentPartyroomStore = () => {
         return {
           reaction: updated,
         };
+      });
+    },
+    resetReaction: () => {
+      return set((state) => {
+        state.reaction = api.getInitialState().reaction;
+
+        return state;
       });
     },
 

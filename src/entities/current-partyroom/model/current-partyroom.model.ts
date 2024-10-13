@@ -35,8 +35,9 @@ export type Model = {
   /**
    * 전광판 리액션 정보 + 모션 정보
    */
-  reaction?: PartyroomReaction;
-  updateReaction: (next: Next<PartyroomReaction | undefined>) => void;
+  reaction: PartyroomReaction;
+  updateReaction: (next: Next<PartyroomReaction>) => void;
+  resetReaction: () => void;
 
   /**
    * 현재 파티룸 내 크루 목록
@@ -86,10 +87,8 @@ export type Model = {
    * 파티룸 입장 시 초기화하는 함수
    */
   init: (
-    next: Pick<
-      Model,
-      'id' | 'me' | 'playbackActivated' | 'playback' | 'reaction' | 'crews' | 'currentDj' | 'notice'
-    >
+    next: Pick<Model, 'id' | 'me' | 'playbackActivated' | 'crews' | 'notice'> &
+      Partial<Pick<Model, 'playback' | 'reaction' | 'currentDj'>>
   ) => void;
 
   /**

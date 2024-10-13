@@ -32,7 +32,8 @@ export const Preview: Story = {
 
 function Render(args: typeof meta.args) {
   const { useCurrentPartyroom } = useStores();
-  const { playback, updatePlayback, updateReaction, updateNotice } = useCurrentPartyroom();
+  const { playback, updatePlayback, updateReaction, resetReaction, updateNotice } =
+    useCurrentPartyroom();
 
   const mockPlaybacks: PartyroomPlayback[] = [
     {
@@ -61,7 +62,7 @@ function Render(args: typeof meta.args) {
 
   const clear = () => {
     updatePlayback(undefined);
-    updateReaction(undefined);
+    resetReaction();
     updateNotice('');
   };
 
