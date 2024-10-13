@@ -6,7 +6,7 @@ import Alert from './alert.model';
 import * as ChatMessage from './chat-message.model';
 import * as Crew from './crew.model';
 
-export type MyPartyroomInfo = {
+type MyPartyroomInfo = {
   crewId: number;
   gradeType: GradeType;
 };

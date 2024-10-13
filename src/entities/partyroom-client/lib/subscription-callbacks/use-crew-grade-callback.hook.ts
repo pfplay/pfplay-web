@@ -9,8 +9,9 @@ const errorLogger = logger(errorLog);
 
 export default function useCrewGradeCallback() {
   const { useCurrentPartyroom } = useStores();
-  const [updateCrews, appendChatMessage, alert] = useCurrentPartyroom((state) => [
+  const [updateCrews, updateMe, appendChatMessage, alert] = useCurrentPartyroom((state) => [
     state.updateCrews,
+    state.updateMe,
     state.appendChatMessage,
     state.alert,
   ]);
@@ -52,6 +53,10 @@ export default function useCrewGradeCallback() {
 
     const myCrewId = useCurrentPartyroom.getState().me?.crewId;
     if (myCrewId === event.adjusted.crewId) {
+      updateMe({
+        gradeType: event.adjusted.currGradeType,
+      });
+
       alert.trigger({
         type: 'grade-adjusted',
         prev: event.adjusted.prevGradeType,
