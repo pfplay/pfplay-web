@@ -35,7 +35,7 @@ function Body({ partyroom }: { partyroom?: PartyroomDetailSummary }) {
 
   const t = useI18n();
 
-  if (partyroom?.linkDomain === 'undefined') {
+  if (typeof partyroom?.linkDomain === 'undefined') {
     throw new Error('Partyroom domain is not found. maybe you are not in the partyroom.');
   }
 
