@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { PenaltyType } from '@/shared/api/http/types/@enums';
+import { Crew } from '@/entities/current-partyroom';
+import { GradeType, PenaltyType } from '@/shared/api/http/types/@enums';
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
@@ -13,13 +14,22 @@ export default function useImposePenalty() {
   const t = useI18n();
   const { openDialog } = useDialog();
   const partyroomId = useStores().useCurrentPartyroom((state) => state.id);
+  const me = useStores().useCurrentPartyroom((state) => state.me);
+  const myPermissions = me && Crew.Permission.of(me.gradeType);
 
   return ({
     crewId,
+    crewGradeType,
     nickname,
     penaltyType,
-  }: Pick<PartyroomCrew, 'crewId' | 'nickname'> & { penaltyType: PenaltyType }) => {
+  }: Pick<PartyroomCrew, 'crewId' | 'nickname'> & {
+    penaltyType: PenaltyType;
+    crewGradeType: GradeType;
+  }) => {
     if (!partyroomId) return;
+
+    const canImposePenalty = myPermissions?.canImposePenalty(crewGradeType);
+    if (!canImposePenalty) return;
 
     return openDialog((onOk, onClose) => ({
       title: ({ defaultTypographyType, defaultClassName }) => (
