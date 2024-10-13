@@ -14,6 +14,7 @@ export default function useSignInForDev() {
 
   return useCallback(() => {
     openDialog((_, onClose) => ({
+      showCloseIcon: true,
       title: t.onboard.title.moment,
       Sub: (
         <Typography type='detail1' className='text-gray-300'>
