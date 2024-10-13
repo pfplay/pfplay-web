@@ -9,9 +9,10 @@ const errorLogger = logger(errorLog);
 
 export default function useCrewGradeCallback() {
   const { useCurrentPartyroom } = useStores();
-  const [updateCrews, appendChatMessage] = useCurrentPartyroom((state) => [
+  const [updateCrews, appendChatMessage, alert] = useCurrentPartyroom((state) => [
     state.updateCrews,
     state.appendChatMessage,
+    state.alert,
   ]);
 
   // TODO: “대상자에게 모달 알림“ 기능 구현
@@ -36,5 +37,14 @@ export default function useCrewGradeCallback() {
       })(),
       receivedAt: Date.now(),
     });
+
+    const myCrewId = useCurrentPartyroom.getState().me?.crewId;
+    if (myCrewId === event.adjusted.crewId) {
+      alert.trigger({
+        type: 'grade-adjusted',
+        prev: event.adjusted.prevGradeType,
+        next: event.adjusted.currGradeType,
+      });
+    }
   };
 }
