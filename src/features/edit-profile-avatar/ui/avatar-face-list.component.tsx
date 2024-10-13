@@ -23,7 +23,7 @@ const AvatarFaceList = () => {
   })();
 
   return (
-    <div ref={containerRef} className='flexCol gap-4 overflow-hidden'>
+    <div ref={containerRef} className='flex-1 flexCol gap-4 overflow-hidden'>
       <div className='flexRow justify-end items-center gap-3'>
         <SuspenseWithErrorBoundary>
           <ConnectWalletButton />
@@ -31,7 +31,7 @@ const AvatarFaceList = () => {
       </div>
       <div
         className={cn(
-          'relative flex-1 grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5',
+          'relative flex-1 grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5 grid-rows-max auto-rows-max',
           {
             'overflow-y-auto': combinable,
             'overflow-hidden': !combinable,
@@ -49,9 +49,9 @@ const AvatarFaceList = () => {
         ))}
 
         {!combinable && (
-          <div className='absolute inset-0 flexColCenter gap-[16px] bg-dim text-white cursor-not-allowed select-none'>
+          <div className='absolute inset-0 flexColCenter gap-[16px] px-2 text-center bg-dim text-white cursor-not-allowed select-none'>
             <PFInfoOutline width={48} height={48} />
-            <Typography type='title2' as='p'>
+            <Typography type='title2' as='p' overflow='break-words'>
               {t.settings.ec.integrated_body}
             </Typography>
           </div>
