@@ -9,7 +9,7 @@ interface DisplayOptionMenuOnHoverListenerProps {
   menuConfig: MenuItem[];
   listenerDisabled?: boolean;
   children: ReactElement | ((isHover: boolean) => ReactElement);
-  menuPositionStyle?: string;
+  menuPositionClassName?: string;
   menuItemPanelSize?: MenuItemPanelSize;
   disabled?: boolean;
 }
@@ -17,7 +17,7 @@ interface DisplayOptionMenuOnHoverListenerProps {
 const DisplayOptionMenuOnHoverListener = ({
   menuConfig,
   children,
-  menuPositionStyle,
+  menuPositionClassName,
   menuItemPanelSize = 'md',
   listenerDisabled = false,
   disabled,
@@ -83,11 +83,11 @@ const DisplayOptionMenuOnHoverListener = ({
             menuItemConfig={menuConfig}
             onMenuIconClick={handleMenuIconClick}
             onMenuClose={handleMenuClose}
-            menuContainerStyle={cn([
+            menuContainerClassName={cn([
               'absolute top-[5px] right-0',
               'opacity-from-zero',
               (isHover || isMenuOpen) && 'opacity-100',
-              menuPositionStyle,
+              menuPositionClassName,
             ])}
             ref={menuRef}
             menuItemPanel={{ size: menuItemPanelSize }}
