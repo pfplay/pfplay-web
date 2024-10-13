@@ -27,7 +27,7 @@ const UserListItem = ({
   return (
     <DisplayOptionMenuOnHoverListener
       menuConfig={menuItemList}
-      menuPositionStyle='top-[8px] right-[12px]'
+      menuPositionClassName='top-[8px] right-[12px]'
       listenerDisabled={suffix?.type === 'button'}
       menuItemPanelSize={menuItemPanelSize}
     >

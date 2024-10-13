@@ -11,9 +11,9 @@ export type MenuItem = {
 };
 export type MenuItemPanelSize = 'lg' | 'md' | 'sm';
 const MenuItemBoxSize: Record<MenuItemPanelSize, string> = {
-  lg: 'w-[330px]',
-  md: 'w-[220px]',
-  sm: 'w-[90px]',
+  lg: 'min-w-[330px] w-max',
+  md: 'min-w-[220px] w-max',
+  sm: 'min-w-[90px] w-max',
 };
 
 interface MenuItemPanelProps {

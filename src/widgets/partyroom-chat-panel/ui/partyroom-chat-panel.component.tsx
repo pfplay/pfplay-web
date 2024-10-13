@@ -54,7 +54,7 @@ export default function PartyroomChatPanel() {
             <DisplayOptionMenuOnHoverListener
               key={message.message.messageId}
               disabled={isMe}
-              menuPositionStyle='top-[8px] right-[12px]'
+              menuPositionClassName='top-[8px] right-[12px]'
               menuItemPanelSize='sm'
               menuConfig={[
                 {

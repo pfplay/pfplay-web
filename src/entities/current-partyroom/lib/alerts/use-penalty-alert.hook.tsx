@@ -5,42 +5,50 @@ import { replaceVar } from '@/shared/lib/localization/split-render';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 import useAlert from './use-alert.hook';
+import { isPenaltyAlertMessage } from '../../model/alert.model';
 
 export default function usePenaltyAlert() {
   const openPenaltyAlertDialog = useOpenPenaltyAlertDialog();
 
-  useAlert({
-    predicate: useCallback((message) => Object.values(PenaltyType).includes(message.type), []),
-    callback: useCallback((message) => {
-      openPenaltyAlertDialog(message.type, message.reason);
-    }, []),
-  });
+  useAlert(
+    useCallback(
+      (message) => {
+        if (isPenaltyAlertMessage(message)) {
+          openPenaltyAlertDialog(message.type, message.reason);
+        }
+      },
+      [openPenaltyAlertDialog]
+    )
+  );
 }
 
 function useOpenPenaltyAlertDialog() {
   const t = useI18n();
   const { openDialog } = useDialog();
 
-  return (penaltyType: PenaltyType, reason: ReactNode) => {
-    openDialog((_, onCancel) => ({
-      title: ({ defaultTypographyType, defaultClassName }) => (
-        <Typography type={defaultTypographyType} className={defaultClassName}>
-          {getPenaltyTypeTitle(penaltyType)}
-        </Typography>
-      ),
-      Body: (
-        <>
-          <Typography type='body3' className='text-gray-50'>
-            {/* TODO: i18n 적용 */}Reason: {reason}
+  return useCallback(
+    (penaltyType: PenaltyType, reason: ReactNode) => {
+      openDialog((_, onCancel) => ({
+        title: ({ defaultTypographyType, defaultClassName }) => (
+          <Typography type={defaultTypographyType} className={defaultClassName}>
+            {getPenaltyTypeTitle(penaltyType)}
           </Typography>
+        ),
+        Body: (
+          <>
+            <Typography type='body3' className='text-gray-50'>
+              {/* TODO: i18n 적용 */}Reason: {reason}
+            </Typography>
 
-          <Dialog.ButtonGroup>
-            <Dialog.Button onClick={onCancel}>{t.common.btn.confirm}</Dialog.Button>
-          </Dialog.ButtonGroup>
-        </>
-      ),
-    }));
-  };
+            <Dialog.ButtonGroup>
+              <Dialog.Button onClick={onCancel}>{t.common.btn.confirm}</Dialog.Button>
+            </Dialog.ButtonGroup>
+          </>
+        ),
+      }));
+    },
+    [t]
+  );
 }
 
 // TODO: i18n 적용

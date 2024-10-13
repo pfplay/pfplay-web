@@ -1,6 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
-import { usePartyroomPenaltyAlert } from '@/entities/current-partyroom';
+import { useCurrentPartyroomAlerts } from '@/entities/current-partyroom';
 import { cn } from '@/shared/lib/functions/cn';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -28,7 +28,7 @@ const PartyroomPage = () => {
   const { useCurrentPartyroom } = useStores();
   const crewsCount = useCurrentPartyroom((state) => state.crews.length);
 
-  usePartyroomPenaltyAlert();
+  useCurrentPartyroomAlerts();
 
   // TODO: 파티룸 모든 api 불러오는 동안 Suspense로 입장 중 페이지 보여주기
   return (

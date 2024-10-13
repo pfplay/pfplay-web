@@ -1,19 +1,5 @@
-import { PenaltyType } from '@/shared/api/http/types/@enums';
+import { GradeType, PenaltyType } from '@/shared/api/http/types/@enums';
 import Observer from '@/shared/lib/functions/observer';
-
-export type AlertMessage =
-  | {
-      type: PenaltyType.CHAT_BAN_30_SECONDS;
-      reason: string;
-    }
-  | {
-      type: PenaltyType.ONE_TIME_EXPULSION;
-      reason: string;
-    }
-  | {
-      type: PenaltyType.PERMANENT_EXPULSION;
-      reason: string;
-    };
 
 export default class Alert {
   private observer = new Observer<AlertMessage>();
@@ -30,3 +16,26 @@ export default class Alert {
     this.observer.notify(message);
   }
 }
+
+type PenaltyAlertMessage = {
+  type: Exclude<PenaltyType, PenaltyType.CHAT_MESSAGE_REMOVAL>;
+  reason: string;
+};
+
+type GradeAdjustedAlertMessage = {
+  type: 'grade-adjusted';
+  prev: GradeType;
+  next: GradeType;
+};
+
+export type AlertMessage = PenaltyAlertMessage | GradeAdjustedAlertMessage;
+
+export const isPenaltyAlertMessage = (message: AlertMessage): message is PenaltyAlertMessage => {
+  return Object.values(PenaltyType).includes(message.type as PenaltyType);
+};
+
+export const isGradeAdjustedAlertMessage = (
+  message: AlertMessage
+): message is GradeAdjustedAlertMessage => {
+  return message.type === 'grade-adjusted';
+};
