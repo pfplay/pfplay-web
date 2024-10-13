@@ -1,10 +1,13 @@
 'use client';
+import { useCallback, useRef, useState } from 'react';
 import { Crew, useCurrentPartyroomChat } from '@/entities/current-partyroom';
+import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
 import { useAdjustGrade } from '@/features/partyroom/adjust-grade';
 import { useDeleteChatMessage, useImposePenalty } from '@/features/partyroom/impose-penalty';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
 import { SendChatMessage } from '@/features/partyroom/send-chat-message';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
+import { ONE_MINUTE } from '@/shared/config/time';
 import { useVerticalStretch } from '@/shared/lib/hooks/use-vertical-stretch.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -30,6 +33,8 @@ export default function PartyroomChatPanel() {
   >({
     itemsGap: 16,
   });
+
+  const banned = useTempChatBanTimer();
 
   return (
     <div ref={containerRef} className='flexCol gap-1'>
@@ -111,7 +116,13 @@ export default function PartyroomChatPanel() {
           <Input
             size='lg'
             variant='outlined'
-            placeholder='What would you like to talk about?' // TODO: i18n 적용
+            disabled={banned}
+            // placeholder='What would you like to talk about?' // TODO: i18n 적용
+            placeholder={
+              banned
+                ? 'You are temporarily banned from chatting.'
+                : 'What would you like to talk about?'
+            }
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onPressEnter={() => {
@@ -133,4 +144,26 @@ export default function PartyroomChatPanel() {
       </SendChatMessage>
     </div>
   );
+}
+
+/**
+ * FIXME: 임시로 채팅 금지 타이머 설정. 나중에 쌈뽕하게 수정 필요. 여기서 useAlert 사용하는거 너무 짜침
+ */
+function useTempChatBanTimer() {
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [banned, setBanned] = useState(false);
+
+  useAlert(
+    useCallback((alert) => {
+      if (alert.type === PenaltyType.CHAT_BAN_30_SECONDS) {
+        setBanned(true);
+
+        timerRef.current = setTimeout(() => {
+          setBanned(false);
+        }, 30 * ONE_MINUTE);
+      }
+    }, [])
+  );
+
+  return banned;
 }
