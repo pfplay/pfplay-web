@@ -27,7 +27,6 @@ export default function ProfileAvatarEditPanel({ titleRender, actions }: Props) 
       <SelectedAvatarStateProvider>
         <div className='flexCol items-start gap-10'>
           {titleRender(t.settings.para.what_wear)}
-          {/*<Typography type='title2'>{t.settings.para.what_wear}</Typography>*/}
           <SelectedAvatar />
         </div>
         <div className='flex-1 h-full flexCol gap-2'>

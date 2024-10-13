@@ -1,4 +1,3 @@
-'use client';
 import { ReactNode } from 'react';
 import { useSuspenseFetchMe } from '@/entities/me';
 import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
@@ -10,16 +9,17 @@ import Profile from '@/shared/ui/components/profile/profile.component';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFHeadset } from '@/shared/ui/icons';
 
-interface SidebarProps {
+type SidebarProps = {
   className: string;
+  onClickAvatarSetting: () => void;
   extraButton?: {
     onClick: () => void;
     icon: (size: number, className: string) => ReactNode;
     text: string;
   };
-}
+};
 
-const Sidebar = ({ className, extraButton }: SidebarProps) => {
+export default function Sidebar({ className, onClickAvatarSetting, extraButton }: SidebarProps) {
   const t = useI18n();
   const { data: me } = useSuspenseFetchMe();
   const { openDialog } = useDialog();
@@ -42,13 +42,19 @@ const Sidebar = ({ className, extraButton }: SidebarProps) => {
       classNames: {
         container: 'w-[620px] h-[391px] py-7 px-10 bg-black',
       },
-      Body: <ProfileEditFormV2 onClickAvatarSetting={onCancel} />,
+      Body: (
+        <ProfileEditFormV2
+          onClickAvatarSetting={() => {
+            onClickAvatarSetting();
+            onCancel?.();
+          }}
+        />
+      ),
     }));
   };
 
   return (
     <aside className={className}>
-      {/* TODO: 프로필 이미지로 변경, href 추가 */}
       <button onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
         <Profile size={48} src={me.avatarIconUri} />
         <Typography type='caption1' className='text-gray-200'>
@@ -72,6 +78,4 @@ const Sidebar = ({ className, extraButton }: SidebarProps) => {
       )}
     </aside>
   );
-};
-
-export default Sidebar;
+}

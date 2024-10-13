@@ -1,15 +1,22 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { AvatarEditDone, ProfileAvatarEditPanel } from '@/features/edit-profile-avatar';
 import { BackButton } from '@/shared/ui/components/back-button';
 import { Button } from '@/shared/ui/components/button';
 
 export default function AvatarSettingsPage() {
+  const router = useRouter();
+
   return (
     <div className='absolute-user-form-section'>
       <ProfileAvatarEditPanel
         titleRender={(text) => <BackButton text={text} />}
         actions={
-          <AvatarEditDone>
+          <AvatarEditDone
+            onSuccess={() => {
+              router.push('/parties');
+            }}
+          >
             {({ done, canSubmit, loading }) => (
               <Button
                 onClick={done}

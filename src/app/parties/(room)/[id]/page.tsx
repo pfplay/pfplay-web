@@ -13,6 +13,7 @@ import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
 import { PartyroomDetailTrigger } from '@/widgets/partyroom-detail';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
+import { useOpenEditProfileAvatarDialog } from '@/widgets/partyroom-edit-profile-avatar-dialog';
 import { PartyroomParticipantPanel } from '@/widgets/partyroom-participant-panel';
 import { Sidebar } from '@/widgets/sidebar';
 
@@ -25,6 +26,7 @@ const PartyroomPage = () => {
     onClose: closeDjingDialog,
   } = useDisclosure();
 
+  const openEditProfileAvatarDialog = useOpenEditProfileAvatarDialog();
   const { useCurrentPartyroom } = useStores();
   const crewsCount = useCurrentPartyroom((state) => state.crews.length);
 
@@ -51,6 +53,7 @@ const PartyroomPage = () => {
           icon: (size, className) => <PFDj width={size} height={size} className={className} />,
           text: t.dj.title.dj_queue,
         }}
+        onClickAvatarSetting={openEditProfileAvatarDialog}
       />
 
       {/* 오른쪽 채팅창 */}

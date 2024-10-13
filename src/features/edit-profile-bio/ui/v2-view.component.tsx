@@ -5,7 +5,6 @@ import { Avatar } from '@/entities/avatar';
 import { Me, useSuspenseFetchMe } from '@/entities/me';
 import { ActivityType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFEdit } from '@/shared/ui/icons';
@@ -17,13 +16,7 @@ type V2ViewModeProps = {
 
 const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps) => {
   const t = useI18n();
-  const router = useAppRouter();
   const { data: me } = useSuspenseFetchMe();
-
-  const handleClickAvatarEditButton = () => {
-    router.push('/settings/avatar');
-    onAvatarSettingClick?.();
-  };
 
   return (
     <div className='gap-5 flexRow'>
@@ -40,8 +33,8 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
           )}
         </div>
 
-        <Button size='sm' variant='outline' onClick={handleClickAvatarEditButton}>
-          {t.settings.btn.addi_connection}
+        <Button size='sm' variant='outline' onClick={onAvatarSettingClick}>
+          {t.lobby.title.ava_settings}
         </Button>
       </div>
       <div className='justify-between flex-1 flexCol'>
