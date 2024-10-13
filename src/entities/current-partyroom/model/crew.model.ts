@@ -40,20 +40,18 @@ export class Permission {
     return this.comparator.lowerGrades;
   }
 
-  public canRemoveChatMessage() {
-    throw new Error('Not Impl yet');
+  public canRemoveChatMessage(targetGrade: GradeType) {
+    return (
+      this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR) &&
+      this.comparator.isHigherThan(targetGrade)
+    );
   }
 
-  public canMute() {
-    throw new Error('Not Impl yet');
-  }
-
-  public canKick() {
-    throw new Error('Not Impl yet');
-  }
-
-  public canBan() {
-    throw new Error('Not Impl yet');
+  public canImposePenalty(targetGrade: GradeType) {
+    return (
+      this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR) &&
+      this.comparator.isHigherThan(targetGrade)
+    );
   }
 
   public canSkipPlayback(targetGrade: GradeType) {

@@ -50,6 +50,16 @@ export default function PartyroomChatPanel() {
           const isLast = i === chatMessages.length - 1;
           const isMe = message.crew.crewId === me?.crewId;
 
+          const canImposePenalty = !!myPermissions?.canImposePenalty(message.crew.gradeType);
+          const onClickImposePenalty = (penaltyType: PenaltyType) => {
+            openImposePenalty({
+              crewId: message.crew.crewId,
+              crewGradeType: message.crew.gradeType,
+              nickname: message.crew.nickname,
+              penaltyType,
+            });
+          };
+
           return (
             <DisplayOptionMenuOnHoverListener
               key={message.message.messageId}
@@ -67,43 +77,26 @@ export default function PartyroomChatPanel() {
                   onClickItem: () => {
                     openDeleteChatMessage({
                       crewId: message.crew.crewId,
+                      crewGradeType: message.crew.gradeType,
                       detail: message.message.messageId,
                     });
                   },
-                  visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
+                  visible: !!myPermissions?.canRemoveChatMessage(message.crew.gradeType),
                 },
                 {
                   label: 'GGUL', // TODO: i18n 적용
-                  onClickItem: () => {
-                    openImposePenalty({
-                      crewId: message.crew.crewId,
-                      nickname: message.crew.nickname,
-                      penaltyType: PenaltyType.CHAT_BAN_30_SECONDS,
-                    });
-                  },
-                  // visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
+                  onClickItem: () => onClickImposePenalty(PenaltyType.CHAT_BAN_30_SECONDS),
+                  visible: canImposePenalty,
                 },
                 {
                   label: 'Kick', // TODO: i18n 적용
-                  onClickItem: () => {
-                    openImposePenalty({
-                      crewId: message.crew.crewId,
-                      nickname: message.crew.nickname,
-                      penaltyType: PenaltyType.ONE_TIME_EXPULSION,
-                    });
-                  },
-                  // visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
+                  onClickItem: () => onClickImposePenalty(PenaltyType.ONE_TIME_EXPULSION),
+                  visible: canImposePenalty,
                 },
                 {
                   label: 'Ban', // TODO: i18n 적용
-                  onClickItem: () => {
-                    openImposePenalty({
-                      crewId: message.crew.crewId,
-                      nickname: message.crew.nickname,
-                      penaltyType: PenaltyType.PERMANENT_EXPULSION,
-                    });
-                  },
-                  // visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
+                  onClickItem: () => onClickImposePenalty(PenaltyType.PERMANENT_EXPULSION),
+                  visible: canImposePenalty,
                 },
               ]}
             >
