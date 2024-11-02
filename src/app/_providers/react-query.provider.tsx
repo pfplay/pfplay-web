@@ -6,6 +6,8 @@ import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experime
 import { getErrorMessage } from '@/shared/api/get-error-message';
 import isAuthError from '@/shared/api/is-auth-error';
 import { FIVE_MINUTES } from '@/shared/config/time';
+import { Dialog } from '@/shared/ui/components/dialog';
+import { Typography } from '@/shared/ui/components/typography';
 
 /**
  * @see https://github.com/TanStack/query/issues/6116#issuecomment-1904051005
@@ -64,17 +66,11 @@ function getQueryClient() {
   return clientQueryClient;
 }
 
-/**
- * TODO: will - alert >> errorDialog 변경
- * 이 파일 내에서 useDialog를 사용하려면 app/logout.tsx 내 provider의 위게를 변경하여 QueryClientProvider를 DialogProvider 내부로 이동해야 하는데,
- * 이러면 다이얼로그 body 내에서 react-query를 사용할 수 없음 (Error: No QueryClient set, use QueryClientProvider to set one)
- * dialog를 provider가 아닌 다른 방식으로 제공하는걸 검토해봐야 할 듯
- */
 function handleBubbledError(error: unknown) {
-  const errorMessage = `[ERROR]\n${getErrorMessage(error)}`;
+  const errorMessage = getErrorMessage(error);
 
   if (typeof window === 'undefined') {
-    console.error(errorMessage);
+    console.error(`[ERROR] ${errorMessage}`);
     return;
   }
 
@@ -86,5 +82,20 @@ function handleBubbledError(error: unknown) {
   }
 
   console.error(error);
-  alert(errorMessage);
+
+  const { destroy } = Dialog.open({
+    title: 'Error',
+    Body: () => (
+      <>
+        <Typography type='caption1' className='text-gray-50'>
+          {errorMessage}
+        </Typography>
+
+        <Dialog.ButtonGroup>
+          <Dialog.Button onClick={() => destroy()}>Close</Dialog.Button>
+        </Dialog.ButtonGroup>
+      </>
+    ),
+    onClose: () => destroy(),
+  });
 }
