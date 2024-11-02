@@ -5,8 +5,7 @@ import { cn } from '@/shared/lib/functions/cn';
 import { delay } from '@/shared/lib/functions/delay';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { replaceVar } from '@/shared/lib/localization/split-render';
-import Dialog from './dialog.component';
-import { useDialog } from './use-dialog.hook';
+import { Dialog, useDialog } from '.';
 import { Button } from '../button';
 import { FormItem } from '../form-item';
 import { Tag } from '../tag';
@@ -318,4 +317,20 @@ export const CustomStructure: Story = () => {
   };
 
   return <Button onClick={openSimpleDialog}>Click</Button>;
+};
+
+export const StaticOpen: Story = () => {
+  const handleClick = () => {
+    const { destroy } = Dialog.open({
+      title: 'Static Open',
+      Body: () => (
+        <Dialog.ButtonGroup>
+          <Dialog.Button onClick={() => destroy()}>확인</Dialog.Button>
+        </Dialog.ButtonGroup>
+      ),
+      onClose: () => destroy(),
+    });
+  };
+
+  return <Button onClick={handleClick}>Click</Button>;
 };
