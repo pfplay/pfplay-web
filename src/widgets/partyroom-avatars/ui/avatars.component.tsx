@@ -38,6 +38,7 @@ export default function Avatars() {
             faceUri={dj.avatarFaceUri}
             facePosX={dj.combinePositionX}
             facePosY={dj.combinePositionY}
+            dance
           />
         </div>
       )}
