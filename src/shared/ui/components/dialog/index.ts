@@ -1,3 +1,5 @@
+'use client';
+
 import { default as DialogPrimitive } from './dialog.component';
 import open, { destroyAll } from './open';
 
