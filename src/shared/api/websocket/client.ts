@@ -18,9 +18,21 @@ export interface Subscription extends StompSubscription {
   destination: Destination;
 }
 
+export type OnConnectOptions = {
+  /**
+   * `true`일 시, 최초 connect 시에만 실행되며 reconnect 시에는 실행되지 않습니다.
+   * @default false
+   */
+  once?: boolean;
+};
+type OnConnect = {
+  callback: () => void;
+  options?: OnConnectOptions;
+};
+
 export default class SocketClient {
   private client: Client;
-  private connectListeners: (() => void)[] = [];
+  private onConnectQueue: OnConnect[] = [];
   public subscriptions: Subscription[] = [];
   private heartbeatIntervalId: ReturnType<typeof setInterval> | undefined;
   private heartbeatSubscription: StompSubscription | undefined;
@@ -29,8 +41,8 @@ export default class SocketClient {
     const handleConnect = () => {
       this.startHeartbeat();
 
-      this.connectListeners.forEach((listener) => listener());
-      this.connectListeners = [];
+      this.onConnectQueue.forEach(({ callback }) => callback());
+      this.onConnectQueue = this.onConnectQueue.filter(({ options }) => !options?.once);
     };
 
     const handleDisconnect = () => {
@@ -76,13 +88,15 @@ export default class SocketClient {
   /**
    * 커넥션이 맺히면 콜백을 실행합니다.
    * **이미 커넥션이 맺혔을 경우 즉시 실행됩니다.**
+   * 기본적으론 매 연결(reconnect 등)마다 실행되지만, `options.once`가 `true`일 시 최초 connect 시에만 실행됩니다.
    */
-  public registerConnectListener(listener: () => void) {
+  public onConnect(callback: () => void, options?: OnConnectOptions) {
     if (this.connected) {
-      listener();
-    } else {
-      this.connectListeners.push(listener);
+      callback();
+      if (options?.once) return;
     }
+
+    this.onConnectQueue.push({ callback, options });
   }
 
   /**
@@ -91,7 +105,7 @@ export default class SocketClient {
    * reconnect 시 자동으로 재구독됩니다.
    */
   public subscribe(destination: Destination, callback: messageCallbackType) {
-    this.registerConnectListener(() => {
+    this.onConnect(() => {
       const subscription = this.client.subscribe(destination, callback);
 
       this.subscriptions.push({
@@ -157,6 +171,7 @@ export default class SocketClient {
       this.send(DESTINATION.PUB, 'PING');
     }, 4000);
   }
+
   private stopHeartbeat() {
     this.heartbeatSubscription?.unsubscribe();
     clearInterval(this.heartbeatIntervalId);
