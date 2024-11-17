@@ -5,7 +5,13 @@ import { specificLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 
 const logger = withDebugger(0);
-const log = logger(specificLog);
+const log = logger<string>((msg) => {
+  if (msg.includes('/heartbeat')) return; // ignore heartbeat logs
+
+  const hhmmss = new Date().toTimeString().split(' ')[0];
+
+  specificLog(`[${hhmmss}] ${msg}`);
+});
 
 export type Destination = `/${string}`;
 export interface Subscription extends StompSubscription {
@@ -23,12 +29,7 @@ export default class SocketClient {
     this.client = new Client({
       brokerURL: process.env.NEXT_PUBLIC_API_WS_HOST_NAME as string,
       reconnectDelay: 5000,
-      debug: (msg) => {
-        // ignore heartbeat logs
-        if (!msg.includes('/heartbeat')) {
-          log(msg);
-        }
-      },
+      debug: log,
     });
   }
 
