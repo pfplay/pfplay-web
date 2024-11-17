@@ -144,10 +144,15 @@ export default class SocketClient {
    * 메시지를 전송합니다.
    */
   public send(destination: Destination, body: unknown) {
-    this.client.publish({
-      destination,
-      body: JSON.stringify(body),
-    });
+    this.onConnect(
+      () => {
+        this.client.publish({
+          destination,
+          body: JSON.stringify(body),
+        });
+      },
+      { once: true }
+    );
   }
 
   /**
