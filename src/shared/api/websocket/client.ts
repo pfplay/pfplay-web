@@ -87,12 +87,17 @@ export default class SocketClient {
 
   /**
    * 구독을 시작합니다.
+   * connect 상태가 아니라면, connect 되길 기다린 후 구독됩니다.
+   * reconnect 시 자동으로 재구독됩니다.
    */
   public subscribe(destination: Destination, callback: messageCallbackType) {
-    const subscription = this.client.subscribe(destination, callback);
-    this.subscriptions.push({
-      ...subscription,
-      destination,
+    this.registerConnectListener(() => {
+      const subscription = this.client.subscribe(destination, callback);
+
+      this.subscriptions.push({
+        ...subscription,
+        destination,
+      });
     });
   }
 
