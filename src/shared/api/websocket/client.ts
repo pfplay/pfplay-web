@@ -33,10 +33,16 @@ export default class SocketClient {
     });
   }
 
+  /**
+   * 커넥션이 맺혔는지 여부를 반환합니다.
+   */
   public get connected() {
     return this.client.connected;
   }
 
+  /**
+   * 커넥션을 맺습니다.
+   */
   public connect() {
     if (!this.connected) {
       this.client.onConnect = () => {
@@ -49,6 +55,9 @@ export default class SocketClient {
     }
   }
 
+  /**
+   * 커넥션을 끊습니다.
+   */
   public async disconnect() {
     if (this.connected) {
       this.stopHeartbeat();
@@ -58,6 +67,10 @@ export default class SocketClient {
     }
   }
 
+  /**
+   * 커넥션이 맺히면 콜백을 실행합니다.
+   * **이미 커넥션이 맺혔을 경우 즉시 실행됩니다.**
+   */
   public registerConnectListener(listener: () => void) {
     if (this.connected) {
       listener();
@@ -66,6 +79,9 @@ export default class SocketClient {
     }
   }
 
+  /**
+   * 구독을 시작합니다.
+   */
   public subscribe(destination: Destination, callback: messageCallbackType) {
     const subscription = this.client.subscribe(destination, callback);
     this.subscriptions.push({
@@ -74,6 +90,9 @@ export default class SocketClient {
     });
   }
 
+  /**
+   * 구독을 해지합니다.
+   */
   public unsubscribe(destination: Destination) {
     const subscription = this.subscriptions.find(
       (subscription) => subscription.destination === destination
@@ -86,11 +105,17 @@ export default class SocketClient {
     );
   }
 
+  /**
+   * 모든 구독을 해지합니다.
+   */
   public unsubscribeAll() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.subscriptions = [];
   }
 
+  /*
+   * 메시지를 전송합니다.
+   */
   public send(destination: Destination, body: unknown) {
     this.client.publish({
       destination,
