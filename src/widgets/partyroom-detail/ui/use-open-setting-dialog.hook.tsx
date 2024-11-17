@@ -5,17 +5,16 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useChangeLanguage } from '@/shared/lib/localization/use-change-language.hook';
 import useLanguages from '@/shared/lib/localization/use-languages.hook';
 import { Button } from '@/shared/ui/components/button';
-import { useDialog } from '@/shared/ui/components/dialog';
+import { type DialogTitleProps, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 
 export default function useOpenSettingDialog() {
-  const t = useI18n();
   const { openDialog } = useDialog();
   const { data: me } = useFetchMe();
 
   return () => {
     return openDialog((onOk) => ({
-      title: t.common.btn.settings,
+      title: Title,
       titleAlign: 'center',
       Sub: me && (
         <Typography type='detail1' className='text-white'>
@@ -29,6 +28,16 @@ export default function useOpenSettingDialog() {
       Body: () => <Body closeDialog={onOk} />,
     }));
   };
+}
+
+function Title({ defaultTypographyType, defaultClassName }: DialogTitleProps) {
+  const t = useI18n();
+
+  return (
+    <Typography type={defaultTypographyType} className={defaultClassName}>
+      {t.common.btn.settings}
+    </Typography>
+  );
 }
 
 function Body({ closeDialog }: { closeDialog: () => void }) {

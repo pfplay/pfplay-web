@@ -13,7 +13,7 @@ type DialogComposition = {
   Button: FC<Omit<PropsWithRef<ButtonProps>, 'size'>>;
 };
 
-type TitleProps = {
+export type DialogTitleProps = {
   defaultTypographyType: TypographyType;
   defaultClassName: string;
 };
@@ -24,7 +24,7 @@ export type DialogProps = {
   /**
    * string 타입이면 typography로 래핑됩니다.
    */
-  title?: string | ((props: TitleProps) => ReactNode);
+  title?: string | ((props: DialogTitleProps) => ReactNode);
   titleAlign?: 'left' | 'center';
   Sub?: ReactNode;
   Body: FC | ReactNode;
@@ -66,7 +66,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   const Title = useMemo(() => {
     if (!title) return null;
 
-    const titleProps: TitleProps = {
+    const titleProps: DialogTitleProps = {
       defaultTypographyType: 'body1',
       defaultClassName: 'text-gray-50 whitespace-pre-line',
     };
