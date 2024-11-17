@@ -2,6 +2,7 @@
 import { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo, useRef } from 'react';
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import { cn } from '@/shared/lib/functions/cn';
+import { TextButton } from '@/shared/ui/components/text-button';
 import theme from '@/shared/ui/foundation/theme';
 import { PFClose } from '@/shared/ui/icons';
 import { Button, ButtonProps } from '../button';
@@ -152,12 +153,10 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
                     ])}
                   >
                     {showCloseIcon && (
-                      <Button
-                        color='secondary'
-                        variant='outline'
-                        Icon={<PFClose width={24} height={24} />}
-                        className='border-none p-0 absolute top-[2.5px] right-0'
+                      <TextButton
                         onClick={handleClose}
+                        Icon={<PFClose width={24} height={24} />}
+                        className='absolute top-[2.5px] right-0'
                       />
                     )}
 
