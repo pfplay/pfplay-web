@@ -26,10 +26,25 @@ export default class SocketClient {
   private heartbeatSubscription: StompSubscription | undefined;
 
   public constructor() {
+    const handleConnect = () => {
+      this.startHeartbeat();
+
+      this.connectListeners.forEach((listener) => listener());
+      this.connectListeners = [];
+    };
+
+    const handleDisconnect = () => {
+      this.stopHeartbeat();
+      this.unsubscribeAll();
+    };
+
     this.client = new Client({
       brokerURL: process.env.NEXT_PUBLIC_API_WS_HOST_NAME as string,
       reconnectDelay: 5000,
       debug: log,
+      onConnect: handleConnect,
+      onWebSocketClose: handleDisconnect,
+      onStompError: handleDisconnect,
     });
   }
 
@@ -44,27 +59,18 @@ export default class SocketClient {
    * 커넥션을 맺습니다.
    */
   public connect() {
-    if (!this.connected) {
-      this.client.onConnect = () => {
-        this.startHeartbeat();
-        this.connectListeners.forEach((listener) => listener());
-        this.connectListeners = [];
-      };
+    if (this.connected) return;
 
-      this.client.activate();
-    }
+    this.client.activate();
   }
 
   /**
    * 커넥션을 끊습니다.
    */
   public async disconnect() {
-    if (this.connected) {
-      this.stopHeartbeat();
-      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    if (!this.connected) return;
 
-      await this.client.deactivate();
-    }
+    await this.client.deactivate();
   }
 
   /**
@@ -94,6 +100,8 @@ export default class SocketClient {
    * 구독을 해지합니다.
    */
   public unsubscribe(destination: Destination) {
+    if (!this.connected) return;
+
     const subscription = this.subscriptions.find(
       (subscription) => subscription.destination === destination
     );
