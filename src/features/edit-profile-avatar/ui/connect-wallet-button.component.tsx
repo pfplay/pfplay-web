@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useSuspenseFetchMe } from '@/entities/me';
-import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { PFAdd, PFInfoOutline } from '@/shared/ui/icons';
@@ -16,19 +15,18 @@ const ConnectWalletButton = () => {
 
   return (
     <ConnectButton.Custom>
-      {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
-        const connected = mounted && !!account && !!chain;
+      {({ account, chain, openAccountModal, openChainModal, openConnectModal }) => {
+        const walletConnected = !!account && !!chain;
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
-          if (!me.walletAddress && connected) {
+          if (!walletConnected && !!me.walletAddress) {
+            updateMyWallet({ walletAddress: '' });
+          }
+          if (walletConnected && (!me.walletAddress || me.walletAddress !== account.address)) {
             updateMyWallet({ walletAddress: account.address });
           }
-          if (!!me.walletAddress && !connected) {
-            // TODO: 지갑연결 해제 시 api 나오면 대응
-            // https://pfplay.slack.com/archives/C051N8A0ZSB/p1728730320680689?thread_ts=1728728907.644159&cid=C051N8A0ZSB
-          }
-        }, [connected]);
+        }, [walletConnected]);
 
         if (chain?.unsupported) {
           return (
@@ -45,8 +43,8 @@ const ConnectWalletButton = () => {
         }
 
         return (
-          <div className={cn(!mounted && 'opacity-0 pointer-events-none user-select-none')}>
-            {!connected ? (
+          <>
+            {!walletConnected ? (
               <Button
                 variant='fill'
                 color='secondary'
@@ -79,7 +77,7 @@ const ConnectWalletButton = () => {
                 {account.displayName}
               </Button>
             )}
-          </div>
+          </>
         );
       }}
     </ConnectButton.Custom>
