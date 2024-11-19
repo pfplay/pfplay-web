@@ -2,6 +2,7 @@ import { ReactNode, useCallback } from 'react';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 import useAlert from './use-alert.hook';
@@ -25,13 +26,13 @@ export default function usePenaltyAlert() {
 function useOpenPenaltyAlertDialog() {
   const t = useI18n();
   const { openDialog } = useDialog();
+  const markExitedOnBackend = useStores().useCurrentPartyroom((state) => state.markExitedOnBackend);
 
   const afterConfirm = (penaltyType: PenaltyType) => {
     switch (penaltyType) {
       case PenaltyType.ONE_TIME_EXPULSION:
       case PenaltyType.PERMANENT_EXPULSION:
-        // TODO: 강제 퇴출 시 백단에서 exit 처리가 되기에, 파티룸 페이지에 걸린 unload 이벤트 리스너에 의해 떠날 때 exit이 호출되고 이 때 404 에러 얼럿이 뜰거임. 예외 처리 필요
-        // @see https://pfplay.slack.com/archives/C03Q28EAU66/p1728818068967889?thread_ts=1728817067.685869&cid=C03Q28EAU66
+        markExitedOnBackend();
         location.href = '/parties';
     }
   };

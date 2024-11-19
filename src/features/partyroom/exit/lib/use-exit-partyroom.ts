@@ -5,15 +5,16 @@ import { useExitPartyroom as useExitPartyroomMutation } from '../api/use-exit-pa
 export function useExitPartyroom(partyroomId: number) {
   const client = usePartyroomClient();
   const { useCurrentPartyroom } = useStores();
-  const resetPartyroomStore = useCurrentPartyroom((state) => state.reset);
+  const [resetPartyroomStore] = useCurrentPartyroom((state) => [state.reset]);
   const { mutate: exit } = useExitPartyroomMutation();
 
   return () => {
-    exit({ partyroomId });
+    const { exitedOnBackend } = useCurrentPartyroom.getState();
+    if (!exitedOnBackend) {
+      exit({ partyroomId });
+    }
 
-    // NOTE: mutation을 들고 있는 컴포넌트가 언마운트 되면 onSuccess가 실행되지 않으므로,
-    // 이하 로직을 exit의 onSuccess에 넣으면 안됩니다
     client.unsubscribeCurrentRoom();
-    resetPartyroomStore();
+    resetPartyroomStore(); // NOTE: exitedOnBackend 플래그 체크 이전에 호출되면 안됩니다.
   };
 }

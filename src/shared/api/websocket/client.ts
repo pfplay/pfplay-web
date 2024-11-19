@@ -5,75 +5,122 @@ import { specificLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 
 const logger = withDebugger(0);
-const log = logger(specificLog);
+const log = logger<string>((msg) => {
+  if (msg.includes('/heartbeat')) return; // ignore heartbeat logs
+
+  const hhmmss = new Date().toTimeString().split(' ')[0];
+
+  specificLog(`[${hhmmss}] ${msg}`);
+});
 
 export type Destination = `/${string}`;
 export interface Subscription extends StompSubscription {
   destination: Destination;
 }
 
+export type OnConnectOptions = {
+  /**
+   * `true`일 시, 최초 connect 시에만 실행되며 reconnect 시에는 실행되지 않습니다.
+   * @default false
+   */
+  once?: boolean;
+};
+type OnConnect = {
+  callback: () => void;
+  options?: OnConnectOptions;
+};
+
 export default class SocketClient {
   private client: Client;
-  private connectListeners: (() => void)[] = [];
+  private onConnectQueue: OnConnect[] = [];
   public subscriptions: Subscription[] = [];
   private heartbeatIntervalId: ReturnType<typeof setInterval> | undefined;
   private heartbeatSubscription: StompSubscription | undefined;
 
   public constructor() {
+    const handleConnect = () => {
+      this.startHeartbeat();
+
+      this.onConnectQueue.forEach(({ callback }) => callback());
+      this.onConnectQueue = this.onConnectQueue.filter(({ options }) => !options?.once);
+    };
+
+    const handleDisconnect = () => {
+      this.stopHeartbeat();
+      this.unsubscribeAll();
+    };
+
     this.client = new Client({
       brokerURL: process.env.NEXT_PUBLIC_API_WS_HOST_NAME as string,
       reconnectDelay: 5000,
-      debug: (msg) => {
-        // ignore heartbeat logs
-        if (!msg.includes('/heartbeat')) {
-          log(msg);
-        }
-      },
+      debug: log,
+      onConnect: handleConnect,
+      onWebSocketClose: handleDisconnect,
+      onStompError: handleDisconnect,
     });
   }
 
+  /**
+   * 커넥션이 맺혔는지 여부를 반환합니다.
+   */
   public get connected() {
     return this.client.connected;
   }
 
+  /**
+   * 커넥션을 맺습니다.
+   */
   public connect() {
-    if (!this.connected) {
-      this.client.onConnect = () => {
-        this.startHeartbeat();
-        this.connectListeners.forEach((listener) => listener());
-        this.connectListeners = [];
-      };
+    if (this.connected) return;
 
-      this.client.activate();
-    }
+    this.client.activate();
   }
 
+  /**
+   * 커넥션을 끊습니다.
+   */
   public async disconnect() {
-    if (this.connected) {
-      this.stopHeartbeat();
-      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    if (!this.connected) return;
 
-      await this.client.deactivate();
-    }
+    await this.client.deactivate();
   }
 
-  public registerConnectListener(listener: () => void) {
+  /**
+   * 커넥션이 맺히면 콜백을 실행합니다.
+   * **이미 커넥션이 맺혔을 경우 즉시 실행됩니다.**
+   * 기본적으론 매 연결(reconnect 등)마다 실행되지만, `options.once`가 `true`일 시 최초 connect 시에만 실행됩니다.
+   */
+  public onConnect(callback: () => void, options?: OnConnectOptions) {
     if (this.connected) {
-      listener();
-    } else {
-      this.connectListeners.push(listener);
+      callback();
+      if (options?.once) return;
     }
+
+    this.onConnectQueue.push({ callback, options });
   }
 
+  /**
+   * 구독을 시작합니다.
+   * connect 상태가 아니라면, connect 되길 기다린 후 구독됩니다.
+   * reconnect 시 자동으로 재구독됩니다.
+   */
   public subscribe(destination: Destination, callback: messageCallbackType) {
-    const subscription = this.client.subscribe(destination, callback);
-    this.subscriptions.push({
-      ...subscription,
-      destination,
+    this.onConnect(() => {
+      const subscription = this.client.subscribe(destination, callback);
+
+      this.subscriptions.push({
+        ...subscription,
+        destination,
+      });
     });
   }
 
+  /**
+   * 구독을 해지합니다.
+   */
   public unsubscribe(destination: Destination) {
+    if (!this.connected) return;
+
     const subscription = this.subscriptions.find(
       (subscription) => subscription.destination === destination
     );
@@ -85,16 +132,27 @@ export default class SocketClient {
     );
   }
 
+  /**
+   * 모든 구독을 해지합니다.
+   */
   public unsubscribeAll() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.subscriptions = [];
   }
 
+  /*
+   * 메시지를 전송합니다.
+   */
   public send(destination: Destination, body: unknown) {
-    this.client.publish({
-      destination,
-      body: JSON.stringify(body),
-    });
+    this.onConnect(
+      () => {
+        this.client.publish({
+          destination,
+          body: JSON.stringify(body),
+        });
+      },
+      { once: true }
+    );
   }
 
   /**
@@ -118,6 +176,7 @@ export default class SocketClient {
       this.send(DESTINATION.PUB, 'PING');
     }, 4000);
   }
+
   private stopHeartbeat() {
     this.heartbeatSubscription?.unsubscribe();
     clearInterval(this.heartbeatIntervalId);

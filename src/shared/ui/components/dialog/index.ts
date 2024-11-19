@@ -10,3 +10,4 @@ export const Dialog = Object.assign(DialogPrimitive, {
 
 export { useDialog } from './use-dialog.hook';
 export { DialogProvider } from './dialog.provider';
+export type { DialogTitleProps } from './dialog.component';

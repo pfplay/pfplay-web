@@ -13,6 +13,7 @@ export default function useSignOut() {
     const confirmed = await openConfirmDialog({
       title: t.common.btn.logout,
       content: t.auth.para.logout_confirm,
+      okText: t.common.btn.logout,
     });
 
     if (!confirmed) return;
