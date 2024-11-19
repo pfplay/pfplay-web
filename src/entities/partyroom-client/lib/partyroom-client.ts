@@ -1,5 +1,5 @@
 import { IMessage } from '@stomp/stompjs';
-import SocketClient from '@/shared/api/websocket/client';
+import SocketClient, { OnConnectOptions } from '@/shared/api/websocket/client';
 
 /**
  * Socket Client를 캡슐화하여 최소한의 인터페이스만을 노출하며,
@@ -21,8 +21,8 @@ export default class PartyroomClient {
     return this.socketClient.connected;
   }
 
-  public whenConnected(callback: () => void) {
-    this.socketClient.registerConnectListener(callback);
+  public onConnect(callback: () => void, options?: OnConnectOptions) {
+    this.socketClient.onConnect(callback, options);
   }
 
   public subscribe(partyroomId: number, handler: (message: IMessage) => void) {
