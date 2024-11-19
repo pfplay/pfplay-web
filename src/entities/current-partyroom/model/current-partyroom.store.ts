@@ -11,6 +11,13 @@ export const createCurrentPartyroomStore = () => {
   return create<CurrentPartyroom.Model>((set, _, api) => ({
     id: undefined,
 
+    exitedOnBackend: false,
+    markExitedOnBackend: () => {
+      return set({
+        exitedOnBackend: true,
+      });
+    },
+
     me: undefined,
     updateMe: (next) => {
       return set((state) => {

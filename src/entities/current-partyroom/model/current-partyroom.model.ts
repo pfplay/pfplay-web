@@ -12,7 +12,17 @@ type MyPartyroomInfo = {
 };
 
 export type Model = {
+  /**
+   * 파티룸 아이디
+   */
   id?: number;
+
+  /**
+   * 파티룸에서 나갈 때 exit api를 기본적으로 호출하나,
+   * 로그아웃했거나 강퇴되거나 등의 이유로 파티룸에서 나가는 경우에는 호출하지 않아야 하기에 그럴 때 체크하는 용도로 사용합니다.
+   */
+  exitedOnBackend: boolean;
+  markExitedOnBackend: () => void;
 
   /**
    * 내 파티룸 정보
