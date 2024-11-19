@@ -2,6 +2,7 @@
 import { FC, Fragment, PropsWithChildren, PropsWithRef, ReactNode, useMemo, useRef } from 'react';
 import { Dialog as HUDialog, Transition } from '@headlessui/react';
 import { cn } from '@/shared/lib/functions/cn';
+import { TextButton } from '@/shared/ui/components/text-button';
 import theme from '@/shared/ui/foundation/theme';
 import { PFClose } from '@/shared/ui/icons';
 import { Button, ButtonProps } from '../button';
@@ -12,7 +13,7 @@ type DialogComposition = {
   Button: FC<Omit<PropsWithRef<ButtonProps>, 'size'>>;
 };
 
-type TitleProps = {
+export type DialogTitleProps = {
   defaultTypographyType: TypographyType;
   defaultClassName: string;
 };
@@ -23,7 +24,7 @@ export type DialogProps = {
   /**
    * string 타입이면 typography로 래핑됩니다.
    */
-  title?: string | ((props: TitleProps) => ReactNode);
+  title?: string | ((props: DialogTitleProps) => ReactNode);
   titleAlign?: 'left' | 'center';
   Sub?: ReactNode;
   Body: FC | ReactNode;
@@ -65,7 +66,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   const Title = useMemo(() => {
     if (!title) return null;
 
-    const titleProps: TitleProps = {
+    const titleProps: DialogTitleProps = {
       defaultTypographyType: 'body1',
       defaultClassName: 'text-gray-50 whitespace-pre-line',
     };
@@ -152,12 +153,10 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
                     ])}
                   >
                     {showCloseIcon && (
-                      <Button
-                        color='secondary'
-                        variant='outline'
-                        Icon={<PFClose width={24} height={24} />}
-                        className='border-none p-0 absolute top-[2.5px] right-0'
+                      <TextButton
                         onClick={handleClose}
+                        Icon={<PFClose width={24} height={24} />}
+                        className='absolute top-[2.5px] right-0'
                       />
                     )}
 

@@ -74,13 +74,7 @@ export default function Body({ onCancel }: Props) {
         </div>
 
         <div className='pt-[12px] flex justify-end' style={{ width: RIGHT_PAD }}>
-          <Button
-            color='secondary'
-            variant='outline'
-            Icon={<PFClose width={24} height={24} />}
-            className='border-none p-0'
-            onClick={onCancel}
-          />
+          <TextButton onClick={onCancel} Icon={<PFClose width={24} height={24} />} />
         </div>
       </header>
 
