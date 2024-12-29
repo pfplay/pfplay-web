@@ -34,7 +34,7 @@
 
 [![DEV](https://img.shields.io/badge/DEV-https%3A%2F%2Fpfplay--web.vercel.app-blue)](https://pfplay-web.vercel.app)
 <br/>
-[![PROD](https://img.shields.io/badge/PROD-https%3A%2F%2Fpfplay.io-blue)](https://pfplay.io)
+[![PROD](https://img.shields.io/badge/PROD-https%3A%2F%2Fpfplay.xyz-blue)](https://pfplay.xyz)
 
 ## Getting started for Development
 
