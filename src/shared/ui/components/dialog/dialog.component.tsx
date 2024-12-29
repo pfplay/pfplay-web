@@ -137,9 +137,12 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
             >
               <HUDialog.Panel
                 className={cn(
-                  'pt-[52px] px-[32px] pb-[32px] w-[400px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all',
+                  'pt-[52px] px-[32px] pb-[32px] w-[440px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all',
                   classNames?.container
                 )}
+                style={{
+                  overflowWrap: 'anywhere',
+                }}
               >
                 {title && (
                   <HUDialog.Title

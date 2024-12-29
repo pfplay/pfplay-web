@@ -334,3 +334,28 @@ export const StaticOpen: Story = () => {
 
   return <Button onClick={handleClick}>Click</Button>;
 };
+
+export const OverflowContent: Story = () => {
+  const { openDialog } = useDialog();
+
+  const openOverflowContentDialog = () => {
+    return openDialog((onOk) => ({
+      title: 'Overflow Content',
+      Body: () => (
+        <>
+          <Typography type='body3'>
+            REQUIRED_BREAK_REQUIRED_BREAK_REQUIRED_BREAK_REQUIRED_BREAK_REQUIRED_BREAK_REQUIRED_BREAK_REQUIRED_BREAK_REQUIRED_BREAK_REQUIRED_BREAK_REQUIRED_BREAK_REQUIRED_BREAK
+          </Typography>
+
+          <Dialog.ButtonGroup>
+            <Dialog.Button onClick={() => onOk()}>
+              NO_BREAK_NO_BREAK_NO_BREAK_NO_BREAK_NO_BREAK_NO_BREAK
+            </Dialog.Button>
+          </Dialog.ButtonGroup>
+        </>
+      ),
+    }));
+  };
+
+  return <Button onClick={openOverflowContentDialog}>Click</Button>;
+};
