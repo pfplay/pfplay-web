@@ -1,7 +1,7 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useGetPartyroomIdByDomain } from '@/features/share-link';
+import { useGetPartyroomIdByDomain } from '@/features/partyroom/share-link';
 
 /**
  * SharedLinkPage 컴포넌트

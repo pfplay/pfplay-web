@@ -9,6 +9,6 @@ import {
 
 export default function useGetPartyroomIdByDomain() {
   return useMutation<GetRoomIdByDomainResponse, AxiosError<APIError>, GetRoomIdByDomainPayload>({
-    mutationFn: ({ domain }) => PartyroomsService.getRoomIdByDomain({ domain }),
+    mutationFn: PartyroomsService.getRoomIdByDomain,
   });
 }
