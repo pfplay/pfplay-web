@@ -2,7 +2,6 @@ import { Singleton } from '@/shared/lib/decorators/singleton';
 import HTTPClient from '../client/client';
 import type {
   SignInRequest,
-  SignInGuestRequest,
   GetMyInfoResponse,
   GetMyProfileSummaryResponse,
   GetUserProfileSummaryRequest,
@@ -29,8 +28,8 @@ class UsersService extends HTTPClient implements UsersClient {
     window.location.href = url.toString();
   };
 
-  public signInGuest = (request: SignInGuestRequest) => {
-    return this.post<void>(`${this.ROUTE_V1}/guests/sign`, request);
+  public signInGuest = () => {
+    return this.post<void>(`${this.ROUTE_V1}/guests/sign`);
   };
 
   public signOut = () => {

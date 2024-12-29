@@ -4,10 +4,6 @@ export interface SignInRequest {
   oauth2Provider: 'google';
 }
 
-export interface SignInGuestRequest {
-  userAgent: string;
-}
-
 export interface GetMyInfoResponse {
   uid: string;
   /**
@@ -112,7 +108,7 @@ export interface UsersClient {
   /**
    * 게스트 로그인
    */
-  signInGuest: (request: SignInGuestRequest) => Promise<void>;
+  signInGuest: () => Promise<void>;
   signOut: () => Promise<void>;
   getMyInfo: () => Promise<GetMyInfoResponse>;
   getMyProfileSummary: () => Promise<GetMyProfileSummaryResponse>;

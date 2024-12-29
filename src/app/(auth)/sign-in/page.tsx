@@ -2,44 +2,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { SignInByGoogleButtonForDev, useSignInByGoogle } from '@/features/sign-in/by-google';
+import { useSignInByGuest } from '@/features/sign-in/by-guest';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
+import { TextButton } from '@/shared/ui/components/text-button';
 import { PFClose } from '@/shared/ui/icons';
 
-const SignInPage = () => {
+export default function SignInPage() {
   const t = useI18n();
-  const signInByGoogle = useSignInByGoogle();
+  const router = useAppRouter();
 
-  // TODO: Onchain 빌더톤 끝나면 주석 해제
-  // const openLookAroundDialog = () => {
-  //   return openDialog<number>((_, onClose) => ({
-  //     title: t.onboard.title.moment,
-  //     Sub: (
-  //       <Typography type='detail1' className='text-gray-300'>
-  //         {t.onboard.para.guest_limit}
-  //       </Typography>
-  //     ),
-  //     Body: () => {
-  //       return (
-  //         <Dialog.ButtonGroup>
-  //           <Dialog.Button
-  //             color='secondary'
-  //             onClick={() => {
-  //               onClose?.();
-  //               // 비로그인 유저가 로그인 없이 서비스를 이용할 때에는, 메인스테이지(파티룸)로 바로 뛀궈준다.
-  //               // FIXME: 게스트 로그인 API 호출
-  //               router.push('/parties/[id]', { path: { id: 1 } });
-  //             }}
-  //             className='flex-none px-[10.5px]'
-  //           >
-  //             {t.onboard.btn.guest}
-  //           </Dialog.Button>
-  //           <Dialog.Button onClick={signInGoogle}>{t.auth.btn.connect_google}</Dialog.Button>
-  //         </Dialog.ButtonGroup>
-  //       );
-  //     },
-  //   }));
-  // };
+  const signInByGoogle = useSignInByGoogle();
+  const signInByGuest = useSignInByGuest({
+    onClickSignInByGoogle: signInByGoogle,
+    onSuccess: () => {
+      router.push('/parties');
+    },
+  });
 
   return (
     <div className='relative min-h-screen flexRowCenter'>
@@ -72,12 +52,10 @@ const SignInPage = () => {
           {t.auth.btn.connect_google}
         </Button>
 
-        {/*<TextButton onClick={openLookAroundDialog} underline>*/}
-        {/*  {t.onboard.btn.take_a_look}*/}
-        {/*</TextButton>*/}
+        <TextButton onClick={signInByGuest} underline>
+          {t.onboard.btn.take_a_look}
+        </TextButton>
       </div>
     </div>
   );
-};
-
-export default SignInPage;
+}
