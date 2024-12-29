@@ -5,23 +5,18 @@ import {
 import PartyroomsService from '@/shared/api/http/services/partyrooms';
 import { MotionType } from '@/shared/api/http/types/@enums';
 import { PartyroomReaction } from '@/shared/api/http/types/partyrooms';
-import { errorLog } from '@/shared/lib/functions/log/logger';
-import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import silent from '@/shared/lib/functions/silent';
+import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { useStores } from '@/shared/lib/store/stores.context';
-import { useDialog } from '@/shared/ui/components/dialog';
 import { useEnterPartyroom as useEnterPartyroomMutation } from '../api/use-enter-partyroom.mutation';
 
-const logger = withDebugger(0);
-const errorLogger = logger(errorLog);
-
 export function useEnterPartyroom(partyroomId: number) {
-  const { openErrorDialog } = useDialog();
   const client = usePartyroomClient();
   const handleEvent = useHandlePartyroomSubscriptionEvent();
   const { useCurrentPartyroom } = useStores();
   const initPartyroom = useCurrentPartyroom((state) => state.init);
   const { mutateAsync: enterAsync } = useEnterPartyroomMutation();
+  const router = useAppRouter();
 
   const enterAndSetup = async () => {
     const enterResponse = await enterAsync({ partyroomId });
@@ -63,9 +58,8 @@ export function useEnterPartyroom(partyroomId: number) {
           onSuccess: () => {
             client.subscribe(partyroomId, handleEvent);
           },
-          onError: (e) => {
-            errorLogger(e);
-            openErrorDialog('Oops! Something went wrong. Please try again later.');
+          onError: () => {
+            router.push('/parties'); // 에러 발생 시 무조건 로비로 이동
           },
         });
       },
