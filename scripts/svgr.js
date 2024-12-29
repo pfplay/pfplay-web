@@ -3,10 +3,10 @@ const path = require('path');
 const { transform } = require('@svgr/core');
 const { glob } = require('glob');
 
-const rootDir = path.resolve(`${__dirname}/../`);
-const svgDir = `${rootDir}/public/icons`;
-const componentDir = `${rootDir}/src/shared/ui/icons`;
-const prettierConfig = fs.readFileSync(`${rootDir}/.prettierrc`, { encoding: 'utf-8' });
+const rootDir = path.resolve(__dirname, '..');
+const svgDir = path.join(rootDir, 'public', 'icons');
+const componentDir = path.join(rootDir, 'src', 'shared', 'ui', 'icons');
+const prettierConfig = fs.readFileSync(path.join(rootDir, '.prettierrc'), { encoding: 'utf-8' });
 
 const utils = {
   generateSvgComponent: (svg, componentName) => {
@@ -28,7 +28,7 @@ const utils = {
     );
   },
   generateSvgGroupDirPath: (groupName) => {
-    return `${componentDir}/${utils.pascalCaseToCamelCase(groupName)}`;
+    return path.join(componentDir, utils.pascalCaseToCamelCase(groupName));
   },
   pascalCaseToCamelCase: (str) => {
     return str[0].toLowerCase() + str.substring(1);
@@ -39,7 +39,7 @@ const utils = {
 };
 
 const exec = () => {
-  const indexFilePath = `${componentDir}/index.tsx`;
+  const indexFilePath = path.join(componentDir, 'index.tsx');
 
   try {
     fs.rmSync(componentDir, { force: true, recursive: true });
@@ -54,7 +54,8 @@ const exec = () => {
   const svgPaths = glob.sync(`${svgDir}/**/*.svg`);
 
   for (const svgPath of svgPaths) {
-    const [groupName, fileName] = svgPath.replace(`${svgDir}/`, '').split('/');
+    const [groupName, fileName] = svgPath.split(path.sep).slice(-2);
+
     const componentName =
       'PF' + utils.screamingLowerCaseToPascalCase(fileName.replace(/(^icn_|^icon_|.svg$)/g, ''));
 
@@ -62,7 +63,7 @@ const exec = () => {
     const component = utils.generateSvgComponent(svg, componentName);
     const svgGroupDirPath = utils.generateSvgGroupDirPath(groupName);
 
-    const componentFilePath = `${svgGroupDirPath}/${componentName}.tsx`;
+    const componentFilePath = path.join(svgGroupDirPath, `${componentName}.tsx`);
     const exportPhrase = `export { default as ${componentName} } from './${utils.pascalCaseToCamelCase(
       groupName
     )}/${componentName}';`;
