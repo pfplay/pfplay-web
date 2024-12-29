@@ -40,7 +40,7 @@ function Body({ partyroom }: { partyroom?: PartyroomDetailSummary }) {
   }
 
   // 개발환경에서는 브라우저 주소창에 사용하는 localhost를 붙이고 나머지 path 입력해서 테스트. e.g) https://localhost:3000/party/...
-  const sharedUrl = `https://pfplay.io/party/${partyroom.linkDomain}`;
+  const sharedUrl = `https://pfplay.xyz/party/${partyroom.linkDomain}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(sharedUrl);

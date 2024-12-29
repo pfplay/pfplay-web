@@ -99,7 +99,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
           >
             <Input
               {...register('domain')}
-              placeholder='웹 페이지 주소는 pfplay.io/도메인으로 시작' // TODO: i18n
+              placeholder='웹 페이지 주소는 pfplay.xyz/도메인으로 시작' // TODO: i18n
             />
           </FormItem>
 
