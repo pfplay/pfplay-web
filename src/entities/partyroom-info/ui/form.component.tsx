@@ -53,7 +53,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
       onSubmit={handleSubmit(() => onSubmit(form.getValues(), form))}
       className={cn('flexCol items-center justify-between mx-auto pl-[26px] pr-[40px]', {
         'child-form-labels:w-[100px]': lang === Language.Ko,
-        'child-form-labels:w-[120px]': lang === Language.En,
+        'child-form-labels:w-[128px]': lang === Language.En,
       })}
     >
       <div className='w-full items-end gap-12 flexCol'>
