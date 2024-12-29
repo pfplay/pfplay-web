@@ -4,7 +4,7 @@ import {
 } from '@/entities/partyroom-client';
 import PartyroomsService from '@/shared/api/http/services/partyrooms';
 import { MotionType } from '@/shared/api/http/types/@enums';
-import { PartyroomReaction } from '@/shared/api/http/types/partyrooms';
+import { EnterResponse, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import silent from '@/shared/lib/functions/silent';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -14,13 +14,14 @@ export function useEnterPartyroom(partyroomId: number) {
   const client = usePartyroomClient();
   const handleEvent = useHandlePartyroomSubscriptionEvent();
   const { useCurrentPartyroom } = useStores();
-  const initPartyroom = useCurrentPartyroom((state) => state.init);
-  const { mutateAsync: enterAsync } = useEnterPartyroomMutation();
+  const [initPartyroom, markExitedOnBackend] = useCurrentPartyroom((state) => [
+    state.init,
+    state.markExitedOnBackend,
+  ]);
+  const { mutate: enter } = useEnterPartyroomMutation();
   const router = useAppRouter();
 
-  const enterAndSetup = async () => {
-    const enterResponse = await enterAsync({ partyroomId });
-
+  const setup = async (enterResponse: EnterResponse) => {
     const [setUpInfo, notice] = await Promise.all([
       PartyroomsService.getSetupInfo({ partyroomId }),
       PartyroomsService.getNotice({ partyroomId }), // 공지사항은 현재 설계상 enter 시점엔 rest api로 받아오고, 이후 공지 변경이 있을 땐 웹 소켓 이벤트로 수신합니다.
@@ -54,14 +55,25 @@ export function useEnterPartyroom(partyroomId: number) {
   return () => {
     client.onConnect(
       () => {
-        silent(enterAndSetup(), {
-          onSuccess: () => {
-            client.subscribe(partyroomId, handleEvent);
-          },
-          onError: () => {
-            router.push('/parties'); // 에러 발생 시 무조건 로비로 이동
-          },
-        });
+        enter(
+          { partyroomId },
+          {
+            onSuccess: (enterResponse) => {
+              silent(setup(enterResponse), {
+                onSuccess: () => {
+                  client.subscribe(partyroomId, handleEvent);
+                },
+                onError: () => {
+                  router.push('/parties'); // 에러 발생 시 로비로 이동
+                },
+              });
+            },
+            onError: () => {
+              markExitedOnBackend(); // enter 자체가 안됐으니, 페이지 벗어날 때 exit api 호출 방지
+              router.push('/parties'); // 에러 발생 시 로비로 이동
+            },
+          }
+        );
       },
       { once: true }
     );
