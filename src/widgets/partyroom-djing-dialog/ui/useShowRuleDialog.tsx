@@ -24,72 +24,84 @@ type Props = {
 };
 
 function Body(props: Props) {
-  // 모달 내용 상수로 분리
+  const t = useI18n();
+
   const modalContents = [
     {
-      title: '디제잉 규칙 안내',
+      title: t.dj.title.rule_guide,
       content: (
         <>
-          대기중인 DJ <span style={{ color: 'red' }}>한명씩</span>
+          {t.dj.title.rule_guide} <span style={{ color: 'red' }}>{t.dj.title.rule_guide}</span>
           <br />
-          <span style={{ color: 'red' }}>순서대로</span> 음악을 디제잉 합니다
+          <span style={{ color: 'red' }}>{t.dj.title.rule_guide}</span> {t.dj.title.rule_guide}
         </>
       ),
+      image: 'https://img1.newsis.com/2021/04/26/NISI20210426_0000733879_web.jpg',
     },
     {
-      title: '디제잉 규칙 안내',
+      title: t.dj.title.rule_guide,
       content: (
         <>
-          플레이리스트의 가장 상단에 있는 곡부터
+          {t.dj.title.rule_guide}
           <br />
-          <span style={{ color: 'red' }}>순차적으로 한명당 하나씩 플레이</span> 됩니다
+          <span style={{ color: 'red' }}>{t.dj.title.rule_guide}</span>
         </>
       ),
+      image: 'https://img1.newsis.com/2021/04/26/NISI20210426_0000733879_web.jpg',
     },
     {
-      title: '디제잉 규칙 안내',
+      title: t.dj.title.rule_guide,
       content: (
         <>
-          노래가 끝나면 디제잉 동안 받은
+          {t.dj.title.rule_guide}
           <br />
-          <span style={{ color: 'red' }}>좋아요, 그랩, 싫어요를 카운팅</span>해 보여드립니다
+          <span style={{ color: 'red' }}>{t.dj.title.rule_guide}</span>
         </>
       ),
+      image: 'https://img1.newsis.com/2021/04/26/NISI20210426_0000733879_web.jpg',
     },
   ];
 
   const [step, setStep] = useState(0);
-  const t = useI18n();
 
-  // "다음" 버튼 클릭 시의 동작
   const handleNextStep = () => {
     if (step < modalContents.length - 1) {
-      setStep(step + 1); // 스텝 증가
+      setStep(step + 1);
     } else {
-      props.onCancel?.(); // 마지막 스텝이면 모달 닫기
+      props.onCancel?.();
     }
   };
 
-  // "다시 보지 않기" 버튼 클릭 시의 동작
   const handleDontShowAgain = () => {
     localStorage.setItem(LocalStorageKeys.HIDE_DJING_RULES_MODAL, 'true');
     props.onCancel?.();
   };
 
   const modalBodyStyle = {
-    whiteSpace: 'pre-line', // 개행과 공백을 유지
-    marginTop: '20px', //TODO: DJ대기열
+    whiteSpace: 'pre-line',
+    marginTop: '20px',
   };
 
   return (
     <div className='modal-overlay'>
       <div className='modal-content'>
         <h2 className='modal-title'>{modalContents[step].title}</h2>
+
+        <img
+          src={modalContents[step].image}
+          alt={`Step ${step + 1}`}
+          style={{
+            width: '100%',
+            height: 'auto',
+            marginBottom: '20px',
+            borderRadius: '8px',
+          }}
+        />
+
         <p className='modal-body' style={modalBodyStyle}>
           {modalContents[step].content}
         </p>
 
-        {/* Stepper */}
         <div
           className='step-indicator'
           style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
@@ -111,7 +123,7 @@ function Body(props: Props) {
                 opacity: 0.5,
               }}
             >
-              {index + 1} {/* 스텝 번호 표시 */}
+              {index + 1}
             </span>
           ))}
         </div>
