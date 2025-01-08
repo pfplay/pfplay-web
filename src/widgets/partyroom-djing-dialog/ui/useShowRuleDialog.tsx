@@ -31,12 +31,26 @@ function Body(props: Props) {
       title: t.dj.title.rule_guide,
       content: (
         <>
-          {t.dj.title.rule_guide} <span style={{ color: 'red' }}>{t.dj.title.rule_guide}</span>
+          {t.dj.para.dj_in_order.split('한명씩 순서대로')[0]}
+          <span style={{ color: 'red' }}>한명씩</span>
           <br />
-          <span style={{ color: 'red' }}>{t.dj.title.rule_guide}</span> {t.dj.title.rule_guide}
+          <span style={{ color: 'red' }}>순서대로</span>
+          {t.dj.para.dj_in_order.split('한명씩 순서대로')[1]}
         </>
       ),
-      image: 'https://img1.newsis.com/2021/04/26/NISI20210426_0000733879_web.jpg',
+      image: '/images/Guide/DJguide_waiting.gif',
+    },
+    {
+      title: t.dj.title.rule_guide,
+      content: (
+        <>
+          {t.dj.para.played_sequentially.split('순차적으로 한명당 하나씩 플레이 ')[0]}
+          <br />
+          <span style={{ color: 'red' }}>순차적으로 한명당 하나씩 플레이 </span>
+          {t.dj.para.played_sequentially.split('순차적으로 한명당 하나씩 플레이 ')[1]}
+        </>
+      ),
+      image: '/images/Guide/DJguide_playlist.gif',
     },
     {
       title: t.dj.title.rule_guide,
@@ -47,18 +61,7 @@ function Body(props: Props) {
           <span style={{ color: 'red' }}>{t.dj.title.rule_guide}</span>
         </>
       ),
-      image: 'https://img1.newsis.com/2021/04/26/NISI20210426_0000733879_web.jpg',
-    },
-    {
-      title: t.dj.title.rule_guide,
-      content: (
-        <>
-          {t.dj.title.rule_guide}
-          <br />
-          <span style={{ color: 'red' }}>{t.dj.title.rule_guide}</span>
-        </>
-      ),
-      image: 'https://img1.newsis.com/2021/04/26/NISI20210426_0000733879_web.jpg',
+      image: '/images/Guide/DJguide_counting.png',
     },
   ];
 
