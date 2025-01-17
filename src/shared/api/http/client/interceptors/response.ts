@@ -1,4 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
+import errorEmitter from '@/shared/api/http/error/error-emitter';
+import { getErrorCode } from '@/shared/api/http/error/get-error-code';
 import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
 import { isPureObject } from '@/shared/lib/functions/is-pure-object';
 import { printErrorLog, printResponseLog } from '@/shared/lib/functions/log/network-log';
@@ -38,6 +40,16 @@ export function logError(e: AxiosError) {
     errorMessage,
     error: e,
   });
+
+  return Promise.reject(e);
+}
+
+export function emitError(e: AxiosError) {
+  const errorCode = getErrorCode(e);
+
+  if (errorCode) {
+    errorEmitter.emit(errorCode);
+  }
 
   return Promise.reject(e);
 }

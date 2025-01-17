@@ -5,9 +5,11 @@ export class EventEmitter<Event = string> {
     const callbacks = this.events.get(event) ?? [];
     callbacks.push(callback);
     this.events.set(event, callbacks);
+
+    return () => this.off(event, callback);
   }
 
-  public off(event: Event, callback: () => void) {
+  private off(event: Event, callback: () => void) {
     const callbacks = this.events.get(event) ?? [];
     const index = callbacks.indexOf(callback);
     if (index >= 0) {

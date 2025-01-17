@@ -1,7 +1,13 @@
 import axios, { AxiosInstance } from 'axios';
 import { flow } from '@/shared/lib/functions/flow';
 import { logRequest } from './interceptors/request';
-import { logError, logResponse, processError, unwrapResponse } from './interceptors/response';
+import {
+  emitError,
+  logError,
+  logResponse,
+  processError,
+  unwrapResponse,
+} from './interceptors/response';
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_HOST_NAME,
@@ -13,7 +19,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(flow([logRequest]));
 axiosInstance.interceptors.response.use(
   flow([logResponse, unwrapResponse]),
-  flow([logError, processError])
+  flow([logError, emitError, processError])
 );
 
 export default class HTTPClient {
