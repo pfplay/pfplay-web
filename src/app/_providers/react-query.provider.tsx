@@ -6,6 +6,7 @@ import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experime
 import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
 import isAuthError from '@/shared/api/http/error/is-auth-error';
 import { FIVE_MINUTES } from '@/shared/config/time';
+import { shouldSkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
 import { Dialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 
@@ -67,6 +68,10 @@ function getQueryClient() {
 }
 
 function handleBubbledError(error: unknown) {
+  if (shouldSkipGlobalErrorHandling(error)) {
+    return;
+  }
+
   const errorMessage = getErrorMessage(error);
 
   if (typeof window === 'undefined') {
