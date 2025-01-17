@@ -1,4 +1,4 @@
-import { getErrorMessage } from '@/shared/api/get-error-message';
+import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
 import { printErrorLog, printRequestLog, printResponseLog } from './network-log';
 
 type AnyFunction = (...args: any[]) => any;

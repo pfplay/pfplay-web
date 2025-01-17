@@ -1,5 +1,5 @@
 import { ReactNode, useMemo } from 'react';
-import { getErrorMessage } from '@/shared/api/get-error-message';
+import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
 import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import Dialog, { DialogProps } from './dialog.component';

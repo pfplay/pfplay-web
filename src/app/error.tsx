@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { getErrorMessage } from '@/shared/api/get-error-message';
-import isAuthError from '@/shared/api/is-auth-error';
+import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
+import isAuthError from '@/shared/api/http/error/is-auth-error';
 import { cn } from '@/shared/lib/functions/cn';
 import { Button } from '@/shared/ui/components/button';
 import { Typography } from '@/shared/ui/components/typography';

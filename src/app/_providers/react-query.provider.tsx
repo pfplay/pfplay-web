@@ -3,9 +3,10 @@ import { ReactNode } from 'react';
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
-import { getErrorMessage } from '@/shared/api/get-error-message';
-import isAuthError from '@/shared/api/is-auth-error';
+import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
+import isAuthError from '@/shared/api/http/error/is-auth-error';
 import { FIVE_MINUTES } from '@/shared/config/time';
+import { shouldSkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
 import { Dialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 
@@ -67,6 +68,10 @@ function getQueryClient() {
 }
 
 function handleBubbledError(error: unknown) {
+  if (shouldSkipGlobalErrorHandling(error)) {
+    return;
+  }
+
   const errorMessage = getErrorMessage(error);
 
   if (typeof window === 'undefined') {
