@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { getErrorMessage } from '@/shared/api/get-error-message';
+import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
 import { isPureObject } from '@/shared/lib/functions/is-pure-object';
 import { printErrorLog, printResponseLog } from '@/shared/lib/functions/log/network-log';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';

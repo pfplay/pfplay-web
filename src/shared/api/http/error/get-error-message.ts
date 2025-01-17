@@ -1,6 +1,6 @@
 import { isAxiosError } from 'axios';
-import { ErrorCode } from '@/shared/api/http/types/@shared';
 import type { Dictionary } from '@/shared/lib/localization/i18n.context';
+import { ErrorCode } from '../types/@shared';
 
 export function getErrorMessage(err: unknown, t?: Dictionary): string {
   if (typeof err === 'string') {

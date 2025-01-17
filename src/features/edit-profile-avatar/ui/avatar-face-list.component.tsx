@@ -1,5 +1,5 @@
 'use client';
-import SuspenseWithErrorBoundary from '@/shared/api/suspense-with-error-boundary.component';
+import SuspenseWithErrorBoundary from '@/shared/api/http/error/suspense-with-error-boundary.component';
 import { cn } from '@/shared/lib/functions/cn';
 import { useVerticalStretch } from '@/shared/lib/hooks/use-vertical-stretch.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
