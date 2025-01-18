@@ -197,7 +197,8 @@
       "skipped_song_by_admin": "According to the admin policy, songs longer than $1 minutes will be automatically skipped",
       "dj_in_order": "DJing one person at a time from the waiting list, in order",
       "played_sequentially": "Songs from the top of the playlist are played sequentially, one song per person",
-      "empty_dj": "zZz...No Djing in currently in progress..."
+      "empty_dj": "zZz...No Djing in currently in progress...",
+      "display_count": "Once the song ends, we'll display a count of the Like, Grab, and Boo received during your DJ set."
     }
   },
   "db": {
