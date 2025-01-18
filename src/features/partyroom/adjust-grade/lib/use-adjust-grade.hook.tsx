@@ -16,8 +16,8 @@ export function useAdjustGrade() {
   return async (targetCrew: Pick<PartyroomCrew, 'nickname' | 'crewId' | 'gradeType'>) => {
     if (!me || !partyroomId) return;
 
-    const permissions = Crew.Permission.of(me.gradeType);
-    const canAdjustGrade = permissions?.canAdjustGrade(targetCrew.gradeType);
+    const myPermission = Crew.Permission.of(me.gradeType);
+    const canAdjustGrade = myPermission.canAdjustGrade(targetCrew.gradeType);
 
     if (!canAdjustGrade) return;
 
@@ -25,7 +25,7 @@ export function useAdjustGrade() {
     const currentGrade = targetCrew.gradeType;
     const selectedGrade = await selectGrade({
       targetNickname: targetCrew.nickname,
-      options: permissions.adjustableGrades,
+      options: myPermission.adjustableGrades,
       current: currentGrade,
     });
     if (!selectedGrade) return; // Cancel

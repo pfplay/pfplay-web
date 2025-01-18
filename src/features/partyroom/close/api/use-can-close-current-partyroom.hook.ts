@@ -1,7 +1,7 @@
 import { Crew } from '@/entities/current-partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
 
-export default function useCanLockDjingQueue(): boolean {
+export default function useCanCloseCurrentPartyroom() {
   const me = useStores().useCurrentPartyroom((state) => state.me);
 
   return (() => {
@@ -9,6 +9,6 @@ export default function useCanLockDjingQueue(): boolean {
 
     const myPermission = Crew.Permission.of(me.gradeType);
 
-    return myPermission.canLockDjingQueue();
+    return myPermission.canClose();
   })();
 }

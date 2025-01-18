@@ -40,3 +40,5 @@ export const replaceVar = (text: string, vars: Record<`$${number}`, ReactNode>):
     </>
   );
 };
+
+// TODO: 현재는 왠만해선 한 번에 하나의 렌더러밖에 쓰지 못함 makeTextProcesser(fn1, fn2, fn3, ...)(text)로 사용할 수 있도록 변경

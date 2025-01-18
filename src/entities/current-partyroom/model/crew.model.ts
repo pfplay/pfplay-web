@@ -69,6 +69,14 @@ export class Permission {
     return this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
   }
 
+  public canEdit() {
+    return this.comparator.isHigherThanOrEqualTo(GradeType.HOST);
+  }
+
+  public canClose() {
+    return this.comparator.isHigherThanOrEqualTo(GradeType.HOST);
+  }
+
   public canRegisterDj() {
     throw new Error('Not Impl yet');
   }

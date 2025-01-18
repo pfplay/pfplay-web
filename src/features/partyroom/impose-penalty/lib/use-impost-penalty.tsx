@@ -15,7 +15,7 @@ export default function useImposePenalty() {
   const { openDialog } = useDialog();
   const partyroomId = useStores().useCurrentPartyroom((state) => state.id);
   const me = useStores().useCurrentPartyroom((state) => state.me);
-  const myPermissions = me && Crew.Permission.of(me.gradeType);
+  const myPermission = me && Crew.Permission.of(me.gradeType);
 
   return ({
     crewId,
@@ -28,7 +28,7 @@ export default function useImposePenalty() {
   }) => {
     if (!partyroomId) return;
 
-    const canImposePenalty = myPermissions?.canImposePenalty(crewGradeType);
+    const canImposePenalty = myPermission?.canImposePenalty(crewGradeType);
     if (!canImposePenalty) return;
 
     return openDialog((onOk, onClose) => ({

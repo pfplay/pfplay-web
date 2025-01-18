@@ -7,9 +7,8 @@ export default function useCanUnlockDjingQueue(): boolean {
   return (() => {
     if (!me) return false;
 
-    const permissions = Crew.Permission.of(me.gradeType);
-    const canLockDjingQueue = permissions?.canUnlockDjingQueue();
+    const myPermission = Crew.Permission.of(me.gradeType);
 
-    return !!canLockDjingQueue;
+    return myPermission.canUnlockDjingQueue();
   })();
 }

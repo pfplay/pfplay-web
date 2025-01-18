@@ -1,4 +1,5 @@
 'use client';
+import { ReactNode } from 'react';
 import {
   PartyroomMutationForm,
   PartyroomMutationFormModel,
@@ -9,10 +10,11 @@ import useEditPartyroom from '../api/use-edit-partyroom.mutation';
 
 type Props = {
   onSuccess?: () => void;
-  defaultValues?: PartyroomMutationFormModel;
+  defaultValues: PartyroomMutationFormModel;
+  sub: ReactNode;
 };
 
-export default function PartyroomEditForm({ onSuccess, defaultValues }: Props) {
+export default function PartyroomEditForm({ onSuccess, defaultValues, sub }: Props) {
   const t = useI18n();
   const { mutate: edit } = useEditPartyroom();
 
@@ -44,6 +46,7 @@ export default function PartyroomEditForm({ onSuccess, defaultValues }: Props) {
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
       submitText={t.common.btn.save}
+      sub={sub}
     />
   );
 }

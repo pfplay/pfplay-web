@@ -26,7 +26,7 @@ export default function PartyroomChatPanel() {
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
   const me = useStores().useCurrentPartyroom((state) => state.me);
-  const myPermissions = me && Crew.Permission.of(me.gradeType);
+  const myPermission = me && Crew.Permission.of(me.gradeType);
   const { scrollContainerRef, lastItemRef } = useChatMessagesScrollManager<
     HTMLDivElement,
     HTMLDivElement
@@ -55,7 +55,7 @@ export default function PartyroomChatPanel() {
           const isLast = i === chatMessages.length - 1;
           const isMe = message.crew.crewId === me?.crewId;
 
-          const canImposePenalty = !!myPermissions?.canImposePenalty(message.crew.gradeType);
+          const canImposePenalty = !!myPermission?.canImposePenalty(message.crew.gradeType);
           const onClickImposePenalty = (penaltyType: PenaltyType) => {
             openImposePenalty({
               crewId: message.crew.crewId,
@@ -75,7 +75,7 @@ export default function PartyroomChatPanel() {
                 {
                   label: t.common.btn.authority,
                   onClickItem: () => adjustGrade(message.crew),
-                  visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
+                  visible: !!myPermission?.canAdjustGrade(message.crew.gradeType),
                 },
                 {
                   label: t.common.btn.delete,
@@ -86,7 +86,7 @@ export default function PartyroomChatPanel() {
                       detail: message.message.messageId,
                     });
                   },
-                  visible: !!myPermissions?.canRemoveChatMessage(message.crew.gradeType),
+                  visible: !!myPermission?.canRemoveChatMessage(message.crew.gradeType),
                 },
                 {
                   label: 'GGUL', // TODO: i18n 적용
