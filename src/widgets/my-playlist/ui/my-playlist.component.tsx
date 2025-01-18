@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
 import { AddPlaylistButton } from '@/features/playlist/add';
-import { AddMusicsToPlaylistButton } from '@/features/playlist/add-musics';
+import { AddTracksToPlaylistButton } from '@/features/playlist/add-tracks';
 import { Playlists, EditablePlaylists, PlaylistListItem } from '@/features/playlist/list';
-import { MusicsInPlaylist } from '@/features/playlist/list-musics';
+import { TracksInPlaylist } from '@/features/playlist/list-tracks';
 import { RemovePlaylistButton } from '@/features/playlist/remove';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -89,7 +89,7 @@ export default function MyPlaylist() {
         {playlistDrawer.interactable && (
           <div className='flexRow justify-between items-center mb-6'>
             {/* TODO: 여기 버튼으로 열리는 music search는 재생목록 선택 없이 즉시 추가되어야 함 */}
-            <AddMusicsToPlaylistButton />
+            <AddTracksToPlaylistButton />
           </div>
         )}
 
@@ -102,7 +102,7 @@ export default function MyPlaylist() {
         />
 
         <div className='space-y-3 [&>:first-child]:pt-3'>
-          <MusicsInPlaylist playlist={playlistDrawer.selectedPlaylist} />
+          <TracksInPlaylist playlist={playlistDrawer.selectedPlaylist} />
         </div>
       </Drawer>
     );
@@ -129,7 +129,7 @@ export default function MyPlaylist() {
       {playlistDrawer.interactable && (
         <div className='flexRow justify-between items-center mb-6'>
           <div className='flexRow gap-3'>
-            <AddMusicsToPlaylistButton />
+            <AddTracksToPlaylistButton />
             <AddPlaylistButton />
           </div>
           <TextButton onClick={() => setEditMode(true)}>{t.common.btn.settings}</TextButton>

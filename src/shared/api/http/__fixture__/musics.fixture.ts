@@ -1,6 +1,6 @@
-import { MusicListItem } from '../types/playlists';
+import { Music } from '../types/playlists';
 
-export function generateFixtureMusics(page: number): MusicListItem[] {
+export function generateFixtureMusics(page: number): Music[] {
   return [
     {
       videoId: `music-${page}-1`,

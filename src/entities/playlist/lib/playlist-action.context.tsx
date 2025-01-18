@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useContext } from 'react';
 import {
-  AddPlaylistMusicRequestBody,
+  AddTrackToPlaylistRequestBody,
   Playlist,
-  PlaylistMusic,
+  PlaylistTrack,
 } from '@/shared/api/http/types/playlists';
 
 export type PlaylistActionOptions = {
@@ -16,12 +16,12 @@ type PlaylistAction = {
   edit: (targetId: Playlist['id']) => void;
   remove: (targetIds: Playlist['id'][], options?: PlaylistActionOptions) => void;
 
-  addMusic: (targetId: Playlist['id'], music: AddPlaylistMusicRequestBody) => void;
-  removeMusics: (targetId: Playlist['id'], musicIds: PlaylistMusic['musicId'][]) => void;
+  addTrack: (targetId: Playlist['id'], track: AddTrackToPlaylistRequestBody) => void;
+  removeTrack: (targetId: Playlist['id'], trackIds: PlaylistTrack['linkId']) => void;
   /**
    * TODO: API 안나옴
    */
-  // moveMusic: (from: Playlist['id'], to: Playlist['id'], musicId: PlaylistMusic['musicId']) => void;
+  // moveMusic: (from: Playlist['id'], to: Playlist['id'], linkId: PlaylistTrack['linkId']) => void;
 };
 
 export const PlaylistActionContext = createContext<PlaylistAction | null>(null);

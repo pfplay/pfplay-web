@@ -24,6 +24,10 @@ export type EditPartyroomPayload = {
   playbackTimeLimit: number;
 };
 
+export type ClosePartyroomPayload = {
+  partyroomId: number;
+};
+
 export type CreatePartyroomResponse = {
   partyroomId: number;
 };
@@ -199,16 +203,6 @@ export type GetPartyroomDetailSummaryPayload = {
   partyroomId: number;
 };
 
-export type GetPlaybackHistoryPayload = {
-  partyroomId: number;
-};
-
-export type PlaybackHistoryItem = {
-  musicName: string;
-  nickname: string;
-  avatarIconUri: string;
-};
-
 export type EnterResponse = {
   crewId: number;
   gradeType: GradeType;
@@ -243,11 +237,26 @@ export type ReactionResponse = {
   isGrabbed: boolean;
 };
 
+export type GetPenaltyListPayload = {
+  partyroomId: number;
+};
+
+export type Penalty = {
+  penaltyId: number;
+  penaltyType: PenaltyType;
+  crewId: number;
+};
+
 export type ImposePenaltyPayload = {
   partyroomId: number;
   crewId: number;
   penaltyType: PenaltyType;
   detail: string;
+};
+
+export type LiftPenaltyPayload = {
+  partyroomId: number;
+  penaltyId: number;
 };
 
 export interface PartyroomsClient {
@@ -263,6 +272,10 @@ export interface PartyroomsClient {
    * 파티룸 목록 조회
    */
   getList: () => Promise<PartyroomSummary[]>;
+  /**
+   * 파티룸 폐쇄
+   */
+  close: (payload: ClosePartyroomPayload) => Promise<void>;
   /**
    * 파티룸 정보 조회
    */
@@ -290,10 +303,6 @@ export interface PartyroomsClient {
    */
   getNotice: (payload: GetNoticePayload) => Promise<GetNoticeResponse>;
   /**
-   * 플레이백 히스토리 조회
-   */
-  getPlaybackHistory: (payload: GetPlaybackHistoryPayload) => Promise<PlaybackHistoryItem[]>;
-  /**
    * 파티룸 입장
    */
   enter: (payload: EnterPayload) => Promise<EnterResponse>;
@@ -315,7 +324,15 @@ export interface PartyroomsClient {
    */
   getRoomIdByDomain: (payload: GetRoomIdByDomainPayload) => Promise<GetRoomIdByDomainResponse>;
   /**
+   * 패널티 목록 조회
+   */
+  getPenaltyList: (payload: GetPenaltyListPayload) => Promise<Penalty[]>;
+  /**
    * 파티룸 패널티 적용
    */
   imposePenalty: (payload: ImposePenaltyPayload) => Promise<void>;
+  /**
+   * 파티룸 패널티 해제
+   */
+  liftPenalty: (payload: LiftPenaltyPayload) => Promise<void>;
 }

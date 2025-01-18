@@ -3,51 +3,42 @@ import { Singleton } from '@/shared/lib/decorators/singleton';
 import HTTPClient from '../client/client';
 import type {
   GetPlaylistsResponse,
-  GetPlaylistMusicsParameters,
-  PlaylistMusic,
+  GetTracksOfPlaylistParameters,
+  PlaylistTrack,
   SearchMusicsRequest,
   SearchMusicsResponse,
   CreatePlaylistRequestBody,
   CreatePlaylistResponse,
   Playlist,
-  UpdatePlaylistRequestBody,
+  UpdatePlaylistRequestParams,
   UpdatePlaylistResponse,
-  AddPlaylistMusicRequestBody,
+  AddTrackToPlaylistRequestBody,
   RemovePlaylistRequestBody,
   RemovePlaylistResponse,
-  RemovePlaylistMusicRequestBody,
-  RemovePlaylistMusicResponse,
+  RemoveTrackFromPlaylistRequestParams,
+  RemoveTrackFromPlaylistResponse,
   PlaylistsClient,
+  MoveTrackInPlaylistRequest,
 } from '../types/playlists';
 
 @Singleton
 export default class PlaylistsService extends HTTPClient implements PlaylistsClient {
   private ROUTE_V1 = 'v1/playlists';
 
-  public getPlaylists() {
-    return this.get<GetPlaylistsResponse>(`${this.ROUTE_V1}`);
-  }
-
-  public getMusicsFromPlaylist(playlistId: Playlist['id'], params?: GetPlaylistMusicsParameters) {
-    return this.get<PaginationResponse<PlaylistMusic>>(`${this.ROUTE_V1}/${playlistId}/musics`, {
-      params,
-    });
-  }
-
   public searchMusics(params: SearchMusicsRequest) {
     return this.get<SearchMusicsResponse>(`v1/music-search`, { params });
+  }
+
+  public getPlaylists() {
+    return this.get<GetPlaylistsResponse>(`${this.ROUTE_V1}`);
   }
 
   public createPlaylist(params: CreatePlaylistRequestBody) {
     return this.post<CreatePlaylistResponse>(`${this.ROUTE_V1}`, params);
   }
 
-  public updatePlaylist(playlistId: Playlist['id'], params: UpdatePlaylistRequestBody) {
+  public updatePlaylist(playlistId: Playlist['id'], params: UpdatePlaylistRequestParams) {
     return this.patch<UpdatePlaylistResponse>(`${this.ROUTE_V1}/${playlistId}`, params);
-  }
-
-  public addMusicToPlaylist(playlistId: Playlist['id'], params: AddPlaylistMusicRequestBody) {
-    return this.post<void>(`${this.ROUTE_V1}/${playlistId}/musics`, params);
   }
 
   public removePlaylist(params: RemovePlaylistRequestBody) {
@@ -56,10 +47,23 @@ export default class PlaylistsService extends HTTPClient implements PlaylistsCli
     });
   }
 
-  public removeMusicsFromPlaylist(params: RemovePlaylistMusicRequestBody) {
-    const { playlistId, ...data } = params;
-    return this.delete<RemovePlaylistMusicResponse>(`${this.ROUTE_V1}/${playlistId}/musics`, {
-      data,
+  public getTracksOfPlaylist(playlistId: Playlist['id'], params?: GetTracksOfPlaylistParameters) {
+    return this.get<PaginationResponse<PlaylistTrack>>(`${this.ROUTE_V1}/${playlistId}/musics`, {
+      params,
     });
+  }
+
+  public addTrackToPlaylist(playlistId: Playlist['id'], params: AddTrackToPlaylistRequestBody) {
+    return this.post<void>(`${this.ROUTE_V1}/${playlistId}/musics`, params);
+  }
+
+  public removeTrackFromPlaylist({ playlistId, trackId }: RemoveTrackFromPlaylistRequestParams) {
+    return this.delete<RemoveTrackFromPlaylistResponse>(
+      `${this.ROUTE_V1}/${playlistId}/musics/${trackId}`
+    );
+  }
+
+  public moveTrackOrderInPlaylist({ playlistId, trackId, ...body }: MoveTrackInPlaylistRequest) {
+    return this.put<void>(`${this.ROUTE_V1}/${playlistId}/musics/${trackId}`, body);
   }
 }

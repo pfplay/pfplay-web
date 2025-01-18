@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fixtureMenuItems } from '@/shared/api/http/__fixture__/menu-items.fixture';
-import Music from './music.component';
+import Track from './track.component';
 
 const meta = {
-  title: 'features/music',
-  component: Music,
+  title: 'features/track',
+  component: Track,
   tags: ['autodocs'],
   args: {
-    music: {
-      musicId: 1,
+    track: {
+      linkId: 1,
       orderNumber: 1,
       name: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
       duration: '00:00',
@@ -23,7 +23,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof Music>;
+} satisfies Meta<typeof Track>;
 
 export default meta;
 

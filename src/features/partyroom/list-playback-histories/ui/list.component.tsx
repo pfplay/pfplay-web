@@ -1,5 +1,5 @@
+import useFetchPlaybackHistory from '@/features/partyroom/list-playback-histories/api/use-fetch-playback-histories.query';
 import ListItem from './list-item.component';
-import useFetchPlaybackHistory from '../api/use-fetch-playback-history.query';
 
 export default function List() {
   const { data: list } = useFetchPlaybackHistory();

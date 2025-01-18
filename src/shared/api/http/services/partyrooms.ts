@@ -1,4 +1,8 @@
 import { ErrorCode } from '@/shared/api/http/types/@shared';
+import { Singleton } from '@/shared/lib/decorators/singleton';
+import { SkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
+import HTTPClient from '../client/client';
+import { getErrorCode } from '../error/get-error-code';
 import type {
   DjingQueue,
   EnterPayload,
@@ -17,8 +21,6 @@ import type {
   AdjustGradePayload,
   GetPartyroomDetailSummaryPayload,
   ReactionResponse,
-  GetPlaybackHistoryPayload,
-  PlaybackHistoryItem,
   GetRoomIdByDomainPayload,
   GetRoomIdByDomainResponse,
   PartyroomSummary,
@@ -27,11 +29,11 @@ import type {
   ChangeDjQueueStatusPayload,
   ImposePenaltyPayload,
   EditPartyroomPayload,
-} from '@/shared/api/http/types/partyrooms';
-import { Singleton } from '@/shared/lib/decorators/singleton';
-import { SkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
-import HTTPClient from '../client/client';
-import { getErrorCode } from '../error/get-error-code';
+  ClosePartyroomPayload,
+  LiftPenaltyPayload,
+  GetPenaltyListPayload,
+  Penalty,
+} from '../types/partyrooms';
 
 @Singleton
 export default class PartyroomsService extends HTTPClient implements PartyroomsClient {
@@ -47,6 +49,10 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
 
   public getList() {
     return this.get<PartyroomSummary[]>(`${this.ROUTE_V1}`);
+  }
+
+  public close(payload: ClosePartyroomPayload) {
+    return this.delete<void>(`${this.ROUTE_V1}/${payload.partyroomId}`);
   }
 
   public getPartyroomDetailSummary({ partyroomId }: GetPartyroomDetailSummaryPayload) {
@@ -66,15 +72,11 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
   }
 
   public changeDjQueueStatus({ partyroomId, ...body }: ChangeDjQueueStatusPayload) {
-    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`, body);
+    return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`, body);
   }
 
   public getNotice({ partyroomId }: GetNoticePayload) {
     return this.get<GetNoticeResponse>(`${this.ROUTE_V1}/${partyroomId}/notice`);
-  }
-
-  public getPlaybackHistory({ partyroomId }: GetPlaybackHistoryPayload) {
-    return this.get<PlaybackHistoryItem[]>(`${this.ROUTE_V1}/${partyroomId}/playbacks/histories`);
   }
 
   @SkipGlobalErrorHandling({
@@ -96,14 +98,22 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
   }
 
   public adjustGrade({ partyroomId, crewId, ...body }: AdjustGradePayload) {
-    return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/grade`, body);
+    return this.patch<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/grade`, body);
   }
 
   public getRoomIdByDomain({ domain }: GetRoomIdByDomainPayload) {
     return this.get<GetRoomIdByDomainResponse>(`${this.ROUTE_V1}/link/${domain}/enter`);
   }
 
-  public imposePenalty({ partyroomId, crewId, ...body }: ImposePenaltyPayload) {
-    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/penalties`, body);
+  public getPenaltyList({ partyroomId }: GetPenaltyListPayload) {
+    return this.get<Penalty[]>(`${this.ROUTE_V1}/${partyroomId}/penalties`);
+  }
+
+  public imposePenalty({ partyroomId, ...body }: ImposePenaltyPayload) {
+    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/penalties`, body);
+  }
+
+  public liftPenalty({ partyroomId, penaltyId }: LiftPenaltyPayload) {
+    return this.delete<void>(`${this.ROUTE_V1}/${partyroomId}/penalties/${penaltyId}`);
   }
 }

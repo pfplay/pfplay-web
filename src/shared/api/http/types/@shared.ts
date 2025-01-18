@@ -1,14 +1,23 @@
 // TODO: generate from BE enum
 export enum ErrorCode {
-  REQUIRED_WALLET_CONNECT = 'BR001', // FIXME: BE 측에서 에러 코드 복구되면 수정 - https://pfplay.slack.com/archives/C051N8A0ZSB/p1735470840734989
-  PLAYLIST_MAXIMUM_COUNT_EXCEED = 'BR002', // FIXME: BE 측에서 에러 코드 복구되면 수정 - https://pfplay.slack.com/archives/C051N8A0ZSB/p1735470840734989
+  // JwtAuthenticationException
+  ACCESS_TOKEN_NOT_FOUND = 'JWT-001', // ACCESS_TOKEN 을 찾을 수 없음
+  ACCESS_TOKEN_INVALID = 'JWT-002', // ACCESS_TOKEN 이 유효하지 않음
+  ACCESS_TOKEN_EXPIRED = 'JWT-003', // ACCESS_TOKEN 이 만료됨
 
   // SessionException
   UNAUTHORIZED_SESSION = 'SESS-001', // 허가되지 않은 세션 요청
 
+  // BlockException
+  BLOCK_HISTORY_NOT_FOUND = 'BLK-001', // 차단 기록을 찾을 수 없음
+  ALREADY_BLOCKED_CREW = 'BLK-002', // 이미 차단된 크루
+
   // CrewException
   NOT_FOUND_ACTIVE_ROOM = 'CRW-001', // 내 활성화된 방을 찾을 수 없음
   INVALID_ACTIVE_ROOM = 'CRW-002', // 내 활성화된 방이 유효하지 않음
+
+  // UserAvatarException
+  AVATAR_SELECTION_FORBIDDEN = 'AVT-001', // 제한 사항(e.g. DJ 포인트 부족)으로 아바타 선택이 불가능함 - FIXME: 수정 필요한지 확인 - https://pfplay.slack.com/archives/C051N8A0ZSB/p1737211081003499
 
   // DjException
   ALREADY_REGISTERED = 'DJ-001', // 이미 DJ로 등록됨
@@ -33,9 +42,18 @@ export enum ErrorCode {
 
   // PenaltyException
   PERMANENT_EXPULSION = 'PNT-001', // 영구적으로 추방된 사용자
+  PENALTY_HISTORY_NOT_FOUND = 'PNT-002', // 제거 등을 위한 패널티 기록을 찾을 수 없음
 
-  // PlaylistMusicException
-  DUPLICATE_MUSIC_IN_PLAYLIST = 'PLM-001', // 재생목록에 이미 존재하는 음악은 추가할 수 없음
+  // PlaylistException
+  NO_WALLET = 'PLL-001', // 지갑이 없음
+  EXCEEDED_PLAYLIST_LIMIT = 'PLL-002', // 재생목록 개수 제한을 초과함
+  NOT_FOUND_PLAYLIST = 'PLL-003', // 재생목록을 찾을 수 없음
+
+  // PlaylistTrackException
+  DUPLICATE_TRACK_IN_PLAYLIST = 'TRK-001', // 재생목록에 이미 존재하는 음악은 추가할 수 없음
+  EXCEEDED_TRACK_LIMIT = 'TRK-002', // 재생목록에 추가할 수 있는 음악 개수를 초과함
+  NOT_FOUND_TRACK = 'TRL-003', // 음악을 찾을 수 없음
+  INVALID_TRACK_ORDER = 'TRK-004', // 재생목록에 추가할 수 없는 음악 순서
 }
 
 export type APIError = {

@@ -1,7 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
-import { useSearchMusics } from '@/features/playlist/add-musics/api/use-search-musics.query';
-import { MusicListItem } from '@/shared/api/http/types/playlists';
+import { Music } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
@@ -11,6 +10,7 @@ import { Typography } from '@/shared/ui/components/typography';
 import { PFAddCircle, PFAddPlaylist } from '@/shared/ui/icons';
 import SearchInput from './search-input.component';
 import SearchListItem from './search-list-item.component';
+import { useSearchMusics } from '../api/use-search-musics.query';
 
 type MusicSearchProps = {
   extraAction?: ReactNode;
@@ -24,9 +24,9 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
   const [search, setSearch] = useState('');
   const { data: musics, isFetching } = useSearchMusics(search);
 
-  const addMusicToPlaylist = useCallback(
-    (listId: number, music: MusicListItem) => {
-      playlistAction.addMusic(listId, {
+  const addTrackToPlaylist = useCallback(
+    (listId: number, music: Music) => {
+      playlistAction.addTrack(listId, {
         linkId: music.videoId,
         thumbnailImage: music.thumbnailUrl,
         duration: music.runningTime,
@@ -57,7 +57,7 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
                     // 선택된 플레이리스트가 있을 경우 해당 플레이리스트에 바로 음악 추가
                     <TextButton
                       Icon={<PFAddPlaylist />}
-                      onClick={() => addMusicToPlaylist(selectedPlaylist.id, music)}
+                      onClick={() => addTrackToPlaylist(selectedPlaylist.id, music)}
                     />
                   ) : (
                     // 선택된 플레이리스트가 없을 경우 플레이리스트 선택 메뉴 표시
@@ -67,7 +67,7 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
                       menuItemConfig={[
                         ...playlistAction.list.map(({ name: label, id }) => ({
                           label,
-                          onClickItem: () => addMusicToPlaylist(id, music),
+                          onClickItem: () => addTrackToPlaylist(id, music),
                         })),
                         {
                           label: t.playlist.btn.add_playlist,

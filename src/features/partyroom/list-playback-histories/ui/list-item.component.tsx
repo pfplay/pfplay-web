@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import type { PlaybackHistoryItem } from '@/shared/api/http/types/partyrooms';
+import type { PlaybackHistoryItem } from '@/shared/api/http/types/djs';
 import { Tag } from '@/shared/ui/components/tag';
 import { Typography } from '@/shared/ui/components/typography';
 
