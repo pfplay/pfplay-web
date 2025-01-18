@@ -44,23 +44,23 @@ export function logError(e: AxiosError) {
   return Promise.reject(e);
 }
 
-export function emitError(e: AxiosError) {
-  const errorCode = getErrorCode(e);
-
-  if (errorCode) {
-    errorEmitter.emit(errorCode);
-  }
-
-  return Promise.reject(e);
-}
-
-export function processError(e: AxiosError<unknown>) {
+export function unwrapError(e: AxiosError<unknown>) {
   if (!e.response) {
     return Promise.reject(e);
   }
 
   if (isPureObject(e.response.data) && 'data' in e.response.data) {
     e.response.data = e.response.data.data; // unwrap
+  }
+
+  return Promise.reject(e);
+}
+
+export function emitError(e: AxiosError) {
+  const errorCode = getErrorCode(e);
+
+  if (errorCode) {
+    errorEmitter.emit(errorCode);
   }
 
   return Promise.reject(e);
