@@ -13,7 +13,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules TZ=utc jest src eslint-custom-plugin",
     "test:type": "tsc --noEmit",
     "lint-staged": "lint-staged",
-    "lint": "next lint -d src --ext .ts --ext .tsx --fix --quiet",
+    "lint": "eslint src --fix --quiet",
     "format": "prettier --check .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
