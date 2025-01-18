@@ -24,6 +24,10 @@ export type EditPartyroomPayload = {
   playbackTimeLimit: number;
 };
 
+export type ClosePartyroomPayload = {
+  partyroomId: number;
+};
+
 export type CreatePartyroomResponse = {
   partyroomId: number;
 };
@@ -233,12 +237,26 @@ export type ReactionResponse = {
   isGrabbed: boolean;
 };
 
+export type GetPenaltyListPayload = {
+  partyroomId: number;
+};
+
+export type Penalty = {
+  penaltyId: number;
+  penaltyType: PenaltyType;
+  crewId: number;
+};
+
 export type ImposePenaltyPayload = {
   partyroomId: number;
   crewId: number;
   penaltyType: PenaltyType;
   detail: string;
-  // detailValid: boolean; // 이게 뭔지 질문 - https://pfplay.slack.com/archives/C051N8A0ZSB/p1737213377217729
+};
+
+export type LiftPenaltyPayload = {
+  partyroomId: number;
+  penaltyId: number;
 };
 
 export interface PartyroomsClient {
@@ -254,6 +272,10 @@ export interface PartyroomsClient {
    * 파티룸 목록 조회
    */
   getList: () => Promise<PartyroomSummary[]>;
+  /**
+   * 파티룸 폐쇄
+   */
+  close: (payload: ClosePartyroomPayload) => Promise<void>;
   /**
    * 파티룸 정보 조회
    */
@@ -302,7 +324,15 @@ export interface PartyroomsClient {
    */
   getRoomIdByDomain: (payload: GetRoomIdByDomainPayload) => Promise<GetRoomIdByDomainResponse>;
   /**
+   * 패널티 목록 조회
+   */
+  getPenaltyList: (payload: GetPenaltyListPayload) => Promise<Penalty[]>;
+  /**
    * 파티룸 패널티 적용
    */
   imposePenalty: (payload: ImposePenaltyPayload) => Promise<void>;
+  /**
+   * 파티룸 패널티 해제
+   */
+  liftPenalty: (payload: LiftPenaltyPayload) => Promise<void>;
 }

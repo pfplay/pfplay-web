@@ -1,4 +1,6 @@
-import type {
+import { Singleton } from '@/shared/lib/decorators/singleton';
+import HTTPClient from '../client/client';
+import {
   DjingQueue,
   EnterPayload,
   EnterResponse,
@@ -24,9 +26,11 @@ import type {
   ChangeDjQueueStatusPayload,
   ImposePenaltyPayload,
   EditPartyroomPayload,
-} from '@/shared/api/http/types/partyrooms';
-import { Singleton } from '@/shared/lib/decorators/singleton';
-import HTTPClient from '../client/client';
+  ClosePartyroomPayload,
+  LiftPenaltyPayload,
+  GetPenaltyListPayload,
+  Penalty,
+} from '../types/partyrooms';
 
 @Singleton
 export default class PartyroomsService extends HTTPClient implements PartyroomsClient {
@@ -42,6 +46,10 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
 
   public getList() {
     return this.get<PartyroomSummary[]>(`${this.ROUTE_V1}`);
+  }
+
+  public close(payload: ClosePartyroomPayload) {
+    return this.delete<void>(`${this.ROUTE_V1}/${payload.partyroomId}`);
   }
 
   public getPartyroomDetailSummary({ partyroomId }: GetPartyroomDetailSummaryPayload) {
@@ -88,7 +96,15 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
     return this.get<GetRoomIdByDomainResponse>(`${this.ROUTE_V1}/link/${domain}/enter`);
   }
 
+  public getPenaltyList({ partyroomId }: GetPenaltyListPayload) {
+    return this.get<Penalty[]>(`${this.ROUTE_V1}/${partyroomId}/penalties`);
+  }
+
   public imposePenalty({ partyroomId, ...body }: ImposePenaltyPayload) {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/penalties`, body);
+  }
+
+  public liftPenalty({ partyroomId, penaltyId }: LiftPenaltyPayload) {
+    return this.delete<void>(`${this.ROUTE_V1}/${partyroomId}/penalties/${penaltyId}`);
   }
 }
