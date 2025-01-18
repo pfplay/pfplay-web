@@ -2,6 +2,8 @@ import {
   RegisterMeToQueuePayload,
   UnregisterMeFromQueuePayload,
   UnregisterDjFromQueuePayload,
+  GetPlaybackHistoryPayload,
+  PlaybackHistoryItem,
   SkipPlaybackPayload,
   DjsClient,
 } from '@/shared/api/http/types/djs';
@@ -22,6 +24,10 @@ export default class DjsService extends HTTPClient implements DjsClient {
 
   public unregisterDjFromQueue({ partyroomId, djId }: UnregisterDjFromQueuePayload) {
     return this.delete<void>(`${this.ROUTE_V1}/${partyroomId}/djs/${djId}`);
+  }
+
+  public getPlaybackHistories({ partyroomId }: GetPlaybackHistoryPayload) {
+    return this.get<PlaybackHistoryItem[]>(`${this.ROUTE_V1}/${partyroomId}/playbacks/histories`);
   }
 
   public skipPlayback({ partyroomId }: SkipPlaybackPayload) {

@@ -199,16 +199,6 @@ export type GetPartyroomDetailSummaryPayload = {
   partyroomId: number;
 };
 
-export type GetPlaybackHistoryPayload = {
-  partyroomId: number;
-};
-
-export type PlaybackHistoryItem = {
-  musicName: string;
-  nickname: string;
-  avatarIconUri: string;
-};
-
 export type EnterResponse = {
   crewId: number;
   gradeType: GradeType;
@@ -248,6 +238,7 @@ export type ImposePenaltyPayload = {
   crewId: number;
   penaltyType: PenaltyType;
   detail: string;
+  // detailValid: boolean; // 이게 뭔지 질문 - https://pfplay.slack.com/archives/C051N8A0ZSB/p1737213377217729
 };
 
 export interface PartyroomsClient {
@@ -289,10 +280,6 @@ export interface PartyroomsClient {
    * 공지사항 조회
    */
   getNotice: (payload: GetNoticePayload) => Promise<GetNoticeResponse>;
-  /**
-   * 플레이백 히스토리 조회
-   */
-  getPlaybackHistory: (payload: GetPlaybackHistoryPayload) => Promise<PlaybackHistoryItem[]>;
   /**
    * 파티룸 입장
    */

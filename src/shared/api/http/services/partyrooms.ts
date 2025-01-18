@@ -16,8 +16,6 @@ import type {
   AdjustGradePayload,
   GetPartyroomDetailSummaryPayload,
   ReactionResponse,
-  GetPlaybackHistoryPayload,
-  PlaybackHistoryItem,
   GetRoomIdByDomainPayload,
   GetRoomIdByDomainResponse,
   PartyroomSummary,
@@ -63,15 +61,11 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
   }
 
   public changeDjQueueStatus({ partyroomId, ...body }: ChangeDjQueueStatusPayload) {
-    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`, body);
+    return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`, body);
   }
 
   public getNotice({ partyroomId }: GetNoticePayload) {
     return this.get<GetNoticeResponse>(`${this.ROUTE_V1}/${partyroomId}/notice`);
-  }
-
-  public getPlaybackHistory({ partyroomId }: GetPlaybackHistoryPayload) {
-    return this.get<PlaybackHistoryItem[]>(`${this.ROUTE_V1}/${partyroomId}/playbacks/histories`);
   }
 
   public enter({ partyroomId }: EnterPayload) {
@@ -87,14 +81,14 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
   }
 
   public adjustGrade({ partyroomId, crewId, ...body }: AdjustGradePayload) {
-    return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/grade`, body);
+    return this.patch<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/grade`, body);
   }
 
   public getRoomIdByDomain({ domain }: GetRoomIdByDomainPayload) {
     return this.get<GetRoomIdByDomainResponse>(`${this.ROUTE_V1}/link/${domain}/enter`);
   }
 
-  public imposePenalty({ partyroomId, crewId, ...body }: ImposePenaltyPayload) {
-    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/penalties`, body);
+  public imposePenalty({ partyroomId, ...body }: ImposePenaltyPayload) {
+    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/penalties`, body);
   }
 }
