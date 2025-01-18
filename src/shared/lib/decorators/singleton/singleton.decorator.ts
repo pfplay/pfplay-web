@@ -11,7 +11,7 @@ export default function Singleton<T extends { new (...args: any[]): NonNullable<
 
   const newConstructor: any = function (...args: any[]) {
     if (instance) {
-      log('Cannot instantiate a singleton twice');
+      log(`Cannot instantiate a singleton twice, target class: ${target.name}`);
       return instance;
     }
 

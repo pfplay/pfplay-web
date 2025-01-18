@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect } from 'react';
 import { useSuspenseFetchMe } from '@/entities/me';
+import { usePartyroomEnterErrorAlerts } from '@/features/partyroom/enter';
 import { MyPlaylist } from '@/widgets/my-playlist';
 
 const ProtectedLayout = ({ children }: PropsWithChildren) => {
@@ -17,6 +18,8 @@ const ProtectedLayout = ({ children }: PropsWithChildren) => {
       router.replace('/settings/profile');
     }
   }, []);
+
+  usePartyroomEnterErrorAlerts();
 
   return (
     <>
