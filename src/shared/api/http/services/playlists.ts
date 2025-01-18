@@ -56,22 +56,22 @@ export default class PlaylistsService extends HTTPClient implements PlaylistsCli
   }
 
   public getTracksOfPlaylist(playlistId: Playlist['id'], params?: GetTracksOfPlaylistParameters) {
-    return this.get<PaginationResponse<PlaylistTrack>>(`${this.ROUTE_V1}/${playlistId}/musics`, {
+    return this.get<PaginationResponse<PlaylistTrack>>(`${this.ROUTE_V1}/${playlistId}/tracks`, {
       params,
     });
   }
 
   public addTrackToPlaylist(playlistId: Playlist['id'], params: AddTrackToPlaylistRequestBody) {
-    return this.post<void>(`${this.ROUTE_V1}/${playlistId}/musics`, params);
+    return this.post<void>(`${this.ROUTE_V1}/${playlistId}/tracks`, params);
   }
 
   public removeTrackFromPlaylist({ playlistId, trackId }: RemoveTrackFromPlaylistRequestParams) {
     return this.delete<RemoveTrackFromPlaylistResponse>(
-      `${this.ROUTE_V1}/${playlistId}/musics/${trackId}`
+      `${this.ROUTE_V1}/${playlistId}/tracks/${trackId}`
     );
   }
 
   public moveTrackOrderInPlaylist({ playlistId, trackId, ...body }: MoveTrackInPlaylistRequest) {
-    return this.put<void>(`${this.ROUTE_V1}/${playlistId}/musics/${trackId}`, body);
+    return this.put<void>(`${this.ROUTE_V1}/${playlistId}/tracks/${trackId}`, body);
   }
 }
