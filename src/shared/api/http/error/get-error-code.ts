@@ -13,19 +13,23 @@ export function getErrorCode(err: unknown): ErrorCode | undefined {
     return;
   }
 
-  const code = err.response?.data.errorCode;
-  if (!code) {
+  const errorCode = extractAPIErrorCode(err);
+  if (!errorCode) {
     return;
   }
 
-  if (!errorCodes.has(code)) {
-    log(`Unknown error code: ${code}`);
+  if (!errorCodes.has(errorCode)) {
+    log(`Unknown errorCode: ${errorCode}`);
     return;
   }
 
-  return code;
+  return errorCode;
 }
 
 function isAPIError(err: unknown): err is AxiosError<APIError> {
-  return isAxiosError(err) && 'errorCode' in err.response?.data; // unwrap(data.data >> data) 되었다고 가정
+  return isAxiosError(err) && !!extractAPIErrorCode(err);
+}
+
+function extractAPIErrorCode(err: AxiosError<any>): ErrorCode | undefined {
+  return err.response?.data?.data?.errorCode ?? err.response?.data?.errorCode;
 }
