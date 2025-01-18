@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fixtureMenuItems } from '@/shared/api/http/__fixture__/menu-items.fixture';
+import { fixturePlaylistTracks } from '@/shared/api/http/__fixture__/playlist-tracks.fixture';
 import Track from './track.component';
 
 const meta = {
@@ -7,13 +8,7 @@ const meta = {
   component: Track,
   tags: ['autodocs'],
   args: {
-    track: {
-      linkId: 1,
-      orderNumber: 1,
-      name: 'BLACKPINK(블랙핑크) - Shut Down @인기가요 inkigayo 20220925',
-      duration: '00:00',
-      thumbnailImage: '/images/Temp/nft.png',
-    },
+    track: fixturePlaylistTracks[0],
     menuItems: fixtureMenuItems,
   },
   decorators: [

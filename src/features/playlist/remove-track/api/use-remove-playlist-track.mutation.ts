@@ -17,14 +17,10 @@ export const useRemovePlaylistTrack = () => {
     RemoveTrackFromPlaylistRequestParams
   >({
     mutationFn: (request) => playlistsService.removeTrackFromPlaylist(request),
-    onSuccess: (data) => {
-      data.listIds.forEach((listId) => {
-        queryClient.invalidateQueries({
-          queryKey: [QueryKeys.PlaylistTracks, listId],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [QueryKeys.Playlist], // for refetch count
-        });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.PlaylistTracks, variables.playlistId] });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.Playlist], // to refetch count
       });
     },
   });

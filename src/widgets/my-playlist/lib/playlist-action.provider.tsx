@@ -5,9 +5,14 @@ import { useAddPlaylistDialog } from '@/features/playlist/add';
 import { useAddPlaylistTrack } from '@/features/playlist/add-tracks';
 import { useEditPlaylistDialog } from '@/features/playlist/edit';
 import { useFetchPlaylists } from '@/features/playlist/list';
+import { useChangeTrackOrder } from '@/features/playlist/move-track-to-the-other-playlist';
 import { useRemovePlaylist } from '@/features/playlist/remove';
 import { useRemovePlaylistTrack } from '@/features/playlist/remove-track';
-import { AddTrackToPlaylistRequestBody, Playlist } from '@/shared/api/http/types/playlists';
+import {
+  AddTrackToPlaylistRequestBody,
+  ChangeTrackOrderRequest,
+  Playlist,
+} from '@/shared/api/http/types/playlists';
 
 export default function PlaylistActionProvider({ children }: { children: ReactNode }) {
   const { data: list = [] } = useFetchPlaylists();
@@ -17,6 +22,7 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
 
   const { mutate: _addTrack } = useAddPlaylistTrack();
   const { mutate: _removeTrack } = useRemovePlaylistTrack();
+  const { mutateAsync: _changeTrackOrder } = useChangeTrackOrder();
 
   const remove = useCallback(
     (targetIds: Playlist['id'][], options?: PlaylistActionOptions) => {
@@ -47,6 +53,13 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
     [_removeTrack]
   );
 
+  const changeTrackOrder = useCallback(
+    async (params: ChangeTrackOrderRequest) => {
+      await _changeTrackOrder(params);
+    },
+    [_changeTrackOrder]
+  );
+
   return (
     <PlaylistActionContext.Provider
       value={{
@@ -54,7 +67,7 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
         add,
         edit,
         remove,
-
+        changeTrackOrder,
         addTrack,
         removeTrack,
       }}

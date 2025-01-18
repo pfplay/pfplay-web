@@ -22,6 +22,7 @@ export interface GetTracksOfPlaylistParameters {
  * 사용자가 지정한 Music 객체가 특정한 플레이리스트에 종속되는 순간 Track 객체가 됩니다.
  */
 export interface PlaylistTrack {
+  trackId: number;
   linkId: number;
   name: string;
   orderNumber: number;
@@ -93,7 +94,7 @@ export interface RemoveTrackFromPlaylistResponse {
   listIds: number[];
 }
 
-export type MoveTrackInPlaylistRequest = {
+export type ChangeTrackOrderRequest = {
   playlistId: number;
   trackId: number;
   nextOrderNumber: number;
@@ -119,5 +120,5 @@ export interface PlaylistsClient {
   removeTrackFromPlaylist: (
     params: RemoveTrackFromPlaylistRequestParams
   ) => Promise<RemoveTrackFromPlaylistResponse>;
-  moveTrackOrderInPlaylist: (request: MoveTrackInPlaylistRequest) => Promise<void>;
+  changeTrackOrderInPlaylist: (request: ChangeTrackOrderRequest) => Promise<void>;
 }

@@ -18,10 +18,11 @@ type PlaylistAction = {
 
   addTrack: (targetId: Playlist['id'], track: AddTrackToPlaylistRequestBody) => void;
   removeTrack: (targetId: Playlist['id'], trackIds: PlaylistTrack['linkId']) => void;
-  /**
-   * TODO: API 안나옴
-   */
-  // moveMusic: (from: Playlist['id'], to: Playlist['id'], linkId: PlaylistTrack['linkId']) => void;
+  changeTrackOrder: (params: {
+    playlistId: number;
+    trackId: number;
+    nextOrderNumber: number;
+  }) => Promise<void>;
 };
 
 export const PlaylistActionContext = createContext<PlaylistAction | null>(null);
