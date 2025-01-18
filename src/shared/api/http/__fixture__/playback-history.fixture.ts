@@ -1,4 +1,4 @@
-import type { PlaybackHistoryItem } from '@/shared/api/http/types/partyrooms';
+import type { PlaybackHistoryItem } from '@/shared/api/http/types/djs';
 
 export const fixturePlaybackHistory: PlaybackHistoryItem[] = [
   {
