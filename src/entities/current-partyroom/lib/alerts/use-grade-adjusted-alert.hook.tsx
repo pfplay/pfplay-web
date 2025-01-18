@@ -6,7 +6,7 @@ import { Typography } from '@/shared/ui/components/typography';
 import { PFChevronRight } from '@/shared/ui/icons';
 import useAlert from './use-alert.hook';
 import { GRADE_TYPE_LABEL } from '../../config/grade-type-label';
-import { isGradeAdjustedAlertMessage } from '../../model/alert.model';
+import * as AlertMessage from '../../model/alert-message.model';
 
 export default function useGradeAdjustedAlert() {
   const openGradeAdjustmentAlertDialog = useOpenGradeAdjustmentAlertDialog();
@@ -14,7 +14,7 @@ export default function useGradeAdjustedAlert() {
   useAlert(
     useCallback(
       (message) => {
-        if (isGradeAdjustedAlertMessage(message)) {
+        if (AlertMessage.isGradeAdjustedAlertMessage(message)) {
           openGradeAdjustmentAlertDialog(message.prev, message.next);
         }
       },

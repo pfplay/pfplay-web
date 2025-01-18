@@ -2,10 +2,11 @@
 
 import { create } from 'zustand';
 import { Chat } from '@/shared/lib/chat';
+import Observer from '@/shared/lib/functions/observer';
 import { update } from '@/shared/lib/functions/update';
-import Alert from './alert.model';
+import * as AlertMessage from './alert-message.model';
 import * as ChatMessage from './chat-message.model';
-import * as CurrentPartyroom from '../model/current-partyroom.model';
+import * as CurrentPartyroom from './current-partyroom.model';
 
 export const createCurrentPartyroomStore = () => {
   return create<CurrentPartyroom.Model>((set, _, api) => ({
@@ -116,7 +117,7 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
-    alert: new Alert(),
+    alert: new Observer<AlertMessage.Model>(),
 
     init: (next) => {
       return set(
