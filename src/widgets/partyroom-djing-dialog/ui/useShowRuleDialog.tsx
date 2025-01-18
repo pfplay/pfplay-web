@@ -40,27 +40,33 @@ function Body(props: Props) {
       ),
       image: '/images/Guide/DJguide_waiting.gif',
     },
+
     {
       title: t.dj.title.rule_guide,
       content: (
         <>
-          {t.dj.para.played_sequentially.split('순차적으로 한명당 하나씩 플레이 ')[0]}
+          {t.dj.para.played_sequentially.split('순차적으로 한명당 하나씩 플레이')[0]}
           <br />
-          <span style={{ color: 'red' }}>순차적으로 한명당 하나씩 플레이 </span>
-          {t.dj.para.played_sequentially.split('순차적으로 한명당 하나씩 플레이 ')[1]}
+          <span style={{ color: 'red' }}>{'순차적으로 한명당 하나씩 플레이 '}</span>
+          {t.dj.para.played_sequentially
+            .split('순차적으로 한명당 하나씩 플레이')[1]
+            .replace('됩니다', ' 됩니다')}
         </>
       ),
       image: '/images/Guide/DJguide_playlist.gif',
     },
+
     {
       title: t.dj.title.rule_guide,
       content: (
         <>
-          {t.dj.title.rule_guide}
+          {t.dj.para.display_count.split('받은')[0]}받은
           <br />
-          <span style={{ color: 'red' }}>{t.dj.title.rule_guide}</span>
+          <span style={{ color: 'red' }}>{'좋아요, 그랩, 싫어요를 카운팅'}</span>
+          <span>{'해 보여드립니다'}</span>
         </>
       ),
+
       image: '/images/Guide/DJguide_counting.png',
     },
   ];
