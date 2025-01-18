@@ -64,7 +64,7 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
     try {
       setItems(arrayMove(items, oldIndex, newIndex));
 
-      await playlistAction.moveTrack({
+      await playlistAction.changeTrackOrder({
         playlistId: playlist.id,
         trackId: activeTrack.trackId,
         nextOrderNumber: newIndex + 1, // orderNumber는 1부터 시작하므로 +1

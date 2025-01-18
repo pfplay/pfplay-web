@@ -1,1 +1,1 @@
-export { default as useMovePlaylistTrack } from './api/use-move-playlist-track.mutation';
+export { default as useChangeTrackOrder } from './api/use-change-track-order.mutation';

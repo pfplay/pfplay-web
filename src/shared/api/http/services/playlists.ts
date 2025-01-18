@@ -20,7 +20,7 @@ import type {
   RemoveTrackFromPlaylistRequestParams,
   RemoveTrackFromPlaylistResponse,
   PlaylistsClient,
-  MoveTrackInPlaylistRequest,
+  ChangeTrackOrderRequest,
 } from '../types/playlists';
 
 @Singleton
@@ -71,7 +71,7 @@ export default class PlaylistsService extends HTTPClient implements PlaylistsCli
     );
   }
 
-  public moveTrackOrderInPlaylist({ playlistId, trackId, ...body }: MoveTrackInPlaylistRequest) {
+  public changeTrackOrderInPlaylist({ playlistId, trackId, ...body }: ChangeTrackOrderRequest) {
     return this.put<void>(`${this.ROUTE_V1}/${playlistId}/tracks/${trackId}`, body);
   }
 }
