@@ -1,5 +1,5 @@
 'use client';
-import { JSX, forwardRef, HTMLAttributes } from 'react';
+import { forwardRef, HTMLAttributes, ElementType } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
 
 export type TypographyType =
@@ -18,7 +18,8 @@ type TypographyOverflow = 'ellipsis' | 'break-words' | 'break-all' | 'break-norm
 export interface TypographyProps extends HTMLAttributes<HTMLElement> {
   type?: TypographyType;
   overflow?: TypographyOverflow;
-  as?: keyof Pick<JSX.IntrinsicElements, 'h1' | 'h2' | 'p' | 'span'>;
+  as?: ElementType;
+  [key: string]: any;
 }
 
 const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
@@ -47,19 +48,18 @@ const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
   }
 );
 
-const defaultElDict: Record<TypographyType, keyof Pick<JSX.IntrinsicElements, 'h1' | 'h2' | 'p'>> =
-  {
-    title1: 'h1',
-    title2: 'h2',
-    body1: 'p',
-    body2: 'p',
-    body3: 'p',
-    body4: 'p',
-    detail1: 'p',
-    detail2: 'p',
-    caption1: 'p',
-    caption2: 'p',
-  };
+const defaultElDict: Record<TypographyType, ElementType> = {
+  title1: 'h1',
+  title2: 'h2',
+  body1: 'p',
+  body2: 'p',
+  body3: 'p',
+  body4: 'p',
+  detail1: 'p',
+  detail2: 'p',
+  caption1: 'p',
+  caption2: 'p',
+};
 const titleTypes: TypographyType[] = ['title1', 'title2'];
 
 export const typoStyleDict: Record<TypographyType, string> = {

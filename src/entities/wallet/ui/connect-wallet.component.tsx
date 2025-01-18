@@ -52,7 +52,7 @@ export default function ConnectWallet({
 
         if (!walletConnected) {
           return notConnectedRender?.({
-            recommendedText: t.settings.btn.addi_connection,
+            recommendedText: t.auth.btn.connect_wallet,
             onClick: openConnectModal,
             icon: <PFAdd />,
           });
