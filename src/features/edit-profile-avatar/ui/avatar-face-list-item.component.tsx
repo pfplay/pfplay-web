@@ -1,12 +1,12 @@
 'use client';
 import { FC } from 'react';
+import { Nft } from '@/entities/wallet';
 import { AvatarFace } from '@/shared/api/http/types/users';
 import AvatarListItem from './avatar-list-item.component';
 import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
-import * as Nft from '../model/nft.model';
 
 interface Props {
-  meta: AvatarFace | Nft.RefinedModel;
+  meta: AvatarFace | Nft.Model;
   hideSelected: boolean;
 }
 

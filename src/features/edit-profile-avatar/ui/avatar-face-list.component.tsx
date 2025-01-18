@@ -1,5 +1,5 @@
 'use client';
-import SuspenseWithErrorBoundary from '@/shared/api/http/error/suspense-with-error-boundary.component';
+import { useNfts } from '@/entities/wallet';
 import { cn } from '@/shared/lib/functions/cn';
 import { useVerticalStretch } from '@/shared/lib/hooks/use-vertical-stretch.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -9,7 +9,6 @@ import AvatarFaceListItem from './avatar-face-list-item.component';
 import ConnectWalletButton from './connect-wallet-button.component';
 import { useFetchAvatarFaces } from '../api/use-fetch-avatar-faces.query';
 import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
-import useNfts from '../lib/use-nfts.hook';
 
 const AvatarFaceList = () => {
   const t = useI18n();
@@ -25,9 +24,7 @@ const AvatarFaceList = () => {
   return (
     <div ref={containerRef} className='flex-1 flexCol gap-4 overflow-hidden'>
       <div className='flexRow justify-end items-center gap-3'>
-        <SuspenseWithErrorBoundary>
-          <ConnectWalletButton />
-        </SuspenseWithErrorBoundary>
+        <ConnectWalletButton />
       </div>
       <div
         className={cn(

@@ -12,8 +12,14 @@ const alchemy = new Alchemy({
   network: Network.ETH_MAINNET,
 });
 
-export function useFetchNfts({ isConnected, address }: { isConnected: boolean; address?: string }) {
-  return useQuery<Nft.RefinedModel[], AxiosError<APIError>>({
+export default function useFetchNfts({
+  isConnected,
+  address,
+}: {
+  isConnected: boolean;
+  address?: string;
+}) {
+  return useQuery<Nft.Model[], AxiosError<APIError>>({
     queryKey: [QueryKeys.Nfts],
     queryFn: async () => {
       const getNfts = withLog(alchemy.nft.getNftsForOwner.bind(alchemy.nft), 'get');
