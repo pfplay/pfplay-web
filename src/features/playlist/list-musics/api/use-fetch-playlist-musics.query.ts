@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
-import PlaylistsService from '@/shared/api/http/services/playlists';
+import { playlistsService } from '@/shared/api/http/services';
 import { APIError, PaginationResponse } from '@/shared/api/http/types/@shared';
 import { type PlaylistMusic } from '@/shared/api/http/types/playlists';
 import { FIVE_MINUTES } from '@/shared/config/time';
@@ -13,7 +13,7 @@ export const useFetchPlaylistMusics = (listId: number) => {
       /**
        * TODO: 페이지네이션 무시하고 music 최대 개수 일괄 조회 중. 추후 개선할 것. 100개라 페이지네이션 자체가 필요 없을 수도?
        */
-      PlaylistsService.getMusicsFromPlaylist(listId, {
+      playlistsService.getMusicsFromPlaylist(listId, {
         pageNumber: 0,
         pageSize: MUSICS_COUNT_LIMIT_PER_1_PLAYLIST,
       }),

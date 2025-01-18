@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
-import PlaylistsService from '@/shared/api/http/services/playlists';
+import { playlistsService } from '@/shared/api/http/services';
 import { PlaylistType } from '@/shared/api/http/types/@enums';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { GetPlaylistsResponse, Playlist } from '@/shared/api/http/types/playlists';
@@ -27,7 +27,7 @@ export default function useFetchPlaylists() {
 
   return useQuery<GetPlaylistsResponse, AxiosError<APIError>, Playlist[]>({
     queryKey: [QueryKeys.Playlist],
-    queryFn: () => PlaylistsService.getPlaylists(),
+    queryFn: () => playlistsService.getPlaylists(),
     select: ({ playlists }) => overwriteGrabPlaylistName(playlists, t),
     staleTime: ONE_MINUTE,
     gcTime: FIVE_MINUTES,

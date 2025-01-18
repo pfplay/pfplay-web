@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
-import PlaylistsService from '@/shared/api/http/services/playlists';
+import { playlistsService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
 import {
   RemovePlaylistMusicRequestBody,
@@ -16,7 +16,7 @@ export const useRemovePlaylistMusics = () => {
     AxiosError<APIError>,
     RemovePlaylistMusicRequestBody
   >({
-    mutationFn: (request) => PlaylistsService.removeMusicsFromPlaylist(request),
+    mutationFn: (request) => playlistsService.removeMusicsFromPlaylist(request),
     onSuccess: (data) => {
       data.listIds.forEach((listId) => {
         queryClient.invalidateQueries({

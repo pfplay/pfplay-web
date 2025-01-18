@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
-import PlaylistsService from '@/shared/api/http/services/playlists';
+import { playlistsService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
 import {
   CreatePlaylistRequestBody,
@@ -12,7 +12,7 @@ export const useCreatePlaylist = () => {
   const queryClient = useQueryClient();
 
   return useMutation<CreatePlaylistResponse, AxiosError<APIError>, CreatePlaylistRequestBody>({
-    mutationFn: (request) => PlaylistsService.createPlaylist(request),
+    mutationFn: (request) => playlistsService.createPlaylist(request),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Playlist],
