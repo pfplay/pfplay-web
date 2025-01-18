@@ -23,7 +23,6 @@ import { PFDelete } from '@/shared/ui/icons';
 import Track from './track.component';
 import { useFetchPlaylistTracks } from '../api/use-fetch-playlist-tracks.query';
 
-
 type TracksInPlaylistProps = {
   playlist: Playlist;
 };
@@ -96,7 +95,7 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
               track={track}
               menuItems={[
                 {
-                  onClickItem: () => playlistAction.removeTrack(playlist.id, track.linkId),
+                  onClickItem: () => playlistAction.removeTrack(playlist.id, track.trackId),
                   label: t.playlist.btn.delete_playlist,
                   Icon: <PFDelete />,
                 },
