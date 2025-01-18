@@ -35,8 +35,8 @@ export default function ActionButton({
           ? activeColor === 'red'
             ? '#FF0000'
             : activeColor === 'green'
-            ? '#00FF00'
-            : '#FFFFFF'
+              ? '#00FF00'
+              : '#FFFFFF'
           : undefined,
       }}
     >

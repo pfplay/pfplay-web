@@ -99,10 +99,10 @@ function getPenaltyTypeTitle(penaltyType: PenaltyType) {
         $1: <b className='text-red-300'>30초간 채팅을 금지</b>,
       })
     : penaltyType === PenaltyType.ONE_TIME_EXPULSION
-    ? replaceVar('즉시 퇴출되며 $1합니다', {
-        $1: <b className='text-red-300'>재입장이 가능</b>,
-      })
-    : replaceVar('즉시 퇴출되며 $1합니다', {
-        $1: <b className='text-red-300'>재입장이 불가능</b>,
-      });
+      ? replaceVar('즉시 퇴출되며 $1합니다', {
+          $1: <b className='text-red-300'>재입장이 가능</b>,
+        })
+      : replaceVar('즉시 퇴출되며 $1합니다', {
+          $1: <b className='text-red-300'>재입장이 불가능</b>,
+        });
 }

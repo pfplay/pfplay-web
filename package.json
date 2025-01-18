@@ -14,7 +14,7 @@
     "test:type": "tsc --noEmit",
     "lint-staged": "lint-staged",
     "lint": "eslint src --fix --quiet",
-    "format": "prettier --check .",
+    "format": "prettier --write .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "pathmap": "node ./scripts/pathmap.js",

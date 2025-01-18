@@ -85,12 +85,15 @@ function crewIdToMotionTypeMap(motionInfo?: PartyroomReaction['motion']) {
     return new Map<number, MotionType>();
   }
 
-  return motionInfo.reduce((acc, motion) => {
-    motion.crewIds.forEach((crewId) => {
-      acc.set(crewId, motion.motionType);
-    });
-    return acc;
-  }, {} as Map<number, MotionType>);
+  return motionInfo.reduce(
+    (acc, motion) => {
+      motion.crewIds.forEach((crewId) => {
+        acc.set(crewId, motion.motionType);
+      });
+      return acc;
+    },
+    {} as Map<number, MotionType>
+  );
 }
 
 /**

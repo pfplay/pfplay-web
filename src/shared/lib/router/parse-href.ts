@@ -4,7 +4,7 @@ export const parseHref = <
   P extends {
     path?: Record<string, string | number>;
     query?: Record<string, string | number>;
-  }
+  },
 >(
   href: string,
   params?: P
