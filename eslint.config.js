@@ -10,6 +10,7 @@ import pluginStorybook from 'eslint-plugin-storybook';
 import unusedImportsPlugin from 'eslint-plugin-unused-imports';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import customPlugin from './eslint-custom-plugin/index.js';
 
 export default tseslint.config(
   {
@@ -30,6 +31,7 @@ export default tseslint.config(
       import: pluginImport,
       i18next: pluginI18next,
       'react-hooks': pluginReactHooks,
+      custom: customPlugin,
       '@next/next': pluginNext,
       prettier: pluginPrettier,
     },
@@ -105,6 +107,7 @@ export default tseslint.config(
       'unused-imports/no-unused-imports': 2,
       'unused-imports/no-unused-vars': 0,
       'i18next/no-literal-string': [1, { validateTemplate: true }],
+      'custom/no-direct-service-method-reference': 2,
     },
   },
   {
