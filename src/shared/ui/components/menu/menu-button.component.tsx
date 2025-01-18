@@ -15,7 +15,7 @@ export const MenuButton = ({
   return (
     <_MenuButton
       onClick={() => {
-        onMenuIconClick && onMenuIconClick();
+        onMenuIconClick?.();
       }}
       className={cn(
         'flex h-max items-center justify-center gap-[8px] rounded-[4px]',

@@ -1,11 +1,11 @@
-import { Singleton } from '@/shared/lib/decorators/singleton';
 import {
   RegisterMeToQueuePayload,
   UnregisterMeFromQueuePayload,
   UnregisterDjFromQueuePayload,
   SkipPlaybackPayload,
   DjsClient,
-} from 'shared/api/http/types/djs';
+} from '@/shared/api/http/types/djs';
+import { Singleton } from '@/shared/lib/decorators/singleton';
 import HTTPClient from '../client/client';
 
 @Singleton

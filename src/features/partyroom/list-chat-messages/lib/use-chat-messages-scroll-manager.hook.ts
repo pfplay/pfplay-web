@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
  */
 export default function useChatMessagesScrollManager<
   ScrollEL extends HTMLElement,
-  ItemEL extends HTMLElement
+  ItemEL extends HTMLElement,
 >({ itemsGap }: { itemsGap: number }) {
   const [scrollContainer, setScrollContainer] = useState<ScrollEL | null>(null);
   const [lastItem, setLastItem] = useState<ItemEL | null>(null);
