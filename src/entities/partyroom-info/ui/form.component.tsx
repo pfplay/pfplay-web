@@ -1,13 +1,12 @@
+import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { UseFormReturn } from 'react-hook-form/dist/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSuspenseFetchMe } from '@/entities/me';
 import { cn } from '@/shared/lib/functions/cn';
 import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useLang } from '@/shared/lib/localization/lang.context';
 import { Button } from '@/shared/ui/components/button';
-import { DjListItem } from '@/shared/ui/components/dj-list-item';
 import { FormItem } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
 import { InputNumber } from '@/shared/ui/components/input-number';
@@ -25,12 +24,15 @@ type Props = {
   onSubmit: PartyroomMutationSubmitHandler;
   defaultValues?: Form.Model;
   submitText: string;
+  /**
+   * submit 버튼 좌측에 표시할 컴포넌트
+   */
+  sub: ReactNode;
 };
 
-export default function PartyroomMutationForm({ defaultValues, onSubmit, submitText }: Props) {
+export default function PartyroomMutationForm({ defaultValues, onSubmit, submitText, sub }: Props) {
   const t = useI18n();
   const lang = useLang();
-  const { data: me } = useSuspenseFetchMe();
 
   const form = useForm<Form.Model>({
     mode: 'all',
@@ -135,16 +137,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
           </div>
         </div>
         <div className='w-full flexRow justify-between items-center'>
-          <FormItem
-            label={
-              <Typography as='span' type='body2'>
-                Admin
-              </Typography>
-            }
-            classNames={{ label: 'text-gray-200' }}
-          >
-            <DjListItem userConfig={{ username: me.nickname, src: me.avatarIconUri }} />
-          </FormItem>
+          <div>{sub}</div>
 
           <Button
             type='submit'

@@ -1,4 +1,5 @@
 import { useParams } from 'next/navigation';
+import { useCanCloseCurrentPartyroom, useCloseCurrentPartyroom } from '@/features/partyroom/close';
 import { PartyroomEditTrigger, useCanEditCurrentPartyroom } from '@/features/partyroom/edit';
 import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
 import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
@@ -34,6 +35,10 @@ export default function MainPanel() {
 
   const canEditCurrentPartyroom = useCanEditCurrentPartyroom();
 
+  const closeCurrentPartyroom = useCloseCurrentPartyroom();
+
+  const canCloseCurrentPartyroom = useCanCloseCurrentPartyroom();
+
   if (isLoading) {
     return (
       <div className='h-[343px]'>
@@ -64,6 +69,18 @@ export default function MainPanel() {
                 domain: partyroomSummary.linkDomain,
                 limit: partyroomSummary.playbackTimeLimit,
               }}
+              sub={
+                canCloseCurrentPartyroom ? (
+                  <Button
+                    size='sm'
+                    variant='outline'
+                    color='secondary'
+                    onClick={closeCurrentPartyroom}
+                  >
+                    {t.db.title.shut_down_party}
+                  </Button>
+                ) : null
+              }
             />
           </div>
         )}

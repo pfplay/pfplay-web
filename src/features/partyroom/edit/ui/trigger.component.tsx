@@ -1,4 +1,5 @@
 'use client';
+import { ReactNode } from 'react';
 import { PartyroomMutationFormModel } from '@/entities/partyroom-info';
 import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -11,9 +12,10 @@ import PartyroomEditForm from './form.component';
 
 type Props = {
   defaultValues: PartyroomMutationFormModel;
+  sub: ReactNode;
 };
 
-export default function Trigger({ defaultValues }: Props) {
+export default function Trigger({ defaultValues, sub }: Props) {
   const t = useI18n();
   const lang = useLang();
   const { openDialog, openConfirmDialog } = useDialog();
@@ -31,7 +33,9 @@ export default function Trigger({ defaultValues }: Props) {
       classNames: {
         container: lang === Language.Ko ? 'w-[800px]' : 'w-[900px]',
       },
-      Body: () => <PartyroomEditForm onSuccess={onCancel} defaultValues={defaultValues} />,
+      Body: () => (
+        <PartyroomEditForm onSuccess={onCancel} defaultValues={defaultValues} sub={sub} />
+      ),
     }));
   };
 
