@@ -5,9 +5,9 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { replaceVar } from '@/shared/lib/localization/split-render';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
+import Dialog from '@/shared/ui/components/dialog/dialog.component';
 import { Typography } from '@/shared/ui/components/typography';
 import theme from '@/shared/ui/foundation/theme';
-import Dialog from 'shared/ui/components/dialog/dialog.component';
 import SelectPlaylist from './select-playlist.component';
 
 type Props = {

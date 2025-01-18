@@ -57,7 +57,7 @@ export default function useCrewGradeCallback() {
         gradeType: event.adjusted.currGradeType,
       });
 
-      alert.trigger({
+      alert.notify({
         type: 'grade-adjusted',
         prev: event.adjusted.prevGradeType,
         next: event.adjusted.currGradeType,

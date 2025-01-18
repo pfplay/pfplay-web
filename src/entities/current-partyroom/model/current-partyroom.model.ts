@@ -1,8 +1,9 @@
 import { GradeType } from '@/shared/api/http/types/@enums';
 import { PartyroomPlayback, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import { Chat } from '@/shared/lib/chat';
+import Observer from '@/shared/lib/functions/observer';
 import type { Next } from '@/shared/lib/functions/update';
-import Alert from './alert.model';
+import * as AlertMessage from './alert-message.model';
 import * as ChatMessage from './chat-message.model';
 import * as Crew from './crew.model';
 
@@ -90,8 +91,11 @@ export type Model = {
    * 알리미 모듈
    * 킥, 꿀, 밴, grade 조정 등의 이벤트 발생 시 대상자에게 알림을 보내기 위한 모듈입니다.
    * 대개 이벤트 콜백에서 알림을 호출하며, 뷰 레이어에서 이를 구독하여 처리합니다.
+   *
+   * 전역 레퍼런스로 제공되어도 되지만 스토어로 제공하는 이유는, alert.notify는 주로 partyroom-client 슬라이스 내에서 호출되어
+   * fsd의 동일 레이어 내 슬라이스 간 참조 금지 규칙을 지키기 위해서입니다.
    */
-  alert: Alert;
+  alert: Observer<AlertMessage.Model>;
 
   /**
    * 파티룸 입장 시 초기화하는 함수

@@ -1,9 +1,7 @@
 const path = require('path');
 
 const buildLintCommand = (filenames) =>
-  `yarn next lint --fix --file ${filenames
-    .map((f) => path.relative(process.cwd(), f))
-    .join(' --file ')}`;
+  `yarn eslint --fix ${filenames.map((f) => path.relative(process.cwd(), f)).join(' ')}`;
 
 const buildPrettierCommand = (filenames) =>
   `yarn prettier --write ${filenames.map((f) => path.relative(process.cwd(), f)).join(' ')}`;

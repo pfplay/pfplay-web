@@ -1,6 +1,4 @@
 import { ErrorCode } from '@/shared/api/http/types/@shared';
-import { Singleton } from '@/shared/lib/decorators/singleton';
-import { SkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
 import type {
   DjingQueue,
   EnterPayload,
@@ -29,7 +27,9 @@ import type {
   ChangeDjQueueStatusPayload,
   ImposePenaltyPayload,
   EditPartyroomPayload,
-} from 'shared/api/http/types/partyrooms';
+} from '@/shared/api/http/types/partyrooms';
+import { Singleton } from '@/shared/lib/decorators/singleton';
+import { SkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
 import HTTPClient from '../client/client';
 import { getErrorCode } from '../error/get-error-code';
 

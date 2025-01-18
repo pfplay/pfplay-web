@@ -1,4 +1,4 @@
-import { privacyPolicyConfig } from 'app/docs/privacy-policy/privacy-policy-config';
+import { privacyPolicyConfig } from '@/app/docs/privacy-policy/privacy-policy-config';
 import ArticleTable from '../_ui/article-table.component';
 import DefaultArticle from '../_ui/default-article.component';
 import ListArticle from '../_ui/list-article.component';

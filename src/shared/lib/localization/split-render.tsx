@@ -33,7 +33,7 @@ export const replaceVar = (text: string, vars: Record<`$${number}`, ReactNode>):
   return (
     <>
       {text.split(/(\$\d+)/).map((part, index) => {
-        const content = maybeVar(part) ? vars[part] ?? part : part;
+        const content = maybeVar(part) ? (vars[part] ?? part) : part;
 
         return <Fragment key={`${text}_${content}_${index}`}>{content}</Fragment>;
       })}

@@ -31,7 +31,7 @@ type PrefetchArgs<P extends Href> = PathMap[P] extends {
   : [
       options: Partial<PrefetchOptionsWithQuery> & {
         path: PathMap[P]['path'];
-      }
+      },
     ];
 
 export const useAppRouter = () => {

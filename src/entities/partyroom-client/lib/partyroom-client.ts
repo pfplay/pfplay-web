@@ -26,7 +26,7 @@ export default class PartyroomClient {
   }
 
   public subscribe(partyroomId: number, handler: (message: IMessage) => void) {
-    if (!!this.socketClient.subscriptions.length) {
+    if (this.socketClient.subscriptions.length) {
       // TODO: 다른 방 연결 끊고 이 방에 연결할래? 라는 문구 출력하도록 작업
       throw new Error('Cannot connect to multiple partyrooms at the same time.');
     }
