@@ -75,7 +75,7 @@ export default function PartyroomChatPanel() {
                 {
                   label: t.common.btn.authority,
                   onClickItem: () => adjustGrade(message.crew),
-                  visible: !!myPermissions?.canAdjustGrade(message.crew.gradeType),
+                  visible: !!myPermission?.canAdjustGrade(message.crew.gradeType),
                 },
                 {
                   label: t.common.btn.delete,
@@ -86,7 +86,7 @@ export default function PartyroomChatPanel() {
                       detail: message.message.messageId,
                     });
                   },
-                  visible: !!myPermissions?.canRemoveChatMessage(message.crew.gradeType),
+                  visible: !!myPermission?.canRemoveChatMessage(message.crew.gradeType),
                 },
                 {
                   label: 'GGUL', // TODO: i18n 적용
