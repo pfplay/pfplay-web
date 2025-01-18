@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import eslint from '@eslint/js';
 import pluginNext from '@next/eslint-plugin-next';
 import configPrettier from 'eslint-config-prettier';
@@ -108,6 +110,13 @@ export default tseslint.config(
       'unused-imports/no-unused-vars': 0,
       'i18next/no-literal-string': [1, { validateTemplate: true }],
       'custom/no-direct-service-method-reference': 2,
+      'custom/no-absolute-import-without-prefix': [
+        2,
+        {
+          targetPaths: getSubDirectories(path.resolve(import.meta.dirname, 'src')),
+          requiredPrefix: '@',
+        },
+      ],
     },
   },
   {
@@ -141,3 +150,11 @@ export default tseslint.config(
   },
   configPrettier
 );
+
+function getSubDirectories(directoryPath) {
+  return fs
+    .readdirSync(directoryPath)
+    .map((file) => path.join(directoryPath, file)) // 파일 전체 경로로 변환
+    .filter((file) => fs.statSync(file).isDirectory()) // 디렉터리만 필터링
+    .map((directory) => path.relative(directoryPath, directory)); // 상대 경로로 변환
+}
