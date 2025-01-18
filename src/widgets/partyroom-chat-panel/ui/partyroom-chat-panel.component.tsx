@@ -26,7 +26,7 @@ export default function PartyroomChatPanel() {
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
   const me = useStores().useCurrentPartyroom((state) => state.me);
-  const myPermissions = me && Crew.Permission.of(me.gradeType);
+  const myPermission = me && Crew.Permission.of(me.gradeType);
   const { scrollContainerRef, lastItemRef } = useChatMessagesScrollManager<
     HTMLDivElement,
     HTMLDivElement
@@ -55,7 +55,7 @@ export default function PartyroomChatPanel() {
           const isLast = i === chatMessages.length - 1;
           const isMe = message.crew.crewId === me?.crewId;
 
-          const canImposePenalty = !!myPermissions?.canImposePenalty(message.crew.gradeType);
+          const canImposePenalty = !!myPermission?.canImposePenalty(message.crew.gradeType);
           const onClickImposePenalty = (penaltyType: PenaltyType) => {
             openImposePenalty({
               crewId: message.crew.crewId,

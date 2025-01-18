@@ -11,7 +11,7 @@ export default function useDeleteChatMessage() {
   const { openDialog } = useDialog();
   const partyroomId = useStores().useCurrentPartyroom((state) => state.id);
   const me = useStores().useCurrentPartyroom((state) => state.me);
-  const myPermissions = me && Crew.Permission.of(me.gradeType);
+  const myPermission = me && Crew.Permission.of(me.gradeType);
 
   return ({
     crewId,
@@ -20,7 +20,7 @@ export default function useDeleteChatMessage() {
   }: Pick<ImposePenaltyPayload, 'crewId' | 'detail'> & { crewGradeType: GradeType }) => {
     if (!partyroomId) return;
 
-    const canRemoveChatMessage = myPermissions?.canRemoveChatMessage(crewGradeType);
+    const canRemoveChatMessage = myPermission?.canRemoveChatMessage(crewGradeType);
     if (!canRemoveChatMessage) return;
 
     return openDialog((onOk, onClose) => ({

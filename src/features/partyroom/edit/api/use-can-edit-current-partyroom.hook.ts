@@ -1,8 +1,14 @@
-import { GradeType } from '@/shared/api/http/types/@enums';
+import { Crew } from '@/entities/current-partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
 
 export default function useCanEditCurrentPartyroom() {
-  const myPartyroomInfo = useStores().useCurrentPartyroom((state) => state.me);
+  const me = useStores().useCurrentPartyroom((state) => state.me);
 
-  return myPartyroomInfo?.gradeType === GradeType.HOST;
+  return (() => {
+    if (!me) return false;
+
+    const myPermission = Crew.Permission.of(me.gradeType);
+
+    return myPermission.canEdit();
+  })();
 }
