@@ -1,6 +1,13 @@
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { AccessType, GradeType, MotionType, PenaltyType } from '../../http/types/@enums';
 
+/**
+ * 파티룸 폐쇄 이벤트
+ */
+export type PartyroomCloseEvent = {
+  eventType: PartyroomEventType.PARTYROOM_CLOSE;
+};
+
 // 재생 비활성화 이벤트
 export type PartyroomDeactivationEvent = {
   eventType: PartyroomEventType.PARTYROOM_DEACTIVATION;
@@ -120,6 +127,7 @@ export type CrewProfileEvent = {
 >;
 
 export enum PartyroomEventType {
+  PARTYROOM_CLOSE = 'PARTYROOM_CLOSE', // FIXME: 맘대로 작성함. api 측과 enum 일치할지 확인 필요 - https://pfplay.slack.com/archives/C03Q28EAU66/p1737235619364459?thread_ts=1737203758.635399&cid=C03Q28EAU66
   PARTYROOM_DEACTIVATION = 'PARTYROOM_DEACTIVATION',
   PARTYROOM_ACCESS = 'PARTYROOM_ACCESS',
   PARTYROOM_NOTICE = 'PARTYROOM_NOTICE',
@@ -134,6 +142,7 @@ export enum PartyroomEventType {
 }
 
 export type PartyroomSubEvent =
+  | PartyroomCloseEvent
   | PartyroomDeactivationEvent
   | PartyroomAccessEvent
   | PartyroomNoticeEvent
