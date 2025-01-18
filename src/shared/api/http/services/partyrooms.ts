@@ -1,4 +1,6 @@
+import { ErrorCode } from '@/shared/api/http/types/@shared';
 import { Singleton } from '@/shared/lib/decorators/singleton';
+import { SkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
 import type {
   DjingQueue,
   EnterPayload,
@@ -29,6 +31,7 @@ import type {
   EditPartyroomPayload,
 } from 'shared/api/http/types/partyrooms';
 import HTTPClient from '../client/client';
+import { getErrorCode } from '../error/get-error-code';
 
 @Singleton
 export default class PartyroomsService extends HTTPClient implements PartyroomsClient {
@@ -74,6 +77,12 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
     return this.get<PlaybackHistoryItem[]>(`${this.ROUTE_V1}/${partyroomId}/playbacks/histories`);
   }
 
+  @SkipGlobalErrorHandling({
+    when: (err) =>
+      [ErrorCode.NOT_FOUND_ROOM, ErrorCode.ALREADY_TERMINATED].includes(
+        getErrorCode(err) as ErrorCode
+      ),
+  })
   public enter({ partyroomId }: EnterPayload) {
     return this.post<EnterResponse>(`${this.ROUTE_V1}/${partyroomId}/enter`);
   }
