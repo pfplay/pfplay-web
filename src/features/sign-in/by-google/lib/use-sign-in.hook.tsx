@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import UsersService from '@/shared/api/http/services/users';
+import { usersService } from '@/shared/api/http/services';
 
 export default function useSignIn() {
   return useCallback(() => {
-    UsersService.signIn({
+    usersService.signIn({
       oauth2Provider: 'google',
     });
   }, []);

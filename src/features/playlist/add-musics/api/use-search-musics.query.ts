@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
-import PlaylistsService from '@/shared/api/http/services/playlists';
+import { playlistsService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { MusicListItem, SearchMusicsResponse } from '@/shared/api/http/types/playlists';
 import { FIVE_MINUTES } from '@/shared/config/time';
@@ -10,7 +10,7 @@ export const useSearchMusics = (search: string) => {
   return useQuery<SearchMusicsResponse, AxiosError<APIError>, MusicListItem[]>({
     queryKey: [QueryKeys.Musics, search],
     queryFn: () =>
-      PlaylistsService.searchMusics({
+      playlistsService.searchMusics({
         q: search,
         platform: 'youtube',
       }),

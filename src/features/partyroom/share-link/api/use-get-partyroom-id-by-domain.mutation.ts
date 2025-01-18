@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import PartyroomsService from '@/shared/api/http/services/partyrooms';
+import { partyroomsService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
 import {
   GetRoomIdByDomainResponse,
@@ -9,6 +9,6 @@ import {
 
 export default function useGetPartyroomIdByDomain() {
   return useMutation<GetRoomIdByDomainResponse, AxiosError<APIError>, GetRoomIdByDomainPayload>({
-    mutationFn: PartyroomsService.getRoomIdByDomain,
+    mutationFn: (request) => partyroomsService.getRoomIdByDomain(request),
   });
 }

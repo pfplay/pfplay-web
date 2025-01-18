@@ -9,25 +9,22 @@ import {
 import HTTPClient from '../client/client';
 
 @Singleton
-class DjsService extends HTTPClient implements DjsClient {
+export default class DjsService extends HTTPClient implements DjsClient {
   private ROUTE_V1 = 'v1/partyrooms';
 
-  public registerMeToQueue = ({ partyroomId, ...body }: RegisterMeToQueuePayload) => {
+  public registerMeToQueue({ partyroomId, ...body }: RegisterMeToQueuePayload) {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/djs`, body);
-  };
+  }
 
-  public unregisterMeFromQueue = ({ partyroomId }: UnregisterMeFromQueuePayload) => {
+  public unregisterMeFromQueue({ partyroomId }: UnregisterMeFromQueuePayload) {
     return this.delete<void>(`${this.ROUTE_V1}/${partyroomId}/djs/me`);
-  };
+  }
 
-  public unregisterDjFromQueue = ({ partyroomId, djId }: UnregisterDjFromQueuePayload) => {
+  public unregisterDjFromQueue({ partyroomId, djId }: UnregisterDjFromQueuePayload) {
     return this.delete<void>(`${this.ROUTE_V1}/${partyroomId}/djs/${djId}`);
-  };
+  }
 
-  public skipPlayback = ({ partyroomId }: SkipPlaybackPayload) => {
+  public skipPlayback({ partyroomId }: SkipPlaybackPayload) {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/playback/skip`);
-  };
+  }
 }
-
-const instance = new DjsService();
-export default instance;

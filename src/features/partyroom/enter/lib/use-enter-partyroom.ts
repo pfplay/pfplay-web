@@ -2,7 +2,7 @@ import {
   useHandlePartyroomSubscriptionEvent,
   usePartyroomClient,
 } from '@/entities/partyroom-client';
-import PartyroomsService from '@/shared/api/http/services/partyrooms';
+import { partyroomsService } from '@/shared/api/http/services';
 import { MotionType } from '@/shared/api/http/types/@enums';
 import { EnterResponse, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import silent from '@/shared/lib/functions/silent';
@@ -23,8 +23,8 @@ export function useEnterPartyroom(partyroomId: number) {
 
   const setup = async (enterResponse: EnterResponse) => {
     const [setUpInfo, notice] = await Promise.all([
-      PartyroomsService.getSetupInfo({ partyroomId }),
-      PartyroomsService.getNotice({ partyroomId }), // 공지사항은 현재 설계상 enter 시점엔 rest api로 받아오고, 이후 공지 변경이 있을 땐 웹 소켓 이벤트로 수신합니다.
+      partyroomsService.getSetupInfo({ partyroomId }),
+      partyroomsService.getNotice({ partyroomId }), // 공지사항은 현재 설계상 enter 시점엔 rest api로 받아오고, 이후 공지 변경이 있을 땐 웹 소켓 이벤트로 수신합니다.
     ]);
 
     // TODO: crews 작업 시 crews 캐시 데이터 세팅해주기

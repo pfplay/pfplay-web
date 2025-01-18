@@ -31,73 +31,70 @@ import type {
 import HTTPClient from '../client/client';
 
 @Singleton
-class PartyroomsService extends HTTPClient implements PartyroomsClient {
+export default class PartyroomsService extends HTTPClient implements PartyroomsClient {
   private ROUTE_V1 = 'v1/partyrooms';
 
-  public create = (payload: CreatePartyroomPayload) => {
+  public create(payload: CreatePartyroomPayload) {
     return this.post<CreatePartyroomResponse>(this.ROUTE_V1, payload);
-  };
+  }
 
-  public edit = ({ partyroomId, ...body }: EditPartyroomPayload) => {
+  public edit({ partyroomId, ...body }: EditPartyroomPayload) {
     return this.put<void>(`${this.ROUTE_V1}/${partyroomId}`, body);
-  };
+  }
 
-  public getList = () => {
+  public getList() {
     return this.get<PartyroomSummary[]>(`${this.ROUTE_V1}`);
-  };
+  }
 
-  public getPartyroomDetailSummary = ({ partyroomId }: GetPartyroomDetailSummaryPayload) => {
+  public getPartyroomDetailSummary({ partyroomId }: GetPartyroomDetailSummaryPayload) {
     return this.get<PartyroomDetailSummary>(`${this.ROUTE_V1}/${partyroomId}/summary`);
-  };
+  }
 
-  public getSetupInfo = ({ partyroomId }: GetSetupInfoPayload) => {
+  public getSetupInfo({ partyroomId }: GetSetupInfoPayload) {
     return this.get<GetSetUpInfoResponse>(`${this.ROUTE_V1}/${partyroomId}/setup`);
-  };
+  }
 
-  public getCrews = ({ partyroomId }: GetCrewsPayload) => {
+  public getCrews({ partyroomId }: GetCrewsPayload) {
     return this.get<PartyroomCrewSummary[]>(`${this.ROUTE_V1}/${partyroomId}/crews`);
-  };
+  }
 
-  public getDjingQueue = ({ partyroomId }: GetDjingQueuePayload) => {
+  public getDjingQueue({ partyroomId }: GetDjingQueuePayload) {
     return this.get<DjingQueue>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`);
-  };
+  }
 
-  public changeDjQueueStatus = ({ partyroomId, ...body }: ChangeDjQueueStatusPayload) => {
+  public changeDjQueueStatus({ partyroomId, ...body }: ChangeDjQueueStatusPayload) {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`, body);
-  };
+  }
 
-  public getNotice = ({ partyroomId }: GetNoticePayload) => {
+  public getNotice({ partyroomId }: GetNoticePayload) {
     return this.get<GetNoticeResponse>(`${this.ROUTE_V1}/${partyroomId}/notice`);
-  };
+  }
 
-  public getPlaybackHistory = ({ partyroomId }: GetPlaybackHistoryPayload) => {
+  public getPlaybackHistory({ partyroomId }: GetPlaybackHistoryPayload) {
     return this.get<PlaybackHistoryItem[]>(`${this.ROUTE_V1}/${partyroomId}/playbacks/histories`);
-  };
+  }
 
-  public enter = ({ partyroomId }: EnterPayload) => {
+  public enter({ partyroomId }: EnterPayload) {
     return this.post<EnterResponse>(`${this.ROUTE_V1}/${partyroomId}/enter`);
-  };
+  }
 
-  public exit = ({ partyroomId }: ExitPayload) => {
+  public exit({ partyroomId }: ExitPayload) {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/exit`);
-  };
+  }
 
-  public reaction = ({ partyroomId, ...body }: ReactionPayload) => {
+  public reaction({ partyroomId, ...body }: ReactionPayload) {
     return this.post<ReactionResponse>(`${this.ROUTE_V1}/${partyroomId}/playbacks/reaction`, body);
-  };
+  }
 
-  public adjustGrade = ({ partyroomId, crewId, ...body }: AdjustGradePayload) => {
+  public adjustGrade({ partyroomId, crewId, ...body }: AdjustGradePayload) {
     return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/grade`, body);
-  };
+  }
 
-  public getRoomIdByDomain = ({ domain }: GetRoomIdByDomainPayload) => {
+  public getRoomIdByDomain({ domain }: GetRoomIdByDomainPayload) {
     return this.get<GetRoomIdByDomainResponse>(`${this.ROUTE_V1}/link/${domain}/enter`);
-  };
+  }
 
-  public imposePenalty = ({ partyroomId, crewId, ...body }: ImposePenaltyPayload) => {
+  public imposePenalty({ partyroomId, crewId, ...body }: ImposePenaltyPayload) {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/penalties`, body);
-  };
+  }
 }
-
-const instance = new PartyroomsService();
-export default instance;

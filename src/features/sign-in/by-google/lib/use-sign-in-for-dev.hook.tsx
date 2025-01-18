@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useGetMyServiceEntry } from '@/entities/me';
-import UsersService from '@/shared/api/http/services/users';
+import { usersService } from '@/shared/api/http/services';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
@@ -27,7 +27,7 @@ export default function useSignInForDev() {
             <Dialog.Button
               color='secondary'
               onClick={async () => {
-                await UsersService.temporary_SignInFullCrew();
+                await usersService.temporary_SignInFullCrew();
                 onClose?.();
                 router.push(await getMyServiceEntry());
               }}
@@ -36,7 +36,7 @@ export default function useSignInForDev() {
             </Dialog.Button>
             <Dialog.Button
               onClick={async () => {
-                await UsersService.temporary_SignInAssociateCrew();
+                await usersService.temporary_SignInAssociateCrew();
                 onClose?.();
                 router.push(await getMyServiceEntry());
               }}
