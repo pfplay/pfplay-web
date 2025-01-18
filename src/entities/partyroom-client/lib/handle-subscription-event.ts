@@ -7,6 +7,7 @@ import useCrewGradeCallback from './subscription-callbacks/use-crew-grade-callba
 import useCrewPenaltyCallback from './subscription-callbacks/use-crew-penalty-callback.hook';
 import useCrewProfileCallback from './subscription-callbacks/use-crew-profile-callback.hook';
 import usePartyroomAccessCallback from './subscription-callbacks/use-partyroom-access-callback.hook';
+import usePartyroomCloseCallback from './subscription-callbacks/use-partyroom-close-callback.hook';
 import usePartyroomDeactivationCallback from './subscription-callbacks/use-partyroom-deactivation-callback.hook';
 import usePartyroomNoticeCallback from './subscription-callbacks/use-partyroom-notice-callback.hook';
 import usePlaybackSkipCallback from './subscription-callbacks/use-playback-skip-callback.hook';
@@ -19,6 +20,7 @@ const warnLogger = logger(warnLog);
 const infoLogger = logger(specificLog);
 
 export default function useHandleSubscriptionEvent() {
+  const partyroomCloseCallback = usePartyroomCloseCallback();
   const partyroomDeactivationCallback = usePartyroomDeactivationCallback();
   const partyroomAccessCallback = usePartyroomAccessCallback();
   const partyroomNoticeCallback = usePartyroomNoticeCallback();
@@ -47,6 +49,9 @@ export default function useHandleSubscriptionEvent() {
     infoLogger('Received event:', event);
 
     switch (event.eventType) {
+      case PartyroomEventType.PARTYROOM_CLOSE:
+        partyroomCloseCallback(event);
+        break;
       case PartyroomEventType.PARTYROOM_DEACTIVATION:
         partyroomDeactivationCallback(event);
         break;
