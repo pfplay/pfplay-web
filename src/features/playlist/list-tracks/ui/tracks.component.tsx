@@ -99,6 +99,12 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
                   label: t.playlist.btn.delete_playlist,
                   Icon: <PFDelete />,
                 },
+                // TODO: 구현되면 주석 해제
+                // {
+                //   onClickItem: () => alert('Not Implemented'),
+                //   label: t.playlist.btn.move_playlist,
+                //   Icon: <PFAddPlaylist />,
+                // },
               ]}
             />
           ))}
