@@ -18,6 +18,7 @@ import type {
   RemoveTrackFromPlaylistRequestParams,
   RemoveTrackFromPlaylistResponse,
   PlaylistsClient,
+  MoveTrackInPlaylistRequest,
 } from '../types/playlists';
 
 @Singleton
@@ -60,5 +61,9 @@ export default class PlaylistsService extends HTTPClient implements PlaylistsCli
     return this.delete<RemoveTrackFromPlaylistResponse>(
       `${this.ROUTE_V1}/${playlistId}/musics/${trackId}`
     );
+  }
+
+  public moveTrackOrderInPlaylist({ playlistId, trackId, ...body }: MoveTrackInPlaylistRequest) {
+    return this.put<void>(`${this.ROUTE_V1}/${playlistId}/musics/${trackId}`, body);
   }
 }
