@@ -6,7 +6,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 import useAlert from './use-alert.hook';
-import { isPenaltyAlertMessage } from '../../model/alert.model';
+import * as AlertMessage from '../../model/alert-message.model';
 
 export default function usePenaltyAlert() {
   const openPenaltyAlertDialog = useOpenPenaltyAlertDialog();
@@ -14,7 +14,7 @@ export default function usePenaltyAlert() {
   useAlert(
     useCallback(
       (message) => {
-        if (isPenaltyAlertMessage(message)) {
+        if (AlertMessage.isPenaltyAlertMessage(message)) {
           openPenaltyAlertDialog(message.type, message.reason);
         }
       },

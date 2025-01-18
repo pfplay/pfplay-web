@@ -44,7 +44,7 @@ export default function useCrewPenaltyCallback() {
 
     const myCrewId = useCurrentPartyroom.getState().me?.crewId;
     if (myCrewId === event.punished.crewId) {
-      alert.trigger({
+      alert.notify({
         type: event.penaltyType,
         reason: event.detail,
       });
