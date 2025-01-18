@@ -22,7 +22,7 @@ const Tag = (props: TagProps) => {
     return (
       <div
         className={cn(
-          'w-fit flexRowCenter rounded-[40px] py-1 px-2 gap-1 bg-black',
+          'w-fit flexRowCenter rounded-[40px] py-1 px-2 gap-1 bg-black select-none',
           props.className
         )}
       >
@@ -37,7 +37,7 @@ const Tag = (props: TagProps) => {
   return (
     <div
       className={cn(
-        'w-fit rounded-[40px] py-[2px] px-2',
+        'w-fit rounded-[40px] py-[2px] px-2 select-none',
         props.className,
         props.variant === 'filled' && 'bg-red-400',
         props.variant === 'outlined' && 'border border-red-400 text-red-300'
