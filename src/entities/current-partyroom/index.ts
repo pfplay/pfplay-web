@@ -10,3 +10,4 @@ export * as Crew from './model/crew.model';
 export { useChat as useCurrentPartyroomChat } from './lib/use-chat.hook';
 export { default as useCurrentPartyroomAlerts } from './lib/alerts/use-alerts.hook';
 export { useOpenGradeAdjustmentAlertDialog } from './lib/alerts/use-grade-adjusted-alert.hook';
+export { default as useRemoveCurrentPartyroomCaches } from './lib/use-remove-current-partyroom-caches.hook';
