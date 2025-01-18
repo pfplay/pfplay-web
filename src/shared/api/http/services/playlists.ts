@@ -21,7 +21,7 @@ import type {
 } from '../types/playlists';
 
 @Singleton
-class PlaylistsService extends HTTPClient implements PlaylistsClient {
+export default class PlaylistsService extends HTTPClient implements PlaylistsClient {
   private ROUTE_V1 = 'v1/playlists';
 
   public getPlaylists() {
@@ -63,6 +63,3 @@ class PlaylistsService extends HTTPClient implements PlaylistsClient {
     });
   }
 }
-
-const instance = new PlaylistsService();
-export default instance;

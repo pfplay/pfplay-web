@@ -22,7 +22,7 @@ axiosInstance.interceptors.response.use(
   flow([logError, emitError, processError])
 );
 
-export default class HTTPClient {
+export default abstract class HTTPClient {
   protected readonly axiosInstance = axiosInstance;
 
   protected get<T>(...args: Parameters<AxiosInstance['get']>) {

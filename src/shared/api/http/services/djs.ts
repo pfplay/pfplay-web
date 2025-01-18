@@ -9,7 +9,7 @@ import {
 import HTTPClient from '../client/client';
 
 @Singleton
-class DjsService extends HTTPClient implements DjsClient {
+export default class DjsService extends HTTPClient implements DjsClient {
   private ROUTE_V1 = 'v1/partyrooms';
 
   public registerMeToQueue({ partyroomId, ...body }: RegisterMeToQueuePayload) {
@@ -28,6 +28,3 @@ class DjsService extends HTTPClient implements DjsClient {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/playback/skip`);
   }
 }
-
-const instance = new DjsService();
-export default instance;

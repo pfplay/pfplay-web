@@ -16,7 +16,7 @@ import type {
 } from '../types/users';
 
 @Singleton
-class UsersService extends HTTPClient implements UsersClient {
+export default class UsersService extends HTTPClient implements UsersClient {
   private ROUTE_V1 = 'v1/users';
 
   public signIn(request: SignInRequest) {
@@ -82,6 +82,3 @@ class UsersService extends HTTPClient implements UsersClient {
     return this.put<void>(`${this.ROUTE_V1}/me/profile/avatar/body`, request);
   }
 }
-
-const instance = new UsersService();
-export default instance;

@@ -31,7 +31,7 @@ import type {
 import HTTPClient from '../client/client';
 
 @Singleton
-class PartyroomsService extends HTTPClient implements PartyroomsClient {
+export default class PartyroomsService extends HTTPClient implements PartyroomsClient {
   private ROUTE_V1 = 'v1/partyrooms';
 
   public create(payload: CreatePartyroomPayload) {
@@ -98,6 +98,3 @@ class PartyroomsService extends HTTPClient implements PartyroomsClient {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/penalties`, body);
   }
 }
-
-const instance = new PartyroomsService();
-export default instance;
