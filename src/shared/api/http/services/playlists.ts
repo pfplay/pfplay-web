@@ -1,5 +1,7 @@
-import { PaginationResponse } from '@/shared/api/http/types/@shared';
+import { getErrorCode } from '@/shared/api/http/error/get-error-code';
+import { ErrorCode, PaginationResponse } from '@/shared/api/http/types/@shared';
 import { Singleton } from '@/shared/lib/decorators/singleton';
+import { SkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
 import HTTPClient from '../client/client';
 import type {
   GetPlaylistsResponse,
@@ -33,6 +35,12 @@ export default class PlaylistsService extends HTTPClient implements PlaylistsCli
     return this.get<GetPlaylistsResponse>(`${this.ROUTE_V1}`);
   }
 
+  @SkipGlobalErrorHandling({
+    when: (error) =>
+      [ErrorCode.NO_WALLET, ErrorCode.EXCEEDED_PLAYLIST_LIMIT].includes(
+        getErrorCode(error) as ErrorCode
+      ),
+  })
   public createPlaylist(params: CreatePlaylistRequestBody) {
     return this.post<CreatePlaylistResponse>(`${this.ROUTE_V1}`, params);
   }

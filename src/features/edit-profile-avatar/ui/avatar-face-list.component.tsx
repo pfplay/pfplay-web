@@ -35,8 +35,6 @@ const AvatarFaceList = () => {
           }
         )}
       >
-        {/* TODO: Add wallet faces */}
-
         {faces.map((face) => (
           <AvatarFaceListItem key={face.resourceUri} meta={face} hideSelected={!combinable} />
         ))}

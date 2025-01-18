@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { useInformWalletLinkage, useIsWalletLinked } from '@/entities/wallet';
 import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useLang } from '@/shared/lib/localization/lang.context';
@@ -11,8 +12,15 @@ export default function PartyroomCreateCard() {
   const t = useI18n();
   const lang = useLang();
   const { openDialog, openConfirmDialog } = useDialog();
+  const isWalletLinked = useIsWalletLinked();
+  const informWalletLinkage = useInformWalletLinkage();
 
-  const handleClickBeAHostBtn = () => {
+  const handleClickBeAHostBtn = async () => {
+    if (!(await isWalletLinked())) {
+      informWalletLinkage();
+      return;
+    }
+
     openDialog((_, onCancel) => ({
       title: t.createparty.title.create_party,
       titleAlign: 'left',
