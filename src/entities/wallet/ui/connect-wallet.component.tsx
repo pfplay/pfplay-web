@@ -14,9 +14,9 @@ type RendererProps = {
 };
 
 type ConnectWalletProps = {
-  wrongNetworkRender?: (props: RendererProps) => ReactNode;
-  notConnectedRender?: (props: RendererProps) => ReactNode;
+  notConnectedRender: (props: RendererProps) => ReactNode;
   connectedRender?: (props: RendererProps) => ReactNode;
+  wrongNetworkRender?: (props: RendererProps) => ReactNode;
 };
 
 export default function ConnectWallet({
@@ -39,6 +39,7 @@ export default function ConnectWallet({
           }
           if (walletConnected && (!me.walletAddress || me.walletAddress !== account.address)) {
             updateMyWallet({ walletAddress: account.address });
+            // TODO: "지갑이 연동되었습니다" 라는 토스트 추가
           }
         }, [walletConnected]);
 

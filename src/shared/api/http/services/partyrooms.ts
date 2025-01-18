@@ -80,9 +80,9 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
   }
 
   @SkipGlobalErrorHandling({
-    when: (err) =>
-      [ErrorCode.NOT_FOUND_ROOM, ErrorCode.ALREADY_TERMINATED].includes(
-        getErrorCode(err) as ErrorCode
+    when: (error) =>
+      [ErrorCode.NOT_FOUND_ROOM, ErrorCode.ALREADY_TERMINATED, ErrorCode.EXCEEDED_LIMIT].includes(
+        getErrorCode(error) as ErrorCode
       ),
   })
   public enter({ partyroomId }: EnterPayload) {
