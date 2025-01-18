@@ -1,4 +1,4 @@
-import { useSelectPlaylistForDjing } from '@/features/partyroom/select-playlist-for-djing';
+/* import { useSelectPlaylistForDjing } from '@/features/partyroom/select-playlist-for-djing';
 import { useFetchPlaylists } from '@/features/playlist/list';
 import { QueueStatus } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -32,6 +32,49 @@ export default function RegisterButton() {
       partyroomId,
       playlistId: selectedPlaylist.id,
     });
+  };
+
+  return (
+    <Button size='lg' onClick={registerMeToDjQueue}>
+      {t.dj.btn.register_queue}
+    </Button>
+  );
+}
+*/
+
+import { useSelectPlaylistForDjing } from '@/features/partyroom/select-playlist-for-djing';
+import { useFetchPlaylists } from '@/features/playlist/list';
+import { LocalStorageKeys } from '@/shared/config/local-storage-keys';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { Button } from '@/shared/ui/components/button';
+import useShowRuleDialog from '@/widgets/partyroom-djing-dialog/ui/useShowRuleDialog';
+import { useRegisterMeToQueue } from '../api/use-register-me-to-queue.mutation';
+import { usePartyroomId } from '../lib/partyroom-id.context';
+
+export default function DjQueueButton() {
+  const t = useI18n();
+  const { data: playlists = [] } = useFetchPlaylists();
+  const selectPlaylist = useSelectPlaylistForDjing({ playlists });
+  const showDjingRuleDialog = useShowRuleDialog();
+  const partyroomId = usePartyroomId();
+  const { mutate: registerMeToQueue } = useRegisterMeToQueue();
+
+  const registerMeToDjQueue = async () => {
+    try {
+      const playlist = await selectPlaylist();
+      if (!playlist) return;
+
+      if (!localStorage.getItem(LocalStorageKeys.HIDE_DJING_RULES_MODAL)) {
+        await showDjingRuleDialog();
+      }
+
+      registerMeToQueue({
+        partyroomId,
+        playlistId: playlist.id,
+      });
+    } catch (error) {
+      console.error('Failed to register to DJ queue:', error);
+    }
   };
 
   return (
