@@ -2,11 +2,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import eslint from '@eslint/js';
 import pluginNext from '@next/eslint-plugin-next';
-import configPrettier from 'eslint-config-prettier';
 import pluginI18next from 'eslint-plugin-i18next';
 import pluginImport from 'eslint-plugin-import';
 import pluginJest from 'eslint-plugin-jest';
-import pluginPrettier from 'eslint-plugin-prettier';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
 import pluginStorybook from 'eslint-plugin-storybook';
 import unusedImportsPlugin from 'eslint-plugin-unused-imports';
@@ -35,15 +33,14 @@ export default tseslint.config(
       'react-hooks': pluginReactHooks,
       custom: customPlugin,
       '@next/next': pluginNext,
-      prettier: pluginPrettier,
     },
     rules: {
-      'prettier/prettier': ['error', { endOfLine: 'auto' }],
       '@typescript-eslint/ban-ts-comment': 1,
       '@typescript-eslint/camelcase': 0,
       '@typescript-eslint/consistent-type-assertions': 2,
       '@typescript-eslint/explicit-function-return-type': 0,
       '@typescript-eslint/explicit-member-accessibility': 2,
+      '@typescript-eslint/no-empty-object-type': 0,
       '@typescript-eslint/interface-name-prefix': 0,
       '@typescript-eslint/no-empty-function': 1,
       '@typescript-eslint/no-empty-interface': 0,
@@ -75,7 +72,7 @@ export default tseslint.config(
               position: 'before',
             },
             {
-              pattern: '{@/**}',
+              pattern: '@/**',
               group: 'internal',
               position: 'before',
             },
@@ -147,8 +144,7 @@ export default tseslint.config(
       'jest/no-identical-title': 0,
       'i18next/no-literal-string': 0,
     },
-  },
-  configPrettier
+  }
 );
 
 function getSubDirectories(directoryPath) {
