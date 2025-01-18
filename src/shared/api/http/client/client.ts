@@ -5,7 +5,7 @@ import {
   emitError,
   logError,
   logResponse,
-  processError,
+  unwrapError,
   unwrapResponse,
 } from './interceptors/response';
 
@@ -19,7 +19,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(flow([logRequest]));
 axiosInstance.interceptors.response.use(
   flow([logResponse, unwrapResponse]),
-  flow([logError, emitError, processError])
+  flow([logError, unwrapError, emitError])
 );
 
 export default abstract class HTTPClient {

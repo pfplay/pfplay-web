@@ -20,9 +20,9 @@ export default function SkipGlobalErrorHandling<E = unknown>({
     }
 
     // @ts-expect-error - function is T
-    descriptor.value = function (...args: unknown[]) {
+    descriptor.value = async function (...args: unknown[]) {
       try {
-        return originalMethod.apply(this, args);
+        return await originalMethod.apply(this, args);
       } catch (error) {
         const shouldSkipGlobalErrorHandling = typeof when === 'function' ? when(error as E) : when;
 
