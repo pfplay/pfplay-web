@@ -5,10 +5,10 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
-import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
+import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
-import { PFPlayCircleFilled } from '@/shared/ui/icons';
+import { PFDragAndDrop, PFMoreVert, PFPlayCircleFilled } from '@/shared/ui/icons';
 
 type TrackProps = {
   track: PlaylistTrack;
@@ -31,41 +31,52 @@ const Track = ({ track, menuItems }: TrackProps) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <DisplayOptionMenuOnHoverListener menuConfig={menuItems}>
-        {(isHover) => (
-          <div className='relative w-full flexRow justify-start rounded gap-[12px]'>
-            <div className='relative w-[80px] h-[44px] bg-gray-700'>
-              <Image
-                priority
-                src={track.thumbnailImage ?? '/images/ETC/PlaylistThumbnail.png'}
-                alt={track.name}
-                width={80}
-                height={44}
-                className={cn('w-full h-full object-contain select-none', isHover && 'opacity-60')}
-              />
-              <div
-                className={cn([
-                  'absolute inset-0 bg-transparent cursor-pointer z-50 flex justify-center items-center',
-                  'opacity-from-zero',
-                  isHover && 'opacity-100',
-                ])}
-                onClick={(e) => handlePlayBtnClick(e, track.linkId)}
-              >
-                <PFPlayCircleFilled />
-              </div>
-            </div>
-            <div className='flex-1 min-w-0 select-none flexCol'>
-              <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
-                {track.name}
-              </Typography>
-              <Typography type='caption1' className='self-end text-gray-400'>
-                {track.duration}
-              </Typography>
-            </div>
+    <div
+      ref={setNodeRef}
+      className='relative grid grid-cols-[24px_1fr_32px] items-center gap-2'
+      style={style}
+      {...attributes}
+    >
+      <div className='flexRowCenter w-6 h-6' {...listeners}>
+        <PFDragAndDrop />
+      </div>
+
+      <div className='relative w-full flexRow justify-start rounded gap-[12px] overflow-hidden'>
+        <div className='relative shrink-0 w-[80px] h-[44px] bg-gray-600'>
+          <Image
+            priority
+            src={track.thumbnailImage ?? '/images/ETC/PlaylistThumbnail.png'}
+            alt={track.name}
+            width={80}
+            height={44}
+            className={cn('w-full h-full object-contain select-none')}
+          />
+          <div
+            className={cn([
+              'absolute inset-0 bg-transparent cursor-pointer z-50 flex justify-center items-center',
+              'opacity-from-zero',
+            ])}
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePlayBtnClick(e, track.linkId);
+            }}
+          >
+            <PFPlayCircleFilled />
           </div>
-        )}
-      </DisplayOptionMenuOnHoverListener>
+        </div>
+        <div className='flex-1 min-w-0 select-none flexCol overflow-hidden'>
+          <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
+            {track.name}
+          </Typography>
+          <Typography type='caption1' className='text-gray-400'>
+            {track.duration}
+          </Typography>
+        </div>
+      </div>
+
+      <div className='shrink-0'>
+        <IconMenu MenuButtonIcon={<PFMoreVert />} menuItemConfig={menuItems} />
+      </div>
     </div>
   );
 };
