@@ -1,11 +1,8 @@
-'use client';
 import Image from 'next/image';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useSuspenseFetchMe } from '@/entities/me';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { PFAdd, PFInfoOutline } from '@/shared/ui/icons';
-import useUpdateMyWallet from '../api/use-update-my-walllet.mutation';
 
 type RendererProps = {
   recommendedText: string;
@@ -25,23 +22,11 @@ export default function ConnectWallet({
   connectedRender,
 }: ConnectWalletProps) {
   const t = useI18n();
-  const { data: me } = useSuspenseFetchMe();
-  const { mutate: updateMyWallet } = useUpdateMyWallet();
 
   return (
     <ConnectButton.Custom>
       {({ account, chain, openAccountModal, openChainModal, openConnectModal }) => {
         const walletConnected = !!account && !!chain;
-
-        useEffect(() => {
-          if (!walletConnected && !!me.walletAddress) {
-            updateMyWallet({ walletAddress: '' });
-          }
-          if (walletConnected && (!me.walletAddress || me.walletAddress !== account.address)) {
-            updateMyWallet({ walletAddress: account.address });
-            // TODO: "지갑이 연동되었습니다" 라는 토스트 추가
-          }
-        }, [walletConnected]);
 
         if (chain?.unsupported) {
           return wrongNetworkRender?.({

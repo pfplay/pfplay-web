@@ -4,6 +4,7 @@ import { darkTheme, RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rai
 import { RainbowKitProviderProps } from '@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitProvider';
 import { WagmiProvider, http } from 'wagmi';
 import { polygon, optimism, arbitrum } from 'wagmi/chains';
+import { useGlobalWalletSync } from '@/entities/wallet';
 
 export const WalletProvider = ({ children }: PropsWithChildren) => {
   const [mounted, setMounted] = useState(false);
@@ -13,7 +14,7 @@ export const WalletProvider = ({ children }: PropsWithChildren) => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <RainbowKitProvider appInfo={appInfo} modalSize='compact' theme={darkTheme()}>
-        {mounted && children}
+        {mounted && <SyncWallet>{children}</SyncWallet>}
       </RainbowKitProvider>
     </WagmiProvider>
   );
@@ -47,3 +48,9 @@ const wagmiConfig = getDefaultConfig({
     [arbitrum.id]: http(),
   },
 });
+
+function SyncWallet({ children }: PropsWithChildren) {
+  useGlobalWalletSync();
+
+  return children;
+}
