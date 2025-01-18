@@ -1,18 +1,18 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import eslint from '@eslint/js';
-import pluginNext from '@next/eslint-plugin-next';
-import pluginI18next from 'eslint-plugin-i18next';
-import pluginImport from 'eslint-plugin-import';
-import pluginJest from 'eslint-plugin-jest';
-import pluginReactHooks from 'eslint-plugin-react-hooks';
-import pluginStorybook from 'eslint-plugin-storybook';
-import unusedImportsPlugin from 'eslint-plugin-unused-imports';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
-import customPlugin from './eslint-custom-plugin/index.js';
+const fs = require('node:fs');
+const path = require('node:path');
+const eslint = require('@eslint/js');
+const pluginNext = require('@next/eslint-plugin-next');
+const pluginI18next = require('eslint-plugin-i18next');
+const pluginImport = require('eslint-plugin-import');
+const pluginJest = require('eslint-plugin-jest');
+const pluginReactHooks = require('eslint-plugin-react-hooks');
+const pluginStorybook = require('eslint-plugin-storybook');
+const unusedImportsPlugin = require('eslint-plugin-unused-imports');
+const globals = require('globals');
+const tseslint = require('typescript-eslint');
+const customPlugin = require('./eslint-custom-plugin');
 
-export default tseslint.config(
+module.exports = tseslint.config(
   {
     extends: [eslint.configs.recommended, tseslint.configs.recommended],
     ignores: ['node_modules', 'build', 'dist', '*.min.js', '.next/*'],
@@ -110,7 +110,7 @@ export default tseslint.config(
       'custom/no-absolute-import-without-prefix': [
         2,
         {
-          targetPaths: getSubDirectories(path.resolve(import.meta.dirname, 'src')),
+          targetPaths: getSubDirectories(path.resolve(__dirname, 'src')),
           requiredPrefix: '@',
         },
       ],

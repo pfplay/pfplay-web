@@ -1,5 +1,5 @@
-import noDirectServiceMethodReferenceRule from './no-direct-service-method-reference/rule.js';
-import noAbsoluteImportWithoutPrefixRule from './no-absolute-import-without-prefix/rule.js';
+const noAbsoluteImportWithoutPrefixRule = require('./no-absolute-import-without-prefix/rule');
+const noDirectServiceMethodReferenceRule = require('./no-direct-service-method-reference/rule');
 
 const plugin = {
   rules: {
@@ -8,4 +8,4 @@ const plugin = {
   },
 };
 
-export default plugin;
+module.exports = plugin;
