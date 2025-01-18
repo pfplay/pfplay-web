@@ -14,14 +14,17 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { useQueryClient } from '@tanstack/react-query';
 import { usePlaylistAction } from '@/entities/playlist';
-import { QueryKeys } from '@/shared/api/http/query-keys';
 import { Playlist, PlaylistTrack } from '@/shared/api/http/types/playlists';
+import { errorLog } from '@/shared/lib/functions/log/logger';
+import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { PFDelete } from '@/shared/ui/icons';
 import Track from './track.component';
 import { useFetchPlaylistTracks } from '../api/use-fetch-playlist-tracks.query';
+
+const logger = withDebugger(0);
+const errorLogger = logger(errorLog);
 
 type TracksInPlaylistProps = {
   playlist: Playlist;
@@ -31,7 +34,6 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
   const t = useI18n();
   const { data } = useFetchPlaylistTracks(playlist.id);
   const playlistAction = usePlaylistAction();
-  const queryClient = useQueryClient();
 
   const [items, setItems] = useState<PlaylistTrack[]>([]);
 
@@ -56,7 +58,7 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
     const oldIndex = items.findIndex((item) => item.linkId === active.id);
     const newIndex = items.findIndex((item) => item.linkId === over.id);
 
-    if (oldIndex === undefined || newIndex === undefined) return;
+    if (oldIndex === -1 || newIndex === -1) return;
 
     const activeTrack = items.find((track) => track.linkId === active.id);
     if (!activeTrack) return;
@@ -70,13 +72,10 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
         nextOrderNumber: newIndex + 1, // orderNumber는 1부터 시작하므로 +1
       });
     } catch (error) {
-      console.error('Failed to update track order:', error);
+      errorLogger('Failed to update track order:', error);
       if (data?.content) {
         setItems(data.content);
       }
-      queryClient.invalidateQueries({
-        queryKey: [QueryKeys.PlaylistTracks, playlist.id],
-      });
     }
   };
 
