@@ -3,11 +3,11 @@ import axios from 'axios';
 import { SetOptional } from 'type-fest';
 import { AvatarFace } from '@/shared/api/http/types/users';
 
-export type Model = OwnedNft;
+export type RawModel = OwnedNft;
 
-export type RefinedModel = SetOptional<AvatarFace, 'id' | 'name'>;
+export type Model = SetOptional<AvatarFace, 'id' | 'name'>;
 
-export async function refineList(models: Model[]): Promise<RefinedModel[]> {
+export async function refineList(models: RawModel[]): Promise<Model[]> {
   const refined: OwnedNft[] = [];
 
   const checkedList = await Promise.allSettled(imageHealthCheckMap(models));
@@ -26,7 +26,7 @@ export async function refineList(models: Model[]): Promise<RefinedModel[]> {
   }));
 }
 
-function imageHealthCheckMap(list: Model[]) {
+function imageHealthCheckMap(list: RawModel[]) {
   return list.map(async (nft) => {
     if (!nft.image?.thumbnailUrl) return null;
 
