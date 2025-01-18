@@ -23,7 +23,7 @@ axiosInstance.interceptors.response.use(
 );
 
 export default class HTTPClient {
-  protected axiosInstance = axiosInstance;
+  protected readonly axiosInstance = axiosInstance;
 
   protected get<T>(...args: Parameters<AxiosInstance['get']>) {
     return this.axiosInstance.get<T, T>(...args);

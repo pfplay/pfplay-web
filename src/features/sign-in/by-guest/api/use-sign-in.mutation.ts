@@ -5,6 +5,6 @@ import { APIError } from '@/shared/api/http/types/@shared';
 
 export default function useSignIn() {
   return useMutation<void, AxiosError<APIError>, void>({
-    mutationFn: UsersService.signInGuest,
+    mutationFn: (request) => UsersService.signInGuest(request),
   });
 }

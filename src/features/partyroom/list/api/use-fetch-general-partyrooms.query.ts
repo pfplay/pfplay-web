@@ -10,7 +10,7 @@ import { FIVE_MINUTES } from '@/shared/config/time';
 export const useFetchGeneralPartyrooms = () => {
   return useQuery<PartyroomSummary[], AxiosError<APIError>, PartyroomSummary[]>({
     queryKey: [QueryKeys.PartyroomList],
-    queryFn: PartyroomsService.getList,
+    queryFn: () => PartyroomsService.getList(),
     select: (data) => data.filter((partyroom) => partyroom.stageType === StageType.GENERAL),
     staleTime: 0,
     gcTime: FIVE_MINUTES,

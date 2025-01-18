@@ -9,7 +9,7 @@ export const useSkipPlayback = () => {
   const queryClient = useQueryClient();
 
   return useMutation<void, AxiosError<APIError>, SkipPlaybackPayload>({
-    mutationFn: DjsService.skipPlayback,
+    mutationFn: (request) => DjsService.skipPlayback(request),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.DjingQueue, variables.partyroomId],

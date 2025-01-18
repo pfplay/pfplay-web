@@ -9,7 +9,7 @@ export function useExitPartyroom() {
   const queryClient = useQueryClient();
 
   return useMutation<void, AxiosError<APIError>, ExitPayload>({
-    mutationFn: PartyroomsService.exit,
+    mutationFn: (request) => PartyroomsService.exit(request),
     onSuccess: () => {
       /**
        * TODO: 파티 룸 관련 캐시 모두 제거 (crews, djingQueue, etc...)

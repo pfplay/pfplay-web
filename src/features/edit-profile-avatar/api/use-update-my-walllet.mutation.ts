@@ -9,7 +9,7 @@ export function useUpdateMyWallet() {
   const queryClient = useQueryClient();
 
   return useMutation<void, AxiosError<APIError>, UpdateMyWalletRequest>({
-    mutationFn: UsersService.updateMyWallet,
+    mutationFn: (request) => UsersService.updateMyWallet(request),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Me],

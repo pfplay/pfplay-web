@@ -6,7 +6,7 @@ export default function useSignOut() {
   const markExitedOnBackend = useStores().useCurrentPartyroom((state) => state.markExitedOnBackend);
 
   return useMutation({
-    mutationFn: UsersService.signOut,
+    mutationFn: (request) => UsersService.signOut(request),
     onSettled: () => {
       markExitedOnBackend();
       location.href = '/';

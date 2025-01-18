@@ -9,7 +9,7 @@ export function useAdjustGrade() {
   const queryClient = useQueryClient();
 
   return useMutation<void, AxiosError<APIError>, AdjustGradePayload>({
-    mutationFn: PartyroomsService.adjustGrade,
+    mutationFn: (request) => PartyroomsService.adjustGrade(request),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Crews],

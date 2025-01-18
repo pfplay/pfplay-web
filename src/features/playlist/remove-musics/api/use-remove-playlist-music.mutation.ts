@@ -16,7 +16,7 @@ export const useRemovePlaylistMusics = () => {
     AxiosError<APIError>,
     RemovePlaylistMusicRequestBody
   >({
-    mutationFn: PlaylistsService.removeMusicsFromPlaylist,
+    mutationFn: (request) => PlaylistsService.removeMusicsFromPlaylist(request),
     onSuccess: (data) => {
       data.listIds.forEach((listId) => {
         queryClient.invalidateQueries({

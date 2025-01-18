@@ -9,7 +9,7 @@ export const useUnregisterMeFromQueue = () => {
   const queryClient = useQueryClient();
 
   return useMutation<void, AxiosError<APIError>, UnregisterMeFromQueuePayload>({
-    mutationFn: DjsService.unregisterMeFromQueue,
+    mutationFn: (request) => DjsService.unregisterMeFromQueue(request),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.DjingQueue, variables.partyroomId],

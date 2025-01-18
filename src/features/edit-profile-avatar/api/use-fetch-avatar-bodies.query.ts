@@ -9,7 +9,7 @@ import { FIVE_MINUTES, ONE_MINUTE } from '@/shared/config/time';
 export function useFetchAvatarBodies() {
   return useQuery<AvatarBody[], AxiosError<APIError>>({
     queryKey: [QueryKeys.AvatarBodies],
-    queryFn: UsersService.getMyAvatarBodies,
+    queryFn: () => UsersService.getMyAvatarBodies(),
     staleTime: ONE_MINUTE,
     gcTime: FIVE_MINUTES,
   });

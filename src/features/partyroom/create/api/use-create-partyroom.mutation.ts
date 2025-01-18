@@ -9,6 +9,6 @@ import {
 
 export default function useCreatePartyroom() {
   return useMutation<CreatePartyroomResponse, AxiosError<APIError>, CreatePartyroomPayload>({
-    mutationFn: PartyroomsService.create,
+    mutationFn: (request) => PartyroomsService.create(request),
   });
 }

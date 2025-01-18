@@ -12,7 +12,7 @@ export const useCreatePlaylist = () => {
   const queryClient = useQueryClient();
 
   return useMutation<CreatePlaylistResponse, AxiosError<APIError>, CreatePlaylistRequestBody>({
-    mutationFn: PlaylistsService.createPlaylist,
+    mutationFn: (request) => PlaylistsService.createPlaylist(request),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Playlist],

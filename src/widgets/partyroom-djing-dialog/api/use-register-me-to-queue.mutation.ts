@@ -9,7 +9,7 @@ export const useRegisterMeToQueue = () => {
   const queryClient = useQueryClient();
 
   return useMutation<void, AxiosError<APIError>, RegisterMeToQueuePayload>({
-    mutationFn: DjsService.registerMeToQueue,
+    mutationFn: (request) => DjsService.registerMeToQueue(request),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.DjingQueue, variables.partyroomId],

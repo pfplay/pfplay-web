@@ -9,7 +9,7 @@ export const useUpdateMyBio = () => {
   const queryClient = useQueryClient();
 
   return useMutation<void, AxiosError<APIError>, UpdateMyBioRequest>({
-    mutationFn: UsersService.updateMyBio,
+    mutationFn: (request) => UsersService.updateMyBio(request),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Me],

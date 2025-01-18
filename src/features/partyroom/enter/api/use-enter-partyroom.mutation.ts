@@ -6,6 +6,6 @@ import { EnterPayload, EnterResponse } from '@/shared/api/http/types/partyrooms'
 
 export function useEnterPartyroom() {
   return useMutation<EnterResponse, AxiosError<APIError>, EnterPayload>({
-    mutationFn: PartyroomsService.enter,
+    mutationFn: (request) => PartyroomsService.enter(request),
   });
 }
