@@ -32,7 +32,14 @@
       "view_guide": "See guide",
       "kor": "한국어",
       "eng": "English",
-      "enter_again": "Try again"
+      "enter_again": "Try again",
+      "chat_mute": "Chat Mute",
+      "kick": "Kick",
+      "ban": "Ban"
+    },
+    "para": {
+      "reason": "Reason:",
+      "to": "To."
     },
     "ec": {
       "char_limit_12": "Limit of 12 characters / No spaces and special characters",
@@ -69,6 +76,22 @@
       "clubber": "Clubber",
       "listener": "Listener",
       "withdrawal": "Delete account"
+    }
+  },
+  "chat": {
+    "para": {
+      "delete_confirm": "Are you sure you want to delete this message?/nOnce deleted, it can't be restored.",
+      "cannot_delete_high_rank": "You can't delete messages from higher-ranked users.",
+      "chat_mute": "Chat will be disabled for 30 seconds.",
+      "kick_with_rejoin": "You will be removed immediately, but re-entry is allowed.",
+      "kick_no_rejoin": "You will be removed immediately, and re-entry is not allowed.",
+      "reason_too_short": "Please enter a reason with at least 2 characters.",
+      "reason_shared": "The reason you provided will be shared with the user.",
+      "muted_by_admin": "Chat has been disabled for 30 seconds by an admin.",
+      "removed_by_admin": "You have been removed by an admin.",
+      "permanent_ban": "You have been permanently removed by an admin and can’t rejoin.",
+      "start_chat": "What shall we talk about?",
+      "remove_chat": "$2''s chat was removed by '$1'."
     }
   },
   "onboard": {
@@ -156,13 +179,12 @@
       "more_than_3m": "Available for more than 3 minutes",
       "stop_editing": "The content written so far is not saved.\nWould you like to stop editing?",
       "copy_completed": "Copied!",
-      "close_party": "Are you sure you want to close the current party room?\nAll data will not be saved.",
-      "enter_confirm": "Enter 'Confirmed'",
+      "close_party": "Are you sure you want to close the current party room?\nAll data will not be saved.\nPlease enter '$1' for close.",
+      "match_for_close_party": "Confirmed",
       "no_longer_see_chat": "You will no longer see the user's chat in this room (applies to me only)",
       "party_rooms": "Party Rooms",
       "leave_party_confirm": "Your changes won't be saved.\nAre you sure you want to leave the party room?",
       "close": "Close",
-      "enter_confirm_phrase": "Please type 'Confirmed'",
       "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
     },
     "btn": {
@@ -197,6 +219,7 @@
       "skipped_song_by_admin": "According to the admin policy, songs longer than $1 minutes will be automatically skipped",
       "dj_in_order": "DJing one person at a time from the waiting list, in order",
       "played_sequentially": "Songs from the top of the playlist are played sequentially, one song per person",
+      "display_count": "Once the song ends, we'll display a count of the Like, Grab, and Boo received during your DJ set.",
       "empty_dj": "zZz...No Djing in currently in progress..."
     }
   },
@@ -257,11 +280,6 @@
     "ec": {
       "shut_down": "The party room no longer exists.",
       "data_load": "Failed to load data.\nWould you like to try entering again?"
-    }
-  },
-  "chat": {
-    "para": {
-      "start_chat": "What shall we talk about?"
     }
   }
 }
