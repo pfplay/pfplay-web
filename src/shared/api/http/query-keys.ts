@@ -5,7 +5,7 @@ export enum QueryKeys {
   Nfts = 'nfts',
   PartyroomList = 'partyroom/list',
   Playlist = 'playlist',
-  PlaylistMusics = 'playlist/musics',
+  PlaylistTracks = 'playlist/tracks',
   Musics = 'musics',
   DjingQueue = 'partyroom/djing-queue',
   Crews = 'partyroom/crews',

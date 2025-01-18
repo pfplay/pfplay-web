@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import { playlistsService } from '@/shared/api/http/services';
-import { AddPlaylistMusicRequestBody } from '@/shared/api/http/types/playlists';
+import { AddTrackToPlaylistRequestBody } from '@/shared/api/http/types/playlists';
 
-export const useAddPlaylistMusic = () => {
+export const useAddPlaylistTrack = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ listId, ...params }: AddPlaylistMusicRequestBody & { listId: number }) => {
-      return playlistsService.addMusicToPlaylist(listId, params);
+    mutationFn: ({ listId, ...params }: AddTrackToPlaylistRequestBody & { listId: number }) => {
+      return playlistsService.addTrackToPlaylist(listId, params);
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: [QueryKeys.PlaylistMusics, variables.listId],
+        queryKey: [QueryKeys.PlaylistTracks, variables.listId],
       });
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Playlist], // for refetch count

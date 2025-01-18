@@ -2,12 +2,12 @@ import { ReactNode, useCallback } from 'react';
 import { PlaylistActionContext } from '@/entities/playlist';
 import { PlaylistActionOptions } from '@/entities/playlist/lib/playlist-action.context';
 import { useAddPlaylistDialog } from '@/features/playlist/add';
-import { useAddPlaylistMusic } from '@/features/playlist/add-musics';
+import { useAddPlaylistTrack } from '@/features/playlist/add-tracks';
 import { useEditPlaylistDialog } from '@/features/playlist/edit';
 import { useFetchPlaylists } from '@/features/playlist/list';
 import { useRemovePlaylist } from '@/features/playlist/remove';
-import { useRemovePlaylistMusics } from '@/features/playlist/remove-musics';
-import { AddPlaylistMusicRequestBody, Playlist } from '@/shared/api/http/types/playlists';
+import { useRemovePlaylistTrack } from '@/features/playlist/remove-track';
+import { AddTrackToPlaylistRequestBody, Playlist } from '@/shared/api/http/types/playlists';
 
 export default function PlaylistActionProvider({ children }: { children: ReactNode }) {
   const { data: list = [] } = useFetchPlaylists();
@@ -15,8 +15,8 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
   const edit = useEditPlaylistDialog(list);
   const { mutate: _remove } = useRemovePlaylist();
 
-  const { mutate: _addMusic } = useAddPlaylistMusic();
-  const { mutate: _removeMusics } = useRemovePlaylistMusics();
+  const { mutate: _addTrack } = useAddPlaylistTrack();
+  const { mutate: _removeTrack } = useRemovePlaylistTrack();
 
   const remove = useCallback(
     (targetIds: Playlist['id'][], options?: PlaylistActionOptions) => {
@@ -27,24 +27,24 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
     [_remove]
   );
 
-  const addMusic = useCallback(
-    (targetId: Playlist['id'], music: AddPlaylistMusicRequestBody) => {
-      _addMusic({
+  const addTrack = useCallback(
+    (targetId: Playlist['id'], track: AddTrackToPlaylistRequestBody) => {
+      _addTrack({
         listId: targetId,
-        ...music,
+        ...track,
       });
     },
-    [_addMusic]
+    [_addTrack]
   );
 
-  const removeMusics = useCallback(
-    (targetId: Playlist['id'], musicIds: number[]) => {
-      _removeMusics({
+  const removeTrack = useCallback(
+    (targetId: Playlist['id'], trackId: number) => {
+      _removeTrack({
         playlistId: targetId,
-        listIds: musicIds,
+        trackId,
       });
     },
-    [_removeMusics]
+    [_removeTrack]
   );
 
   return (
@@ -55,8 +55,8 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
         edit,
         remove,
 
-        addMusic,
-        removeMusics,
+        addTrack,
+        removeTrack,
       }}
     >
       {children}

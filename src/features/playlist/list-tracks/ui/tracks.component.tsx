@@ -2,27 +2,27 @@ import { usePlaylistAction } from '@/entities/playlist';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { PFDelete } from '@/shared/ui/icons';
-import Music from './music.component';
-import { useFetchPlaylistMusics } from '../api/use-fetch-playlist-musics.query';
+import Track from './track.component';
+import { useFetchPlaylistTracks } from '../api/use-fetch-playlist-tracks.query';
 
-type MusicsInPlaylistProps = {
+type TracksInPlaylistProps = {
   playlist: Playlist;
 };
 
-const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
+const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
   const t = useI18n();
-  const { data } = useFetchPlaylistMusics(playlist.id);
+  const { data } = useFetchPlaylistTracks(playlist.id);
   const playlistAction = usePlaylistAction();
 
   return (
     <div className='flex flex-col gap-3'>
-      {data?.content.map((music) => (
-        <Music
-          key={music.musicId}
-          music={music}
+      {data?.content.map((track) => (
+        <Track
+          key={track.linkId}
+          track={track}
           menuItems={[
             {
-              onClickItem: () => playlistAction.removeMusics(playlist.id, [music.musicId]),
+              onClickItem: () => playlistAction.removeTrack(playlist.id, track.linkId),
               label: t.playlist.btn.delete_playlist,
               Icon: <PFDelete />,
             },
@@ -39,4 +39,4 @@ const MusicsInPlaylist = ({ playlist }: MusicsInPlaylistProps) => {
   );
 };
 
-export default MusicsInPlaylist;
+export default TracksInPlaylist;

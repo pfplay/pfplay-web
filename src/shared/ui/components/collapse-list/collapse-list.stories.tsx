@@ -1,5 +1,5 @@
 import type { Meta } from '@storybook/react';
-import PlaylistItem from '@/features/playlist/list-musics/ui/music.component';
+import PlaylistItem from '@/features/playlist/list-tracks/ui/track.component';
 import { fixtureCollapseList } from '@/shared/api/http/__fixture__/collapse-list.fixture';
 import { fixtureMenuItems } from '@/shared/api/http/__fixture__/menu-items.fixture';
 import { UserListItem, UserListItemSuffix } from '@/shared/ui/components/user-list-item';
@@ -20,8 +20,8 @@ export default meta;
 export const CollapseListDefault = () => {
   return (
     <CollapseList title={'Do you offer technical support?'} classNames={{ panel: 'text-gray-200' }}>
-      {fixtureCollapseList.musics.map((music) => (
-        <PlaylistItem key={music.musicId} music={music} menuItems={fixtureMenuItems} />
+      {fixtureCollapseList.tracks.map((track) => (
+        <PlaylistItem key={track.linkId} track={track} menuItems={fixtureMenuItems} />
       ))}
     </CollapseList>
   );
@@ -34,8 +34,8 @@ export const CollapseListAccent = () => {
       title={'Do you offer technical support?'}
       classNames={{ panel: 'text-gray-200' }}
     >
-      {fixtureCollapseList.musics.map((music) => (
-        <PlaylistItem key={music.musicId} music={music} menuItems={fixtureMenuItems} />
+      {fixtureCollapseList.tracks.map((track) => (
+        <PlaylistItem key={track.linkId} track={track} menuItems={fixtureMenuItems} />
       ))}
     </CollapseList>
   );
@@ -48,8 +48,8 @@ export const CollapseListOutlined = () => {
       title={'Do you offer technical support?'}
       classNames={{ panel: 'text-gray-200' }}
     >
-      {fixtureCollapseList.musics.map((music) => (
-        <PlaylistItem key={music.musicId} music={music} menuItems={fixtureMenuItems} />
+      {fixtureCollapseList.tracks.map((track) => (
+        <PlaylistItem key={track.linkId} track={track} menuItems={fixtureMenuItems} />
       ))}
     </CollapseList>
   );
@@ -63,8 +63,8 @@ export const CollapseListForPlaylist = () => {
       infoText='24곡'
       classNames={{ panel: 'text-gray-200' }}
     >
-      {fixtureCollapseList.musics.map((music) => (
-        <PlaylistItem key={music.musicId} music={music} menuItems={fixtureMenuItems} />
+      {fixtureCollapseList.tracks.map((track) => (
+        <PlaylistItem key={track.linkId} track={track} menuItems={fixtureMenuItems} />
       ))}
     </CollapseList>
   );

@@ -1,12 +1,12 @@
+import { fixturePlaylistTracks } from '@/shared/api/http/__fixture__/playlist-tracks.fixture';
 import type { UserListItemType } from '@/shared/ui/components/user-list-item';
-import { fixturePlaylistMusics } from './playlist-musics.fixture';
-import { PlaylistMusic } from '../types/playlists';
+import { PlaylistTrack } from '../types/playlists';
 
 export const fixtureCollapseList: {
-  musics: PlaylistMusic[];
+  tracks: PlaylistTrack[];
   userListPanel: UserListItemType[];
 } = {
-  musics: fixturePlaylistMusics,
+  tracks: fixturePlaylistTracks,
   userListPanel: [
     {
       crewId: 1,

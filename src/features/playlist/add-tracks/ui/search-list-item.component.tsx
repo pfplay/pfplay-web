@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import { ReactNode } from 'react';
-import { MusicListItem } from '@/shared/api/http/types/playlists';
+import { Music } from '@/shared/api/http/types/playlists';
 import { safeDecodeURI } from '@/shared/lib/functions/safe-decode-uri';
 import { Typography } from '@/shared/ui/components/typography';
 
 type SearchListItemProps = {
-  music: Pick<MusicListItem, 'videoTitle' | 'runningTime' | 'thumbnailUrl'>;
+  music: Pick<Music, 'videoTitle' | 'runningTime' | 'thumbnailUrl'>;
   Suffix: ReactNode;
 };
 

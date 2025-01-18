@@ -13,15 +13,18 @@ export interface GetPlaylistsResponse {
   playlists: Playlist[];
 }
 
-export interface GetPlaylistMusicsParameters {
+export interface GetTracksOfPlaylistParameters {
   pageNumber: number;
   pageSize: number;
 }
 
-export interface PlaylistMusic {
-  musicId: number;
-  orderNumber: number;
+/**
+ * 사용자가 지정한 Music 객체가 특정한 플레이리스트에 종속되는 순간 Track 객체가 됩니다.
+ */
+export interface PlaylistTrack {
+  linkId: number;
   name: string;
+  orderNumber: number;
   duration: string;
   thumbnailImage: string;
 }
@@ -32,10 +35,16 @@ export interface SearchMusicsRequest {
 }
 
 export interface SearchMusicsResponse {
-  musicList: MusicListItem[];
+  musicList: Music[];
 }
 
-export interface MusicListItem {
+/**
+ * - Youtube 뮤직
+ * - Spotify 뮤직
+ * - Melon 뮤직
+ * 모두 가능한 추상 객체입니다. Playlist에 종속되면 "Track"이 됩니다.
+ */
+export interface Music {
   videoId: string;
   videoTitle: string;
   thumbnailUrl: string;
@@ -53,8 +62,8 @@ export interface CreatePlaylistResponse {
   type: PlaylistType;
 }
 
-export interface AddPlaylistMusicRequestBody {
-  linkId: string;
+export interface AddTrackToPlaylistRequestBody {
+  linkId: string; // = videoId
   name: string;
   duration: string;
   thumbnailImage: string;
@@ -67,7 +76,7 @@ export interface RemovePlaylistResponse {
   listIds: number[];
 }
 
-export interface UpdatePlaylistRequestBody {
+export interface UpdatePlaylistRequestParams {
   name: string;
 }
 
@@ -76,32 +85,32 @@ export interface UpdatePlaylistResponse {
   name: string;
 }
 
-export interface RemovePlaylistMusicRequestBody {
+export interface RemoveTrackFromPlaylistRequestParams {
   playlistId: number;
-  listIds: number[];
+  trackId: number;
 }
-export interface RemovePlaylistMusicResponse {
+export interface RemoveTrackFromPlaylistResponse {
   listIds: number[];
 }
 
 export interface PlaylistsClient {
-  getPlaylists: () => Promise<GetPlaylistsResponse>;
-  getMusicsFromPlaylist: (
-    playlistId: Playlist['id'],
-    params?: GetPlaylistMusicsParameters
-  ) => Promise<PaginationResponse<PlaylistMusic>>;
   searchMusics: (params: SearchMusicsRequest) => Promise<SearchMusicsResponse>;
+  getPlaylists: () => Promise<GetPlaylistsResponse>;
   createPlaylist: (params: CreatePlaylistRequestBody) => Promise<CreatePlaylistResponse>;
   updatePlaylist: (
     playlistId: Playlist['id'],
-    params: UpdatePlaylistRequestBody
+    params: UpdatePlaylistRequestParams
   ) => Promise<UpdatePlaylistResponse>;
-  addMusicToPlaylist: (
-    playlistId: Playlist['id'],
-    params: AddPlaylistMusicRequestBody
-  ) => Promise<void>;
   removePlaylist: (params: RemovePlaylistRequestBody) => Promise<RemovePlaylistResponse>;
-  removeMusicsFromPlaylist: (
-    params: RemovePlaylistMusicRequestBody
-  ) => Promise<RemovePlaylistMusicResponse>;
+  getTracksOfPlaylist: (
+    playlistId: Playlist['id'],
+    params?: GetTracksOfPlaylistParameters
+  ) => Promise<PaginationResponse<PlaylistTrack>>;
+  addTrackToPlaylist: (
+    playlistId: Playlist['id'],
+    params: AddTrackToPlaylistRequestBody
+  ) => Promise<void>;
+  removeTrackFromPlaylist: (
+    params: RemoveTrackFromPlaylistRequestParams
+  ) => Promise<RemoveTrackFromPlaylistResponse>;
 }

@@ -1,19 +1,19 @@
 'use client';
 import Image from 'next/image';
 import { MouseEvent } from 'react';
-import { PlaylistMusic } from '@/shared/api/http/types/playlists';
+import { PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
 import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFPlayCircleFilled } from '@/shared/ui/icons';
 
-type MusicProps = {
-  music: PlaylistMusic;
+type TrackProps = {
+  track: PlaylistTrack;
   menuItems: MenuItem[];
 };
 
-const Music = ({ music, menuItems }: MusicProps) => {
+const Track = ({ track, menuItems }: TrackProps) => {
   const handlePlayBtnClick = (e: MouseEvent<HTMLDivElement>, _id: number) => {
     e.stopPropagation();
     // id는 향후 비디오 재생 api 연결에 사용될 예정입니다.
@@ -26,8 +26,8 @@ const Music = ({ music, menuItems }: MusicProps) => {
           <div className='relative w-[80px] h-[44px] bg-gray-700'>
             <Image
               priority
-              src={music.thumbnailImage ?? '/images/ETC/PlaylistThumbnail.png'}
-              alt={music.name}
+              src={track.thumbnailImage ?? '/images/ETC/PlaylistThumbnail.png'}
+              alt={track.name}
               width={80}
               height={44}
               className={cn('w-full h-full object-contain select-none', isHover && 'opacity-60')}
@@ -38,17 +38,17 @@ const Music = ({ music, menuItems }: MusicProps) => {
                 'opacity-from-zero',
                 isHover && 'opacity-100',
               ])}
-              onClick={(e) => handlePlayBtnClick(e, music.musicId)}
+              onClick={(e) => handlePlayBtnClick(e, track.linkId)}
             >
               <PFPlayCircleFilled />
             </div>
           </div>
           <div className='flex-1 min-w-0 select-none flexCol'>
             <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
-              {music.name}
+              {track.name}
             </Typography>
             <Typography type='caption1' className='self-end text-gray-400'>
-              {music.duration}
+              {track.duration}
             </Typography>
           </div>
         </div>
@@ -57,4 +57,4 @@ const Music = ({ music, menuItems }: MusicProps) => {
   );
 };
 
-export default Music;
+export default Track;

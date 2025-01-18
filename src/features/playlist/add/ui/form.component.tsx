@@ -67,10 +67,10 @@ const Form = (props: FormProps) => {
       { name },
       {
         onError: (err) => {
-          if (err.response?.data.errorCode === ErrorCode.REQUIRED_WALLET_CONNECT) {
+          if (err.response?.data.errorCode === ErrorCode.NO_WALLET) {
             openNeedConnectWalletDialog();
           }
-          if (err.response?.data.errorCode === ErrorCode.PLAYLIST_MAXIMUM_COUNT_EXCEED) {
+          if (err.response?.data.errorCode === ErrorCode.EXCEEDED_PLAYLIST_LIMIT) {
             openLimitDialog();
           }
         },

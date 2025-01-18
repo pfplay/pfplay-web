@@ -4,23 +4,23 @@ import { QueryKeys } from '@/shared/api/http/query-keys';
 import { playlistsService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
 import {
-  RemovePlaylistMusicRequestBody,
-  RemovePlaylistMusicResponse,
+  RemoveTrackFromPlaylistRequestParams,
+  RemoveTrackFromPlaylistResponse,
 } from '@/shared/api/http/types/playlists';
 
-export const useRemovePlaylistMusics = () => {
+export const useRemovePlaylistTrack = () => {
   const queryClient = useQueryClient();
 
   return useMutation<
-    RemovePlaylistMusicResponse,
+    RemoveTrackFromPlaylistResponse,
     AxiosError<APIError>,
-    RemovePlaylistMusicRequestBody
+    RemoveTrackFromPlaylistRequestParams
   >({
-    mutationFn: (request) => playlistsService.removeMusicsFromPlaylist(request),
+    mutationFn: (request) => playlistsService.removeTrackFromPlaylist(request),
     onSuccess: (data) => {
       data.listIds.forEach((listId) => {
         queryClient.invalidateQueries({
-          queryKey: [QueryKeys.PlaylistMusics, listId],
+          queryKey: [QueryKeys.PlaylistTracks, listId],
         });
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.Playlist], // for refetch count
