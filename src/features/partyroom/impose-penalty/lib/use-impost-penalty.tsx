@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Crew } from '@/entities/current-partyroom';
 import { GradeType, PenaltyType } from '@/shared/api/http/types/@enums';
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -8,14 +7,14 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Input } from '@/shared/ui/components/input';
 import { Typography } from '@/shared/ui/components/typography';
+import useCanImposePenalty from '../api/use-can-impose-penalty.hook';
 import useImposePenaltyMutation from '../api/use-impose-penalty.mutation';
 
 export default function useImposePenalty() {
   const t = useI18n();
   const { openDialog } = useDialog();
   const partyroomId = useStores().useCurrentPartyroom((state) => state.id);
-  const me = useStores().useCurrentPartyroom((state) => state.me);
-  const myPermission = me && Crew.Permission.of(me.gradeType);
+  const canImposePenalty = useCanImposePenalty();
 
   return ({
     crewId,
@@ -26,10 +25,7 @@ export default function useImposePenalty() {
     penaltyType: PenaltyType;
     crewGradeType: GradeType;
   }) => {
-    if (!partyroomId) return;
-
-    const canImposePenalty = myPermission?.canImposePenalty(crewGradeType);
-    if (!canImposePenalty) return;
+    if (!partyroomId || !canImposePenalty(crewGradeType)) return;
 
     return openDialog((onOk, onClose) => ({
       title: ({ defaultTypographyType, defaultClassName }) => (

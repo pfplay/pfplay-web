@@ -1,18 +1,21 @@
+import { useCurrentPartyroomCrews } from '@/features/partyroom/list-crews';
 import { cn } from '@/shared/lib/functions/cn';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
 import UserGradePanel from './parts/user-grade-panel.component';
 
 const PartyroomParticipantPanel = () => {
+  const crews = useCurrentPartyroomCrews();
+
   return (
     <TabGroup defaultIndex={0}>
       <TabList className={cn('w-1/2 flexRow gap-6 justify-start my-6')}>
         <Tab
-          tabTitle={`전체 00`} // TODO: 기획 쪽에 i18n 추가 요청
+          tabTitle={`All ${crews.length.toString().padStart(2, '0')}`} // TODO: i18n
           variant='text'
           className='w-fit p-0'
         />
         <Tab
-          tabTitle={'재재 목록'} // TODO: 기획 쪽에 i18n 추가 요청
+          tabTitle='Ban List' // TODO: i18n
           variant='text'
           className='w-fit p-0'
         />

@@ -1,54 +1,79 @@
-import { useMemo } from 'react';
-import { useFetchParticipants } from '@/features/partyroom/list-participants';
-import { fixtureMenuItems } from '@/shared/api/http/__fixture__/menu-items.fixture';
+import { useAdjustGrade, useCanAdjustGrade } from '@/features/partyroom/adjust-grade';
+import { useCanImposePenalty, useImposePenalty } from '@/features/partyroom/impose-penalty';
+import { Crews, useCurrentPartyroomCrews } from '@/features/partyroom/list-crews';
+import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { CollapseList } from '@/shared/ui/components/collapse-list';
 import { UserListItem, UserListItemSuffix } from '@/shared/ui/components/user-list-item';
-import { categorizeParticipantsByGrade } from '../../model/user-grade-panel.model';
 
 const UserGradePanel = () => {
   const t = useI18n();
-  const participants = useFetchParticipants();
-  const { useCurrentPartyroom } = useStores();
-  const { me, currentDj } = useCurrentPartyroom();
-
-  const categorizedParticipants = useMemo(() => {
-    return categorizeParticipantsByGrade({
-      participants,
-    });
-  }, [participants]);
+  const crews = useCurrentPartyroomCrews();
+  const adjustGrade = useAdjustGrade();
+  const canAdjustGrade = useCanAdjustGrade();
+  const canImposePenalty = useCanImposePenalty();
+  const imposePenalty = useImposePenalty();
+  const [me, currentDj] = useStores().useCurrentPartyroom((state) => [state.me, state.currentDj]);
 
   return (
     <div className='flex flex-col gap-6'>
-      {Object.entries(categorizedParticipants).map(([category, participants]) => {
-        return (
-          <CollapseList key={category} title={category} displaySuffix={false}>
-            {participants.map((participant) => {
-              const Suffix = (() => {
-                if (currentDj?.crewId === participant.crewId) {
-                  // FIXME: Component value에 i18n 적용, value djing에 맞게 수정
-                  return <UserListItemSuffix type='tag' value={t.common.btn.play} />;
-                }
-                if (me?.crewId === participant.crewId) {
-                  // FIXME: Component value에 i18n 적용, value me 맞게 수정
-                  return <UserListItemSuffix type='tag' value={t.common.btn.play} />;
-                }
-              })();
+      {Object.entries(Crews.categorizeByGradeType(crews)).map(([category, crews]) => (
+        <CollapseList key={'UserGradePanel' + category} title={category} displaySuffix={false}>
+          {crews.map((crew) => {
+            const _canImposePenalty = canImposePenalty(crew.gradeType);
+            const onClickImposePenalty = (penaltyType: PenaltyType) => {
+              imposePenalty({
+                crewId: crew.crewId,
+                crewGradeType: crew.gradeType,
+                nickname: crew.nickname,
+                penaltyType,
+              });
+            };
 
-              return (
-                <UserListItem
-                  key={participant.crewId}
-                  userListItemConfig={participant}
-                  menuItemList={fixtureMenuItems}
-                  menuItemPanelSize='sm'
-                  suffix={Suffix && { type: 'tag', Component: Suffix }}
-                />
-              );
-            })}
-          </CollapseList>
-        );
-      })}
+            const suffix = (() => {
+              if (currentDj?.crewId === crew.crewId) {
+                return <UserListItemSuffix type='tag' value='DJing' />;
+              }
+              if (me?.crewId === crew.crewId) {
+                return <UserListItemSuffix type='tag' value='Me' />;
+              }
+            })();
+
+            return (
+              <UserListItem
+                key={crew.crewId}
+                userListItemConfig={crew}
+                menuItemList={[
+                  {
+                    label: t.common.btn.authority,
+                    onClickItem: () => adjustGrade(crew),
+                    visible: canAdjustGrade(crew.gradeType),
+                  },
+                  {
+                    label: 'GGUL', // TODO: i18n 적용
+                    onClickItem: () => onClickImposePenalty(PenaltyType.CHAT_BAN_30_SECONDS),
+                    visible: _canImposePenalty,
+                  },
+                  {
+                    label: 'Kick', // TODO: i18n 적용
+                    onClickItem: () => onClickImposePenalty(PenaltyType.ONE_TIME_EXPULSION),
+                    visible: _canImposePenalty,
+                  },
+                  {
+                    label: 'Ban', // TODO: i18n 적용
+                    onClickItem: () => onClickImposePenalty(PenaltyType.PERMANENT_EXPULSION),
+                    visible: _canImposePenalty,
+                  },
+                ]}
+                menuItemPanelSize='sm'
+                suffix={suffix && { type: 'tag', Component: suffix }}
+                menuDisabled={me?.crewId === crew.crewId}
+              />
+            );
+          })}
+        </CollapseList>
+      ))}
     </div>
   );
 };

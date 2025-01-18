@@ -1,9 +1,14 @@
 'use client';
 import { useCallback, useRef, useState } from 'react';
-import { Crew, useCurrentPartyroomChat } from '@/entities/current-partyroom';
+import { useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
-import { useAdjustGrade } from '@/features/partyroom/adjust-grade';
-import { useDeleteChatMessage, useImposePenalty } from '@/features/partyroom/impose-penalty';
+import { useAdjustGrade, useCanAdjustGrade } from '@/features/partyroom/adjust-grade';
+import {
+  useRemoveChatMessage,
+  useImposePenalty,
+  useCanRemoveChatMessage,
+  useCanImposePenalty,
+} from '@/features/partyroom/impose-penalty';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
 import { SendChatMessage } from '@/features/partyroom/send-chat-message';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
@@ -21,12 +26,14 @@ import ChatItem from './chat-item.component';
 export default function PartyroomChatPanel() {
   const t = useI18n();
   const adjustGrade = useAdjustGrade();
-  const openDeleteChatMessage = useDeleteChatMessage();
-  const openImposePenalty = useImposePenalty();
+  const canAdjustGrade = useCanAdjustGrade();
+  const canRemoveChatMessage = useCanRemoveChatMessage();
+  const canImposePenalty = useCanImposePenalty();
+  const removeChatMessage = useRemoveChatMessage();
+  const imposePenalty = useImposePenalty();
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
   const me = useStores().useCurrentPartyroom((state) => state.me);
-  const myPermission = me && Crew.Permission.of(me.gradeType);
   const { scrollContainerRef, lastItemRef } = useChatMessagesScrollManager<
     HTMLDivElement,
     HTMLDivElement
@@ -55,9 +62,9 @@ export default function PartyroomChatPanel() {
           const isLast = i === chatMessages.length - 1;
           const isMe = message.crew.crewId === me?.crewId;
 
-          const canImposePenalty = !!myPermission?.canImposePenalty(message.crew.gradeType);
+          const _canImposePenalty = canImposePenalty(message.crew.gradeType);
           const onClickImposePenalty = (penaltyType: PenaltyType) => {
-            openImposePenalty({
+            imposePenalty({
               crewId: message.crew.crewId,
               crewGradeType: message.crew.gradeType,
               nickname: message.crew.nickname,
@@ -75,33 +82,33 @@ export default function PartyroomChatPanel() {
                 {
                   label: t.common.btn.authority,
                   onClickItem: () => adjustGrade(message.crew),
-                  visible: !!myPermission?.canAdjustGrade(message.crew.gradeType),
+                  visible: canAdjustGrade(message.crew.gradeType),
                 },
                 {
                   label: t.common.btn.delete,
                   onClickItem: () => {
-                    openDeleteChatMessage({
+                    removeChatMessage({
                       crewId: message.crew.crewId,
                       crewGradeType: message.crew.gradeType,
                       detail: message.message.messageId,
                     });
                   },
-                  visible: !!myPermission?.canRemoveChatMessage(message.crew.gradeType),
+                  visible: canRemoveChatMessage(message.crew.gradeType),
                 },
                 {
                   label: 'GGUL', // TODO: i18n 적용
                   onClickItem: () => onClickImposePenalty(PenaltyType.CHAT_BAN_30_SECONDS),
-                  visible: canImposePenalty,
+                  visible: _canImposePenalty,
                 },
                 {
                   label: 'Kick', // TODO: i18n 적용
                   onClickItem: () => onClickImposePenalty(PenaltyType.ONE_TIME_EXPULSION),
-                  visible: canImposePenalty,
+                  visible: _canImposePenalty,
                 },
                 {
                   label: 'Ban', // TODO: i18n 적용
                   onClickItem: () => onClickImposePenalty(PenaltyType.PERMANENT_EXPULSION),
-                  visible: canImposePenalty,
+                  visible: _canImposePenalty,
                 },
               ]}
             >

@@ -1,4 +1,5 @@
 import { Crew, useOpenGradeAdjustmentAlertDialog } from '@/entities/current-partyroom';
+import useCanAdjustGrade from '@/features/partyroom/adjust-grade/api/use-can-adjust-grade.hook';
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useSelectGrade } from './use-select-grade.hook';
@@ -12,20 +13,16 @@ export function useAdjustGrade() {
     me: state.me,
     partyroomId: state.id,
   }));
+  const canAdjustGrade = useCanAdjustGrade();
 
   return async (targetCrew: Pick<PartyroomCrew, 'nickname' | 'crewId' | 'gradeType'>) => {
-    if (!me || !partyroomId) return;
-
-    const myPermission = Crew.Permission.of(me.gradeType);
-    const canAdjustGrade = myPermission.canAdjustGrade(targetCrew.gradeType);
-
-    if (!canAdjustGrade) return;
+    if (!partyroomId || !me || !canAdjustGrade(targetCrew.gradeType)) return;
 
     // Select grade
     const currentGrade = targetCrew.gradeType;
     const selectedGrade = await selectGrade({
       targetNickname: targetCrew.nickname,
-      options: myPermission.adjustableGrades,
+      options: Crew.Permission.of(me.gradeType).adjustableGrades,
       current: currentGrade,
     });
     if (!selectedGrade) return; // Cancel
