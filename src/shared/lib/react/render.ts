@@ -24,7 +24,7 @@ try {
   if (mainVersion >= 18) {
     createRoot = clonedReactDOM.createRoot;
   }
-} catch (e) {
+} catch {
   // Do nothing;
 }
 

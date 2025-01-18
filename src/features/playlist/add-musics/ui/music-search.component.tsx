@@ -1,5 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
+import { useSearchMusics } from '@/features/playlist/add-musics/api/use-search-musics.query';
 import { MusicListItem } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -8,7 +9,6 @@ import LoadingPanel from '@/shared/ui/components/loading/loading-panel.component
 import { TextButton } from '@/shared/ui/components/text-button';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFAddCircle, PFAddPlaylist } from '@/shared/ui/icons';
-import { useSearchMusics } from 'features/playlist/add-musics/api/use-search-musics.query';
 import SearchInput from './search-input.component';
 import SearchListItem from './search-list-item.component';
 

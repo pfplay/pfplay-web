@@ -1,4 +1,3 @@
-import { Singleton } from '@/shared/lib/decorators/singleton';
 import type {
   DjingQueue,
   EnterPayload,
@@ -27,7 +26,8 @@ import type {
   ChangeDjQueueStatusPayload,
   ImposePenaltyPayload,
   EditPartyroomPayload,
-} from 'shared/api/http/types/partyrooms';
+} from '@/shared/api/http/types/partyrooms';
+import { Singleton } from '@/shared/lib/decorators/singleton';
 import HTTPClient from '../client/client';
 
 @Singleton

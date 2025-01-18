@@ -2,9 +2,9 @@
 
 import { ReactNode, useRef } from 'react';
 import { StoreApi, UseBoundStore } from 'zustand';
+import { CurrentPartyroom, createCurrentPartyroomStore } from '@/entities/current-partyroom';
 import { UIState, createUIStateStore } from '@/entities/ui-state';
 import { StoresContext, Stores } from '@/shared/lib/store/stores.context';
-import { CurrentPartyroom, createCurrentPartyroomStore } from 'entities/current-partyroom';
 
 declare module '@/shared/lib/store/stores.context' {
   interface Stores {
