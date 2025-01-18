@@ -34,10 +34,10 @@ export enum ErrorCode {
   // PartyroomException
   NOT_FOUND_ROOM = 'PTR-001', // 파티룸을 찾을 수 없음
   ALREADY_TERMINATED = 'PTR-002', // 이미 종료된 파티룸
-  EXCEEDED_LIMIT = 'PTR-003', // 입장 제한을 초과함
+  EXCEEDED_LIMIT = 'PTR-003', // 파티룸 정원 초과
   ACTIVE_ANOTHER_ROOM = 'PTR-004', // 이미 다른 파티룸에 활성화되어 있음
   CACHE_MISS_SESSION = 'PTR-005', // 세션 ID에 대한 캐시 데이터가 없음
-  RESTRICTED_AUTHORITY = 'PTR-006', // 권한이 제한됨
+  RESTRICTED_AUTHORITY = 'PTR-006', // 권한이 제한됨 (e.g. 지갑 인증 유저만 파티룸 생성 가능)
   ALREADY_HOST = 'PTR-007', // 이미 다른 파티룸의 호스트임
 
   // PenaltyException

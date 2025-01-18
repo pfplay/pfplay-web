@@ -17,4 +17,7 @@ export default function usePartyroomEnterErrorAlerts() {
   useOnError(ErrorCode.ALREADY_TERMINATED, () => {
     openAlertDialog({ content: t.partyroom.ec.shut_down });
   });
+  useOnError(ErrorCode.EXCEEDED_LIMIT, () => {
+    openAlertDialog({ content: `The party room is over capacity.` }); // TODO: i18n
+  });
 }
