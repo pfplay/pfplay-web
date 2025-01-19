@@ -1,4 +1,5 @@
 export * as Me from './model/me.model';
+export { default as useIsGuest } from './lib/use-is-guest.hook';
 export { useFetchMe, useSuspenseFetchMe } from './api/use-fetch-me.query';
 export { default as usePrefetchMe } from './api/use-prefetch-me.query';
 export { useFetchMeAsync } from './api/use-fetch-me-async';

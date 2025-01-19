@@ -1,6 +1,8 @@
 'use client';
 import { useParams } from 'next/navigation';
 import { useCurrentPartyroomAlerts } from '@/entities/current-partyroom';
+import { useIsGuest } from '@/entities/me';
+import { useInformGoogleLogin } from '@/features/sign-in/by-google';
 import { cn } from '@/shared/lib/functions/cn';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -26,6 +28,9 @@ const PartyroomPage = () => {
     onClose: closeDjingDialog,
   } = useDisclosure();
 
+  const isGuest = useIsGuest();
+  const informGoogleLogin = useInformGoogleLogin();
+
   const openEditProfileAvatarDialog = useOpenEditProfileAvatarDialog();
   const { useCurrentPartyroom } = useStores();
   const crewsCount = useCurrentPartyroom((state) => state.crews.length);
@@ -49,7 +54,13 @@ const PartyroomPage = () => {
           'absolute top-1/2 left-[40px] transform -translate-y-1/2',
         ])}
         extraButton={{
-          onClick: openDjingDialog,
+          onClick: async () => {
+            if (await isGuest()) {
+              informGoogleLogin();
+              return;
+            }
+            openDjingDialog();
+          },
           icon: (size, className) => <PFDj width={size} height={size} className={className} />,
           text: t.dj.title.dj_queue,
         }}
