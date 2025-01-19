@@ -38,6 +38,7 @@ export default function Avatars() {
             faceUri={dj.avatarFaceUri}
             facePosX={dj.combinePositionX}
             facePosY={dj.combinePositionY}
+            reaction={dj.reactionType}
             dance
           />
         </div>
@@ -65,6 +66,7 @@ export default function Avatars() {
               faceUri={crew.avatarFaceUri}
               facePosX={crew.combinePositionX}
               facePosY={crew.combinePositionY}
+              reaction={crew.reactionType}
               dance={crew.motionType !== MotionType.NONE}
             />
           </div>

@@ -31,12 +31,12 @@ export default function SearchListItem({
  * Format duration to 'mm:ss'
  */
 function formatDuration(duration: string) {
-  const times = duration?.match(/\d+/g);
-  if (!times) return '00:00';
+  const DELEMETER = ':';
 
-  const [minutes, seconds] = times.map((t) => parseInt(t, 10));
-  const formattedMinutes = minutes.toString().padStart(2, '0');
-  const formattedSeconds = seconds.toString().padStart(2, '0');
+  const times = duration.split(DELEMETER);
+  if (!times.length) return '00:00';
 
-  return `${formattedMinutes}:${formattedSeconds}`;
+  const formatTime = (time: string) => time.padStart(2, '0');
+
+  return times.map(formatTime).join(DELEMETER);
 }

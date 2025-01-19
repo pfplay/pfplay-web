@@ -12,6 +12,7 @@ export default function useReactionMotionCallback() {
           return {
             ...crew,
             motionType: event.motionType,
+            reactionType: event.reactionType,
           };
         }
         return crew;

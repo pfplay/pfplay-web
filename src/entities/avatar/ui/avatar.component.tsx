@@ -1,4 +1,6 @@
 import { memo, useRef } from 'react';
+import { ReactionLottie } from '@/entities/avatar/ui/reaction-lottie';
+import { ReactionType } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import calculateDimensions from '../lib/calculate-dimensions';
 import { Model } from '../model/avatar.model';
@@ -6,6 +8,7 @@ import { Model } from '../model/avatar.model';
 type Props = Model & {
   height: number;
   dance?: boolean;
+  reaction?: ReactionType;
 };
 
 /**
@@ -15,7 +18,7 @@ type Props = Model & {
  *   - facePosY: face의 BODY_BASE_HEIGHT 기준 y축 위치. face height 상단까지 측정한 값
  * - facePosX, facePosY는 너비 120, 높이 160 기준으로 계산된 값이여야 합니다.
  */
-const Avatar = memo(({ height, bodyUri, faceUri, facePosX, facePosY, dance }: Props) => {
+const Avatar = memo(({ height, bodyUri, faceUri, facePosX, facePosY, dance, reaction }: Props) => {
   const dimensions = calculateDimensions(height, facePosX, facePosY);
   const fixedRandomSeconds = useRef(`${Math.random() * 0.5}s`).current;
 
@@ -37,6 +40,15 @@ const Avatar = memo(({ height, bodyUri, faceUri, facePosX, facePosY, dance }: Pr
         animationDelay: dance ? fixedRandomSeconds : undefined,
       }}
     >
+      {reaction && (
+        <div
+          aria-label='Avatar Reaction'
+          role='presentation'
+          className='absolute left-1/2 -top-6 transform -translate-x-1/2 -z-1'
+        >
+          <ReactionLottie reaction={reaction} />
+        </div>
+      )}
       {faceUri && (
         <div
           aria-label='Avatar Face'

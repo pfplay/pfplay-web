@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { ReactionType } from '@/shared/api/http/types/@enums';
+import { Button } from '@/shared/ui/components/button';
 import Avatar from './avatar.component';
 
 const meta = {
@@ -97,4 +100,41 @@ export const Dance: Story = {
       </div>
     ),
   ],
+};
+
+export const Reaction: Story = {
+  args: {
+    height: 160,
+    faceUri: mockFace.uri,
+    facePosX: mockBody.facePosX,
+    facePosY: mockBody.facePosY,
+    bodyUri: mockBody.uri,
+  },
+  render: (args) => {
+    const [reaction, setReaction] = useState<ReactionType>();
+
+    return (
+      <>
+        <div style={{ display: 'flex', gap: 4, marginBottom: 40 }}>
+          {Object.values(ReactionType).map((reactionType) => (
+            <Button
+              size='sm'
+              color={reaction === reactionType ? 'primary' : 'secondary'}
+              key={reactionType}
+              onClick={() => setReaction(reactionType)}
+              style={{ cursor: reaction === reactionType ? 'default' : 'pointer' }}
+            >
+              {reactionType}
+            </Button>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4 }}>
+          <Avatar {...args} reaction={reaction} />
+          <Avatar {...args} height={120} reaction={reaction} />
+          <Avatar bodyUri={mockBodyWithoutFace.uri} height={160} reaction={reaction} />
+        </div>
+      </>
+    );
+  },
 };
