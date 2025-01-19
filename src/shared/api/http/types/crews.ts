@@ -10,7 +10,7 @@ export type BlockCrewPayload = {
 };
 
 export type UnblockCrewPayload = {
-  crewId: number;
+  blockId: number;
 };
 
 export interface CrewsClient {

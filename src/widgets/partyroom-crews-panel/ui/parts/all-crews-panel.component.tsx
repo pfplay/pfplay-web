@@ -1,4 +1,5 @@
 import { useAdjustGrade, useCanAdjustGrade } from '@/features/partyroom/adjust-grade';
+import { useBlockCrew } from '@/features/partyroom/block-crew';
 import { useCanImposePenalty, useImposePenalty } from '@/features/partyroom/impose-penalty';
 import { Crews, useCurrentPartyroomCrews } from '@/features/partyroom/list-crews';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
@@ -14,6 +15,7 @@ export default function AllCrewsPanel() {
   const canAdjustGrade = useCanAdjustGrade();
   const canImposePenalty = useCanImposePenalty();
   const imposePenalty = useImposePenalty();
+  const blockCrew = useBlockCrew();
   const [me, currentDj] = useStores().useCurrentPartyroom((state) => [state.me, state.currentDj]);
 
   return (
@@ -64,6 +66,10 @@ export default function AllCrewsPanel() {
                     label: 'Ban', // TODO: i18n 적용
                     onClickItem: () => onClickImposePenalty(PenaltyType.PERMANENT_EXPULSION),
                     visible: _canImposePenalty,
+                  },
+                  {
+                    label: 'Block', // TODO: i18n 적용
+                    onClickItem: () => blockCrew({ crewId: crew.crewId }),
                   },
                 ]}
                 menuItemPanelSize='sm'

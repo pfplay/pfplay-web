@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
 import { useAdjustGrade, useCanAdjustGrade } from '@/features/partyroom/adjust-grade';
+import { useBlockCrew } from '@/features/partyroom/block-crew';
 import {
   useRemoveChatMessage,
   useImposePenalty,
@@ -10,6 +11,7 @@ import {
   useCanImposePenalty,
 } from '@/features/partyroom/impose-penalty';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
+import { useIsBlockedCrew } from '@/features/partyroom/list-my-blocked-crews';
 import { SendChatMessage } from '@/features/partyroom/send-chat-message';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { ONE_MINUTE } from '@/shared/config/time';
@@ -31,6 +33,8 @@ export default function PartyroomChatPanel() {
   const canImposePenalty = useCanImposePenalty();
   const removeChatMessage = useRemoveChatMessage();
   const imposePenalty = useImposePenalty();
+  const blockCrew = useBlockCrew();
+  const isBlockedCrew = useIsBlockedCrew();
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
   const me = useStores().useCurrentPartyroom((state) => state.me);
@@ -57,6 +61,10 @@ export default function PartyroomChatPanel() {
                 {message.content}
               </Typography>
             );
+          }
+
+          if (isBlockedCrew(message.crew.crewId)) {
+            return null;
           }
 
           const isLast = i === chatMessages.length - 1;
@@ -109,6 +117,10 @@ export default function PartyroomChatPanel() {
                   label: 'Ban', // TODO: i18n 적용
                   onClickItem: () => onClickImposePenalty(PenaltyType.PERMANENT_EXPULSION),
                   visible: _canImposePenalty,
+                },
+                {
+                  label: 'Block', // TODO: i18n 적용
+                  onClickItem: () => blockCrew({ crewId: message.crew.crewId }),
                 },
               ]}
             >
