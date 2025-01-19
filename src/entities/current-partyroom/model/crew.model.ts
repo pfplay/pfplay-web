@@ -1,8 +1,15 @@
-import { GradeType, MotionType } from '@/shared/api/http/types/@enums';
+import { GradeType, MotionType, ReactionType } from '@/shared/api/http/types/@enums';
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 
 export type Model = PartyroomCrew & {
+  /**
+   * setup 시점에 동기화 후, 웹소켓 이벤트 수신때마다 변경됨
+   */
   motionType: MotionType;
+  /**
+   * setup 시점엔 동기화 하지 않음, 웹소켓 이벤트 수신때마다 변경됨
+   */
+  reactionType?: ReactionType;
 };
 
 /**

@@ -1,5 +1,11 @@
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
-import { AccessType, GradeType, MotionType, PenaltyType } from '../../http/types/@enums';
+import {
+  AccessType,
+  GradeType,
+  MotionType,
+  PenaltyType,
+  ReactionType,
+} from '../../http/types/@enums';
 
 /**
  * 파티룸 폐쇄 이벤트
@@ -46,6 +52,7 @@ export type ReactionAggregationEvent = {
 export type ReactionMotionEvent = {
   eventType: PartyroomEventType.REACTION_MOTION;
   motionType: MotionType;
+  reactionType: ReactionType;
   crew: {
     crewId: number;
   };
