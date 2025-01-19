@@ -7,8 +7,10 @@ export enum QueryKeys {
   Playlist = 'playlist',
   PlaylistTracks = 'playlist/tracks',
   Musics = 'musics',
+  MyBlocks = 'my-blocks',
   DjingQueue = 'partyroom/djing-queue',
   Crews = 'partyroom/crews',
   PartyroomDetailSummary = 'partyroom/summary',
   PlaybackHistory = 'partyroom/playback-history',
+  Penalties = 'partyroom/penalties',
 }

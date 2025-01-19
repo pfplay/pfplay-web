@@ -25,5 +25,8 @@ export default function useRemoveCurrentPartyroomCaches() {
     queryClient.removeQueries({
       queryKey: [QueryKeys.PlaybackHistory, partyroomId],
     });
+    queryClient.removeQueries({
+      queryKey: [QueryKeys.Penalties, partyroomId],
+    });
   };
 }

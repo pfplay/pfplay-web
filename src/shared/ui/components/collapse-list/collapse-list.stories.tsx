@@ -79,7 +79,7 @@ export const CollapseListForUserList = () => {
     >
       {fixtureCollapseList.userListPanel.map((user) => (
         <UserListItem
-          key={user.uid}
+          key={user.crewId}
           userListItemConfig={user}
           menuItemList={fixtureMenuItems}
           suffix={{
@@ -89,7 +89,7 @@ export const CollapseListForUserList = () => {
                 type='button'
                 value='Click'
                 onButtonClick={() =>
-                  console.log(`id: ${user.uid}는 향후 api 연결에 사용될 예정입니다.`)
+                  console.log(`id: ${user.crewId}는 향후 api 연결에 사용될 예정입니다.`)
                 }
               />
             ),

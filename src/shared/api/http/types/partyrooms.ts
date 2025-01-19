@@ -2,7 +2,6 @@ import {
   AuthorityTier,
   GradeType,
   MotionType,
-  PartyroomGrade,
   PenaltyType,
   QueueStatus,
   ReactionType,
@@ -157,15 +156,6 @@ export type Dj = {
   avatarIconUri: string;
 };
 
-export interface Participant {
-  uid: string;
-  partyroomGrade: PartyroomGrade;
-  nickname: string;
-  crewId: number;
-  gradeType: GradeType;
-  avatarIconUri: string;
-}
-
 export type DjingQueue = {
   playbackActivated: boolean;
   /**
@@ -245,6 +235,8 @@ export type Penalty = {
   penaltyId: number;
   penaltyType: PenaltyType;
   crewId: number;
+  avatarIconUri: string;
+  nickname: string;
 };
 
 export type ImposePenaltyPayload = {
