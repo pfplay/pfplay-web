@@ -5,7 +5,6 @@ export const categorizeByGradeType = (crews: Crew.Model[]): Categorized<Crew.Mod
   return categorize({
     items: crews,
     categoryKey: 'gradeType',
-    getCategoryValue: (crew) => crew.gradeType,
     orderReferenceArr: Crew.gradePriorities as string[],
   });
 };
