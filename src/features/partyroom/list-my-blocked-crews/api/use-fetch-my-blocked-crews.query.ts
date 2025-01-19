@@ -6,7 +6,7 @@ import { APIError } from '@/shared/api/http/types/@shared';
 import { BlockedCrew } from '@/shared/api/http/types/crews';
 import { FIVE_MINUTES } from '@/shared/config/time';
 
-export default function useFetchMyBlocks() {
+export default function useFetchMyBlockedCrews() {
   return useQuery<BlockedCrew[], AxiosError<APIError>>({
     queryKey: [QueryKeys.MyBlocks],
     queryFn: () => crewsService.getBlockedCrews(),

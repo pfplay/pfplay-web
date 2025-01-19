@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import { useFetchMyBlocks } from '@/features/partyroom/list-my-blocks';
+import { useFetchMyBlockedCrews } from '@/features/partyroom/list-my-blocked-crews';
 import { useFetchCurrentPartyroomPenalties } from '@/features/partyroom/list-penalties';
 import { Categorized } from '@/shared/lib/functions/categorize';
 import * as RestrictionPanelListItem from '../model/restriction-panel-list-item.model';
 
 export default function useGetRestrictionPanelListItems() {
   const { data: penalties } = useFetchCurrentPartyroomPenalties();
-  const { data: myBlocks = [] } = useFetchMyBlocks();
+  const { data: myBlockedCrews = [] } = useFetchMyBlockedCrews();
 
   return useMemo<{
     length: number;
@@ -14,12 +14,12 @@ export default function useGetRestrictionPanelListItems() {
   }>(() => {
     const list = [
       ...RestrictionPanelListItem.listOfPenalties(penalties),
-      ...RestrictionPanelListItem.listOfMyBlockedCrews(myBlocks),
+      ...RestrictionPanelListItem.listOfMyBlockedCrews(myBlockedCrews),
     ];
 
     return {
       length: list.length,
       categorized: RestrictionPanelListItem.categorize(list),
     };
-  }, [myBlocks, penalties]);
+  }, [myBlockedCrews, penalties]);
 }
