@@ -19,7 +19,7 @@ export default class CrewsService extends HTTPClient implements CrewsClient {
     return this.post<void>(`${this.ROUTE_V1}/me/blocks`, payload);
   }
 
-  public unblockCrew({ crewId }: UnblockCrewPayload) {
-    return this.delete<void>(`${this.ROUTE_V1}/me/blocks/${crewId}`);
+  public unblockCrew({ blockId }: UnblockCrewPayload) {
+    return this.delete<void>(`${this.ROUTE_V1}/me/blocks/${blockId}`);
   }
 }

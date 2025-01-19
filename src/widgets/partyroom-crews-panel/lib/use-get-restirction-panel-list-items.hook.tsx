@@ -41,7 +41,7 @@ export default function useGetRestrictionPanelListItems() {
         size='xs'
         color='secondary'
         variant='outline'
-        onClick={() => unblockCrew({ crewId: blockedCrew.blockedCrewId })}
+        onClick={() => unblockCrew({ blockId: blockedCrew.blockId })}
       >
         Lift{/* TODO: i18n */}
       </Button>
