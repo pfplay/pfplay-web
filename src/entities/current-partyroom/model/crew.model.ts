@@ -58,6 +58,13 @@ export class Permission {
     );
   }
 
+  public canLiftPenalty(targetGrade: GradeType) {
+    return (
+      this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR) &&
+      this.comparator.isHigherThan(targetGrade)
+    );
+  }
+
   public canSkipPlayback(targetGrade: GradeType) {
     return (
       this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR) &&
