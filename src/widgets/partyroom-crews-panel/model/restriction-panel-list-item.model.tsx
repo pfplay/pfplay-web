@@ -31,8 +31,8 @@ export const listOfPenalties = (penalties: Penalty[]): Model[] => {
   return penalties.map((penalty) => ({
     category: getPenaltyTypeCategory(penalty.penaltyType),
     crewId: penalty.crewId,
-    avatarIconUri: penalty.avatarIconUri,
-    nickname: penalty.nickname,
+    avatarIconUri: penalty.avatarIconUri || '/images/Temp/face.png',
+    nickname: penalty.nickname || 'Unknown (이름 가져오기 미구현)',
     suffix: (
       <Button
         size='xs'
