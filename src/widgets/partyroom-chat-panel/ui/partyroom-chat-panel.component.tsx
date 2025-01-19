@@ -10,6 +10,7 @@ import {
   useCanImposePenalty,
 } from '@/features/partyroom/impose-penalty';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
+import { useIsBlockedCrew } from '@/features/partyroom/list-my-blocked-crews';
 import { SendChatMessage } from '@/features/partyroom/send-chat-message';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { ONE_MINUTE } from '@/shared/config/time';
@@ -31,6 +32,7 @@ export default function PartyroomChatPanel() {
   const canImposePenalty = useCanImposePenalty();
   const removeChatMessage = useRemoveChatMessage();
   const imposePenalty = useImposePenalty();
+  const isBlockedCrew = useIsBlockedCrew();
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
   const me = useStores().useCurrentPartyroom((state) => state.me);
@@ -57,6 +59,10 @@ export default function PartyroomChatPanel() {
                 {message.content}
               </Typography>
             );
+          }
+
+          if (isBlockedCrew(message.crew.crewId)) {
+            return null;
           }
 
           const isLast = i === chatMessages.length - 1;
