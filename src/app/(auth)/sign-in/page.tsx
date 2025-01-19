@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePrefetchMe } from '@/entities/me';
 import { SignInByGoogleButtonForDev, useSignInByGoogle } from '@/features/sign-in/by-google';
 import { useSignInByGuest } from '@/features/sign-in/by-guest';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -13,10 +14,12 @@ export default function SignInPage() {
   const t = useI18n();
   const router = useAppRouter();
 
+  const prefetchMe = usePrefetchMe();
   const signInByGoogle = useSignInByGoogle();
   const signInByGuest = useSignInByGuest({
     onClickSignInByGoogle: signInByGoogle,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await prefetchMe();
       router.push('/parties');
     },
   });
