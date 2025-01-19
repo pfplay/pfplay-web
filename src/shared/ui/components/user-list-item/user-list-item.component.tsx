@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import { ReactNode } from 'react';
-import { Participant } from '@/shared/api/http/types/partyrooms';
+import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
 import { MenuItem, MenuItemPanelSize } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
 import { SuffixType } from './model/user-list-item.model';
 
-export type UserListItemType = Partial<Participant>;
+export type UserListItemType = Partial<PartyroomCrew>;
 
 type UserListItemProps = {
   userListItemConfig: UserListItemType;

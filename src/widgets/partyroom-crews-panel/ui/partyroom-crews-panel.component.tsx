@@ -3,7 +3,7 @@ import { cn } from '@/shared/lib/functions/cn';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
 import UserGradePanel from './parts/user-grade-panel.component';
 
-const PartyroomParticipantPanel = () => {
+export default function PartyroomCrewsPanel() {
   const crews = useCurrentPartyroomCrews();
 
   return (
@@ -30,6 +30,4 @@ const PartyroomParticipantPanel = () => {
       </TabPanels>
     </TabGroup>
   );
-};
-
-export default PartyroomParticipantPanel;
+}

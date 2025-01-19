@@ -10,11 +10,11 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/compone
 import { PFParty, PFChatFilled, PFPersonOutline, PFDj } from '@/shared/ui/icons';
 import { PartyroomAvatars } from '@/widgets/partyroom-avatars';
 import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
+import { PartyroomCrewsPanel } from '@/widgets/partyroom-crews-panel';
 import { PartyroomDetailTrigger } from '@/widgets/partyroom-detail';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
 import { useOpenEditProfileAvatarDialog } from '@/widgets/partyroom-edit-profile-avatar-dialog';
-import { PartyroomParticipantPanel } from '@/widgets/partyroom-participant-panel';
 import { Sidebar } from '@/widgets/sidebar';
 
 const PartyroomPage = () => {
@@ -90,7 +90,7 @@ const PartyroomPage = () => {
               <PartyroomChatPanel />
             </TabPanel>
             <TabPanel tabIndex={1} className='flex-1 flexCol'>
-              <PartyroomParticipantPanel />
+              <PartyroomCrewsPanel />
             </TabPanel>
           </TabPanels>
         </TabGroup>
