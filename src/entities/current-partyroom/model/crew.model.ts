@@ -47,6 +47,10 @@ export class Permission {
     );
   }
 
+  public canViewPenalties() {
+    return this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
+  }
+
   public canImposePenalty(targetGrade: GradeType) {
     return (
       this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR) &&
