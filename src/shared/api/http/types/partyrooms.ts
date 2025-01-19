@@ -235,6 +235,8 @@ export type Penalty = {
   penaltyId: number;
   penaltyType: PenaltyType;
   crewId: number;
+  avatarIconUri: string;
+  nickname: string;
 };
 
 export type ImposePenaltyPayload = {

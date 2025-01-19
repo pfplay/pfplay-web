@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { BlockedCrew } from '@/shared/api/http/types/crews';
-import { PartyroomCrew, Penalty } from '@/shared/api/http/types/partyrooms';
+import { Penalty } from '@/shared/api/http/types/partyrooms';
 import { Categorized, categorize as _categorize } from '@/shared/lib/functions/categorize';
 import { Button } from '@/shared/ui/components/button';
 
@@ -18,11 +18,7 @@ const enum Category {
   BLOCK = 'BLOCK',
 }
 
-export const listOfPenalty = (penalties: Penalty[], allCrews: PartyroomCrew[]): Model[] => {
-  const allCrewsMap = new Map<PartyroomCrew['crewId'], PartyroomCrew>(
-    allCrews.map((crew) => [crew.crewId, crew])
-  );
-
+export const listOfPenalties = (penalties: Penalty[]): Model[] => {
   function getPenaltyTypeCategory(penaltyType: PenaltyType): string {
     switch (penaltyType) {
       case PenaltyType.ONE_TIME_EXPULSION:
@@ -32,62 +28,42 @@ export const listOfPenalty = (penalties: Penalty[], allCrews: PartyroomCrew[]): 
     }
   }
 
-  return penalties
-    .map((penalty) => {
-      const crew = allCrewsMap.get(penalty.crewId);
-      if (!crew) return null;
-
-      return {
-        category: getPenaltyTypeCategory(penalty.penaltyType),
-        crewId: crew.crewId,
-        avatarIconUri: crew.avatarIconUri,
-        nickname: crew.nickname,
-        suffix: (
-          <Button
-            size='xs'
-            color='secondary'
-            variant='outline'
-            onClick={() => alert(`Not Impl ${penalty.penaltyId}`)}
-          >
-            Lift{/* TODO: i18n */}
-          </Button>
-        ),
-      };
-    })
-    .filter((model) => model !== null);
+  return penalties.map((penalty) => ({
+    category: getPenaltyTypeCategory(penalty.penaltyType),
+    crewId: penalty.crewId,
+    avatarIconUri: penalty.avatarIconUri,
+    nickname: penalty.nickname,
+    suffix: (
+      <Button
+        size='xs'
+        color='secondary'
+        variant='outline'
+        onClick={() => alert(`Not Impl ${penalty.penaltyId}`)}
+      >
+        Lift{/* TODO: i18n */}
+      </Button>
+    ),
+  }));
 };
 
-export const listOfMyBlockedCrews = (
-  blockedCrews: BlockedCrew[],
-  allCrews: PartyroomCrew[]
-): Model[] => {
-  const allCrewsMap = new Map<PartyroomCrew['crewId'], PartyroomCrew>(
-    allCrews.map((crew) => [crew.crewId, crew])
-  );
-
-  return blockedCrews
-    .map((blockedCrew) => {
-      const crew = allCrewsMap.get(blockedCrew.blockedCrewId);
-      if (!crew) return null;
-
-      return {
-        category: Category.BLOCK,
-        crewId: crew.crewId,
-        avatarIconUri: crew.avatarIconUri,
-        nickname: crew.nickname,
-        suffix: (
-          <Button
-            size='xs'
-            color='secondary'
-            variant='outline'
-            onClick={() => alert(`Not Impl ${blockedCrew.blockId}`)}
-          >
-            Lift{/* TODO: i18n */}
-          </Button>
-        ),
-      };
-    })
-    .filter((model) => model !== null);
+// blockedCrews는 "모든 파티룸의 차단 목록"임. 현재 파티룸 화면에 다 보여줌
+export const listOfMyBlockedCrews = (blockedCrews: BlockedCrew[]): Model[] => {
+  return blockedCrews.map((crew) => ({
+    category: Category.BLOCK,
+    crewId: crew.blockedCrewId,
+    avatarIconUri: crew.avatarIconUri,
+    nickname: crew.nickname,
+    suffix: (
+      <Button
+        size='xs'
+        color='secondary'
+        variant='outline'
+        onClick={() => alert(`Not Impl ${crew.blockId}`)}
+      >
+        Lift{/* TODO: i18n */}
+      </Button>
+    ),
+  }));
 };
 
 export const categorize = (models: Model[]): Categorized<Model> => {
