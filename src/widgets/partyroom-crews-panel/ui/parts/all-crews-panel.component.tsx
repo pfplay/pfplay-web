@@ -7,7 +7,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { CollapseList } from '@/shared/ui/components/collapse-list';
 import { UserListItem, UserListItemSuffix } from '@/shared/ui/components/user-list-item';
 
-const UserGradePanel = () => {
+export default function AllCrewsPanel() {
   const t = useI18n();
   const crews = useCurrentPartyroomCrews();
   const adjustGrade = useAdjustGrade();
@@ -19,7 +19,7 @@ const UserGradePanel = () => {
   return (
     <div className='flex flex-col gap-6'>
       {Object.entries(Crews.categorizeByGradeType(crews)).map(([category, crews]) => (
-        <CollapseList key={'UserGradePanel' + category} title={category} displaySuffix={false}>
+        <CollapseList key={'AllCrewsPanel' + category} title={category} displaySuffix={false}>
           {crews.map((crew) => {
             const _canImposePenalty = canImposePenalty(crew.gradeType);
             const onClickImposePenalty = (penaltyType: PenaltyType) => {
@@ -76,6 +76,4 @@ const UserGradePanel = () => {
       ))}
     </div>
   );
-};
-
-export default UserGradePanel;
+}

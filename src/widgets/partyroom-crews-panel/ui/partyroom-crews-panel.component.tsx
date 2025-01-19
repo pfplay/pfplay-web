@@ -1,7 +1,7 @@
 import { useCurrentPartyroomCrews } from '@/features/partyroom/list-crews';
 import { cn } from '@/shared/lib/functions/cn';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
-import UserGradePanel from './parts/user-grade-panel.component';
+import AllCrewsPanel from './parts/all-crews-panel.component';
 
 export default function PartyroomCrewsPanel() {
   const crews = useCurrentPartyroomCrews();
@@ -22,7 +22,7 @@ export default function PartyroomCrewsPanel() {
       </TabList>
       <TabPanels className='flex-1 flexCol'>
         <TabPanel tabIndex={0} className='flex-1 flexCol'>
-          <UserGradePanel />
+          <AllCrewsPanel />
         </TabPanel>
         <TabPanel tabIndex={1} className='flex-1 flexCol overflow-hidden'>
           {/* <PartyroomUserPanel /> */}
