@@ -53,17 +53,19 @@ const PartyroomPage = () => {
           'flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded',
           'absolute top-1/2 left-[40px] transform -translate-y-1/2',
         ])}
-        extraButton={{
-          onClick: async () => {
-            if (await isGuest()) {
-              informGoogleLogin();
-              return;
-            }
-            openDjingDialog();
+        extraButtons={[
+          {
+            onClick: async () => {
+              if (await isGuest()) {
+                informGoogleLogin();
+                return;
+              }
+              openDjingDialog();
+            },
+            icon: (size, className) => <PFDj width={size} height={size} className={className} />,
+            text: t.dj.title.dj_queue,
           },
-          icon: (size, className) => <PFDj width={size} height={size} className={className} />,
-          text: t.dj.title.dj_queue,
-        }}
+        ]}
         onClickAvatarSetting={openEditProfileAvatarDialog}
       />
 
