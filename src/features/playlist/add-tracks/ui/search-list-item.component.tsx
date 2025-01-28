@@ -31,12 +31,12 @@ export default function SearchListItem({
  * Format duration to 'mm:ss'
  */
 function formatDuration(duration: string) {
-  const DELEMETER = ':';
+  const DELIMITER = ':';
 
-  const times = duration.split(DELEMETER);
+  const times = duration.split(DELIMITER);
   if (!times.length) return '00:00';
 
   const formatTime = (time: string) => time.padStart(2, '0');
 
-  return times.map(formatTime).join(DELEMETER);
+  return times.map(formatTime).join(DELIMITER);
 }
