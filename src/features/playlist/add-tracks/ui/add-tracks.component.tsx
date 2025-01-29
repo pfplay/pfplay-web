@@ -1,5 +1,4 @@
-import { usePlaylistAction } from '@/entities/playlist';
-import { PlaylistActionBypassProvider } from '@/entities/playlist/lib/playlist-action.context';
+import { PlaylistActionBypassProvider, usePlaylistAction } from '@/entities/playlist';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
@@ -8,7 +7,7 @@ import { TextButton } from '@/shared/ui/components/text-button';
 import { PFAdd, PFClose } from '@/shared/ui/icons';
 import MusicSearch from './music-search.component';
 
-const EntryButton = () => {
+export default function EntryButton() {
   const t = useI18n();
   const { openDialog } = useDialog();
   const playlistAction = usePlaylistAction();
@@ -36,6 +35,4 @@ const EntryButton = () => {
       {t.playlist.btn.add_song}
     </Button>
   );
-};
-
-export default EntryButton;
+}
