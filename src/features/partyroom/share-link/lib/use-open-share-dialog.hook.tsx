@@ -8,11 +8,18 @@ import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 
-export default function useOpenShareDialog(partyroomSummary?: PartyroomDetailSummary) {
+/**
+ * @param partyroomSummary 파티룸 요약 정보, 서버에서 fetch 해오고 있는 경우 `undefined` 일 수 있습니다. `partyroomSummary`가 `undefined`인 경우 다이얼로그가 열리지 않습니다.
+ */
+export default function useSharePartyroom(partyroomSummary: PartyroomDetailSummary | undefined) {
   const t = useI18n();
   const { openDialog } = useDialog();
 
   return () => {
+    if (!partyroomSummary) {
+      return;
+    }
+
     return openDialog(() => ({
       title: t.common.btn.share,
       titleAlign: 'center',
@@ -25,22 +32,13 @@ export default function useOpenShareDialog(partyroomSummary?: PartyroomDetailSum
   };
 }
 
-function Body({ partyroom }: { partyroom?: PartyroomDetailSummary }) {
-  if (!partyroom?.title) {
-    throw new Error('partyroom summary is not found.');
-  }
+function Body({ partyroom }: { partyroom: PartyroomDetailSummary }) {
+  const t = useI18n();
 
   const [playback] = useStores().useCurrentPartyroom((state) => [state.playback]);
   const [isCopied, setIsCopied] = useState(false);
 
-  const t = useI18n();
-
-  if (typeof partyroom?.linkDomain === 'undefined') {
-    throw new Error('Partyroom domain is not found. maybe you are not in the partyroom.');
-  }
-
-  // 개발환경에서는 브라우저 주소창에 사용하는 localhost를 붙이고 나머지 path 입력해서 테스트. e.g) https://localhost:3000/party/...
-  const sharedUrl = `https://pfplay.xyz/party/${partyroom.linkDomain}`;
+  const sharedUrl = `${location.origin}/party/${partyroom.linkDomain}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(sharedUrl);

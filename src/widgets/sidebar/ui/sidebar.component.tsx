@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { useSuspenseFetchMe } from '@/entities/me';
 import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
+import { cn } from '@/shared/lib/functions/cn';
 import { mergeDeep } from '@/shared/lib/functions/merge-deep';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -9,17 +10,20 @@ import Profile from '@/shared/ui/components/profile/profile.component';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFHeadset } from '@/shared/ui/icons';
 
+type ExtraButton = {
+  onClick: () => void;
+  icon: (size: number, className: string) => ReactNode;
+  text: string;
+  disabled?: boolean;
+};
+
 type SidebarProps = {
   className: string;
   onClickAvatarSetting: () => void;
-  extraButton?: {
-    onClick: () => void;
-    icon: (size: number, className: string) => ReactNode;
-    text: string;
-  };
+  extraButtons?: ExtraButton[];
 };
 
-export default function Sidebar({ className, onClickAvatarSetting, extraButton }: SidebarProps) {
+export default function Sidebar({ className, onClickAvatarSetting, extraButtons }: SidebarProps) {
   const t = useI18n();
   const { data: me } = useSuspenseFetchMe();
   const { openDialog } = useDialog();
@@ -68,14 +72,21 @@ export default function Sidebar({ className, onClickAvatarSetting, extraButton }
         </Typography>
       </button>
 
-      {extraButton && (
-        <button onClick={extraButton.onClick} className='gap-2 cursor-pointer flexColCenter'>
+      {extraButtons?.map((extraButton) => (
+        <button
+          key={'sidebar-button' + extraButton.text}
+          onClick={extraButton.onClick}
+          className={cn('gap-2 cursor-pointer flexColCenter', {
+            'cursor-not-allowed opacity-50': extraButton.disabled,
+          })}
+          disabled={extraButton.disabled}
+        >
           {extraButton.icon(36, 'text-gray-400')}
           <Typography type='caption1' className='text-gray-200'>
             {extraButton.text}
           </Typography>
         </button>
-      )}
+      ))}
     </aside>
   );
 }

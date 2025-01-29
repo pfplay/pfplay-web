@@ -2,6 +2,8 @@
 import { useParams } from 'next/navigation';
 import { useCurrentPartyroomAlerts } from '@/entities/current-partyroom';
 import { useIsGuest } from '@/entities/me';
+import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
+import { useSharePartyroom } from '@/features/partyroom/share-link';
 import { useInformGoogleLogin } from '@/features/sign-in/by-google';
 import { cn } from '@/shared/lib/functions/cn';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
@@ -9,7 +11,7 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
-import { PFParty, PFChatFilled, PFPersonOutline, PFDj } from '@/shared/ui/icons';
+import { PFParty, PFChatFilled, PFPersonOutline, PFDj, PFLink } from '@/shared/ui/icons';
 import { PartyroomAvatars } from '@/widgets/partyroom-avatars';
 import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
 import { PartyroomCrewsPanel } from '@/widgets/partyroom-crews-panel';
@@ -30,6 +32,10 @@ const PartyroomPage = () => {
 
   const isGuest = useIsGuest();
   const informGoogleLogin = useInformGoogleLogin();
+
+  const { data: partyroomSummary, isLoading: isPartyroomSummaryLoading } =
+    useFetchPartyroomDetailSummary(Number(params.id), !!params.id);
+  const sharePartyroom = useSharePartyroom(partyroomSummary);
 
   const openEditProfileAvatarDialog = useOpenEditProfileAvatarDialog();
   const { useCurrentPartyroom } = useStores();
@@ -53,17 +59,25 @@ const PartyroomPage = () => {
           'flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded',
           'absolute top-1/2 left-[40px] transform -translate-y-1/2',
         ])}
-        extraButton={{
-          onClick: async () => {
-            if (await isGuest()) {
-              informGoogleLogin();
-              return;
-            }
-            openDjingDialog();
+        extraButtons={[
+          {
+            onClick: async () => {
+              if (await isGuest()) {
+                informGoogleLogin();
+                return;
+              }
+              openDjingDialog();
+            },
+            icon: (size, className) => <PFDj width={size} height={size} className={className} />,
+            text: t.dj.title.dj_queue,
           },
-          icon: (size, className) => <PFDj width={size} height={size} className={className} />,
-          text: t.dj.title.dj_queue,
-        }}
+          {
+            onClick: sharePartyroom,
+            icon: (size, className) => <PFLink width={size} height={size} className={className} />,
+            text: t.common.btn.share,
+            disabled: isPartyroomSummaryLoading,
+          },
+        ]}
         onClickAvatarSetting={openEditProfileAvatarDialog}
       />
 

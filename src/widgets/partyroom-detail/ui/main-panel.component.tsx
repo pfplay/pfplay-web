@@ -3,6 +3,7 @@ import { useCanCloseCurrentPartyroom, useCloseCurrentPartyroom } from '@/feature
 import { PartyroomEditTrigger, useCanEditCurrentPartyroom } from '@/features/partyroom/edit';
 import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
 import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
+import { useSharePartyroom } from '@/features/partyroom/share-link';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';
@@ -10,7 +11,6 @@ import { LoadingPanel } from '@/shared/ui/components/loading';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFChevronRight, PFLink, PFSettings } from '@/shared/ui/icons';
 import useOpenSettingDialog from './use-open-setting-dialog.hook';
-import useOpenShareDialog from './use-open-share-dialog.hook';
 import { Panel, usePanelController } from '../lib/panel-controller.context';
 
 export default function MainPanel() {
@@ -29,7 +29,7 @@ export default function MainPanel() {
 
   const currentDj = djingQueue?.djs.slice().sort((a, b) => a.orderNumber - b.orderNumber)[0];
 
-  const openShareDialog = useOpenShareDialog(partyroomSummary);
+  const sharePartyroom = useSharePartyroom(partyroomSummary);
 
   const openSettingDialog = useOpenSettingDialog();
 
@@ -123,7 +123,7 @@ export default function MainPanel() {
 
       <div className='flexRowCenter gap-3'>
         <Button
-          onClick={openShareDialog}
+          onClick={sharePartyroom}
           size='sm'
           variant='outline'
           color='secondary'
