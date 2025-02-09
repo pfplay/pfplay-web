@@ -5,6 +5,7 @@ import { PropsWithChildren, useEffect } from 'react';
 import { useSuspenseFetchMe } from '@/entities/me';
 import { usePartyroomEnterErrorAlerts } from '@/features/partyroom/enter';
 import { MyPlaylist } from '@/widgets/my-playlist';
+import PlaylistActionProvider from './playlist-action.provider';
 
 const ProtectedLayout = ({ children }: PropsWithChildren) => {
   const { data: me } = useSuspenseFetchMe();
@@ -22,11 +23,10 @@ const ProtectedLayout = ({ children }: PropsWithChildren) => {
   usePartyroomEnterErrorAlerts();
 
   return (
-    <>
+    <PlaylistActionProvider>
       {children}
-
       <MyPlaylist />
-    </>
+    </PlaylistActionProvider>
   );
 };
 

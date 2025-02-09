@@ -1,14 +1,22 @@
-import { usePlaylistAction } from '@/entities/playlist';
-import { PlaylistActionBypassProvider } from '@/entities/playlist/lib/playlist-action.context';
+import type { ReactElement } from 'react';
+import { PlaylistActionBypassProvider, usePlaylistAction } from '@/entities/playlist';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
-import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { TextButton } from '@/shared/ui/components/text-button';
-import { PFAdd, PFClose } from '@/shared/ui/icons';
+import { PFClose } from '@/shared/ui/icons';
 import MusicSearch from './music-search.component';
 
-const EntryButton = () => {
+type ChildrenProps = {
+  text: string;
+  execute: () => void;
+};
+
+type Props = {
+  children: (props: ChildrenProps) => ReactElement;
+};
+
+export default function AddTracks({ children }: Props) {
   const t = useI18n();
   const { openDialog } = useDialog();
   const playlistAction = usePlaylistAction();
@@ -31,11 +39,8 @@ const EntryButton = () => {
     }));
   };
 
-  return (
-    <Button size='sm' variant='outline' color='secondary' Icon={<PFAdd />} onClick={handleAddMusic}>
-      {t.playlist.btn.add_song}
-    </Button>
-  );
-};
-
-export default EntryButton;
+  return children({
+    text: t.playlist.btn.add_song,
+    execute: handleAddMusic,
+  });
+}

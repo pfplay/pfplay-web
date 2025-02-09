@@ -11,7 +11,7 @@ export default function Notice() {
   const typoClassName = cn(galmuriFont.className, 'text-white leading-none');
 
   return (
-    <div className='flex items-center gap-[12px] py-[10px] px-[12px] bg-black border-2 border-gray-800 rounded'>
+    <div className='flex-1 flex items-center gap-[12px] py-[10px] px-[12px] bg-black border-2 border-gray-800 rounded'>
       <PFCampaign width={20} height={20} className='text-red-300' />
 
       {!notice && (
