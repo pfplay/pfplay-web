@@ -1,3 +1,5 @@
+import { ProfileSummary } from './users';
+
 export type BlockedCrew = {
   blockId: number;
   blockedCrewId: number;
@@ -13,6 +15,15 @@ export type UnblockCrewPayload = {
   blockId: number;
 };
 
+export type GetCrewProfilePayload = {
+  crewId: number;
+};
+
+export type CrewProfile = ProfileSummary & {
+  crewId: number;
+  registrationDate?: string;
+};
+
 export interface CrewsClient {
   /**
    * 내가 채팅 차단한 크루 목록 조회
@@ -26,4 +37,8 @@ export interface CrewsClient {
    * 채팅 차단 해제
    */
   unblockCrew: (payload: UnblockCrewPayload) => Promise<void>;
+  /**
+   * 파티룸 크루 프로필 조회
+   */
+  getCrewProfile: (payload: GetCrewProfilePayload) => Promise<CrewProfile>;
 }

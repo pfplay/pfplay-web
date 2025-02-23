@@ -13,4 +13,5 @@ export enum QueryKeys {
   PartyroomDetailSummary = 'partyroom/summary',
   PlaybackHistory = 'partyroom/playback-history',
   Penalties = 'partyroom/penalties',
+  CrewProfile = 'partyroom/crews/profile',
 }

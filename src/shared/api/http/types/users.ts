@@ -23,16 +23,19 @@ export interface ActivitySummary {
   score: number;
 }
 
-export interface GetMyProfileSummaryResponse {
+export interface ProfileSummary {
   nickname: string;
   introduction?: string;
   avatarBodyUri: string;
   avatarFaceUri: string;
-  avatarIconUri: string;
-  combinePositionX?: number;
-  combinePositionY?: number;
-  walletAddress?: string;
+  combinePositionX: number;
+  combinePositionY: number;
   activitySummaries: ActivitySummary[];
+}
+
+export interface GetMyProfileSummaryResponse extends ProfileSummary {
+  avatarIconUri: string;
+  walletAddress?: string;
 }
 
 export interface GetUserProfileSummaryRequest {
