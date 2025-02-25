@@ -23,9 +23,9 @@ export default function ViewCrewProfile({ crewId }: Props) {
         combinePositionX: crew.combinePositionX,
         combinePositionY: crew.combinePositionY,
         nickname: crew.nickname,
-        introduction: crew.introduction || '',
+        introduction: crew.introduction ?? '',
         score: Profile.score(crew.activitySummaries, ActivityType.DJ_PNT),
-        registrationDate: Profile.registrationDate(crew.registrationDate || ''), // TODO: api 수정 후 ''제거
+        registrationDate: Profile.registrationDate(crew.registrationDate ?? ''), // TODO: api 수정 후 ''제거
       }}
     />
   );
