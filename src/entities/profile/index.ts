@@ -1,1 +1,1 @@
-export { default as Profile } from './ui/profile.component';
+export * as Profile from './model/profile.model';
