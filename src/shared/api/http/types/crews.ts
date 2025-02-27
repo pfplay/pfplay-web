@@ -1,4 +1,4 @@
-import { ProfileSummary } from './users';
+import { ActivitySummary } from './users';
 
 export type BlockedCrew = {
   blockId: number;
@@ -19,9 +19,16 @@ export type GetCrewProfilePayload = {
   crewId: number;
 };
 
-export type CrewProfile = ProfileSummary & {
+export type CrewProfile = {
   crewId: number;
   registrationDate?: string;
+  nickname: string;
+  introduction?: string;
+  avatarBodyUri: string;
+  avatarFaceUri: string;
+  combinePositionX: number;
+  combinePositionY: number;
+  activitySummaries: ActivitySummary[];
 };
 
 export interface CrewsClient {
