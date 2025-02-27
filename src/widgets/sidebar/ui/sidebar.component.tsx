@@ -1,92 +1,38 @@
-import { ReactNode } from 'react';
-import { useSuspenseFetchMe } from '@/entities/me';
-import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
-import { cn } from '@/shared/lib/functions/cn';
-import { mergeDeep } from '@/shared/lib/functions/merge-deep';
-import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { useStores } from '@/shared/lib/store/stores.context';
-import { useDialog } from '@/shared/ui/components/dialog';
-import Profile from '@/shared/ui/components/profile/profile.component';
-import { Typography } from '@/shared/ui/components/typography';
-import { PFHeadset } from '@/shared/ui/icons';
+import { PropsWithChildren } from 'react';
 
-type ExtraButton = {
-  onClick: () => void;
-  icon: (size: number, className: string) => ReactNode;
-  text: string;
-  disabled?: boolean;
-};
+// type Button = {
+//   onClick: () => void;
+//   icon: (size: number, className: string) => ReactNode;
+//   text: string;
+//   disabled?: boolean;
+// };
 
 type SidebarProps = {
   className: string;
-  onClickAvatarSetting: () => void;
-  extraButtons?: ExtraButton[];
 };
 
-export default function Sidebar({ className, onClickAvatarSetting, extraButtons }: SidebarProps) {
-  const t = useI18n();
-  const { data: me } = useSuspenseFetchMe();
-  const { openDialog } = useDialog();
-  const { useUIState } = useStores();
-  const setPlaylistDrawer = useUIState((state) => state.setPlaylistDrawer);
-
-  const togglePlaylist = () => {
-    setPlaylistDrawer((prev) => mergeDeep(prev, { open: !prev.open }));
-  };
-
-  const handleClickProfileButton = () => {
-    return openDialog((_, onCancel) => ({
-      title: ({ defaultClassName }) => (
-        <Typography type='title2' className={defaultClassName}>
-          {t.common.btn.my_profile}
-        </Typography>
-      ),
-      titleAlign: 'left',
-      showCloseIcon: true,
-      classNames: {
-        container: 'w-[620px] h-[391px] py-7 px-10 bg-black',
-      },
-      Body: (
-        <ProfileEditFormV2
-          onClickAvatarSetting={() => {
-            onClickAvatarSetting();
-            onCancel?.();
-          }}
-        />
-      ),
-    }));
-  };
-
+export default function Sidebar({ className, children }: PropsWithChildren<SidebarProps>) {
   return (
     <aside className={className}>
-      <button onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
-        <Profile size={48} src={me.avatarIconUri} />
-        <Typography type='caption1' className='text-gray-200'>
-          {t.common.btn.my_profile}
-        </Typography>
-      </button>
-      <button onClick={togglePlaylist} className='gap-2 cursor-pointer flexColCenter'>
-        <PFHeadset width={36} height={36} className='[&_*]:fill-gray-400' />
-        <Typography type='caption1' className='text-gray-200'>
-          {t.common.btn.playlist}
-        </Typography>
-      </button>
+      {/* <ProfileButton onClick={handleClickProfileButton} text={t.common.btn.my_profile} />
+      <PlaylistButton onClick={togglePlaylist} text={t.common.btn.playlist} /> */}
 
-      {extraButtons?.map((extraButton) => (
+      {/* {buttons.map((button) => (
         <button
-          key={'sidebar-button' + extraButton.text}
-          onClick={extraButton.onClick}
+          key={'sidebar-button' + button.text}
+          onClick={button.onClick}
           className={cn('gap-2 cursor-pointer flexColCenter', {
-            'cursor-not-allowed opacity-50': extraButton.disabled,
+            'cursor-not-allowed opacity-50': button.disabled,
           })}
-          disabled={extraButton.disabled}
+          disabled={button.disabled}
         >
-          {extraButton.icon(36, 'text-gray-400')}
+          {button.icon(36, 'text-gray-400')}
           <Typography type='caption1' className='text-gray-200'>
-            {extraButton.text}
+            {button.text}
           </Typography>
         </button>
-      ))}
+      ))} */}
+      {children}
     </aside>
   );
 }
