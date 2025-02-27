@@ -6,11 +6,14 @@ import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary
 import { useSharePartyroom } from '@/features/partyroom/share-link';
 import { useInformGoogleLogin } from '@/features/sign-in/by-google';
 import { cn } from '@/shared/lib/functions/cn';
+import { mergeDeep } from '@/shared/lib/functions/merge-deep';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
+import { useDialog } from '@/shared/ui/components/dialog';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
+import { Typography } from '@/shared/ui/components/typography';
 import { PFParty, PFChatFilled, PFPersonOutline, PFDj, PFLink } from '@/shared/ui/icons';
 import { PartyroomAvatars } from '@/widgets/partyroom-avatars';
 import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
@@ -19,7 +22,8 @@ import { PartyroomDetailTrigger } from '@/widgets/partyroom-detail';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
 import { useOpenEditProfileAvatarDialog } from '@/widgets/partyroom-edit-profile-avatar-dialog';
-import { Sidebar } from '@/widgets/sidebar';
+import { MyProfilePanel } from '@/widgets/profile-panel';
+import { SidebarButton, Sidebar, ProfileButton, PlaylistButton } from '@/widgets/sidebar';
 
 const PartyroomPage = () => {
   const t = useI18n();
@@ -38,8 +42,31 @@ const PartyroomPage = () => {
   const sharePartyroom = useSharePartyroom(partyroomSummary);
 
   const openEditProfileAvatarDialog = useOpenEditProfileAvatarDialog();
-  const { useCurrentPartyroom } = useStores();
+  const { useCurrentPartyroom, useUIState } = useStores();
   const crewsCount = useCurrentPartyroom((state) => state.crews.length);
+
+  const setPlaylistDrawer = useUIState((state) => state.setPlaylistDrawer);
+  const { openDialog } = useDialog();
+
+  const togglePlaylist = () => {
+    setPlaylistDrawer((prev) => mergeDeep(prev, { open: !prev.open }));
+  };
+
+  const handleClickProfileButton = () => {
+    return openDialog(() => ({
+      title: ({ defaultClassName }) => (
+        <Typography type='title2' className={defaultClassName}>
+          {t.common.btn.my_profile}
+        </Typography>
+      ),
+      titleAlign: 'left',
+      showCloseIcon: true,
+      classNames: {
+        container: 'w-[620px] h-[391px] py-7 px-10 bg-black',
+      },
+      Body: <MyProfilePanel onClickAvatarSetting={openEditProfileAvatarDialog} />,
+    }));
+  };
 
   useCurrentPartyroomAlerts();
 
@@ -59,28 +86,27 @@ const PartyroomPage = () => {
           'flexCol justify-between gap-10 px-1 py-6 bg-[#0E0E0E] rounded',
           'absolute top-1/2 left-[40px] transform -translate-y-1/2',
         ])}
-        extraButtons={[
-          {
-            onClick: async () => {
-              if (await isGuest()) {
-                informGoogleLogin();
-                return;
-              }
-              openDjingDialog();
-            },
-            icon: (size, className) => <PFDj width={size} height={size} className={className} />,
-            text: t.dj.title.dj_queue,
-          },
-          {
-            onClick: sharePartyroom,
-            icon: (size, className) => <PFLink width={size} height={size} className={className} />,
-            text: t.common.btn.share,
-            disabled: isPartyroomSummaryLoading,
-          },
-        ]}
-        onClickAvatarSetting={openEditProfileAvatarDialog}
-      />
-
+      >
+        <ProfileButton onClick={handleClickProfileButton} />
+        <PlaylistButton onClick={togglePlaylist} />
+        <SidebarButton
+          onClick={async () => {
+            if (await isGuest()) {
+              informGoogleLogin();
+              return;
+            }
+            openDjingDialog();
+          }}
+          text={t.dj.title.dj_queue}
+          Icon={<PFDj width={36} height={36} className='[&_*]:fill-gray-400' />}
+        />
+        <SidebarButton
+          onClick={sharePartyroom}
+          text={t.common.btn.share}
+          Icon={<PFLink width={36} height={36} className='[&_*]:fill-gray-400' />}
+          disabled={isPartyroomSummaryLoading}
+        />
+      </Sidebar>
       {/* 오른쪽 채팅창 */}
       <div className='absolute top-0 right-0 w-[400px] max-w-full h-screen flexCol bg-black pt-8 pb-3 px-7'>
         <div className='bg-black grid grid-cols-2 gap-3 mb-5'>
