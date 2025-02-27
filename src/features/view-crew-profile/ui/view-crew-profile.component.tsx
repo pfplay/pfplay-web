@@ -1,7 +1,7 @@
-import { Profile } from '@/entities/profile';
 import { ActivityType } from '@/shared/api/http/types/@enums';
-import { ProfileCard } from '@/shared/ui/components/profile-card';
+import ProfileCard from './profile-card.component';
 import useViewCrewProfile from '../api/use-view-crew-profile';
+import { extractScore, getRegistrationDate } from '../lib/profile.lib';
 
 interface Props {
   crewId: number;
@@ -23,8 +23,8 @@ export default function ViewCrewProfile({ crewId }: Props) {
         combinePositionY: crew.combinePositionY,
         nickname: crew.nickname,
         introduction: crew.introduction ?? '',
-        score: Profile.score(crew.activitySummaries, ActivityType.DJ_PNT),
-        registrationDate: Profile.registrationDate(crew.registrationDate ?? ''), // TODO: api 수정 후 ''제거
+        score: extractScore(crew.activitySummaries, ActivityType.DJ_PNT),
+        registrationDate: getRegistrationDate(crew.registrationDate ?? ''), // TODO: api 수정 후 ''제거
       }}
     />
   );

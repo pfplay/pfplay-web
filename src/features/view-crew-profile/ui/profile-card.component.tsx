@@ -3,12 +3,12 @@
 import Image from 'next/image';
 import { ReactNode } from 'react';
 import { Avatar } from '@/entities/avatar';
-import { Profile } from '@/entities/profile';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { Typography } from '../typography';
+import { Typography } from '@/shared/ui/components/typography';
+import { ProfileCardType } from '../model/profile.model';
 
 type ProfileCardProps = {
-  profile: Profile.Model;
+  profile: ProfileCardType;
   actions?: {
     avatar?: ReactNode;
     info?: ReactNode;

@@ -1,5 +1,5 @@
 import { Me } from '@/entities/me';
-import { Profile } from '@/entities/profile';
+import { extractScore } from '@/features/view-crew-profile';
 import { ActivityType, ObtainmentType } from '@/shared/api/http/types/@enums';
 import { AvatarBody } from '@/shared/api/http/types/users';
 
@@ -13,7 +13,7 @@ export const locked = (
   if (model.obtainableType === ObtainmentType.BASIC) return { is: false };
 
   const activityType = ObtainmentTypeToActivityTypeMap[model.obtainableType];
-  const myScore = Profile.score(me.activitySummaries, activityType);
+  const myScore = extractScore(me.activitySummaries, activityType);
   const isLocked = model.obtainableScore > myScore;
 
   return {
