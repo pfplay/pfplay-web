@@ -12,6 +12,7 @@ type Props = {
   processors: I18nProcessor[];
 };
 
+// 명시된 태그 외 다른 태그는 렌더링하지 않고 단순 문자열로 취급합니다.
 const RELIABLE_HTML_TAGS = ['b', 'strong', 'i', 'em', 'br'];
 
 export default function Trans({ i18nKey, processors }: Props) {
