@@ -1,7 +1,7 @@
 import { Fragment, ReactNode } from 'react';
 
 /**
- * \n이 포함된 문자를 렌더할 때 사용합니다.
+ * @deprecated
  */
 export const renderBr = (text: string) => {
   return text.split('\n').map((line, index, { length }) => {
@@ -14,6 +14,9 @@ export const renderBr = (text: string) => {
   });
 };
 
+/**
+ * @deprecated
+ */
 export const renderLi = (text: string) => {
   return text.split('\n').map((line, index) => {
     return <li key={`${text}_${line}_${index}`}>{line}</li>;
@@ -22,6 +25,7 @@ export const renderLi = (text: string) => {
 
 /**
  * 문자열 내의 $1, $2, ... 등의 변수를 치환합니다.
+ * @deprecated
  */
 export const replaceVar = (text: string, vars: Record<`$${number}`, ReactNode>): ReactNode => {
   if (Object.keys(vars).some((key) => !key.startsWith('$'))) {
