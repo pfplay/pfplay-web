@@ -1,9 +1,3 @@
-import { warnLog } from '@/shared/lib/functions/log/logger';
-import withDebugger from '@/shared/lib/functions/log/with-debugger';
-
-const logger = withDebugger(0);
-const log = logger(warnLog);
-
 export default function Singleton<T extends { new (...args: any[]): NonNullable<unknown> }>(
   target: T
 ): T {
@@ -11,7 +5,6 @@ export default function Singleton<T extends { new (...args: any[]): NonNullable<
 
   const newConstructor: any = function (...args: any[]) {
     if (instance) {
-      log(`Cannot instantiate a singleton twice, target class: ${target.name}`);
       return instance;
     }
 
