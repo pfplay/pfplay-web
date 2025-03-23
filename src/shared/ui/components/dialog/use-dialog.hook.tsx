@@ -1,7 +1,8 @@
-import { ReactNode, useMemo } from 'react';
+import { isValidElement, ReactNode, useMemo } from 'react';
 import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
 import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { isFragment } from '@/shared/lib/react/is-fragment';
 import Dialog, { DialogProps } from './dialog.component';
 import { useDialogContext } from './dialog.context';
 import { Typography } from '../typography';
@@ -33,12 +34,12 @@ export const useDialog = () => {
           Sub,
           Body: () => (
             <>
-              {typeof content === 'string' ? (
+              {isValidElement(content) && !isFragment(content) ? (
+                content
+              ) : (
                 <Typography type='body3' overflow='break-words'>
                   {content}
                 </Typography>
-              ) : (
-                content
               )}
 
               <Dialog.ButtonGroup>
@@ -61,12 +62,12 @@ export const useDialog = () => {
           Sub,
           Body: () => (
             <>
-              {typeof content === 'string' ? (
+              {isValidElement(content) && !isFragment(content) ? (
+                content
+              ) : (
                 <Typography type='body3' overflow='break-words'>
                   {content}
                 </Typography>
-              ) : (
-                content
               )}
 
               <Dialog.ButtonGroup>
