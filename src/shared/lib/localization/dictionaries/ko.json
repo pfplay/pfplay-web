@@ -69,7 +69,7 @@
       "connect_google": "구글 연동하기"
     },
     "title": {
-      "set_nickname": "$1 권한을 설정해주세요",
+      "set_nickname": "'**{{nickname}}**'의 권한을 설정해주세요",
       "current": "현재",
       "community_manager": "Community Manager",
       "moderator": "Moderator",
@@ -91,7 +91,7 @@
       "removed_by_admin": "관리자에 의해 퇴출되셨습니다.",
       "permanent_ban": "관리자에 의해 영구 퇴출되셨으며/n재입장은 불가합니다.",
       "start_chat": "무슨 얘기를 해볼까요?",
-      "remove_chat": "$1'가 '$2'의 채팅을 삭제했습니다."
+      "remove_chat": "'{{subject}}'가 '{{target}}'의 채팅을 삭제했습니다."
     }
   },
   "onboard": {
@@ -179,7 +179,7 @@
       "more_than_3m": "3분 이상 가능",
       "stop_editing": "지금까지 작성한 내용은 저장되지 않아요.\n수정을 그만하시겠어요?",
       "copy_completed": "복사 완료!",
-      "close_party": "현재 파티룸을 정말로 폐쇄하시겠어요?\n모든 데이터는 저장되지 않습니다.\n폐쇄하려면 '$1'을 입력해주세요.",
+      "close_party": "현재 파티룸을 정말로 폐쇄하시겠어요?\n모든 데이터는 저장되지 않습니다.\n폐쇄하려면 '{{match}}'을 입력해주세요.",
       "match_for_close_party": "확인",
       "no_longer_see_chat": "이 방에서 사용자의 채팅을 더이상 보지 않습니다 (나에게만 적용)",
       "party_rooms": "Party Rooms",
@@ -196,7 +196,7 @@
     "title": {
       "current_dj": "현재 디제잉",
       "dj_queue": "DJ 대기열",
-      "time_limit": "디제잉 1회당 제한시간 : $1분",
+      "time_limit": "디제잉 1회당 제한시간 : **{{minutes}}**분",
       "rule_guide": "디제잉 규칙 안내"
     },
     "btn": {
@@ -216,7 +216,7 @@
       "write_reason": "사유를 작성해주세요(최소 2자)",
       "deleted_queue_by_admin": "관리자에 의해 대기열에서 삭제되었습니다",
       "locked_queue_by_admin": "관리자에 의해 현재 DJ 대기열이 잠금 상태예요",
-      "skipped_song_by_admin": "어드민 정책에 따라 n분 이상의 곡은 자동으로 스킵됩니다",
+      "skipped_song_by_admin": "어드민 정책에 따라 {{count}}분 이상의 곡은 자동으로 스킵됩니다",
       "dj_in_order": "대기 중인 DJ 한명씩 순서대로 음악을 디제잉 합니다",
       "played_sequentially": "플레이리스트의 가장 상단에 있는 곡부터 순차적으로 한명당 하나씩 플레이됩니다",
       "display_count": "노래가 끝나면 디제잉하는 동안 받은 좋아요, 그랩, 싫어요를 카운팅해 보여드려요.",
@@ -246,7 +246,7 @@
       "my_playlist": "내 플레이리스트",
       "grabbed_song": "그랩한 곡",
       "song": "곡",
-      "n_song": "$1 곡"
+      "n_song": "{{count}} 곡"
     },
     "btn": {
       "add_playlist": "플레이리스트 추가",
@@ -259,7 +259,7 @@
     "para": {
       "enter_playlist_name": "플레이리스트 이름을 입력해주세요",
       "delete_playlist_confirm": "정말 선택 항목을 리스트에서 삭제하시겠어요?",
-      "delete_duplicated_list_confirm": "'$1'에 이미 존재하는 곡입니다!\n중복곡은 삭제하고 다시 담을까요?",
+      "delete_duplicated_list_confirm": "'{{playlist}}'플레이리스트에 이미 존재하는 곡입니다!\n중복곡은 삭제하고 다시 담을까요?",
       "no_list_yet": "아직 리스트가 없네요!\n취향의 곡을 담아보세요",
       "search_url": "Search for music and URL",
       "up_to_10_if_connect_wallet": "지갑을 연동하시면 10개까지 생성할 수 있어요!"
