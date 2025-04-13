@@ -4,7 +4,7 @@ import { PartyroomMutationFormModel } from '@/entities/partyroom-info';
 import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useLang } from '@/shared/lib/localization/lang.context';
-import { renderBr } from '@/shared/lib/localization/split-render';
+import { Trans, LineBreakProcessor } from '@/shared/lib/localization/renderer';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { PFEdit } from '@/shared/ui/icons';
@@ -27,7 +27,9 @@ export default function Trigger({ defaultValues, sub }: Props) {
       showCloseIcon: true,
       closeConfirm: () => {
         return openConfirmDialog({
-          content: renderBr(t.party.para.stop_editing),
+          content: (
+            <Trans i18nKey='party.para.stop_editing' processors={[new LineBreakProcessor()]} />
+          ),
         });
       },
       classNames: {

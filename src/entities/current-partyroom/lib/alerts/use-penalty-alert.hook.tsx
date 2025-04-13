@@ -1,7 +1,7 @@
 import { ReactNode, useCallback } from 'react';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { replaceVar } from '@/shared/lib/localization/split-render';
+import { Trans, LineBreakProcessor } from '@/shared/lib/localization/renderer';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
@@ -42,7 +42,7 @@ function useOpenPenaltyAlertDialog() {
       await openDialog((_, onCancel) => ({
         title: ({ defaultTypographyType, defaultClassName }) => (
           <Typography type={defaultTypographyType} className={defaultClassName}>
-            {getPenaltyTypeTitle(penaltyType)}
+            {penaltyTypeToTitleMap[penaltyType]}
           </Typography>
         ),
         Body: (
@@ -64,29 +64,11 @@ function useOpenPenaltyAlertDialog() {
   );
 }
 
-// TODO: i18n 적용
-function getPenaltyTypeTitle(penaltyType: PenaltyType) {
-  switch (penaltyType) {
-    case PenaltyType.CHAT_BAN_30_SECONDS:
-      return replaceVar('관리자에 의해 $1됩니다', {
-        $1: <b className='text-red-300'>30초간 채팅이 금지</b>,
-      });
-
-    case PenaltyType.PERMANENT_EXPULSION:
-      return replaceVar('관리자에 의해 $1되셨으며 $2합니다', {
-        $1: <b className='text-red-300'>영구 퇴출</b>,
-        $2: (
-          <>
-            <br />
-            <b className='text-red-300'>재입장은 불가능</b>
-          </>
-        ),
-      });
-    case PenaltyType.ONE_TIME_EXPULSION:
-      return replaceVar('관리자에 의해 $1되셨습니다', {
-        $1: <b className='text-red-300'>퇴출</b>,
-      });
-    default:
-      return '';
-  }
-}
+const penaltyTypeToTitleMap: Record<PenaltyType, ReactNode> = {
+  [PenaltyType.CHAT_BAN_30_SECONDS]: <Trans i18nKey='chat.para.muted_by_admin' />,
+  [PenaltyType.ONE_TIME_EXPULSION]: <Trans i18nKey='chat.para.removed_by_admin' />,
+  [PenaltyType.PERMANENT_EXPULSION]: (
+    <Trans i18nKey='chat.para.permanent_ban' processors={[new LineBreakProcessor()]} />
+  ),
+  [PenaltyType.CHAT_MESSAGE_REMOVAL]: null,
+};

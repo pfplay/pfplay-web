@@ -7,7 +7,7 @@ import {
 } from '@/features/partyroom/unlock-djing-queue';
 import { QueueStatus } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { replaceVar } from '@/shared/lib/localization/split-render';
+import { BoldProcessor, Trans, VariableProcessor } from '@/shared/lib/localization/renderer';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button, ButtonProps } from '@/shared/ui/components/button';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';
@@ -143,13 +143,15 @@ export default function Body({ onCancel }: Props) {
         style={{ width: `calc(100% - ${RIGHT_PAD}px)` }}
       >
         <Typography type='caption1'>
-          {replaceVar(t.dj.title.time_limit, {
-            $1: (
-              <Typography type='detail2' as='span' className='text-red-300'>
-                N
-              </Typography>
-            ),
-          })}
+          <Trans
+            i18nKey='dj.title.time_limit'
+            processors={[
+              new BoldProcessor(),
+              new VariableProcessor({
+                minutes: 'N', // TODO: 실제 시간 표시
+              }),
+            ]}
+          />
         </Typography>
 
         {isMeInQueue ? <UnregisterButton /> : <RegisterButton />}

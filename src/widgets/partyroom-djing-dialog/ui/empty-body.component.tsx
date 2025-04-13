@@ -1,5 +1,5 @@
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { renderBr } from '@/shared/lib/localization/split-render';
+import { Trans, LineBreakProcessor } from '@/shared/lib/localization/renderer';
 import { TextButton } from '@/shared/ui/components/text-button';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
@@ -21,7 +21,7 @@ export default function EmptyBody({ onCancel }: { onCancel: () => void | undefin
       <div className='h-[388px] flexRowCenter'>
         <div className='flexColCenter gap-[24px]'>
           <Typography type='body2' className='text-center'>
-            {renderBr(t.dj.para.no_dj_crew)}
+            <Trans i18nKey='dj.para.no_dj_crew' processors={[new LineBreakProcessor()]} />
           </Typography>
 
           <RegisterButton />

@@ -7,7 +7,7 @@ import { TracksInPlaylist } from '@/features/playlist/list-tracks';
 import { RemovePlaylistButton } from '@/features/playlist/remove';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { replaceVar } from '@/shared/lib/localization/split-render';
+import { Trans, VariableProcessor } from '@/shared/lib/localization/renderer';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { Drawer, DrawerProps } from '@/shared/ui/components/drawer';
@@ -108,9 +108,14 @@ export default function MyPlaylist() {
         <PlaylistListItem
           key={playlistDrawer.selectedPlaylist.id}
           title={playlistDrawer.selectedPlaylist.name}
-          InfoText={replaceVar(t.playlist.title.n_song, {
-            $1: playlistDrawer.selectedPlaylist.musicCount,
-          })}
+          InfoText={
+            <Trans
+              i18nKey='playlist.title.n_song'
+              processors={[
+                new VariableProcessor({ count: playlistDrawer.selectedPlaylist.musicCount }),
+              ]}
+            />
+          }
         />
 
         <div className='space-y-3 [&>:first-child]:pt-3'>
