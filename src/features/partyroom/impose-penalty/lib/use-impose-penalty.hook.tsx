@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { GradeType, PenaltyType } from '@/shared/api/http/types/@enums';
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { replaceVar } from '@/shared/lib/localization/split-render';
+import { Trans, LineBreakProcessor } from '@/shared/lib/localization/renderer';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Input } from '@/shared/ui/components/input';
@@ -30,7 +30,7 @@ export default function useImposePenalty() {
     return openDialog((onOk, onClose) => ({
       title: ({ defaultTypographyType, defaultClassName }) => (
         <Typography type={defaultTypographyType} className={defaultClassName}>
-          {getPenaltyTypeTitle(penaltyType)}
+          {penaltyTypeToTitleMap[penaltyType]}
         </Typography>
       ),
       Sub: (
@@ -88,17 +88,11 @@ export default function useImposePenalty() {
   };
 }
 
-// TODO: i18n 적용
-function getPenaltyTypeTitle(penaltyType: PenaltyType) {
-  return penaltyType === PenaltyType.CHAT_BAN_30_SECONDS
-    ? replaceVar('$1합니다', {
-        $1: <b className='text-red-300'>30초간 채팅을 금지</b>,
-      })
-    : penaltyType === PenaltyType.ONE_TIME_EXPULSION
-      ? replaceVar('즉시 퇴출되며 $1합니다', {
-          $1: <b className='text-red-300'>재입장이 가능</b>,
-        })
-      : replaceVar('즉시 퇴출되며 $1합니다', {
-          $1: <b className='text-red-300'>재입장이 불가능</b>,
-        });
-}
+const penaltyTypeToTitleMap: Record<PenaltyType, ReactNode> = {
+  [PenaltyType.CHAT_BAN_30_SECONDS]: <Trans i18nKey='chat.para.muted_by_admin' />,
+  [PenaltyType.ONE_TIME_EXPULSION]: <Trans i18nKey='chat.para.removed_by_admin' />,
+  [PenaltyType.PERMANENT_EXPULSION]: (
+    <Trans i18nKey='chat.para.permanent_ban' processors={[new LineBreakProcessor()]} />
+  ),
+  [PenaltyType.CHAT_MESSAGE_REMOVAL]: null,
+};

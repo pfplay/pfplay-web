@@ -9,13 +9,13 @@ import type Dictionary from '../dictionaries/en.json';
 
 type Props = {
   i18nKey: Leaves<typeof Dictionary> | keyof typeof __dev__preTranslation;
-  processors: I18nProcessor[];
+  processors?: I18nProcessor[];
 };
 
 // 명시된 태그 외 다른 태그는 렌더링하지 않고 단순 문자열로 취급합니다.
 const RELIABLE_HTML_TAGS = ['b', 'strong', 'i', 'em', 'br'];
 
-export default function Trans({ i18nKey, processors }: Props) {
+export default function Trans({ i18nKey, processors = [] }: Props) {
   const i18n = useI18n();
 
   const t: string | undefined =

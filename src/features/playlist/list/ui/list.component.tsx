@@ -1,8 +1,7 @@
 'use client';
 import { usePlaylistAction } from '@/entities/playlist';
 import { Playlist } from '@/shared/api/http/types/playlists';
-import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { replaceVar } from '@/shared/lib/localization/split-render';
+import { Trans, VariableProcessor } from '@/shared/lib/localization/renderer';
 import ListItem from './list-item.component';
 
 type Props = {
@@ -10,7 +9,6 @@ type Props = {
 };
 
 const List = ({ onClickItem }: Props) => {
-  const t = useI18n();
   const playlistAction = usePlaylistAction();
 
   return (
@@ -19,7 +17,12 @@ const List = ({ onClickItem }: Props) => {
         <ListItem
           key={playlist.id}
           title={playlist.name}
-          InfoText={replaceVar(t.playlist.title.n_song, { $1: playlist.musicCount })}
+          InfoText={
+            <Trans
+              i18nKey='playlist.title.n_song'
+              processors={[new VariableProcessor({ count: playlist.musicCount })]}
+            />
+          }
           onClick={() => onClickItem?.(playlist)}
         />
       ))}

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { renderBr, replaceVar } from '@/shared/lib/localization/split-render';
-import { getNodeText } from '@/shared/lib/react/get-node-text';
+import { Trans, LineBreakProcessor, VariableProcessor } from '@/shared/lib/localization/renderer';
 import { useDialog } from '@/shared/ui/components/dialog';
 import Dialog from '@/shared/ui/components/dialog/dialog.component';
 import { Input } from '@/shared/ui/components/input';
@@ -33,13 +32,13 @@ function useOpenPartyroomCloseConfirmDialog() {
     return openDialog<boolean>((onOk) => ({
       title: ({ defaultTypographyType, defaultClassName }) => (
         <Typography type={defaultTypographyType} className={defaultClassName}>
-          {renderBr(
-            getNodeText(
-              replaceVar(t.party.para.close_party, {
-                $1: matchForCloseParty,
-              })
-            )
-          )}
+          <Trans
+            i18nKey='party.para.close_party'
+            processors={[
+              new LineBreakProcessor(),
+              new VariableProcessor({ match: matchForCloseParty }),
+            ]}
+          />
         </Typography>
       ),
       Body: () => {

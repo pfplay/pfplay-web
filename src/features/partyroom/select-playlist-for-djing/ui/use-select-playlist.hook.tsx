@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { replaceVar } from '@/shared/lib/localization/split-render';
+import { Trans, VariableProcessor } from '@/shared/lib/localization/renderer';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import Dialog from '@/shared/ui/components/dialog/dialog.component';
@@ -40,8 +40,10 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
       title: t.dj.btn.select_dj_playlist,
       Sub: (
         <Typography type='detail1' className='text-center text-gray-300'>
-          {/* TODO: replace $1 with the actual number of skipped songs */}
-          {replaceVar(t.dj.para.skipped_song_by_admin, { $1: 'n' })}
+          <Trans
+            i18nKey='dj.para.skipped_song_by_admin'
+            processors={[new VariableProcessor({ count: 'n' })]}
+          />
         </Typography>
       ),
       Body: () => {

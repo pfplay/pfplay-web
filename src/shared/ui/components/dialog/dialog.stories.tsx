@@ -4,7 +4,6 @@ import type { Meta, StoryFn } from '@storybook/react';
 import { cn } from '@/shared/lib/functions/cn';
 import { delay } from '@/shared/lib/functions/delay';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
-import { replaceVar } from '@/shared/lib/localization/split-render';
 import { Dialog, useDialog } from '.';
 import { Button } from '../button';
 import { FormItem } from '../form-item';
@@ -46,9 +45,7 @@ export const Fully: Story = () => {
     return openDialog<number>((onOk, onCancel) => ({
       title: ({ defaultTypographyType, defaultClassName }) => (
         <Typography type={defaultTypographyType} className={defaultClassName}>
-          {replaceVar('확인을 누르면 $1을 반환합니다', {
-            $1: <b className='text-red-300'>{RESOLVE_VALUE}</b>,
-          })}
+          확인을 누르면 <b>{RESOLVE_VALUE}</b>을 반환해요.
         </Typography>
       ),
       Sub: (

@@ -6,7 +6,7 @@ export default class VariableProcessor implements I18nProcessor {
 
   public process(t: string): string {
     return t.replace(/{{(.*?)}}/g, (_, key) => {
-      return this.variables[key] ? String(this.variables[key]) : '';
+      return key in this.variables ? String(this.variables[key]) : '';
     });
   }
 }

@@ -69,7 +69,7 @@
       "connect_google": "Connect with Google"
     },
     "title": {
-      "set_nickname": "Please configure the $1 permissions",
+      "set_nickname": "Please configure the '**{{nickname}}**'s permissions",
       "current": "Current",
       "community_manager": "Community Manager",
       "moderator": "Moderator",
@@ -91,7 +91,7 @@
       "removed_by_admin": "You have been removed by an admin.",
       "permanent_ban": "You have been permanently removed by an admin and can’t rejoin.",
       "start_chat": "What shall we talk about?",
-      "remove_chat": "$2''s chat was removed by '$1'."
+      "remove_chat": "'{{target}}'s chat was removed by '{{subject}}'."
     }
   },
   "onboard": {
@@ -154,7 +154,7 @@
       "name_in_use": "The party name is already in use",
       "select": "(Select)",
       "min": "Minutes",
-      "cancel_confirm": "Your changes are not saved. \nDo you want to stop creating the party?",
+      "cancel_confirm": "Your changes are not saved.\nDo you want to stop creating the party?",
       "noti_djing_limit": "DJing time limit per session is at least 3 minutes",
       "noti_web_address": "Please enter your party room's web address"
     },
@@ -179,7 +179,7 @@
       "more_than_3m": "Available for more than 3 minutes",
       "stop_editing": "The content written so far is not saved.\nWould you like to stop editing?",
       "copy_completed": "Copied!",
-      "close_party": "Are you sure you want to close the current party room?\nAll data will not be saved.\nPlease enter '$1' for close.",
+      "close_party": "Are you sure you want to close the current party room?\nAll data will not be saved.\nPlease enter '{{match}}' for close.",
       "match_for_close_party": "Confirmed",
       "no_longer_see_chat": "You will no longer see the user's chat in this room (applies to me only)",
       "party_rooms": "Party Rooms",
@@ -196,7 +196,7 @@
     "title": {
       "current_dj": "Now DJing",
       "dj_queue": "DJ queue",
-      "time_limit": "DJing time limit per session: $1 minutes",
+      "time_limit": "DJing time limit per session: **{{minutes}}** minutes",
       "rule_guide": "DJing rule guide"
     },
     "btn": {
@@ -216,7 +216,7 @@
       "write_reason": "Please provide a reason (at least 2 characters)",
       "deleted_queue_by_admin": "You have been removed from the queue by the administrator",
       "locked_queue_by_admin": "The current DJ queue is locked by an admin",
-      "skipped_song_by_admin": "According to the admin policy, songs longer than $1 minutes will be automatically skipped",
+      "skipped_song_by_admin": "According to the admin policy, songs longer than {{count}} minutes will be automatically skipped",
       "dj_in_order": "DJing one person at a time from the waiting list, in order",
       "played_sequentially": "Songs from the top of the playlist are played sequentially, one song per person",
       "display_count": "Once the song ends, we'll display a count of the Like, Grab, and Boo received during your DJ set.",
@@ -246,7 +246,7 @@
       "my_playlist": "My playlist",
       "grabbed_song": "Grabbed song",
       "song": "song",
-      "n_song": "$1 songs"
+      "n_song": "{{count}} songs"
     },
     "btn": {
       "add_playlist": "Add playlist",
@@ -259,7 +259,7 @@
     "para": {
       "enter_playlist_name": "Please provide a name for your playlist",
       "delete_playlist_confirm": "Are you sure you want to delete the selected item from the list?",
-      "delete_duplicated_list_confirm": "'$1' already has this song!\nShould we remove the duplicate and add it again?",
+      "delete_duplicated_list_confirm": "The '{{playlist}}' playlist already has this song!\nShould we remove the duplicate and add it again?",
       "no_list_yet": "There's no list yet! Try to fill it with your favorite songs.",
       "search_url": "Search for music and URL",
       "up_to_10_if_connect_wallet": "If you connect your wallet, you can create up to 10!"

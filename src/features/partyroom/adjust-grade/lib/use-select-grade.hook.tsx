@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { GRADE_TYPE_LABEL } from '@/entities/current-partyroom';
 import { GradeType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { replaceVar } from '@/shared/lib/localization/split-render';
+import { Trans, BoldProcessor, VariableProcessor } from '@/shared/lib/localization/renderer';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Select } from '@/shared/ui/components/select';
 import { Tag } from '@/shared/ui/components/tag';
@@ -24,9 +24,13 @@ export function useSelectGrade() {
     return openDialog<GradeType>((onOk, onClose) => ({
       title: ({ defaultTypographyType, defaultClassName }) => (
         <Typography type={defaultTypographyType} className={defaultClassName}>
-          {replaceVar(t.auth.title.set_nickname, {
-            $1: <span className='text-red-300'>{`'${targetNickname}'`}</span>,
-          })}
+          <Trans
+            i18nKey='auth.title.set_nickname'
+            processors={[
+              new BoldProcessor(),
+              new VariableProcessor({ nickname: `'${targetNickname}'` }),
+            ]}
+          />
         </Typography>
       ),
       Body: () => {

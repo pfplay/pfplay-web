@@ -1,6 +1,6 @@
 import { AvatarEditDone, ProfileAvatarEditPanel } from '@/features/edit-profile-avatar';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { renderBr } from '@/shared/lib/localization/split-render';
+import { Trans, LineBreakProcessor } from '@/shared/lib/localization/renderer';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
@@ -46,7 +46,9 @@ export default function useOpenEditProfileAvatarDialog() {
       ),
       closeConfirm: () => {
         return openConfirmDialog({
-          content: renderBr(t.party.para.stop_editing),
+          content: (
+            <Trans i18nKey='party.para.stop_editing' processors={[new LineBreakProcessor()]} />
+          ),
         });
       },
     }));
