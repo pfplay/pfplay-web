@@ -4,7 +4,7 @@
 
 ### Work Process
 
-> Last Update (24.03.24)
+> Last Update (25.05.11)
 
 <div align="center">
   <a aria-label="노션 작업 보드" href="https://www.notion.so/pfplay/468dd7cebdaa4e94924131727bee1440?v=ec525f34140d43ec92b311f3a2a53617&pvs=4">
@@ -16,15 +16,13 @@
 </div>
 
 1. [노션 작업 보드](https://www.notion.so/pfplay/468dd7cebdaa4e94924131727bee1440?v=ec525f34140d43ec92b311f3a2a53617&pvs=4)에 티켓을 등록합니다.
-2. 최신 develop 브랜치 베이스로 `feature/{Ticket-Number}` 브랜치를 따서 작업합니다.
+2. 최신 development 브랜치 베이스로 `feature/{Ticket-Number}` 브랜치를 따서 작업합니다.
 
 ### Directory Structure
 
-> Last Update (24.03.24)
+> Last Update (25.05.11)
 
 FSD(Frontend Structure Design) 아키텍쳐를 기반으로 작업합니다.
-<br />
-상세 내용은 [FSD 문서]("./FSD.md")를 참고해주세요.
 
 ### Color Theme
 
@@ -44,3 +42,9 @@ FSD(Frontend Structure Design) 아키텍쳐를 기반으로 작업합니다.
 - 그 외 이미지들
   - ext - `png|jpg|jpeg|gif|...`
   - `/public/images/` 디렉터리에 넣습니다.
+
+## react-query
+
+> Last Update (25.05.11)
+
+Please refer to [REACT_QUERY.md](./REACT_QUERY.md).
