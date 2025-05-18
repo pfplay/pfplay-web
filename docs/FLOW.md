@@ -49,9 +49,7 @@ sequenceDiagram
     actor User
     participant Layout as PartyroomLayout
     participant PCP as PartyroomConnectionProvider
-    participant FetchMe as useFetchMe (Hook)
     participant PClient as PartyroomClient (Entity)
-    participant SClient as SocketClient (Shared API)
     participant WSServer as WebSocket Server
     participant EnterHook as useEnterPartyroom (Feature Hook)
     participant ExitHook as useExitPartyroom (Feature Hook)
@@ -59,16 +57,10 @@ sequenceDiagram
     participant APIServer as Partyroom API Server
 
     %% Initial Connection (App Load)
-    PCP->>FetchMe: Get user data
-    FetchMe->>APIServer: GET /me
-    APIServer-->>FetchMe: User data / null
+    PCP->>PClient: 사용자 인증 확인 및 웹소켓 연결 시도
     alt User Authenticated
-        PCP->>PClient: connect()
-        PClient->>SClient: connect()
-        SClient->>SClient: client.activate()
-        SClient->>WSServer: WebSocket Connect Request
-        WSServer-->>SClient: Connected
-        SClient-->>PClient: Connected
+        PClient->>WSServer: WebSocket Connect Request
+        WSServer-->>PClient: Connected
         PClient-->>PCP: Connected
     else User Not Authenticated
         PCP->>PClient: (No connect call)
@@ -76,8 +68,7 @@ sequenceDiagram
 
     %% Partyroom Entry (User navigates to /parties/(room)/[id])
     User->>Layout: Navigate to Partyroom Page (e.g., /parties/(room)/123)
-    Layout->>Layout: partyroomId = 123
-    Layout->>EnterHook: enter()
+    Layout->>EnterHook: enter(partyroomId)
 
     EnterHook->>PClient: onConnect(callback, {once: true})
     alt WebSocket Already Connected
@@ -87,69 +78,55 @@ sequenceDiagram
     end
 
     activate EnterHook
-    EnterHook->>APIServer: POST /partyrooms/{partyroomId}/enter (via useEnterPartyroomMutation)
-    APIServer-->>EnterHook: EnterResponse (crewId, gradeType)
+    EnterHook->>APIServer: 파티룸 입장 및 정보 로드 (enter, setup-info, notice)
+    APIServer-->>EnterHook: Partyroom Data
 
-    EnterHook->>APIServer: GET /partyrooms/{partyroomId}/setup-info
-    APIServer-->>EnterHook: SetupInfo (playback, reaction, crews, etc.)
-    EnterHook->>APIServer: GET /partyrooms/{partyroomId}/notice
-    APIServer-->>EnterHook: Notice content
+    EnterHook->>CPStore: initPartyroom(Partyroom Data)
 
-    EnterHook->>CPStore: initPartyroom({id, me, playback, crews, ...})
-    CPStore->>CPStore: Update state
-
-    EnterHook->>PClient: subscribe("/sub/partyrooms/123", handleEvent)
-    PClient->>SClient: subscribe("/sub/partyrooms/123", handleEvent)
-    SClient->>WSServer: STOMP SUBSCRIBE /sub/partyrooms/123
-    WSServer-->>SClient: (Subscription Confirmed)
-    SClient-->>PClient: (Subscription Active)
+    EnterHook->>PClient: subscribeToPartyroomEvents("/sub/partyrooms/123")
+    PClient->>WSServer: STOMP SUBSCRIBE
+    WSServer-->>PClient: Subscription Confirmed
     deactivate EnterHook
 
-    WSServer->>SClient: WebSocket Message (e.g., new chat)
-    SClient->>PClient: handleEvent(message)
-    PClient->>CPStore: (via handleEvent) Update state (e.g., appendChatMessage)
+    WSServer->>PClient: WebSocket Message (e.g., new chat)
+    PClient->>CPStore: handlePartyroomEvent(message)
     CPStore->>Layout: (Reactively) Update UI
 
     %% Partyroom Exit (User leaves page or closes tab)
     User->>Layout: Navigate away / Close tab
     Layout->>ExitHook: exit()
     activate ExitHook
-    ExitHook->>CPStore: getState() (check exitedOnBackend)
     alt Not exited on backend yet
-        ExitHook->>APIServer: POST /partyrooms/{partyroomId}/exit (via useExitPartyroomMutation)
+        ExitHook->>APIServer: POST /partyrooms/{partyroomId}/exit
         APIServer-->>ExitHook: (Success)
     end
 
-    ExitHook->>PClient: unsubscribeCurrentRoom()
-    PClient->>SClient: unsubscribe("/sub/partyrooms/123")
-    SClient->>WSServer: STOMP UNSUBSCRIBE /sub/partyrooms/123
-    WSServer-->>SClient: (Unsubscription Confirmed)
+    ExitHook->>PClient: unsubscribeFromPartyroomEvents()
+    PClient->>WSServer: STOMP UNSUBSCRIBE
+    WSServer-->>PClient: (Unsubscription Confirmed)
 
     ExitHook->>CPStore: resetPartyroomStore()
-    CPStore->>CPStore: Reset state
     deactivate ExitHook
 
-    alt User closes tab and SocketClient detects WebSocket close
-        SClient->>SClient: handleDisconnect() (onWebSocketClose)
-        SClient->>SClient: unsubscribeAll()
-        SClient->>SClient: stopHeartbeat()
+    alt User closes tab (WebSocket connection drops)
+        PClient->>WSServer: WebSocket Disconnected
+        PClient->>PClient: Handle disconnect (unsubscribe all, cleanup)
     end
 ```
 
 **설명:**
 
 1.  **초기 연결:**
-    - `PartyroomConnectionProvider`가 사용자 인증 상태를 확인합니다.
-    - 인증된 사용자면 `PartyroomClient`를 통해 `SocketClient`에게 웹소켓 연결을 지시합니다.
+    - `PartyroomConnectionProvider` (PCP)가 사용자 인증 상태를 확인하고, 인증된 경우 `PartyroomClient`를 통해 웹소켓 연결을 시도합니다.
 2.  **파티룸 입장:**
-    - 사용자가 파티룸 페이지로 이동하면 `PartyroomLayout`에서 `useEnterPartyroom` 훅의 `enter` 함수를 호출합니다.
-    - `enter` 함수는 웹소켓 연결을 확인한 후, HTTP API로 파티룸 입장을 요청하고, 성공 시 파티룸 설정 정보를 받아 `CurrentPartyroomStore`를 초기화합니다.
-    - 이후 `PartyroomClient.subscribe`를 호출하여 해당 파티룸의 웹소켓 메시지 구독을 시작합니다.
-    - 웹소켓 서버로부터 메시지가 오면 `handleEvent`를 통해 `CurrentPartyroomStore`가 업데이트되고, UI가 반응적으로 변경됩니다.
+    - 사용자가 파티룸 페이지로 이동하면 `PartyroomLayout`이 `useEnterPartyroom` 훅의 `enter` 함수를 호출합니다.
+    - `enter` 함수는 웹소켓 연결을 확인 후, API 서버에서 파티룸 입장 처리 및 필요한 데이터(설정 정보, 공지 등)를 가져와 `CurrentPartyroomStore`를 초기화합니다.
+    - 이후 `PartyroomClient`를 통해 해당 파티룸의 실시간 이벤트 구독을 시작합니다.
+    - 웹소켓 서버로부터 이벤트 메시지가 수신되면 `PartyroomClient`가 이를 처리하여 `CurrentPartyroomStore`를 업데이트하고, UI가 이에 반응하여 변경됩니다.
 3.  **파티룸 퇴장:**
-    - 사용자가 페이지를 벗어나면 `PartyroomLayout`에서 `useExitPartyroom` 훅의 `exit` 함수를 호출합니다.
-    - `exit` 함수는 HTTP API로 퇴장을 알리고, `PartyroomClient.unsubscribeCurrentRoom`을 호출하여 구독을 해제하며, `CurrentPartyroomStore`를 리셋합니다.
-    - 브라우저 탭 종료 등으로 웹소켓 연결 자체가 끊어지면 `SocketClient` 내부의 `handleDisconnect` 로직이 모든 구독을 해제합니다.
+    - 사용자가 페이지를 벗어나면 `PartyroomLayout`이 `useExitPartyroom` 훅의 `exit` 함수를 호출합니다.
+    - `exit` 함수는 필요한 경우 API 서버에 퇴장을 알리고, `PartyroomClient`를 통해 이벤트 구독을 해제하며, `CurrentPartyroomStore`를 초기 상태로 리셋합니다.
+    - 브라우저 탭 종료 등으로 웹소켓 연결이 직접 끊어지는 경우, `PartyroomClient`가 이를 감지하여 모든 구독을 해제하고 정리 작업을 수행합니다.
 
 ## 다이어그램 3: 일반적인 데이터 조회 흐름 (예: 파티룸 상세 정보)
 
