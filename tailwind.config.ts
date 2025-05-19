@@ -1,3 +1,4 @@
+import scrollbarHide from 'tailwind-scrollbar-hide';
 import { Config } from 'tailwindcss';
 import { PluginAPI } from 'tailwindcss/types/config';
 import theme from './src/shared/ui/foundation/theme';
@@ -13,7 +14,7 @@ const tailwindConfig: Config = {
     },
   },
   plugins: [
-    require('tailwind-scrollbar-hide'),
+    scrollbarHide,
 
     function ({ addVariant }: PluginAPI) {
       addVariant('child-form-labels', '& label [data-custom-role="form-item-title"]');
