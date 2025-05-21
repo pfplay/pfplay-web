@@ -9,10 +9,10 @@
   </div>
   <br />
   <div>
-    <a aria-label="Node Version" href="https://chequer.slack.com/archives/C046888P2Q0">
+    <a aria-label="Node Version" href="https://nodejs.org/en">
         <img alt="" src="https://img.shields.io/badge/node->=20.16.0-339933?logo=nodedotjs">
     </a>
-    <a aria-label="Npm Version" href="https://chequer.slack.com/archives/C046888P2Q0">
+    <a aria-label="Npm Version" href="https://classic.yarnpkg.com/en/">
         <img alt="" src="https://img.shields.io/badge/yarn->=1.22.22-237397?logo=yarn">
     </a>
   </div>
@@ -38,14 +38,14 @@
 
 ## 🎯 Overview
 
-PFPlay는 Web3 기술을 활용한 소셜 뮤직 플랫폼입니다.
+PFPlay는 NFT와 음악 디제잉을 결합한 소셜 플랫폼을 만들어 PFP NFT의 새로운 사용처가 됩니다. 다양한 커뮤니티를 포용하며, 음악을 직접 스트리밍하거나 비슷한 취향을 공유하는 사람들과 연결되어 새로운 음악 디깅 문화를 만들어가는 독특하고 몰입감 있는 경험을 제공합니다.
 
 ### 주요 기능
 
 - NFT 지갑 연동 및 프로필 설정
 - 파티룸 생성 및 참여
 - 실시간 음악 스트리밍
-- Chatting 기능을 포함한 소셜 인터랙션
+- 채팅 기능을 포함한 소셜 인터랙션
 
 ### 배포 환경
 
@@ -102,6 +102,7 @@ src/
 - [wagmi](https://wagmi.sh/) - 이더리움 데이터 처리 및 지갑 연동
 - [WalletConnect](https://walletconnect.com/) - 크로스 플랫폼 지갑 연결
 - [Alchemy SDK](https://www.alchemy.com/) - NFT 데이터 조회
+- [Rainbow kit](https://rainbowkit.com/docs/installation) - N직관적이고 커스터마이징 가능한 지갑 연결 UI 라이브러리
 
 ### State Management & Data Fetching
 
@@ -127,6 +128,7 @@ src/
 ### Styling
 
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Headless UI](https://headlessui.com/)
 
 ## 🔑 Environment Setup
 
