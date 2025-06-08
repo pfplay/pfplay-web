@@ -93,25 +93,25 @@ src/
 
 ### Core
 
-- [Next.js 14](https://nextjs.org/)
-- [React 18](https://react.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
+- Next.js 14
+- React 18
+- TypeScript
 
 ### Web3 Integration
 
 - [wagmi](https://wagmi.sh/) - 이더리움 데이터 처리 및 지갑 연동
 - [WalletConnect](https://walletconnect.com/) - 크로스 플랫폼 지갑 연결
 - [Alchemy SDK](https://www.alchemy.com/) - NFT 데이터 조회
-- [Rainbow kit](https://rainbowkit.com/docs/installation) - N직관적이고 커스터마이징 가능한 지갑 연결 UI 라이브러리
+- [Rainbow kit](https://rainbowkit.com/docs/installation) - 직관적이고 커스터마이징 가능한 지갑 연결 UI 라이브러리
 
-### State Management & Data Fetching
+### State Management
 
-- [TanStack Query](https://tanstack.com/query/latest) - 서버 상태 관리
-- [Zustand](https://zustand-demo.pmnd.rs/) - 클라이언트 상태 관리
+- TanStack Query
+- Zustand
 
 ### Development Tools
 
-- [Storybook](https://storybook.js.org/) - 컴포넌트 개발 및 문서화
+- Storybook - 컴포넌트 개발 및 문서화
 
   ```bash
   # Storybook 실행
@@ -121,9 +121,9 @@ src/
   yarn build-storybook
   ```
 
-- [ESLint](https://eslint.org/) - 코드 품질 관리
-- [Prettier](https://prettier.io/) - 코드 포맷팅
-- [Jest](https://jestjs.io/) - 유닛 테스트
+- ESLint - 코드 품질 관리
+- Prettier - 코드 포맷팅
+- Jest - 유닛 테스트
 
 ### Styling
 
