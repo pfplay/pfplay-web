@@ -1,38 +1,38 @@
-<div align="center">
-  <img src="./public/images/Logo/Symbol_medium_red.png" alt="Logo" width="100px">
+<div style="text-align: center">
+  <img style="display: block; margin: 0 auto;" src="./public/images/Logo/Symbol_medium_red.png" alt="Logo" width="100px">
   <br />
   <br />
-  <div align="center">
+  <div style="display: flex; justify-content: center; gap: 4px;">
     <img alt="badge_react" src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black" />
     <img alt="badge_typescript" src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
     <img alt="badge_nextjs" src="https://img.shields.io/badge/NEXT.JS-000000?style=for-the-badge&logo=next.js&logoColor=white" />
   </div>
   <br />
-  <div align="center">
+  <div style="display: flex; justify-content: center; gap: 4px;">
     <a aria-label="Node Version" href="https://nodejs.org/en">
-        <img alt="" src="https://img.shields.io/badge/node->=20.16.0-339933?logo=nodedotjs">
+      <img alt="" src="https://img.shields.io/badge/node->=20.16.0-339933?logo=nodedotjs">
     </a>
     <a aria-label="Npm Version" href="https://classic.yarnpkg.com/en/">
-        <img alt="" src="https://img.shields.io/badge/yarn->=1.22.22-237397?logo=yarn">
+      <img alt="" src="https://img.shields.io/badge/yarn->=1.22.22-237397?logo=yarn">
     </a>
   </div>
   <br />
-  <div align="center">
+  <div style="display: flex; justify-content: center; gap: 4px;">
     <a aria-label="Front Slack Channel" href="https://pfplay.slack.com/archives/C051ZQSV205">
-        <img alt="" src="https://img.shields.io/badge/slack-4A154B?logo=slack">
+      <img alt="" src="https://img.shields.io/badge/slack-4A154B?logo=slack">
     </a>
     <a aria-label="Front Notion Notion" href="https://www.notion.so/pfplay/FE-5e7cd836945f47b98c49e2c66e4bf949?pvs=4">
-        <img alt="" src="https://img.shields.io/badge/wiki-black?logo=notion">
+      <img alt="" src="https://img.shields.io/badge/wiki-black?logo=notion">
     </a>
     <a aria-label="Figma" href="https://www.figma.com/file/9I5PR6OqN8cHJ7WVTOKe00/PFPlay-GUI-%EC%84%A4%EA%B3%84%EC%84%9C-%ED%95%A9%EB%B3%B8?type=design&node-id=1%3A17&mode=design&t=v01tSWKTB86CkcfO-1">
-        <img alt="" src="https://img.shields.io/badge/Figma-black?logo=figma&logoColor=F24E1E">
+      <img alt="" src="https://img.shields.io/badge/Figma-black?logo=figma&logoColor=F24E1E">
     </a>
   </div>
-  <h1 align="center">PFPlay</h1>
-  <p align="center">
-      우리는 PFP NFT와 디제잉을 결합한 소셜 플랫폼을 만들어 새로운 디깅 문화를 만들어갑니다.
-      <br />
-      This is <strong>frontend repository</strong> for <strong>PFPlay</strong>.
+  <h1 style="text-align: center">PFPlay</h1>
+  <p style="text-align: center">
+    우리는 PFP NFT와 디제잉을 결합한 소셜 플랫폼을 만들어 새로운 디깅 문화를 만들어갑니다.
+    <br />
+    This is <strong>frontend repository</strong> for <strong>PFPlay</strong>.
   </p>
 </div>
 
