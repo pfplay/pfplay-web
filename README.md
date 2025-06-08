@@ -1,14 +1,14 @@
-<div style="text-align: center">
+<div align="center">
   <img src="./public/images/Logo/Symbol_medium_red.png" alt="Logo" width="100px">
   <br />
   <br />
-  <div>
+  <div align="center">
     <img alt="badge_react" src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black" />
     <img alt="badge_typescript" src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
     <img alt="badge_nextjs" src="https://img.shields.io/badge/NEXT.JS-000000?style=for-the-badge&logo=next.js&logoColor=white" />
   </div>
   <br />
-  <div>
+  <div align="center">
     <a aria-label="Node Version" href="https://nodejs.org/en">
         <img alt="" src="https://img.shields.io/badge/node->=20.16.0-339933?logo=nodedotjs">
     </a>
@@ -17,7 +17,7 @@
     </a>
   </div>
   <br />
-  <div>
+  <div align="center">
     <a aria-label="Front Slack Channel" href="https://pfplay.slack.com/archives/C051ZQSV205">
         <img alt="" src="https://img.shields.io/badge/slack-4A154B?logo=slack">
     </a>
@@ -28,8 +28,8 @@
         <img alt="" src="https://img.shields.io/badge/Figma-black?logo=figma&logoColor=F24E1E">
     </a>
   </div>
-  <h1>PFPlay</h1>
-  <p>
+  <h1 align="center">PFPlay</h1>
+  <p align="center">
       우리는 PFP NFT와 디제잉을 결합한 소셜 플랫폼을 만들어 새로운 디깅 문화를 만들어갑니다.
       <br />
       This is <strong>frontend repository</strong> for <strong>PFPlay</strong>.
