@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { useSuspenseFetchMe } from '@/entities/me';
 import { useFetchAvatarBodies } from '@/features/edit-profile-avatar/api/use-fetch-avatar-bodies.query';
 import { AvatarBody } from '@/shared/api/http/types/users';
@@ -10,6 +10,7 @@ export default function SelectedAvatarStateProvider({ children }: { children: Re
   const { data: bodies } = useFetchAvatarBodies();
   const [selectedBody, setSelectedBody] = useState<AvatarBody>();
   const [selectedFaceUri, setSelectedFaceUri] = useState<string>();
+  const selectedAvatarDOM = useRef<HTMLDivElement>(null);
 
   const contextValue = useMemo(
     () => ({
@@ -17,6 +18,7 @@ export default function SelectedAvatarStateProvider({ children }: { children: Re
       setBody: setSelectedBody,
       faceUri: selectedFaceUri,
       setFaceUri: setSelectedFaceUri,
+      avatarDOM: selectedAvatarDOM,
     }),
     [selectedBody, selectedFaceUri]
   );

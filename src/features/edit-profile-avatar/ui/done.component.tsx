@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 import { useUpdateMyAvatar } from '../api/use-update-my-avatar.mutation';
 import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
+// import { useAvatarCapture } from '../lib/use-avatar-capture.hook';
 
 type ChildrenProps = {
   done: () => Promise<void>;
@@ -13,15 +14,21 @@ type Props = {
   onSuccess?: () => void;
 };
 
-export default function EditDone({ children, onSuccess }: Props) {
+export default function AvatarEditDone({ children, onSuccess }: Props) {
   const { body, faceUri } = useSelectedAvatarState();
+  // const { captureAvatar } = useAvatarCapture();
   const canSubmit = !!body && (!body.combinable || !!faceUri);
   const { mutate: updateAvatar, isPending } = useUpdateMyAvatar();
 
   const done = async () => {
     if (!canSubmit) return;
 
-    updateAvatar({ body, faceUri }, { onSuccess });
+    try {
+      // const { formData } = await captureAvatar();
+      await updateAvatar({ body, faceUri }, { onSuccess });
+    } catch (error) {
+      console.error('Avatar capture failed:', error); // TODO: 에러 처리
+    }
   };
 
   return children({

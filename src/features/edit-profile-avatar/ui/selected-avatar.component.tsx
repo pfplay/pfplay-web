@@ -5,7 +5,10 @@ const SelectedAvatar = () => {
   const selectedAvatar = useSelectedAvatarState();
 
   return (
-    <div className='w-[360px] h-full min-h-[500px] flexCol justify-center items-center bg-black select-none'>
+    <div
+      ref={selectedAvatar.avatarDOM}
+      className='w-[360px] h-full min-h-[500px] flexCol justify-center items-center bg-black select-none'
+    >
       {selectedAvatar.body && (
         <Avatar
           height={400}

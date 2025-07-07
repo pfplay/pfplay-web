@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext } from 'react';
+import { createContext, RefObject, useContext } from 'react';
 import { AvatarBody } from '@/shared/api/http/types/users';
 
 type SelectedAvatarState = {
@@ -9,6 +9,8 @@ type SelectedAvatarState = {
 
   faceUri?: string;
   setFaceUri: (uri?: string) => void;
+
+  avatarDOM: RefObject<HTMLDivElement>;
 };
 
 export const SelectedAvatarStateContext = createContext<SelectedAvatarState | null>(null);
