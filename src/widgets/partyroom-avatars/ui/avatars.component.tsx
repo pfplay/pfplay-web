@@ -1,10 +1,10 @@
 'use client';
 import { Avatar } from '@/entities/avatar';
 import { Crew } from '@/entities/current-partyroom';
-import { MotionType } from '@/shared/api/http/types/@enums';
 import { pick } from '@/shared/lib/functions/pick';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useAvatarCluster } from '../lib/use-avatar-cluster.hook';
+import { AVATAR_GROUP } from '../model/constants';
 
 export default function Avatars() {
   const { useCurrentPartyroom } = useStores();
@@ -60,13 +60,14 @@ export default function Avatars() {
             }}
           >
             <Avatar
-              height={180}
+              height={AVATAR_GROUP.HEIGHT}
               bodyUri={crew.avatarBodyUri}
               faceUri={crew.avatarFaceUri}
               facePosX={crew.combinePositionX}
               facePosY={crew.combinePositionY}
               reaction={crew.reactionType}
-              dance={crew.motionType !== MotionType.NONE}
+              // dance={crew.motionType !== MotionType.NONE}
+              dance={true}
             />
           </div>
         );

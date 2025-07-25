@@ -9,6 +9,7 @@ import {
 } from 'd3-force';
 import { Crew } from '@/entities/current-partyroom';
 import { Point } from '../model/avatar-position.model';
+import { AVATAR_GROUP } from '../model/constants';
 
 type D3Node = SimulationNodeDatum & Crew.Model & { fx?: number; fy?: number };
 type PositionedCrew = Crew.Model & { position: Point };
@@ -33,8 +34,8 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
       .filter((c) => !existingIds.has(c.crewId))
       .map((crew) => ({
         ...crew,
-        x: centerX + (Math.random() - 0.5) * 200,
-        y: centerY + (Math.random() - 0.5) * 200,
+        x: centerX + (Math.random() - 0.5) * AVATAR_GROUP.WIDTH,
+        y: centerY + (Math.random() - 0.5) * AVATAR_GROUP.HEIGHT,
       }));
 
     // 유지되는 기존 노드는 fx, fy로 고정
@@ -44,8 +45,8 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
 
     // 제거된 노드 제외
     const updatedNodes: D3Node[] = [
-      ...keptNodes.filter((n) => incomingIds.has(n.crewId)),
       ...addedNodes,
+      ...keptNodes.filter((n) => incomingIds.has(n.crewId)),
     ];
 
     nodesRef.current = updatedNodes;
@@ -55,14 +56,14 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
       simulationRef.current = forceSimulation(updatedNodes)
         .force('center', forceCenter(centerX, centerY)) // 중앙에 가까워지도록
         .force('charge', forceManyBody().strength(-10)) // 서로 밀치는 힘
-        .force('collision', forceCollide().radius(30)) // 5px 간격
+        .force('collision', forceCollide().radius(AVATAR_GROUP.COLLISION_RADIUS)) // 5px 간격
         .stop();
-
-      for (let i = 0; i < 100; i++) {
-        simulationRef.current.tick();
-      }
     } else {
       simulationRef.current.nodes(updatedNodes).alpha(1).restart();
+    }
+
+    for (let i = 0; i < 100; i++) {
+      simulationRef.current?.tick();
     }
 
     setClustered(
