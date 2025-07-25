@@ -1,20 +1,19 @@
 'use client';
 import { Avatar } from '@/entities/avatar';
+import { Crew } from '@/entities/current-partyroom';
 import { MotionType } from '@/shared/api/http/types/@enums';
 import { pick } from '@/shared/lib/functions/pick';
 import { useStores } from '@/shared/lib/store/stores.context';
-import useAssignAvatarPositions from '../lib/use-assign-avatar-positions.hook';
-import { Area } from '../model/avatar-position.model';
+import { useAvatarCluster } from '../lib/use-avatar-cluster.hook';
 
 export default function Avatars() {
   const { useCurrentPartyroom } = useStores();
   const { crews, currentDj } = useCurrentPartyroom((state) => pick(state, ['crews', 'currentDj']));
-  const dj = currentDj && crews.find((crew) => crew.crewId === currentDj.crewId);
 
-  const positionedCrews = useAssignAvatarPositions({
-    originCrews: crews,
-    allowArea: ALLOW_AREA,
-    denyArea: DENY_AREA,
+  const dj = currentDj && crews.find((crew: Crew.Model) => crew.crewId === currentDj.crewId);
+
+  const positionedCrews = useAvatarCluster({
+    crews: crews,
   });
 
   return (
@@ -25,7 +24,7 @@ export default function Avatars() {
     <div className='h-screen aspect-partyroom-bg absolute inset-0 z-0 bg-cover bg-left-bottom overflow-hidden'>
       {!!dj && (
         <div
-          className='absolute'
+          className='relative'
           style={{
             top: '98%',
             left: '16%',
@@ -55,8 +54,8 @@ export default function Avatars() {
             key={'partyroom-crew-' + crew.crewId}
             className='absolute'
             style={{
-              top: `${crew.position.y}%`,
-              left: `${crew.position.x}%`,
+              top: `${crew.position.y}px`,
+              left: `${crew.position.x}px`,
               transform: 'translate(-100%, -100%)',
             }}
           >
@@ -75,13 +74,3 @@ export default function Avatars() {
     </div>
   );
 }
-
-const ALLOW_AREA: Area = {
-  from: { x: 10, y: 60 },
-  to: { x: 80, y: 100 },
-};
-
-const DENY_AREA: Area = {
-  from: { x: 0, y: 0 },
-  to: { x: 40, y: 100 },
-};

@@ -13,6 +13,9 @@ const captureDOMToBlob = async <T extends HTMLElement>(dom: RefObject<T>): Promi
     useCORS: true,
     allowTaint: false,
     backgroundColor: null,
+    scale: 0.5,
+    width: 300,
+    height: 300,
   });
 
   return new Promise((resolve, reject) => {
