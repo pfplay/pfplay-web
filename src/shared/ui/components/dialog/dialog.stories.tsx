@@ -205,22 +205,25 @@ export const Multiple: Story = () => {
 export const Stream: Story = () => {
   const [count, setCount] = useState(0);
   const { open, onOpen, onClose } = useDisclosure();
-  const intervalRef = useRef<NodeJS.Timer>();
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const streamLike = useMemo(() => {
     const stopCount = () => {
-      clearInterval(intervalRef.current);
-    };
-    const startCount = () => {
-      intervalRef.current = setInterval(() => {
-        setCount((prev) => prev + 1);
-      }, 500);
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
 
-    return {
-      stopCount,
-      startCount,
+    const startCount = () => {
+      if (intervalRef.current === null) {
+        intervalRef.current = setInterval(() => {
+          setCount((prev) => prev + 1);
+        }, 500);
+      }
     };
+
+    return { stopCount, startCount };
   }, []);
 
   const handleOpenDialog = () => {
