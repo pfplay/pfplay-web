@@ -16,8 +16,8 @@ type PositionedCrew = Crew.Model & { position: Point };
 
 export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): PositionedCrew[] {
   const [clustered, setClustered] = useState<PositionedCrew[]>([]);
-  const simulationRef = useRef<Simulation<D3Node, undefined> | null>(null);
-  const nodesRef = useRef<D3Node[]>([]);
+  const simulationRef = useRef<Simulation<D3Node, undefined> | null>(null); // 노드 간 물리적인 힘 계산을 위한 참조
+  const nodesRef = useRef<D3Node[]>([]); // 현재 노드들 상태 저장
 
   useEffect(() => {
     const width = window.innerWidth;
@@ -53,6 +53,7 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
 
     // D3 Simulation 실행
     if (!simulationRef.current) {
+      // 있는 경우 재사용
       simulationRef.current = forceSimulation(updatedNodes)
         .force('center', forceCenter(centerX, centerY)) // 중앙에 가까워지도록
         .force('charge', forceManyBody().strength(-10)) // 서로 밀치는 힘
@@ -63,6 +64,7 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
     }
 
     for (let i = 0; i < 100; i++) {
+      // simulationRef 힘 계산을 충분히 하도록 100번 반복
       simulationRef.current?.tick();
     }
 

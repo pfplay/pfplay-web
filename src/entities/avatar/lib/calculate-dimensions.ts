@@ -4,6 +4,7 @@ import {
   FACE_BASE_HEIGHT_RATIO,
   FACE_BASE_WIDTH_RATIO,
 } from '../config/base-size';
+import { FacePos } from '../model/avatar.model';
 
 /**
  * @description - 아바타의 주어진 높이를 기준으로 새로운 너비, x, y 좌표를 계산
@@ -15,7 +16,8 @@ import {
 export default function calculateDimensions(
   targetHeight: number,
   faceBasePosX: number = 0,
-  faceBasePosY: number = 0
+  faceBasePosY: number = 0,
+  facePos: FacePos
 ) {
   // 높이 비율
   const heightRatio = targetHeight / BODY_BASE_HEIGHT;
@@ -26,6 +28,9 @@ export default function calculateDimensions(
   const facePosY = faceBasePosY * heightRatio;
   const faceWidth = width * FACE_BASE_WIDTH_RATIO;
   const faceHeight = targetHeight * FACE_BASE_HEIGHT_RATIO;
+  const offsetX = (facePos.offsetX / 100) * faceWidth;
+  const offsetY = (facePos.offsetY / 100) * faceHeight;
+  const zoom = facePos.zoom / 100;
 
   return {
     width,
@@ -33,5 +38,8 @@ export default function calculateDimensions(
     facePosY,
     faceWidth,
     faceHeight,
+    offsetX,
+    offsetY,
+    zoom,
   };
 }
