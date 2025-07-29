@@ -5,19 +5,21 @@ import {
   FACE_BASE_WIDTH_RATIO,
 } from '../config/base-size';
 import { FacePos } from '../model/avatar.model';
+import { DEFAULT_FACE_POS } from '../ui/react-moveable/moveable-face';
 
 /**
  * @description - 아바타의 주어진 높이를 기준으로 새로운 너비, x, y 좌표를 계산
  *
  * @param targetHeight - 원하는 body 높이
- * @param faceBasePosX - BODY_BASE_WIDTH 기준 x 좌표. body별로 고유한 값. combinabl false라면 비어있을 수 있음
+ * @param faceBasePosX - BODY_BASE_WIDTH 기준 x 좌표. body별로 고유한 값. combinable false라면 비어있을 수 있음
  * @param faceBasePosY - BODY_BASE_HEIGHT 기준 y 좌표. body별로 고유한 값. combinable false라면 비어있을 수 있음
+ * @param facePos - face 위치 조정 값. combineable false라면 비어있을 수 있음
  */
 export default function calculateDimensions(
   targetHeight: number,
   faceBasePosX: number = 0,
   faceBasePosY: number = 0,
-  facePos: FacePos
+  facePos: FacePos = DEFAULT_FACE_POS
 ) {
   // 높이 비율
   const heightRatio = targetHeight / BODY_BASE_HEIGHT;

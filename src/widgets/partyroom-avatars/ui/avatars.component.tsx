@@ -1,5 +1,7 @@
 'use client';
 import { Avatar } from '@/entities/avatar';
+import { DEFAULT_FACE_POS } from '@/entities/avatar/ui/react-moveable/moveable-face';
+import { useAvatarDance } from '@/entities/avatar/ui/useAvatarDance.hook';
 import { Crew } from '@/entities/current-partyroom';
 import { pick } from '@/shared/lib/functions/pick';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -9,8 +11,8 @@ import { AVATAR_GROUP } from '../model/constants';
 export default function Avatars() {
   const { useCurrentPartyroom } = useStores();
   const { crews, currentDj } = useCurrentPartyroom((state) => pick(state, ['crews', 'currentDj']));
-
   const dj = currentDj && crews.find((crew: Crew.Model) => crew.crewId === currentDj.crewId);
+  const { registerAvatar } = useAvatarDance();
 
   const positionedCrews = useAvatarCluster({
     crews: crews,
@@ -38,12 +40,12 @@ export default function Avatars() {
             facePosX={dj.combinePositionX}
             facePosY={dj.combinePositionY}
             reaction={dj.reactionType}
-            dance
+            motionType={dj.motionType}
           />
         </div>
       )}
 
-      {positionedCrews.map((crew) => {
+      {positionedCrews.map((crew, index) => {
         const isDj = dj?.crewId === crew.crewId;
         if (isDj) {
           return null;
@@ -51,7 +53,7 @@ export default function Avatars() {
 
         return (
           <div
-            key={'partyroom-crew-' + crew.crewId}
+            key={'partyroom-crew-' + crew.crewId + index}
             className='absolute'
             style={{
               top: `${crew.position.y}px`,
@@ -66,8 +68,9 @@ export default function Avatars() {
               facePosX={crew.combinePositionX}
               facePosY={crew.combinePositionY}
               reaction={crew.reactionType}
-              // dance={crew.motionType !== MotionType.NONE}
-              dance={true}
+              facePos={DEFAULT_FACE_POS}
+              motionType={crew.motionType}
+              avatarRef={registerAvatar}
             />
           </div>
         );

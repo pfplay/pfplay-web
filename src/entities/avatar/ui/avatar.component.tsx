@@ -1,6 +1,6 @@
-import { memo, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { ReactionLottie } from '@/entities/avatar/ui/reaction-lottie';
-import { ReactionType } from '@/shared/api/http/types/@enums';
+import { MotionType, ReactionType } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import calculateDimensions from '../lib/calculate-dimensions';
 import { FacePos, Model } from '../model/avatar.model';
@@ -8,12 +8,13 @@ import { DEFAULT_FACE_POS, MoveableFace } from './react-moveable/moveable-face';
 
 type Props = Model & {
   height: number;
-  dance?: boolean;
   reaction?: ReactionType;
+  motionType?: MotionType;
   /**
    * 함수가 있으면 얼굴 위치 조정 가능, 없으면 얼굴 위치 조정 불가능
    */
   onFacePosChange?: (facePos: FacePos) => void;
+  avatarRef?: (el: HTMLElement | null, type: MotionType) => void;
 };
 
 /**
@@ -30,31 +31,34 @@ const Avatar = memo(
     faceUri,
     facePosX,
     facePosY,
-    dance,
     reaction,
+    motionType,
     facePos,
     onFacePosChange,
+    avatarRef,
   }: Props) => {
     const dimensions = calculateDimensions(height, facePosX, facePosY, facePos ?? DEFAULT_FACE_POS);
-    const fixedRandomSeconds = useRef(`${Math.random() * 0.5}s`).current;
     const faceImgRef = useRef<HTMLImageElement>(null);
+
+    console.log('dimensions', calculateDimensions(240));
+
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      avatarRef?.(ref.current, motionType ?? MotionType.NONE);
+    }, [motionType, avatarRef]);
 
     return (
       <div
+        ref={ref}
         aria-label='Avatar View'
         role='presentation'
-        className={cn('relative', {
-          'animate-bounce': dance,
-        })}
+        className={cn('relative will-change-transform')}
         style={{
           width: dimensions.width,
           minWidth: dimensions.width,
           height,
           background: `url(${bodyUri}) no-repeat center center / contain`,
-          /**
-           * 한 화면에 여러 아바타가 춤을 출 때, 각 아바타의 춤 출 시작 시간에 미세한 차이를 두어 너무 기계적으로 보이지 않게하기 위한 딜레이입니다.
-           */
-          animationDelay: dance ? fixedRandomSeconds : undefined,
         }}
       >
         {reaction && (
