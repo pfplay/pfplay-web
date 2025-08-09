@@ -1,9 +1,9 @@
 import { ActivityType, AuthorityTier, ObtainmentType } from './@enums';
+import { OAuth2Provider } from './oauth';
 
 export interface SignInRequest {
-  oauth2Provider: 'google';
+  oauth2Provider: OAuth2Provider;
 }
-
 export interface GetMyInfoResponse {
   uid: string;
   /**
@@ -33,6 +33,34 @@ export interface GetMyProfileSummaryResponse {
   combinePositionY?: number;
   walletAddress?: string;
   activitySummaries: ActivitySummary[];
+}
+
+export interface AuthStartResponse {
+  success: boolean;
+  message?: string;
+}
+
+export interface TokenExchangeRequest {
+  oauth2Provider: OAuth2Provider;
+}
+
+export interface TokenExchangeResponse {
+  success: boolean;
+  accessToken?: string;
+  user?: {
+    id: string;
+    email: string;
+    name: string;
+    picture?: string;
+  };
+  message?: string;
+}
+
+export interface AuthCallbackParams {
+  code?: string;
+  state?: string;
+  error?: string;
+  error_description?: string;
 }
 
 export interface GetUserProfileSummaryRequest {
@@ -102,10 +130,6 @@ export interface UsersClient {
    */
   temporary_SignInAssociateCrew: () => Promise<void>;
   /**
-   * OAuth2 로그인
-   */
-  signIn: (request: SignInRequest) => void;
-  /**
    * 게스트 로그인
    */
   signInGuest: () => Promise<void>;
@@ -121,4 +145,20 @@ export interface UsersClient {
   updateMyBio: (request: UpdateMyBioRequest) => Promise<void>;
   updateMyAvatarFace: (request: UpdateMyAvatarFaceRequest) => Promise<void>;
   updateMyAvatarBody: (request: UpdateMyAvatarBodyRequest) => Promise<void>;
+  initiateLogin: (request: SignInRequest) => Promise<void>;
+  /**
+   * 백엔드에서 state 발급 요청
+   * @returns 백엔드에서 발급한 state 값
+   */
+  requestAuthStart: () => Promise<AuthStartResponse>;
+  /**
+   * Authorization Code 체크 후 토큰 교환
+   * @param request
+   * @returns 토큰 교환 결과
+   */
+  exchangeCodeForToken: (request: TokenExchangeRequest) => Promise<TokenExchangeResponse>;
+  /**
+   * URL 파라미터 파싱
+   * @returns 콜백 파라미터
+   */
 }
