@@ -1,14 +1,7 @@
 import { authConfig } from '@/shared/config/oauth';
 import { Singleton } from '@/shared/lib/decorators/singleton';
-import {
-  clearStoredCodeVerifier,
-  createPKCEParams,
-  getStoredCodeVerifier,
-  parseCallbackParams,
-} from '@/shared/lib/functions/pkce';
 import HTTPClient from '../client/client';
 import type {
-  SignInRequest,
   GetMyInfoResponse,
   GetMyProfileSummaryResponse,
   GetUserProfileSummaryRequest,
@@ -21,83 +14,26 @@ import type {
   UpdateMyAvatarBodyRequest,
   UsersClient,
   AuthStartResponse,
-  TokenExchangeRequest,
   TokenExchangeResponse,
+  TokenExchangeRequest,
 } from '../types/users';
 
 @Singleton
 export default class UsersService extends HTTPClient implements UsersClient {
   private ROUTE_V1 = 'v1/users';
 
-  public async initiateLogin({ oauth2Provider }: SignInRequest) {
-    try {
-      const authStart = await this.requestAuthStart();
-      if (!authStart.success) {
-        throw new Error(authStart.message || 'Failed to start authentication');
-      }
-
-      const { codeChallenge, codeChallengeMethod } = await createPKCEParams();
-
-      const config = authConfig[oauth2Provider];
-      const params = new URLSearchParams({
-        client_id: config.clientId,
-        redirect_uri: config.redirectUri,
-        scope: config.scope,
-        response_type: 'code',
-        code_challenge: codeChallenge,
-        code_challenge_method: codeChallengeMethod,
-      });
-
-      const authUrl = `${config.authUrl}?${params.toString()}`;
-      window.location.href = authUrl;
-    } catch (error) {
-      console.error('Login initiation failed:', error);
-      alert(`${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
+  public initiateLogin(request: TokenExchangeRequest) {
+    return this.post<AuthStartResponse>(
+      `${this.ROUTE_V1}${authConfig.backend.authStartPath}`,
+      request
+    );
   }
 
-  public async exchangeCodeForToken({ oauth2Provider }: TokenExchangeRequest) {
-    const params = parseCallbackParams();
-    if (params.error) {
-      throw new Error(params.error_description || params.error);
-    }
-    if (!params.code) {
-      throw new Error('Authorization code not received');
-    }
-    const { code } = params;
-
-    try {
-      const codeVerifier = getStoredCodeVerifier();
-      if (!codeVerifier) {
-        throw new Error('Code verifier not found in storage');
-      }
-
-      const request = {
-        oauth2Provider,
-        code,
-        codeVerifier,
-      };
-
-      const response = await this.post<TokenExchangeResponse>(
-        `${this.ROUTE_V1}${authConfig.backend.tokenExchangePath}`,
-        request
-      );
-
-      if (!response.success) {
-        throw new Error(response.message || 'Token exchange failed');
-      }
-
-      if (response.success) {
-        clearStoredCodeVerifier();
-      }
-      return response;
-    } catch (error) {
-      console.error('Token exchange failed:', error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
+  public exchangeToken(request: TokenExchangeRequest) {
+    return this.post<TokenExchangeResponse>(
+      `${this.ROUTE_V1}${authConfig.backend.tokenExchangePath}`,
+      request
+    );
   }
 
   public signInGuest() {

@@ -1,30 +1,53 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { setCookie } from 'cookies-next';
 import { usersService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { OAuth2Provider } from '@/shared/api/http/types/oauth';
 import { TokenExchangeResponse } from '@/shared/api/http/types/users';
+import {
+  clearStoredCodeVerifier,
+  getStoredCodeVerifier,
+  parseCallbackParams,
+} from '@/shared/lib/functions/pkce';
 
 export default function useExchangeToken() {
-  return useMutation<
-    TokenExchangeResponse,
-    AxiosError<APIError>,
-    { oauth2Provider: OAuth2Provider }
-  >({
-    mutationFn: async ({ oauth2Provider }) => {
-      const result = await usersService.exchangeCodeForToken({
-        oauth2Provider,
-      });
-      if (!result.success || !result.accessToken) {
-        throw new Error(result.message || 'Access token not received');
+  return useMutation<TokenExchangeResponse, AxiosError<APIError>, OAuth2Provider>({
+    mutationFn: async (oauth2Provider) => {
+      const params = parseCallbackParams();
+      if (!params.code) {
+        throw new Error(
+          params.error_description || params.error || 'Authorization code not received'
+        );
       }
-      const { accessToken } = result;
-      // TODO: 쿠키에 토큰 담는 주체가 프론트인가...?
-      setCookie('accessToken', accessToken, {
-        httpOnly: true,
-      });
-      return result;
+      const { code } = params;
+
+      try {
+        const codeVerifier = getStoredCodeVerifier();
+        if (!codeVerifier) {
+          throw new Error('Code verifier not found in storage');
+        }
+
+        const request = {
+          provider: oauth2Provider,
+          code,
+          codeVerifier,
+        };
+        const response = await usersService.exchangeToken(request);
+
+        if (!response.success) {
+          throw new Error(response.message || 'Token exchange failed');
+        }
+        if (response.success) {
+          clearStoredCodeVerifier();
+        }
+        return response;
+      } catch (error) {
+        console.error('Token exchange failed:', error);
+        return {
+          success: false,
+          message: error instanceof Error ? error.message : 'Unknown error',
+        };
+      }
     },
   });
 }

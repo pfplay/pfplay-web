@@ -40,8 +40,20 @@ export interface AuthStartResponse {
   message?: string;
 }
 
+export interface AuthStartResponse {
+  success: boolean;
+  message?: string;
+}
+
+export interface AuthStartResponse {
+  success: boolean;
+  message?: string;
+}
+
 export interface TokenExchangeRequest {
-  oauth2Provider: OAuth2Provider;
+  provider: OAuth2Provider;
+  code: string;
+  codeVerifier: string;
 }
 
 export interface TokenExchangeResponse {
@@ -145,20 +157,6 @@ export interface UsersClient {
   updateMyBio: (request: UpdateMyBioRequest) => Promise<void>;
   updateMyAvatarFace: (request: UpdateMyAvatarFaceRequest) => Promise<void>;
   updateMyAvatarBody: (request: UpdateMyAvatarBodyRequest) => Promise<void>;
-  initiateLogin: (request: SignInRequest) => Promise<void>;
-  /**
-   * 백엔드에서 state 발급 요청
-   * @returns 백엔드에서 발급한 state 값
-   */
-  requestAuthStart: () => Promise<AuthStartResponse>;
-  /**
-   * Authorization Code 체크 후 토큰 교환
-   * @param request
-   * @returns 토큰 교환 결과
-   */
-  exchangeCodeForToken: (request: TokenExchangeRequest) => Promise<TokenExchangeResponse>;
-  /**
-   * URL 파라미터 파싱
-   * @returns 콜백 파라미터
-   */
+  initiateLogin: (request: TokenExchangeRequest) => Promise<AuthStartResponse>;
+  exchangeToken: (request: TokenExchangeRequest) => Promise<TokenExchangeResponse>;
 }

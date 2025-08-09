@@ -3,6 +3,9 @@
  * OAuth 2.0 Authorization Code Flow with PKCE 구현을 위한 함수들
  */
 
+import { OAuth2Provider } from '@/shared/api/http/types/oauth';
+import { authConfig } from '@/shared/config/oauth';
+
 // TODO: test 코드 추가
 
 /**
@@ -48,7 +51,7 @@ export async function generateCodeChallenge(verifier: string): Promise<string> {
  * code_verifier와 code_challenge를 생성하고 sessionStorage에 저장
  * @returns code_challenge와 code_challenge_method
  */
-export async function createPKCEParams(): Promise<{
+async function createPKCEParams(): Promise<{
   codeChallenge: string;
   codeChallengeMethod: string;
 }> {
@@ -99,4 +102,23 @@ export function parseCallbackParams() {
     error: urlParams.get('error') || undefined,
     error_description: urlParams.get('error_description') || undefined,
   };
+}
+
+/**
+ * redirect uri 생성
+ */
+export async function generateRedirectUri(oauth2Provider: OAuth2Provider) {
+  const { codeChallenge, codeChallengeMethod } = await createPKCEParams();
+  const config = authConfig[oauth2Provider];
+  const params = new URLSearchParams({
+    client_id: config.clientId,
+    redirect_uri: config.redirectUri,
+    scope: config.scope,
+    response_type: 'code',
+    code_challenge: codeChallenge,
+    code_challenge_method: codeChallengeMethod,
+  });
+
+  const redirectUri = `${config.authUrl}?${params.toString()}`;
+  return redirectUri;
 }
