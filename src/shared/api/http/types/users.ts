@@ -1,5 +1,4 @@
 import { ActivityType, AuthorityTier, ObtainmentType } from './@enums';
-import { OAuth2Provider } from './oauth';
 
 export interface SignInRequest {
   oauth2Provider: OAuth2Provider;
@@ -34,39 +33,43 @@ export interface GetMyProfileSummaryResponse {
   walletAddress?: string;
   activitySummaries: ActivitySummary[];
 }
-
-export interface AuthStartResponse {
-  success: boolean;
-  message?: string;
+export interface InitiateLoginRequest {
+  provider: OAuth2Provider;
+  codeVerifier: string;
 }
 
-export interface AuthStartResponse {
-  success: boolean;
-  message?: string;
-}
-
-export interface AuthStartResponse {
-  success: boolean;
-  message?: string;
-}
+export type InitiateLoginResponse =
+  | {
+      success: true;
+      authUrl: string;
+      state: string;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
 export interface TokenExchangeRequest {
   provider: OAuth2Provider;
   code: string;
   codeVerifier: string;
+  state: string;
 }
 
-export interface TokenExchangeResponse {
-  success: boolean;
-  accessToken?: string;
-  user?: {
-    id: string;
-    email: string;
-    name: string;
-    picture?: string;
-  };
-  message?: string;
-}
+export type TokenExchangeResponse =
+  | {
+      success: true;
+      user: {
+        id: string;
+        email: string;
+        name: string;
+        picture: string;
+      };
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
 export interface AuthCallbackParams {
   code?: string;
@@ -157,6 +160,8 @@ export interface UsersClient {
   updateMyBio: (request: UpdateMyBioRequest) => Promise<void>;
   updateMyAvatarFace: (request: UpdateMyAvatarFaceRequest) => Promise<void>;
   updateMyAvatarBody: (request: UpdateMyAvatarBodyRequest) => Promise<void>;
-  initiateLogin: (request: TokenExchangeRequest) => Promise<AuthStartResponse>;
+  initiateLogin: (request: InitiateLoginRequest) => Promise<InitiateLoginResponse>;
   exchangeToken: (request: TokenExchangeRequest) => Promise<TokenExchangeResponse>;
 }
+
+export type OAuth2Provider = 'google' | 'twitter';

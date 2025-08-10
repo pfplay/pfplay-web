@@ -13,7 +13,6 @@ import { PFClose } from '@/shared/ui/icons';
 export default function SignInPage() {
   const t = useI18n();
   const router = useAppRouter();
-
   const prefetchMe = usePrefetchMe();
   const signInByGoogle = useSignInOAuth2('google');
   const signInByTwitter = useSignInOAuth2('twitter');
@@ -52,7 +51,7 @@ export default function SignInPage() {
           variant='outline'
           Icon={<Image src='/images/ETC/google.png' alt='google' width={32} height={32} />}
           onClick={signInByGoogle}
-          className='w-[320px] h-[56px] mb-[40px]'
+          className='w-[320px] h-[56px] mb-[20px]'
         >
           {t.auth.btn.connect_google}
         </Button>

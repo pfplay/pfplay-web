@@ -3,11 +3,6 @@
  * OAuth 2.0 Authorization Code Flow with PKCE 구현을 위한 함수들
  */
 
-import { OAuth2Provider } from '@/shared/api/http/types/oauth';
-import { authConfig } from '@/shared/config/oauth';
-
-// TODO: test 코드 추가
-
 /**
  * URL-safe Base64 인코딩
  * @param buffer - 인코딩할 ArrayBuffer
@@ -22,28 +17,17 @@ function base64URLEncode(buffer: ArrayBuffer): string {
   return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 
+// TODO: session storage 통신 레이어 분리...
+
 /**
  * code_verifier 생성
  * 43-128자의 URL-safe 문자열 생성
  * @returns code_verifier 문자열
  */
-export function generateCodeVerifier(): string {
+function generateCodeVerifier(): string {
   const array = new Uint8Array(32);
   crypto.getRandomValues(array);
   return base64URLEncode(array.buffer);
-}
-
-/**
- * code_challenge 생성
- * code_verifier를 SHA256 해시한 후 Base64URL 인코딩
- * @param verifier - code_verifier 문자열
- * @returns code_challenge 문자열
- */
-export async function generateCodeChallenge(verifier: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(verifier);
-  const digest = await crypto.subtle.digest('SHA-256', data);
-  return base64URLEncode(digest);
 }
 
 /**
@@ -51,22 +35,48 @@ export async function generateCodeChallenge(verifier: string): Promise<string> {
  * code_verifier와 code_challenge를 생성하고 sessionStorage에 저장
  * @returns code_challenge와 code_challenge_method
  */
-async function createPKCEParams(): Promise<{
-  codeChallenge: string;
-  codeChallengeMethod: string;
+export async function createPKCEParams(): Promise<{
+  codeVerifier: string;
 }> {
   const codeVerifier = generateCodeVerifier();
-  const codeChallenge = await generateCodeChallenge(codeVerifier);
 
-  // code_verifier를 sessionStorage에 저장 (콜백에서 사용)
   if (typeof window !== 'undefined') {
     sessionStorage.setItem('code_verifier', codeVerifier);
   }
 
   return {
-    codeChallenge,
-    codeChallengeMethod: 'S256',
+    codeVerifier,
   };
+}
+
+/**
+ * 저장된 state 가져오기
+ * @returns 저장된 state 또는 null
+ */
+export function getStoredState(): string | null {
+  if (typeof window !== 'undefined') {
+    return sessionStorage.getItem('state');
+  }
+  return null;
+}
+
+/**
+ * state 저장
+ * @param state - 저장할 state
+ */
+export function setStoredState(state: string): void {
+  if (typeof window !== 'undefined') {
+    sessionStorage.setItem('state', state);
+  }
+}
+
+/**
+ * 저장된 state 제거
+ */
+export function clearStoredState(): void {
+  if (typeof window !== 'undefined') {
+    sessionStorage.removeItem('state');
+  }
 }
 
 /**
@@ -90,11 +100,16 @@ export function clearStoredCodeVerifier(): void {
 }
 
 /**
- * URL 파라미터 파싱
- * @returns 콜백 파라미터
+ * URL 파라미터에서 콜백 데이터 파싱
  */
+export function parseCallbackParams(): {
+  code?: string;
+  state?: string;
+  error?: string;
+  error_description?: string;
+} {
+  if (typeof window === 'undefined') return {};
 
-export function parseCallbackParams() {
   const urlParams = new URLSearchParams(window.location.search);
   return {
     code: urlParams.get('code') || undefined,
@@ -102,23 +117,4 @@ export function parseCallbackParams() {
     error: urlParams.get('error') || undefined,
     error_description: urlParams.get('error_description') || undefined,
   };
-}
-
-/**
- * redirect uri 생성
- */
-export async function generateRedirectUri(oauth2Provider: OAuth2Provider) {
-  const { codeChallenge, codeChallengeMethod } = await createPKCEParams();
-  const config = authConfig[oauth2Provider];
-  const params = new URLSearchParams({
-    client_id: config.clientId,
-    redirect_uri: config.redirectUri,
-    scope: config.scope,
-    response_type: 'code',
-    code_challenge: codeChallenge,
-    code_challenge_method: codeChallengeMethod,
-  });
-
-  const redirectUri = `${config.authUrl}?${params.toString()}`;
-  return redirectUri;
 }

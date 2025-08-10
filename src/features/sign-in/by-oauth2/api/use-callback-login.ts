@@ -2,15 +2,16 @@ import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { usersService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
-import { OAuth2Provider } from '@/shared/api/http/types/oauth';
-import { TokenExchangeResponse } from '@/shared/api/http/types/users';
+import { OAuth2Provider, TokenExchangeResponse } from '@/shared/api/http/types/users';
 import {
   clearStoredCodeVerifier,
+  clearStoredState,
   getStoredCodeVerifier,
+  getStoredState,
   parseCallbackParams,
 } from '@/shared/lib/functions/pkce';
 
-export default function useExchangeToken() {
+export default function useCallbackLogin() {
   return useMutation<TokenExchangeResponse, AxiosError<APIError>, OAuth2Provider>({
     mutationFn: async (oauth2Provider) => {
       const params = parseCallbackParams();
@@ -23,22 +24,26 @@ export default function useExchangeToken() {
 
       try {
         const codeVerifier = getStoredCodeVerifier();
+        const state = getStoredState();
         if (!codeVerifier) {
           throw new Error('Code verifier not found in storage');
         }
-
+        if (!state) {
+          throw new Error('State not found in storage');
+        }
         const request = {
           provider: oauth2Provider,
           code,
           codeVerifier,
+          state,
         };
         const response = await usersService.exchangeToken(request);
-
         if (!response.success) {
           throw new Error(response.message || 'Token exchange failed');
         }
         if (response.success) {
           clearStoredCodeVerifier();
+          clearStoredState();
         }
         return response;
       } catch (error) {

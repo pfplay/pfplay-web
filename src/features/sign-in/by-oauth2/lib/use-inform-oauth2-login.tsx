@@ -1,5 +1,5 @@
 import { useIsGuest } from '@/entities/me';
-import { OAuth2Provider } from '@/shared/api/http/types/oauth';
+import { OAuth2Provider } from '@/shared/api/http/types/users';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import useSignInOAuth2 from './use-sign-in-oauth2.hook';
