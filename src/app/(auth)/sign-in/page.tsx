@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePrefetchMe } from '@/entities/me';
 import { useSignInByGuest } from '@/features/sign-in/by-guest';
-import { SignInByGoogleButtonForDev, useSignInOAuth2 } from '@/features/sign-in/by-oauth2';
+import { SignInByGoogleButtonForDev, useInitiateSignIn } from '@/features/sign-in/by-social';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
@@ -14,11 +14,10 @@ export default function SignInPage() {
   const t = useI18n();
   const router = useAppRouter();
   const prefetchMe = usePrefetchMe();
-  const signInByGoogle = useSignInOAuth2('google');
-  const signInByTwitter = useSignInOAuth2('twitter');
+  const signInByGoogle = useInitiateSignIn('google');
+  const signInByTwitter = useInitiateSignIn('twitter');
+
   const signInByGuest = useSignInByGuest({
-    onClickSignInByGoogle: signInByGoogle,
-    onClickSignInByTwitter: signInByTwitter,
     onSuccess: async () => {
       await prefetchMe();
       router.push('/parties');
@@ -65,7 +64,7 @@ export default function SignInPage() {
           onClick={signInByTwitter}
           className='w-[320px] h-[56px] mb-[40px]'
         >
-          트위터 연동하기 (임시)
+          {t.auth.btn.connect_twitter}
         </Button>
 
         <TextButton onClick={signInByGuest} underline>

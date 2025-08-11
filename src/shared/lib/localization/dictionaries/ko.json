@@ -11,6 +11,7 @@
       "sanction": "제재",
       "block": "차단",
       "next": "다음",
+      "twitter_login": "트위터 로그인",
       "google_login": "구글 로그인",
       "share": "공유하기",
       "settings": "설정",
@@ -55,8 +56,8 @@
     "para": {
       "need_wallet": "해당 기능은 지갑 연결이 필요해요",
       "about_wallet": "지갑이 뭔가요? 어떻게 하는거죠?",
-      "linking_google": "PFPlay에선 구글 계정을 연동하면 DJ가 될 수 있어요!",
-      "need_google_login": "해당 기능은 구글계정 로그인이 필요해요",
+      "linking_social": "PFPlay에선 소셜 계정을 연동하면 DJ가 될 수 있어요!",
+      "need_social_login": "해당 기능은 소셜 계정 로그인이 필요해요",
       "logout_confirm": "로그아웃 하시겠어요? 로그아웃 시 메인 홈으로 이동합니다",
       "withdraw_confirm": "정말로 탈퇴하시겠습니까? 탈퇴 시 미션 포인트, 플레이리스트 등 데이터가 삭제되며 복구는 불가합니다.",
       "withdraw_completed": "탈퇴가 완료되었습니다. 다음에 다시 만나요!",
@@ -66,6 +67,9 @@
     },
     "btn": {
       "connect_wallet": "지갑 연동하기",
+      "connect_social": "소셜 로그인하기",
+      "back_to_sign_in": "로그인으로 돌아가기",
+      "connect_twitter": "트위터 연동하기",
       "connect_google": "구글 연동하기"
     },
     "title": {
@@ -107,7 +111,7 @@
       "moment": "잠깐만요!"
     },
     "para": {
-      "guest_limit": "비로그인 입장 시 접근 가능한 기능이 제한됩니다. 구글 계정을 연동하면 온전한 서비스를 즐길 수 있어요"
+      "guest_limit": "비로그인 입장 시 접근 가능한 기능이 제한됩니다. 소셜 계정을 연동하면 온전한 서비스를 즐길 수 있어요"
     }
   },
   "settings": {

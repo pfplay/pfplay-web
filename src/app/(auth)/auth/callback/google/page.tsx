@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useOAuth2Callback } from '@/features/sign-in/by-oauth2';
+import { useSocialSignInCallback } from '@/features/sign-in/by-social';
 
 export default function GoogleCallbackPage() {
-  const handleCallback = useOAuth2Callback();
+  const handleCallback = useSocialSignInCallback();
 
   useEffect(() => {
     handleCallback('google');
-  }, [handleCallback]); // handleCallback을 의존성 배열에 추가
+  }, [handleCallback]);
 
   return null;
 }

@@ -31,12 +31,12 @@ export default class UsersService extends HTTPClient implements UsersClient {
     return this.post<TokenExchangeResponse>(`${this.ROUTE_AUTH}/oauth/callback`, request);
   }
 
-  public signInGuest() {
-    return this.post<void>(`${this.ROUTE_AUTH}/guests/sign`);
-  }
-
   public signOut() {
     return this.post<void>(`${this.ROUTE_AUTH}/logout`);
+  }
+
+  public signInGuest() {
+    return this.post<void>(`${this.ROUTE_USER}/guests/sign`);
   }
 
   public temporary_SignInFullCrew() {

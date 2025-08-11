@@ -1,4 +1,4 @@
-import { PKCEStorage, StorageKey } from '@/features/sign-in/by-oauth2/model/pkce-storage.model';
+import { PKCEStorage, StorageKey } from '@/features/sign-in/by-social/model/pkce-storage.model';
 
 /**
  * URL-safe Base64 인코딩

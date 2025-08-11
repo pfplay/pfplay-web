@@ -180,11 +180,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
 };
 
 const DialogButtonGroup: DialogComposition['ButtonGroup'] = ({ children }) => {
-  return (
-    <section className='mt-[36px] flex w-full flex-wrap justify-center gap-[8px]'>
-      {children}
-    </section>
-  );
+  return <section className='mt-[36px] flex w-full justify-center gap-[8px]'>{children}</section>;
 };
 const DialogButton: DialogComposition['Button'] = ({ children, className, ...rest }) => {
   return (

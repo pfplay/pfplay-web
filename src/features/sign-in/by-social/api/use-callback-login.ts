@@ -14,15 +14,14 @@ import {
 export default function useCallbackLogin() {
   return useMutation<TokenExchangeResponse, AxiosError<APIError>, OAuth2Provider>({
     mutationFn: async (oauth2Provider) => {
-      const params = parseCallbackParams();
-      if (!params.code) {
-        throw new Error(
-          params.error_description || params.error || 'Authorization code not received'
-        );
-      }
-      const { code } = params;
-
       try {
+        const params = parseCallbackParams();
+        if (!params.code) {
+          throw new Error(
+            params.error_description || params.error || 'Authorization code not received'
+          );
+        }
+        const { code } = params;
         const codeVerifier = getStoredCodeVerifier();
         const state = getStoredState();
         if (!codeVerifier) {

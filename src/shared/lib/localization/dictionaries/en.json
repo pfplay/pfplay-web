@@ -11,6 +11,7 @@
       "sanction": "Sanction",
       "block": "Block",
       "next": "Next",
+      "twitter_login": "Twitter Login",
       "google_login": "Google Login",
       "share": "Share",
       "settings": "Settings",
@@ -55,8 +56,8 @@
     "para": {
       "need_wallet": "This feature requires wallet connection",
       "about_wallet": "What is a wallet? How does it work?",
-      "linking_google": "PFPlay allows you to become a DJ by connecting your Google account!",
-      "need_google_login": "To use this feature, please log in with your Google account",
+      "linking_social": "PFPlay allows you to become a DJ by connecting your social account!",
+      "need_social_login": "To use this feature, please log in with your social account",
       "logout_confirm": "Do you want to log out? If yes, you will be redirected to home",
       "withdraw_confirm": "Are you sure you want to delete your account? Your mission points, playlists, etc. will be deleted and cannot be recovered.",
       "withdraw_completed": "Your account has been deleted. See you next time!",
@@ -66,6 +67,9 @@
     },
     "btn": {
       "connect_wallet": "Connect wallet",
+      "connect_social": "Social Sign-In",
+      "back_to_sign_in": "Back to Sign In",
+      "connect_twitter": "Connect with Twitter",
       "connect_google": "Connect with Google"
     },
     "title": {
@@ -107,7 +111,7 @@
       "moment": "Hold on!"
     },
     "para": {
-      "guest_limit": "Access is limited as a guest. Connect your Google account to enjoy full services."
+      "guest_limit": "Access is limited as a guest. Connect your social account to enjoy full services."
     }
   },
   "settings": {

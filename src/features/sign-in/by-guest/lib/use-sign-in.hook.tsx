@@ -5,15 +5,9 @@ import { default as useSignInMutation } from '../api/use-sign-in.mutation';
 
 type Props = {
   onSuccess: () => void;
-  onClickSignInByGoogle: () => void;
-  onClickSignInByTwitter: () => void;
 };
 
-export default function useSignIn({
-  onSuccess,
-  onClickSignInByGoogle,
-  onClickSignInByTwitter,
-}: Props) {
+export default function useSignIn({ onSuccess }: Props) {
   const { openDialog } = useDialog();
   const t = useI18n();
   const { mutate, isPending } = useSignInMutation();
@@ -29,13 +23,8 @@ export default function useSignIn({
       ),
       Body: () => (
         <Dialog.ButtonGroup>
-          <Dialog.Button onClick={onClickSignInByGoogle} disabled={isPending}>
-            {t.auth.btn.connect_google}
-          </Dialog.Button>
-          <Dialog.Button onClick={onClickSignInByTwitter} disabled={isPending}>
-            트위터 연동하기 (임시)
-          </Dialog.Button>
           <Dialog.Button
+            className='w-[50%]'
             color='secondary'
             onClick={() => {
               mutate(undefined, {
@@ -49,10 +38,19 @@ export default function useSignIn({
           >
             {t.onboard.btn.guest}
           </Dialog.Button>
+          <Dialog.Button
+            className='w-[50%]'
+            onClick={() => {
+              onClose?.();
+            }}
+            disabled={isPending}
+          >
+            {t.auth.btn.back_to_sign_in}
+          </Dialog.Button>
         </Dialog.ButtonGroup>
       ),
       classNames: {
-        container: 'w-[550px]',
+        container: 'w-[550px] pb-[50px]',
       },
     }));
   };
