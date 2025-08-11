@@ -1,20 +1,21 @@
 import { useIsGuest } from '@/entities/me';
+import { OAuth2Provider } from '@/shared/api/http/types/users';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
-import useSignIn from './use-sign-in.hook';
+import useInitiateSignIn from './use-initiate-sign-in';
 
-export default function useInformGoogleLogin(title?: string) {
+export default function useInformSocialLogin(oauth2Provider: OAuth2Provider, title?: string) {
   const t = useI18n();
   const { openConfirmDialog } = useDialog();
   const isGuest = useIsGuest();
-  const signIn = useSignIn();
+  const signIn = useInitiateSignIn(oauth2Provider);
 
   return async () => {
     if (!(await isGuest())) return;
 
     const confirmed = await openConfirmDialog({
-      title: title ?? t.auth.para.need_google_login,
-      okText: t.common.btn.google_login,
+      title: title ?? t.auth.para.need_social_login,
+      okText: t.auth.btn.connect_social,
     });
 
     if (!confirmed) return;

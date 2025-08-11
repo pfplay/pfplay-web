@@ -2,8 +2,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePrefetchMe } from '@/entities/me';
-import { SignInByGoogleButtonForDev, useSignInByGoogle } from '@/features/sign-in/by-google';
 import { useSignInByGuest } from '@/features/sign-in/by-guest';
+import { SignInByGoogleButtonForDev, useInitiateSignIn } from '@/features/sign-in/by-social';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
@@ -13,11 +13,11 @@ import { PFClose } from '@/shared/ui/icons';
 export default function SignInPage() {
   const t = useI18n();
   const router = useAppRouter();
-
   const prefetchMe = usePrefetchMe();
-  const signInByGoogle = useSignInByGoogle();
+  const signInByGoogle = useInitiateSignIn('google');
+  const signInByTwitter = useInitiateSignIn('twitter');
+
   const signInByGuest = useSignInByGuest({
-    onClickSignInByGoogle: signInByGoogle,
     onSuccess: async () => {
       await prefetchMe();
       router.push('/parties');
@@ -50,9 +50,21 @@ export default function SignInPage() {
           variant='outline'
           Icon={<Image src='/images/ETC/google.png' alt='google' width={32} height={32} />}
           onClick={signInByGoogle}
-          className='w-[320px] h-[56px] mb-[40px]'
+          className='w-[320px] h-[56px] mb-[20px]'
         >
           {t.auth.btn.connect_google}
+        </Button>
+
+        <Button
+          size='xl'
+          typo='detail1'
+          color='secondary'
+          variant='outline'
+          Icon={<Image src='/images/ETC/twitter.png' alt='twitter' width={32} height={32} />}
+          onClick={signInByTwitter}
+          className='w-[320px] h-[56px] mb-[40px]'
+        >
+          {t.auth.btn.connect_twitter}
         </Button>
 
         <TextButton onClick={signInByGuest} underline>

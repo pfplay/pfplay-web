@@ -1,9 +1,8 @@
 import { ActivityType, AuthorityTier, ObtainmentType } from './@enums';
 
 export interface SignInRequest {
-  oauth2Provider: 'google';
+  oauth2Provider: OAuth2Provider;
 }
-
 export interface GetMyInfoResponse {
   uid: string;
   /**
@@ -33,6 +32,50 @@ export interface GetMyProfileSummaryResponse {
   combinePositionY?: number;
   walletAddress?: string;
   activitySummaries: ActivitySummary[];
+}
+export interface InitiateLoginRequest {
+  provider: OAuth2Provider;
+  codeVerifier: string;
+}
+
+export type InitiateLoginResponse =
+  | {
+      success: true;
+      authUrl: string;
+      state: string;
+    }
+  | {
+      success: false;
+      message: string;
+    };
+
+export interface TokenExchangeRequest {
+  provider: OAuth2Provider;
+  code: string;
+  codeVerifier: string;
+  state: string;
+}
+
+export type TokenExchangeResponse =
+  | {
+      success: true;
+      user: {
+        id: string;
+        email: string;
+        name: string;
+        picture: string;
+      };
+    }
+  | {
+      success: false;
+      message: string;
+    };
+
+export interface AuthCallbackParams {
+  code?: string;
+  state?: string;
+  error?: string;
+  error_description?: string;
 }
 
 export interface GetUserProfileSummaryRequest {
@@ -102,10 +145,6 @@ export interface UsersClient {
    */
   temporary_SignInAssociateCrew: () => Promise<void>;
   /**
-   * OAuth2 로그인
-   */
-  signIn: (request: SignInRequest) => void;
-  /**
    * 게스트 로그인
    */
   signInGuest: () => Promise<void>;
@@ -121,4 +160,8 @@ export interface UsersClient {
   updateMyBio: (request: UpdateMyBioRequest) => Promise<void>;
   updateMyAvatarFace: (request: UpdateMyAvatarFaceRequest) => Promise<void>;
   updateMyAvatarBody: (request: UpdateMyAvatarBodyRequest) => Promise<void>;
+  initiateLogin: (request: InitiateLoginRequest) => Promise<InitiateLoginResponse>;
+  exchangeToken: (request: TokenExchangeRequest) => Promise<TokenExchangeResponse>;
 }
+
+export type OAuth2Provider = 'google' | 'twitter';

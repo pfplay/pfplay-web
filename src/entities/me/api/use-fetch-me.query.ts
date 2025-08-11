@@ -35,4 +35,5 @@ export const queryOptions: UseQueryOptions<Me.Model, AxiosError<APIError>> = {
   staleTime: ONE_HOUR,
   gcTime: ONE_HOUR,
   placeholderData: keepPreviousData,
+  enabled: typeof window === 'undefined' || !window.location.pathname.startsWith('/auth/callback/'),
 };

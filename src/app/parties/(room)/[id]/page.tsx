@@ -4,7 +4,7 @@ import { useCurrentPartyroomAlerts } from '@/entities/current-partyroom';
 import { useIsGuest } from '@/entities/me';
 import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
 import { useSharePartyroom } from '@/features/partyroom/share-link';
-import { useInformGoogleLogin } from '@/features/sign-in/by-google';
+import { useInformSocialType } from '@/features/sign-in/by-social';
 import { cn } from '@/shared/lib/functions/cn';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -31,7 +31,7 @@ const PartyroomPage = () => {
   } = useDisclosure();
 
   const isGuest = useIsGuest();
-  const informGoogleLogin = useInformGoogleLogin();
+  const informSocialType = useInformSocialType();
 
   const { data: partyroomSummary, isLoading: isPartyroomSummaryLoading } =
     useFetchPartyroomDetailSummary(Number(params.id), !!params.id);
@@ -63,7 +63,7 @@ const PartyroomPage = () => {
           {
             onClick: async () => {
               if (await isGuest()) {
-                informGoogleLogin();
+                informSocialType();
                 return;
               }
               openDjingDialog();
