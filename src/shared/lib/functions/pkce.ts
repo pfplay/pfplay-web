@@ -1,12 +1,7 @@
-/**
- * PKCE (Proof Key for Code Exchange) 유틸리티 함수들
- * OAuth 2.0 Authorization Code Flow with PKCE 구현을 위한 함수들
- */
+import { PKCEStorage, StorageKey } from '@/features/sign-in/by-oauth2/model/pkce-storage.model';
 
 /**
  * URL-safe Base64 인코딩
- * @param buffer - 인코딩할 ArrayBuffer
- * @returns URL-safe Base64 문자열
  */
 function base64URLEncode(buffer: ArrayBuffer): string {
   const bytes = new Uint8Array(buffer);
@@ -17,12 +12,8 @@ function base64URLEncode(buffer: ArrayBuffer): string {
   return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 
-// TODO: session storage 통신 레이어 분리...
-
 /**
  * code_verifier 생성
- * 43-128자의 URL-safe 문자열 생성
- * @returns code_verifier 문자열
  */
 function generateCodeVerifier(): string {
   const array = new Uint8Array(32);
@@ -32,18 +23,12 @@ function generateCodeVerifier(): string {
 
 /**
  * PKCE 파라미터 생성 및 저장
- * code_verifier와 code_challenge를 생성하고 sessionStorage에 저장
- * @returns code_challenge와 code_challenge_method
  */
 export async function createPKCEParams(): Promise<{
   codeVerifier: string;
 }> {
   const codeVerifier = generateCodeVerifier();
-
-  if (typeof window !== 'undefined') {
-    sessionStorage.setItem('code_verifier', codeVerifier);
-  }
-
+  PKCEStorage.setItem(StorageKey.CODE_VERIFIER, codeVerifier);
   return {
     codeVerifier,
   };
@@ -51,52 +36,37 @@ export async function createPKCEParams(): Promise<{
 
 /**
  * 저장된 state 가져오기
- * @returns 저장된 state 또는 null
  */
 export function getStoredState(): string | null {
-  if (typeof window !== 'undefined') {
-    return sessionStorage.getItem('state');
-  }
-  return null;
+  return PKCEStorage.getItem(StorageKey.STATE);
 }
 
 /**
  * state 저장
- * @param state - 저장할 state
  */
 export function setStoredState(state: string): void {
-  if (typeof window !== 'undefined') {
-    sessionStorage.setItem('state', state);
-  }
+  PKCEStorage.setItem(StorageKey.STATE, state);
 }
 
 /**
  * 저장된 state 제거
  */
 export function clearStoredState(): void {
-  if (typeof window !== 'undefined') {
-    sessionStorage.removeItem('state');
-  }
+  PKCEStorage.removeItem(StorageKey.STATE);
 }
 
 /**
  * 저장된 code_verifier 가져오기
- * @returns 저장된 code_verifier 또는 null
  */
 export function getStoredCodeVerifier(): string | null {
-  if (typeof window !== 'undefined') {
-    return sessionStorage.getItem('code_verifier');
-  }
-  return null;
+  return PKCEStorage.getItem(StorageKey.CODE_VERIFIER);
 }
 
 /**
  * 저장된 code_verifier 제거
  */
 export function clearStoredCodeVerifier(): void {
-  if (typeof window !== 'undefined') {
-    sessionStorage.removeItem('code_verifier');
-  }
+  PKCEStorage.removeItem(StorageKey.CODE_VERIFIER);
 }
 
 /**
