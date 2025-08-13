@@ -7,16 +7,14 @@ export default function useCrewProfileCallback() {
 
   return (event: CrewProfileEvent) => {
     updateCrews((prev) => {
-      return prev.map((crew) => {
+      const updatedCrews = prev.map((crew) => {
         if (crew.crewId !== event.crewId) {
           return crew;
         }
-
-        return {
-          ...crew,
-          ...omit(event, 'eventType'),
-        };
+        const crewUpdated = { ...crew, ...omit(event, 'eventType') };
+        return crewUpdated;
       });
+      return updatedCrews;
     });
   };
 }

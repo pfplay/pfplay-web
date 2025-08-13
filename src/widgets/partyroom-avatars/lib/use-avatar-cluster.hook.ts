@@ -39,9 +39,20 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
       }));
 
     // 유지되는 기존 노드는 fx, fy로 고정
-    const keptNodes = existingNodes.map((n) =>
-      incomingIds.has(n.crewId) ? { ...n, fx: n.x, fy: n.y } : n
-    );
+    const keptNodes = existingNodes.map((n) => {
+      if (!incomingIds.has(n.crewId)) return n;
+
+      const updatedCrew = crews.find((c) => c.crewId === n.crewId);
+      if (!updatedCrew) return n; // crews에서 찾지 못한 경우 기존 노드 유지
+
+      return {
+        ...updatedCrew, // 새로운 속성들 (아바타, 닉네임 등)
+        x: n.x, // 기존 위치 유지
+        y: n.y,
+        fx: n.x, // 위치 고정
+        fy: n.y,
+      };
+    });
 
     // 제거된 노드 제외
     const updatedNodes: D3Node[] = [
