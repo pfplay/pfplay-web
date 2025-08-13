@@ -1,18 +1,12 @@
 import { useState } from 'react';
 import Moveable from 'react-moveable';
 import { useSelectedAvatarState } from '@/features/edit-profile-avatar/lib/selected-avatar-state.context';
+import { AvatarFacePos } from '@/shared/api/http/types/users';
 import { MoveableHelper } from './moveable.helper';
-import { FacePos } from '../../model/avatar.model';
-
-export const DEFAULT_FACE_POS: FacePos = {
-  offsetX: 20,
-  offsetY: 10,
-  zoom: 80,
-};
 
 type Props = {
   faceRef: React.RefObject<HTMLElement>;
-  onFacePosChange: (facePos: FacePos) => void;
+  onFacePosChange: (facePos: AvatarFacePos) => void;
   faceWidth: number;
   faceHeight: number;
 };
@@ -21,12 +15,7 @@ function MoveableFace({ faceRef, onFacePosChange, faceWidth, faceHeight }: Props
   const selectedAvatar = useSelectedAvatarState();
 
   const [helper] = useState(() => {
-    return new MoveableHelper(
-      selectedAvatar.facePos ?? DEFAULT_FACE_POS,
-      onFacePosChange,
-      faceWidth,
-      faceHeight
-    );
+    return new MoveableHelper(selectedAvatar.facePos, onFacePosChange, faceWidth, faceHeight);
   });
 
   return (

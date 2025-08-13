@@ -1,6 +1,6 @@
 'use client';
 import { Avatar } from '@/entities/avatar';
-import { DEFAULT_FACE_POS } from '@/entities/avatar/ui/react-moveable/moveable-face';
+import { BASE_SCALE, BASE_X, BASE_Y } from '@/entities/avatar/config/base-size';
 import { useAvatarDance } from '@/entities/avatar/ui/useAvatarDance.hook';
 import { Crew } from '@/entities/current-partyroom';
 import { pick } from '@/shared/lib/functions/pick';
@@ -41,6 +41,10 @@ export default function Avatars() {
             facePosY={dj.combinePositionY}
             reaction={dj.reactionType}
             motionType={dj.motionType}
+            offsetX={dj.offsetX || BASE_X}
+            offsetY={dj.offsetY || BASE_Y}
+            scale={dj.scale || BASE_SCALE}
+            avatarRef={registerAvatar}
           />
         </div>
       )}
@@ -68,7 +72,9 @@ export default function Avatars() {
               facePosX={crew.combinePositionX}
               facePosY={crew.combinePositionY}
               reaction={crew.reactionType}
-              facePos={DEFAULT_FACE_POS}
+              offsetX={crew.offsetX || BASE_X}
+              offsetY={crew.offsetY || BASE_Y}
+              scale={crew.scale || BASE_SCALE}
               motionType={crew.motionType}
               avatarRef={registerAvatar}
             />

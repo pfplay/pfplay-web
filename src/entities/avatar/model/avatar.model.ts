@@ -16,13 +16,15 @@ export type Model = {
    */
   facePosY?: number;
   /**
-   * face 위치 조정 값
+   * body 내 face 중앙점을 (0,0) 기준으로 좌(-), 우(+) 이동 얼굴 너비 대비 비율
    */
-  facePos?: FacePos;
-};
-
-export type FacePos = {
-  offsetX: number; // body 내 face 중앙점을 (0,0) 기준으로 좌(-), 우(+) 이동 얼굴 너비 대비 비율
-  offsetY: number; // body 내 face 중앙점을 (0,0) 기준으로 위(-), 아래(+) 이동 얼굴 높이 대비 비율
-  zoom: number; // face 크기 조절 배율
+  offsetX?: number;
+  /**
+   * body 내 face 중앙점을 (0,0) 기준으로 위(-), 아래(+) 이동 얼굴 높이 대비 비율
+   */
+  offsetY?: number;
+  /**
+   * face 크기 조절 배율
+   */
+  scale?: number;
 };

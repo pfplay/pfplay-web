@@ -1,10 +1,8 @@
 'use client';
-import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { FacePos } from '@/entities/avatar/model/avatar.model';
-import { DEFAULT_FACE_POS } from '@/entities/avatar/ui/react-moveable/moveable-face';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useSuspenseFetchMe } from '@/entities/me';
 import { useFetchAvatarBodies } from '@/features/edit-profile-avatar/api/use-fetch-avatar-bodies.query';
-import { AvatarBody } from '@/shared/api/http/types/users';
+import { AvatarBody, AvatarFacePos } from '@/shared/api/http/types/users';
 import { SelectedAvatarStateContext } from './selected-avatar-state.context';
 
 export default function SelectedAvatarStateProvider({ children }: { children: ReactNode }) {
@@ -12,8 +10,11 @@ export default function SelectedAvatarStateProvider({ children }: { children: Re
   const { data: bodies } = useFetchAvatarBodies();
   const [selectedBody, setSelectedBody] = useState<AvatarBody>();
   const [selectedFaceUri, setSelectedFaceUri] = useState<string>();
-  const selectedAvatarDOM = useRef<HTMLDivElement>(null);
-  const [selectedFacePos, setSelectedFacePos] = useState<FacePos>(DEFAULT_FACE_POS); // TODO: 이전 선택된 값으로 초기화해야함
+  const [selectedFacePos, setSelectedFacePos] = useState<AvatarFacePos>({
+    offsetX: me.offsetX,
+    offsetY: me.offsetY,
+    scale: me.scale,
+  });
 
   const contextValue = useMemo(
     () => ({
@@ -21,7 +22,6 @@ export default function SelectedAvatarStateProvider({ children }: { children: Re
       setBody: setSelectedBody,
       faceUri: selectedFaceUri,
       setFaceUri: setSelectedFaceUri,
-      avatarDOM: selectedAvatarDOM,
       facePos: selectedFacePos,
       setFacePos: setSelectedFacePos,
     }),
@@ -35,7 +35,11 @@ export default function SelectedAvatarStateProvider({ children }: { children: Re
     if (bodies && !selectedBody) {
       setSelectedBody(bodies.find((body) => body.resourceUri === me.avatarBodyUri));
       setSelectedFaceUri(me.avatarFaceUri);
-      setSelectedFacePos(DEFAULT_FACE_POS);
+      setSelectedFacePos({
+        offsetX: me.offsetX,
+        offsetY: me.offsetY,
+        scale: me.scale,
+      });
     }
   }, [bodies, selectedBody, selectedFacePos]);
 

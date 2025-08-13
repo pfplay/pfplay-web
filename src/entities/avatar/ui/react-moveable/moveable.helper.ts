@@ -1,43 +1,45 @@
-import { FacePos } from '../../model/avatar.model';
+import { AvatarFacePos } from '@/shared/api/http/types/users';
 
-type SetFacePosFn = (facePos: FacePos) => void;
+type SetFacePosFn = (facePos: AvatarFacePos) => void;
 
 class MoveableHelper {
-  private facePos: FacePos;
+  private facePos: AvatarFacePos;
   private onFacePosChange: SetFacePosFn;
   private faceWidth: number;
   private faceHeight: number;
 
   public constructor(
-    initialFacePos: FacePos,
+    initialFacePos: AvatarFacePos | undefined,
     onFacePosChange: SetFacePosFn,
     faceWidth: number,
     faceHeight: number
   ) {
-    this.facePos = initialFacePos;
+    this.facePos = initialFacePos || {
+      offsetX: 0,
+      offsetY: 0,
+      scale: 1,
+    };
     this.onFacePosChange = onFacePosChange;
     this.faceWidth = faceWidth;
     this.faceHeight = faceHeight;
   }
 
   public onDrag = (e: any) => {
-    const [x, y] = e.beforeTranslate;
-
+    const [x, y] = e.beforeTranslate; // 이동 px 단위 기록
     this.facePos = {
       ...this.facePos,
-      offsetX: (x / this.faceWidth) * 100,
-      offsetY: (y / this.faceHeight) * 100,
+      offsetX: x / this.faceWidth,
+      offsetY: y / this.faceHeight,
     };
 
     this.onFacePosChange(this.facePos);
   };
 
   public onScale = (e: any) => {
-    const zoomPercent = e.scale[0] * 100;
-
+    const zoomRatio = e.scale[0];
     this.facePos = {
       ...this.facePos,
-      zoom: zoomPercent,
+      scale: zoomRatio,
     };
 
     this.onFacePosChange(this.facePos);

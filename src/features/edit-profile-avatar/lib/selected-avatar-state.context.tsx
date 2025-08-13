@@ -1,8 +1,7 @@
 'use client';
 
-import { createContext, RefObject, useContext } from 'react';
-import { FacePos } from '@/entities/avatar/model/avatar.model';
-import { AvatarBody } from '@/shared/api/http/types/users';
+import { createContext, useContext } from 'react';
+import { AvatarBody, AvatarFacePos } from '@/shared/api/http/types/users';
 
 type SelectedAvatarState = {
   body?: AvatarBody;
@@ -11,10 +10,8 @@ type SelectedAvatarState = {
   faceUri?: string;
   setFaceUri: (uri?: string) => void;
 
-  avatarDOM: RefObject<HTMLDivElement>; // TODO: 미사용 시 삭제 필요할 수 있음
-
-  facePos?: FacePos;
-  setFacePos: (pos: FacePos) => void;
+  facePos?: AvatarFacePos;
+  setFacePos: (pos: AvatarFacePos) => void;
 };
 
 export const SelectedAvatarStateContext = createContext<SelectedAvatarState | null>(null);

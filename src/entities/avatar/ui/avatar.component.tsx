@@ -1,10 +1,11 @@
 import { memo, useEffect, useRef } from 'react';
 import { ReactionLottie } from '@/entities/avatar/ui/reaction-lottie';
 import { MotionType, ReactionType } from '@/shared/api/http/types/@enums';
+import { AvatarFacePos } from '@/shared/api/http/types/users';
 import { cn } from '@/shared/lib/functions/cn';
 import calculateDimensions from '../lib/calculate-dimensions';
-import { FacePos, Model } from '../model/avatar.model';
-import { DEFAULT_FACE_POS, MoveableFace } from './react-moveable/moveable-face';
+import { Model } from '../model/avatar.model';
+import { MoveableFace } from './react-moveable/moveable-face';
 
 type Props = Model & {
   height: number;
@@ -13,7 +14,7 @@ type Props = Model & {
   /**
    * 함수가 있으면 얼굴 위치 조정 가능, 없으면 얼굴 위치 조정 불가능
    */
-  onFacePosChange?: (facePos: FacePos) => void;
+  onFacePosChange?: (facePos: AvatarFacePos) => void;
   avatarRef?: (el: HTMLElement | null, type: MotionType) => void;
 };
 
@@ -23,6 +24,7 @@ type Props = Model & {
  *   - facePosX: face의 BODY_BASE_WIDTH 기준 x축 위치. face width 중앙까지 측정한 값
  *   - facePosY: face의 BODY_BASE_HEIGHT 기준 y축 위치. face height 상단까지 측정한 값
  * - facePosX, facePosY는 너비 120, 높이 160 기준으로 계산된 값이여야 합니다.
+ * - x, y, scale는 얼굴 너비 대비 비율로 계산된 값이여야 합니다.
  */
 const Avatar = memo(
   ({
@@ -33,14 +35,14 @@ const Avatar = memo(
     facePosY,
     reaction,
     motionType,
-    facePos,
+    offsetX,
+    offsetY,
+    scale,
     onFacePosChange,
     avatarRef,
   }: Props) => {
-    const dimensions = calculateDimensions(height, facePosX, facePosY, facePos ?? DEFAULT_FACE_POS);
+    const dimensions = calculateDimensions(height, facePosX, facePosY, offsetX, offsetY, scale);
     const faceImgRef = useRef<HTMLImageElement>(null);
-
-    console.log('dimensions', calculateDimensions(240));
 
     const ref = useRef<HTMLDivElement>(null);
 

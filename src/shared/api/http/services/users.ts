@@ -9,13 +9,12 @@ import type {
   AvatarFace,
   UpdateMyWalletRequest,
   UpdateMyBioRequest,
-  UpdateMyAvatarFaceRequest,
-  UpdateMyAvatarBodyRequest,
   UsersClient,
   TokenExchangeResponse,
   TokenExchangeRequest,
   InitiateLoginRequest,
   InitiateLoginResponse,
+  UpdateAvatarRequest,
 } from '../types/users';
 
 @Singleton
@@ -77,11 +76,7 @@ export default class UsersService extends HTTPClient implements UsersClient {
     return this.put<void>(`${this.ROUTE_USER}/me/profile/bio`, request);
   }
 
-  public updateMyAvatarFace(request: UpdateMyAvatarFaceRequest) {
-    return this.put<void>(`${this.ROUTE_USER}/me/profile/avatar/face`, request);
-  }
-
-  public updateMyAvatarBody(request: UpdateMyAvatarBodyRequest) {
-    return this.put<void>(`${this.ROUTE_USER}/me/profile/avatar/body`, request);
+  public updateMyAvatar(request: UpdateAvatarRequest) {
+    return this.put<void>(`${this.ROUTE_USER}/me/profile/avatar`, request);
   }
 }

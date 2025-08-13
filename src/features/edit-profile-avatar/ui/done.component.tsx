@@ -15,20 +15,16 @@ type Props = {
 };
 
 export default function AvatarEditDone({ children, onSuccess }: Props) {
-  const { body, faceUri } = useSelectedAvatarState();
-  // const { captureAvatar } = useAvatarCapture(); // TODO: 미사용 시 삭제
+  const { body, faceUri, facePos } = useSelectedAvatarState();
   const canSubmit = !!body && (!body.combinable || !!faceUri);
   const { mutate: updateAvatar, isPending } = useUpdateMyAvatar();
 
   const done = async () => {
     if (!canSubmit) return;
-
     try {
-      // const { formData } = await captureAvatar(); // TODO: 미사용 시 삭제
-      // TODO: facePos 같이 전달 필요
-      await updateAvatar({ body, faceUri }, { onSuccess });
+      await updateAvatar({ body, faceUri, facePos }, { onSuccess });
     } catch (error) {
-      console.error('Avatar capture failed:', error); // TODO: 에러 처리
+      console.error('Avatar update failed:', error);
     }
   };
 

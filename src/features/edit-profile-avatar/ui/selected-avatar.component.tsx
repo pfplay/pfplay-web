@@ -5,10 +5,7 @@ const SelectedAvatar = () => {
   const selectedAvatar = useSelectedAvatarState();
 
   return (
-    <div
-      ref={selectedAvatar.avatarDOM}
-      className='w-[360px] h-full min-h-[500px] flexCol justify-center items-center bg-black select-none'
-    >
+    <div className='w-[360px] h-full min-h-[500px] flexCol justify-center items-center bg-black select-none'>
       {selectedAvatar.body && (
         <Avatar
           height={400}
@@ -22,7 +19,9 @@ const SelectedAvatar = () => {
           faceUri={selectedAvatar.body.combinable ? selectedAvatar.faceUri : undefined}
           facePosX={selectedAvatar.body.combinePositionX}
           facePosY={selectedAvatar.body.combinePositionY}
-          facePos={selectedAvatar.facePos}
+          offsetX={selectedAvatar.facePos ? selectedAvatar.facePos.offsetX : undefined}
+          offsetY={selectedAvatar.facePos ? selectedAvatar.facePos.offsetY : undefined}
+          scale={selectedAvatar.facePos ? selectedAvatar.facePos.scale : undefined}
           onFacePosChange={selectedAvatar.setFacePos}
         />
       )}
