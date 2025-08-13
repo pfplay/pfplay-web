@@ -19,6 +19,10 @@ const SelectedAvatar = () => {
           faceUri={selectedAvatar.body.combinable ? selectedAvatar.faceUri : undefined}
           facePosX={selectedAvatar.body.combinePositionX}
           facePosY={selectedAvatar.body.combinePositionY}
+          offsetX={selectedAvatar.facePos ? selectedAvatar.facePos.offsetX : undefined}
+          offsetY={selectedAvatar.facePos ? selectedAvatar.facePos.offsetY : undefined}
+          scale={selectedAvatar.facePos ? selectedAvatar.facePos.scale : undefined}
+          onFacePosChange={selectedAvatar.setFacePos}
         />
       )}
     </div>

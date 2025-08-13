@@ -2,7 +2,7 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useSuspenseFetchMe } from '@/entities/me';
 import { useFetchAvatarBodies } from '@/features/edit-profile-avatar/api/use-fetch-avatar-bodies.query';
-import { AvatarBody } from '@/shared/api/http/types/users';
+import { AvatarBody, AvatarFacePos } from '@/shared/api/http/types/users';
 import { SelectedAvatarStateContext } from './selected-avatar-state.context';
 
 export default function SelectedAvatarStateProvider({ children }: { children: ReactNode }) {
@@ -10,6 +10,11 @@ export default function SelectedAvatarStateProvider({ children }: { children: Re
   const { data: bodies } = useFetchAvatarBodies();
   const [selectedBody, setSelectedBody] = useState<AvatarBody>();
   const [selectedFaceUri, setSelectedFaceUri] = useState<string>();
+  const [selectedFacePos, setSelectedFacePos] = useState<AvatarFacePos>({
+    offsetX: me.offsetX,
+    offsetY: me.offsetY,
+    scale: me.scale,
+  });
 
   const contextValue = useMemo(
     () => ({
@@ -17,19 +22,26 @@ export default function SelectedAvatarStateProvider({ children }: { children: Re
       setBody: setSelectedBody,
       faceUri: selectedFaceUri,
       setFaceUri: setSelectedFaceUri,
+      facePos: selectedFacePos,
+      setFacePos: setSelectedFacePos,
     }),
-    [selectedBody, selectedFaceUri]
+    [selectedBody, selectedFaceUri, selectedFacePos]
   );
 
   useEffect(() => {
     /**
-     * selectedBody와 selectedFaceUri 초기화
+     * selectedBody와 selectedFaceUri, selectedFacePos 초기화
      */
     if (bodies && !selectedBody) {
       setSelectedBody(bodies.find((body) => body.resourceUri === me.avatarBodyUri));
       setSelectedFaceUri(me.avatarFaceUri);
+      setSelectedFacePos({
+        offsetX: me.offsetX,
+        offsetY: me.offsetY,
+        scale: me.scale,
+      });
     }
-  }, [bodies, selectedBody]);
+  }, [bodies, selectedBody, selectedFacePos]);
 
   return (
     <SelectedAvatarStateContext.Provider value={contextValue}>

@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Avatar } from '@/entities/avatar';
+import { BASE_SCALE, BASE_X, BASE_Y } from '@/entities/avatar/config/base-size';
 import { Me, useSuspenseFetchMe } from '@/entities/me';
 import { ActivityType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -29,6 +30,9 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
               faceUri={me.avatarFaceUri}
               facePosX={me.combinePositionX}
               facePosY={me.combinePositionY}
+              offsetX={me.offsetX || BASE_X}
+              offsetY={me.offsetY || BASE_Y}
+              scale={me.scale || BASE_SCALE}
             />
           )}
         </div>

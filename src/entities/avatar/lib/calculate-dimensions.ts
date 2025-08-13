@@ -9,13 +9,19 @@ import {
  * @description - 아바타의 주어진 높이를 기준으로 새로운 너비, x, y 좌표를 계산
  *
  * @param targetHeight - 원하는 body 높이
- * @param faceBasePosX - BODY_BASE_WIDTH 기준 x 좌표. body별로 고유한 값. combinabl false라면 비어있을 수 있음
+ * @param faceBasePosX - BODY_BASE_WIDTH 기준 x 좌표. body별로 고유한 값. combinable false라면 비어있을 수 있음
  * @param faceBasePosY - BODY_BASE_HEIGHT 기준 y 좌표. body별로 고유한 값. combinable false라면 비어있을 수 있음
+ * @param x - face 위치 조정 값. combineable false라면 비어있을 수 있음
+ * @param y - face 위치 조정 값. combineable false라면 비어있을 수 있음
+ * @param scale - face 크기 조절 배율
  */
 export default function calculateDimensions(
   targetHeight: number,
   faceBasePosX: number = 0,
-  faceBasePosY: number = 0
+  faceBasePosY: number = 0,
+  x: number = 0,
+  y: number = 0,
+  scale: number = 1
 ) {
   // 높이 비율
   const heightRatio = targetHeight / BODY_BASE_HEIGHT;
@@ -26,6 +32,9 @@ export default function calculateDimensions(
   const facePosY = faceBasePosY * heightRatio;
   const faceWidth = width * FACE_BASE_WIDTH_RATIO;
   const faceHeight = targetHeight * FACE_BASE_HEIGHT_RATIO;
+  const offsetX = x * faceWidth;
+  const offsetY = y * faceHeight;
+  const zoom = scale;
 
   return {
     width,
@@ -33,5 +42,8 @@ export default function calculateDimensions(
     facePosY,
     faceWidth,
     faceHeight,
+    offsetX,
+    offsetY,
+    zoom,
   };
 }

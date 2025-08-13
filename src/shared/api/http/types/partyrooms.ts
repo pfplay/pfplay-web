@@ -77,6 +77,9 @@ export type PartyroomCrew = {
   avatarIconUri: string;
   combinePositionX: number;
   combinePositionY: number;
+  offsetX: number;
+  offsetY: number;
+  scale: number;
 };
 
 export type PartyroomPlayback = {

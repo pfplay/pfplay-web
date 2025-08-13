@@ -32,6 +32,9 @@ export interface GetMyProfileSummaryResponse {
   combinePositionY?: number;
   walletAddress?: string;
   activitySummaries: ActivitySummary[];
+  offsetX: number;
+  offsetY: number;
+  scale: number;
 }
 export interface InitiateLoginRequest {
   provider: OAuth2Provider;
@@ -117,6 +120,11 @@ export interface AvatarBody extends AvatarPartsDefaultMeta {
 }
 
 export interface AvatarFace extends AvatarPartsDefaultMeta {}
+export interface AvatarFacePos {
+  offsetX: number; // 얼굴 너비 대비 비율 (0 ~ 1)
+  offsetY: number; // 얼굴 높이 대비 비율 (0 ~ 1)
+  scale: number; // 배율 (기준 1)
+}
 
 export interface UpdateMyWalletRequest {
   walletAddress: string;
@@ -127,14 +135,28 @@ export interface UpdateMyBioRequest {
   introduction?: string;
 }
 
-export interface UpdateMyAvatarFaceRequest {
-  avatarFaceUri: string;
-}
-
-export interface UpdateMyAvatarBodyRequest {
-  avatarBodyUri: string;
-}
-
+export type UpdateAvatarRequest =
+  | {
+      avatarCompositionType: 'SINGLE_BODY';
+      body: {
+        uri: string;
+      };
+    }
+  | {
+      avatarCompositionType: 'BODY_WITH_FACE';
+      body: {
+        uri: string;
+      };
+      face: {
+        sourceType: 'INTERNAL_IMAGE' | 'NFT_URI';
+        uri: string;
+        transform: {
+          offsetX: number;
+          offsetY: number;
+          scale: number;
+        };
+      };
+    };
 export interface UsersClient {
   /**
    * @deprecated 개발용 로그인
@@ -158,10 +180,7 @@ export interface UsersClient {
   getMyAvatarFaces: () => Promise<AvatarFace[]>;
   updateMyWallet: (request: UpdateMyWalletRequest) => Promise<void>;
   updateMyBio: (request: UpdateMyBioRequest) => Promise<void>;
-  updateMyAvatarFace: (request: UpdateMyAvatarFaceRequest) => Promise<void>;
-  updateMyAvatarBody: (request: UpdateMyAvatarBodyRequest) => Promise<void>;
-  initiateLogin: (request: InitiateLoginRequest) => Promise<InitiateLoginResponse>;
-  exchangeToken: (request: TokenExchangeRequest) => Promise<TokenExchangeResponse>;
+  updateMyAvatar: (request: UpdateAvatarRequest) => Promise<void>;
 }
 
 export type OAuth2Provider = 'google' | 'twitter';

@@ -131,6 +131,9 @@ export type CrewProfileEvent = {
   | 'avatarIconUri'
   | 'combinePositionX'
   | 'combinePositionY'
+  | 'offsetX'
+  | 'offsetY'
+  | 'scale'
 >;
 
 export enum PartyroomEventType {

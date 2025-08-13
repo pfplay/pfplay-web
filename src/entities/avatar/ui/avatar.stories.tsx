@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { ReactionType } from '@/shared/api/http/types/@enums';
+import { MotionType, ReactionType } from '@/shared/api/http/types/@enums';
 import { Button } from '@/shared/ui/components/button';
 import Avatar from './avatar.component';
 
@@ -80,7 +80,7 @@ export const Sizes: Story = {
 export const Dance: Story = {
   args: {
     height: 160,
-    dance: true,
+    motionType: MotionType.DANCE_TYPE_1,
     faceUri: mockFace.uri,
     facePosX: mockBody.facePosX,
     facePosY: mockBody.facePosY,
@@ -89,7 +89,7 @@ export const Dance: Story = {
   render: (args) => (
     <>
       <Avatar {...args} />
-      <Avatar dance bodyUri={mockBodyWithoutFace.uri} height={160} />
+      <Avatar motionType={MotionType.DANCE_TYPE_1} bodyUri={mockBodyWithoutFace.uri} height={160} />
       <Avatar {...args} />
     </>
   ),

@@ -11,6 +11,9 @@ type Props = {
 
 type PositionedCrew = Crew.Model & { position: Point };
 
+/**
+ * 아바타 랜덤 위치 배치 훅 (deprecated)
+ */
 export default function useAssignAvatarPositions({
   originCrews,
   allowArea,
