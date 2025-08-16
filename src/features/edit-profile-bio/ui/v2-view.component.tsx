@@ -18,7 +18,6 @@ type V2ViewModeProps = {
 const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps) => {
   const t = useI18n();
   const { data: me } = useSuspenseFetchMe();
-
   return (
     <div className='gap-5 flexRow'>
       <div className='flexCol gap-9'>

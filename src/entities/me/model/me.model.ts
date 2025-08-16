@@ -15,7 +15,6 @@ export const serviceEntry = (model: Model | null): string => {
 
 export const score = (model: Model, activityType: ActivityType): number => {
   const summary = model.activitySummaries.find((summary) => summary.activityType === activityType);
-
   return summary ? summary.score : 0;
 };
 

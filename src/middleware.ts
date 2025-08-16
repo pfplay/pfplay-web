@@ -8,7 +8,11 @@ export const middleware = (req: NextRequest) => {
   const response = NextResponse.next();
 
   if (!req.cookies.get(LANGUAGE_COOKIE_KEY)?.value) {
-    response.cookies.set(LANGUAGE_COOKIE_KEY, Language.En, { path: '/', maxAge: TEN_YEARS });
+    response.cookies.set(LANGUAGE_COOKIE_KEY, Language.En, {
+      path: '/',
+      maxAge: TEN_YEARS,
+      secure: true,
+    });
 
     setCookieToRequestHeader(req, response);
 

@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
-import { useSuspenseFetchMe } from '@/entities/me';
+import { useIsGuest, useSuspenseFetchMe } from '@/entities/me';
 import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
+import { useInformSocialType } from '@/features/sign-in/by-social';
 import { cn } from '@/shared/lib/functions/cn';
 import { mergeDeep } from '@/shared/lib/functions/merge-deep';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -26,15 +27,21 @@ type SidebarProps = {
 export default function Sidebar({ className, onClickAvatarSetting, extraButtons }: SidebarProps) {
   const t = useI18n();
   const { data: me } = useSuspenseFetchMe();
+  const isGuest = useIsGuest();
   const { openDialog } = useDialog();
   const { useUIState } = useStores();
   const setPlaylistDrawer = useUIState((state) => state.setPlaylistDrawer);
+  const informSocialType = useInformSocialType();
 
   const togglePlaylist = () => {
     setPlaylistDrawer((prev) => mergeDeep(prev, { open: !prev.open }));
   };
 
-  const handleClickProfileButton = () => {
+  const handleClickProfileButton = async () => {
+    if (await isGuest()) {
+      informSocialType();
+      return;
+    }
     return openDialog((_, onCancel) => ({
       title: ({ defaultClassName }) => (
         <Typography type='title2' className={defaultClassName}>
@@ -48,7 +55,7 @@ export default function Sidebar({ className, onClickAvatarSetting, extraButtons 
       },
       Body: (
         <ProfileEditFormV2
-          onClickAvatarSetting={() => {
+          onClickAvatarSetting={async () => {
             onClickAvatarSetting();
             onCancel?.();
           }}
