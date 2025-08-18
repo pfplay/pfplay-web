@@ -55,6 +55,7 @@ export type Model = {
    */
   crews: Crew.Model[];
   updateCrews: (next: Next<Crew.Model[]>) => void;
+  resetCrewsMotion: () => void;
 
   /**
    * 현재 DJ

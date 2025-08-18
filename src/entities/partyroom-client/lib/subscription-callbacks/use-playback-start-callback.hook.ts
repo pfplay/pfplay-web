@@ -4,13 +4,19 @@ import useInvalidateDjingQueue from './utils/use-invalidate-djing-queue.hook';
 
 export default function usePlaybackStartCallback() {
   const { useCurrentPartyroom } = useStores();
-  const [updatePlaybackActivated, updatePlayback, updateCurrentDj, resetReaction] =
-    useCurrentPartyroom((state) => [
-      state.updatePlaybackActivated,
-      state.updatePlayback,
-      state.updateCurrentDj,
-      state.resetReaction,
-    ]);
+  const [
+    updatePlaybackActivated,
+    updatePlayback,
+    updateCurrentDj,
+    resetReaction,
+    resetCrewsMotion,
+  ] = useCurrentPartyroom((state) => [
+    state.updatePlaybackActivated,
+    state.updatePlayback,
+    state.updateCurrentDj,
+    state.resetReaction,
+    state.resetCrewsMotion,
+  ]);
   const invalidateDjingQueue = useInvalidateDjingQueue();
 
   return (event: PlaybackStartEvent) => {
@@ -18,6 +24,7 @@ export default function usePlaybackStartCallback() {
     updatePlayback(event.playback);
     updateCurrentDj({ crewId: event.crewId });
     resetReaction();
+    resetCrewsMotion();
     invalidateDjingQueue();
   };
 }

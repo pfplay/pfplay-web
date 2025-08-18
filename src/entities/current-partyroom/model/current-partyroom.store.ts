@@ -1,6 +1,7 @@
 'use client';
 
 import { create } from 'zustand';
+import { MotionType } from '@/shared/api/http/types/@enums';
 import { Chat } from '@/shared/lib/chat';
 import Observer from '@/shared/lib/functions/observer';
 import { update } from '@/shared/lib/functions/update';
@@ -72,9 +73,14 @@ export const createCurrentPartyroomStore = () => {
     },
     resetReaction: () => {
       return set((state) => {
-        state.reaction = api.getInitialState().reaction;
+        const updated = state.crews.map((crew) => ({
+          ...crew,
+          motionType: MotionType.NONE,
+        }));
 
-        return state;
+        return {
+          crews: updated,
+        };
       });
     },
 
@@ -82,6 +88,18 @@ export const createCurrentPartyroomStore = () => {
     updateCrews: (next) => {
       return set((state) => {
         const updated = update(state.crews, next);
+
+        return {
+          crews: updated,
+        };
+      });
+    },
+    resetCrewsMotion: () => {
+      return set((state) => {
+        const updated = state.crews.map((crew) => ({
+          ...crew,
+          motionType: MotionType.NONE,
+        }));
 
         return {
           crews: updated,
