@@ -12,6 +12,7 @@ const fastSin = (angle: number) => SIN_LUT[normalizeAngle(Math.floor(angle))];
 type AvatarEntry = {
   el: HTMLElement;
   motionType: MotionType;
+  startTime: number;
 };
 
 export function useAvatarDance() {
@@ -20,21 +21,40 @@ export function useAvatarDance() {
   const startTimeRef = useRef<number>();
 
   const registerAvatar = (el: HTMLElement | null, motionType: MotionType) => {
-    if (el && !avatarEntries.current.find((entry) => entry.el === el)) {
-      avatarEntries.current.push({ el, motionType });
+    if (!el) return;
+
+    const currentTime = performance.now();
+    const existingEntry = avatarEntries.current.find((entry) => entry.el === el);
+    if (existingEntry) {
+      existingEntry.motionType = motionType;
+      existingEntry.startTime = currentTime;
+    } else {
+      avatarEntries.current.push({
+        el,
+        motionType,
+        startTime: currentTime,
+      });
     }
   };
 
   useEffect(() => {
     startTimeRef.current = performance.now();
     const speed = 1;
+    const ANIMATION_DURATION = 3200;
 
     const animate = (time: number) => {
       if (!startTimeRef.current) return;
       const t = ((time - startTimeRef.current) / 1000) * speed;
 
       avatarEntries.current.forEach((entry, index) => {
-        const { el, motionType } = entry;
+        const { el, motionType, startTime } = entry;
+        const elapsedTime = time - startTime;
+
+        if (elapsedTime > ANIMATION_DURATION) {
+          el.style.transform = '';
+          return;
+        }
+
         const offset = index * 36;
         const angle = t * 360 + offset;
 

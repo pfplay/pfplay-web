@@ -30,7 +30,7 @@ export default function Avatars() {
           style={{
             top: '98%',
             left: '16%',
-            transform: 'translate(-100%, -100%)',
+            transform: 'translate(-10%, -100%)',
           }}
         >
           <Avatar
