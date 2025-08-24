@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "pm2": "pm2 start yarn --interpreter bash -- start && pm2 monit",
-    "test": "NODE_OPTIONS=--experimental-vm-modules TZ=utc jest src eslint-custom-plugin",
+    "test": "jest src eslint-custom-plugin",
     "test:type": "tsc --noEmit",
     "lint-staged": "lint-staged",
     "lint": "eslint src --fix --quiet",

@@ -1,7 +1,7 @@
 'use client';
-import Image from 'next/image';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { ThumbnailWithPreview, convertPlaylistTrackToPreview } from '@/entities/music-preview';
 import { PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
@@ -24,6 +24,9 @@ const Track = ({ track, menuItems }: TrackProps) => {
     transition,
   };
 
+  // 미리보기용 트랙 데이터 변환
+  const previewTrack = convertPlaylistTrackToPreview(track);
+
   return (
     <div
       ref={setNodeRef}
@@ -35,18 +38,21 @@ const Track = ({ track, menuItems }: TrackProps) => {
         <PFDragAndDrop />
       </div>
 
-      <div className='relative w-full flexRow justify-start rounded gap-[12px] overflow-hidden select-none pointer-events-none'>
-        <div className='relative shrink-0 w-[80px] h-[44px] bg-gray-600'>
-          <Image
-            priority
-            src={track.thumbnailImage ?? '/images/ETC/PlaylistThumbnail.png'}
-            alt={track.name}
+      <div className='relative w-full flexRow justify-start rounded gap-[12px] overflow-hidden select-none'>
+        {/* 미리보기 기능이 통합된 썸네일 */}
+        <div className='shrink-0 pointer-events-auto'>
+          <ThumbnailWithPreview
+            previewTrack={previewTrack}
+            thumbnailSrc={track.thumbnailImage ?? '/images/ETC/PlaylistThumbnail.png'}
+            thumbnailAlt={track.name}
             width={80}
             height={44}
-            className={cn('w-full h-full object-contain select-none')}
+            className='w-[80px] h-[44px] bg-gray-600'
+            imageClassName={cn('w-full h-full object-contain select-none')}
           />
         </div>
-        <div className='flex-1 min-w-0 select-none flexCol overflow-hidden'>
+
+        <div className='flex-1 min-w-0 select-none flexCol overflow-hidden pointer-events-none'>
           <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
             {track.name}
           </Typography>
