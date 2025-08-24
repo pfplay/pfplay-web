@@ -27,7 +27,7 @@ export default function AddTracks({ children }: Props) {
     openDialog((_, onClose) => ({
       zIndex: playlistDrawer.zIndex + 1,
       classNames: {
-        container: '!p-[unset] w-[800px] bg-black border border-gray-700',
+        container: '!p-[unset] w-[1000px] bg-black border border-gray-700',
       },
       Body: (
         <PlaylistActionBypassProvider action={playlistAction}>

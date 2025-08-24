@@ -1,25 +1,34 @@
-import Image from 'next/image';
 import { ReactNode } from 'react';
+import { ThumbnailWithPreview, convertSearchMusicToPreview } from '@/entities/music-preview';
 import { Music } from '@/shared/api/http/types/playlists';
 import { safeDecodeURI } from '@/shared/lib/functions/safe-decode-uri';
 import { Typography } from '@/shared/ui/components/typography';
 
 type SearchListItemProps = {
-  music: Pick<Music, 'videoTitle' | 'runningTime' | 'thumbnailUrl'>;
+  music: Music;
   Suffix: ReactNode;
 };
 
-export default function SearchListItem({
-  music: { videoTitle, runningTime, thumbnailUrl },
-  Suffix,
-}: SearchListItemProps) {
+export default function SearchListItem({ music, Suffix }: SearchListItemProps) {
+  // 미리보기용 트랙 데이터 변환
+  const previewTrack = convertSearchMusicToPreview(music);
+
   return (
     <div className='flex items-center gap-[32px]'>
       <div className='flex-1 flex items-center gap-[12px]'>
-        <Image src={thumbnailUrl} alt='Video Thumbnail' width={60} height={33.75} />
+        {/* 미리보기 기능이 통합된 썸네일 */}
+        <ThumbnailWithPreview
+          previewTrack={previewTrack}
+          thumbnailSrc={music.thumbnailUrl}
+          thumbnailAlt='Video Thumbnail'
+          width={60}
+          height={33.75}
+          imageClassName='object-cover'
+        />
+
         {/* 일본어, 중국어 등의 정상 렌더링을 위해 url encode, title decode 해줘야 함 */}
-        <Typography className='flex-1 text-left mx-3'>{safeDecodeURI(videoTitle)}</Typography>
-        <Typography>{formatDuration(runningTime)}</Typography>
+        <Typography className='flex-1 text-left mx-3'>{safeDecodeURI(music.videoTitle)}</Typography>
+        <Typography>{formatDuration(music.runningTime)}</Typography>
       </div>
 
       {Suffix}
