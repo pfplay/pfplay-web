@@ -4,11 +4,11 @@ import Image from 'next/image';
 import { useStores } from '@/shared/lib/store/stores.context';
 import PreviewIndicator from './preview-indicator.component';
 import PreviewOverlay from './preview-overlay.component';
-import type { Preview } from '../model/preview.model';
+import type { PreviewTrack } from '../model/preview.model';
 
 type ThumbnailWithPreviewProps = {
   /** 미리보기 트랙 정보 */
-  previewTrack: Preview.PreviewTrack;
+  previewTrack: PreviewTrack;
   /** 썸네일 이미지 src */
   thumbnailSrc: string;
   /** 썸네일 alt 텍스트 */

@@ -1,12 +1,12 @@
 import type { Music } from '@/shared/api/http/types/playlists';
 import type { PlaylistTrack } from '@/shared/api/http/types/playlists';
-import type { Preview } from '../model/preview.model';
+import type { PreviewTrack } from '../model/preview.model';
 
 /**
  * 플레이리스트 트랙을 미리보기 트랙으로 변환
  */
-export const convertPlaylistTrackToPreview = (track: PlaylistTrack): Preview.PreviewTrack => ({
-  id: track.linkId,
+export const convertPlaylistTrackToPreview = (track: PlaylistTrack): PreviewTrack => ({
+  id: track.linkId.toString(),
   title: track.name,
   thumbnailUrl: track.thumbnailImage,
   videoUrl: `https://www.youtube.com/watch?v=${track.linkId}`,
@@ -16,7 +16,7 @@ export const convertPlaylistTrackToPreview = (track: PlaylistTrack): Preview.Pre
 /**
  * 검색 결과 음악을 미리보기 트랙으로 변환
  */
-export const convertSearchMusicToPreview = (music: Music): Preview.PreviewTrack => ({
+export const convertSearchMusicToPreview = (music: Music): PreviewTrack => ({
   id: music.videoId,
   title: music.videoTitle,
   thumbnailUrl: music.thumbnailUrl,
