@@ -48,7 +48,7 @@ function useOpenPenaltyAlertDialog() {
         Body: (
           <>
             <Typography type='body3' className='text-gray-50'>
-              {/* TODO: i18n 적용 */}Reason: {reason}
+              {t.common.para.reason}: {reason}
             </Typography>
 
             <Dialog.ButtonGroup>

@@ -13,5 +13,6 @@ export const optionalString = (schema: z.ZodString) =>
 /**
  * @example requiredString(z.string().email())
  */
-export const requiredString = (schema: z.ZodString) =>
-  z.string().refine((val) => schema.safeParse(val).success, { message: 'required' }); // TODO: i18n
+//
+export const requiredString = (schema: z.ZodString, message: string) =>
+  z.string().refine((val) => schema.safeParse(val).success, { message });

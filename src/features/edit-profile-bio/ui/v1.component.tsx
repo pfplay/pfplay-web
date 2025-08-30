@@ -38,7 +38,7 @@ const ProfileEditFormV1 = () => {
       onError: (err) => {
         // FIXME: 다른 브랜치에서 작업한 server response 를 제네릭으로 변경
         if (err.response?.data.code === 409) {
-          setError('nickname', { message: 'This nickname is already used.' }); // TODO: i18n
+          setError('nickname', { message: t.settings.para.nickname_taken });
         }
       },
     });

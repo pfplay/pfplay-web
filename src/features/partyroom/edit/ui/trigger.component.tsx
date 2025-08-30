@@ -22,7 +22,7 @@ export default function Trigger({ defaultValues, sub }: Props) {
 
   const handleClick = () => {
     openDialog((_, onCancel) => ({
-      title: 'Edit Party', // TODO: i18n
+      title: t.party.title.party_edit,
       titleAlign: 'left',
       showCloseIcon: true,
       closeConfirm: () => {

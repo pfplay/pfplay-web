@@ -1,11 +1,13 @@
 import Marquee from 'react-fast-marquee';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Typography } from '@/shared/ui/components/typography';
 import { galmuriFont } from '@/shared/ui/foundation/fonts';
 import { PFCampaign } from '@/shared/ui/icons';
 
 export default function Notice() {
+  const t = useI18n();
   const { useCurrentPartyroom } = useStores();
   const notice = useCurrentPartyroom((state) => state.notice);
   const typoClassName = cn(galmuriFont.className, 'text-white leading-none');
@@ -16,7 +18,7 @@ export default function Notice() {
 
       {!notice && (
         <Typography type='caption2' className={typoClassName}>
-          {'공지를 등록해주세요.' /* TODO: i18n */}
+          {t.ed.para.empty_notice}
         </Typography>
       )}
       {notice && (

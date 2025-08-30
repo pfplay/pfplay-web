@@ -1,3 +1,4 @@
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { CollapseList } from '@/shared/ui/components/collapse-list';
 import { Typography } from '@/shared/ui/components/typography';
 import { UserListItem } from '@/shared/ui/components/user-list-item';
@@ -6,6 +7,7 @@ import * as RestrictionPanelListItem from '../../model/restriction-panel-list-it
 
 export default function RestrictionPanel() {
   const { length, categorized } = useGetRestrictionPanelListItems();
+  const t = useI18n();
 
   if (!length) {
     return (
@@ -20,7 +22,7 @@ export default function RestrictionPanel() {
       {Object.entries(categorized).map(([category, items]) => (
         <CollapseList
           key={'RestrictionPanel' + category}
-          title={RestrictionPanelListItem.getCategoryLabel(category)}
+          title={RestrictionPanelListItem.getCategoryLabel(category, t)}
           displaySuffix={false}
         >
           {items.map((item) => (

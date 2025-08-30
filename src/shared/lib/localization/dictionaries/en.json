@@ -33,6 +33,7 @@
       "view_guide": "See guide",
       "kor": "한국어",
       "eng": "English",
+      "language": "Language",
       "enter_again": "Try again",
       "chat_mute": "Chat Mute",
       "kick": "Kick",
@@ -40,6 +41,7 @@
     },
     "para": {
       "reason": "Reason:",
+      "points_to_unlock\t": "Get {{points}} points to unlock!",
       "to": "To."
     },
     "ec": {
@@ -63,7 +65,9 @@
       "withdraw_completed": "Your account has been deleted. See you next time!",
       "auth_changed": "Permission has been updated!",
       "auth_quota_exceeded": "The capacity for this permission has been exceeded",
-      "no_change_authority": "You cannot arbitrarily change the permissions of higher-ranking users."
+      "no_change_authority": "You cannot arbitrarily change the permissions of higher-ranking users.",
+      "penalty": "Ban (No re-entry allowed)",
+      "block": "A list I blocked"
     },
     "btn": {
       "connect_wallet": "Connect wallet",
@@ -95,7 +99,7 @@
       "removed_by_admin": "You have been removed by an admin.",
       "permanent_ban": "You have been permanently removed by an admin and can’t rejoin.",
       "start_chat": "What shall we talk about?",
-      "remove_chat": "'{{target}}'s chat was removed by '{{subject}}'."
+      "remove_chat": "'{target}'s chat was removed by '{subject}'."
     }
   },
   "onboard": {
@@ -111,6 +115,7 @@
       "moment": "Hold on!"
     },
     "para": {
+      "domain_format": "Web address starts with pfplay.xyz/domain",
       "guest_limit": "Access is limited as a guest. Connect your social account to enjoy full services."
     }
   },
@@ -130,6 +135,7 @@
     },
     "para": {
       "what_wear": "What will you wear to play?",
+      "nickname_taken": "This nickname is already used.",
       "empty_records": "You don't have any items"
     }
   },
@@ -171,6 +177,7 @@
   },
   "party": {
     "title": {
+      "party_edit": "Edit Party",
       "party_info": "Party Details",
       "party_list": "Party List",
       "party_name": "Party Name",
@@ -188,6 +195,7 @@
       "no_longer_see_chat": "You will no longer see the user's chat in this room (applies to me only)",
       "party_rooms": "Party Rooms",
       "leave_party_confirm": "Your changes won't be saved.\nAre you sure you want to leave the party room?",
+      "closed": "The party room has been closed.",
       "close": "Close",
       "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
     },
@@ -242,6 +250,7 @@
     },
     "para": {
       "edit_only_admin": "Only Community Manager and above can make edit action",
+      "empty_notice": "Please post the announcement.",
       "noti_deleted": "When you add a new announcement, the old one will be removed!"
     }
   },
@@ -284,6 +293,12 @@
     "ec": {
       "shut_down": "The party room no longer exists.",
       "data_load": "Failed to load data.\nWould you like to try entering again?"
+    }
+  },
+  "crews": {
+    "title": {
+      "all_count": "All {count}",
+      "restriction": "Restriction"
     }
   }
 }

@@ -99,10 +99,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
             error={errors.domain?.message}
             classNames={{ label: 'text-gray-200', container: 'flex-1' }}
           >
-            <Input
-              {...register('domain')}
-              placeholder='웹 페이지 주소는 pfplay.xyz/도메인으로 시작' // TODO: i18n
-            />
+            <Input {...register('domain')} placeholder={t.onboard.para.domain_format} />
           </FormItem>
 
           <div className='flexRow items-center gap-4'>

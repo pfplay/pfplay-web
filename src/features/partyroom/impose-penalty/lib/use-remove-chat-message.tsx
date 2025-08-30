@@ -20,7 +20,7 @@ export default function useRemoveChatMessage() {
     if (!partyroomId || !canRemoveChatMessage(crewGradeType)) return;
 
     return openDialog((onOk, onClose) => ({
-      title: '해당 메세지를 정말로 삭제하시겠어요? 삭제되면 복구할 수 없어요', // TODO: i18n 적용
+      title: t.chat.para.delete_confirm,
       Body: () => {
         const { mutate: deleteChatMessage, isPending } = useImposePenaltyMutation();
 

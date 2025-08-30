@@ -2,6 +2,8 @@ import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { CrewPenaltyEvent } from '@/shared/api/websocket/types/partyroom';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { processI18nString } from '@/shared/lib/localization/renderer/processors/variable-processor-util';
 import { useStores } from '@/shared/lib/store/stores.context';
 
 const logger = withDebugger(0);
@@ -16,6 +18,7 @@ export default function useCrewPenaltyCallback() {
     state.updateChatMessage,
     state.alert,
   ]);
+  const t = useI18n();
 
   return (event: CrewPenaltyEvent) => {
     if (event.penaltyType === PenaltyType.CHAT_MESSAGE_REMOVAL) {
@@ -33,7 +36,10 @@ export default function useCrewPenaltyCallback() {
         (message) => message.from === 'user' && message.message.messageId === event.detail,
         () => ({
           from: 'system',
-          content: `'${punisher?.nickname}'(이)가 '${punished?.nickname}'의 채팅을 삭제했습니다.`, // TODO: i18n 적용
+          content: processI18nString(t.chat.para.remove_chat, {
+            subject: punisher?.nickname ?? '',
+            target: punished?.nickname ?? '',
+          }),
           messageId: event.detail,
           receivedAt: Date.now(),
         })

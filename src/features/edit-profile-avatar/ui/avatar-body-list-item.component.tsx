@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Me } from '@/entities/me';
 import { QueryKeys } from '@/shared/api/http/query-keys';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import AvatarListItem from './avatar-list-item.component';
 import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
 import * as AvatarBody from '../model/avatar-body.model';
@@ -15,7 +16,8 @@ const AvatarBodyListItem: FC<Props> = ({ meta }) => {
   const queryClient = useQueryClient();
   const me = queryClient.getQueryData<Me.Model>([QueryKeys.Me]);
   const selectedAvatar = useSelectedAvatarState();
-  const locked = AvatarBody.locked(meta, me);
+  const t = useI18n();
+  const locked = AvatarBody.locked(meta, me, t);
 
   const handleAvatarImgClick = () => {
     selectedAvatar.setBody(meta);

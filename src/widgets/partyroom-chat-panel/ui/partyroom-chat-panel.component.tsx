@@ -104,22 +104,22 @@ export default function PartyroomChatPanel() {
                   visible: canRemoveChatMessage(message.crew.gradeType),
                 },
                 {
-                  label: 'GGUL', // TODO: i18n 적용
+                  label: t.common.btn.chat_mute,
                   onClickItem: () => onClickImposePenalty(PenaltyType.CHAT_BAN_30_SECONDS),
                   visible: _canImposePenalty,
                 },
                 {
-                  label: 'Kick', // TODO: i18n 적용
+                  label: t.common.btn.kick,
                   onClickItem: () => onClickImposePenalty(PenaltyType.ONE_TIME_EXPULSION),
                   visible: _canImposePenalty,
                 },
                 {
-                  label: 'Ban', // TODO: i18n 적용
+                  label: t.common.btn.ban,
                   onClickItem: () => onClickImposePenalty(PenaltyType.PERMANENT_EXPULSION),
                   visible: _canImposePenalty,
                 },
                 {
-                  label: 'Block', // TODO: i18n 적용
+                  label: t.common.btn.block,
                   onClickItem: () => blockCrew({ crewId: message.crew.crewId }),
                 },
               ]}
@@ -136,12 +136,7 @@ export default function PartyroomChatPanel() {
             size='lg'
             variant='outlined'
             disabled={banned}
-            // placeholder='What would you like to talk about?' // TODO: i18n 적용
-            placeholder={
-              banned
-                ? 'You are temporarily banned from chatting.'
-                : 'What would you like to talk about?'
-            }
+            placeholder={t.chat.para.start_chat}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onPressEnter={() => {

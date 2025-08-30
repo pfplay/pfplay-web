@@ -18,6 +18,6 @@ export default function usePartyroomEnterErrorAlerts() {
     openAlertDialog({ content: t.partyroom.ec.shut_down });
   });
   useOnError(ErrorCode.EXCEEDED_LIMIT, () => {
-    openAlertDialog({ content: `The party room is over capacity.` }); // TODO: i18n
+    openAlertDialog({ content: t.auth.para.auth_quota_exceeded });
   });
 }

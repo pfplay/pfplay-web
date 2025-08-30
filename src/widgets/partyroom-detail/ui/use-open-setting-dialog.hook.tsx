@@ -90,7 +90,7 @@ function Body({ closeDialog }: { closeDialog: () => void }) {
 
       <div className='flexRowCenter gap-5 mt-7'>
         <Typography type='detail1' className='text-gray-200'>
-          Language{/* TODO: i18n */}
+          {t.common.btn.language}
         </Typography>
 
         <div className='flex gap-3'>

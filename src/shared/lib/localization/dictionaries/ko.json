@@ -33,6 +33,7 @@
       "view_guide": "가이드 보기",
       "kor": "한국어",
       "eng": "English",
+      "language": "언어",
       "enter_again": "다시 입장하기",
       "chat_mute": "꿀",
       "kick": "킥",
@@ -40,6 +41,7 @@
     },
     "para": {
       "reason": "사유:",
+      "points_to_unlock\t": "{{points}} 포인트가 필요해요",
       "to": "To."
     },
     "ec": {
@@ -63,7 +65,9 @@
       "withdraw_completed": "탈퇴가 완료되었습니다. 다음에 다시 만나요!",
       "auth_changed": "관리자에 의해 권한이 변경되었습니다!",
       "auth_quota_exceeded": "해당 권한의 정원이 초과되었어요",
-      "no_change_authority": "상위 계급 유저의 권한은 임의로 변경할 수 없어요"
+      "no_change_authority": "상위 계급 유저의 권한은 임의로 변경할 수 없어요",
+      "penalty": "영구 패널티",
+      "block": "차단"
     },
     "btn": {
       "connect_wallet": "지갑 연동하기",
@@ -95,7 +99,7 @@
       "removed_by_admin": "관리자에 의해 퇴출되셨습니다.",
       "permanent_ban": "관리자에 의해 영구 퇴출되셨으며/n재입장은 불가합니다.",
       "start_chat": "무슨 얘기를 해볼까요?",
-      "remove_chat": "'{{subject}}'가 '{{target}}'의 채팅을 삭제했습니다."
+      "remove_chat": "'{subject}'가 '{target}'의 채팅을 삭제했습니다."
     }
   },
   "onboard": {
@@ -111,6 +115,7 @@
       "moment": "잠깐만요!"
     },
     "para": {
+      "domain_format": "웹 페이지 주소는 pfplay.xyz/도메인으로 시작",
       "guest_limit": "비로그인 입장 시 접근 가능한 기능이 제한됩니다. 소셜 계정을 연동하면 온전한 서비스를 즐길 수 있어요"
     }
   },
@@ -130,6 +135,7 @@
     },
     "para": {
       "what_wear": "뭘 입고 놀아볼까요?",
+      "nickname_taken": "이미 사용 중인 닉네임입니다.",
       "empty_records": "보유한 내역이 없어요"
     }
   },
@@ -171,6 +177,7 @@
   },
   "party": {
     "title": {
+      "party_edit": "파티 수정",
       "party_info": "파티 정보",
       "party_list": "파티 목록",
       "party_name": "파티 이름",
@@ -188,6 +195,7 @@
       "no_longer_see_chat": "이 방에서 사용자의 채팅을 더이상 보지 않습니다 (나에게만 적용)",
       "party_rooms": "Party Rooms",
       "leave_party_confirm": "변경 내용이 저장되지 않아요.\n파티룸으로 나가시겠어요?",
+      "closed": "파티룸이 폐쇄되었습니다",
       "close": "폐쇄하기",
       "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
     },
@@ -242,6 +250,7 @@
     },
     "para": {
       "edit_only_admin": "Community Manager이상 관리자만 수정 가능해요",
+      "empty_notice": "공지를 등록해주세요.",
       "noti_deleted": "공지 등록 시 기존 공지는 삭제됩니다!"
     }
   },
@@ -265,7 +274,7 @@
       "delete_playlist_confirm": "정말 선택 항목을 리스트에서 삭제하시겠어요?",
       "delete_duplicated_list_confirm": "'{{playlist}}'플레이리스트에 이미 존재하는 곡입니다!\n중복곡은 삭제하고 다시 담을까요?",
       "no_list_yet": "아직 리스트가 없네요!\n취향의 곡을 담아보세요",
-      "search_url": "Search for music and URL",
+      "search_url": "URL 혹은 음악을 검색할 수 있어요",
       "up_to_10_if_connect_wallet": "지갑을 연동하시면 10개까지 생성할 수 있어요!"
     },
     "ec": {
@@ -284,6 +293,12 @@
     "ec": {
       "shut_down": "더 이상 존재하지 않는 파티룸이에요",
       "data_load": "데이터를 불러오는데 실패했습니다.\n다시 입장하시겠어요?"
+    }
+  },
+  "crews": {
+    "title": {
+      "all_count": "전체 {count}",
+      "restriction": "제재"
     }
   }
 }

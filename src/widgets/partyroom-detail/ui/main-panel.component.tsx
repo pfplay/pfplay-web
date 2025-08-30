@@ -99,9 +99,8 @@ export default function MainPanel() {
               }}
             />
           ) : (
-            // TODO: 추후 i18n 적용 필요
             <Typography type='detail1' className='pl-4 my-auto'>
-              진행 중인 디제잉이 없어요 zZz...
+              {t.dj.para.empty_dj}
             </Typography>
           )}
         </div>

@@ -66,7 +66,7 @@ export default function useImposePenalty() {
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               minLength={2}
-              placeholder={'작성된 사유는 사용자에게 전달됩니다(최소 2자)'} // TODO: i18n 적용
+              placeholder={t.chat.para.reason_shared}
               classNames={{ container: 'mb-9' }}
             />
             <Dialog.ButtonGroup>

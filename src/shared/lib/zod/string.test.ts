@@ -16,7 +16,7 @@ describe('string', () => {
 
   describe('requiredString', () => {
     test('올바르게 동작하는지 확인', () => {
-      const emailInputSchema = requiredString(z.string().email());
+      const emailInputSchema = requiredString(z.string().email(), 'error message');
 
       const validateResult = emails.map((email) => emailInputSchema.safeParse(email).success);
 

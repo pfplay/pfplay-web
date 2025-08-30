@@ -3,6 +3,7 @@ import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { BlockedCrew } from '@/shared/api/http/types/crews';
 import { Penalty } from '@/shared/api/http/types/partyrooms';
 import { Categorized, categorize as _categorize } from '@/shared/lib/functions/categorize';
+import { type Dictionary } from '@/shared/lib/localization/i18n.context';
 
 export type Model = {
   category: string;
@@ -17,15 +18,12 @@ const enum Category {
   BLOCK = 'BLOCK',
 }
 
-export const getCategoryLabel = (category: string): string => {
-  // TODO: i18n
+export const getCategoryLabel = (category: string, t: Dictionary): string => {
   switch (category) {
     case Category.PERMANENT_EXPULSION:
-      // return '영구 패널티';
-      return 'Ban (No re-entry allowed)';
+      return t.auth.para.penalty;
     case Category.BLOCK:
-      // return '차단';
-      return 'A list I blocked';
+      return t.auth.para.block;
     default:
       return '';
   }

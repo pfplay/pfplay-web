@@ -1,10 +1,12 @@
 import Marquee from 'react-fast-marquee';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Typography } from '@/shared/ui/components/typography';
 import { galmuriFont } from '@/shared/ui/foundation/fonts';
 
 export default function VideoTitle() {
+  const t = useI18n();
   const { useCurrentPartyroom } = useStores();
   const playback = useCurrentPartyroom((state) => state.playback);
   const typoClassName = cn(galmuriFont.className, 'text-white leading-none');
@@ -12,7 +14,7 @@ export default function VideoTitle() {
   if (!playback) {
     return (
       <Typography type='caption1' className={typoClassName}>
-        {'진행 중인 디제잉이 없어요 zZz...' /* TODO: i18n */}
+        {t.dj.para.empty_dj}
       </Typography>
     );
   }

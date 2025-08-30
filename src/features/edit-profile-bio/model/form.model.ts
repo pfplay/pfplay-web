@@ -14,7 +14,8 @@ export const getSchema = (t: Dictionary) =>
         })
         .max(12, {
           message: t.common.ec.char_limit_12,
-        })
+        }),
+      t.common.ec.char_field_required
     ).refine((value) => /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]*$/.test(value), {
       message: t.common.ec.char_limit_12,
     }),
