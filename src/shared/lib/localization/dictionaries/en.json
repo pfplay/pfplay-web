@@ -3,12 +3,12 @@
     "btn": {
       "play": "Let's PFPlay!",
       "logout": "Logout",
-      "withdraw": "Delete account",
+      "withdraw": "Delete Account",
       "enter": "Enter",
       "cancel": "Cancel",
       "confirm": "Confirm",
       "authority": "Permissions",
-      "sanction": "Sanction",
+      "sanction": "Restriction",
       "block": "Block",
       "next": "Next",
       "twitter_login": "Twitter Login",
@@ -34,8 +34,8 @@
       "kor": "한국어",
       "eng": "English",
       "language": "Language",
-      "enter_again": "Try again",
-      "chat_mute": "Chat Mute",
+      "enter_again": "Re-enter",
+      "chat_mute": "Buzz",
       "kick": "Kick",
       "ban": "Ban"
     },
@@ -60,14 +60,14 @@
       "about_wallet": "What is a wallet? How does it work?",
       "linking_social": "PFPlay allows you to become a DJ by connecting your social account!",
       "need_social_login": "To use this feature, please log in with your social account",
-      "logout_confirm": "Do you want to log out? If yes, you will be redirected to home",
+      "logout_confirm": "Are you sure you want to log out? You'll be redirected to the home",
       "withdraw_confirm": "Are you sure you want to delete your account? Your mission points, playlists, etc. will be deleted and cannot be recovered.",
       "withdraw_completed": "Your account has been deleted. See you next time!",
       "auth_changed": "Permission has been updated!",
       "auth_quota_exceeded": "The capacity for this permission has been exceeded",
       "no_change_authority": "You cannot arbitrarily change the permissions of higher-ranking users.",
       "penalty": "Ban (No re-entry allowed)",
-      "block": "A list I blocked"
+      "block": "Blocked list"
     },
     "btn": {
       "connect_wallet": "Connect wallet",
@@ -106,7 +106,7 @@
     "btn": {
       "pfp_play": "Let your PFP Play",
       "terms": "Privacy&Terms",
-      "pfp_doing": "How is your PFPlay?",
+      "pfp_doing": "How's your PFP doing?",
       "take_a_look": "I want to explore first",
       "lang": "Korean",
       "guest": "Explore as a Guest"
@@ -123,7 +123,7 @@
     "title": {
       "who_r_u": "Who are you?",
       "nickname": "Nickname",
-      "introduction": "Info",
+      "introduction": "About me",
       "body": "Body",
       "face": "Face"
     },
@@ -136,7 +136,7 @@
     "para": {
       "what_wear": "What will you wear to play?",
       "nickname_taken": "This nickname is already used.",
-      "empty_records": "You don't have any items"
+      "empty_records": "You have no items"
     }
   },
   "setting": {
@@ -207,7 +207,7 @@
   "dj": {
     "title": {
       "current_dj": "Now DJing",
-      "dj_queue": "DJ queue",
+      "dj_queue": "DJ Queue",
       "time_limit": "DJing time limit per session: **{{minutes}}** minutes",
       "rule_guide": "DJing rule guide"
     },
@@ -218,7 +218,7 @@
       "select_dj_playlist": "Select DJ Playlist"
     },
     "para": {
-      "no_dj_crew": "No one is djing now.\nWhy not become the DJ and make some noise!",
+      "no_dj_crew": "No one is DJing now.\nWhy not become the DJ and make some noise!",
       "create_playlist_song": "Before you join the queue, please create a playlist with at least one song.",
       "cancel_dj_queue": "Cancel DJ queue registration",
       "cancel_dj_queue_confirm": "Do you want to remove yourself from the DJ queue?",
@@ -232,7 +232,7 @@
       "dj_in_order": "DJing one person at a time from the waiting list, in order",
       "played_sequentially": "Songs from the top of the playlist are played sequentially, one song per person",
       "display_count": "Once the song ends, we'll display a count of the Like, Grab, and Boo received during your DJ set.",
-      "empty_dj": "zZz...No Djing in currently in progress..."
+      "empty_dj": "zZz...No DJ currently playing..."
     }
   },
   "db": {
