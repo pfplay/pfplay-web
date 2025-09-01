@@ -54,9 +54,7 @@ export function useAvatarDance() {
           const rotation = fastSin(angle * 1.5) * 3;
           const scale = 1 + bounceY * 0.01 + fastSin(angle * 1.2) * 0.02;
           transform = `translate(${wiggleX}px, ${-bounceY}px) rotate(${rotation}deg) scale(${scale})`;
-        }
-
-        if (motionType === MotionType.DANCE_TYPE_2) {
+        } else if (motionType === MotionType.DANCE_TYPE_2) {
           const basePeriod = 0.4;
           const totalPeriod = basePeriod * 4; // 3 움찔 + 1 점프
 
@@ -80,6 +78,14 @@ export function useAvatarDance() {
           }
 
           transform = `translateY(${-y}px) scale(${s})`;
+        } else if (motionType === MotionType.NONE) {
+          // 숨쉬는 듯한 모션
+          const breathPeriod = 1; // 호흡 주기 (초)
+          const breathPhase = (t % breathPeriod) / breathPeriod;
+          const breathWave = (fastSin(breathPhase * 360) + 1) / 2;
+          const scaleChange = 0.04; // 크기 변화량
+          const scale = 1 + scaleChange * breathWave;
+          transform = `scale(${scale})`;
         }
 
         el.style.transform = transform;
