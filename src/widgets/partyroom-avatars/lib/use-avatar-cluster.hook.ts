@@ -29,21 +29,40 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
     const existingIds = new Set(existingNodes.map((n) => n.crewId));
     const incomingIds = new Set(crews.map((c) => c.crewId));
 
-    // 추가된 노드 (아바타)
-    const addedNodes: D3Node[] = crews
-      .filter((c) => !existingIds.has(c.crewId))
-      .map((crew) => ({
-        ...crew,
-        x: centerX + (Math.random() - 0.5) * AVATAR_GROUP.WIDTH,
-        y: centerY + (Math.random() - 0.5) * AVATAR_GROUP.HEIGHT,
-      }));
+    const findAvailablePosition = (
+      existingPositions: { x: number; y: number }[]
+    ): { x: number; y: number } => {
+      const minDistance = AVATAR_GROUP.COLLISION_RADIUS * 1.5; // 최소 거리 (최초 접근 시와 동일한 간격)
+      const maxAttempts = 100;
+
+      for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        const x = centerX + (Math.random() - 0.5) * AVATAR_GROUP.WIDTH;
+        const y = centerY + (Math.random() - 0.5) * AVATAR_GROUP.HEIGHT;
+
+        // 기존 노드들과의 거리 확인
+        const isAvailable = existingPositions.every((pos) => {
+          const distance = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2);
+          return distance >= minDistance;
+        });
+
+        if (isAvailable) {
+          return { x, y };
+        }
+      }
+
+      // 모든 시도가 실패하면 중앙점에서 멀리 떨어진 위치 반환
+      return {
+        x: centerX + (Math.random() - 0.5) * width * 0.4,
+        y: centerY + (Math.random() - 0.5) * height * 0.4,
+      };
+    };
 
     // 유지되는 기존 노드는 fx, fy로 고정
     const keptNodes = existingNodes.map((n) => {
       if (!incomingIds.has(n.crewId)) return n;
 
       const updatedCrew = crews.find((c) => c.crewId === n.crewId);
-      if (!updatedCrew) return n; // crews에서 찾지 못한 경우 기존 노드 유지
+      if (!updatedCrew) return n;
 
       return {
         ...updatedCrew, // 새로운 속성들 (아바타, 닉네임 등)
@@ -53,6 +72,23 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
         fy: n.y,
       };
     });
+
+    // 기존 노드들의 위치 정보
+    const existingPositions = keptNodes
+      .filter((n) => incomingIds.has(n.crewId))
+      .map((n) => ({ x: n.x ?? centerX, y: n.y ?? centerY }));
+
+    // 추가된 노드를 기존 노드들과 충돌하지 않는 위치에 배치함
+    const addedNodes: D3Node[] = crews
+      .filter((c) => !existingIds.has(c.crewId))
+      .map((crew) => {
+        const position = findAvailablePosition(existingPositions);
+        return {
+          ...crew,
+          x: position.x,
+          y: position.y,
+        };
+      });
 
     // 제거된 노드 제외
     const updatedNodes: D3Node[] = [
@@ -66,16 +102,16 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
     if (!simulationRef.current) {
       // 있는 경우 재사용
       simulationRef.current = forceSimulation(updatedNodes)
-        .force('center', forceCenter(centerX, centerY)) // 중앙에 가까워지도록
-        .force('charge', forceManyBody().strength(-10)) // 서로 밀치는 힘
-        .force('collision', forceCollide().radius(AVATAR_GROUP.COLLISION_RADIUS)) // 5px 간격
+        .force('center', forceCenter(centerX, centerY))
+        .force('charge', forceManyBody().strength(-10))
+        .force('collision', forceCollide().radius(AVATAR_GROUP.COLLISION_RADIUS))
         .stop();
     } else {
       simulationRef.current.nodes(updatedNodes).alpha(1).restart();
     }
 
     for (let i = 0; i < 100; i++) {
-      // simulationRef 힘 계산을 충분히 하도록 100번 반복
+      // simulationRef 힘 계산을 충분히 하도록 100번 반복 (최초 접근 시와 동일)
       simulationRef.current?.tick();
     }
 
