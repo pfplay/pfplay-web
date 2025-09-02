@@ -5,18 +5,16 @@ import {
   forceManyBody,
   forceCollide,
   SimulationNodeDatum,
-  Simulation,
 } from 'd3-force';
 import { Crew } from '@/entities/current-partyroom';
 import { Point } from '../model/avatar-position.model';
-import { AVATAR_GROUP } from '../model/constants';
+import { D3_OPTIONS_FOR_ADDED_NODES, D3_OPTIONS_FOR_INITIAL_NODES } from '../model/constants';
 
 type D3Node = SimulationNodeDatum & Crew.Model & { fx?: number; fy?: number };
 type PositionedCrew = Crew.Model & { position: Point };
 
 export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): PositionedCrew[] {
   const [clustered, setClustered] = useState<PositionedCrew[]>([]);
-  const simulationRef = useRef<Simulation<D3Node, undefined> | null>(null); // 노드 간 물리적인 힘 계산을 위한 참조
   const nodesRef = useRef<D3Node[]>([]); // 현재 노드들 상태 저장
 
   useEffect(() => {
@@ -28,16 +26,18 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
     const existingNodes = nodesRef.current;
     const existingIds = new Set(existingNodes.map((n) => n.crewId));
     const incomingIds = new Set(crews.map((c) => c.crewId));
+    const d3Options =
+      existingIds.size > 0 ? D3_OPTIONS_FOR_ADDED_NODES : D3_OPTIONS_FOR_INITIAL_NODES;
 
     const findAvailablePosition = (
       existingPositions: { x: number; y: number }[]
     ): { x: number; y: number } => {
-      const minDistance = AVATAR_GROUP.COLLISION_RADIUS * 1.5; // 최소 거리 (최초 접근 시와 동일한 간격)
-      const maxAttempts = 100;
+      const minDistance = d3Options.MIN_DISTANCE;
+      const maxAttempts = d3Options.MAX_ATTEMPTS;
 
       for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        const x = centerX + (Math.random() - 0.5) * AVATAR_GROUP.WIDTH;
-        const y = centerY + (Math.random() - 0.5) * AVATAR_GROUP.HEIGHT;
+        const x = centerX + (Math.random() - 0.5) * d3Options.CENTER_X_OFFSET;
+        const y = centerY + (Math.random() - 0.5) * d3Options.CENTER_Y_OFFSET;
 
         // 기존 노드들과의 거리 확인
         const isAvailable = existingPositions.every((pos) => {
@@ -98,21 +98,14 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
 
     nodesRef.current = updatedNodes;
 
-    // D3 Simulation 실행
-    if (!simulationRef.current) {
-      // 있는 경우 재사용
-      simulationRef.current = forceSimulation(updatedNodes)
-        .force('center', forceCenter(centerX, centerY))
-        .force('charge', forceManyBody().strength(-10))
-        .force('collision', forceCollide().radius(AVATAR_GROUP.COLLISION_RADIUS))
-        .stop();
-    } else {
-      simulationRef.current.nodes(updatedNodes).alpha(1).restart();
-    }
+    const simulation = forceSimulation(updatedNodes)
+      .force('center', forceCenter(centerX, centerY))
+      .force('charge', forceManyBody().strength(d3Options.FORCE_STRENGTH))
+      .force('collision', forceCollide().radius(d3Options.COLLIDE_RADIUS))
+      .stop();
 
     for (let i = 0; i < 100; i++) {
-      // simulationRef 힘 계산을 충분히 하도록 100번 반복 (최초 접근 시와 동일)
-      simulationRef.current?.tick();
+      simulation?.tick();
     }
 
     setClustered(
@@ -126,7 +119,7 @@ export function useAvatarCluster({ crews }: { crews: Crew.Model[] }): Positioned
     );
 
     return () => {
-      simulationRef.current?.stop();
+      simulation?.stop();
     };
   }, [crews]);
 
