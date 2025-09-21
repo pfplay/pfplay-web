@@ -6,7 +6,7 @@ export const useRemovePlaylist = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (listIds: number[]) => playlistsService.removePlaylist({ listIds }),
+    mutationFn: (playlistIds: number[]) => playlistsService.removePlaylist({ playlistIds }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Playlist],

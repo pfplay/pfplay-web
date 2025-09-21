@@ -71,10 +71,10 @@ export interface AddTrackToPlaylistRequestBody {
 }
 
 export interface RemovePlaylistRequestBody {
-  listIds: number[];
+  playlistIds: number[];
 }
 export interface RemovePlaylistResponse {
-  listIds: number[];
+  playlistIds: number[];
 }
 
 export interface UpdatePlaylistRequestParams {

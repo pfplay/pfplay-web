@@ -9,9 +9,8 @@ import { cn } from '@/shared/lib/functions/cn';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
-import { Button } from '@/shared/ui/components/button';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/shared/ui/components/tab';
-import { PFParty, PFChatFilled, PFPersonOutline, PFDj, PFLink } from '@/shared/ui/icons';
+import { PFChatFilled, PFPersonOutline, PFDj, PFLink } from '@/shared/ui/icons';
 import { PartyroomAvatars } from '@/widgets/partyroom-avatars';
 import { PartyroomChatPanel } from '@/widgets/partyroom-chat-panel';
 import { PartyroomCrewsPanel } from '@/widgets/partyroom-crews-panel';
@@ -19,6 +18,7 @@ import { PartyroomDetailTrigger } from '@/widgets/partyroom-detail';
 import { PartyroomDisplayBoard } from '@/widgets/partyroom-display-board';
 import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
 import { useOpenEditProfileAvatarDialog } from '@/widgets/partyroom-edit-profile-avatar-dialog';
+import { PartyRoomListTrigger } from '@/widgets/partyroom-party-list';
 import { Sidebar } from '@/widgets/sidebar';
 
 const PartyroomPage = () => {
@@ -85,15 +85,7 @@ const PartyroomPage = () => {
       <div className='absolute top-0 right-0 w-[400px] max-w-full h-screen flexCol bg-black pt-8 pb-3 px-7'>
         <div className='bg-black grid grid-cols-2 gap-3 mb-5'>
           <PartyroomDetailTrigger />
-          <Button
-            color='secondary'
-            variant='outline'
-            Icon={<PFParty widths={20} height={20} className='[&_*]:fill-gray-300' />}
-            size='sm'
-            className='text-gray-50'
-          >
-            {t.party.title.party_list}
-          </Button>
+          <PartyRoomListTrigger />
         </div>
 
         {/* 채팅, 사람 탭 */}
