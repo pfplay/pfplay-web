@@ -9,12 +9,14 @@ export default function usePlaybackStartCallback() {
     updatePlayback,
     updateCurrentDj,
     resetReaction,
+    resetReactionAggregation,
     resetCrewsMotion,
   ] = useCurrentPartyroom((state) => [
     state.updatePlaybackActivated,
     state.updatePlayback,
     state.updateCurrentDj,
     state.resetReaction,
+    state.resetReactionAggregation,
     state.resetCrewsMotion,
   ]);
   const invalidateDjingQueue = useInvalidateDjingQueue();
@@ -24,6 +26,7 @@ export default function usePlaybackStartCallback() {
     updatePlayback(event.playback);
     updateCurrentDj({ crewId: event.crewId });
     resetReaction();
+    resetReactionAggregation();
     resetCrewsMotion();
     invalidateDjingQueue();
   };

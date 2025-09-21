@@ -49,6 +49,7 @@ export type Model = {
   reaction: PartyroomReaction;
   updateReaction: (next: Next<PartyroomReaction>) => void;
   resetReaction: () => void;
+  resetReactionAggregation: () => void;
 
   /**
    * 현재 파티룸 내 크루 목록
