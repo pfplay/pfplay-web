@@ -13,8 +13,10 @@ import { APIError } from '@/shared/api/http/types/@shared';
 import { ONE_HOUR } from '@/shared/config/time';
 import * as Me from '../model/me.model';
 
-export function useFetchMe(): UseQueryResult<Me.Model, AxiosError<APIError>> {
-  return useQuery(queryOptions);
+export function useFetchMe(
+  options?: Partial<UseQueryOptions<Me.Model, AxiosError<APIError>>>
+): UseQueryResult<Me.Model, AxiosError<APIError>> {
+  return useQuery({ ...queryOptions, ...options });
 }
 
 export function useSuspenseFetchMe(): UseSuspenseQueryResult<Me.Model, AxiosError<APIError>> {
@@ -35,5 +37,4 @@ export const queryOptions: UseQueryOptions<Me.Model, AxiosError<APIError>> = {
   staleTime: ONE_HOUR,
   gcTime: ONE_HOUR,
   placeholderData: keepPreviousData,
-  enabled: typeof window === 'undefined' || !window.location.pathname.startsWith('/auth/callback/'),
 };
