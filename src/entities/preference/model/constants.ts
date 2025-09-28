@@ -1,0 +1,3 @@
+export const USER_PREFERENCES_KEY = {
+  HIDDEN_DJING_GUIDE: 'HIDDEN_DJING_GUIDE',
+} as const;
