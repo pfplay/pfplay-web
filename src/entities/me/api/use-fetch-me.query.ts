@@ -13,10 +13,8 @@ import { APIError } from '@/shared/api/http/types/@shared';
 import { ONE_HOUR } from '@/shared/config/time';
 import * as Me from '../model/me.model';
 
-export function useFetchMe(
-  options?: Partial<UseQueryOptions<Me.Model, AxiosError<APIError>>>
-): UseQueryResult<Me.Model, AxiosError<APIError>> {
-  return useQuery({ ...queryOptions, ...options });
+export function useFetchMe(): UseQueryResult<Me.Model, AxiosError<APIError>> {
+  return useQuery(queryOptions);
 }
 
 export function useSuspenseFetchMe(): UseSuspenseQueryResult<Me.Model, AxiosError<APIError>> {

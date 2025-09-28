@@ -14,12 +14,11 @@ import { MenuButton, MenuItemPanel } from '@/shared/ui/components/menu';
 
 interface Props {
   withLogo?: boolean;
-  checkMe?: boolean;
 }
 
-const Header: FC<Props> = ({ withLogo, checkMe = true }) => {
+const Header: FC<Props> = ({ withLogo }) => {
   const t = useI18n();
-  const { data: me } = useFetchMe({ enabled: checkMe });
+  const { data: me } = useFetchMe();
   const {
     isIntersecting: atTopOfPage,
     setRef: setTopElRef,

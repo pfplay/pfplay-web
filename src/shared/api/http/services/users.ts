@@ -1,5 +1,8 @@
+import { PUBLIC_ROUTE_PREFIXES } from '@/entities/me/model/constants';
 import { Singleton } from '@/shared/lib/decorators/singleton';
+import { SkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
 import HTTPClient from '../client/client';
+import isAuthError from '../error/is-auth-error';
 import type {
   GetMyInfoResponse,
   GetMyProfileSummaryResponse,
@@ -46,6 +49,11 @@ export default class UsersService extends HTTPClient implements UsersClient {
     return this.post<void>(`${this.ROUTE_USER}/members/sign/temporary/associate-member`);
   }
 
+  @SkipGlobalErrorHandling({
+    when: (error) =>
+      isAuthError(error) &&
+      PUBLIC_ROUTE_PREFIXES.some((prefix) => location.pathname.startsWith(prefix)),
+  })
   public getMyInfo() {
     return this.get<GetMyInfoResponse>(`${this.ROUTE_USER}/me/info`);
   }

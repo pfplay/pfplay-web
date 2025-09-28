@@ -8,7 +8,7 @@ import PrivacyAndTermsTabGroup from './privacy-and-terms-tabs.component';
 const PrivacyAndTermsLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
-      <Header withLogo checkMe={false} />
+      <Header withLogo />
       <main className='bg-black px-3 mx-auto tablet:px-app  flexCol py-[160px] gap-[60px] max-w-desktop min-w-mobile'>
         <Typography type='title1' className='text-white' overflow='break-all'>
           PFPlay 이용약관 및 개인정보 처리방침
