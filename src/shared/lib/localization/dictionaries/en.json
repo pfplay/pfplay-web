@@ -229,9 +229,9 @@
       "deleted_queue_by_admin": "You have been removed from the queue by the administrator",
       "locked_queue_by_admin": "The current DJ queue is locked by an admin",
       "skipped_song_by_admin": "According to the admin policy, songs longer than {{count}} minutes will be automatically skipped",
-      "dj_in_order": "DJing one person at a time from the waiting list, in order",
-      "played_sequentially": "Songs from the top of the playlist are played sequentially, one song per person",
-      "display_count": "Once the song ends, we'll display a count of the Like, Grab, and Boo received during your DJ set.",
+      "dj_in_order": "DJing **one person at a time** \n from the waiting list, in order",
+      "played_sequentially": "Songs from the top of the playlist are \n **played sequentially, one song per person**",
+      "display_count": "Once the song ends, we'll display \n a count of the **Like, Grab, and Boo** received during your DJ set.",
       "empty_dj": "zZz...No DJ currently playing..."
     }
   },

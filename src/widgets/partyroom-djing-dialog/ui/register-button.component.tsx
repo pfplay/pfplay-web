@@ -1,4 +1,5 @@
 import { useSelectPlaylistForDjing } from '@/features/partyroom/select-playlist-for-djing';
+import useDjingGuide from '@/features/playlist/djing-guide/ui/use-djing-guide.hook';
 import { useFetchPlaylists } from '@/features/playlist/list';
 import { QueueStatus } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -16,22 +17,24 @@ export default function RegisterButton() {
   const partyroomId = usePartyroomId();
   const { mutate: registerMeToQueue } = useRegisterMeToQueue();
   const isLocked = useDjingQueue().queueStatus === QueueStatus.CLOSE;
+  const { showDjingGuide, openDjingGuideModal } = useDjingGuide();
 
   const registerMeToDjQueue = async () => {
     if (isLocked) {
       await openAlertDialog({ content: t.dj.para.locked_queue_by_admin });
+
       return;
     }
 
     const selectedPlaylist = await selectPlaylist();
     if (!selectedPlaylist) return; // canceled
 
-    // TODO: 디제잉 규칙 안내 팝업 보여주기
-
     registerMeToQueue({
       partyroomId,
       playlistId: selectedPlaylist.id,
     });
+
+    if (showDjingGuide) openDjingGuideModal();
   };
 
   return (
