@@ -42,7 +42,7 @@ export default function PartyroomCreateCard() {
   return (
     <button
       onClick={handleClickBeAHostBtn}
-      className='appearance-none col-span-1 tablet:col-span-2 desktop:col-span-1 pt-6 bg-gray-900 rounded flexCol px-7 z-0 cursor-pointer text-start'
+      className='appearance-none col-span-1 tablet:col-span-2 desktop:col-span-1 pt-6 bg-gray-900 rounded flexCol px-7 z-0 cursor-pointer text-start h-full'
     >
       <div className='items-start gap-3 flexCol'>
         <Typography type='title2' className='text-red-300'>

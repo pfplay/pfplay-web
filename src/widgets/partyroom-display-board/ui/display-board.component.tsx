@@ -15,9 +15,7 @@ export default function DisplayBoard({ width }: Props) {
         <Notice />
         <AddTracksButton />
       </div>
-
       <Video width={width} />
-
       <div className='relative p-[20px] bg-black border border-gray-800 rounded'>
         <VideoTitle />
 
