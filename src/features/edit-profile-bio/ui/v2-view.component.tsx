@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Avatar } from '@/entities/avatar';
 import { BASE_SCALE, BASE_X, BASE_Y } from '@/entities/avatar/config/base-size';
 import { Me, useSuspenseFetchMe } from '@/entities/me';
@@ -18,6 +19,7 @@ type V2ViewModeProps = {
 const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps) => {
   const t = useI18n();
   const { data: me } = useSuspenseFetchMe();
+
   return (
     <div className='gap-5 flexRow'>
       <div className='flexCol gap-9'>
@@ -54,7 +56,7 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
         </div>
 
         <div className='items-center justify-between flexRow'>
-          <div className='gap-10 flexRow'>
+          <div className='flexRow flex-1 justify-between'>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               {t.lobby.title.points}
               <Typography as='span' type='body3'>
@@ -67,14 +69,18 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
                 {Me.registrationDate(me)}
               </Typography>
             </Typography>
+            {me.walletAddress && (
+              <Link href={`https://app.rainbow.me/address/${me.walletAddress}`} target='_blank'>
+                <Image
+                  src={'/images/ETC/rainbow.png'}
+                  alt='rainbow'
+                  width={32}
+                  height={32}
+                  className='select-none pointer-events-none'
+                />
+              </Link>
+            )}
           </div>
-          <Image
-            src={'/images/ETC/rainbow.png'}
-            alt='rainbow'
-            width={32}
-            height={32}
-            className='select-none pointer-events-none'
-          />
         </div>
       </div>
     </div>
