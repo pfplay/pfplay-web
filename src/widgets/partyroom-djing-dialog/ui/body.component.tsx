@@ -33,7 +33,7 @@ export default function Body({ onCancel }: Props) {
   const [currentDj, ...queue] = djingQueue.djs
     .slice()
     .sort((a, b) => a.orderNumber - b.orderNumber);
-  const isMeInQueue = queue.some((dj) => dj.crewId === myCrewId);
+  const isMeInQueue = djingQueue.djs.some((dj) => dj.crewId === myCrewId);
 
   const lockDjQueue = useLockDjingQueue();
   const unlockDjQueue = useUnlockDjingQueue();
