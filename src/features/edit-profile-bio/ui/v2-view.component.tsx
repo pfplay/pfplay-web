@@ -70,7 +70,7 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
               </Typography>
             </Typography>
             {me.walletAddress && (
-              <Link href={`https://app.rainbow.me/address/${me.walletAddress}`} target='_blank'>
+              <Link href={`https://app.rainbow.me/${me.walletAddress}`} target='_blank'>
                 <Image
                   src={'/images/ETC/rainbow.png'}
                   alt='rainbow'
