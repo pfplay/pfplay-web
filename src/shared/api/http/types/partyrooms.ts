@@ -152,6 +152,11 @@ export type ChangeDjQueueStatusPayload = {
   queueStatus: QueueStatus;
 };
 
+export type DeleteDjFromQueuePayload = {
+  partyroomId: number;
+  djId: string;
+};
+
 export type Dj = {
   crewId: number;
   orderNumber: number;

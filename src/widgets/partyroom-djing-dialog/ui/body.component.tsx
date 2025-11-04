@@ -1,4 +1,6 @@
 import { Dj } from '@/entities/current-partyroom';
+import useCanDeleteDjFromQueue from '@/features/partyroom/delete-dj-from-queue/lib/use-can-delete-dj-from-queue.hook';
+import useDeleteDjFromQueue from '@/features/partyroom/delete-dj-from-queue/lib/use-delete-dj-from-queue.hook';
 import { useCanLockDjingQueue, useLockDjingQueue } from '@/features/partyroom/lock-djing-queue';
 import SkipPlayback from '@/features/partyroom/skip-playback';
 import {
@@ -39,6 +41,8 @@ export default function Body({ onCancel }: Props) {
   const unlockDjQueue = useUnlockDjingQueue();
   const canLockDjQueue = useCanLockDjingQueue();
   const canUnLockDjQueue = useCanUnlockDjingQueue();
+  const canDeleteDjFromQueue = useCanDeleteDjFromQueue();
+  const deleteDjFromQueue = useDeleteDjFromQueue();
   const isLocked = djingQueue.queueStatus === QueueStatus.CLOSE;
 
   return (
@@ -115,23 +119,33 @@ export default function Body({ onCancel }: Props) {
 
               return (
                 <div key={'queue' + dj.crewId} className='flex justify-between items-center'>
-                  {/* TODO: 각 리스트에 삭제 버튼이 있어야 함. User List Item 컴포넌트로 대체 해야 할 지 고민해보기 */}
                   <DjListItem
                     order={`${index + 1}`}
                     userConfig={Dj.toListItemConfig(dj)}
                     suffixTagValue={isMe ? 'Me' : undefined}
                   />
-
-                  {isMe && (
-                    <Button
-                      color='primary'
-                      variant='outline'
-                      size='sm'
-                      onClick={() => alert('Not Impl')}
-                    >
-                      {t.playlist.btn.change_playlist}
-                    </Button>
-                  )}
+                  <div className='flex items-center gap-2'>
+                    {isMe && (
+                      <Button
+                        color='primary'
+                        variant='outline'
+                        size='sm'
+                        onClick={() => alert('Not Impl')}
+                      >
+                        {t.playlist.btn.change_playlist}
+                      </Button>
+                    )}
+                    {canDeleteDjFromQueue && (
+                      <Button
+                        size='sm'
+                        color='secondary'
+                        variant='outline'
+                        onClick={() => deleteDjFromQueue(dj.crewId.toString())}
+                      >
+                        {t.common.btn.delete}
+                      </Button>
+                    )}
+                  </div>
                 </div>
               );
             })}

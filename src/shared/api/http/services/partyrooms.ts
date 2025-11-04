@@ -33,6 +33,7 @@ import type {
   LiftPenaltyPayload,
   GetPenaltyListPayload,
   Penalty,
+  DeleteDjFromQueuePayload,
 } from '../types/partyrooms';
 
 @Singleton
@@ -73,6 +74,10 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
 
   public changeDjQueueStatus({ partyroomId, ...body }: ChangeDjQueueStatusPayload) {
     return this.put<void>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`, body);
+  }
+
+  public deleteDjFromQueue({ partyroomId, djId }: DeleteDjFromQueuePayload) {
+    return this.delete<void>(`${this.ROUTE_V1}/${partyroomId}/dj-queue/${djId}`);
   }
 
   public getNotice({ partyroomId }: GetNoticePayload) {

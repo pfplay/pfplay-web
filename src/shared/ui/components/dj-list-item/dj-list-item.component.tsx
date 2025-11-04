@@ -53,7 +53,6 @@ const DjListItem = ({
           {username}
         </Typography>
       </div>
-
       {suffixTagValue && <Tag value={suffixTagValue} variant='filled' />}
     </div>
   );

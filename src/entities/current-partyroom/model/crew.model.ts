@@ -72,11 +72,8 @@ export class Permission {
     );
   }
 
-  public canSkipPlayback(targetGrade: GradeType) {
-    return (
-      this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR) &&
-      this.comparator.isHigherThan(targetGrade)
-    );
+  public canSkipPlayback() {
+    return this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
   }
 
   public canLockDjingQueue() {
@@ -84,6 +81,10 @@ export class Permission {
   }
 
   public canUnlockDjingQueue() {
+    return this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
+  }
+
+  public canDeleteDjFromQueue() {
     return this.comparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
   }
 
