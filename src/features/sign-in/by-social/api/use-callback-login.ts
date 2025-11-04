@@ -13,6 +13,7 @@ import {
 
 export default function useCallbackLogin() {
   return useMutation<TokenExchangeResponse, AxiosError<APIError>, OAuth2Provider>({
+    mutationKey: ['oauth2-callback'], // 중복 요청 방지를 위한 키
     mutationFn: async (oauth2Provider) => {
       try {
         const params = parseCallbackParams();

@@ -7,7 +7,7 @@
     "generate-enums": "node scripts/copy-java-enums",
     "prepare": "husky install && yarn svgr",
     "dev": "next dev --experimental-https --turbo",
-    "build": "next build",
+    "build": "next build && ./scripts/setup-standalone.sh",
     "start": "next start",
     "pm2": "pm2 start yarn --interpreter bash -- start && pm2 monit",
     "test": "jest src eslint-custom-plugin",
