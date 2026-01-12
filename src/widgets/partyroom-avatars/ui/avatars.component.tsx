@@ -11,10 +11,11 @@ import { AVATAR_GROUP } from '../model/constants';
 export default function Avatars() {
   const { useCurrentPartyroom } = useStores();
   const { crews, currentDj } = useCurrentPartyroom((state) => pick(state, ['crews', 'currentDj']));
+
   const dj = currentDj && crews.find((crew: Crew.Model) => crew.crewId === currentDj.crewId);
   const { registerAvatar } = useAvatarDance();
 
-  const positionedCrews = useAvatarCluster({
+  const { positionedCrews } = useAvatarCluster({
     crews: crews,
   });
 
