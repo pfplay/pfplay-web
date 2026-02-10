@@ -1,27 +1,47 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect } from 'react';
-import { useSuspenseFetchMe } from '@/entities/me';
+import { useFetchMe } from '@/entities/me';
+import { GUEST_AUTO_LOGIN_ROUTE_PATTERN } from '@/entities/me/model/constants';
 import { usePartyroomEnterErrorAlerts } from '@/features/partyroom/enter';
+import { useAutoSignInByGuest } from '@/features/sign-in/by-guest';
+import isAuthError from '@/shared/api/http/error/is-auth-error';
 import { SidebarPlayer, ModalPlayer } from '@/widgets/music-preview-player';
 import { MyPlaylist } from '@/widgets/my-playlist';
 import PlaylistActionProvider from './playlist-action.provider';
 
 const ProtectedLayout = ({ children }: PropsWithChildren) => {
-  const { data: me } = useSuspenseFetchMe();
+  const { data: me, error, isLoading } = useFetchMe();
+  const pathname = usePathname();
   const router = useRouter();
+
+  const isPartyroomRoute = GUEST_AUTO_LOGIN_ROUTE_PATTERN.test(pathname);
+  const { isSigningIn } = useAutoSignInByGuest(error, isPartyroomRoute);
+
+  /**
+   * 비로그인 상태에서 로비 등 파티룸이 아닌 라우트 접속 시 홈으로 리다이렉트
+   */
+  useEffect(() => {
+    if (error && isAuthError(error) && !isPartyroomRoute) {
+      location.href = '/';
+    }
+  }, [error, isPartyroomRoute]);
 
   useEffect(() => {
     /**
      * 로그인은 했지만 프로필을 아직 생성하지 않은 경우
      */
-    if (!me.profileUpdated) {
+    if (me && !me.profileUpdated) {
       router.replace('/settings/profile');
     }
-  }, [me.profileUpdated, router]);
+  }, [me, router]);
 
   usePartyroomEnterErrorAlerts();
+
+  if (isLoading || isSigningIn || !me) {
+    return null;
+  }
 
   return (
     <PlaylistActionProvider>

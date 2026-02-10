@@ -1,4 +1,7 @@
-import { PUBLIC_ROUTE_PREFIXES } from '@/entities/me/model/constants';
+import {
+  PUBLIC_ROUTE_PREFIXES,
+  GUEST_AUTO_LOGIN_ROUTE_PATTERN,
+} from '@/entities/me/model/constants';
 import { Singleton } from '@/shared/lib/decorators/singleton';
 import { SkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
 import HTTPClient from '../client/client';
@@ -52,7 +55,8 @@ export default class UsersService extends HTTPClient implements UsersClient {
   @SkipGlobalErrorHandling({
     when: (error) =>
       isAuthError(error) &&
-      PUBLIC_ROUTE_PREFIXES.some((prefix) => location.pathname.startsWith(prefix)),
+      (PUBLIC_ROUTE_PREFIXES.some((prefix) => location.pathname.startsWith(prefix)) ||
+        GUEST_AUTO_LOGIN_ROUTE_PATTERN.test(location.pathname)),
   })
   public getMyInfo() {
     return this.get<GetMyInfoResponse>(`${this.ROUTE_USER}/me/info`);
