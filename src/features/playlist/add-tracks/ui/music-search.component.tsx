@@ -1,5 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
+import { useFetchPlaylists } from '@/features/playlist/list';
 import { Music } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -21,6 +22,7 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
   const { useUIState } = useStores();
   const selectedPlaylist = useUIState((state) => state.playlistDrawer.selectedPlaylist);
   const playlistAction = usePlaylistAction();
+  const { data: playlists = [] } = useFetchPlaylists();
   const [search, setSearch] = useState('');
   const { data: musics, isFetching } = useSearchMusics(search);
 
@@ -65,7 +67,7 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
                       MenuButtonIcon={<PFAddPlaylist />}
                       menuItemPanel={{ className: 'm-w-[300px] border border-gray-500' }}
                       menuItemConfig={[
-                        ...playlistAction.list.map(({ name: label, id }) => ({
+                        ...playlists.map(({ name: label, id }) => ({
                           label,
                           onClickItem: () => addTrackToPlaylist(id, music),
                         })),
