@@ -22,7 +22,20 @@ export const D3_OPTIONS_FOR_ADDED_NODES = {
   MAX_ATTEMPTS: 200,
 };
 
-export const OVAL_CONFIG = {
+export type OvalConfig = {
+  CENTER_X_RATIO: number;
+  CENTER_Y_RATIO: number;
+  RADIUS_X_RATIO: number;
+  RADIUS_Y_RATIO: number;
+  FALLBACK_RADIUS_RATIO: number;
+  BOUNDARY_CONSTRAINT: number;
+  FORCE_X_STRENGTH: number;
+  FORCE_Y_STRENGTH: number;
+  SIMULATION_TICKS: number;
+};
+
+/** 궁중(메인 무대) 클러스터 설정 */
+export const OVAL_CONFIG_COURT: OvalConfig = {
   CENTER_X_RATIO: 0.55,
   CENTER_Y_RATIO: 0.8,
   RADIUS_X_RATIO: 0.25,
@@ -32,4 +45,17 @@ export const OVAL_CONFIG = {
   FORCE_X_STRENGTH: 0.05,
   FORCE_Y_STRENGTH: 0.1,
   SIMULATION_TICKS: 100,
-} as const;
+};
+
+/** DJ 대기열 클러스터 설정 */
+export const OVAL_CONFIG_QUEUE: OvalConfig = {
+  CENTER_X_RATIO: 0.2,
+  CENTER_Y_RATIO: 0.5,
+  RADIUS_X_RATIO: 0.45,
+  RADIUS_Y_RATIO: 0.2,
+  FALLBACK_RADIUS_RATIO: 0.5,
+  BOUNDARY_CONSTRAINT: 0.95,
+  FORCE_X_STRENGTH: 0.05,
+  FORCE_Y_STRENGTH: 0.1,
+  SIMULATION_TICKS: 100,
+};

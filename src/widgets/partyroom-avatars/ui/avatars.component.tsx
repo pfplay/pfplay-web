@@ -1,8 +1,10 @@
 'use client';
+import { useParams } from 'next/navigation';
 import { Avatar } from '@/entities/avatar';
 import { BASE_SCALE, BASE_X, BASE_Y } from '@/entities/avatar/config/base-size';
 import { useAvatarDance } from '@/entities/avatar/ui/useAvatarDance.hook';
 import { Crew } from '@/entities/current-partyroom';
+import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { pick } from '@/shared/lib/functions/pick';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useAvatarCluster } from '../lib/use-avatar-cluster.hook';
@@ -11,12 +13,19 @@ import { AVATAR_GROUP } from '../model/constants';
 export default function Avatars() {
   const { useCurrentPartyroom } = useStores();
   const { crews, currentDj } = useCurrentPartyroom((state) => pick(state, ['crews', 'currentDj']));
-
   const dj = currentDj && crews.find((crew: Crew.Model) => crew.crewId === currentDj.crewId);
+  const params = useParams<{ id: string }>();
+  const { data: djingQueue } = useFetchDjingQueue({ partyroomId: Number(params.id) }, true);
+
+  const djQueueCrewIds = djingQueue
+    ? djingQueue.djs.filter((dj) => dj.orderNumber > 1).map((dj) => dj.crewId)
+    : [];
+
   const { registerAvatar } = useAvatarDance();
 
-  const { positionedCrews } = useAvatarCluster({
+  const { positionedCrews, djQueueCrews } = useAvatarCluster({
     crews: crews,
+    djQueueCrewIds: djQueueCrewIds,
   });
 
   return (
@@ -50,6 +59,36 @@ export default function Avatars() {
         </div>
       )}
 
+      {/* DJ Queue Avatars  */}
+      {djQueueCrews.map((crew, index) => {
+        return (
+          <div
+            key={'partyroom-dj-queue-' + crew.crewId + index}
+            className='absolute'
+            style={{
+              top: `${crew.position.y}px`,
+              left: `${crew.position.x}px`,
+              transform: 'translate(-50%, -100%)',
+            }}
+          >
+            <Avatar
+              height={AVATAR_GROUP.HEIGHT}
+              bodyUri={crew.avatarBodyUri}
+              faceUri={crew.avatarFaceUri}
+              facePosX={crew.combinePositionX}
+              facePosY={crew.combinePositionY}
+              reaction={crew.reactionType}
+              offsetX={crew.offsetX || BASE_X}
+              offsetY={crew.offsetY || BASE_Y}
+              scale={crew.scale || BASE_SCALE}
+              motionType={crew.motionType}
+              avatarRef={registerAvatar}
+            />
+          </div>
+        );
+      })}
+
+      {/* Cluster Avatars */}
       {positionedCrews.map((crew, index) => {
         const isDj = dj?.crewId === crew.crewId;
         if (isDj) {
