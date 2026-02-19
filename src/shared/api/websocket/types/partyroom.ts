@@ -64,6 +64,9 @@ export type Playback = {
   name: string;
   duration: string;
   thumbnailImage: string;
+  likeCount: number;
+  dislikeCount: number;
+  grabCount: number;
 };
 
 // 재생(플레이백) 시작 이벤트

@@ -83,23 +83,6 @@ export const createCurrentPartyroomStore = () => {
         };
       });
     },
-    resetReactionAggregation: () => {
-      return set((state) => {
-        const updated = {
-          ...state.reaction,
-          aggregation: {
-            likeCount: 0,
-            dislikeCount: 0,
-            grabCount: 0,
-          },
-        };
-
-        return {
-          reaction: updated,
-        };
-      });
-    },
-
     crews: [],
     updateCrews: (next) => {
       return set((state) => {
