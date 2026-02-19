@@ -3,7 +3,11 @@
 import PartyroomCard from './partyroom-card.component';
 import { useFetchGeneralPartyrooms } from '../api/use-fetch-general-partyrooms.query';
 
-const PartyroomList = () => {
+interface PartyroomListProps {
+  onClose?: () => void;
+}
+
+const PartyroomList = ({ onClose }: PartyroomListProps) => {
   const { data: partyRooms = [] } = useFetchGeneralPartyrooms();
 
   return (
@@ -13,6 +17,7 @@ const PartyroomList = () => {
           key={partyRoom.partyroomId}
           roomId={partyRoom.partyroomId}
           summary={partyRoom}
+          onClose={onClose}
         />
       ))}
     </>

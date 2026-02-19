@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { PartyroomSummary } from '@/shared/api/http/types/partyrooms';
 import { cn } from '@/shared/lib/functions/cn';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFInfoOutline } from '@/shared/ui/icons';
@@ -12,14 +13,23 @@ import Crews from './crews.component';
 interface PartyroomCardProps {
   roomId: number;
   summary: PartyroomSummary;
+  onClose?: () => void;
 }
 
-const PartyroomCard = ({ roomId, summary }: PartyroomCardProps) => {
+const PartyroomCard = ({ roomId, summary, onClose }: PartyroomCardProps) => {
+  const { useCurrentPartyroom } = useStores();
+  const markExitedOnBackend = useCurrentPartyroom((state) => state.markExitedOnBackend);
+
+  const handleClick = () => {
+    markExitedOnBackend();
+    onClose?.();
+  };
+
   return (
     <BackdropBlurContainer>
       <Link
-        /* TODO: set proper route with id */
         href={`/parties/${roomId}`}
+        onClick={handleClick}
         className='h-full flexCol justify-between gap-[61px] py-6 px-7 backdrop-blur-xl bg-backdrop-black/80'
       >
         <Typography type='title2' className='text-gray-50'>

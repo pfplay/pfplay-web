@@ -18,7 +18,7 @@ export default function PartyRoomListTrigger() {
       Body: (
         <>
           {onCancel && <PanelHeader onClose={onCancel} />}
-          <PanelMain />
+          <PanelMain onClose={onCancel} />
         </>
       ),
     }));

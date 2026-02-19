@@ -9,7 +9,11 @@ import { Typography } from '@/shared/ui/components/typography';
 import Crews from './crews.component';
 import { useSuspenseFetchMainPartyroom } from '../api/use-fetch-main-partyroom.query';
 
-export default function MainPartyroomCard() {
+interface MainPartyroomCardProps {
+  onClose?: () => void;
+}
+
+export default function MainPartyroomCard({ onClose }: MainPartyroomCardProps) {
   const t = useI18n();
   const { data: partyroom } = useSuspenseFetchMainPartyroom();
 
@@ -21,6 +25,7 @@ export default function MainPartyroomCard() {
     <BackdropBlurContainer>
       <Link
         href={`/parties/${partyroom.partyroomId}`}
+        onClick={onClose}
         className='flexCol tablet:flexRow items-start tablet:items-end gap-[20px] tablet:gap-[50px] desktop:gap-[169px] px-7 py-10 backdrop-blur-xl bg-backdrop-black/80'
       >
         <div className='flexCol gap-6 tablet:gap-12 pb-[21px]'>
