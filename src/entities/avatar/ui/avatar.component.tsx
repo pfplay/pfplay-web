@@ -1,11 +1,20 @@
+import dynamic from 'next/dynamic';
 import { memo, useEffect, useRef } from 'react';
-import { ReactionLottie } from '@/entities/avatar/ui/reaction-lottie';
+
+const ReactionLottie = dynamic(
+  () => import('@/entities/avatar/ui/reaction-lottie').then((mod) => mod.ReactionLottie),
+  { ssr: false }
+);
 import { MotionType, ReactionType } from '@/shared/api/http/types/@enums';
 import { AvatarFacePos } from '@/shared/api/http/types/users';
 import { cn } from '@/shared/lib/functions/cn';
 import calculateDimensions from '../lib/calculate-dimensions';
 import { Model } from '../model/avatar.model';
-import { MoveableFace } from './react-moveable/moveable-face';
+
+const MoveableFace = dynamic(
+  () => import('./react-moveable/moveable-face').then((mod) => mod.MoveableFace),
+  { ssr: false }
+);
 
 type Props = Model & {
   height: number;
