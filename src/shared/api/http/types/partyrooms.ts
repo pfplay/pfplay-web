@@ -230,6 +230,14 @@ export type GetRoomIdByDomainPayload = {
   domain: string;
 };
 
+export type EnterByLinkPayload = {
+  linkDomain: string;
+};
+
+export type EnterByLinkResponse = {
+  partyroomId: number;
+};
+
 export type ReactionResponse = {
   isLiked: boolean;
   isDisliked: boolean;
@@ -324,6 +332,10 @@ export interface PartyroomsClient {
    * 공유 링크 입장
    */
   getRoomIdByDomain: (payload: GetRoomIdByDomainPayload) => Promise<GetRoomIdByDomainResponse>;
+  /**
+   * 링크로 파티룸 입장 (게스트 세션 생성)
+   */
+  enterByLink: (payload: EnterByLinkPayload) => Promise<EnterByLinkResponse>;
   /**
    * 패널티 목록 조회
    */

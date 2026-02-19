@@ -17,7 +17,8 @@ const ProtectedLayout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
 
   const isPartyroomRoute = GUEST_AUTO_LOGIN_ROUTE_PATTERN.test(pathname);
-  const { isSigningIn } = useAutoSignInByGuest(error, isPartyroomRoute);
+  const partyroomIdFromPath = isPartyroomRoute ? Number(pathname.split('/')[2]) : null;
+  const { isSigningIn } = useAutoSignInByGuest(error, partyroomIdFromPath);
 
   /**
    * 비로그인 상태에서 로비 등 파티룸이 아닌 라우트 접속 시 홈으로 리다이렉트

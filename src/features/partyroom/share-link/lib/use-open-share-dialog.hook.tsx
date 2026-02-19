@@ -38,7 +38,7 @@ function Body({ partyroom }: { partyroom: PartyroomDetailSummary }) {
   const [playback] = useStores().useCurrentPartyroom((state) => [state.playback]);
   const [isCopied, setIsCopied] = useState(false);
 
-  const sharedUrl = `${location.origin}/party/${partyroom.linkDomain}`;
+  const sharedUrl = `${location.origin}/link/${partyroom.linkDomain}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(sharedUrl);
