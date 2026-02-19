@@ -66,10 +66,9 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
             <div className='flex flex-col gap-1'>
               <Input
                 {...register('nickname')}
-                maxLength={16}
+                maxLength={12}
                 placeholder={t.common.ec.char_limit_12}
               />
-
               {errors.nickname && <FormItemError>{errors.nickname?.message}</FormItemError>}
             </div>
             <div className='flex flex-col gap-1 w-full'>
