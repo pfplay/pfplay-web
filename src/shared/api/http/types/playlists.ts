@@ -100,6 +100,12 @@ export type ChangeTrackOrderRequest = {
   nextOrderNumber: number;
 };
 
+export interface MoveTrackToPlaylistRequest {
+  playlistId: number;
+  trackId: number;
+  targetPlaylistId: number;
+}
+
 export interface PlaylistsClient {
   searchMusics: (params: SearchMusicsRequest) => Promise<SearchMusicsResponse>;
   getPlaylists: () => Promise<GetPlaylistsResponse>;
@@ -121,4 +127,5 @@ export interface PlaylistsClient {
     params: RemoveTrackFromPlaylistRequestParams
   ) => Promise<RemoveTrackFromPlaylistResponse>;
   changeTrackOrderInPlaylist: (request: ChangeTrackOrderRequest) => Promise<void>;
+  moveTrackToPlaylist: (request: MoveTrackToPlaylistRequest) => Promise<void>;
 }

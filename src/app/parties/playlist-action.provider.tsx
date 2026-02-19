@@ -5,6 +5,7 @@ import { useAddPlaylistDialog } from '@/features/playlist/add';
 import { useAddPlaylistTrack } from '@/features/playlist/add-tracks';
 import { useEditPlaylistDialog } from '@/features/playlist/edit';
 import { useFetchPlaylists } from '@/features/playlist/list';
+import { useMoveTrackToPlaylistDialog } from '@/features/playlist/move-track-to-playlist';
 import { useChangeTrackOrder } from '@/features/playlist/move-track-to-the-other-playlist';
 import { useRemovePlaylist } from '@/features/playlist/remove';
 import { useRemovePlaylistTrack } from '@/features/playlist/remove-track';
@@ -18,6 +19,7 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
   const { data: list = [] } = useFetchPlaylists();
   const add = useAddPlaylistDialog();
   const edit = useEditPlaylistDialog(list);
+  const moveTrack = useMoveTrackToPlaylistDialog(list);
   const { mutate: _remove } = useRemovePlaylist();
 
   const { mutate: _addTrack } = useAddPlaylistTrack();
@@ -70,6 +72,7 @@ export default function PlaylistActionProvider({ children }: { children: ReactNo
         changeTrackOrder,
         addTrack,
         removeTrack,
+        moveTrack,
       }}
     >
       {children}

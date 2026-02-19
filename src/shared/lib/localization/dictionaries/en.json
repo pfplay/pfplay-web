@@ -259,7 +259,8 @@
       "my_playlist": "My playlist",
       "grabbed_song": "Grabbed song",
       "song": "song",
-      "n_song": "{{count}} songs"
+      "n_song": "{{count}} songs",
+      "select": "Select playlist"
     },
     "btn": {
       "add_playlist": "Add playlist",
@@ -275,12 +276,16 @@
       "delete_duplicated_list_confirm": "The '{{playlist}}' playlist already has this song!\nShould we remove the duplicate and add it again?",
       "no_list_yet": "There's no list yet! Try to fill it with your favorite songs.",
       "search_url": "Search for music and URL",
-      "up_to_10_if_connect_wallet": "If you connect your wallet, you can create up to 10!"
+      "up_to_10_if_connect_wallet": "If you connect your wallet, you can create up to 10!",
+      "no_other_playlist": "There are no other playlists to move this song to",
+      "select_for_move": "Please select the playlist to move the selected song to"
     },
     "ec": {
       "exceeded_list_connect_wallet": "You have already exceeded the number of lists that can be created. ",
       "exceeded_list": "Oh no! You have exceeded the number of lists that can be created. You can only create up to 10.",
-      "up_to_100_songs": "You can add a maximum of 100 songs to each playlist"
+      "up_to_100_songs": "You can add a maximum of 100 songs to each playlist",
+      "duplicate_track_move": "This song already exists in the selected playlist",
+      "exceeded_track_limit_move": "The selected playlist has reached its song limit (15 songs)"
     }
   },
   "partyroom": {

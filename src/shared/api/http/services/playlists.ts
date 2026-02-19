@@ -21,6 +21,7 @@ import type {
   RemoveTrackFromPlaylistResponse,
   PlaylistsClient,
   ChangeTrackOrderRequest,
+  MoveTrackToPlaylistRequest,
 } from '../types/playlists';
 
 @Singleton
@@ -73,5 +74,21 @@ export default class PlaylistsService extends HTTPClient implements PlaylistsCli
 
   public changeTrackOrderInPlaylist({ playlistId, trackId, ...body }: ChangeTrackOrderRequest) {
     return this.put<void>(`${this.ROUTE_V1}/${playlistId}/tracks/${trackId}`, body);
+  }
+
+  @SkipGlobalErrorHandling({
+    when: (error) =>
+      [ErrorCode.DUPLICATE_TRACK_IN_PLAYLIST, ErrorCode.EXCEEDED_TRACK_LIMIT].includes(
+        getErrorCode(error) as ErrorCode
+      ),
+  })
+  public moveTrackToPlaylist({
+    playlistId,
+    trackId,
+    targetPlaylistId,
+  }: MoveTrackToPlaylistRequest) {
+    return this.patch<void>(`${this.ROUTE_V1}/${playlistId}/tracks/${trackId}/move`, {
+      targetPlaylistId,
+    });
   }
 }

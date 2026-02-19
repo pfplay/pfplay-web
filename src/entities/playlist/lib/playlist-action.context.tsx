@@ -23,6 +23,7 @@ type PlaylistAction = {
     trackId: number;
     nextOrderNumber: number;
   }) => Promise<void>;
+  moveTrack: (sourcePlaylistId: number, trackId: number) => void;
 };
 
 export const PlaylistActionContext = createContext<PlaylistAction | null>(null);

@@ -19,7 +19,7 @@ import { Playlist, PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { PFDelete } from '@/shared/ui/icons';
+import { PFAddPlaylist, PFDelete } from '@/shared/ui/icons';
 import Track from './track.component';
 import { useFetchPlaylistTracks } from '../api/use-fetch-playlist-tracks.query';
 
@@ -98,12 +98,11 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
                   label: t.playlist.btn.delete_playlist,
                   Icon: <PFDelete />,
                 },
-                // TODO: 구현되면 주석 해제
-                // {
-                //   onClickItem: () => alert('Not Implemented'),
-                //   label: t.playlist.btn.move_playlist,
-                //   Icon: <PFAddPlaylist />,
-                // },
+                {
+                  onClickItem: () => playlistAction.moveTrack(playlist.id, track.trackId),
+                  label: t.playlist.btn.move_playlist,
+                  Icon: <PFAddPlaylist />,
+                },
               ]}
             />
           ))}

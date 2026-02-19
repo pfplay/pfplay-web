@@ -259,7 +259,8 @@
       "my_playlist": "내 플레이리스트",
       "grabbed_song": "그랩한 곡",
       "song": "곡",
-      "n_song": "{{count}} 곡"
+      "n_song": "{{count}} 곡",
+      "select": "재생목록 선택"
     },
     "btn": {
       "add_playlist": "플레이리스트 추가",
@@ -275,12 +276,16 @@
       "delete_duplicated_list_confirm": "'{{playlist}}'플레이리스트에 이미 존재하는 곡입니다!\n중복곡은 삭제하고 다시 담을까요?",
       "no_list_yet": "아직 리스트가 없네요!\n취향의 곡을 담아보세요",
       "search_url": "URL 혹은 음악을 검색할 수 있어요",
-      "up_to_10_if_connect_wallet": "지갑을 연동하시면 10개까지 생성할 수 있어요!"
+      "up_to_10_if_connect_wallet": "지갑을 연동하시면 10개까지 생성할 수 있어요!",
+      "no_other_playlist": "이동할 수 있는 다른 플레이리스트가 없어요",
+      "select_for_move": "선택한 곡을 이동할 재생목록을 선택해 주세요"
     },
     "ec": {
       "exceeded_list_connect_wallet": "이미 생성 가능한 리스트 수를 초과했어요.\n",
       "exceeded_list": "이런! 생성 가능한 리스트 수를 초과했어요\n최대 10개 까지만 생성이 가능해요",
-      "up_to_100_songs": "곡은 1개 플레이리스트당 최대 100개 까지만 추가 가능해요"
+      "up_to_100_songs": "곡은 1개 플레이리스트당 최대 100개 까지만 추가 가능해요",
+      "duplicate_track_move": "선택한 플레이리스트에 이미 존재하는 곡이에요",
+      "exceeded_track_limit_move": "선택한 플레이리스트의 트랙 한도(15개)를 초과했어요"
     }
   },
   "partyroom": {
