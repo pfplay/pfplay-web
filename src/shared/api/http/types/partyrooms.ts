@@ -177,6 +177,7 @@ export type DjingQueue = {
   playback?: {
     name: string;
     thumbnailImage: string;
+    duration: string;
   };
   /**
    * Dj 대기열에 1명만 존재하는 상황에서 새로운 Dj가 대기열에 추가된다고 가정하면, 현재 재생곡이 끝난다면 새로운 Dj에게 차례를 넘기는 것이 자연스럽다.

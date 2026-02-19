@@ -59,7 +59,7 @@ export default function Body({ onCancel }: Props) {
             </Typography>
             <div className='inline-flex items-center gap-2'>
               {/* FIXME: playback 재생 시간 표시 필요 */}
-              <Typography type='detail1'>03:00</Typography>
+              <Typography type='detail1'>{djingQueue.playback?.duration}</Typography>
               <SkipPlayback>
                 {(skipPlayback) => (
                   <TextButton
