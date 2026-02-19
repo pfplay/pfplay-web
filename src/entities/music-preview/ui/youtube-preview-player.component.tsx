@@ -7,7 +7,7 @@ import { cn } from '@/shared/lib/functions/cn';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { LoadingPanel } from '@/shared/ui/components/loading';
 import { TextButton } from '@/shared/ui/components/text-button';
-import { PFClose } from '@/shared/ui/icons';
+import { PFClose, PFVolumeOff, PFVolumeOn } from '@/shared/ui/icons';
 import { previewPlayerConfig } from '../config/youtube-player.config';
 import { previewPlayerAPI } from '../lib/react-player.api';
 
@@ -41,6 +41,7 @@ export default function YouTubePreviewPlayer({
   const { currentTrack, playState, playerReady, setPlayerReady, stopPreview } = useMusicPreview();
 
   const [played, setPlayed] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const playerRef = useRef<TReactPlayer | null>(null);
 
   const videoId = currentTrack?.id;
@@ -91,6 +92,13 @@ export default function YouTubePreviewPlayer({
     stopPreview();
     onClose?.();
   };
+
+  /**
+   * 새 트랙 선택 시 음소거 리셋
+   */
+  useEffect(() => {
+    setIsMuted(true);
+  }, [videoId]);
 
   /**
    * 플레이어 정리
@@ -145,8 +153,19 @@ export default function YouTubePreviewPlayer({
         onError={onError}
         config={previewPlayerConfig}
         pip={false}
-        muted={true} // 기본 음소거
+        muted={isMuted}
       />
+
+      {/* 음소거 토글 버튼 */}
+      <div className='absolute top-2 left-2 z-10'>
+        <TextButton
+          onClick={() => setIsMuted((prev) => !prev)}
+          Icon={
+            isMuted ? <PFVolumeOff width={20} height={20} /> : <PFVolumeOn width={20} height={20} />
+          }
+          className='bg-black bg-opacity-50 hover:bg-opacity-75 text-white rounded-full p-1 transition-all'
+        />
+      </div>
 
       {/* 닫기 버튼 */}
       {showCloseButton && (
