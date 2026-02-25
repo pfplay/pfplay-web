@@ -1,5 +1,5 @@
 'use client';
-import { ConnectWallet } from '@/entities/wallet';
+import { ConnectWallet } from '@/entities/wallet/index.ui';
 import SuspenseWithErrorBoundary from '@/shared/api/http/error/suspense-with-error-boundary.component';
 import { Button } from '@/shared/ui/components/button';
 

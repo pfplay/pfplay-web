@@ -1,7 +1,8 @@
 import { ReactNode, useCallback } from 'react';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { Trans, LineBreakProcessor } from '@/shared/lib/localization/renderer';
+import { LineBreakProcessor } from '@/shared/lib/localization/renderer';
+import { Trans } from '@/shared/lib/localization/renderer/index.ui';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';

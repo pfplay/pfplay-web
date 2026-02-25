@@ -1,5 +1,6 @@
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { Trans, LineBreakProcessor } from '@/shared/lib/localization/renderer';
+import { LineBreakProcessor } from '@/shared/lib/localization/renderer';
+import { Trans } from '@/shared/lib/localization/renderer/index.ui';
 import { TextButton } from '@/shared/ui/components/text-button';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';

@@ -1,12 +1,6 @@
-import React, { createRef } from 'react';
+import { createRef } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import Checkbox from './checkbox.component';
-
-jest.mock('react', () => {
-  const actual = jest.requireActual('react');
-  globalThis.React = actual;
-  return actual;
-});
 
 jest.mock('@/shared/ui/icons', () => ({
   PFCheckMark: (props: any) => <svg data-testid='check-mark' {...props} />,

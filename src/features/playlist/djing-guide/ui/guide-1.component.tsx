@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { BoldProcessor, LineBreakProcessor, Trans } from '@/shared/lib/localization/renderer';
+import { BoldProcessor, LineBreakProcessor } from '@/shared/lib/localization/renderer';
+import { Trans } from '@/shared/lib/localization/renderer/index.ui';
 import { Typography } from '@/shared/ui/components/typography';
 
 export default function Guide1() {

@@ -1,8 +1,3 @@
-jest.mock('@/shared/lib/functions/log/with-debugger', () => ({
-  __esModule: true,
-  default: () => (fn: any) => fn,
-}));
-
 jest.mock('@/shared/lib/functions/log/logger', () => ({
   warnLog: jest.fn(),
 }));

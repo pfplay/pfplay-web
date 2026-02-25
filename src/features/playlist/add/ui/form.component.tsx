@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { PlaylistForm, PlaylistFormProps, PlaylistFormValues } from '@/entities/playlist';
-import { ConnectWallet } from '@/entities/wallet';
+import { PlaylistFormValues } from '@/entities/playlist';
+import { PlaylistForm, PlaylistFormProps } from '@/entities/playlist/index.ui';
+import { ConnectWallet } from '@/entities/wallet/index.ui';
 import useOnError from '@/shared/api/http/error/use-on-error.hook';
 import { ErrorCode } from '@/shared/api/http/types/@shared';
 import { useI18n } from '@/shared/lib/localization/i18n.context';

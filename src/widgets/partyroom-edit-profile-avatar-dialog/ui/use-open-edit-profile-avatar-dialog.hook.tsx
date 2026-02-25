@@ -1,6 +1,7 @@
 import { AvatarEditDone, ProfileAvatarEditPanel } from '@/features/edit-profile-avatar';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { Trans, LineBreakProcessor } from '@/shared/lib/localization/renderer';
+import { LineBreakProcessor } from '@/shared/lib/localization/renderer';
+import { Trans } from '@/shared/lib/localization/renderer/index.ui';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';

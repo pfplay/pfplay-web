@@ -1,7 +1,8 @@
 'use client';
 import { usePlaylistAction } from '@/entities/playlist';
 import { Playlist } from '@/shared/api/http/types/playlists';
-import { Trans, VariableProcessor } from '@/shared/lib/localization/renderer';
+import { VariableProcessor } from '@/shared/lib/localization/renderer';
+import { Trans } from '@/shared/lib/localization/renderer/index.ui';
 import ListItem from './list-item.component';
 
 type Props = {

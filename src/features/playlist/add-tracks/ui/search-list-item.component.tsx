@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import { ThumbnailWithPreview, convertSearchMusicToPreview } from '@/entities/music-preview';
+import { convertSearchMusicToPreview } from '@/entities/music-preview';
+import { ThumbnailWithPreview } from '@/entities/music-preview/index.ui';
 import { Music } from '@/shared/api/http/types/playlists';
 import { safeDecodeURI } from '@/shared/lib/functions/safe-decode-uri';
 import { Typography } from '@/shared/ui/components/typography';

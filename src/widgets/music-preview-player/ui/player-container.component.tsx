@@ -1,7 +1,7 @@
 'use client';
 
-import { YouTubePreviewPlayer } from '@/entities/music-preview';
 import { PREVIEW_PLAYER_SIZES } from '@/entities/music-preview/config/youtube-player.config';
+import { YouTubePreviewPlayer } from '@/entities/music-preview/index.ui';
 import { useStores } from '@/shared/lib/store/stores.context';
 
 type PlayerContainerProps = {

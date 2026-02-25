@@ -1,12 +1,5 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import InputNumber from './input-number.component';
-
-jest.mock('react', () => {
-  const actual = jest.requireActual('react');
-  globalThis.React = actual;
-  return actual;
-});
 
 jest.mock('@/shared/lib/functions/combine-ref', () => ({
   combineRef: (refs: any[]) => (el: any) => {

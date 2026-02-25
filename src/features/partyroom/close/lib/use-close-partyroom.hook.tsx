@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { Trans, LineBreakProcessor, VariableProcessor } from '@/shared/lib/localization/renderer';
+import { LineBreakProcessor, VariableProcessor } from '@/shared/lib/localization/renderer';
+import { Trans } from '@/shared/lib/localization/renderer/index.ui';
 import { useDialog } from '@/shared/ui/components/dialog';
 import Dialog from '@/shared/ui/components/dialog/dialog.component';
 import { Input } from '@/shared/ui/components/input';
