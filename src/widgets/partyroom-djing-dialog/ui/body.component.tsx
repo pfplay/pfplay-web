@@ -9,7 +9,8 @@ import {
 } from '@/features/partyroom/unlock-djing-queue';
 import { QueueStatus } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { BoldProcessor, Trans, VariableProcessor } from '@/shared/lib/localization/renderer';
+import { BoldProcessor, VariableProcessor } from '@/shared/lib/localization/renderer';
+import { Trans } from '@/shared/lib/localization/renderer/index.ui';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button, ButtonProps } from '@/shared/ui/components/button';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';

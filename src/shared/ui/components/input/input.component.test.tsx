@@ -1,12 +1,5 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Input from './input.component';
-
-jest.mock('react', () => {
-  const actual = jest.requireActual('react');
-  globalThis.React = actual;
-  return actual;
-});
 
 jest.mock('../typography', () => ({
   Typography: ({ children, className }: any) => <span className={className}>{children}</span>,

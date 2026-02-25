@@ -1,12 +1,5 @@
-import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import PreviewOverlay from './preview-overlay.component';
-
-jest.mock('react', () => {
-  const actual = jest.requireActual('react');
-  globalThis.React = actual;
-  return actual;
-});
 
 describe('PreviewOverlay', () => {
   const defaultProps = {

@@ -1,7 +1,8 @@
 'use client';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ThumbnailWithPreview, convertPlaylistTrackToPreview } from '@/entities/music-preview';
+import { convertPlaylistTrackToPreview } from '@/entities/music-preview';
+import { ThumbnailWithPreview } from '@/entities/music-preview/index.ui';
 import { PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
 import { IconMenu } from '@/shared/ui/components/icon-menu';

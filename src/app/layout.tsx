@@ -5,7 +5,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import '@/shared/ui/foundation/globals.css';
 
 import { PropsWithChildren } from 'react';
-import { MeHydration } from '@/entities/me';
+import { MeHydration } from '@/entities/me/index.ui';
 import { DomId } from '@/shared/config/dom-id';
 import { Language } from '@/shared/lib/localization/constants';
 import { LANGUAGE_COOKIE_KEY } from '@/shared/lib/localization/constants';
