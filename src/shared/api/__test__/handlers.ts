@@ -298,6 +298,11 @@ export const handlers = [
     });
   }),
 
+  // PUT /v1/partyrooms/:id — edit
+  http.put(`${BASE_URL}/v1/partyrooms/:id`, () => {
+    return new HttpResponse(null, { status: 200 });
+  }),
+
   // DELETE /v1/partyrooms/:id — close
   http.delete(`${BASE_URL}/v1/partyrooms/:id`, () => {
     return new HttpResponse(null, { status: 200 });
@@ -305,6 +310,104 @@ export const handlers = [
 
   // PUT /v1/partyrooms/:id/dj-queue — changeDjQueueStatus
   http.put(`${BASE_URL}/v1/partyrooms/:id/dj-queue`, () => {
+    return new HttpResponse(null, { status: 200 });
+  }),
+
+  // DELETE /v1/partyrooms/:id/dj-queue/:djId — deleteDjFromQueue
+  http.delete(`${BASE_URL}/v1/partyrooms/:id/dj-queue/:djId`, () => {
+    return new HttpResponse(null, { status: 200 });
+  }),
+
+  // POST /v1/partyrooms/:id/playback/skip — skipPlayback
+  http.post(`${BASE_URL}/v1/partyrooms/:id/playback/skip`, () => {
+    return new HttpResponse(null, { status: 200 });
+  }),
+
+  // POST /v1/partyrooms/:id/playbacks/reaction — reaction
+  http.post(`${BASE_URL}/v1/partyrooms/:id/playbacks/reaction`, () => {
+    return HttpResponse.json({
+      data: { isLiked: true, isDisliked: false, isGrabbed: false },
+    });
+  }),
+
+  // ──────────────────────────────────────────────
+  // Penalties
+  // ──────────────────────────────────────────────
+
+  // POST /v1/partyrooms/:id/penalties — imposePenalty
+  http.post(`${BASE_URL}/v1/partyrooms/:id/penalties`, () => {
+    return new HttpResponse(null, { status: 200 });
+  }),
+
+  // DELETE /v1/partyrooms/:id/penalties/:penaltyId — liftPenalty
+  http.delete(`${BASE_URL}/v1/partyrooms/:id/penalties/:penaltyId`, () => {
+    return new HttpResponse(null, { status: 200 });
+  }),
+
+  // GET /v1/partyrooms/:id/penalties — getPenaltyList
+  http.get(`${BASE_URL}/v1/partyrooms/:id/penalties`, () => {
+    return HttpResponse.json({
+      data: [
+        {
+          penaltyId: 1,
+          penaltyType: 'MUTE',
+          crewId: 10,
+          nickname: 'User1',
+          avatarIconUri: 'https://example.com/u1.png',
+        },
+      ],
+    });
+  }),
+
+  // ──────────────────────────────────────────────
+  // Users (Profile)
+  // ──────────────────────────────────────────────
+
+  // PUT /v1/users/me/profile/bio — updateMyBio
+  http.put(`${BASE_URL}/v1/users/me/profile/bio`, () => {
+    return new HttpResponse(null, { status: 200 });
+  }),
+
+  // PUT /v1/users/me/profile/avatar — updateMyAvatar
+  http.put(`${BASE_URL}/v1/users/me/profile/avatar`, () => {
+    return new HttpResponse(null, { status: 200 });
+  }),
+
+  // GET /v1/users/me/profile/avatar/bodies — getMyAvatarBodies
+  http.get(`${BASE_URL}/v1/users/me/profile/avatar/bodies`, () => {
+    return HttpResponse.json({
+      data: [
+        {
+          id: 1,
+          name: 'Body A',
+          resourceUri: 'https://example.com/bodyA.png',
+          available: true,
+          combinable: true,
+          defaultSetting: false,
+        },
+        {
+          id: 2,
+          name: 'Body B',
+          resourceUri: 'https://example.com/bodyB.png',
+          available: true,
+          combinable: false,
+          defaultSetting: true,
+        },
+      ],
+    });
+  }),
+
+  // GET /v1/users/me/profile/avatar/faces — getMyAvatarFaces
+  http.get(`${BASE_URL}/v1/users/me/profile/avatar/faces`, () => {
+    return HttpResponse.json({
+      data: [
+        { id: 1, name: 'Face A', resourceUri: 'https://example.com/faceA.png', available: true },
+      ],
+    });
+  }),
+
+  // PUT /v1/users/me/profile/wallet — updateMyWallet
+  http.put(`${BASE_URL}/v1/users/me/profile/wallet`, () => {
     return new HttpResponse(null, { status: 200 });
   }),
 
