@@ -27,4 +27,23 @@ describe('cloneDeep', () => {
     expect(isOneDepthRefSame).toEqual(false);
     expect(isTwoDepthRefSame).toEqual(false);
   });
+
+  test('원시값 그대로 반환', () => {
+    expect(cloneDeep(42)).toBe(42);
+    expect(cloneDeep('hello')).toBe('hello');
+    expect(cloneDeep(null)).toBe(null);
+    expect(cloneDeep(undefined)).toBe(undefined);
+    expect(cloneDeep(true)).toBe(true);
+  });
+
+  test('원본 변경이 클론에 영향 없음', () => {
+    const original = { a: { b: 1 }, c: [1, 2] };
+    const copy = cloneDeep(original);
+
+    original.a.b = 999;
+    original.c.push(3);
+
+    expect(copy.a.b).toBe(1);
+    expect(copy.c).toEqual([1, 2]);
+  });
 });

@@ -57,4 +57,22 @@ describe('calculateDimensions', () => {
       offsetY: BASE_Y,
     });
   });
+
+  test('절반 높이(80) → width=60', () => {
+    const result = calculateDimensions(80);
+    expect(result.width).toBe(60);
+  });
+
+  test('scale → zoom 반영', () => {
+    const result = calculateDimensions(BODY_BASE_HEIGHT, 0, 0, 0, 0, 2.5);
+    expect(result.zoom).toBe(2.5);
+  });
+
+  test('x, y offset 계산', () => {
+    const result = calculateDimensions(BODY_BASE_HEIGHT, 0, 0, 0.5, 0.3, 1);
+    const expectedFaceWidth = BODY_BASE_WIDTH * FACE_BASE_WIDTH_RATIO;
+    const expectedFaceHeight = BODY_BASE_HEIGHT * FACE_BASE_HEIGHT_RATIO;
+    expect(result.offsetX).toBeCloseTo(0.5 * expectedFaceWidth);
+    expect(result.offsetY).toBeCloseTo(0.3 * expectedFaceHeight);
+  });
 });
