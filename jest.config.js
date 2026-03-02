@@ -18,5 +18,7 @@ module.exports = {
     '@/(.*)': '<rootDir>/src/$1',
   },
   resolver: '<rootDir>/jest.resolver.js',
-  transformIgnorePatterns: ['node_modules/(?!(msw|@mswjs|until-async)/)'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(msw|@mswjs|until-async|d3-force|d3-dispatch|d3-quadtree|d3-timer)/)',
+  ],
 };
