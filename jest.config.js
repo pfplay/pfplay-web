@@ -17,4 +17,6 @@ module.exports = {
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
   },
+  resolver: '<rootDir>/jest.resolver.js',
+  transformIgnorePatterns: ['node_modules/(?!(msw|@mswjs|until-async)/)'],
 };
