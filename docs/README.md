@@ -58,6 +58,10 @@ yarn dev
 
 And then, open `https://localhost:3000` in your browser.
 
+## Testing
+
+Please refer to [Testing Guide](./TESTING.md).
+
 ## Contributing
 
 Please refer to [Contributing](./CONTRIBUTING.md).

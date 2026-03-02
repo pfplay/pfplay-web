@@ -43,6 +43,27 @@ FSD(Frontend Structure Design) 아키텍쳐를 기반으로 작업합니다.
   - ext - `png|jpg|jpeg|gif|...`
   - `/public/images/` 디렉터리에 넣습니다.
 
+## Testing
+
+> Last Update (26.03.02)
+
+```bash
+# 전체 테스트
+yarn test
+
+# 커버리지 없이 빠르게 실행
+npx jest --no-coverage
+
+# 특정 경로만 실행
+npx jest src/shared/ui --no-coverage
+```
+
+- 테스트 파일은 소스 파일과 **동일 디렉토리에 co-locate** 합니다.
+- 네이밍: `{name}.test.ts`, `{name}.component.test.tsx`, `{name}.hook.test.ts`, `{name}.integration.test.ts`
+- MSW 통합 테스트 작성 시 `import '@/shared/api/__test__/msw-server'`를 반드시 추가해야 합니다.
+
+상세 가이드는 [TESTING.md](./TESTING.md)를 참고하세요.
+
 ## react-query
 
 > Last Update (25.05.11)
