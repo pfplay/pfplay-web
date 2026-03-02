@@ -27,6 +27,34 @@ describe('mergeDeep', () => {
 
     expect(result).toStrictEqual(expected);
   });
+
+  test('source에만 있는 key 유지', () => {
+    const result = mergeDeep({ a: 1, b: 2 }, { a: 10 });
+
+    expect(result).toStrictEqual({ a: 10, b: 2 });
+  });
+
+  test('override에만 있는 key 추가', () => {
+    const result = mergeDeep({ a: 1 }, { b: 2 } as Record<string, unknown>);
+
+    expect(result).toStrictEqual({ a: 1, b: 2 });
+  });
+
+  test('배열은 merge하지 않고 교체', () => {
+    const result = mergeDeep({ items: [1, 2, 3] }, { items: [4, 5] });
+
+    expect(result).toStrictEqual({ items: [4, 5] });
+  });
+
+  test('원본 mutation 없음 (immutability)', () => {
+    const initial = { a: { nested: 1 }, b: 2 };
+    const override = { a: { nested: 99 } };
+    const initialCopy = JSON.parse(JSON.stringify(initial));
+
+    mergeDeep(initial, override);
+
+    expect(initial).toStrictEqual(initialCopy);
+  });
 });
 
 type MergeTestGroup = {
