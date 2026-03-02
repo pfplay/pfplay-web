@@ -14,16 +14,17 @@ import { render, screen } from '@testing-library/react';
 import { GradeType } from '@/shared/api/http/types/@enums';
 import ChatItem from './chat-item.component';
 
-const makeMessage = (gradeType: GradeType, content = 'Hello') => ({
-  from: 'user' as const,
-  crew: {
-    crewId: 1,
-    nickname: 'TestUser',
-    gradeType,
-    avatarIconUri: 'https://example.com/icon.png',
-  },
-  message: { content },
-});
+const makeMessage = (gradeType: GradeType, content = 'Hello') =>
+  ({
+    from: 'user',
+    crew: {
+      crewId: 1,
+      nickname: 'TestUser',
+      gradeType,
+      avatarIconUri: 'https://example.com/icon.png',
+    },
+    message: { content },
+  }) as any;
 
 describe('ChatItem', () => {
   test('닉네임과 메시지를 렌더링한다', () => {
