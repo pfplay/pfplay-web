@@ -10,7 +10,7 @@ type PartyroomOG = {
 
 async function fetchPartyroomByLink(linkDomain: string): Promise<PartyroomOG | null> {
   try {
-    const res = await fetch(`${API_BASE}v1/partyrooms/link/${linkDomain}/enter`, {
+    const res = await fetch(`${API_BASE}v1/partyrooms/link/${linkDomain}`, {
       next: { revalidate: 60 },
     });
     if (!res.ok) return null;
