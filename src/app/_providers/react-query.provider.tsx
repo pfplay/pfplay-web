@@ -80,7 +80,7 @@ function handleBubbledError(error: unknown) {
   }
 
   if (isAuthError(error)) {
-    if (location.pathname !== '/') {
+    if (location.pathname !== '/' && !location.pathname.startsWith('/link/')) {
       location.href = '/';
     }
     return;

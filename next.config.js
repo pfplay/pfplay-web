@@ -4,6 +4,7 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     webpackBuildWorker: true,
+    serverComponentsExternalPackages: ['@resvg/resvg-js'],
   },
   webpack: (config) => {
     config.resolve.fallback = { fs: false, net: false, tls: false };
