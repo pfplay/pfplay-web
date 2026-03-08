@@ -1,8 +1,14 @@
+import { AvatarCompositionType } from '@/shared/api/http/types/@enums';
+
 export type Model = {
   /**
    * body의 uri
    */
   bodyUri: string;
+  /**
+   * 아바타 합성 타입 (SINGLE_BODY | BODY_WITH_FACE)
+   */
+  compositionType?: AvatarCompositionType;
   /**
    * face의 uri
    */

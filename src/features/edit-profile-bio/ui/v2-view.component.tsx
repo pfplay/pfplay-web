@@ -28,6 +28,7 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
             <Avatar
               height={180}
               bodyUri={me.avatarBodyUri}
+              compositionType={me.avatarCompositionType}
               faceUri={me.avatarFaceUri}
               facePosX={me.combinePositionX}
               facePosY={me.combinePositionY}

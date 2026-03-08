@@ -1,4 +1,4 @@
-import { ActivityType, AuthorityTier, ObtainmentType } from './@enums';
+import { ActivityType, AuthorityTier, AvatarCompositionType, ObtainmentType } from './@enums';
 
 export interface SignInRequest {
   oauth2Provider: OAuth2Provider;
@@ -25,6 +25,7 @@ export interface ActivitySummary {
 export interface GetMyProfileSummaryResponse {
   nickname: string;
   introduction?: string;
+  avatarCompositionType: AvatarCompositionType;
   avatarBodyUri: string;
   avatarFaceUri: string;
   avatarIconUri: string;

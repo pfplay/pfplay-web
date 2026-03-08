@@ -17,7 +17,7 @@ type PlaylistAction = {
   remove: (targetIds: Playlist['id'][], options?: PlaylistActionOptions) => void;
 
   addTrack: (targetId: Playlist['id'], track: AddTrackToPlaylistRequestBody) => void;
-  removeTrack: (targetId: Playlist['id'], trackIds: PlaylistTrack['linkId']) => void;
+  removeTrack: (targetId: Playlist['id'], trackId: PlaylistTrack['trackId']) => void;
   changeTrackOrder: (params: {
     playlistId: number;
     trackId: number;

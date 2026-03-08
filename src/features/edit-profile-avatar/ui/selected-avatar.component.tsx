@@ -1,4 +1,5 @@
 import { Avatar } from '@/entities/avatar';
+import { AvatarCompositionType } from '@/shared/api/http/types/@enums';
 import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
 
 const SelectedAvatar = () => {
@@ -10,6 +11,11 @@ const SelectedAvatar = () => {
         <Avatar
           height={400}
           bodyUri={selectedAvatar.body.resourceUri}
+          compositionType={
+            selectedAvatar.body.combinable
+              ? AvatarCompositionType.BODY_WITH_FACE
+              : AvatarCompositionType.SINGLE_BODY
+          }
           /**
            * NOTE
            *  combinable이 false라고 해서 선택했던 faceUri를 초기화하진 않고, 단순히 뷰에서만 감춥니다.

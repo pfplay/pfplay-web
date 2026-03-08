@@ -46,6 +46,7 @@ export default function Avatars() {
           <Avatar
             height={380}
             bodyUri={dj.avatarBodyUri}
+            compositionType={dj.avatarCompositionType}
             faceUri={dj.avatarFaceUri}
             facePosX={dj.combinePositionX}
             facePosY={dj.combinePositionY}
@@ -74,6 +75,7 @@ export default function Avatars() {
             <Avatar
               height={AVATAR_GROUP.HEIGHT}
               bodyUri={crew.avatarBodyUri}
+              compositionType={crew.avatarCompositionType}
               faceUri={crew.avatarFaceUri}
               facePosX={crew.combinePositionX}
               facePosY={crew.combinePositionY}
@@ -108,6 +110,7 @@ export default function Avatars() {
             <Avatar
               height={AVATAR_GROUP.HEIGHT}
               bodyUri={crew.avatarBodyUri}
+              compositionType={crew.avatarCompositionType}
               faceUri={crew.avatarFaceUri}
               facePosX={crew.combinePositionX}
               facePosY={crew.combinePositionY}

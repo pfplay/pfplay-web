@@ -23,7 +23,7 @@ export interface GetTracksOfPlaylistParameters {
  */
 export interface PlaylistTrack {
   trackId: number;
-  linkId: number;
+  linkId: string;
   name: string;
   orderNumber: number;
   duration: string;

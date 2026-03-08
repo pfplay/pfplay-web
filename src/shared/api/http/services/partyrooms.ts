@@ -11,12 +11,10 @@ import type {
   EnterResponse,
   ExitPayload,
   GetDjingQueuePayload,
-  GetCrewsPayload,
   GetNoticePayload,
   GetNoticeResponse,
   GetSetupInfoPayload,
   GetSetUpInfoResponse,
-  PartyroomCrewSummary,
   PartyroomsClient,
   PartyroomDetailSummary,
   ReactionPayload,
@@ -62,10 +60,6 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
 
   public getSetupInfo({ partyroomId }: GetSetupInfoPayload) {
     return this.get<GetSetUpInfoResponse>(`${this.ROUTE_V1}/${partyroomId}/setup`);
-  }
-
-  public getCrews({ partyroomId }: GetCrewsPayload) {
-    return this.get<PartyroomCrewSummary[]>(`${this.ROUTE_V1}/${partyroomId}/crews`);
   }
 
   public getDjingQueue({ partyroomId }: GetDjingQueuePayload) {

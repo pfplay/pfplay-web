@@ -135,6 +135,11 @@ export enum TokenClaim {
   AUTHORITY_TIER = 'AUTHORITY_TIER',
 }
 
+export enum AvatarCompositionType {
+  SINGLE_BODY = 'SINGLE_BODY',
+  BODY_WITH_FACE = 'BODY_WITH_FACE',
+}
+
 export enum AuthorityTier {
   FM = 'FM', // Full Crew (지갑인증 - 정회원)
   AM = 'AM', // Associate Crew (지갑인증 x - 준회원)

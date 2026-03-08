@@ -77,7 +77,7 @@ export const handlers = [
         content: [
           {
             trackId: 10,
-            linkId: 100,
+            linkId: '100',
             name: 'Track A',
             orderNumber: 1,
             duration: '03:30',
@@ -85,7 +85,7 @@ export const handlers = [
           },
           {
             trackId: 20,
-            linkId: 200,
+            linkId: '200',
             name: 'Track B',
             orderNumber: 2,
             duration: '04:15',
@@ -269,7 +269,7 @@ export const handlers = [
       data: {
         playbackActivated: true,
         queueStatus: 'OPEN',
-        isRegistered: false,
+        registered: false,
         djs: [
           {
             crewId: 1,

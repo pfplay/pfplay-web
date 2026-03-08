@@ -1,5 +1,5 @@
 import {
-  AuthorityTier,
+  AvatarCompositionType,
   GradeType,
   MotionType,
   PenaltyType,
@@ -69,9 +69,10 @@ export type PartyroomCrew = {
   crewId: number;
   nickname: string;
   gradeType: GradeType;
+  avatarCompositionType: AvatarCompositionType;
   avatarBodyUri: string;
   /**
-   * not combinable body일 경우 빈 문자열
+   * SINGLE_BODY일 경우 빈 문자열
    */
   avatarFaceUri: string;
   avatarIconUri: string;
@@ -130,19 +131,6 @@ export type GetSetUpInfoResponse = {
   };
 };
 
-export type GetCrewsPayload = {
-  partyroomId: number;
-};
-
-export type PartyroomCrewSummary = {
-  uid: string;
-  authorityTier: AuthorityTier;
-  crewId: number;
-  nickname: string;
-  gradeType: GradeType;
-  avatarIconUri: string;
-};
-
 export type GetDjingQueuePayload = {
   partyroomId: number;
 };
@@ -173,7 +161,7 @@ export type DjingQueue = {
   /**
    * 본인이 대기열에 등록되었는지 여부
    */
-  isRegistered: boolean;
+  registered: boolean;
   playback?: {
     name: string;
     thumbnailImage: string;
@@ -294,10 +282,6 @@ export interface PartyroomsClient {
    * 파티룸 초기화 정보 조회
    */
   getSetupInfo: (payload: GetSetupInfoPayload) => Promise<GetSetUpInfoResponse>;
-  /**
-   * 우측 사이드 바의 ‘전체’ 탭을 눌렀을 시 호출하는 현재 파티룸 내의 파티 멤버 목록 조회
-   */
-  getCrews: (payload: GetCrewsPayload) => Promise<PartyroomCrewSummary[]>;
   /**
    * DJ 대기열 조회
    */
