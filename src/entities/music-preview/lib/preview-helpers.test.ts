@@ -12,7 +12,7 @@ describe('preview-helpers', () => {
     test('PlaylistTrack을 PreviewTrack으로 변환', () => {
       const track: PlaylistTrack = {
         trackId: 1,
-        linkId: 12345,
+        linkId: '12345',
         name: '테스트 곡',
         orderNumber: 1,
         duration: '03:30',

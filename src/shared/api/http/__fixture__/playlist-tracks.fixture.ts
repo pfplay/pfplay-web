@@ -3,7 +3,7 @@ import { PlaylistTrack } from '../types/playlists';
 export const fixturePlaylistTracks: PlaylistTrack[] = [
   {
     trackId: 1,
-    linkId: 1,
+    linkId: '1',
     orderNumber: 1,
     name: 'BLACKPINK(블랙핑크) - Shut Down @인기가요sssss inkigayo 20220925 long long long long long long long longlong long long long text',
     duration: '00:00',
@@ -11,7 +11,7 @@ export const fixturePlaylistTracks: PlaylistTrack[] = [
   },
   {
     trackId: 2,
-    linkId: 2,
+    linkId: '2',
     orderNumber: 2,
     name: 'BLACKPINK(블랙핑크)checkehck ',
     duration: '04:20',

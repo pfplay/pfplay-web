@@ -6,7 +6,7 @@ import type { PreviewTrack } from '../model/preview.model';
  * 플레이리스트 트랙을 미리보기 트랙으로 변환
  */
 export const convertPlaylistTrackToPreview = (track: PlaylistTrack): PreviewTrack => ({
-  id: track.linkId.toString(),
+  id: track.linkId,
   title: track.name,
   thumbnailUrl: track.thumbnailImage,
   videoUrl: `https://www.youtube.com/watch?v=${track.linkId}`,

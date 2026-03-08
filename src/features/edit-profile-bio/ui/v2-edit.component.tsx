@@ -55,6 +55,7 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
             <Avatar
               height={180}
               bodyUri={me.avatarBodyUri}
+              compositionType={me.avatarCompositionType}
               faceUri={me.avatarFaceUri}
               facePosX={me.combinePositionX}
               facePosY={me.combinePositionY}

@@ -5,7 +5,7 @@ const ReactionLottie = dynamic(
   () => import('@/entities/avatar/ui/reaction-lottie').then((mod) => mod.ReactionLottie),
   { ssr: false }
 );
-import { MotionType, ReactionType } from '@/shared/api/http/types/@enums';
+import { AvatarCompositionType, MotionType, ReactionType } from '@/shared/api/http/types/@enums';
 import { AvatarFacePos } from '@/shared/api/http/types/users';
 import { cn } from '@/shared/lib/functions/cn';
 import calculateDimensions from '../lib/calculate-dimensions';
@@ -39,6 +39,7 @@ const Avatar = memo(
   ({
     height,
     bodyUri,
+    compositionType,
     faceUri,
     facePosX,
     facePosY,
@@ -82,7 +83,7 @@ const Avatar = memo(
           </div>
         )}
 
-        {faceUri && (
+        {compositionType === AvatarCompositionType.BODY_WITH_FACE && faceUri && (
           <div
             className='absolute transform -translate-x-1/2 -z-1'
             style={{
