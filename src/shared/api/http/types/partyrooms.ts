@@ -207,10 +207,6 @@ export type EnterResponse = {
   gradeType: GradeType;
 };
 
-export type GetRoomIdByDomainResponse = {
-  partyroomId: number;
-};
-
 export type ExitPayload = {
   partyroomId: number;
 };
@@ -226,16 +222,19 @@ export type ReactionPayload = {
   reactionType: ReactionType;
 };
 
-export type GetRoomIdByDomainPayload = {
-  domain: string;
-};
-
-export type EnterByLinkPayload = {
+export type GetPartyroomByLinkPayload = {
   linkDomain: string;
 };
 
-export type EnterByLinkResponse = {
+export type GetPartyroomByLinkResponse = {
   partyroomId: number;
+  title: string;
+  introduction: string;
+  playback: {
+    name: string;
+    thumbnailImage: string;
+  } | null;
+  crewCount: number;
 };
 
 export type ReactionResponse = {
@@ -329,13 +328,9 @@ export interface PartyroomsClient {
    */
   adjustGrade: (payload: AdjustGradePayload) => Promise<void>;
   /**
-   * 공유 링크 입장
+   * 공유 링크로 파티룸 정보 조회
    */
-  getRoomIdByDomain: (payload: GetRoomIdByDomainPayload) => Promise<GetRoomIdByDomainResponse>;
-  /**
-   * 링크로 파티룸 입장 (게스트 세션 생성)
-   */
-  enterByLink: (payload: EnterByLinkPayload) => Promise<EnterByLinkResponse>;
+  getPartyroomByLink: (payload: GetPartyroomByLinkPayload) => Promise<GetPartyroomByLinkResponse>;
   /**
    * 패널티 목록 조회
    */

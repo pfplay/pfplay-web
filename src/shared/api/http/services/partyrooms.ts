@@ -5,8 +5,8 @@ import HTTPClient from '../client/client';
 import { getErrorCode } from '../error/get-error-code';
 import type {
   DjingQueue,
-  EnterByLinkPayload,
-  EnterByLinkResponse,
+  GetPartyroomByLinkPayload,
+  GetPartyroomByLinkResponse,
   EnterPayload,
   EnterResponse,
   ExitPayload,
@@ -23,8 +23,6 @@ import type {
   AdjustGradePayload,
   GetPartyroomDetailSummaryPayload,
   ReactionResponse,
-  GetRoomIdByDomainPayload,
-  GetRoomIdByDomainResponse,
   PartyroomSummary,
   CreatePartyroomPayload,
   CreatePartyroomResponse,
@@ -108,12 +106,8 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
     return this.patch<void>(`${this.ROUTE_V1}/${partyroomId}/crews/${crewId}/grade`, body);
   }
 
-  public getRoomIdByDomain({ domain }: GetRoomIdByDomainPayload) {
-    return this.get<GetRoomIdByDomainResponse>(`${this.ROUTE_V1}/link/${domain}/enter`);
-  }
-
-  public enterByLink({ linkDomain }: EnterByLinkPayload) {
-    return this.get<EnterByLinkResponse>(`${this.ROUTE_V1}/link/${linkDomain}/enter`);
+  public getPartyroomByLink({ linkDomain }: GetPartyroomByLinkPayload) {
+    return this.get<GetPartyroomByLinkResponse>(`${this.ROUTE_V1}/link/${linkDomain}`);
   }
 
   public getPenaltyList({ partyroomId }: GetPenaltyListPayload) {
