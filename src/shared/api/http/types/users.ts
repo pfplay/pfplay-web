@@ -42,16 +42,12 @@ export interface InitiateLoginRequest {
   codeVerifier: string;
 }
 
-export type InitiateLoginResponse =
-  | {
-      success: true;
-      authUrl: string;
-      state: string;
-    }
-  | {
-      success: false;
-      message: string;
-    };
+export type InitiateLoginResponse = {
+  authUrl: string;
+  state: string;
+  provider: string;
+  expiresIn: number;
+};
 
 export interface TokenExchangeRequest {
   provider: OAuth2Provider;
@@ -60,20 +56,11 @@ export interface TokenExchangeRequest {
   state: string;
 }
 
-export type TokenExchangeResponse =
-  | {
-      success: true;
-      user: {
-        id: string;
-        email: string;
-        name: string;
-        picture: string;
-      };
-    }
-  | {
-      success: false;
-      message: string;
-    };
+export type TokenExchangeResponse = {
+  tokenType: string;
+  expiresIn: number;
+  issuedAt: string;
+};
 
 export interface AuthCallbackParams {
   code?: string;

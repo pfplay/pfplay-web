@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation'; // next/router 대신 next/navigation 사용
+import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useGetMyServiceEntry } from '@/entities/me';
 import { OAuth2Provider } from '@/shared/api/http/types/users';
@@ -13,11 +13,11 @@ export default function useOAuth2Callback() {
 
   return useCallback(
     async (oauth2Provider: OAuth2Provider) => {
-      const response = await callbackLogin(oauth2Provider);
-      if (response.success) {
+      try {
+        await callbackLogin(oauth2Provider);
         const serviceEntry = await getMyServiceEntry();
         router.push(serviceEntry);
-      } else {
+      } catch {
         router.push('/sign-in');
       }
     },
