@@ -1,5 +1,5 @@
 'use client';
-import { ReactElement, useCallback, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { delay } from '@/shared/lib/functions/delay';
 import Dialog, { DialogProps } from './dialog.component';
 import { DialogContext, type DialogID, type PopDialog, type PushDialog } from './dialog.context';
@@ -9,7 +9,7 @@ type DialogOptions = Omit<DialogProps, 'id'> & {
 };
 
 type DialogProviderProps = {
-  children: ReactElement;
+  children: ReactNode;
 };
 
 export const DialogProvider = ({ children }: DialogProviderProps) => {
