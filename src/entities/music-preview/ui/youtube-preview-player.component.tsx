@@ -138,7 +138,6 @@ export default function YouTubePreviewPlayer({
       {/* YouTube 플레이어 */}
       <YoutubePlayer
         key={`preview-${videoId}-${playerReady}-${played}`} // 상태 변경 시 리렌더링
-        ref={playerRef}
         playing={playerReady && isPlaying}
         width={width}
         height={height}
