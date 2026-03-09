@@ -40,7 +40,7 @@ const wagmiConfig = getDefaultConfig({
     optimism,
     arbitrum,
   ],
-  // ssr: true,
+  ssr: true,
   transports: {
     // [mainnet.id]: http(),
     [polygon.id]: http(),
