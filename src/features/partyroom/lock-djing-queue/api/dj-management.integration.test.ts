@@ -1,7 +1,4 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
-jest.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/store/stores.context');
 
 import '@/shared/api/__test__/msw-server';
 import { act, waitFor } from '@testing-library/react';
@@ -14,8 +11,8 @@ import { useSkipPlayback } from '../../skip-playback/api/use-skip-playback.mutat
 import useUnlockDjingQueue from '../../unlock-djing-queue/api/use-unlock-djing-queue.mutation';
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useStores as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: (selector: (...args: any[]) => any) => selector({ id: 1 }),
   });
 });
@@ -23,7 +20,7 @@ beforeEach(() => {
 describe('useLockDjingQueue 통합', () => {
   test('성공 시 DjingQueue 캐시를 무효화한다', async () => {
     const { result, queryClient } = renderWithClient(() => useLockDjingQueue());
-    const invalidate = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidate = vi.spyOn(queryClient, 'invalidateQueries');
 
     await act(async () => {
       result.current.mutate();
@@ -39,7 +36,7 @@ describe('useLockDjingQueue 통합', () => {
 describe('useUnlockDjingQueue 통합', () => {
   test('성공 시 DjingQueue 캐시를 무효화한다', async () => {
     const { result, queryClient } = renderWithClient(() => useUnlockDjingQueue());
-    const invalidate = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidate = vi.spyOn(queryClient, 'invalidateQueries');
 
     await act(async () => {
       result.current.mutate();
@@ -55,7 +52,7 @@ describe('useUnlockDjingQueue 통합', () => {
 describe('useDeleteDjFromQueueMutation 통합', () => {
   test('성공 시 DjingQueue 캐시를 무효화한다', async () => {
     const { result, queryClient } = renderWithClient(() => useDeleteDjFromQueueMutation());
-    const invalidate = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidate = vi.spyOn(queryClient, 'invalidateQueries');
 
     await act(async () => {
       result.current.mutate('dj-123');
@@ -71,7 +68,7 @@ describe('useDeleteDjFromQueueMutation 통합', () => {
 describe('useSkipPlayback 통합', () => {
   test('성공 시 DjingQueue 캐시를 무효화한다', async () => {
     const { result, queryClient } = renderWithClient(() => useSkipPlayback());
-    const invalidate = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidate = vi.spyOn(queryClient, 'invalidateQueries');
 
     await act(async () => {
       result.current.mutate({ partyroomId: 1 });

@@ -10,7 +10,7 @@ describe('ObserverAdapter', () => {
   });
 
   test('register + notify → 리스너가 event.message만 수신한다', () => {
-    const listener = jest.fn();
+    const listener = vi.fn();
     adapter.register(listener);
 
     adapter.notify({ type: 'add', message: 'hello' });
@@ -19,8 +19,8 @@ describe('ObserverAdapter', () => {
   });
 
   test('복수 리스너 등록 → 모두 호출된다', () => {
-    const listener1 = jest.fn();
-    const listener2 = jest.fn();
+    const listener1 = vi.fn();
+    const listener2 = vi.fn();
     adapter.register(listener1);
     adapter.register(listener2);
 
@@ -31,7 +31,7 @@ describe('ObserverAdapter', () => {
   });
 
   test('deregisterAll → 이후 notify 시 리스너가 호출되지 않는다', () => {
-    const listener = jest.fn();
+    const listener = vi.fn();
     adapter.register(listener);
     adapter.deregisterAll();
 
@@ -41,7 +41,7 @@ describe('ObserverAdapter', () => {
   });
 
   test('deregister → 참조 불일치로 리스너가 제거되지 않는다 (known limitation)', () => {
-    const listener = jest.fn();
+    const listener = vi.fn();
     adapter.register(listener);
     adapter.deregister(listener);
 

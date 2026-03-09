@@ -1,7 +1,4 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
-jest.mock('@/entities/wallet/lib/use-is-nft.hook');
+vi.mock('@/entities/wallet/lib/use-is-nft.hook');
 
 import '@/shared/api/__test__/msw-server';
 import { act, waitFor } from '@testing-library/react';
@@ -37,14 +34,14 @@ const combinableBody: AvatarBody = {
 };
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useIsNft as jest.Mock).mockReturnValue(() => false);
+  vi.clearAllMocks();
+  (useIsNft as Mock).mockReturnValue(() => false);
 });
 
 describe('useUpdateMyAvatar 통합', () => {
   test('non-combinable body → SINGLE_BODY로 업데이트 성공', async () => {
     const { result, queryClient } = renderWithClient(() => useUpdateMyAvatar());
-    const invalidate = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidate = vi.spyOn(queryClient, 'invalidateQueries');
 
     await act(async () => {
       result.current.mutate({ body: singleBody });

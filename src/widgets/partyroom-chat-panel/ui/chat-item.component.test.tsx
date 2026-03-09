@@ -1,12 +1,12 @@
-jest.mock('@/shared/ui/components/profile/profile.component', () => ({
+vi.mock('@/shared/ui/components/profile/profile.component', () => ({
   __esModule: true,
   default: ({ src, size }: any) => <div data-testid='profile' data-src={src} data-size={size} />,
 }));
-jest.mock('./authority-headset.component', () => ({
+vi.mock('./authority-headset.component', () => ({
   __esModule: true,
   default: ({ grade }: any) => <div data-testid='headset' data-grade={grade} />,
 }));
-jest.mock('@/shared/ui/foundation/fonts', () => ({
+vi.mock('@/shared/ui/foundation/fonts', () => ({
   galmuriFont: { className: 'galmuri' },
 }));
 
@@ -53,7 +53,7 @@ describe('ChatItem', () => {
   });
 
   test('ref를 전달할 수 있다', () => {
-    const ref = jest.fn();
+    const ref = vi.fn();
     render(<ChatItem ref={ref} message={makeMessage(GradeType.CLUBBER)} />);
     expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
   });

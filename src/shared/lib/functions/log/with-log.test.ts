@@ -1,18 +1,18 @@
-jest.mock('./network-log', () => ({
-  printRequestLog: jest.fn(),
-  printResponseLog: jest.fn(),
-  printErrorLog: jest.fn(),
+vi.mock('./network-log', () => ({
+  printRequestLog: vi.fn(),
+  printResponseLog: vi.fn(),
+  printErrorLog: vi.fn(),
 }));
 
-jest.mock('@/shared/api/http/error/get-error-message', () => ({
-  getErrorMessage: jest.fn((err: Error) => err.message),
+vi.mock('@/shared/api/http/error/get-error-message', () => ({
+  getErrorMessage: vi.fn((err: Error) => err.message),
 }));
 
 import { printRequestLog, printResponseLog, printErrorLog } from './network-log';
 import withLog from './with-log';
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 describe('withLog', () => {

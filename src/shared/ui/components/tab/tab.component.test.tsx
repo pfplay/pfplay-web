@@ -1,11 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Tab, { TabGroup, TabList, TabPanel, TabPanels } from './tab.component';
 
-jest.mock('../typography', () => ({
+vi.mock('../typography', () => ({
   Typography: ({ children }: any) => <span>{children}</span>,
 }));
 
- 
 global.ResizeObserver = class ResizeObserver {
   public observe() {
     /* noop */

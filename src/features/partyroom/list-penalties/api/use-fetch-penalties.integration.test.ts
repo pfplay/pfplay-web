@@ -1,8 +1,5 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
-jest.mock('@/shared/lib/store/stores.context');
-jest.mock('./use-can-view-penalties.hook');
+vi.mock('@/shared/lib/store/stores.context');
+vi.mock('./use-can-view-penalties.hook');
 
 import '@/shared/api/__test__/msw-server';
 import { waitFor } from '@testing-library/react';
@@ -12,11 +9,11 @@ import canViewPenalties from './use-can-view-penalties.hook';
 import useFetchPenalties from './use-fetch-penalties.query';
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useStores as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: (selector: (...args: any[]) => any) => selector({ id: 1 }),
   });
-  (canViewPenalties as jest.Mock).mockReturnValue(true);
+  (canViewPenalties as Mock).mockReturnValue(true);
 });
 
 describe('useFetchPenalties 통합', () => {
@@ -31,7 +28,7 @@ describe('useFetchPenalties 통합', () => {
   });
 
   test('canView가 false이면 쿼리가 실행되지 않는다', async () => {
-    (canViewPenalties as jest.Mock).mockReturnValue(false);
+    (canViewPenalties as Mock).mockReturnValue(false);
 
     const { result } = renderWithClient(() => useFetchPenalties());
 

@@ -1,11 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Input from './input.component';
 
-jest.mock('../typography', () => ({
+vi.mock('../typography', () => ({
   Typography: ({ children, className }: any) => <span className={className}>{children}</span>,
 }));
 
-jest.mock('@/shared/lib/functions/combine-ref', () => ({
+vi.mock('@/shared/lib/functions/combine-ref', () => ({
   combineRef: (refs: any[]) => (el: any) => {
     refs.forEach((ref) => {
       if (typeof ref === 'function') ref(el);
@@ -54,7 +54,7 @@ describe('Input', () => {
   });
 
   test('Enter 키를 누르면 onPressEnter 콜백이 호출된다', () => {
-    const onPressEnter = jest.fn();
+    const onPressEnter = vi.fn();
     render(<Input onPressEnter={onPressEnter} placeholder='입력' />);
 
     const input = screen.getByPlaceholderText('입력');
@@ -76,7 +76,7 @@ describe('Input', () => {
     const input = screen.getByPlaceholderText('입력');
     const wrapper = container.firstElementChild as HTMLElement;
 
-    const focusSpy = jest.spyOn(input, 'focus');
+    const focusSpy = vi.spyOn(input, 'focus');
     fireEvent.click(wrapper);
 
     expect(focusSpy).toHaveBeenCalled();

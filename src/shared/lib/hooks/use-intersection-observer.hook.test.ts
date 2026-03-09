@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import useIntersectionObserver from './use-intersection-observer.hook';
 
-jest.mock('@/shared/lib/functions/repeat-animation-frame', () => ({
+vi.mock('@/shared/lib/functions/repeat-animation-frame', () => ({
   repeatAnimationFrame: (fn: () => void) => {
     fn();
     return () => {};
@@ -9,21 +9,30 @@ jest.mock('@/shared/lib/functions/repeat-animation-frame', () => ({
 }));
 
 let observerCallback: IntersectionObserverCallback;
-const mockObserve = jest.fn();
-const mockUnobserve = jest.fn();
-const mockDisconnect = jest.fn();
+const mockObserve = vi.fn();
+const mockUnobserve = vi.fn();
+const mockDisconnect = vi.fn();
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 
-  global.IntersectionObserver = jest.fn((cb) => {
-    observerCallback = cb;
-    return {
-      observe: mockObserve,
-      unobserve: mockUnobserve,
-      disconnect: mockDisconnect,
-    };
-  }) as any;
+  vi.stubGlobal(
+    'IntersectionObserver',
+    vi.fn(function (this: any, cb: IntersectionObserverCallback) {
+      observerCallback = cb;
+      this.observe = mockObserve;
+      this.unobserve = mockUnobserve;
+      this.disconnect = mockDisconnect;
+      this.takeRecords = vi.fn();
+      this.root = null;
+      this.rootMargin = '';
+      this.thresholds = [];
+    })
+  );
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
 });
 
 describe('useIntersectionObserver', () => {

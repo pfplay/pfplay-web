@@ -1,12 +1,9 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
-jest.mock('@/shared/lib/store/stores.context');
-jest.mock('@/entities/current-partyroom', () => ({
+vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/entities/current-partyroom', () => ({
   useRemoveCurrentPartyroomCaches: () => mockRemoveCaches,
 }));
 
-const mockRemoveCaches = jest.fn();
+const mockRemoveCaches = vi.fn();
 
 import '@/shared/api/__test__/msw-server';
 import { act, waitFor } from '@testing-library/react';
@@ -15,8 +12,8 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import useClosePartyroom from './use-close-partyroom.mutation';
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useStores as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: (selector: (...args: any[]) => any) => selector({ id: 1 }),
   });
 });
@@ -34,7 +31,7 @@ describe('useClosePartyroom 통합', () => {
   });
 
   test('partyroomId가 없으면 에러를 던진다', async () => {
-    (useStores as jest.Mock).mockReturnValue({
+    (useStores as Mock).mockReturnValue({
       useCurrentPartyroom: (selector: (...args: any[]) => any) => selector({ id: undefined }),
     });
 

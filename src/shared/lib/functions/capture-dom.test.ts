@@ -1,12 +1,12 @@
 import { captureDOMToBlob, convertToFormData } from './capture-dom';
 
-jest.mock('html2canvas', () =>
-  jest.fn().mockResolvedValue({
+vi.mock('html2canvas', () => ({
+  default: vi.fn().mockResolvedValue({
     toBlob: (cb: (blob: Blob | null) => void) => {
       cb(new Blob(['test'], { type: 'image/webp' }));
     },
-  })
-);
+  }),
+}));
 
 describe('capture-dom', () => {
   describe('captureDOMToBlob', () => {
@@ -17,9 +17,9 @@ describe('capture-dom', () => {
 
     test('DOM을 캡처하여 Blob 반환', async () => {
       const mockElement = document.createElement('div');
-      jest
-        .spyOn(mockElement, 'querySelectorAll')
-        .mockReturnValue([] as unknown as NodeListOf<HTMLElement>);
+      vi.spyOn(mockElement, 'querySelectorAll').mockReturnValue(
+        [] as unknown as NodeListOf<HTMLElement>
+      );
       const ref = { current: mockElement };
 
       const blob = await captureDOMToBlob(ref);

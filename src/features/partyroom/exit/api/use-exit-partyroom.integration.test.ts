@@ -1,11 +1,8 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
-jest.mock('@/entities/current-partyroom', () => ({
+vi.mock('@/entities/current-partyroom', () => ({
   useRemoveCurrentPartyroomCaches: () => mockRemoveCaches,
 }));
 
-const mockRemoveCaches = jest.fn();
+const mockRemoveCaches = vi.fn();
 
 import { act, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
@@ -16,7 +13,7 @@ import { useExitPartyroom } from './use-exit-partyroom.mutation';
 
 const API = process.env.NEXT_PUBLIC_API_HOST_NAME;
 
-beforeEach(() => jest.clearAllMocks());
+beforeEach(() => vi.clearAllMocks());
 
 describe('useExitPartyroom 통합', () => {
   test('성공 시 removeCurrentPartyroomCaches를 호출한다', async () => {

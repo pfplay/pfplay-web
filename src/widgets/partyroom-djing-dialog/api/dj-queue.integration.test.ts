@@ -1,6 +1,3 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
 import { waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { server } from '@/shared/api/__test__/msw-server';
@@ -17,7 +14,7 @@ describe('DJ queue integration (hook → service → MSW)', () => {
       const { result, queryClient } = renderWithClient(() => useRegisterMeToQueue());
 
       queryClient.setQueryData([QueryKeys.DjingQueue, 1], {});
-      const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+      const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
       result.current.mutate({ partyroomId: 1, playlistId: 10 });
 
@@ -68,7 +65,7 @@ describe('DJ queue integration (hook → service → MSW)', () => {
       const { result, queryClient } = renderWithClient(() => useUnregisterMeFromQueue());
 
       queryClient.setQueryData([QueryKeys.DjingQueue, 1], {});
-      const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+      const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
       result.current.mutate({ partyroomId: 1 });
 

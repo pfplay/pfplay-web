@@ -2,16 +2,16 @@ import { ReactPlayerAPI } from './react-player.api';
 
 function createMockPlayer(overrides?: Record<string, unknown>) {
   const internalPlayer = {
-    mute: jest.fn(),
-    unMute: jest.fn(),
-    setVolume: jest.fn(),
+    mute: vi.fn(),
+    unMute: vi.fn(),
+    setVolume: vi.fn(),
   };
   return {
-    seekTo: jest.fn(),
-    forceUpdate: jest.fn(),
-    getCurrentTime: jest.fn(() => 42),
-    getDuration: jest.fn(() => 180),
-    getInternalPlayer: jest.fn(() => internalPlayer),
+    seekTo: vi.fn(),
+    forceUpdate: vi.fn(),
+    getCurrentTime: vi.fn(() => 42),
+    getDuration: vi.fn(() => 180),
+    getInternalPlayer: vi.fn(() => internalPlayer),
     __internalPlayer: internalPlayer,
     ...overrides,
   } as any;
@@ -84,14 +84,14 @@ describe('ReactPlayerAPI', () => {
     });
 
     test('internalPlayer가 null이면 아무 동작도 하지 않는다', () => {
-      const player = createMockPlayer({ getInternalPlayer: jest.fn(() => null) });
+      const player = createMockPlayer({ getInternalPlayer: vi.fn(() => null) });
       api.setPlayer(player);
       expect(() => api.setMuted(true)).not.toThrow();
     });
 
     test('mute가 함수가 아니면 아무 동작도 하지 않는다', () => {
       const player = createMockPlayer({
-        getInternalPlayer: jest.fn(() => ({ mute: 'not-a-function' })),
+        getInternalPlayer: vi.fn(() => ({ mute: 'not-a-function' })),
       });
       api.setPlayer(player);
       expect(() => api.setMuted(true)).not.toThrow();

@@ -6,11 +6,11 @@ describe('playback model', () => {
     const MOCK_CURRENT_DATE = new Date('2000-01-01T23:55:00Z');
 
     beforeAll(() => {
-      jest.useFakeTimers().setSystemTime(MOCK_CURRENT_DATE);
+      vi.useFakeTimers().setSystemTime(MOCK_CURRENT_DATE);
     });
 
     afterAll(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     test('should return seek amount in seconds when endTime is in today', () => {

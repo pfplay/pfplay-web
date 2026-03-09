@@ -1,5 +1,5 @@
-const mockFetchMeAsync = jest.fn();
-jest.mock('@/entities/me', () => ({
+const mockFetchMeAsync = vi.fn();
+vi.mock('@/entities/me', () => ({
   useFetchMeAsync: () => mockFetchMeAsync,
 }));
 
@@ -8,7 +8,7 @@ import { AuthorityTier } from '@/shared/api/http/types/@enums';
 import useIsGuest from './use-is-guest.hook';
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 describe('useIsGuest', () => {

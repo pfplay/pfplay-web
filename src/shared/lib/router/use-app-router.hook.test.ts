@@ -1,13 +1,13 @@
 import { renderHook, act } from '@testing-library/react';
 import { useAppRouter } from './use-app-router.hook';
 
-const mockPush = jest.fn();
-const mockReplace = jest.fn();
-const mockPrefetch = jest.fn();
-const mockRefresh = jest.fn();
-const mockBack = jest.fn();
+const mockPush = vi.fn();
+const mockReplace = vi.fn();
+const mockPrefetch = vi.fn();
+const mockRefresh = vi.fn();
+const mockBack = vi.fn();
 
-jest.mock('next/navigation', () => ({
+vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push: mockPush,
     replace: mockReplace,
@@ -17,7 +17,7 @@ jest.mock('next/navigation', () => ({
   }),
 }));
 
-jest.mock('./parse-href', () => ({
+vi.mock('./parse-href', () => ({
   parseHref: (href: string, options: any) => {
     if (options?.path) {
       let result = href as string;
@@ -36,7 +36,7 @@ jest.mock('./parse-href', () => ({
 
 describe('useAppRouter', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('push가 parseHref를 통해 변환된 경로로 호출된다', () => {

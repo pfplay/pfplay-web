@@ -1,23 +1,27 @@
-jest.mock('@/shared/lib/functions/log/network-log', () => ({
-  printResponseLog: jest.fn(),
-  printErrorLog: jest.fn(),
+vi.mock('@/shared/lib/functions/log/with-debugger', () => ({
+  default: () => (fn: any) => fn,
 }));
 
-jest.mock('@/shared/api/http/error/get-error-message', () => ({
-  getErrorMessage: jest.fn(() => 'mocked error message'),
+vi.mock('@/shared/lib/functions/log/network-log', () => ({
+  printResponseLog: vi.fn(),
+  printErrorLog: vi.fn(),
 }));
 
-jest.mock('@/shared/api/http/error/get-error-code', () => ({
-  getErrorCode: jest.fn(),
+vi.mock('@/shared/api/http/error/get-error-message', () => ({
+  getErrorMessage: vi.fn(() => 'mocked error message'),
 }));
 
-jest.mock('@/shared/api/http/error/error-emitter', () => ({
+vi.mock('@/shared/api/http/error/get-error-code', () => ({
+  getErrorCode: vi.fn(),
+}));
+
+vi.mock('@/shared/api/http/error/error-emitter', () => ({
   __esModule: true,
-  default: { emit: jest.fn() },
+  default: { emit: vi.fn() },
 }));
 
-jest.mock('@/shared/lib/functions/is-pure-object', () => ({
-  isPureObject: jest.fn(
+vi.mock('@/shared/lib/functions/is-pure-object', () => ({
+  isPureObject: vi.fn(
     (obj: unknown) => obj !== null && typeof obj === 'object' && !Array.isArray(obj)
   ),
 }));
@@ -30,7 +34,7 @@ import { printErrorLog, printResponseLog } from '@/shared/lib/functions/log/netw
 import { logResponse, unwrapResponse, logError, unwrapError, emitError } from './response';
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 function createAxiosResponse(overrides: {
@@ -175,7 +179,7 @@ describe('response interceptors', () => {
 
   describe('emitError', () => {
     test('유효한 ErrorCode 있으면 errorEmitter.emit 호출', async () => {
-      (getErrorCode as jest.Mock).mockReturnValue('JWT-001');
+      (getErrorCode as Mock).mockReturnValue('JWT-001');
 
       const error = createAxiosError({});
 
@@ -184,7 +188,7 @@ describe('response interceptors', () => {
     });
 
     test('ErrorCode 없으면 emit 호출 안 함', async () => {
-      (getErrorCode as jest.Mock).mockReturnValue(undefined);
+      (getErrorCode as Mock).mockReturnValue(undefined);
 
       const error = createAxiosError({});
 
@@ -193,7 +197,7 @@ describe('response interceptors', () => {
     });
 
     test('항상 Promise.reject 반환', async () => {
-      (getErrorCode as jest.Mock).mockReturnValue(undefined);
+      (getErrorCode as Mock).mockReturnValue(undefined);
 
       const error = createAxiosError({});
 

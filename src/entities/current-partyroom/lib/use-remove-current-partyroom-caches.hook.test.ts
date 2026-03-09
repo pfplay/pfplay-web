@@ -1,7 +1,7 @@
-jest.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/store/stores.context');
 
-const mockRemoveQueries = jest.fn();
-jest.mock('@tanstack/react-query', () => ({
+const mockRemoveQueries = vi.fn();
+vi.mock('@tanstack/react-query', () => ({
   useQueryClient: () => ({ removeQueries: mockRemoveQueries }),
 }));
 
@@ -14,9 +14,9 @@ import useRemoveCurrentPartyroomCaches from './use-remove-current-partyroom-cach
 let store: ReturnType<typeof createCurrentPartyroomStore>;
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   store = createCurrentPartyroomStore();
-  (useStores as jest.Mock).mockReturnValue({ useCurrentPartyroom: store });
+  (useStores as Mock).mockReturnValue({ useCurrentPartyroom: store });
 });
 
 describe('useRemoveCurrentPartyroomCaches', () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ActionButton from './action-button.component';
 
-jest.mock('@/shared/ui/components/typography', () => ({
+vi.mock('@/shared/ui/components/typography', () => ({
   Typography: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
 }));
 
@@ -11,11 +11,11 @@ describe('ActionButton', () => {
     icon: <svg data-testid='icon' />,
     text: '42',
     active: false,
-    onClick: jest.fn(),
+    onClick: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('아이콘과 텍스트를 렌더링한다', () => {

@@ -3,7 +3,7 @@ import useClickOutside from './use-click-outside.hook';
 
 describe('useClickOutside', () => {
   test('ref 외부 클릭 → callback 호출', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const { result } = renderHook(() => useClickOutside<HTMLDivElement>(callback));
 
     // ref에 DOM 요소 연결
@@ -30,7 +30,7 @@ describe('useClickOutside', () => {
   });
 
   test('ref 내부 클릭 → callback 호출 안 함', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const { result } = renderHook(() => useClickOutside<HTMLDivElement>(callback));
 
     const inside = document.createElement('div');
@@ -50,8 +50,8 @@ describe('useClickOutside', () => {
   });
 
   test('언마운트 시 이벤트 리스너 정리됨', () => {
-    const callback = jest.fn();
-    const removeSpy = jest.spyOn(document, 'removeEventListener');
+    const callback = vi.fn();
+    const removeSpy = vi.spyOn(document, 'removeEventListener');
 
     const { result, unmount } = renderHook(() => useClickOutside<HTMLDivElement>(callback));
 

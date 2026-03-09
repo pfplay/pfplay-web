@@ -1,7 +1,7 @@
-jest.mock('@/shared/lib/functions/log/network-log', () => ({
-  printRequestLog: jest.fn(),
+vi.mock('@/shared/lib/functions/log/network-log', () => ({
+  printRequestLog: vi.fn(),
 }));
-jest.mock('@/shared/lib/functions/log/with-debugger', () => ({
+vi.mock('@/shared/lib/functions/log/with-debugger', () => ({
   __esModule: true,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   default: () => (logFn: Function) => logFn,
@@ -12,7 +12,7 @@ import { printRequestLog } from '@/shared/lib/functions/log/network-log';
 import { logRequest } from './request';
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 function createAxiosRequestConfig(

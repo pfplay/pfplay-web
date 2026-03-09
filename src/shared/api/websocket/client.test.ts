@@ -1,28 +1,26 @@
-jest.mock('@stomp/stompjs', () => {
+vi.mock('@stomp/stompjs', () => {
   return {
-    Client: jest.fn().mockImplementation((config: any) => ({
-      connected: false,
-      activate: jest.fn(),
-      deactivate: jest.fn(),
-      subscribe: jest.fn((dest: string) => ({
+    Client: vi.fn(function (this: any, config: any) {
+      this.connected = false;
+      this.activate = vi.fn();
+      this.deactivate = vi.fn();
+      this.subscribe = vi.fn((dest: string) => ({
         id: `sub-${dest}`,
-        unsubscribe: jest.fn(),
+        unsubscribe: vi.fn(),
         destination: dest,
-      })),
-      publish: jest.fn(),
-      // 설정 저장하여 나중에 핸들러를 호출할 수 있도록 한다
-      __config: config,
-    })),
+      }));
+      this.publish = vi.fn();
+      this.__config = config;
+    }),
   };
 });
 
-jest.mock('@/shared/lib/functions/log/logger', () => ({
-  specificLog: jest.fn(),
-  warnLog: jest.fn(),
+vi.mock('@/shared/lib/functions/log/logger', () => ({
+  specificLog: vi.fn(),
+  warnLog: vi.fn(),
 }));
 
-jest.mock('@/shared/lib/functions/log/with-debugger', () => ({
-  __esModule: true,
+vi.mock('@/shared/lib/functions/log/with-debugger', () => ({
   default: () => (fn: any) => fn,
 }));
 
@@ -40,12 +38,12 @@ function triggerConnect(socketClient: SocketClient) {
 
 describe('SocketClient', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.useFakeTimers();
+    vi.clearAllMocks();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   describe('connect', () => {
@@ -82,7 +80,7 @@ describe('SocketClient', () => {
     test('이미 연결 상태 → 콜백을 즉시 실행한다', () => {
       const sc = new SocketClient();
       getStompClient(sc).connected = true;
-      const callback = jest.fn();
+      const callback = vi.fn();
 
       sc.onConnect(callback);
 
@@ -91,7 +89,7 @@ describe('SocketClient', () => {
 
     test('미연결 상태 → 큐에 추가 후 연결 시 실행한다', () => {
       const sc = new SocketClient();
-      const callback = jest.fn();
+      const callback = vi.fn();
 
       sc.onConnect(callback);
       expect(callback).not.toHaveBeenCalled();
@@ -103,7 +101,7 @@ describe('SocketClient', () => {
     test('once: true + 이미 연결 → 즉시 실행하고 큐에 추가하지 않는다', () => {
       const sc = new SocketClient();
       getStompClient(sc).connected = true;
-      const callback = jest.fn();
+      const callback = vi.fn();
 
       sc.onConnect(callback, { once: true });
       expect(callback).toHaveBeenCalledTimes(1);
@@ -118,8 +116,8 @@ describe('SocketClient', () => {
   describe('handleConnect (내부)', () => {
     test('큐의 모든 콜백을 실행하고 once 항목을 제거한다', () => {
       const sc = new SocketClient();
-      const persistent = jest.fn();
-      const once = jest.fn();
+      const persistent = vi.fn();
+      const once = vi.fn();
 
       sc.onConnect(persistent);
       sc.onConnect(once, { once: true });
@@ -140,7 +138,7 @@ describe('SocketClient', () => {
   describe('subscribe', () => {
     test('onConnect를 경유하여 client.subscribe를 호출하고 subscriptions에 추가한다', () => {
       const sc = new SocketClient();
-      const handler = jest.fn();
+      const handler = vi.fn();
 
       sc.subscribe('/sub/test' as any, handler);
       triggerConnect(sc);
@@ -167,7 +165,7 @@ describe('SocketClient', () => {
 
     test('해당 destination이 있으면 해제하고 배열에서 제거한다', () => {
       const sc = new SocketClient();
-      sc.subscribe('/sub/room' as any, jest.fn());
+      sc.subscribe('/sub/room' as any, vi.fn());
       triggerConnect(sc);
 
       expect(sc.subscriptions).toHaveLength(1);
@@ -183,8 +181,8 @@ describe('SocketClient', () => {
   describe('unsubscribeAll', () => {
     test('모든 구독을 해제하고 배열을 초기화한다', () => {
       const sc = new SocketClient();
-      sc.subscribe('/sub/a' as any, jest.fn());
-      sc.subscribe('/sub/b' as any, jest.fn());
+      sc.subscribe('/sub/a' as any, vi.fn());
+      sc.subscribe('/sub/b' as any, vi.fn());
       triggerConnect(sc);
 
       expect(sc.subscriptions).toHaveLength(2);

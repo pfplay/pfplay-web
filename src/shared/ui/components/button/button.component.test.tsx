@@ -2,12 +2,12 @@ import { createRef } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Button from './button.component';
 
-jest.mock('../typography', () => ({
+vi.mock('../typography', () => ({
   Typography: ({ children }: any) => <span>{children}</span>,
   TypographyType: {},
 }));
 
-jest.mock('../loading', () => ({
+vi.mock('../loading', () => ({
   Loading: () => <span data-testid='loading-spinner' />,
 }));
 
@@ -18,7 +18,7 @@ describe('Button', () => {
   });
 
   test('onClick 콜백이 호출된다', () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     render(<Button onClick={onClick}>클릭</Button>);
 
     fireEvent.click(screen.getByRole('button'));
@@ -26,7 +26,7 @@ describe('Button', () => {
   });
 
   test('disabled 상태에서 클릭해도 onClick이 호출되지 않는다', () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     render(
       <Button disabled onClick={onClick}>
         클릭
@@ -49,7 +49,7 @@ describe('Button', () => {
   });
 
   test('loading 상태에서 클릭해도 onClick이 호출되지 않는다', () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     render(
       <Button loading onClick={onClick}>
         클릭

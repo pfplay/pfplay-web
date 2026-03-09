@@ -48,7 +48,7 @@ describe('restriction-panel-list-item model', () => {
         createPenalty({ penaltyId: 1, crewId: 10, nickname: 'user1' }),
         createPenalty({ penaltyId: 2, crewId: 20, nickname: 'user2' }),
       ];
-      const suffixRender = jest.fn(() => 'suffix');
+      const suffixRender = vi.fn(() => 'suffix');
 
       const result = listOfPenalties(penalties, suffixRender);
 
@@ -71,7 +71,7 @@ describe('restriction-panel-list-item model', () => {
         createPenalty({ penaltyType: PenaltyType.ONE_TIME_EXPULSION }),
         createPenalty({ penaltyType: PenaltyType.CHAT_BAN_30_SECONDS }),
       ];
-      const suffixRender = jest.fn(() => 'suffix');
+      const suffixRender = vi.fn(() => 'suffix');
 
       const result = listOfPenalties(penalties, suffixRender);
 
@@ -86,7 +86,7 @@ describe('restriction-panel-list-item model', () => {
         createBlockedCrew({ blockId: 1, blockedCrewId: 301, nickname: 'blocked1' }),
         createBlockedCrew({ blockId: 2, blockedCrewId: 302, nickname: 'blocked2' }),
       ];
-      const suffixRender = jest.fn(() => 'suffix');
+      const suffixRender = vi.fn(() => 'suffix');
 
       const result = listOfMyBlockedCrews(blockedCrews, suffixRender);
 

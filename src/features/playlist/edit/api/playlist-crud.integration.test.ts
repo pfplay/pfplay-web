@@ -1,6 +1,3 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
 import { waitFor } from '@testing-library/react';
 import '@/shared/api/__test__/msw-server';
 import { useAddPlaylistTrack } from '@/features/playlist/add-tracks/api/use-add-playlist-track.mutation';
@@ -16,7 +13,7 @@ describe('Playlist CRUD integration (hook → service → MSW)', () => {
       const { result, queryClient } = renderWithClient(() => useUpdatePlaylist());
 
       queryClient.setQueryData([QueryKeys.Playlist], { playlists: [] });
-      const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+      const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
       result.current.mutate({ listId: 1, name: 'Renamed' });
 
@@ -34,7 +31,7 @@ describe('Playlist CRUD integration (hook → service → MSW)', () => {
       const { result, queryClient } = renderWithClient(() => useRemovePlaylist());
 
       queryClient.setQueryData([QueryKeys.Playlist], { playlists: [] });
-      const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+      const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
       result.current.mutate([1, 2]);
 
@@ -53,7 +50,7 @@ describe('Playlist CRUD integration (hook → service → MSW)', () => {
 
       queryClient.setQueryData([QueryKeys.PlaylistTracks, 5], []);
       queryClient.setQueryData([QueryKeys.Playlist], { playlists: [] });
-      const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+      const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
       result.current.mutate({
         listId: 5,

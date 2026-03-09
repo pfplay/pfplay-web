@@ -1,13 +1,13 @@
-const mockOpenDialog = jest.fn();
-const mockCloseDialog = jest.fn();
+const mockOpenDialog = vi.fn();
+const mockCloseDialog = vi.fn();
 
-jest.mock('./dialog.context', () => ({
+vi.mock('./dialog.context', () => ({
   useDialogContext: () => ({
     openDialog: mockOpenDialog,
     closeDialog: mockCloseDialog,
   }),
 }));
-jest.mock('@/shared/lib/localization/i18n.context', () => ({
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
   useI18n: () => ({
     common: { btn: { confirm: '확인', cancel: '취소' } },
   }),
@@ -17,7 +17,7 @@ import { renderHook, act } from '@testing-library/react';
 import { useDialog } from './use-dialog.hook';
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 describe('useDialog', () => {
@@ -64,7 +64,7 @@ describe('useDialog', () => {
 
   test('openAlertDialog factory는 title과 Body를 포함하는 객체를 반환한다', async () => {
     mockOpenDialog.mockImplementation(async (factory: (...args: any[]) => any) => {
-      const config = factory(jest.fn(), jest.fn());
+      const config = factory(vi.fn(), vi.fn());
       expect(config.title).toBe('알림');
       expect(typeof config.Body).toBe('function');
     });
@@ -76,9 +76,9 @@ describe('useDialog', () => {
   });
 
   test('openConfirmDialog factory의 Body에서 onOk(true)와 onOk(false)를 호출할 수 있다', async () => {
-    const onOk = jest.fn();
+    const onOk = vi.fn();
     mockOpenDialog.mockImplementation(async (factory: (...args: any[]) => any) => {
-      const config = factory(onOk, jest.fn());
+      const config = factory(onOk, vi.fn());
       expect(typeof config.Body).toBe('function');
     });
 

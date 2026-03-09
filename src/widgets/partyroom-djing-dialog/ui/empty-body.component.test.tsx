@@ -1,11 +1,11 @@
-jest.mock('@/shared/lib/localization/i18n.context');
-jest.mock('@/shared/lib/localization/renderer/index.ui', () => ({
+vi.mock('@/shared/lib/localization/i18n.context');
+vi.mock('@/shared/lib/localization/renderer/index.ui', () => ({
   Trans: ({ i18nKey }: any) => <span>{i18nKey}</span>,
 }));
-jest.mock('@/shared/ui/icons', () => ({
+vi.mock('@/shared/ui/icons', () => ({
   PFClose: (props: any) => <svg data-testid='close-icon' {...props} />,
 }));
-jest.mock('./register-button.component', () => ({
+vi.mock('./register-button.component', () => ({
   __esModule: true,
   default: () => <button data-testid='register-btn'>Register</button>,
 }));
@@ -15,29 +15,29 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import EmptyBody from './empty-body.component';
 
 beforeEach(() => {
-  (useI18n as jest.Mock).mockReturnValue({
+  (useI18n as Mock).mockReturnValue({
     dj: { title: { current_dj: 'Current DJ' } },
   });
 });
 
 describe('EmptyBody', () => {
   test('Current DJ 타이틀을 렌더링한다', () => {
-    render(<EmptyBody onCancel={jest.fn()} />);
+    render(<EmptyBody onCancel={vi.fn()} />);
     expect(screen.getByText('Current DJ')).toBeTruthy();
   });
 
   test('빈 상태 메시지를 표시한다', () => {
-    render(<EmptyBody onCancel={jest.fn()} />);
+    render(<EmptyBody onCancel={vi.fn()} />);
     expect(screen.getByText('dj.para.no_dj_crew')).toBeTruthy();
   });
 
   test('RegisterButton을 렌더링한다', () => {
-    render(<EmptyBody onCancel={jest.fn()} />);
+    render(<EmptyBody onCancel={vi.fn()} />);
     expect(screen.getByTestId('register-btn')).toBeTruthy();
   });
 
   test('닫기 아이콘 클릭 시 onCancel을 호출한다', () => {
-    const onCancel = jest.fn();
+    const onCancel = vi.fn();
     render(<EmptyBody onCancel={onCancel} />);
     fireEvent.click(screen.getByTestId('close-icon'));
     expect(onCancel).toHaveBeenCalledTimes(1);

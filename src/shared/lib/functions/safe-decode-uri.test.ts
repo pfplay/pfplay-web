@@ -31,7 +31,7 @@ describe('safeDecodeURI', () => {
     const encodedURI = 'https://example.com/%E0%A4%A%20valid%20sequence';
 
     // decodeURI를 모킹하여 URIError가 아닌 예외를 던지게 함
-    jest.spyOn(global, 'decodeURI').mockImplementation(() => {
+    vi.spyOn(global, 'decodeURI').mockImplementation(() => {
       throw new Error('Non-URIError exception');
     });
 

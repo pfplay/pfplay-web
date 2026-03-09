@@ -1,7 +1,7 @@
-jest.mock('@/entities/partyroom-client');
-jest.mock('@/shared/lib/store/stores.context');
-jest.mock('@/shared/lib/router/use-app-router.hook');
-jest.mock('../api/use-enter-partyroom.mutation');
+vi.mock('@/entities/partyroom-client');
+vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/router/use-app-router.hook');
+vi.mock('../api/use-enter-partyroom.mutation');
 
 import { renderHook, act } from '@testing-library/react';
 import {
@@ -13,25 +13,25 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { useEnterPartyroom } from './use-enter-partyroom';
 import { useEnterPartyroom as useEnterPartyroomMutation } from '../api/use-enter-partyroom.mutation';
 
-const mockOnConnect = jest.fn();
-const mockMutate = jest.fn();
-const mockInit = jest.fn();
-const mockMarkExitedOnBackend = jest.fn();
-const mockPush = jest.fn();
+const mockOnConnect = vi.fn();
+const mockMutate = vi.fn();
+const mockInit = vi.fn();
+const mockMarkExitedOnBackend = vi.fn();
+const mockPush = vi.fn();
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (usePartyroomClient as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (usePartyroomClient as Mock).mockReturnValue({
     onConnect: mockOnConnect,
-    subscribe: jest.fn(),
+    subscribe: vi.fn(),
   });
-  (useHandlePartyroomSubscriptionEvent as jest.Mock).mockReturnValue(jest.fn());
-  (useStores as jest.Mock).mockReturnValue({
+  (useHandlePartyroomSubscriptionEvent as Mock).mockReturnValue(vi.fn());
+  (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: (selector: (...args: any[]) => any) =>
       selector({ init: mockInit, markExitedOnBackend: mockMarkExitedOnBackend }),
   });
-  (useEnterPartyroomMutation as jest.Mock).mockReturnValue({ mutate: mockMutate });
-  (useAppRouter as jest.Mock).mockReturnValue({ push: mockPush });
+  (useEnterPartyroomMutation as Mock).mockReturnValue({ mutate: mockMutate });
+  (useAppRouter as Mock).mockReturnValue({ push: mockPush });
 });
 
 describe('useEnterPartyroom', () => {

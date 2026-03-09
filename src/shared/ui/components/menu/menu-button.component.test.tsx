@@ -23,7 +23,7 @@ describe('MenuButton', () => {
   });
 
   test('클릭 시 onMenuIconClick을 호출한다', () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     const { getByRole } = renderInMenu(
       <MenuButton type='icon' onMenuIconClick={onClick}>
         아이콘

@@ -1,6 +1,6 @@
-jest.mock('@/shared/lib/store/stores.context');
-jest.mock('@/shared/ui/components/dialog');
-jest.mock('../api/use-block-crew.mutation');
+vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/ui/components/dialog');
+vi.mock('../api/use-block-crew.mutation');
 
 import { renderHook, act } from '@testing-library/react';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -8,12 +8,12 @@ import { useDialog } from '@/shared/ui/components/dialog';
 import useBlockCrew from './use-block-crew.hook';
 import useBlockCrewMutation from '../api/use-block-crew.mutation';
 
-const mockMutate = jest.fn();
-const mockOpenAlertDialog = jest.fn();
+const mockMutate = vi.fn();
+const mockOpenAlertDialog = vi.fn();
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useStores as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: (selector: (...args: any[]) => any) =>
       selector({
         crews: [
@@ -22,8 +22,8 @@ beforeEach(() => {
         ],
       }),
   });
-  (useDialog as jest.Mock).mockReturnValue({ openAlertDialog: mockOpenAlertDialog });
-  (useBlockCrewMutation as jest.Mock).mockReturnValue({ mutate: mockMutate });
+  (useDialog as Mock).mockReturnValue({ openAlertDialog: mockOpenAlertDialog });
+  (useBlockCrewMutation as Mock).mockReturnValue({ mutate: mockMutate });
 });
 
 describe('useBlockCrew hook', () => {

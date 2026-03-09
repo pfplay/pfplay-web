@@ -1,15 +1,15 @@
-jest.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/store/stores.context');
 
 import { renderHook } from '@testing-library/react';
 import { useStores } from '@/shared/lib/store/stores.context';
 import useAlert from './use-alert.hook';
 
-const mockSubscribe = jest.fn();
-const mockUnsubscribe = jest.fn();
+const mockSubscribe = vi.fn();
+const mockUnsubscribe = vi.fn();
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useStores as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: (selector: (...args: any[]) => any) =>
       selector({ alert: { subscribe: mockSubscribe, unsubscribe: mockUnsubscribe } }),
   });
@@ -17,14 +17,14 @@ beforeEach(() => {
 
 describe('useAlert', () => {
   test('마운트 시 callback을 subscribe한다', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     renderHook(() => useAlert(callback));
 
     expect(mockSubscribe).toHaveBeenCalledWith(callback);
   });
 
   test('언마운트 시 callback을 unsubscribe한다', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const { unmount } = renderHook(() => useAlert(callback));
 
     unmount();

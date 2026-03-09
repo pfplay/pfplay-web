@@ -1,6 +1,6 @@
-jest.mock('@/shared/lib/localization/i18n.context');
-jest.mock('@/shared/ui/components/dialog');
-jest.mock('../api/use-sign-out.mutation');
+vi.mock('@/shared/lib/localization/i18n.context');
+vi.mock('@/shared/ui/components/dialog');
+vi.mock('../api/use-sign-out.mutation');
 
 import { renderHook, act } from '@testing-library/react';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -8,17 +8,17 @@ import { useDialog } from '@/shared/ui/components/dialog';
 import useSignOut from './use-sign-out.hook';
 import useSignOutMutation from '../api/use-sign-out.mutation';
 
-const mockSignOut = jest.fn();
-const mockOpenConfirmDialog = jest.fn();
+const mockSignOut = vi.fn();
+const mockOpenConfirmDialog = vi.fn();
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useI18n as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useI18n as Mock).mockReturnValue({
     common: { btn: { logout: 'Logout' } },
     auth: { para: { logout_confirm: 'Are you sure?' } },
   });
-  (useDialog as jest.Mock).mockReturnValue({ openConfirmDialog: mockOpenConfirmDialog });
-  (useSignOutMutation as jest.Mock).mockReturnValue({ mutate: mockSignOut });
+  (useDialog as Mock).mockReturnValue({ openConfirmDialog: mockOpenConfirmDialog });
+  (useSignOutMutation as Mock).mockReturnValue({ mutate: mockSignOut });
 });
 
 describe('useSignOut hook', () => {

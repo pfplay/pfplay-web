@@ -2,11 +2,11 @@ import { createRef } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import TextArea from './textarea.component';
 
-jest.mock('../typography', () => ({
+vi.mock('../typography', () => ({
   Typography: ({ children, className }: any) => <span className={className}>{children}</span>,
 }));
 
-jest.mock('@/shared/lib/functions/combine-ref', () => ({
+vi.mock('@/shared/lib/functions/combine-ref', () => ({
   combineRef: (refs: any[]) => (el: any) => {
     refs.forEach((ref) => {
       if (typeof ref === 'function') ref(el);
@@ -32,7 +32,7 @@ describe('TextArea', () => {
   });
 
   test('타이핑 시 onChange 콜백이 호출된다', () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     render(<TextArea onChange={onChange} placeholder='입력' />);
 
     const textarea = screen.getByPlaceholderText('입력');

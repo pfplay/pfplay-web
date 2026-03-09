@@ -22,7 +22,7 @@ export default function open(params: DialogStaticOpenParams): { destroy: () => v
   function destroy() {
     for (let i = 0; i < destroyFns.length; i++) {
       const fn = destroyFns[i];
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+
       if (fn === close) {
         destroyFns.splice(i, 1);
         break;

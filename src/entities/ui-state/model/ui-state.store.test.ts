@@ -1,14 +1,17 @@
-jest.mock('@/shared/lib/functions/log/logger', () => ({
-  warnLog: jest.fn(),
+vi.mock('@/shared/lib/functions/log/logger', () => ({
+  warnLog: vi.fn(),
+}));
+vi.mock('@/shared/lib/functions/log/with-debugger', () => ({
+  default: () => (fn: any) => fn,
 }));
 
 import { warnLog } from '@/shared/lib/functions/log/logger';
 import { createUIStateStore } from './ui-state.store';
 
-const mockedWarnLog = warnLog as jest.Mock;
+const mockedWarnLog = warnLog as Mock;
 
 describe('ui-state store', () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => vi.clearAllMocks());
 
   test('초기 상태: open=false, interactable=true, zIndex=30, selectedPlaylist=undefined', () => {
     const store = createUIStateStore();

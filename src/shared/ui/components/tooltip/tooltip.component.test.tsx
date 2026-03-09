@@ -2,16 +2,16 @@ import { forwardRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import Tooltip from './tooltip.component';
 
-jest.mock('../typography', () => ({
+vi.mock('../typography', () => ({
   Typography: ({ children }: any) => <span>{children}</span>,
 }));
 
-jest.mock('@/shared/lib/hooks/use-portal-root.hook', () => ({
+vi.mock('@/shared/lib/hooks/use-portal-root.hook', () => ({
   __esModule: true,
   default: () => document.body,
 }));
 
-jest.mock('@/shared/lib/functions/repeat-animation-frame', () => ({
+vi.mock('@/shared/lib/functions/repeat-animation-frame', () => ({
   repeatAnimationFrame: (fn: () => void) => {
     fn();
     return () => {

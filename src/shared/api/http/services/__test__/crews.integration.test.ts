@@ -1,6 +1,3 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
 import { http, HttpResponse } from 'msw';
 import { server } from '@/shared/api/__test__/msw-server';
 import { crewsService } from '@/shared/api/http/services';

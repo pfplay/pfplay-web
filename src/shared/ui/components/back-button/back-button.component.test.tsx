@@ -1,12 +1,12 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import BackButton from './back-button.component';
 
-const mockBack = jest.fn();
-jest.mock('next/navigation', () => ({
+const mockBack = vi.fn();
+vi.mock('next/navigation', () => ({
   useRouter: () => ({ back: mockBack }),
 }));
 
-jest.mock('../text-button', () => ({
+vi.mock('../text-button', () => ({
   TextButton: ({ children, onClick, Icon }: any) => (
     <button data-testid='text-button' onClick={onClick}>
       {Icon}
@@ -15,7 +15,7 @@ jest.mock('../text-button', () => ({
   ),
 }));
 
-jest.mock('@/shared/ui/icons', () => ({
+vi.mock('@/shared/ui/icons', () => ({
   PFArrowLeft: (props: any) => <svg data-testid='arrow-left' {...props} />,
 }));
 

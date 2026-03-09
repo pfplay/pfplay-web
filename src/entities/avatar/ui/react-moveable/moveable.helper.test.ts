@@ -5,7 +5,7 @@ const FACE_HEIGHT = 300;
 
 function createHelper(
   initialFacePos?: { offsetX: number; offsetY: number; scale: number },
-  onFacePosChange = jest.fn()
+  onFacePosChange = vi.fn()
 ) {
   return {
     helper: new MoveableHelper(initialFacePos, onFacePosChange, FACE_WIDTH, FACE_HEIGHT),

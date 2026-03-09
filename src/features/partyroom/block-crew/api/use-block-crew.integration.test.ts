@@ -1,6 +1,3 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
 import { waitFor } from '@testing-library/react';
 import '@/shared/api/__test__/msw-server';
 import useUnblockCrew from '@/features/partyroom/unblock-crew/api/use-unblock-crew.mutation';
@@ -14,7 +11,7 @@ describe('Crew block/unblock integration (hook → service → MSW)', () => {
       const { result, queryClient } = renderWithClient(() => useBlockCrew());
 
       queryClient.setQueryData([QueryKeys.MyBlocks], []);
-      const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+      const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
       result.current.mutate({ crewId: 55 });
 
@@ -31,7 +28,7 @@ describe('Crew block/unblock integration (hook → service → MSW)', () => {
       const { result, queryClient } = renderWithClient(() => useUnblockCrew());
 
       queryClient.setQueryData([QueryKeys.MyBlocks], []);
-      const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+      const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
       result.current.mutate({ blockId: 1 });
 

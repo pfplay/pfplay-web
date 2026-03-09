@@ -1,6 +1,3 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
 import { waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { server } from '@/shared/api/__test__/msw-server';
@@ -30,7 +27,7 @@ describe('useCreatePlaylist integration (hook → service → MSW)', () => {
 
     // Seed the playlist cache
     queryClient.setQueryData([QueryKeys.Playlist], { playlists: [] });
-    const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
     result.current.mutate({ name: 'Cache Test' });
 

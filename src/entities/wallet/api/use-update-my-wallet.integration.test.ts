@@ -1,6 +1,3 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
 import '@/shared/api/__test__/msw-server';
 import { act, waitFor } from '@testing-library/react';
 import { renderWithClient } from '@/shared/api/__test__/test-utils';
@@ -10,7 +7,7 @@ import useUpdateMyWallet from './use-update-my-wallet.mutation';
 describe('useUpdateMyWallet 통합', () => {
   test('성공 시 Me 캐시를 무효화한다', async () => {
     const { result, queryClient } = renderWithClient(() => useUpdateMyWallet());
-    const invalidate = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidate = vi.spyOn(queryClient, 'invalidateQueries');
 
     await act(async () => {
       result.current.mutate({ walletAddress: '0xABC' });

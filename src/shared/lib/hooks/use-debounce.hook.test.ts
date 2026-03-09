@@ -4,15 +4,15 @@ import { useDebounce } from './use-debounce.hook';
 
 describe('useDebounce', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   test('value는 handleChange 호출 즉시 업데이트', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const { result } = renderHook(() => useDebounce(callback));
 
     act(() => {
@@ -25,7 +25,7 @@ describe('useDebounce', () => {
   });
 
   test('callback은 기본 interval(500ms) 후 호출', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const { result } = renderHook(() => useDebounce(callback));
 
     act(() => {
@@ -37,7 +37,7 @@ describe('useDebounce', () => {
     expect(callback).not.toHaveBeenCalled();
 
     act(() => {
-      jest.advanceTimersByTime(500);
+      vi.advanceTimersByTime(500);
     });
 
     expect(callback).toHaveBeenCalledTimes(1);
@@ -45,7 +45,7 @@ describe('useDebounce', () => {
   });
 
   test('연속 입력 시 이전 타이머 취소, 마지막 값만 콜백', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const { result } = renderHook(() => useDebounce(callback));
 
     act(() => {
@@ -55,7 +55,7 @@ describe('useDebounce', () => {
     });
 
     act(() => {
-      jest.advanceTimersByTime(200);
+      vi.advanceTimersByTime(200);
     });
 
     act(() => {
@@ -65,7 +65,7 @@ describe('useDebounce', () => {
     });
 
     act(() => {
-      jest.advanceTimersByTime(200);
+      vi.advanceTimersByTime(200);
     });
 
     act(() => {
@@ -75,7 +75,7 @@ describe('useDebounce', () => {
     });
 
     act(() => {
-      jest.advanceTimersByTime(500);
+      vi.advanceTimersByTime(500);
     });
 
     expect(callback).toHaveBeenCalledTimes(1);
@@ -83,7 +83,7 @@ describe('useDebounce', () => {
   });
 
   test('커스텀 interval 적용', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const { result } = renderHook(() => useDebounce(callback, { interval: 1000 }));
 
     act(() => {
@@ -93,13 +93,13 @@ describe('useDebounce', () => {
     });
 
     act(() => {
-      jest.advanceTimersByTime(500);
+      vi.advanceTimersByTime(500);
     });
 
     expect(callback).not.toHaveBeenCalled();
 
     act(() => {
-      jest.advanceTimersByTime(500);
+      vi.advanceTimersByTime(500);
     });
 
     expect(callback).toHaveBeenCalledTimes(1);
@@ -116,7 +116,7 @@ describe('useDebounce', () => {
     });
 
     act(() => {
-      jest.advanceTimersByTime(500);
+      vi.advanceTimersByTime(500);
     });
 
     expect(result.current.value).toBe('test');

@@ -1,6 +1,3 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
 import { waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { useAdjustGrade } from '@/features/partyroom/adjust-grade/api/use-adjust-grade.mutation';
@@ -83,7 +80,7 @@ describe('Partyroom mutation integration (hook → service → MSW)', () => {
       const { result, queryClient } = renderWithClient(() => useAdjustGrade());
 
       queryClient.setQueryData([QueryKeys.Crews], []);
-      const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+      const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
       result.current.mutate({ partyroomId: 1, crewId: 99, gradeType: 'MANAGER' as any });
 

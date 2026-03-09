@@ -2,7 +2,7 @@ import errorEmitter from './error-emitter';
 import { ErrorCode } from '../types/@shared';
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 describe('ErrorEmitter', () => {
@@ -14,7 +14,7 @@ describe('ErrorEmitter', () => {
   });
 
   test('emit(ErrorCode) → 구독자에게 전달', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const unsubscribe = errorEmitter.on(ErrorCode.ACCESS_TOKEN_EXPIRED, callback);
 
     errorEmitter.emit(ErrorCode.ACCESS_TOKEN_EXPIRED);
@@ -25,7 +25,7 @@ describe('ErrorEmitter', () => {
   });
 
   test('on/emit/unsubscribe 라이프사이클 — 구독 해제 후 콜백 호출 안 됨', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const unsubscribe = errorEmitter.on(ErrorCode.UNAUTHORIZED_SESSION, callback);
 
     errorEmitter.emit(ErrorCode.UNAUTHORIZED_SESSION);
@@ -38,7 +38,7 @@ describe('ErrorEmitter', () => {
   });
 
   test('다른 ErrorCode 이벤트는 구독자에게 전달되지 않음', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const unsubscribe = errorEmitter.on(ErrorCode.ACCESS_TOKEN_NOT_FOUND, callback);
 
     errorEmitter.emit(ErrorCode.ALREADY_BLOCKED_CREW);
@@ -49,8 +49,8 @@ describe('ErrorEmitter', () => {
   });
 
   test('같은 ErrorCode에 여러 구독자 등록 가능', () => {
-    const cb1 = jest.fn();
-    const cb2 = jest.fn();
+    const cb1 = vi.fn();
+    const cb2 = vi.fn();
     const unsub1 = errorEmitter.on(ErrorCode.NOT_FOUND_ROOM, cb1);
     const unsub2 = errorEmitter.on(ErrorCode.NOT_FOUND_ROOM, cb2);
 

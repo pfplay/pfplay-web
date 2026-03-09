@@ -12,38 +12,38 @@ describe('silent', () => {
   });
 
   test('성공 시 onSuccess 콜백 호출', async () => {
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     await silent(Promise.resolve('data'), { onSuccess });
     expect(onSuccess).toHaveBeenCalledWith('data');
   });
 
   test('실패 시 onError 콜백 호출', async () => {
     const error = new Error('fail');
-    const onError = jest.fn();
+    const onError = vi.fn();
     await silent(Promise.reject(error), { onError });
     expect(onError).toHaveBeenCalledWith(error);
   });
 
   test('성공 시 onSettled 콜백 호출', async () => {
-    const onSettled = jest.fn();
+    const onSettled = vi.fn();
     await silent(Promise.resolve('data'), { onSettled });
     expect(onSettled).toHaveBeenCalledTimes(1);
   });
 
   test('실패 시에도 onSettled 콜백 호출', async () => {
-    const onSettled = jest.fn();
+    const onSettled = vi.fn();
     await silent(Promise.reject(new Error('fail')), { onSettled });
     expect(onSettled).toHaveBeenCalledTimes(1);
   });
 
   test('성공 시 onError 호출되지 않음', async () => {
-    const onError = jest.fn();
+    const onError = vi.fn();
     await silent(Promise.resolve('data'), { onError });
     expect(onError).not.toHaveBeenCalled();
   });
 
   test('실패 시 onSuccess 호출되지 않음', async () => {
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     await silent(Promise.reject(new Error('fail')), { onSuccess });
     expect(onSuccess).not.toHaveBeenCalled();
   });

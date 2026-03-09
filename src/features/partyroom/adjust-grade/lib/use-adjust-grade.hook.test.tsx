@@ -1,4 +1,4 @@
-jest.mock('@/entities/current-partyroom', () => ({
+vi.mock('@/entities/current-partyroom', () => ({
   Crew: {
     Permission: {
       of: (_grade: string) => ({
@@ -6,12 +6,12 @@ jest.mock('@/entities/current-partyroom', () => ({
       }),
     },
   },
-  useOpenGradeAdjustmentAlertDialog: jest.fn(),
+  useOpenGradeAdjustmentAlertDialog: vi.fn(),
 }));
-jest.mock('../api/use-adjust-grade.mutation');
-jest.mock('../api/use-can-adjust-grade.hook');
-jest.mock('./use-select-grade.hook');
-jest.mock('@/shared/lib/store/stores.context');
+vi.mock('../api/use-adjust-grade.mutation');
+vi.mock('../api/use-can-adjust-grade.hook');
+vi.mock('./use-select-grade.hook');
+vi.mock('@/shared/lib/store/stores.context');
 
 import { renderHook, act } from '@testing-library/react';
 import { useOpenGradeAdjustmentAlertDialog } from '@/entities/current-partyroom';
@@ -22,16 +22,16 @@ import { useSelectGrade } from './use-select-grade.hook';
 import { useAdjustGrade as useAdjustGradeMutation } from '../api/use-adjust-grade.mutation';
 import useCanAdjustGrade from '../api/use-can-adjust-grade.hook';
 
-const mockMutate = jest.fn();
-const mockSelectGrade = jest.fn();
-const mockOpenAlert = jest.fn();
+const mockMutate = vi.fn();
+const mockSelectGrade = vi.fn();
+const mockOpenAlert = vi.fn();
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useAdjustGradeMutation as jest.Mock).mockReturnValue({ mutate: mockMutate });
-  (useSelectGrade as jest.Mock).mockReturnValue(mockSelectGrade);
-  (useOpenGradeAdjustmentAlertDialog as jest.Mock).mockReturnValue(mockOpenAlert);
-  (useStores as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useAdjustGradeMutation as Mock).mockReturnValue({ mutate: mockMutate });
+  (useSelectGrade as Mock).mockReturnValue(mockSelectGrade);
+  (useOpenGradeAdjustmentAlertDialog as Mock).mockReturnValue(mockOpenAlert);
+  (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: (selector: (...args: any[]) => any) =>
       selector({ me: { crewId: 1, gradeType: GradeType.HOST }, id: 1 }),
   });
@@ -39,7 +39,7 @@ beforeEach(() => {
 
 describe('useAdjustGrade', () => {
   test('권한 없으면 다이얼로그를 열지 않는다', async () => {
-    (useCanAdjustGrade as jest.Mock).mockReturnValue(() => false);
+    (useCanAdjustGrade as Mock).mockReturnValue(() => false);
 
     const { result } = renderHook(() => useAdjustGrade());
     await act(async () => {
@@ -51,7 +51,7 @@ describe('useAdjustGrade', () => {
   });
 
   test('같은 등급 선택 시 mutate를 호출하지 않는다', async () => {
-    (useCanAdjustGrade as jest.Mock).mockReturnValue(() => true);
+    (useCanAdjustGrade as Mock).mockReturnValue(() => true);
     mockSelectGrade.mockResolvedValue(GradeType.CLUBBER);
 
     const { result } = renderHook(() => useAdjustGrade());
@@ -64,7 +64,7 @@ describe('useAdjustGrade', () => {
   });
 
   test('다른 등급 선택 시 mutate를 호출한다', async () => {
-    (useCanAdjustGrade as jest.Mock).mockReturnValue(() => true);
+    (useCanAdjustGrade as Mock).mockReturnValue(() => true);
     mockSelectGrade.mockResolvedValue(GradeType.LISTENER);
 
     const { result } = renderHook(() => useAdjustGrade());
@@ -79,7 +79,7 @@ describe('useAdjustGrade', () => {
   });
 
   test('mutate 성공 시 등급 변경 알림 다이얼로그를 연다', async () => {
-    (useCanAdjustGrade as jest.Mock).mockReturnValue(() => true);
+    (useCanAdjustGrade as Mock).mockReturnValue(() => true);
     mockSelectGrade.mockResolvedValue(GradeType.LISTENER);
     mockMutate.mockImplementation((_payload: any, options: any) => {
       options.onSuccess();

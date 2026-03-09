@@ -1,64 +1,64 @@
-jest.mock('@/shared/lib/functions/log/logger', () => ({
-  specificLog: jest.fn(),
-  warnLog: jest.fn(),
+vi.mock('@/shared/lib/functions/log/logger', () => ({
+  specificLog: vi.fn(),
+  warnLog: vi.fn(),
 }));
 
-jest.mock('@/shared/lib/functions/log/with-debugger', () => ({
+vi.mock('@/shared/lib/functions/log/with-debugger', () => ({
   __esModule: true,
   default: () => (fn: any) => fn,
 }));
 
-jest.mock('./subscription-callbacks/use-chat-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-chat-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-crew-grade-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-crew-grade-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-crew-penalty-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-crew-penalty-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-crew-profile-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-crew-profile-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-crew-entered-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-crew-entered-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-crew-exited-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-crew-exited-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-partyroom-close-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-partyroom-close-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-partyroom-deactivation-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-partyroom-deactivation-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-partyroom-notice-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-partyroom-notice-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-playback-start-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-playback-start-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-reaction-aggregation-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-reaction-aggregation-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-reaction-motion-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-reaction-motion-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
-jest.mock('./subscription-callbacks/use-dj-queue-changed-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-dj-queue-changed-callback.hook', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
 
 import { renderHook } from '@testing-library/react';
@@ -81,74 +81,74 @@ import useReactionMotionCallback from './subscription-callbacks/use-reaction-mot
 
 type EventTypeToHook = {
   eventType: PartyroomEventType;
-  hook: jest.Mock;
+  hook: Mock;
   label: string;
 };
 
 const CALLBACK_MAP: EventTypeToHook[] = [
   {
     eventType: PartyroomEventType.PARTYROOM_CLOSED,
-    hook: usePartyroomCloseCallback as jest.Mock,
+    hook: usePartyroomCloseCallback as Mock,
     label: 'usePartyroomCloseCallback',
   },
   {
     eventType: PartyroomEventType.PLAYBACK_DEACTIVATED,
-    hook: usePartyroomDeactivationCallback as jest.Mock,
+    hook: usePartyroomDeactivationCallback as Mock,
     label: 'usePartyroomDeactivationCallback',
   },
   {
     eventType: PartyroomEventType.CREW_ENTERED,
-    hook: useCrewEnteredCallback as jest.Mock,
+    hook: useCrewEnteredCallback as Mock,
     label: 'useCrewEnteredCallback',
   },
   {
     eventType: PartyroomEventType.CREW_EXITED,
-    hook: useCrewExitedCallback as jest.Mock,
+    hook: useCrewExitedCallback as Mock,
     label: 'useCrewExitedCallback',
   },
   {
     eventType: PartyroomEventType.PARTYROOM_NOTICE_UPDATED,
-    hook: usePartyroomNoticeCallback as jest.Mock,
+    hook: usePartyroomNoticeCallback as Mock,
     label: 'usePartyroomNoticeCallback',
   },
   {
     eventType: PartyroomEventType.REACTION_AGGREGATION_UPDATED,
-    hook: useReactionAggregationCallback as jest.Mock,
+    hook: useReactionAggregationCallback as Mock,
     label: 'useReactionAggregationCallback',
   },
   {
     eventType: PartyroomEventType.REACTION_PERFORMED,
-    hook: useReactionMotionCallback as jest.Mock,
+    hook: useReactionMotionCallback as Mock,
     label: 'useReactionMotionCallback',
   },
   {
     eventType: PartyroomEventType.PLAYBACK_STARTED,
-    hook: usePlaybackStartCallback as jest.Mock,
+    hook: usePlaybackStartCallback as Mock,
     label: 'usePlaybackStartCallback',
   },
   {
     eventType: PartyroomEventType.CHAT_MESSAGE_SENT,
-    hook: useChatCallback as jest.Mock,
+    hook: useChatCallback as Mock,
     label: 'useChatCallback',
   },
   {
     eventType: PartyroomEventType.CREW_GRADE_CHANGED,
-    hook: useCrewGradeCallback as jest.Mock,
+    hook: useCrewGradeCallback as Mock,
     label: 'useCrewGradeCallback',
   },
   {
     eventType: PartyroomEventType.CREW_PENALIZED,
-    hook: useCrewPenaltyCallback as jest.Mock,
+    hook: useCrewPenaltyCallback as Mock,
     label: 'useCrewPenaltyCallback',
   },
   {
     eventType: PartyroomEventType.CREW_PROFILE_CHANGED,
-    hook: useCrewProfileCallback as jest.Mock,
+    hook: useCrewProfileCallback as Mock,
     label: 'useCrewProfileCallback',
   },
   {
     eventType: PartyroomEventType.DJ_QUEUE_CHANGED,
-    hook: useDjQueueChangedCallback as jest.Mock,
+    hook: useDjQueueChangedCallback as Mock,
     label: 'useDjQueueChangedCallback',
   },
 ];
@@ -158,10 +158,10 @@ function createMessage(body: string) {
 }
 
 function setupCallbacks() {
-  const callbacks = new Map<PartyroomEventType, jest.Mock>();
+  const callbacks = new Map<PartyroomEventType, Mock>();
 
   for (const { eventType, hook } of CALLBACK_MAP) {
-    const cb = jest.fn();
+    const cb = vi.fn();
     hook.mockReturnValue(cb);
     callbacks.set(eventType, cb);
   }
@@ -171,7 +171,7 @@ function setupCallbacks() {
 
 describe('useHandleSubscriptionEvent', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('유효한 JSON + 알려진 eventType → 해당 콜백이 호출된다', () => {

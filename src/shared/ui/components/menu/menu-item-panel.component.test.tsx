@@ -10,7 +10,7 @@ global.ResizeObserver = class ResizeObserver {
   }
 } as any;
 
-jest.mock('@headlessui/react', () => {
+vi.mock('@headlessui/react', () => {
   return {
     Transition: ({ children }: any) => children,
     MenuItems: ({ children, as: As = 'div', ...props }: any) => {
@@ -29,11 +29,11 @@ import MenuItemPanel from './menu-item-panel.component';
 import type { MenuItem } from './menu-item-panel.component';
 
 const createItems = (...labels: string[]): MenuItem[] =>
-  labels.map((label) => ({ label, onClickItem: jest.fn() }));
+  labels.map((label) => ({ label, onClickItem: vi.fn() }));
 
 describe('MenuItemPanel', () => {
   test('메뉴 아이템을 렌더링한다', () => {
-    const onMenuClose = jest.fn();
+    const onMenuClose = vi.fn();
     const { getByText } = render(
       <MenuItemPanel menuItemConfig={createItems('항목1', '항목2')} onMenuClose={onMenuClose} />
     );
@@ -43,19 +43,17 @@ describe('MenuItemPanel', () => {
 
   test('visible=false인 항목은 렌더링하지 않는다', () => {
     const items: MenuItem[] = [
-      { label: '보이는항목', onClickItem: jest.fn() },
-      { label: '숨긴항목', onClickItem: jest.fn(), visible: false },
+      { label: '보이는항목', onClickItem: vi.fn() },
+      { label: '숨긴항목', onClickItem: vi.fn(), visible: false },
     ];
-    const { queryByText } = render(
-      <MenuItemPanel menuItemConfig={items} onMenuClose={jest.fn()} />
-    );
+    const { queryByText } = render(<MenuItemPanel menuItemConfig={items} onMenuClose={vi.fn()} />);
     expect(queryByText('보이는항목')).toBeTruthy();
     expect(queryByText('숨긴항목')).toBeNull();
   });
 
   test('아이템 클릭 시 onClickItem과 onMenuClose를 호출한다', () => {
     const items = createItems('항목1');
-    const onMenuClose = jest.fn();
+    const onMenuClose = vi.fn();
     const { getByText } = render(
       <MenuItemPanel menuItemConfig={items} onMenuClose={onMenuClose} />
     );
@@ -68,7 +66,7 @@ describe('MenuItemPanel', () => {
     const { getByText } = render(
       <MenuItemPanel
         menuItemConfig={createItems('항목1')}
-        onMenuClose={jest.fn()}
+        onMenuClose={vi.fn()}
         HeaderIcon={<span>헤더아이콘</span>}
       />
     );
@@ -76,7 +74,7 @@ describe('MenuItemPanel', () => {
   });
 
   test('HeaderIcon 클릭 시 onMenuClose를 호출한다', () => {
-    const onMenuClose = jest.fn();
+    const onMenuClose = vi.fn();
     const { getByText } = render(
       <MenuItemPanel
         menuItemConfig={createItems('항목1')}

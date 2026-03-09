@@ -1,7 +1,4 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
-jest.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/store/stores.context');
 
 import '@/shared/api/__test__/msw-server';
 import { waitFor } from '@testing-library/react';
@@ -11,8 +8,8 @@ import useFetchDjingQueue from './use-fetch-djing-queue.query';
 import useFetchPlaybackHistory from '../../list-playback-histories/api/use-fetch-playback-histories.query';
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useStores as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: (selector: (...args: any[]) => any) => selector({ id: 1 }),
   });
 });
