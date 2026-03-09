@@ -1,5 +1,5 @@
 import * as Crew from '@/entities/current-partyroom/model/crew.model';
-import { ChatEvent } from '@/shared/api/websocket/types/partyroom';
+import { ChatMessageSentEvent } from '@/shared/api/websocket/types/partyroom';
 import { warnLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -8,7 +8,7 @@ export default function useChatCallback() {
   const { useCurrentPartyroom } = useStores();
   const appendChatMessage = useCurrentPartyroom((state) => state.appendChatMessage);
 
-  return (event: ChatEvent) => {
+  return (event: ChatMessageSentEvent) => {
     const { crews } = useCurrentPartyroom.getState();
 
     const crew = crews.find((crew) => crew.crewId === event.crew.crewId);

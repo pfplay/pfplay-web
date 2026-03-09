@@ -50,8 +50,7 @@ describe('useChatCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.CHAT,
-      partyroomId: { id: 1 },
+      eventType: PartyroomEventType.CHAT_MESSAGE_SENT,
       crew: { crewId: 5 },
       message: { messageId: 'msg-1', content: '안녕하세요' },
     });
@@ -72,8 +71,7 @@ describe('useChatCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.CHAT,
-      partyroomId: { id: 1 },
+      eventType: PartyroomEventType.CHAT_MESSAGE_SENT,
       crew: { crewId: 999 },
       message: { messageId: 'msg-2', content: '메시지' },
     });

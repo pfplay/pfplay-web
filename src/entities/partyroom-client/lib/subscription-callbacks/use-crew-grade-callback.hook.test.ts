@@ -54,7 +54,7 @@ describe('useCrewGradeCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.CREW_GRADE,
+      eventType: PartyroomEventType.CREW_GRADE_CHANGED,
       adjuster: { crewId: 1 },
       adjusted: {
         crewId: 2,
@@ -81,7 +81,7 @@ describe('useCrewGradeCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.CREW_GRADE,
+      eventType: PartyroomEventType.CREW_GRADE_CHANGED,
       adjuster: { crewId: 1 },
       adjusted: {
         crewId: 2,
@@ -118,7 +118,7 @@ describe('useCrewGradeCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.CREW_GRADE,
+      eventType: PartyroomEventType.CREW_GRADE_CHANGED,
       adjuster: { crewId: 1 },
       adjusted: {
         crewId: 2,
@@ -154,7 +154,7 @@ describe('useCrewGradeCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.CREW_GRADE,
+      eventType: PartyroomEventType.CREW_GRADE_CHANGED,
       adjuster: { crewId: 1 },
       adjusted: {
         crewId: 2,
@@ -174,7 +174,7 @@ describe('useCrewGradeCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.CREW_GRADE,
+      eventType: PartyroomEventType.CREW_GRADE_CHANGED,
       adjuster: { crewId: 999 },
       adjusted: {
         crewId: 888,

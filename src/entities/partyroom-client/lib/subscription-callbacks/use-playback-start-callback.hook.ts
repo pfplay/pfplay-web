@@ -1,4 +1,4 @@
-import { PlaybackStartEvent } from '@/shared/api/websocket/types/partyroom';
+import { PlaybackStartedEvent } from '@/shared/api/websocket/types/partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
 import useInvalidateDjingQueue from './utils/use-invalidate-djing-queue.hook';
 
@@ -21,7 +21,7 @@ export default function usePlaybackStartCallback() {
   ]);
   const invalidateDjingQueue = useInvalidateDjingQueue();
 
-  return (event: PlaybackStartEvent) => {
+  return (event: PlaybackStartedEvent) => {
     updatePlaybackActivated(true);
     updatePlayback(event.playback);
     updateCurrentDj({ crewId: event.crewId });
@@ -29,9 +29,9 @@ export default function usePlaybackStartCallback() {
     updateReaction((prev) => ({
       ...prev,
       aggregation: {
-        likeCount: event.playback.likeCount,
-        dislikeCount: event.playback.dislikeCount,
-        grabCount: event.playback.grabCount,
+        likeCount: 0,
+        dislikeCount: 0,
+        grabCount: 0,
       },
     }));
     resetCrewsMotion();

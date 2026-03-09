@@ -20,7 +20,7 @@ describe('useReactionAggregationCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.REACTION_AGGREGATION,
+      eventType: PartyroomEventType.REACTION_AGGREGATION_UPDATED,
       aggregation: { likeCount: 10, dislikeCount: 3, grabCount: 5 },
     });
 
@@ -42,7 +42,7 @@ describe('useReactionAggregationCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.REACTION_AGGREGATION,
+      eventType: PartyroomEventType.REACTION_AGGREGATION_UPDATED,
       aggregation: { likeCount: 99, dislikeCount: 0, grabCount: 0 },
     });
 

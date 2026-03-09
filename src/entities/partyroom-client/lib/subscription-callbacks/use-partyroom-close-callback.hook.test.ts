@@ -60,7 +60,7 @@ describe('usePartyroomCloseCallback', () => {
     const { result } = renderHook(() => usePartyroomCloseCallback());
     const callback = result.current;
 
-    callback({ eventType: PartyroomEventType.PARTYROOM_CLOSE });
+    callback({ eventType: PartyroomEventType.PARTYROOM_CLOSED });
 
     expect(mockReplace).toHaveBeenCalledWith('/parties');
   });
@@ -77,7 +77,7 @@ describe('usePartyroomCloseCallback', () => {
     const { result } = renderHook(() => usePartyroomCloseCallback());
     const callback = result.current;
 
-    callback({ eventType: PartyroomEventType.PARTYROOM_CLOSE });
+    callback({ eventType: PartyroomEventType.PARTYROOM_CLOSED });
 
     const state = store.getState();
     expect(state.id).toBeUndefined();
@@ -89,7 +89,7 @@ describe('usePartyroomCloseCallback', () => {
     const { result } = renderHook(() => usePartyroomCloseCallback());
     const callback = result.current;
 
-    callback({ eventType: PartyroomEventType.PARTYROOM_CLOSE });
+    callback({ eventType: PartyroomEventType.PARTYROOM_CLOSED });
 
     expect(mockRemoveCaches).toHaveBeenCalledTimes(1);
   });
@@ -98,7 +98,7 @@ describe('usePartyroomCloseCallback', () => {
     const { result } = renderHook(() => usePartyroomCloseCallback());
     const callback = result.current;
 
-    callback({ eventType: PartyroomEventType.PARTYROOM_CLOSE });
+    callback({ eventType: PartyroomEventType.PARTYROOM_CLOSED });
 
     expect(mockOpenAlertDialog).toHaveBeenCalledWith({
       content: '파티룸이 닫혔습니다.',

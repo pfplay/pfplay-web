@@ -1,4 +1,4 @@
-import { CrewGradeEvent } from '@/shared/api/websocket/types/partyroom';
+import { CrewGradeChangedEvent } from '@/shared/api/websocket/types/partyroom';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -17,7 +17,7 @@ export default function useCrewGradeCallback() {
   ]);
 
   // TODO: “대상자에게 모달 알림“ 기능 구현
-  return (event: CrewGradeEvent) => {
+  return (event: CrewGradeChangedEvent) => {
     const crews = useCurrentPartyroom.getState().crews;
     const adjuster = crews.find((crew) => crew.crewId === event.adjuster.crewId);
     const adjusted = crews.find((crew) => crew.crewId === event.adjusted.crewId);

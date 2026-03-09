@@ -40,17 +40,20 @@ describe('useCrewProfileCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.CREW_PROFILE,
+      eventType: PartyroomEventType.CREW_PROFILE_CHANGED,
       crewId: 1,
       nickname: '새이름',
-      avatarBodyUri: 'new-body.png',
-      avatarFaceUri: 'new-face.png',
-      avatarIconUri: 'new-icon.png',
-      combinePositionX: 10,
-      combinePositionY: 20,
-      offsetX: 5,
-      offsetY: 5,
-      scale: 2,
+      avatar: {
+        avatarCompositionType: 'COMBINED' as any,
+        avatarBodyUri: 'new-body.png',
+        avatarFaceUri: 'new-face.png',
+        avatarIconUri: 'new-icon.png',
+        combinePositionX: 10,
+        combinePositionY: 20,
+        offsetX: 5,
+        offsetY: 5,
+        scale: 2,
+      },
     });
 
     const crew = store.getState().crews[0];
@@ -79,17 +82,20 @@ describe('useCrewProfileCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.CREW_PROFILE,
+      eventType: PartyroomEventType.CREW_PROFILE_CHANGED,
       crewId: 1,
       nickname: '변경된이름',
-      avatarBodyUri: 'body.png',
-      avatarFaceUri: 'face.png',
-      avatarIconUri: 'icon.png',
-      combinePositionX: 0,
-      combinePositionY: 0,
-      offsetX: 0,
-      offsetY: 0,
-      scale: 1,
+      avatar: {
+        avatarCompositionType: 'COMBINED' as any,
+        avatarBodyUri: 'body.png',
+        avatarFaceUri: 'face.png',
+        avatarIconUri: 'icon.png',
+        combinePositionX: 0,
+        combinePositionY: 0,
+        offsetX: 0,
+        offsetY: 0,
+        scale: 1,
+      },
     });
 
     const crews = store.getState().crews;

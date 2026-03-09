@@ -1,5 +1,5 @@
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
-import { ChatEvent } from '@/shared/api/websocket/types/partyroom';
+import { ChatMessageSentEvent } from '@/shared/api/websocket/types/partyroom';
 
 export type SystemChat = {
   from: 'system';
@@ -10,7 +10,7 @@ export type SystemChat = {
 export type UserChat = {
   from: 'user';
   crew: PartyroomCrew;
-  message: ChatEvent['message'];
+  message: ChatMessageSentEvent['message'];
   receivedAt: number;
 };
 

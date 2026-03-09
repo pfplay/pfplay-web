@@ -1,5 +1,5 @@
 import { PenaltyType } from '@/shared/api/http/types/@enums';
-import { CrewPenaltyEvent } from '@/shared/api/websocket/types/partyroom';
+import { CrewPenalizedEvent } from '@/shared/api/websocket/types/partyroom';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -20,7 +20,7 @@ export default function useCrewPenaltyCallback() {
   ]);
   const t = useI18n();
 
-  return (event: CrewPenaltyEvent) => {
+  return (event: CrewPenalizedEvent) => {
     if (event.penaltyType === PenaltyType.CHAT_MESSAGE_REMOVAL) {
       const crews = useCurrentPartyroom.getState().crews;
 
