@@ -33,19 +33,13 @@ export const handlers = [
   }),
 
   // PATCH /v1/playlists/:id — updatePlaylist
-  http.patch(`${BASE_URL}/v1/playlists/:id`, async ({ request }) => {
-    const body = (await request.json()) as { name: string };
-    return HttpResponse.json({
-      data: { id: 1, name: body.name },
-    });
+  http.patch(`${BASE_URL}/v1/playlists/:id`, () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 
   // DELETE /v1/playlists — removePlaylist
-  http.delete(`${BASE_URL}/v1/playlists`, async ({ request }) => {
-    const body = (await request.json()) as { playlistIds: number[] };
-    return HttpResponse.json({
-      data: { playlistIds: body.playlistIds },
-    });
+  http.delete(`${BASE_URL}/v1/playlists`, () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 
   // POST /v1/playlists/:id/tracks — addTrackToPlaylist (void)
@@ -54,10 +48,8 @@ export const handlers = [
   }),
 
   // DELETE /v1/playlists/:playlistId/tracks/:trackId — removeTrackFromPlaylist
-  http.delete(`${BASE_URL}/v1/playlists/:playlistId/tracks/:trackId`, ({ params }) => {
-    return HttpResponse.json({
-      data: { listIds: [Number(params.trackId)] },
-    });
+  http.delete(`${BASE_URL}/v1/playlists/:playlistId/tracks/:trackId`, () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 
   // PATCH /v1/playlists/:playlistId/tracks/:trackId/move — moveTrackToPlaylist
@@ -191,16 +183,14 @@ export const handlers = [
     });
   }),
 
-  // POST /v1/partyrooms/:id/enter — enter
-  http.post(`${BASE_URL}/v1/partyrooms/:id/enter`, () => {
-    return HttpResponse.json({
-      data: { crewId: 99, gradeType: 'CLUBBER' },
-    });
+  // POST /v1/partyrooms/:id/crews — enter
+  http.post(`${BASE_URL}/v1/partyrooms/:id/crews`, () => {
+    return HttpResponse.json({ data: { crewId: 99, gradeType: 'CLUBBER' } }, { status: 201 });
   }),
 
-  // POST /v1/partyrooms/:id/exit — exit
-  http.post(`${BASE_URL}/v1/partyrooms/:id/exit`, () => {
-    return new HttpResponse(null, { status: 200 });
+  // DELETE /v1/partyrooms/:id/crews/me — exit
+  http.delete(`${BASE_URL}/v1/partyrooms/:id/crews/me`, () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 
   // PATCH /v1/partyrooms/:id/crews/:crewId/grade — adjustGrade
@@ -253,14 +243,14 @@ export const handlers = [
   // DJs
   // ──────────────────────────────────────────────
 
-  // POST /v1/partyrooms/:id/djs — registerMeToQueue
-  http.post(`${BASE_URL}/v1/partyrooms/:id/djs`, () => {
-    return new HttpResponse(null, { status: 200 });
+  // POST /v1/partyrooms/:id/dj-queue — registerMeToQueue
+  http.post(`${BASE_URL}/v1/partyrooms/:id/dj-queue`, () => {
+    return new HttpResponse(null, { status: 201 });
   }),
 
-  // DELETE /v1/partyrooms/:id/djs/me — unregisterMeFromQueue
-  http.delete(`${BASE_URL}/v1/partyrooms/:id/djs/me`, () => {
-    return new HttpResponse(null, { status: 200 });
+  // DELETE /v1/partyrooms/:id/dj-queue/me — unregisterMeFromQueue
+  http.delete(`${BASE_URL}/v1/partyrooms/:id/dj-queue/me`, () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 
   // GET /v1/partyrooms/:id/dj-queue — getDjingQueue
@@ -318,9 +308,9 @@ export const handlers = [
     return new HttpResponse(null, { status: 200 });
   }),
 
-  // POST /v1/partyrooms/:id/playback/skip — skipPlayback
-  http.post(`${BASE_URL}/v1/partyrooms/:id/playback/skip`, () => {
-    return new HttpResponse(null, { status: 200 });
+  // DELETE /v1/partyrooms/:id/playbacks/current — skipPlayback
+  http.delete(`${BASE_URL}/v1/partyrooms/:id/playbacks/current`, () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 
   // POST /v1/partyrooms/:id/playbacks/reaction — reaction

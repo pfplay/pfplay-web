@@ -13,12 +13,9 @@ import type {
   CreatePlaylistResponse,
   Playlist,
   UpdatePlaylistRequestParams,
-  UpdatePlaylistResponse,
   AddTrackToPlaylistRequestBody,
   RemovePlaylistRequestBody,
-  RemovePlaylistResponse,
   RemoveTrackFromPlaylistRequestParams,
-  RemoveTrackFromPlaylistResponse,
   PlaylistsClient,
   ChangeTrackOrderRequest,
   MoveTrackToPlaylistRequest,
@@ -47,11 +44,11 @@ export default class PlaylistsService extends HTTPClient implements PlaylistsCli
   }
 
   public updatePlaylist(playlistId: Playlist['id'], params: UpdatePlaylistRequestParams) {
-    return this.patch<UpdatePlaylistResponse>(`${this.ROUTE_V1}/${playlistId}`, params);
+    return this.patch<void>(`${this.ROUTE_V1}/${playlistId}`, params);
   }
 
   public removePlaylist(params: RemovePlaylistRequestBody) {
-    return this.delete<RemovePlaylistResponse>(`${this.ROUTE_V1}`, {
+    return this.delete<void>(`${this.ROUTE_V1}`, {
       data: params,
     });
   }
@@ -67,9 +64,7 @@ export default class PlaylistsService extends HTTPClient implements PlaylistsCli
   }
 
   public removeTrackFromPlaylist({ playlistId, trackId }: RemoveTrackFromPlaylistRequestParams) {
-    return this.delete<RemoveTrackFromPlaylistResponse>(
-      `${this.ROUTE_V1}/${playlistId}/tracks/${trackId}`
-    );
+    return this.delete<void>(`${this.ROUTE_V1}/${playlistId}/tracks/${trackId}`);
   }
 
   public changeTrackOrderInPlaylist({ playlistId, trackId, ...body }: ChangeTrackOrderRequest) {

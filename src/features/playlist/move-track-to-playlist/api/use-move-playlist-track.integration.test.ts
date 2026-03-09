@@ -77,7 +77,7 @@ describe('Playlist track operations integration (hook → service → MSW)', () 
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.data).toEqual({ listIds: [10] });
+      expect(result.current.data).toEqual('');
       expect(invalidateSpy).toHaveBeenCalledWith(
         expect.objectContaining({ queryKey: [QueryKeys.PlaylistTracks, 1] })
       );

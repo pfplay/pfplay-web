@@ -73,16 +73,7 @@ export interface AddTrackToPlaylistRequestBody {
 export interface RemovePlaylistRequestBody {
   playlistIds: number[];
 }
-export interface RemovePlaylistResponse {
-  playlistIds: number[];
-}
-
 export interface UpdatePlaylistRequestParams {
-  name: string;
-}
-
-export interface UpdatePlaylistResponse {
-  id: number;
   name: string;
 }
 
@@ -90,10 +81,6 @@ export interface RemoveTrackFromPlaylistRequestParams {
   playlistId: number;
   trackId: number;
 }
-export interface RemoveTrackFromPlaylistResponse {
-  listIds: number[];
-}
-
 export type ChangeTrackOrderRequest = {
   playlistId: number;
   trackId: number;
@@ -113,8 +100,8 @@ export interface PlaylistsClient {
   updatePlaylist: (
     playlistId: Playlist['id'],
     params: UpdatePlaylistRequestParams
-  ) => Promise<UpdatePlaylistResponse>;
-  removePlaylist: (params: RemovePlaylistRequestBody) => Promise<RemovePlaylistResponse>;
+  ) => Promise<void>;
+  removePlaylist: (params: RemovePlaylistRequestBody) => Promise<void>;
   getTracksOfPlaylist: (
     playlistId: Playlist['id'],
     params?: GetTracksOfPlaylistParameters
@@ -123,9 +110,7 @@ export interface PlaylistsClient {
     playlistId: Playlist['id'],
     params: AddTrackToPlaylistRequestBody
   ) => Promise<void>;
-  removeTrackFromPlaylist: (
-    params: RemoveTrackFromPlaylistRequestParams
-  ) => Promise<RemoveTrackFromPlaylistResponse>;
+  removeTrackFromPlaylist: (params: RemoveTrackFromPlaylistRequestParams) => Promise<void>;
   changeTrackOrderInPlaylist: (request: ChangeTrackOrderRequest) => Promise<void>;
   moveTrackToPlaylist: (request: MoveTrackToPlaylistRequest) => Promise<void>;
 }

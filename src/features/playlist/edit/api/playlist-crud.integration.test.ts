@@ -22,7 +22,7 @@ describe('Playlist CRUD integration (hook → service → MSW)', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.data).toEqual({ id: 1, name: 'Renamed' });
+      expect(result.current.data).toEqual('');
       expect(invalidateSpy).toHaveBeenCalledWith(
         expect.objectContaining({ queryKey: [QueryKeys.Playlist] })
       );
@@ -40,7 +40,7 @@ describe('Playlist CRUD integration (hook → service → MSW)', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.data).toEqual({ playlistIds: [1, 2] });
+      expect(result.current.data).toEqual('');
       expect(invalidateSpy).toHaveBeenCalledWith(
         expect.objectContaining({ queryKey: [QueryKeys.Playlist] })
       );

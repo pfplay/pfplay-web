@@ -98,7 +98,7 @@ describe('Interceptor chain integration (401 auth errors across services)', () =
 
   it('unwrapError extracts nested data from error response', async () => {
     server.use(
-      http.post('http://localhost:8080/api/v1/partyrooms/:id/enter', () => {
+      http.post('http://localhost:8080/api/v1/partyrooms/:id/crews', () => {
         return HttpResponse.json(
           {
             data: {

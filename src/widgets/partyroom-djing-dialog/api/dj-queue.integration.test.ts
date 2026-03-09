@@ -30,7 +30,7 @@ describe('DJ queue integration (hook → service → MSW)', () => {
 
     it('propagates error and emits errorCode on API failure', async () => {
       server.use(
-        http.post('http://localhost:8080/api/v1/partyrooms/:id/djs', () => {
+        http.post('http://localhost:8080/api/v1/partyrooms/:id/dj-queue', () => {
           return HttpResponse.json(
             {
               data: {
