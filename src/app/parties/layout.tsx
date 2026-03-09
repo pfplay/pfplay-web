@@ -11,7 +11,6 @@ import { SidebarPlayer, ModalPlayer } from '@/widgets/music-preview-player';
 import { MyPlaylist } from '@/widgets/my-playlist';
 import PlaylistActionProvider from './playlist-action.provider';
 import PartyroomConnectionProvider from '../_providers/partyroom-connection.provider';
-import { WalletProvider } from '../_providers/wallet.provider';
 
 const ProtectedLayout = ({ children }: PropsWithChildren) => {
   const { data: me, error, isLoading } = useFetchMe();
@@ -47,20 +46,18 @@ const ProtectedLayout = ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <WalletProvider>
-      <PartyroomConnectionProvider>
-        <PlaylistActionProvider>
-          {children}
-          <MyPlaylist />
+    <PartyroomConnectionProvider>
+      <PlaylistActionProvider>
+        {children}
+        <MyPlaylist />
 
-          {/* ⓐ 사이드바 미리보기 플레이어 (플레이리스트 트랙용) */}
-          <SidebarPlayer />
+        {/* ⓐ 사이드바 미리보기 플레이어 (플레이리스트 트랙용) */}
+        <SidebarPlayer />
 
-          {/* ⓑ 모달 미리보기 플레이어 (검색 결과용) - 모달과 분리된 고정 위치 */}
-          <ModalPlayer />
-        </PlaylistActionProvider>
-      </PartyroomConnectionProvider>
-    </WalletProvider>
+        {/* ⓑ 모달 미리보기 플레이어 (검색 결과용) - 모달과 분리된 고정 위치 */}
+        <ModalPlayer />
+      </PlaylistActionProvider>
+    </PartyroomConnectionProvider>
   );
 };
 
