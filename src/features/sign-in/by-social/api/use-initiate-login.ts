@@ -12,9 +12,6 @@ export function useInitiateLogin() {
           provider: oauth2Provider,
           codeVerifier,
         });
-        if (!response.success) {
-          throw new Error(response.message || 'Failed to start authentication');
-        }
         setStoredState(response.state);
         if (!response.authUrl) {
           throw new Error('Failed to get authentication URL');
