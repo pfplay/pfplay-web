@@ -1,5 +1,4 @@
 jest.mock('@/shared/lib/store/stores.context');
-jest.mock('./utils/use-invalidate-djing-queue.hook');
 
 import { renderHook } from '@testing-library/react';
 import type * as Crew from '@/entities/current-partyroom/model/crew.model';
@@ -8,16 +7,13 @@ import { GradeType, MotionType } from '@/shared/api/http/types/@enums';
 import { PartyroomEventType } from '@/shared/api/websocket/types/partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
 import usePartyroomDeactivationCallback from './use-partyroom-deactivation-callback.hook';
-import useInvalidateDjingQueue from './utils/use-invalidate-djing-queue.hook';
 
 let store: ReturnType<typeof createCurrentPartyroomStore>;
-const mockInvalidateDjingQueue = jest.fn();
 
 beforeEach(() => {
   jest.clearAllMocks();
   store = createCurrentPartyroomStore();
   (useStores as jest.Mock).mockReturnValue({ useCurrentPartyroom: store });
-  (useInvalidateDjingQueue as jest.Mock).mockReturnValue(mockInvalidateDjingQueue);
 });
 
 const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({
@@ -58,14 +54,5 @@ describe('usePartyroomDeactivationCallback', () => {
     expect(state.playbackActivated).toBe(false);
     expect(state.crews).toEqual([]);
     expect(state.notice).toBe('');
-  });
-
-  test('invalidateDjingQueue 호출됨', () => {
-    const { result } = renderHook(() => usePartyroomDeactivationCallback());
-    const callback = result.current;
-
-    callback({ eventType: PartyroomEventType.PLAYBACK_DEACTIVATED });
-
-    expect(mockInvalidateDjingQueue).toHaveBeenCalledTimes(1);
   });
 });

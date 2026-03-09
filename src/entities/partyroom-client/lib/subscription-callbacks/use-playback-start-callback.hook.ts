@@ -1,6 +1,5 @@
 import { PlaybackStartedEvent } from '@/shared/api/websocket/types/partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
-import useInvalidateDjingQueue from './utils/use-invalidate-djing-queue.hook';
 
 export default function usePlaybackStartCallback() {
   const { useCurrentPartyroom } = useStores();
@@ -19,7 +18,6 @@ export default function usePlaybackStartCallback() {
     state.updateReaction,
     state.resetCrewsMotion,
   ]);
-  const invalidateDjingQueue = useInvalidateDjingQueue();
 
   return (event: PlaybackStartedEvent) => {
     updatePlaybackActivated(true);
@@ -35,6 +33,5 @@ export default function usePlaybackStartCallback() {
       },
     }));
     resetCrewsMotion();
-    invalidateDjingQueue();
   };
 }
