@@ -14,7 +14,7 @@ import { I18nProvider } from '@/shared/lib/localization/i18n.context';
 import { LangProvider } from '@/shared/lib/localization/lang.context';
 import { DialogProvider } from '@/shared/ui/components/dialog';
 import { pretendardVariable } from '@/shared/ui/foundation/fonts';
-import PartyroomConnectionProvider from './_providers/partyroom-connection.provider';
+
 import ReactQueryProvider from './_providers/react-query.provider';
 import StoresProvider from './_providers/stores.provider';
 import { WalletProvider } from './_providers/wallet.provider';
@@ -39,9 +39,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
             <I18nProvider dictionary={dictionary}>
               <StoresProvider>
                 <WalletProvider>
-                  <DialogProvider>
-                    <PartyroomConnectionProvider>{children}</PartyroomConnectionProvider>
-                  </DialogProvider>
+                  <DialogProvider>{children}</DialogProvider>
                 </WalletProvider>
               </StoresProvider>
             </I18nProvider>
