@@ -4,6 +4,6 @@ import type { I18nProcessor } from './_interface';
 @Singleton
 export default class BoldProcessor implements I18nProcessor {
   public process(t: string): string {
-    return t.replace(/\*\*(.*?)\*\*/g, '<b class="text-red-300">$1</b>');
+    return t.replace(/\*\*(.*?)\*\*/g, '<b className="text-red-300">$1</b>');
   }
 }
