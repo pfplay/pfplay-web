@@ -23,6 +23,7 @@ export enum ErrorCode {
   ALREADY_REGISTERED = 'DJ-001', // 이미 DJ로 등록됨
   QUEUE_CLOSED = 'DJ-002', // DJ 대기열이 닫혀 있음
   EMPTY_PLAYLIST = 'DJ-003', // 비어있는 재생목록은 등록할 수 없음
+  DJ_NOT_FOUND = 'DJ-004', // DJ 대기열에서 해당 DJ를 찾을 수 없음
 
   // GradeException
   MANAGER_GRADE_REQUIRED = 'GRD-001', // 이 작업을 수행하려면 관리자 등급이 필요함
@@ -36,9 +37,8 @@ export enum ErrorCode {
   ALREADY_TERMINATED = 'PTR-002', // 이미 종료된 파티룸
   EXCEEDED_LIMIT = 'PTR-003', // 파티룸 정원 초과
   ACTIVE_ANOTHER_ROOM = 'PTR-004', // 이미 다른 파티룸에 활성화되어 있음
-  CACHE_MISS_SESSION = 'PTR-005', // 세션 ID에 대한 캐시 데이터가 없음
-  RESTRICTED_AUTHORITY = 'PTR-006', // 권한이 제한됨 (e.g. 지갑 인증 유저만 파티룸 생성 가능)
-  ALREADY_HOST = 'PTR-007', // 이미 다른 파티룸의 호스트임
+  RESTRICTED_AUTHORITY = 'PTR-005', // 권한이 제한됨 (e.g. 지갑 인증 유저만 파티룸 생성 가능)
+  ALREADY_HOST = 'PTR-006', // 이미 다른 파티룸의 호스트임
 
   // PenaltyException
   PERMANENT_EXPULSION = 'PNT-001', // 영구적으로 추방된 사용자
