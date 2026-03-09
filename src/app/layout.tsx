@@ -17,7 +17,6 @@ import { pretendardVariable } from '@/shared/ui/foundation/fonts';
 
 import ReactQueryProvider from './_providers/react-query.provider';
 import StoresProvider from './_providers/stores.provider';
-import { WalletProvider } from './_providers/wallet.provider';
 
 export const metadata: Metadata = {
   title: 'PFPlay',
@@ -38,9 +37,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
           <LangProvider lang={lang as Language}>
             <I18nProvider dictionary={dictionary}>
               <StoresProvider>
-                <WalletProvider>
-                  <DialogProvider>{children}</DialogProvider>
-                </WalletProvider>
+                <DialogProvider>{children}</DialogProvider>
               </StoresProvider>
             </I18nProvider>
           </LangProvider>
