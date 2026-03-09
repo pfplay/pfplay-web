@@ -1,14 +1,14 @@
-jest.mock('@/shared/lib/store/stores.context');
-jest.mock('@/entities/current-partyroom', () => ({
-  useRemoveCurrentPartyroomCaches: jest.fn(),
+vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/entities/current-partyroom', () => ({
+  useRemoveCurrentPartyroomCaches: vi.fn(),
 }));
-jest.mock('@/shared/lib/router/use-app-router.hook', () => ({
-  useAppRouter: jest.fn(),
+vi.mock('@/shared/lib/router/use-app-router.hook', () => ({
+  useAppRouter: vi.fn(),
 }));
-jest.mock('@/shared/ui/components/dialog', () => ({
-  useDialog: jest.fn(),
+vi.mock('@/shared/ui/components/dialog', () => ({
+  useDialog: vi.fn(),
 }));
-jest.mock('@/shared/lib/localization/i18n.context', () => ({
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
   useI18n: () => ({
     party: { para: { closed: '파티룸이 닫혔습니다.' } },
   }),
@@ -26,17 +26,17 @@ import { useDialog } from '@/shared/ui/components/dialog';
 import usePartyroomCloseCallback from './use-partyroom-close-callback.hook';
 
 let store: ReturnType<typeof createCurrentPartyroomStore>;
-const mockReplace = jest.fn();
-const mockRemoveCaches = jest.fn();
-const mockOpenAlertDialog = jest.fn();
+const mockReplace = vi.fn();
+const mockRemoveCaches = vi.fn();
+const mockOpenAlertDialog = vi.fn();
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   store = createCurrentPartyroomStore();
-  (useStores as jest.Mock).mockReturnValue({ useCurrentPartyroom: store });
-  (useAppRouter as jest.Mock).mockReturnValue({ replace: mockReplace });
-  (useRemoveCurrentPartyroomCaches as jest.Mock).mockReturnValue(mockRemoveCaches);
-  (useDialog as jest.Mock).mockReturnValue({ openAlertDialog: mockOpenAlertDialog });
+  (useStores as Mock).mockReturnValue({ useCurrentPartyroom: store });
+  (useAppRouter as Mock).mockReturnValue({ replace: mockReplace });
+  (useRemoveCurrentPartyroomCaches as Mock).mockReturnValue(mockRemoveCaches);
+  (useDialog as Mock).mockReturnValue({ openAlertDialog: mockOpenAlertDialog });
 });
 
 const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({

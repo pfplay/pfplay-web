@@ -1,8 +1,8 @@
-jest.mock('@/shared/lib/store/stores.context');
-jest.mock('@/shared/lib/functions/log/logger', () => ({
-  warnLog: jest.fn(),
+vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/functions/log/logger', () => ({
+  warnLog: vi.fn(),
 }));
-jest.mock('@/shared/lib/functions/log/with-debugger', () => ({
+vi.mock('@/shared/lib/functions/log/with-debugger', () => ({
   __esModule: true,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   default: () => (logFn: Function) => logFn,
@@ -20,9 +20,9 @@ import useChatCallback from './use-chat-callback.hook';
 let store: ReturnType<typeof createCurrentPartyroomStore>;
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   store = createCurrentPartyroomStore();
-  (useStores as jest.Mock).mockReturnValue({ useCurrentPartyroom: store });
+  (useStores as Mock).mockReturnValue({ useCurrentPartyroom: store });
 });
 
 const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({

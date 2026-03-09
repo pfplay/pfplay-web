@@ -1,17 +1,17 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Dialog from './dialog.component';
 
-jest.mock('../typography', () => ({
+vi.mock('../typography', () => ({
   Typography: ({ children }: any) => <span>{children}</span>,
   TypographyType: {},
 }));
 
-jest.mock('../button', () => ({
+vi.mock('../button', () => ({
   Button: ({ children, ...rest }: any) => <button {...rest}>{children}</button>,
   ButtonProps: {},
 }));
 
-jest.mock('@/shared/ui/components/text-button', () => ({
+vi.mock('@/shared/ui/components/text-button', () => ({
   TextButton: ({ onClick, Icon }: any) => (
     <button data-testid='close-icon' onClick={onClick}>
       {Icon}
@@ -19,16 +19,15 @@ jest.mock('@/shared/ui/components/text-button', () => ({
   ),
 }));
 
-jest.mock('@/shared/ui/icons', () => ({
+vi.mock('@/shared/ui/icons', () => ({
   PFClose: () => <svg data-testid='pf-close' />,
 }));
 
-jest.mock('@/shared/ui/foundation/theme', () => ({
+vi.mock('@/shared/ui/foundation/theme', () => ({
   __esModule: true,
   default: { zIndex: { dialog: 50 } },
 }));
 
- 
 global.ResizeObserver = class ResizeObserver {
   public observe() {
     /* noop */
@@ -44,12 +43,12 @@ global.ResizeObserver = class ResizeObserver {
 describe('Dialog', () => {
   const defaultProps = {
     open: true,
-    onClose: jest.fn(),
+    onClose: vi.fn(),
     Body: <div>바디 내용</div>,
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('open=true일 때 Body가 렌더링된다', () => {
@@ -89,7 +88,7 @@ describe('Dialog', () => {
   });
 
   test('닫기 아이콘 클릭 시 onClose가 호출된다', async () => {
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     render(<Dialog {...defaultProps} title='제목' showCloseIcon onClose={onClose} />);
 
     fireEvent.click(screen.getByTestId('close-icon'));

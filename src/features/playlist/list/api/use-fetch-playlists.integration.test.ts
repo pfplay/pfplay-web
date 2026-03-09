@@ -1,7 +1,4 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
-jest.mock('@/shared/lib/localization/i18n.context');
+vi.mock('@/shared/lib/localization/i18n.context');
 
 import '@/shared/api/__test__/msw-server';
 import { waitFor } from '@testing-library/react';
@@ -11,8 +8,8 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import useFetchPlaylists from './use-fetch-playlists.query';
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useI18n as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useI18n as Mock).mockReturnValue({
     playlist: { title: { grabbed_song: 'Grabbed Songs' } },
   });
 });

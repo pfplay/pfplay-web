@@ -1,11 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Drawer from './drawer.component';
 
-jest.mock('../typography', () => ({
+vi.mock('../typography', () => ({
   Typography: ({ children }: any) => <span>{children}</span>,
 }));
 
-jest.mock('@/shared/ui/components/text-button', () => ({
+vi.mock('@/shared/ui/components/text-button', () => ({
   TextButton: ({ onClick, Icon }: any) => (
     <button data-testid='close-button' onClick={onClick}>
       {Icon}
@@ -13,11 +13,11 @@ jest.mock('@/shared/ui/components/text-button', () => ({
   ),
 }));
 
-jest.mock('@/shared/ui/icons', () => ({
+vi.mock('@/shared/ui/icons', () => ({
   PFClose: () => <svg data-testid='pf-close' />,
 }));
 
-jest.mock('@/shared/lib/hooks/use-portal-root.hook', () => ({
+vi.mock('@/shared/lib/hooks/use-portal-root.hook', () => ({
   __esModule: true,
   default: () => document.body,
 }));
@@ -55,7 +55,7 @@ describe('Drawer', () => {
 
   test('close 콜백이 있으면 닫기 버튼이 표시된다', () => {
     render(
-      <Drawer isOpen title='서랍' close={jest.fn()}>
+      <Drawer isOpen title='서랍' close={vi.fn()}>
         <div>내용</div>
       </Drawer>
     );
@@ -64,7 +64,7 @@ describe('Drawer', () => {
   });
 
   test('닫기 버튼 클릭 시 close가 호출된다', () => {
-    const close = jest.fn();
+    const close = vi.fn();
     render(
       <Drawer isOpen title='서랍' close={close}>
         <div>내용</div>

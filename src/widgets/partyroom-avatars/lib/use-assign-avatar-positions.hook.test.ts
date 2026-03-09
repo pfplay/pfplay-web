@@ -1,6 +1,6 @@
-jest.mock('../model/avatar-position.model', () => ({
-  ...jest.requireActual('../model/avatar-position.model'),
-  getRandomPoint: jest.fn(),
+vi.mock('../model/avatar-position.model', () => ({
+  ...vi.importActual('../model/avatar-position.model'),
+  getRandomPoint: vi.fn(),
 }));
 
 import { renderHook } from '@testing-library/react';
@@ -30,7 +30,7 @@ const denyArea = { from: { x: 40, y: 40 }, to: { x: 60, y: 60 } };
 let callCount = 0;
 beforeEach(() => {
   callCount = 0;
-  (getRandomPoint as jest.Mock).mockImplementation(() => {
+  (getRandomPoint as Mock).mockImplementation(() => {
     callCount++;
     return { x: callCount * 10, y: callCount * 10 };
   });

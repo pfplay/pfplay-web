@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react';
 import usePortalRoot from './use-portal-root.hook';
 
-jest.mock('@/shared/lib/functions/log/logger', () => ({
-  errorLog: jest.fn(),
+vi.mock('@/shared/lib/functions/log/logger', () => ({
+  errorLog: vi.fn(),
 }));
 
-jest.mock('@/shared/lib/functions/log/with-debugger', () => ({
+vi.mock('@/shared/lib/functions/log/with-debugger', () => ({
   __esModule: true,
   default: () => (fn: any) => fn,
 }));

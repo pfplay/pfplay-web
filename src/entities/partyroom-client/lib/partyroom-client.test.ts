@@ -1,18 +1,18 @@
-jest.mock('@/shared/api/websocket/client');
+vi.mock('@/shared/api/websocket/client');
 
 import SocketClient from '@/shared/api/websocket/client';
 import PartyroomClient from './partyroom-client';
 
-const MockSocketClient = SocketClient as jest.MockedClass<typeof SocketClient>;
+const MockSocketClient = SocketClient as MockedClass<typeof SocketClient>;
 
 describe('PartyroomClient', () => {
   let client: PartyroomClient;
-  let mockSocketInstance: jest.Mocked<SocketClient>;
+  let mockSocketInstance: Mocked<SocketClient>;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     client = new PartyroomClient();
-    mockSocketInstance = MockSocketClient.mock.instances[0] as jest.Mocked<SocketClient>;
+    mockSocketInstance = MockSocketClient.mock.instances[0] as Mocked<SocketClient>;
   });
 
   test('connect() → socketClient.connect()를 위임한다', () => {
@@ -26,7 +26,7 @@ describe('PartyroomClient', () => {
   });
 
   test('onConnect → socketClient.onConnect를 위임한다', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const options = { once: true };
     client.onConnect(callback, options);
     expect(mockSocketInstance.onConnect).toHaveBeenCalledWith(callback, options);
@@ -36,14 +36,14 @@ describe('PartyroomClient', () => {
     test('이미 구독이 있으면 Error를 throw한다', () => {
       mockSocketInstance.subscriptions = [{ destination: '/sub/partyrooms/1' } as any];
 
-      expect(() => client.subscribe(2, jest.fn())).toThrow(
+      expect(() => client.subscribe(2, vi.fn())).toThrow(
         'Cannot connect to multiple partyrooms at the same time.'
       );
     });
 
     test('구독이 없으면 올바른 경로로 subscribe를 호출한다', () => {
       mockSocketInstance.subscriptions = [];
-      const handler = jest.fn();
+      const handler = vi.fn();
 
       client.subscribe(42, handler);
 
@@ -53,7 +53,7 @@ describe('PartyroomClient', () => {
 
   test('unsubscribeCurrentRoom → 올바른 경로로 unsubscribe를 호출한다', () => {
     mockSocketInstance.subscriptions = [];
-    client.subscribe(10, jest.fn());
+    client.subscribe(10, vi.fn());
 
     client.unsubscribeCurrentRoom();
 
@@ -69,7 +69,7 @@ describe('PartyroomClient', () => {
 
     test('구독 후에 호출하면 올바른 경로와 내용으로 send를 호출한다', () => {
       mockSocketInstance.subscriptions = [];
-      client.subscribe(7, jest.fn());
+      client.subscribe(7, vi.fn());
 
       client.sendChatMessage('hi there');
 

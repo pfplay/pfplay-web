@@ -1,7 +1,4 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
-jest.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/store/stores.context');
 
 import '@/shared/api/__test__/msw-server';
 import { act, waitFor } from '@testing-library/react';
@@ -9,18 +6,38 @@ import { renderWithClient } from '@/shared/api/__test__/test-utils';
 import { useStores } from '@/shared/lib/store/stores.context';
 import useSignOut from './use-sign-out.mutation';
 
-const mockMarkExitedOnBackend = jest.fn();
+const mockMarkExitedOnBackend = vi.fn();
+let locationHrefSetter: ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useStores as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: (selector: (...args: any[]) => any) =>
       selector({ markExitedOnBackend: mockMarkExitedOnBackend }),
   });
-  // location.href 할당 방지
+
+  // location.href 할당을 가로채서 실제 navigation 방지
+  locationHrefSetter = vi.fn();
+  const originalLocation = window.location;
   Object.defineProperty(window, 'location', {
-    value: { href: '/' },
+    value: {
+      ...originalLocation,
+      origin: originalLocation.origin,
+      protocol: originalLocation.protocol,
+      host: originalLocation.host,
+      hostname: originalLocation.hostname,
+      port: originalLocation.port,
+      pathname: originalLocation.pathname,
+      search: originalLocation.search,
+      hash: originalLocation.hash,
+    },
     writable: true,
+    configurable: true,
+  });
+  Object.defineProperty(window.location, 'href', {
+    set: locationHrefSetter,
+    get: () => originalLocation.href,
+    configurable: true,
   });
 });
 
@@ -44,6 +61,6 @@ describe('useSignOut 통합', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(window.location.href).toBe('/');
+    expect(locationHrefSetter).toHaveBeenCalledWith('/');
   });
 });

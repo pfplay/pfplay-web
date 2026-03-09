@@ -4,7 +4,6 @@ const eslint = require('@eslint/js');
 const pluginNext = require('@next/eslint-plugin-next');
 const pluginI18next = require('eslint-plugin-i18next');
 const pluginImport = require('eslint-plugin-import');
-const pluginJest = require('eslint-plugin-jest');
 const pluginReactHooks = require('eslint-plugin-react-hooks');
 const pluginStorybook = require('eslint-plugin-storybook');
 const unusedImportsPlugin = require('eslint-plugin-unused-imports');
@@ -134,14 +133,7 @@ module.exports = tseslint.config(
   },
   {
     files: ['**/*.test.*'],
-    plugins: {
-      jest: pluginJest,
-    },
-    languageOptions: {
-      globals: pluginJest.environments.globals.globals,
-    },
     rules: {
-      'jest/no-identical-title': 0,
       'i18next/no-literal-string': 0,
     },
   }

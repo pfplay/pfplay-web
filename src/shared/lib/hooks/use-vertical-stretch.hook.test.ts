@@ -2,15 +2,24 @@ import { renderHook, act } from '@testing-library/react';
 import { useVerticalStretch } from './use-vertical-stretch.hook';
 
 describe('useVerticalStretch', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   test('부모가 flex column이면 flex: 1이 설정된다', () => {
     const parent = document.createElement('div');
     const child = document.createElement('div');
     parent.appendChild(child);
     document.body.appendChild(parent);
 
-    // getComputedStyle을 직접 설정할 수 없으므로 style로 설정
-    parent.style.display = 'flex';
-    parent.style.flexDirection = 'column';
+    // jsdom의 getComputedStyle은 인라인 스타일을 정확히 반영하지 않으므로 직접 mock
+    vi.stubGlobal(
+      'getComputedStyle',
+      vi.fn().mockReturnValue({
+        display: 'flex',
+        flexDirection: 'column',
+      })
+    );
 
     const { result } = renderHook(() => useVerticalStretch<HTMLDivElement>());
 
@@ -18,7 +27,7 @@ describe('useVerticalStretch', () => {
       result.current(child);
     });
 
-    expect(child.style.flex).toBe('1');
+    expect(child.style.flexGrow).toBe('1');
 
     document.body.removeChild(parent);
   });
@@ -29,7 +38,13 @@ describe('useVerticalStretch', () => {
     parent.appendChild(child);
     document.body.appendChild(parent);
 
-    parent.style.display = 'block';
+    vi.stubGlobal(
+      'getComputedStyle',
+      vi.fn().mockReturnValue({
+        display: 'block',
+        flexDirection: '',
+      })
+    );
 
     const { result } = renderHook(() => useVerticalStretch<HTMLDivElement>());
 

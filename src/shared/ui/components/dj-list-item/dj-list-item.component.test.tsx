@@ -1,16 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import DjListItem from './dj-list-item.component';
 
-jest.mock('next/image', () => ({
+vi.mock('next/image', () => ({
   __esModule: true,
   default: ({ src, alt, ...rest }: any) => <img src={src} alt={alt} {...rest} />,
 }));
 
-jest.mock('@/shared/ui/components/typography', () => ({
+vi.mock('@/shared/ui/components/typography', () => ({
   Typography: ({ children }: any) => <span>{children}</span>,
 }));
 
-jest.mock('@/shared/ui/components/tag', () => ({
+vi.mock('@/shared/ui/components/tag', () => ({
   Tag: ({ value }: any) => <span data-testid='tag'>{value}</span>,
 }));
 

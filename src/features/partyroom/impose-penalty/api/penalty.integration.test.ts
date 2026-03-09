@@ -1,6 +1,3 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
 import '@/shared/api/__test__/msw-server';
 import { act, waitFor } from '@testing-library/react';
 import { renderWithClient } from '@/shared/api/__test__/test-utils';
@@ -11,7 +8,7 @@ import useLiftPenalty from '../../lift-penalty/api/use-lift-penalty.mutation';
 describe('useImposePenaltyMutation 통합', () => {
   test('성공 시 Penalties 캐시를 무효화한다', async () => {
     const { result, queryClient } = renderWithClient(() => useImposePenaltyMutation());
-    const invalidate = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidate = vi.spyOn(queryClient, 'invalidateQueries');
 
     await act(async () => {
       result.current.mutate({
@@ -32,7 +29,7 @@ describe('useImposePenaltyMutation 통합', () => {
 describe('useLiftPenalty 통합', () => {
   test('성공 시 Penalties 캐시를 무효화한다', async () => {
     const { result, queryClient } = renderWithClient(() => useLiftPenalty());
-    const invalidate = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidate = vi.spyOn(queryClient, 'invalidateQueries');
 
     await act(async () => {
       result.current.mutate({ partyroomId: 1, penaltyId: 1 });

@@ -1,5 +1,5 @@
-const mockGetQueryData = jest.fn();
-jest.mock('@tanstack/react-query', () => ({
+const mockGetQueryData = vi.fn();
+vi.mock('@tanstack/react-query', () => ({
   useQueryClient: () => ({ getQueryData: mockGetQueryData }),
 }));
 
@@ -7,7 +7,7 @@ import { renderHook } from '@testing-library/react';
 import useIsNft from './use-is-nft.hook';
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 describe('useIsNft', () => {

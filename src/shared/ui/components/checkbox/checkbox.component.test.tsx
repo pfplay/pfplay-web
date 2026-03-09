@@ -2,7 +2,7 @@ import { createRef } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import Checkbox from './checkbox.component';
 
-jest.mock('@/shared/ui/icons', () => ({
+vi.mock('@/shared/ui/icons', () => ({
   PFCheckMark: (props: any) => <svg data-testid='check-mark' {...props} />,
 }));
 
@@ -35,7 +35,7 @@ describe('Checkbox', () => {
   });
 
   test('onChange 콜백이 호출된다', () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const { container } = render(<Checkbox onChange={onChange} />);
 
     const label = container.querySelector('label') as HTMLElement;

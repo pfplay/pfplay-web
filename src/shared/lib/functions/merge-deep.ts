@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { PartialDeep } from 'type-fest';
 import { cloneDeep } from './clone-deep';
 import { isPlainObject } from './is-plain-object';

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import FormItem, { FormItemError } from './form-item.component';
 
-jest.mock('../typography', () => ({
+vi.mock('../typography', () => ({
   Typography: ({ children, className, ...rest }: any) => (
     <span className={className} {...rest}>
       {children}

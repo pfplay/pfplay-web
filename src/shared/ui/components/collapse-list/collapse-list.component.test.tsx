@@ -1,11 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import CollapseList from './collapse-list.component';
 
-jest.mock('../typography', () => ({
+vi.mock('../typography', () => ({
   Typography: ({ children }: any) => <span>{children}</span>,
 }));
 
-jest.mock('@/shared/ui/icons', () => ({
+vi.mock('@/shared/ui/icons', () => ({
   PFChevronDown: () => <svg data-testid='chevron-down' />,
   PFChevronUp: () => <svg data-testid='chevron-up' />,
 }));

@@ -1,6 +1,6 @@
-jest.mock('@/shared/lib/store/stores.context');
-jest.mock('@/shared/lib/localization/i18n.context');
-jest.mock('@/shared/ui/components/dialog');
+vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/localization/i18n.context');
+vi.mock('@/shared/ui/components/dialog');
 
 import { renderHook, act } from '@testing-library/react';
 import { GradeType } from '@/shared/api/http/types/@enums';
@@ -8,14 +8,14 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { useOpenGradeAdjustmentAlertDialog } from './use-grade-adjusted-alert.hook';
 
-const mockOpenAlertDialog = jest.fn();
+const mockOpenAlertDialog = vi.fn();
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useI18n as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useI18n as Mock).mockReturnValue({
     auth: { para: { auth_changed: 'Authority Changed' } },
   });
-  (useDialog as jest.Mock).mockReturnValue({ openAlertDialog: mockOpenAlertDialog });
+  (useDialog as Mock).mockReturnValue({ openAlertDialog: mockOpenAlertDialog });
 });
 
 describe('useOpenGradeAdjustmentAlertDialog', () => {

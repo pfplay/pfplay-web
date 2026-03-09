@@ -1,14 +1,14 @@
-jest.mock('./logger', () => ({
-  infoLog: jest.fn(),
-  successLog: jest.fn(),
-  errorLog: jest.fn(),
+vi.mock('./logger', () => ({
+  infoLog: vi.fn(),
+  successLog: vi.fn(),
+  errorLog: vi.fn(),
 }));
 
 import { infoLog, successLog, errorLog } from './logger';
 import { printRequestLog, printResponseLog, printErrorLog } from './network-log';
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 describe('network-log', () => {

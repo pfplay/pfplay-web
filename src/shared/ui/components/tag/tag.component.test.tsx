@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Tag from './tag.component';
 
-jest.mock('../typography', () => ({
+vi.mock('../typography', () => ({
   Typography: ({ children, className }: any) => <span className={className}>{children}</span>,
 }));
 

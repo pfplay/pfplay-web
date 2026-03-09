@@ -3,7 +3,7 @@ import useDidUpdateEffect from './use-did-update-effect';
 
 describe('useDidUpdateEffect', () => {
   test('mount 시 effect 실행 안 됨', () => {
-    const effect = jest.fn();
+    const effect = vi.fn();
 
     renderHook(({ dep }) => useDidUpdateEffect(effect, [dep]), {
       initialProps: { dep: 1 },
@@ -13,7 +13,7 @@ describe('useDidUpdateEffect', () => {
   });
 
   test('dependency 변경 시 effect 실행', () => {
-    const effect = jest.fn();
+    const effect = vi.fn();
 
     const { rerender } = renderHook(({ dep }) => useDidUpdateEffect(effect, [dep]), {
       initialProps: { dep: 1 },
@@ -25,7 +25,7 @@ describe('useDidUpdateEffect', () => {
   });
 
   test('dependency 미변경 시 effect 실행 안 됨', () => {
-    const effect = jest.fn();
+    const effect = vi.fn();
 
     const { rerender } = renderHook(({ dep }) => useDidUpdateEffect(effect, [dep]), {
       initialProps: { dep: 1 },

@@ -1,8 +1,8 @@
-jest.mock('@/features/playlist/add-tracks', () => ({
+vi.mock('@/features/playlist/add-tracks', () => ({
   AddTracksToPlaylist: ({ children }: { children: (props: any) => React.ReactNode }) =>
-    children({ text: 'Add Tracks', execute: jest.fn() }),
+    children({ text: 'Add Tracks', execute: vi.fn() }),
 }));
-jest.mock('@/shared/ui/icons', () => ({
+vi.mock('@/shared/ui/icons', () => ({
   PFAddPlaylist: () => <svg data-testid='add-icon' />,
 }));
 

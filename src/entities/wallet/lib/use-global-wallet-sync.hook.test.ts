@@ -1,9 +1,9 @@
-jest.mock('wagmi', () => ({
-  useAccount: jest.fn(),
+vi.mock('wagmi', () => ({
+  useAccount: vi.fn(),
 }));
-jest.mock('../api/use-update-my-wallet.mutation', () => ({
+vi.mock('../api/use-update-my-wallet.mutation', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: vi.fn(),
 }));
 
 import { renderHook } from '@testing-library/react';
@@ -11,16 +11,16 @@ import { useAccount } from 'wagmi';
 import useGlobalWalletSync from './use-global-wallet-sync.hook';
 import useUpdateMyWallet from '../api/use-update-my-wallet.mutation';
 
-const mockMutate = jest.fn();
+const mockMutate = vi.fn();
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useUpdateMyWallet as jest.Mock).mockReturnValue({ mutate: mockMutate });
+  vi.clearAllMocks();
+  (useUpdateMyWallet as Mock).mockReturnValue({ mutate: mockMutate });
 });
 
 describe('useGlobalWalletSync', () => {
   test('지갑이 연결되고 주소가 다르면 updateMyWallet을 호출한다', () => {
-    (useAccount as jest.Mock).mockReturnValue({
+    (useAccount as Mock).mockReturnValue({
       address: '0xNewAddress',
       isConnected: true,
     });
@@ -31,7 +31,7 @@ describe('useGlobalWalletSync', () => {
   });
 
   test('지갑 연결 해제 시 빈 주소로 updateMyWallet을 호출한다', () => {
-    (useAccount as jest.Mock).mockReturnValue({
+    (useAccount as Mock).mockReturnValue({
       address: undefined,
       isConnected: false,
     });
@@ -42,7 +42,7 @@ describe('useGlobalWalletSync', () => {
   });
 
   test('지갑 주소가 동일하면 updateMyWallet을 호출하지 않는다', () => {
-    (useAccount as jest.Mock).mockReturnValue({
+    (useAccount as Mock).mockReturnValue({
       address: '0xSameAddress',
       isConnected: true,
     });

@@ -1,18 +1,18 @@
-jest.mock('@/shared/lib/store/stores.context');
-jest.mock('@/shared/lib/functions/log/logger', () => ({
-  errorLog: jest.fn(),
+vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/functions/log/logger', () => ({
+  errorLog: vi.fn(),
 }));
-jest.mock('@/shared/lib/functions/log/with-debugger', () => ({
+vi.mock('@/shared/lib/functions/log/with-debugger', () => ({
   __esModule: true,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   default: () => (logFn: Function) => logFn,
 }));
-jest.mock('@/shared/lib/localization/i18n.context', () => ({
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
   useI18n: () => ({
     chat: { para: { remove_chat: '{subject}님이 {target}님의 채팅을 삭제했습니다.' } },
   }),
 }));
-jest.mock('@/shared/lib/localization/renderer/processors/variable-processor-util', () => ({
+vi.mock('@/shared/lib/localization/renderer/processors/variable-processor-util', () => ({
   processI18nString: (template: string, vars: Record<string, string>) =>
     template.replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? ''),
 }));
@@ -29,9 +29,9 @@ import useCrewPenaltyCallback from './use-crew-penalty-callback.hook';
 let store: ReturnType<typeof createCurrentPartyroomStore>;
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   store = createCurrentPartyroomStore();
-  (useStores as jest.Mock).mockReturnValue({ useCurrentPartyroom: store });
+  (useStores as Mock).mockReturnValue({ useCurrentPartyroom: store });
 });
 
 const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({
@@ -120,7 +120,7 @@ describe('useCrewPenaltyCallback', () => {
         notice: '',
       });
 
-      const alertNotify = jest.spyOn(store.getState().alert, 'notify');
+      const alertNotify = vi.spyOn(store.getState().alert, 'notify');
 
       const { result } = renderHook(() => useCrewPenaltyCallback());
       const callback = result.current;
@@ -148,7 +148,7 @@ describe('useCrewPenaltyCallback', () => {
         notice: '',
       });
 
-      const alertNotify = jest.spyOn(store.getState().alert, 'notify');
+      const alertNotify = vi.spyOn(store.getState().alert, 'notify');
 
       const { result } = renderHook(() => useCrewPenaltyCallback());
       const callback = result.current;

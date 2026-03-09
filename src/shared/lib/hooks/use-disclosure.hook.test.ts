@@ -64,7 +64,7 @@ describe('useDisclosure', () => {
   });
 
   test('onOpen 콜백 함수 호출 확인', () => {
-    const onOpenCallback = jest.fn();
+    const onOpenCallback = vi.fn();
     const { result } = renderHook(() => useDisclosure({ onOpen: onOpenCallback }));
 
     act(() => {
@@ -75,7 +75,7 @@ describe('useDisclosure', () => {
   });
 
   test('onClose 콜백 함수 호출 확인', () => {
-    const onCloseCallback = jest.fn();
+    const onCloseCallback = vi.fn();
     const { result } = renderHook(() =>
       useDisclosure({ defaultOpen: true, onClose: onCloseCallback })
     );

@@ -21,7 +21,7 @@ describe('Chat', () => {
 
     test('메시지 추가 시 리스너에 알림', () => {
       const chat = Chat.create<string>([]);
-      const listener = jest.fn();
+      const listener = vi.fn();
       chat.addMessageListener(listener);
 
       chat.appendMessage('hello');
@@ -50,7 +50,7 @@ describe('Chat', () => {
 
     test('업데이트 시 리스너에 알림', () => {
       const chat = Chat.create([{ id: 1, text: 'hello' }]);
-      const listener = jest.fn();
+      const listener = vi.fn();
       chat.addMessageListener(listener);
 
       chat.updateMessage(
@@ -63,7 +63,7 @@ describe('Chat', () => {
 
     test('조건에 맞는 메시지가 없으면 리스너 호출 안 됨', () => {
       const chat = Chat.create([{ id: 1, text: 'hello' }]);
-      const listener = jest.fn();
+      const listener = vi.fn();
       chat.addMessageListener(listener);
 
       chat.updateMessage(
@@ -78,7 +78,7 @@ describe('Chat', () => {
   describe('clear', () => {
     test('메시지와 리스너 모두 초기화', () => {
       const chat = Chat.create(['hello', 'world']);
-      const listener = jest.fn();
+      const listener = vi.fn();
       chat.addMessageListener(listener);
 
       chat.clear();

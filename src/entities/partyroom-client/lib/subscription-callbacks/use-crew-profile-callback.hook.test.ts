@@ -1,4 +1,4 @@
-jest.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/store/stores.context');
 
 import { renderHook } from '@testing-library/react';
 import type * as Crew from '@/entities/current-partyroom/model/crew.model';
@@ -11,9 +11,9 @@ import useCrewProfileCallback from './use-crew-profile-callback.hook';
 let store: ReturnType<typeof createCurrentPartyroomStore>;
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   store = createCurrentPartyroomStore();
-  (useStores as jest.Mock).mockReturnValue({ useCurrentPartyroom: store });
+  (useStores as Mock).mockReturnValue({ useCurrentPartyroom: store });
 });
 
 const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({

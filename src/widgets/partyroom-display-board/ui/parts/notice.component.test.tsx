@@ -1,17 +1,17 @@
-jest.mock('@/shared/lib/store/stores.context');
-jest.mock('@/shared/lib/localization/i18n.context', () => ({
+vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
   useI18n: () => ({ ed: { para: { empty_notice: '공지가 없습니다' } } }),
 }));
-jest.mock('react-fast-marquee', () => ({
+vi.mock('react-fast-marquee', () => ({
   __esModule: true,
   default: ({ children }: { children: React.ReactNode }) => (
     <div data-testid='marquee'>{children}</div>
   ),
 }));
-jest.mock('@/shared/ui/foundation/fonts', () => ({
+vi.mock('@/shared/ui/foundation/fonts', () => ({
   galmuriFont: { className: 'font-galmuri' },
 }));
-jest.mock('@/shared/ui/icons', () => ({
+vi.mock('@/shared/ui/icons', () => ({
   PFCampaign: (props: any) => <svg data-testid='campaign-icon' {...props} />,
 }));
 
@@ -24,9 +24,9 @@ import Notice from './notice.component';
 let store: ReturnType<typeof createCurrentPartyroomStore>;
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   store = createCurrentPartyroomStore();
-  (useStores as jest.Mock).mockReturnValue({ useCurrentPartyroom: store });
+  (useStores as Mock).mockReturnValue({ useCurrentPartyroom: store });
 });
 
 describe('Notice', () => {

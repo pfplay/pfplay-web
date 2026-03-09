@@ -7,7 +7,7 @@ describe('logger', () => {
   const mockData = { key: 'value' };
 
   beforeEach(() => {
-    consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+    consoleSpy = vi.spyOn(console, 'log').mockImplementation();
   });
 
   afterEach(() => {

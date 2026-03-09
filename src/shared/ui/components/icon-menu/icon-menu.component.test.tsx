@@ -15,7 +15,7 @@ import IconMenu from './icon-menu.component';
 import type { MenuItem } from '../menu';
 
 const createConfig = (...labels: string[]): MenuItem[] =>
-  labels.map((label) => ({ label, onClickItem: jest.fn() }));
+  labels.map((label) => ({ label, onClickItem: vi.fn() }));
 
 describe('IconMenu', () => {
   test('MenuButtonIcon을 렌더링한다', () => {
@@ -26,7 +26,7 @@ describe('IconMenu', () => {
   });
 
   test('메뉴 버튼 클릭 시 onMenuIconClick을 호출한다', () => {
-    const onMenuIconClick = jest.fn();
+    const onMenuIconClick = vi.fn();
     const { getByRole } = render(
       <IconMenu
         MenuButtonIcon={<span>아이콘</span>}

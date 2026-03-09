@@ -1,4 +1,4 @@
-jest.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/store/stores.context');
 
 import { renderHook } from '@testing-library/react';
 import { createCurrentPartyroomStore } from '@/entities/current-partyroom/model/current-partyroom.store';
@@ -9,9 +9,9 @@ import useReactionAggregationCallback from './use-reaction-aggregation-callback.
 let store: ReturnType<typeof createCurrentPartyroomStore>;
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   store = createCurrentPartyroomStore();
-  (useStores as jest.Mock).mockReturnValue({ useCurrentPartyroom: store });
+  (useStores as Mock).mockReturnValue({ useCurrentPartyroom: store });
 });
 
 describe('useReactionAggregationCallback', () => {

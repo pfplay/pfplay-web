@@ -1,16 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import UserListItem from './user-list-item.component';
 
-jest.mock('next/image', () => ({
+vi.mock('next/image', () => ({
   __esModule: true,
   default: ({ src, alt, ...rest }: any) => <img src={src} alt={alt} {...rest} />,
 }));
 
-jest.mock('@/shared/ui/components/typography', () => ({
+vi.mock('@/shared/ui/components/typography', () => ({
   Typography: ({ children }: any) => <span>{children}</span>,
 }));
 
-jest.mock('@/shared/ui/components/display-option-menu-on-hover-listener', () => ({
+vi.mock('@/shared/ui/components/display-option-menu-on-hover-listener', () => ({
   DisplayOptionMenuOnHoverListener: ({ children }: any) => (
     <div data-testid='hover-menu'>{children}</div>
   ),
@@ -40,13 +40,13 @@ describe('UserListItem', () => {
   });
 
   test('menuItemList가 있으면 hover 메뉴가 렌더링된다', () => {
-    const menuItems = [{ label: '차단', onClickItem: jest.fn() }];
+    const menuItems = [{ label: '차단', onClickItem: vi.fn() }];
     render(<UserListItem userListItemConfig={defaultConfig} menuItemList={menuItems} />);
     expect(screen.getByTestId('hover-menu')).toBeTruthy();
   });
 
   test('menuDisabled=true이면 hover 메뉴가 렌더링되지 않는다', () => {
-    const menuItems = [{ label: '차단', onClickItem: jest.fn() }];
+    const menuItems = [{ label: '차단', onClickItem: vi.fn() }];
     render(
       <UserListItem userListItemConfig={defaultConfig} menuItemList={menuItems} menuDisabled />
     );

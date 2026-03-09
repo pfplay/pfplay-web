@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import InputNumber from './input-number.component';
 
-jest.mock('@/shared/lib/functions/combine-ref', () => ({
+vi.mock('@/shared/lib/functions/combine-ref', () => ({
   combineRef: (refs: any[]) => (el: any) => {
     refs.forEach((ref) => {
       if (typeof ref === 'function') ref(el);
@@ -49,7 +49,7 @@ describe('InputNumber', () => {
   });
 
   test('onChange 콜백이 호출된다', () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     render(<InputNumber defaultValue={0} onChange={onChange} placeholder='숫자' />);
 
     const input = screen.getByPlaceholderText('숫자');

@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { GradeType } from '@/shared/api/http/types/@enums';
 import AuthorityHeadset from './authority-headset.component';
 
-jest.mock('@/shared/ui/icons', () => ({
+vi.mock('@/shared/ui/icons', () => ({
   PFHeadsetGray: (props: any) => <svg data-testid='headset-gray' {...props} />,
   PFHeadsetRed: (props: any) => <svg data-testid='headset-red' {...props} />,
 }));

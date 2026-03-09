@@ -1,20 +1,20 @@
-jest.mock('./parts/action-buttons.component', () => ({
+vi.mock('./parts/action-buttons.component', () => ({
   __esModule: true,
   default: () => <div data-testid='action-buttons' />,
 }));
-jest.mock('./parts/add-tracks-button.component', () => ({
+vi.mock('./parts/add-tracks-button.component', () => ({
   __esModule: true,
   default: () => <div data-testid='add-tracks-button' />,
 }));
-jest.mock('./parts/notice.component', () => ({
+vi.mock('./parts/notice.component', () => ({
   __esModule: true,
   default: () => <div data-testid='notice' />,
 }));
-jest.mock('./parts/video-title.component', () => ({
+vi.mock('./parts/video-title.component', () => ({
   __esModule: true,
   default: () => <div data-testid='video-title' />,
 }));
-jest.mock('./parts/video.component', () => ({
+vi.mock('./parts/video.component', () => ({
   __esModule: true,
   default: ({ width }: any) => <div data-testid='video' data-width={width} />,
 }));

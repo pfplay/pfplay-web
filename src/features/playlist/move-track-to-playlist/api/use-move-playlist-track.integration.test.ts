@@ -1,6 +1,3 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
 import { waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { useRemovePlaylistTrack } from '@/features/playlist/remove-track/api/use-remove-playlist-track.mutation';
@@ -17,7 +14,7 @@ describe('Playlist track operations integration (hook → service → MSW)', () 
 
       queryClient.setQueryData([QueryKeys.PlaylistTracks, 1], []);
       queryClient.setQueryData([QueryKeys.PlaylistTracks, 2], []);
-      const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+      const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
       result.current.mutate({ playlistId: 1, trackId: 10, targetPlaylistId: 2 });
 
@@ -71,7 +68,7 @@ describe('Playlist track operations integration (hook → service → MSW)', () 
       const { result, queryClient } = renderWithClient(() => useRemovePlaylistTrack());
 
       queryClient.setQueryData([QueryKeys.PlaylistTracks, 1], []);
-      const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+      const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
       result.current.mutate({ playlistId: 1, trackId: 10 });
 

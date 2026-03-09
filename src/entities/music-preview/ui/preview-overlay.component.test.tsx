@@ -4,12 +4,12 @@ import PreviewOverlay from './preview-overlay.component';
 describe('PreviewOverlay', () => {
   const defaultProps = {
     isPlaying: false,
-    onPlay: jest.fn(),
-    onStop: jest.fn(),
+    onPlay: vi.fn(),
+    onStop: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('초기 상태에서 오버레이 내부 컨텐츠가 숨겨져 있다', () => {
@@ -40,9 +40,9 @@ describe('PreviewOverlay', () => {
   });
 
   test('isPlaying=false 상태에서 클릭하면 onPlay 콜백이 호출된다', () => {
-    const onPlay = jest.fn();
+    const onPlay = vi.fn();
     const { container } = render(
-      <PreviewOverlay isPlaying={false} onPlay={onPlay} onStop={jest.fn()} />
+      <PreviewOverlay isPlaying={false} onPlay={onPlay} onStop={vi.fn()} />
     );
 
     const root = container.firstElementChild as HTMLElement;
@@ -52,9 +52,9 @@ describe('PreviewOverlay', () => {
   });
 
   test('isPlaying=true 상태에서 클릭하면 onStop 콜백이 호출된다', () => {
-    const onStop = jest.fn();
+    const onStop = vi.fn();
     const { container } = render(
-      <PreviewOverlay isPlaying={true} onPlay={jest.fn()} onStop={onStop} />
+      <PreviewOverlay isPlaying={true} onPlay={vi.fn()} onStop={onStop} />
     );
 
     const root = container.firstElementChild as HTMLElement;
@@ -64,7 +64,7 @@ describe('PreviewOverlay', () => {
   });
 
   test('클릭 시 이벤트 전파가 차단된다 (stopPropagation)', () => {
-    const outerHandler = jest.fn();
+    const outerHandler = vi.fn();
     const { container } = render(
       <div onClick={outerHandler}>
         <PreviewOverlay {...defaultProps} />

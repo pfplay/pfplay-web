@@ -1,6 +1,6 @@
-jest.mock('@/entities/partyroom-client');
-jest.mock('@/shared/lib/store/stores.context');
-jest.mock('../api/use-exit-partyroom.mutation');
+vi.mock('@/entities/partyroom-client');
+vi.mock('@/shared/lib/store/stores.context');
+vi.mock('../api/use-exit-partyroom.mutation');
 
 import { renderHook, act } from '@testing-library/react';
 import { usePartyroomClient } from '@/entities/partyroom-client';
@@ -8,24 +8,24 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { useExitPartyroom } from './use-exit-partyroom';
 import { useExitPartyroom as useExitPartyroomMutation } from '../api/use-exit-partyroom.mutation';
 
-const mockMutate = jest.fn();
-const mockUnsubscribe = jest.fn();
-const mockReset = jest.fn();
-const mockGetState = jest.fn();
+const mockMutate = vi.fn();
+const mockUnsubscribe = vi.fn();
+const mockReset = vi.fn();
+const mockGetState = vi.fn();
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (usePartyroomClient as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (usePartyroomClient as Mock).mockReturnValue({
     unsubscribeCurrentRoom: mockUnsubscribe,
   });
   mockGetState.mockReturnValue({ exitedOnBackend: false });
-  (useStores as jest.Mock).mockReturnValue({
+  (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: Object.assign(
       (selector: (...args: any[]) => any) => selector({ reset: mockReset }),
       { getState: mockGetState }
     ),
   });
-  (useExitPartyroomMutation as jest.Mock).mockReturnValue({ mutate: mockMutate });
+  (useExitPartyroomMutation as Mock).mockReturnValue({ mutate: mockMutate });
 });
 
 describe('useExitPartyroom (lib)', () => {

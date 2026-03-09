@@ -10,7 +10,7 @@ describe('withDebugger', () => {
       test('should call the function', () => {
         // Arrange
         const debugLevel = 0;
-        const fn = jest.fn();
+        const fn = vi.fn();
         const args = [1, 2, 3];
         window.debugLevel = debugLevel + 1;
 
@@ -24,7 +24,7 @@ describe('withDebugger', () => {
       test('should return the result of the function', () => {
         // Arrange
         const debugLevel = 0;
-        const fn = jest.fn().mockReturnValue('result');
+        const fn = vi.fn().mockReturnValue('result');
         const args = [1, 2, 3];
         window.debugLevel = debugLevel + 1;
 
@@ -40,7 +40,7 @@ describe('withDebugger', () => {
       test('should not call the function', () => {
         // Arrange
         const debugLevel = 1;
-        const fn = jest.fn();
+        const fn = vi.fn();
         const args = [1, 2, 3];
         window.debugLevel = debugLevel;
 
@@ -54,7 +54,7 @@ describe('withDebugger', () => {
       test('should return the fallback value', () => {
         // Arrange
         const debugLevel = 1;
-        const fn = jest.fn();
+        const fn = vi.fn();
         const args = [1, 2, 3];
         const fallback = 'fallback';
         window.debugLevel = debugLevel;
@@ -70,7 +70,7 @@ describe('withDebugger', () => {
       test('should not call the function', () => {
         // Arrange
         const debugLevel = 2;
-        const fn = jest.fn();
+        const fn = vi.fn();
         const args = [1, 2, 3];
         window.debugLevel = debugLevel - 1;
 
@@ -90,7 +90,7 @@ describe('withDebugger', () => {
     test('should call the function', () => {
       // Arrange
       const debugLevel = 0;
-      const fn = jest.fn();
+      const fn = vi.fn();
       const args = [1, 2, 3];
       window.debugLevel = debugLevel;
 

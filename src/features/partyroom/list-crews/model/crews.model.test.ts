@@ -2,8 +2,8 @@ import type { Model } from '@/entities/current-partyroom/model/crew.model';
 import { GradeType, MotionType } from '@/shared/api/http/types/@enums';
 
 // barrel export에 JSX 포함된 훅이 있어 직접 모듈 경로로 모킹
-jest.mock('@/entities/current-partyroom', () => ({
-  Crew: jest.requireActual('@/entities/current-partyroom/model/crew.model'),
+vi.mock('@/entities/current-partyroom', async () => ({
+  Crew: await vi.importActual('@/entities/current-partyroom/model/crew.model'),
 }));
 
 import { categorizeByGradeType } from './crews.model';

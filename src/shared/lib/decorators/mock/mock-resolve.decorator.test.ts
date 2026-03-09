@@ -4,12 +4,12 @@ describe('MockResolve decorator', () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     process.env = { ...originalEnv, NODE_ENV: 'test', NEXT_PUBLIC_USE_MOCK: 'true' };
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
     process.env = originalEnv;
   });
 
@@ -23,7 +23,7 @@ describe('MockResolve decorator', () => {
 
     const service = new TestService();
     const promise = service.fetchData();
-    jest.runAllTimers();
+    vi.runAllTimers();
     await expect(promise).resolves.toEqual({ id: 1 });
   });
 
@@ -37,7 +37,7 @@ describe('MockResolve decorator', () => {
 
     const service = new TestService();
     const promise = service.fetchData();
-    jest.runAllTimers();
+    vi.runAllTimers();
     await expect(promise).rejects.toThrow('mock error');
   });
 
@@ -50,14 +50,14 @@ describe('MockResolve decorator', () => {
     }
 
     const service = new TestService();
-    const callback = jest.fn();
+    const callback = vi.fn();
     service.fetchData().then(callback);
 
-    jest.advanceTimersByTime(499);
+    vi.advanceTimersByTime(499);
     await Promise.resolve();
     expect(callback).not.toHaveBeenCalled();
 
-    jest.advanceTimersByTime(1);
+    vi.advanceTimersByTime(1);
     await Promise.resolve();
     expect(callback).toHaveBeenCalledWith('delayed');
   });

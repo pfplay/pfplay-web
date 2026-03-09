@@ -1,6 +1,3 @@
-/**
- * @jest-environment <rootDir>/src/shared/api/__test__/jest-msw-env.ts
- */
 import '@/shared/api/__test__/msw-server';
 import { act } from '@testing-library/react';
 import { renderWithClient } from '@/shared/api/__test__/test-utils';

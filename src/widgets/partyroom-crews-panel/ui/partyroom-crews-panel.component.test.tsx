@@ -1,12 +1,12 @@
-jest.mock('@/features/partyroom/list-crews', () => ({
-  useCurrentPartyroomCrews: jest.fn(),
+vi.mock('@/features/partyroom/list-crews', () => ({
+  useCurrentPartyroomCrews: vi.fn(),
 }));
-jest.mock('@/shared/lib/localization/i18n.context');
-jest.mock('./parts/all-crews-panel.component', () => ({
+vi.mock('@/shared/lib/localization/i18n.context');
+vi.mock('./parts/all-crews-panel.component', () => ({
   __esModule: true,
   default: () => <div data-testid='all-crews-panel' />,
 }));
-jest.mock('./parts/restriction-panel.component', () => ({
+vi.mock('./parts/restriction-panel.component', () => ({
   __esModule: true,
   default: () => <div data-testid='restriction-panel' />,
 }));
@@ -17,13 +17,9 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import PartyroomCrewsPanel from './partyroom-crews-panel.component';
 
 beforeEach(() => {
-  jest.clearAllMocks();
-  (useCurrentPartyroomCrews as jest.Mock).mockReturnValue([
-    { crewId: 1 },
-    { crewId: 2 },
-    { crewId: 3 },
-  ]);
-  (useI18n as jest.Mock).mockReturnValue({
+  vi.clearAllMocks();
+  (useCurrentPartyroomCrews as Mock).mockReturnValue([{ crewId: 1 }, { crewId: 2 }, { crewId: 3 }]);
+  (useI18n as Mock).mockReturnValue({
     crews: {
       title: {
         all_count: 'All ({count})',

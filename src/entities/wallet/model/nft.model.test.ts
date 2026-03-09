@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { refineList } from './nft.model';
 
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+vi.mock('axios');
+const mockedAxios = axios as Mocked<typeof axios>;
 
 const createNft = (thumbnailUrl: string | null = 'https://example.com/nft.png', name = 'TestNFT') =>
   ({
@@ -13,7 +13,7 @@ const createNft = (thumbnailUrl: string | null = 'https://example.com/nft.png', 
 describe('nft model', () => {
   describe('refineList', () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test('이미지 헬스체크 통과한 NFT만 반환', async () => {
