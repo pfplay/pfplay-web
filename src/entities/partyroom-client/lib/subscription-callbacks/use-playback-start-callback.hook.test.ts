@@ -37,16 +37,13 @@ const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({
 });
 
 const createPlaybackEvent = () => ({
-  eventType: PartyroomEventType.PLAYBACK_START as const,
+  eventType: PartyroomEventType.PLAYBACK_STARTED as const,
   crewId: 10,
   playback: {
     linkId: 'yt-abc123',
     name: '테스트 곡',
     duration: '03:45',
     thumbnailImage: 'thumb.jpg',
-    likeCount: 5,
-    dislikeCount: 1,
-    grabCount: 2,
   },
 });
 
@@ -77,9 +74,9 @@ describe('usePlaybackStartCallback', () => {
 
     const reaction = store.getState().reaction;
     expect(reaction.aggregation).toEqual({
-      likeCount: 5,
-      dislikeCount: 1,
-      grabCount: 2,
+      likeCount: 0,
+      dislikeCount: 0,
+      grabCount: 0,
     });
   });
 

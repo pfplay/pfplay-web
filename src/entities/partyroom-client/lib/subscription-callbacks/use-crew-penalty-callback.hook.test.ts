@@ -69,7 +69,7 @@ describe('useCrewPenaltyCallback', () => {
       const callback = result.current;
 
       callback({
-        eventType: PartyroomEventType.CREW_PENALTY,
+        eventType: PartyroomEventType.CREW_PENALIZED,
         penaltyType: PenaltyType.CHAT_MESSAGE_REMOVAL,
         detail: 'target-msg',
         punisher: { crewId: 1 },
@@ -99,7 +99,7 @@ describe('useCrewPenaltyCallback', () => {
       const callback = result.current;
 
       callback({
-        eventType: PartyroomEventType.CREW_PENALTY,
+        eventType: PartyroomEventType.CREW_PENALIZED,
         penaltyType: PenaltyType.CHAT_MESSAGE_REMOVAL,
         detail: 'some-msg',
         punisher: { crewId: 999 },
@@ -126,7 +126,7 @@ describe('useCrewPenaltyCallback', () => {
       const callback = result.current;
 
       callback({
-        eventType: PartyroomEventType.CREW_PENALTY,
+        eventType: PartyroomEventType.CREW_PENALIZED,
         penaltyType: PenaltyType.CHAT_BAN_30_SECONDS,
         detail: '도배 행위',
         punisher: { crewId: 1 },
@@ -154,7 +154,7 @@ describe('useCrewPenaltyCallback', () => {
       const callback = result.current;
 
       callback({
-        eventType: PartyroomEventType.CREW_PENALTY,
+        eventType: PartyroomEventType.CREW_PENALIZED,
         penaltyType: PenaltyType.ONE_TIME_EXPULSION,
         detail: '부적절한 행위',
         punisher: { crewId: 1 },

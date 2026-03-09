@@ -50,7 +50,7 @@ describe('usePartyroomDeactivationCallback', () => {
     const { result } = renderHook(() => usePartyroomDeactivationCallback());
     const callback = result.current;
 
-    callback({ eventType: PartyroomEventType.PARTYROOM_DEACTIVATION });
+    callback({ eventType: PartyroomEventType.PLAYBACK_DEACTIVATED });
 
     const state = store.getState();
     expect(state.id).toBeUndefined();
@@ -64,7 +64,7 @@ describe('usePartyroomDeactivationCallback', () => {
     const { result } = renderHook(() => usePartyroomDeactivationCallback());
     const callback = result.current;
 
-    callback({ eventType: PartyroomEventType.PARTYROOM_DEACTIVATION });
+    callback({ eventType: PartyroomEventType.PLAYBACK_DEACTIVATED });
 
     expect(mockInvalidateDjingQueue).toHaveBeenCalledTimes(1);
   });

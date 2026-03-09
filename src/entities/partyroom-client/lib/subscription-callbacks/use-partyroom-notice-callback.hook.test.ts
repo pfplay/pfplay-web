@@ -20,7 +20,7 @@ describe('usePartyroomNoticeCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.PARTYROOM_NOTICE,
+      eventType: PartyroomEventType.PARTYROOM_NOTICE_UPDATED,
       content: '새로운 공지사항입니다',
     });
 
@@ -35,7 +35,7 @@ describe('usePartyroomNoticeCallback', () => {
     store.getState().updateNotice('기존 공지');
 
     callback({
-      eventType: PartyroomEventType.PARTYROOM_NOTICE,
+      eventType: PartyroomEventType.PARTYROOM_NOTICE_UPDATED,
       content: '',
     });
 

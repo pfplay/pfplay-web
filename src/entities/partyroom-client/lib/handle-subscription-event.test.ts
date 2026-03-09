@@ -24,7 +24,11 @@ jest.mock('./subscription-callbacks/use-crew-profile-callback.hook', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-jest.mock('./subscription-callbacks/use-partyroom-access-callback.hook', () => ({
+jest.mock('./subscription-callbacks/use-crew-entered-callback.hook', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+jest.mock('./subscription-callbacks/use-crew-exited-callback.hook', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
@@ -40,10 +44,6 @@ jest.mock('./subscription-callbacks/use-partyroom-notice-callback.hook', () => (
   __esModule: true,
   default: jest.fn(),
 }));
-jest.mock('./subscription-callbacks/use-playback-skip-callback.hook', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}));
 jest.mock('./subscription-callbacks/use-playback-start-callback.hook', () => ({
   __esModule: true,
   default: jest.fn(),
@@ -56,20 +56,25 @@ jest.mock('./subscription-callbacks/use-reaction-motion-callback.hook', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
+jest.mock('./subscription-callbacks/use-dj-queue-changed-callback.hook', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
 
 import { renderHook } from '@testing-library/react';
 import { PartyroomEventType } from '@/shared/api/websocket/types/partyroom';
 import { warnLog } from '@/shared/lib/functions/log/logger';
 import useHandleSubscriptionEvent from './handle-subscription-event';
 import useChatCallback from './subscription-callbacks/use-chat-callback.hook';
+import useCrewEnteredCallback from './subscription-callbacks/use-crew-entered-callback.hook';
+import useCrewExitedCallback from './subscription-callbacks/use-crew-exited-callback.hook';
 import useCrewGradeCallback from './subscription-callbacks/use-crew-grade-callback.hook';
 import useCrewPenaltyCallback from './subscription-callbacks/use-crew-penalty-callback.hook';
 import useCrewProfileCallback from './subscription-callbacks/use-crew-profile-callback.hook';
-import usePartyroomAccessCallback from './subscription-callbacks/use-partyroom-access-callback.hook';
+import useDjQueueChangedCallback from './subscription-callbacks/use-dj-queue-changed-callback.hook';
 import usePartyroomCloseCallback from './subscription-callbacks/use-partyroom-close-callback.hook';
 import usePartyroomDeactivationCallback from './subscription-callbacks/use-partyroom-deactivation-callback.hook';
 import usePartyroomNoticeCallback from './subscription-callbacks/use-partyroom-notice-callback.hook';
-import usePlaybackSkipCallback from './subscription-callbacks/use-playback-skip-callback.hook';
 import usePlaybackStartCallback from './subscription-callbacks/use-playback-start-callback.hook';
 import useReactionAggregationCallback from './subscription-callbacks/use-reaction-aggregation-callback.hook';
 import useReactionMotionCallback from './subscription-callbacks/use-reaction-motion-callback.hook';
@@ -82,64 +87,69 @@ type EventTypeToHook = {
 
 const CALLBACK_MAP: EventTypeToHook[] = [
   {
-    eventType: PartyroomEventType.PARTYROOM_CLOSE,
+    eventType: PartyroomEventType.PARTYROOM_CLOSED,
     hook: usePartyroomCloseCallback as jest.Mock,
     label: 'usePartyroomCloseCallback',
   },
   {
-    eventType: PartyroomEventType.PARTYROOM_DEACTIVATION,
+    eventType: PartyroomEventType.PLAYBACK_DEACTIVATED,
     hook: usePartyroomDeactivationCallback as jest.Mock,
     label: 'usePartyroomDeactivationCallback',
   },
   {
-    eventType: PartyroomEventType.PARTYROOM_ACCESS,
-    hook: usePartyroomAccessCallback as jest.Mock,
-    label: 'usePartyroomAccessCallback',
+    eventType: PartyroomEventType.CREW_ENTERED,
+    hook: useCrewEnteredCallback as jest.Mock,
+    label: 'useCrewEnteredCallback',
   },
   {
-    eventType: PartyroomEventType.PARTYROOM_NOTICE,
+    eventType: PartyroomEventType.CREW_EXITED,
+    hook: useCrewExitedCallback as jest.Mock,
+    label: 'useCrewExitedCallback',
+  },
+  {
+    eventType: PartyroomEventType.PARTYROOM_NOTICE_UPDATED,
     hook: usePartyroomNoticeCallback as jest.Mock,
     label: 'usePartyroomNoticeCallback',
   },
   {
-    eventType: PartyroomEventType.REACTION_AGGREGATION,
+    eventType: PartyroomEventType.REACTION_AGGREGATION_UPDATED,
     hook: useReactionAggregationCallback as jest.Mock,
     label: 'useReactionAggregationCallback',
   },
   {
-    eventType: PartyroomEventType.REACTION_MOTION,
+    eventType: PartyroomEventType.REACTION_PERFORMED,
     hook: useReactionMotionCallback as jest.Mock,
     label: 'useReactionMotionCallback',
   },
   {
-    eventType: PartyroomEventType.PLAYBACK_START,
+    eventType: PartyroomEventType.PLAYBACK_STARTED,
     hook: usePlaybackStartCallback as jest.Mock,
     label: 'usePlaybackStartCallback',
   },
   {
-    eventType: PartyroomEventType.PLAYBACK_SKIP,
-    hook: usePlaybackSkipCallback as jest.Mock,
-    label: 'usePlaybackSkipCallback',
-  },
-  {
-    eventType: PartyroomEventType.CHAT,
+    eventType: PartyroomEventType.CHAT_MESSAGE_SENT,
     hook: useChatCallback as jest.Mock,
     label: 'useChatCallback',
   },
   {
-    eventType: PartyroomEventType.CREW_GRADE,
+    eventType: PartyroomEventType.CREW_GRADE_CHANGED,
     hook: useCrewGradeCallback as jest.Mock,
     label: 'useCrewGradeCallback',
   },
   {
-    eventType: PartyroomEventType.CREW_PENALTY,
+    eventType: PartyroomEventType.CREW_PENALIZED,
     hook: useCrewPenaltyCallback as jest.Mock,
     label: 'useCrewPenaltyCallback',
   },
   {
-    eventType: PartyroomEventType.CREW_PROFILE,
+    eventType: PartyroomEventType.CREW_PROFILE_CHANGED,
     hook: useCrewProfileCallback as jest.Mock,
     label: 'useCrewProfileCallback',
+  },
+  {
+    eventType: PartyroomEventType.DJ_QUEUE_CHANGED,
+    hook: useDjQueueChangedCallback as jest.Mock,
+    label: 'useDjQueueChangedCallback',
   },
 ];
 
@@ -169,10 +179,10 @@ describe('useHandleSubscriptionEvent', () => {
     const { result } = renderHook(() => useHandleSubscriptionEvent());
     const handler = result.current;
 
-    const event = { eventType: PartyroomEventType.CHAT, message: { content: 'hi' } };
+    const event = { eventType: PartyroomEventType.CHAT_MESSAGE_SENT, message: { content: 'hi' } };
     handler(createMessage(JSON.stringify(event)));
 
-    expect(callbacks.get(PartyroomEventType.CHAT)).toHaveBeenCalledWith(event);
+    expect(callbacks.get(PartyroomEventType.CHAT_MESSAGE_SENT)).toHaveBeenCalledWith(event);
   });
 
   test('유효한 JSON + eventType 없음 → 아무 콜백도 호출되지 않는다', () => {

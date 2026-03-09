@@ -1,5 +1,5 @@
 import { useRemoveCurrentPartyroomCaches } from '@/entities/current-partyroom';
-import { PartyroomCloseEvent } from '@/shared/api/websocket/types/partyroom';
+import { PartyroomClosedEvent } from '@/shared/api/websocket/types/partyroom';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -13,7 +13,7 @@ export default function usePartyroomCloseCallback() {
   const { openAlertDialog } = useDialog();
   const t = useI18n();
 
-  return (_event: PartyroomCloseEvent) => {
+  return (_event: PartyroomClosedEvent) => {
     router.replace('/parties');
     reset();
     removeCurrentPartyroomCaches();

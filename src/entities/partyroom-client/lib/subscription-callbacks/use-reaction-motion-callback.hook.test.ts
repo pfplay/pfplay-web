@@ -40,7 +40,7 @@ describe('useReactionMotionCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.REACTION_MOTION,
+      eventType: PartyroomEventType.REACTION_PERFORMED,
       motionType: MotionType.DANCE_TYPE_1,
       reactionType: ReactionType.LIKE,
       crew: { crewId: 1 },
@@ -63,7 +63,7 @@ describe('useReactionMotionCallback', () => {
     const callback = result.current;
 
     callback({
-      eventType: PartyroomEventType.REACTION_MOTION,
+      eventType: PartyroomEventType.REACTION_PERFORMED,
       motionType: MotionType.DANCE_TYPE_2,
       reactionType: ReactionType.DISLIKE,
       crew: { crewId: 1 },
