@@ -41,7 +41,7 @@ export default function SelectedAvatarStateProvider({ children }: { children: Re
         scale: me.scale,
       });
     }
-  }, [bodies, selectedBody, selectedFacePos]);
+  }, [bodies, selectedBody]);
 
   return (
     <SelectedAvatarStateContext.Provider value={contextValue}>

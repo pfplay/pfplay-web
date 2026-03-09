@@ -41,7 +41,7 @@ const ProtectedLayout = ({ children }: PropsWithChildren) => {
 
   usePartyroomEnterErrorAlerts();
 
-  if (isLoading || isSigningIn || !me) {
+  if (isLoading || isSigningIn || !me || !me.profileUpdated) {
     return null;
   }
 

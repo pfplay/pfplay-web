@@ -1,15 +1,19 @@
 'use client';
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useFetchMe } from '@/entities/me';
 import { PartyroomClient, PartyroomClientContext } from '@/entities/partyroom-client';
 
 export default function PartyroomConnectionProvider({ children }: { children: ReactNode }) {
   const { data: me } = useFetchMe();
   const clientRef = useRef<PartyroomClient | null>(null);
+  const [mounted, setMounted] = useState(false);
 
-  if (typeof window !== 'undefined' && !clientRef.current) {
-    clientRef.current = new PartyroomClient();
-  }
+  useEffect(() => {
+    if (!clientRef.current) {
+      clientRef.current = new PartyroomClient();
+    }
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     /**
@@ -20,7 +24,7 @@ export default function PartyroomConnectionProvider({ children }: { children: Re
     if (me && clientRef.current && !clientRef.current.connected) {
       clientRef.current.connect();
     }
-  }, [me]);
+  }, [me, mounted]);
 
   return (
     <PartyroomClientContext.Provider value={clientRef.current}>
