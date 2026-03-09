@@ -40,7 +40,7 @@ describe('PartyroomsService integration (axios → interceptors → MSW)', () =>
 
     it('rejects with PTR-003 on capacity exceeded', async () => {
       server.use(
-        http.post('http://localhost:8080/api/v1/partyrooms/:id/enter', () => {
+        http.post('http://localhost:8080/api/v1/partyrooms/:id/crews', () => {
           return HttpResponse.json(
             {
               data: {
@@ -67,7 +67,7 @@ describe('PartyroomsService integration (axios → interceptors → MSW)', () =>
 
     it('rejects with PTR-001 when room not found', async () => {
       server.use(
-        http.post('http://localhost:8080/api/v1/partyrooms/:id/enter', () => {
+        http.post('http://localhost:8080/api/v1/partyrooms/:id/crews', () => {
           return HttpResponse.json(
             {
               data: {
@@ -93,7 +93,7 @@ describe('PartyroomsService integration (axios → interceptors → MSW)', () =>
 
     it('rejects with PTR-002 when room already terminated', async () => {
       server.use(
-        http.post('http://localhost:8080/api/v1/partyrooms/:id/enter', () => {
+        http.post('http://localhost:8080/api/v1/partyrooms/:id/crews', () => {
           return HttpResponse.json(
             {
               data: {

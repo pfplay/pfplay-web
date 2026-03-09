@@ -32,7 +32,7 @@ describe('useExitPartyroom 통합', () => {
 
   test('API 에러 시 isError가 true가 된다', async () => {
     server.use(
-      http.post(`${API}v1/partyrooms/:id/exit`, () =>
+      http.delete(`${API}v1/partyrooms/:id/crews/me`, () =>
         HttpResponse.json(
           { errorCode: ErrorCode.ACTIVE_ANOTHER_ROOM, reason: 'error' },
           { status: 400 }

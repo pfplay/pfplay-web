@@ -13,7 +13,7 @@ describe('DjsService integration (axios → interceptors → MSW)', () => {
 
     it('rejects with DJ-001 when already registered', async () => {
       server.use(
-        http.post('http://localhost:8080/api/v1/partyrooms/:id/djs', () => {
+        http.post('http://localhost:8080/api/v1/partyrooms/:id/dj-queue', () => {
           return HttpResponse.json(
             {
               data: {
@@ -39,7 +39,7 @@ describe('DjsService integration (axios → interceptors → MSW)', () => {
 
     it('rejects with DJ-002 when queue is closed', async () => {
       server.use(
-        http.post('http://localhost:8080/api/v1/partyrooms/:id/djs', () => {
+        http.post('http://localhost:8080/api/v1/partyrooms/:id/dj-queue', () => {
           return HttpResponse.json(
             {
               data: {
@@ -64,7 +64,7 @@ describe('DjsService integration (axios → interceptors → MSW)', () => {
 
     it('rejects with DJ-003 when playlist is empty', async () => {
       server.use(
-        http.post('http://localhost:8080/api/v1/partyrooms/:id/djs', () => {
+        http.post('http://localhost:8080/api/v1/partyrooms/:id/dj-queue', () => {
           return HttpResponse.json(
             {
               data: {
