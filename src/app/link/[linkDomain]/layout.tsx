@@ -22,11 +22,12 @@ async function fetchPartyroomByLink(linkDomain: string): Promise<PartyroomOG | n
 }
 
 type Props = {
-  params: { linkDomain: string };
+  params: Promise<{ linkDomain: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const partyroom = await fetchPartyroomByLink(params.linkDomain);
+  const { linkDomain } = await params;
+  const partyroom = await fetchPartyroomByLink(linkDomain);
 
   return {
     title: partyroom?.title ?? 'PFPlay',
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: partyroom?.title ?? 'PFPlay',
       description: partyroom?.introduction ?? 'PFP Playground for music',
       type: 'website',
-      images: [`/api/og?linkDomain=${params.linkDomain}`],
+      images: [`/api/og?linkDomain=${linkDomain}`],
     },
   };
 }

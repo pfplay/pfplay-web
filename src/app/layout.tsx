@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }: PropsWithChildren) => {
   const dictionary = await getServerDictionary();
-  const lang = cookies().get(LANGUAGE_COOKIE_KEY)?.value || Language.En;
+  const lang = (await cookies()).get(LANGUAGE_COOKIE_KEY)?.value || Language.En;
 
   return (
     <html lang={lang}>

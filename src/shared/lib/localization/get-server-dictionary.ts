@@ -7,7 +7,7 @@ const dictionary = {
 };
 
 export const getServerDictionary: () => ReturnType<(typeof dictionary)['en']> = async () => {
-  const lang = cookies().get(LANGUAGE_COOKIE_KEY)?.value as Language;
+  const lang = (await cookies()).get(LANGUAGE_COOKIE_KEY)?.value as Language;
 
   if (!lang) {
     console.error('empty language in cookie');
