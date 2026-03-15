@@ -2,7 +2,7 @@
 import { Avatar } from '@/entities/avatar';
 import { BASE_SCALE, BASE_X, BASE_Y } from '@/entities/avatar/config/base-size';
 import { Crew } from '@/entities/current-partyroom';
-import { PFChatOutlineOff, PFCinemaView, PFFullscreen, PFTheaterView } from '@/shared/ui/icons';
+import { PFChatOutlineOff, PFDefault, PFFull, PFTheater } from '@/shared/ui/icons';
 import ActionButtons from './action-buttons.component';
 import VideoTitle from './video-title.component';
 import VolumeControl from './volume-control.component';
@@ -69,7 +69,7 @@ export default function CinemaFooter({
             className='flex flex-col items-center gap-1 w-11 cursor-pointer hover:opacity-80 transition-opacity'
             title='Default'
           >
-            <PFCinemaView width={24} height={24} className='text-gray-300' />
+            <PFDefault width={24} height={24} className='text-gray-300' />
             <span className='text-gray-300 text-xs'>Default</span>
           </button>
           {isFullscreen ? (
@@ -78,7 +78,7 @@ export default function CinemaFooter({
               className='flex flex-col items-center gap-1 w-11 cursor-pointer hover:opacity-80 transition-opacity'
               title='Theater'
             >
-              <PFTheaterView width={24} height={24} className='text-gray-300' />
+              <PFTheater width={24} height={24} className='text-gray-300' />
               <span className='text-gray-300 text-xs'>Theater</span>
             </button>
           ) : (
@@ -88,7 +88,7 @@ export default function CinemaFooter({
                 className='flex flex-col items-center gap-1 w-11 cursor-pointer hover:opacity-80 transition-opacity'
                 title='Full'
               >
-                <PFFullscreen width={24} height={24} className='text-gray-300' />
+                <PFFull width={24} height={24} className='text-gray-300' />
                 <span className='text-gray-300 text-xs'>Full</span>
               </button>
               <button

@@ -8,9 +8,9 @@ vi.mock('@/entities/avatar', () => ({
   Avatar: () => <div data-testid='avatar' />,
 }));
 vi.mock('@/shared/ui/icons', () => ({
-  PFCinemaView: () => <svg data-testid='icon-cinema-view' />,
-  PFFullscreen: () => <svg data-testid='icon-fullscreen' />,
-  PFTheaterView: () => <svg data-testid='icon-theater-view' />,
+  PFDefault: () => <svg data-testid='icon-default' />,
+  PFFull: () => <svg data-testid='icon-full' />,
+  PFTheater: () => <svg data-testid='icon-theater' />,
   PFChatOutlineOff: () => <svg data-testid='icon-chat-outline-off' />,
 }));
 vi.mock('./action-buttons.component', () => ({
@@ -36,7 +36,7 @@ const mockDjCrew: Crew.Model = {
   offsetX: 0,
   offsetY: 0,
   scale: 1,
-  motionType: MotionType.IDLE,
+  motionType: MotionType.NONE,
 };
 
 const defaultProps = {

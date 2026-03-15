@@ -1,6 +1,6 @@
 'use client';
 import { useStores } from '@/shared/lib/store/stores.context';
-import { PFFullscreen, PFTheaterView } from '@/shared/ui/icons';
+import { PFFull, PFTheater } from '@/shared/ui/icons';
 import VolumeControl from './volume-control.component';
 
 type Props = {
@@ -22,7 +22,7 @@ export default function VideoControls({ onTheater, onFull }: Props) {
             className='flex items-center gap-2 bg-[#2f2f2f] h-9 px-4 rounded text-[#fdfdfd] text-sm cursor-pointer'
             title='Theater'
           >
-            <PFTheaterView width={16} height={16} className='text-gray-50' />
+            <PFTheater width={16} height={16} className='text-gray-50' />
             <span>Theater</span>
           </button>
         )}
@@ -31,7 +31,7 @@ export default function VideoControls({ onTheater, onFull }: Props) {
           className='flex items-center gap-2 bg-[#2f2f2f] h-9 px-4 rounded text-[#fdfdfd] text-sm cursor-pointer'
           title='Full'
         >
-          <PFFullscreen width={16} height={16} className='text-gray-50' />
+          <PFFull width={16} height={16} className='text-gray-50' />
           <span>Full</span>
         </button>
       </div>
