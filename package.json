@@ -8,6 +8,10 @@
     "prepare": "husky install && yarn svgr",
     "dev": "next dev --experimental-https --turbo",
     "build": "next build && ./scripts/setup-standalone.sh",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf:typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "start": "next start",
     "pm2": "pm2 start yarn --interpreter bash -- start && pm2 monit",
     "test": "vitest run",
@@ -26,6 +30,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@headlessui/react": "^2.1.2",
     "@hookform/resolvers": "^2.9.10",
+    "@opennextjs/cloudflare": "^1.17.1",
     "@rainbow-me/rainbowkit": "2.2.1",
     "@resvg/resvg-js": "^2.6.2",
     "@stomp/stompjs": "^7.0.0",
@@ -40,7 +45,8 @@
     "html2canvas": "^1.4.1",
     "lottie-react": "^2.4.0",
     "moveable-helper": "^0.4.0",
-    "next": "14.2.15",
+    "next": "^15.2.9",
+    "pino-pretty": "^13.1.3",
     "pm2": "^5.4.1",
     "postcss-nesting": "^12.0.1",
     "react": "^18.2.0",
@@ -113,7 +119,8 @@
     "type-fest": "^4.20.1",
     "typescript-eslint": "^8.20.0",
     "vitest": "^4.0.18",
-    "webpack": "5.94.0"
+    "webpack": "5.94.0",
+    "wrangler": "^4.72.0"
   },
   "engines": {
     "node": ">=20.16.0",
