@@ -1,0 +1,14 @@
+name: vercel build check
+
+on:
+  pull_request:
+    branches: [development, main]
+
+jobs:
+  build:
+    name: vercel build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: npx vercel build --yes --token=${{ secrets.VERCEL_TOKEN }}
