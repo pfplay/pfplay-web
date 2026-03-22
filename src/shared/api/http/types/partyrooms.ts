@@ -1,0 +1,330 @@
+import {
+  AvatarCompositionType,
+  GradeType,
+  MotionType,
+  PenaltyType,
+  QueueStatus,
+  ReactionType,
+  StageType,
+} from '@/shared/api/http/types/@enums';
+
+export type CreatePartyroomPayload = {
+  title: string;
+  introduction: string;
+  linkDomain?: string;
+  playbackTimeLimit: number;
+};
+
+export type EditPartyroomPayload = {
+  partyroomId: number;
+  title: string;
+  introduction: string;
+  linkDomain?: string;
+  playbackTimeLimit: number;
+};
+
+export type ClosePartyroomPayload = {
+  partyroomId: number;
+};
+
+export type CreatePartyroomResponse = {
+  partyroomId: number;
+};
+
+export type PartyroomDetailSummary = {
+  title: string;
+  introduction: string;
+  linkDomain: string;
+  playbackTimeLimit: number;
+  currentDj: Pick<PartyroomCrew, 'crewId' | 'nickname' | 'avatarIconUri'>;
+};
+
+export type PartyroomSummary = {
+  partyroomId: number;
+  stageType: StageType;
+  title: string;
+  introduction: string;
+  crewCount: number;
+  /**
+   * false 인 경우 playback이 null
+   */
+  playbackActivated: boolean;
+  playback?: {
+    name: string;
+    thumbnailImage: string;
+  };
+  /**
+   * 최소한 호스트 1명에 대한 정보는 있음
+   */
+  primaryIcons: {
+    avatarIconUri: string;
+  }[];
+};
+
+export type GetSetupInfoPayload = {
+  partyroomId: number;
+};
+
+export type PartyroomCrew = {
+  crewId: number;
+  nickname: string;
+  gradeType: GradeType;
+  avatarCompositionType: AvatarCompositionType;
+  avatarBodyUri: string;
+  /**
+   * SINGLE_BODY일 경우 빈 문자열
+   */
+  avatarFaceUri: string;
+  avatarIconUri: string;
+  combinePositionX: number;
+  combinePositionY: number;
+  offsetX: number;
+  offsetY: number;
+  scale: number;
+};
+
+export type PartyroomPlayback = {
+  id: number;
+  name: string;
+  linkId: string;
+  duration: string; // 00:00 형식의 문자열
+  thumbnailImage: string;
+  endTime: number; // UTC 기준 UNIX timestamp, ex) 1722750394821
+};
+
+export type PartyroomReaction = {
+  /**
+   * 이전에 '내가' 클릭했는지 여부
+   */
+  history: {
+    isLiked: boolean;
+    isDisliked: boolean;
+    isGrabbed: boolean;
+  };
+  /**
+   * 현재까지의 반응 수
+   */
+  aggregation: {
+    likeCount: number;
+    dislikeCount: number;
+    grabCount: number;
+  };
+  /**
+   * 춤추고 있는 유저들의 정보
+   */
+  motion: {
+    motionType: MotionType;
+    crewIds: number[];
+  }[];
+};
+
+export type GetSetUpInfoResponse = {
+  crews: PartyroomCrew[];
+  display: {
+    /**
+     * false 인 경우 playback과 reaction이 null
+     */
+    playbackActivated: boolean;
+    playback?: PartyroomPlayback;
+    reaction?: PartyroomReaction;
+    currentDj?: Pick<PartyroomCrew, 'crewId'>;
+  };
+};
+
+export type GetDjingQueuePayload = {
+  partyroomId: number;
+};
+
+export type ChangeDjQueueStatusPayload = {
+  partyroomId: number;
+  queueStatus: QueueStatus;
+};
+
+export type DeleteDjFromQueuePayload = {
+  partyroomId: number;
+  djId: string;
+};
+
+export type Dj = {
+  crewId: number;
+  orderNumber: number;
+  nickname: string;
+  avatarIconUri: string;
+};
+
+export type DjingQueue = {
+  playbackActivated: boolean;
+  /**
+   * 대기열 잠금 여부
+   */
+  queueStatus: QueueStatus;
+  /**
+   * 본인이 대기열에 등록되었는지 여부
+   */
+  registered: boolean;
+  playback?: {
+    name: string;
+    thumbnailImage: string;
+    duration: string;
+  };
+  /**
+   * Dj 대기열에 1명만 존재하는 상황에서 새로운 Dj가 대기열에 추가된다고 가정하면, 현재 재생곡이 끝난다면 새로운 Dj에게 차례를 넘기는 것이 자연스럽다.
+   * 이것은 순서 회전이 곡 완료를 기점으로 연산되어야 한다는 의미이다. 즉, 언제나 orderNumber가 1인 Dj는 현재 재생곡의 Dj이다.
+   */
+  djs: Dj[];
+};
+
+export type GetNoticePayload = {
+  partyroomId: number;
+};
+
+export type GetNoticeResponse = {
+  content?: string;
+};
+
+export type EnterPayload = {
+  partyroomId: number;
+};
+
+export type GetPartyroomDetailSummaryPayload = {
+  partyroomId: number;
+};
+
+export type EnterResponse = {
+  crewId: number;
+  gradeType: GradeType;
+};
+
+export type ExitPayload = {
+  partyroomId: number;
+};
+
+export type AdjustGradePayload = {
+  partyroomId: number;
+  crewId: number;
+  gradeType: GradeType;
+};
+
+export type ReactionPayload = {
+  partyroomId: number;
+  reactionType: ReactionType;
+};
+
+export type GetPartyroomByLinkPayload = {
+  linkDomain: string;
+};
+
+export type GetPartyroomByLinkResponse = {
+  partyroomId: number;
+  title: string;
+  introduction: string;
+  playback: {
+    name: string;
+    thumbnailImage: string;
+  } | null;
+  crewCount: number;
+};
+
+export type ReactionResponse = {
+  isLiked: boolean;
+  isDisliked: boolean;
+  isGrabbed: boolean;
+};
+
+export type GetPenaltyListPayload = {
+  partyroomId: number;
+};
+
+export type Penalty = {
+  penaltyId: number;
+  penaltyType: PenaltyType;
+  crewId: number;
+  avatarIconUri: string;
+  nickname: string;
+};
+
+export type ImposePenaltyPayload = {
+  partyroomId: number;
+  crewId: number;
+  penaltyType: PenaltyType;
+  detail: string;
+};
+
+export type LiftPenaltyPayload = {
+  partyroomId: number;
+  penaltyId: number;
+};
+
+export interface PartyroomsClient {
+  /**
+   * 파티룸 생성
+   */
+  create(payload: CreatePartyroomPayload): Promise<CreatePartyroomResponse>;
+  /**
+   * 파티룸 수정
+   */
+  edit: (payload: EditPartyroomPayload) => Promise<void>;
+  /**
+   * 파티룸 목록 조회
+   */
+  getList: () => Promise<PartyroomSummary[]>;
+  /**
+   * 파티룸 폐쇄
+   */
+  close: (payload: ClosePartyroomPayload) => Promise<void>;
+  /**
+   * 파티룸 정보 조회
+   */
+  getPartyroomDetailSummary: (
+    payload: GetPartyroomDetailSummaryPayload
+  ) => Promise<PartyroomDetailSummary>;
+  /**
+   * 파티룸 초기화 정보 조회
+   */
+  getSetupInfo: (payload: GetSetupInfoPayload) => Promise<GetSetUpInfoResponse>;
+  /**
+   * DJ 대기열 조회
+   */
+  getDjingQueue: (payload: GetDjingQueuePayload) => Promise<DjingQueue>;
+  /**
+   * DJ 대기열 상태 변경
+   */
+  changeDjQueueStatus: (payload: ChangeDjQueueStatusPayload) => Promise<void>;
+  /**
+   * 공지사항 조회
+   */
+  getNotice: (payload: GetNoticePayload) => Promise<GetNoticeResponse>;
+  /**
+   * 파티룸 입장
+   */
+  enter: (payload: EnterPayload) => Promise<EnterResponse>;
+  /**
+   * 파티룸 퇴장
+   */
+  exit: (payload: ExitPayload) => Promise<void>;
+  /**
+   * 현재 playback에 대한 반응 (좋아요 / 싫어요 / 찜하기)
+   * 동사형은 라이브러리명과 겹치므로 일부러 안씀
+   */
+  reaction: (payload: ReactionPayload) => Promise<ReactionResponse>;
+  /**
+   * 등급 조정
+   */
+  adjustGrade: (payload: AdjustGradePayload) => Promise<void>;
+  /**
+   * 공유 링크로 파티룸 정보 조회
+   */
+  getPartyroomByLink: (payload: GetPartyroomByLinkPayload) => Promise<GetPartyroomByLinkResponse>;
+  /**
+   * 패널티 목록 조회
+   */
+  getPenaltyList: (payload: GetPenaltyListPayload) => Promise<Penalty[]>;
+  /**
+   * 파티룸 패널티 적용
+   */
+  imposePenalty: (payload: ImposePenaltyPayload) => Promise<void>;
+  /**
+   * 파티룸 패널티 해제
+   */
+  liftPenalty: (payload: LiftPenaltyPayload) => Promise<void>;
+}

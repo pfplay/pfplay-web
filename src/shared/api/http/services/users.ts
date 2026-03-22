@@ -1,0 +1,94 @@
+import {
+  PUBLIC_ROUTE_PREFIXES,
+  GUEST_AUTO_LOGIN_ROUTE_PATTERN,
+} from '@/entities/me/model/constants';
+import { Singleton } from '@/shared/lib/decorators/singleton';
+import { SkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
+import HTTPClient from '../client/client';
+import isAuthError from '../error/is-auth-error';
+import type {
+  GetMyInfoResponse,
+  GetMyProfileSummaryResponse,
+  GetUserProfileSummaryRequest,
+  GetUserProfileSummaryResponse,
+  AvatarBody,
+  AvatarFace,
+  UpdateMyWalletRequest,
+  UpdateMyBioRequest,
+  UsersClient,
+  TokenExchangeResponse,
+  TokenExchangeRequest,
+  InitiateLoginRequest,
+  InitiateLoginResponse,
+  UpdateAvatarRequest,
+} from '../types/users';
+
+@Singleton
+export default class UsersService extends HTTPClient implements UsersClient {
+  private ROUTE_USER = 'v1/users';
+  private ROUTE_AUTH = 'v1/auth';
+
+  public async initiateLogin(request: InitiateLoginRequest) {
+    return this.post<InitiateLoginResponse>(`${this.ROUTE_AUTH}/oauth/url`, request);
+  }
+
+  public exchangeToken(request: TokenExchangeRequest) {
+    return this.post<TokenExchangeResponse>(`${this.ROUTE_AUTH}/oauth/callback`, request);
+  }
+
+  public signOut() {
+    return this.post<void>(`${this.ROUTE_AUTH}/logout`);
+  }
+
+  public signInGuest() {
+    return this.post<void>(`${this.ROUTE_USER}/guests/sign`);
+  }
+
+  public temporary_SignInFullCrew() {
+    return this.post<void>(`${this.ROUTE_USER}/members/sign/temporary/full-member`);
+  }
+
+  public temporary_SignInAssociateCrew() {
+    return this.post<void>(`${this.ROUTE_USER}/members/sign/temporary/associate-member`);
+  }
+
+  @SkipGlobalErrorHandling({
+    when: (error) =>
+      isAuthError(error) &&
+      (PUBLIC_ROUTE_PREFIXES.some((prefix) => location.pathname.startsWith(prefix)) ||
+        GUEST_AUTO_LOGIN_ROUTE_PATTERN.test(location.pathname)),
+  })
+  public getMyInfo() {
+    return this.get<GetMyInfoResponse>(`${this.ROUTE_USER}/me/info`);
+  }
+
+  public getUserProfileSummary(request: GetUserProfileSummaryRequest) {
+    return this.get<GetUserProfileSummaryResponse>(
+      `${this.ROUTE_USER}/${request.uid}/profile/summary`
+    );
+  }
+
+  public getMyProfileSummary() {
+    return this.get<GetMyProfileSummaryResponse>(`${this.ROUTE_USER}/me/profile/summary`);
+  }
+
+  public getMyAvatarBodies() {
+    return this.get<AvatarBody[]>(`${this.ROUTE_USER}/me/profile/avatar/bodies`);
+  }
+
+  public getMyAvatarFaces() {
+    return this.get<AvatarFace[]>(`${this.ROUTE_USER}/me/profile/avatar/faces`);
+  }
+
+  public updateMyWallet(request: UpdateMyWalletRequest) {
+    return this.put<void>(`${this.ROUTE_USER}/me/profile/wallet`, request);
+  }
+
+  public updateMyBio(request: UpdateMyBioRequest) {
+    return this.put<void>(`${this.ROUTE_USER}/me/profile/bio`, request);
+  }
+
+  public updateMyAvatar(request: UpdateAvatarRequest) {
+    return this.put<void>(`${this.ROUTE_USER}/me/profile/avatar`, request);
+  }
+}

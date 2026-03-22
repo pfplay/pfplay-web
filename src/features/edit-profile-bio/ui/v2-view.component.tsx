@@ -1,0 +1,91 @@
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { Avatar } from '@/entities/avatar';
+import { BASE_SCALE, BASE_X, BASE_Y } from '@/entities/avatar/config/base-size';
+import { Me, useSuspenseFetchMe } from '@/entities/me';
+import { ActivityType } from '@/shared/api/http/types/@enums';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { Button } from '@/shared/ui/components/button';
+import { Typography } from '@/shared/ui/components/typography';
+import { PFEdit } from '@/shared/ui/icons';
+
+type V2ViewModeProps = {
+  onAvatarSettingClick?: () => void;
+  changeToEditMode: () => void;
+};
+
+const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps) => {
+  const t = useI18n();
+  const { data: me } = useSuspenseFetchMe();
+
+  return (
+    <div className='gap-5 flexRow'>
+      <div className='flexCol gap-9'>
+        <div className='w-max h-[216px] flexRowCenter bg-[#1D1D1D] pointer-events-none select-none'>
+          {!!me.avatarBodyUri && (
+            <Avatar
+              height={180}
+              bodyUri={me.avatarBodyUri}
+              compositionType={me.avatarCompositionType}
+              faceUri={me.avatarFaceUri}
+              facePosX={me.combinePositionX}
+              facePosY={me.combinePositionY}
+              offsetX={me.offsetX || BASE_X}
+              offsetY={me.offsetY || BASE_Y}
+              scale={me.scale || BASE_SCALE}
+            />
+          )}
+        </div>
+
+        <Button size='sm' variant='outline' onClick={onAvatarSettingClick}>
+          {t.lobby.title.ava_settings}
+        </Button>
+      </div>
+      <div className='justify-between flex-1 flexCol'>
+        <div className='items-start gap-3 flexCol'>
+          <div className='flex gap-3 items-center'>
+            <Typography type='body1' className='text-white'>
+              {me.nickname}
+            </Typography>
+            <div onClick={changeToEditMode} className='cursor-pointer'>
+              <PFEdit />
+            </div>
+          </div>
+          <Typography className='text-left text-white'>{me.introduction || '-'}</Typography>
+        </div>
+
+        <div className='items-center justify-between flexRow'>
+          <div className='flexRow flex-1 justify-between'>
+            <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
+              {t.lobby.title.points}
+              <Typography as='span' type='body3'>
+                {`${Me.score(me, ActivityType.DJ_PNT)}p`}
+              </Typography>
+            </Typography>
+            <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
+              {t.lobby.title.join_date}
+              <Typography as='span' type='body3'>
+                {Me.registrationDate(me)}
+              </Typography>
+            </Typography>
+            {me.walletAddress && (
+              <Link href={`https://rainbow.me/${me.walletAddress}`} target='_blank'>
+                <Image
+                  src={'/images/ETC/rainbow.png'}
+                  alt='rainbow'
+                  width={32}
+                  height={32}
+                  className='select-none pointer-events-none'
+                />
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default V2ViewMode;

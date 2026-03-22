@@ -1,83 +1,126 @@
 {
   "name": "pfplay",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.0",
+  "private": "true",
   "scripts": {
-    "dev": "next dev",
+    "svgr": "node scripts/svgr",
+    "generate-enums": "node scripts/copy-java-enums",
+    "prepare": "husky install && yarn svgr",
+    "dev": "next dev --experimental-https --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --ext .ts,.tsx . --fix",
-    "format": "prettier --check .",
-    "format:fix": "prettier --write .",
-    "prepare": "husky install"
-  },
-  "prettier": "@thumbsu/prettier-config",
-  "eslintConfig": {
-    "parserOptions": {
-      "project": "./tsconfig.json"
-    },
-    "extends": [
-      "@thumbsu/eslint-config",
-      "next/core-web-vitals"
-    ],
-    "rules": {
-      "react/jsx-uses-react": "off",
-      "react/react-in-jsx-scope": "off",
-      "@typescript-eslint/no-unsafe-call": "off"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "organize-imports-cli",
-      "yarn format:fix",
-      "yarn lint"
-    ],
-    "*.{js,css,md}": "prettier --write ."
+    "pm2": "pm2 start yarn --interpreter bash -- start && pm2 monit",
+    "test": "vitest run",
+    "test:type": "tsc --noEmit",
+    "lint-staged": "lint-staged",
+    "lint": "eslint src --fix --quiet",
+    "format": "prettier --write .",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "pathmap": "node ./scripts/pathmap.js",
+    "i18n": "node ./scripts/i18n.js"
   },
   "dependencies": {
-    "@tanstack/react-query": "^4.13.0",
-    "@thirdweb-dev/react": "^3.6.2",
-    "@thirdweb-dev/sdk": "^3.6.2",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@headlessui/react": "^2.1.2",
+    "@hookform/resolvers": "^2.9.10",
+    "@rainbow-me/rainbowkit": "2.2.1",
+    "@resvg/resvg-js": "^2.6.2",
+    "@stomp/stompjs": "^7.0.0",
+    "@tanstack/react-query": "^5.45.1",
+    "@tanstack/react-query-next-experimental": "^5.46.0",
+    "alchemy-sdk": "^3.3.1",
     "axios": "^1.2.0",
-    "ethers": "^5.7.2",
-    "next": "^12.3.1",
-    "next-auth": "^4.16.3",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-modal": "^3.16.1",
-    "recoil": "^0.7.6",
-    "tailwind-scrollbar-hide": "^1.1.7"
+    "clsx": "^1.2.1",
+    "cookies-next": "^4.1.0",
+    "d3-force": "^3.0.0",
+    "html-parse-stringify": "^3.0.1",
+    "html2canvas": "^1.4.1",
+    "lottie-react": "^2.4.0",
+    "moveable-helper": "^0.4.0",
+    "next": "14.2.15",
+    "pm2": "^5.4.1",
+    "postcss-nesting": "^12.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.11",
+    "react-fast-marquee": "^1.6.4",
+    "react-hook-form": "^7.41.5",
+    "react-moveable": "^0.56.0",
+    "react-player": "^2.16.0",
+    "react-share": "^5.1.0",
+    "satori": "^0.25.0",
+    "tailwind-merge": "^1.13.2",
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "typescript": "^5.5.4",
+    "viem": "2.21.58",
+    "wagmi": "2.10.8",
+    "zod": "^3.21.4",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
-    "@havenmoney/organize-imports-cli": "^0.4.0",
-    "@thumbsu/eslint-config": "^0.0.1",
-    "@thumbsu/prettier-config": "^0.0.1",
-    "@types/node": "18.7.6",
-    "@types/react": "18.0.17",
+    "@babel/core": "^7.25.2",
+    "@babel/plugin-proposal-decorators": "^7.24.7",
+    "@eslint/js": "^9.18.0",
+    "@next/eslint-plugin-next": "^15.1.5",
+    "@storybook/addon-actions": "^7.5.2",
+    "@storybook/addon-essentials": "^7.5.2",
+    "@storybook/addon-interactions": "^7.5.2",
+    "@storybook/addon-links": "^7.5.2",
+    "@storybook/addon-postcss": "2.0.0",
+    "@storybook/blocks": "^7.5.2",
+    "@storybook/nextjs": "^7.5.2",
+    "@storybook/react": "^7.5.2",
+    "@storybook/testing-library": "^0.2.2",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-prettier": "^8.1.0",
+    "@swc/core": "1.7.11",
+    "@tanstack/react-query-devtools": "^5.17.1",
+    "@testing-library/react": "^16.2.0",
+    "@types/d3-force": "^3.0.10",
+    "@types/node": "18.16.19",
+    "@types/react": "^18.2.33",
     "@types/react-dom": "18.0.6",
     "@types/react-modal": "^3.13.1",
-    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/rule-tester": "^8.20.0",
+    "@vitest/coverage-v8": "^4.0.18",
     "autoprefixer": "^10.4.12",
-    "eslint": "^8.33.0",
-    "eslint-config-next": "12.2.5",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "chokidar": "^3.5.3",
+    "eslint": "^9.18.0",
+    "eslint-config-next": "^15.1.5",
+    "eslint-import-resolver-typescript": "^3.7.0",
+    "eslint-plugin-i18next": "^6.1.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-storybook": "^0.11.2",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "exceljs": "^4.4.0",
+    "glob": "^10.3.10",
+    "globals": "^15.14.0",
     "husky": "^8.0.0",
-    "lint-staged": "^13.1.0",
+    "jsdom": "^28.1.0",
+    "lint-staged": "^13.2.3",
+    "msw": "^2.12.10",
     "postcss": "^8.4.18",
-    "prettier": "^2.8.3",
+    "prettier": "^3.4.2",
+    "storybook": "^7.5.2",
     "tailwindcss": "^3.2.1",
-    "typescript": "4.7.4"
-  }
+    "type-fest": "^4.20.1",
+    "typescript-eslint": "^8.20.0",
+    "vitest": "^4.0.18",
+    "webpack": "5.94.0"
+  },
+  "engines": {
+    "node": ">=20.16.0",
+    "yarn": ">=1.22.22"
+  },
+  "resolutions": {
+    "jackspeak": "3.1.2"
+  },
+  "packageManager": "yarn@1.22.22"
 }

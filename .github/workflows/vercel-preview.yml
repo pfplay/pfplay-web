@@ -1,0 +1,15 @@
+name: vercel preview
+
+on:
+  push:
+    branches: [development]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: deploy preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Vercel Preview
+        run: npx vercel deploy --yes --token=${{ secrets.VERCEL_TOKEN }}

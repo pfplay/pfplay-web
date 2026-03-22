@@ -1,0 +1,107 @@
+import {
+  useHandlePartyroomSubscriptionEvent,
+  usePartyroomClient,
+} from '@/entities/partyroom-client';
+import { partyroomsService } from '@/shared/api/http/services';
+import { MotionType } from '@/shared/api/http/types/@enums';
+import { EnterResponse, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
+import silent from '@/shared/lib/functions/silent';
+import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
+import { useStores } from '@/shared/lib/store/stores.context';
+import { useEnterPartyroom as useEnterPartyroomMutation } from '../api/use-enter-partyroom.mutation';
+
+export function useEnterPartyroom(partyroomId: number) {
+  const client = usePartyroomClient();
+  const handleEvent = useHandlePartyroomSubscriptionEvent();
+  const { useCurrentPartyroom } = useStores();
+  const [initPartyroom, markExitedOnBackend] = useCurrentPartyroom((state) => [
+    state.init,
+    state.markExitedOnBackend,
+  ]);
+  const { mutate: enter } = useEnterPartyroomMutation();
+  const router = useAppRouter();
+
+  const setup = async (enterResponse: EnterResponse) => {
+    const [setUpInfo, notice] = await Promise.all([
+      partyroomsService.getSetupInfo({ partyroomId }),
+      partyroomsService.getNotice({ partyroomId }), // 공지사항은 현재 설계상 enter 시점엔 rest api로 받아오고, 이후 공지 변경이 있을 땐 웹 소켓 이벤트로 수신합니다.
+    ]);
+
+    // TODO: crews 작업 시 crews 캐시 데이터 세팅해주기
+    // queryClient.setQueryData([QueryKeys.PartyroomCrews, partyroomId], setUpInfo.crews);
+
+    const motionTypeMap = crewIdToMotionTypeMap(setUpInfo.display.reaction?.motion);
+
+    initPartyroom(
+      omitNullables({
+        id: partyroomId,
+        me: {
+          crewId: enterResponse.crewId,
+          gradeType: enterResponse.gradeType,
+        },
+        playbackActivated: setUpInfo.display.playbackActivated,
+        playback: setUpInfo.display.playback,
+        reaction: setUpInfo.display.reaction,
+        crews: setUpInfo.crews.map((crew) => ({
+          ...crew,
+          motionType: motionTypeMap.get(crew.crewId) ?? MotionType.NONE,
+        })),
+        currentDj: setUpInfo.display.currentDj,
+        notice: notice.content ?? '',
+      })
+    );
+  };
+
+  return () => {
+    client.onConnect(
+      () => {
+        enter(
+          { partyroomId },
+          {
+            onSuccess: (enterResponse) => {
+              silent(setup(enterResponse), {
+                onSuccess: () => {
+                  client.subscribe(partyroomId, handleEvent);
+                },
+                onError: () => {
+                  router.push('/parties'); // 에러 발생 시 로비로 이동
+                },
+              });
+            },
+            onError: () => {
+              markExitedOnBackend(); // enter 자체가 안됐으니, 페이지 벗어날 때 exit api 호출 방지
+              router.push('/parties'); // 에러 발생 시 로비로 이동
+            },
+          }
+        );
+      },
+      { once: true }
+    );
+  };
+}
+
+function crewIdToMotionTypeMap(motionInfo?: PartyroomReaction['motion']) {
+  if (!motionInfo) {
+    return new Map<number, MotionType>();
+  }
+
+  return motionInfo.reduce(
+    (acc, motion) => {
+      motion.crewIds.forEach((crewId) => {
+        acc.set(crewId, motion.motionType);
+      });
+      return acc;
+    },
+    {} as Map<number, MotionType>
+  );
+}
+
+/**
+ * api 응답으로 온 nullable 필드들이 스토어 내 required로 초기화된 필드들을 덮어 씌우지 않도록 하기 위해 사용합니다
+ * 예시로 reaction 필드가 있습니다.
+ */
+function omitNullables<T extends Record<string, unknown>>(obj: T): T {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, value]) => value !== null && value !== undefined)
+  ) as T;
+}

@@ -1,0 +1,309 @@
+{
+  "common": {
+    "btn": {
+      "play": "Let's PFPlay!",
+      "logout": "Logout",
+      "withdraw": "Delete Account",
+      "enter": "Enter",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "authority": "Permissions",
+      "sanction": "Restriction",
+      "block": "Block",
+      "next": "Next",
+      "twitter_login": "Twitter Login",
+      "google_login": "Google Login",
+      "share": "Share",
+      "settings": "Settings",
+      "add": "Add",
+      "delete": "Delete",
+      "complete": "Complete",
+      "dont_show_again": "Don't show again",
+      "skip": "Skip",
+      "edit": "Edit",
+      "lock": "Lock",
+      "unlock": "Unlock",
+      "like": "Like",
+      "grab": "Grab",
+      "boo": "Boo",
+      "save": "Save",
+      "my_profile": "My profile",
+      "playlist": "Playlist",
+      "home": "PFPlay Home",
+      "view_guide": "See guide",
+      "kor": "한국어",
+      "eng": "English",
+      "language": "Language",
+      "enter_again": "Re-enter",
+      "chat_mute": "Buzz",
+      "kick": "Kick",
+      "ban": "Ban"
+    },
+    "para": {
+      "reason": "Reason:",
+      "points_to_unlock\t": "Get {{points}} points to unlock!",
+      "to": "To."
+    },
+    "ec": {
+      "char_limit_12": "Limit of 12 characters / No spaces and special characters",
+      "char_limit_50": "Limit of 50 characters including spaces",
+      "char_limit_20": "Limit of 20 characters including spaces",
+      "char_up_to_50": "You can register up to 50 characters",
+      "char_limit_60_dash": "Limit of 3 to 60 characters, including letters, numbers, and hyphens (-)",
+      "char_limit_30": "Limit of 30 characters for Korean and English / No special characters allowed.",
+      "char_field_required": "This field is required. Please enter the content."
+    }
+  },
+  "auth": {
+    "para": {
+      "need_wallet": "This feature requires wallet connection",
+      "about_wallet": "What is a wallet? How does it work?",
+      "linking_social": "PFPlay allows you to become a DJ by connecting your social account!",
+      "need_social_login": "To use this feature, please log in with your social account",
+      "logout_confirm": "Are you sure you want to log out? You'll be redirected to the home",
+      "withdraw_confirm": "Are you sure you want to delete your account? Your mission points, playlists, etc. will be deleted and cannot be recovered.",
+      "withdraw_completed": "Your account has been deleted. See you next time!",
+      "auth_changed": "Permission has been updated!",
+      "auth_quota_exceeded": "The capacity for this permission has been exceeded",
+      "no_change_authority": "You cannot arbitrarily change the permissions of higher-ranking users.",
+      "penalty": "Ban (No re-entry allowed)",
+      "block": "Blocked list"
+    },
+    "btn": {
+      "connect_wallet": "Connect wallet",
+      "connect_social": "Social Sign-In",
+      "back_to_sign_in": "Back to Sign In",
+      "connect_twitter": "Connect with Twitter",
+      "connect_google": "Connect with Google"
+    },
+    "title": {
+      "set_nickname": "Please configure the '**{{nickname}}**'s permissions",
+      "current": "Current",
+      "community_manager": "Community Manager",
+      "moderator": "Moderator",
+      "clubber": "Clubber",
+      "listener": "Listener",
+      "withdrawal": "Delete account"
+    }
+  },
+  "chat": {
+    "para": {
+      "delete_confirm": "Are you sure you want to delete this message?/nOnce deleted, it can't be restored.",
+      "cannot_delete_high_rank": "You can't delete messages from higher-ranked users.",
+      "chat_mute": "Chat will be disabled for 30 seconds.",
+      "kick_with_rejoin": "You will be removed immediately, but re-entry is allowed.",
+      "kick_no_rejoin": "You will be removed immediately, and re-entry is not allowed.",
+      "reason_too_short": "Please enter a reason with at least 2 characters.",
+      "reason_shared": "The reason you provided will be shared with the user.",
+      "muted_by_admin": "Chat has been disabled for 30 seconds by an admin.",
+      "removed_by_admin": "You have been removed by an admin.",
+      "permanent_ban": "You have been permanently removed by an admin and can’t rejoin.",
+      "start_chat": "What shall we talk about?",
+      "remove_chat": "'{target}'s chat was removed by '{subject}'."
+    }
+  },
+  "onboard": {
+    "btn": {
+      "pfp_play": "Let your PFP Play",
+      "terms": "Privacy&Terms",
+      "pfp_doing": "How's your PFP doing?",
+      "take_a_look": "I want to explore first",
+      "lang": "Korean",
+      "guest": "Explore as a Guest"
+    },
+    "title": {
+      "moment": "Hold on!"
+    },
+    "para": {
+      "domain_format": "Web address starts with pfplay.xyz/domain",
+      "guest_limit": "Access is limited as a guest. Connect your social account to enjoy full services."
+    }
+  },
+  "settings": {
+    "title": {
+      "who_r_u": "Who are you?",
+      "nickname": "Nickname",
+      "introduction": "About me",
+      "body": "Body",
+      "face": "Face"
+    },
+    "ec": {
+      "integrated_body": "Face selection is unavailable for full-body items"
+    },
+    "btn": {
+      "addi_connection": "Add Connection"
+    },
+    "para": {
+      "what_wear": "What will you wear to play?",
+      "nickname_taken": "This nickname is already used.",
+      "empty_records": "You have no items"
+    }
+  },
+  "setting": {
+    "title": {
+      "nft": "NFT",
+      "connected_wallet": "Connected wallet"
+    }
+  },
+  "lobby": {
+    "title": {
+      "be_a_host": "Be a PFPlay Host",
+      "ava_settings": "Avatar settings",
+      "points": "Points",
+      "join_date": "Registration date"
+    },
+    "para": {
+      "freely_host": "Host a party with the theme that you want!",
+      "pfplay_main_stage": "PFPlay Main Stage",
+      "welcome_party": "Welcome to the party!"
+    }
+  },
+  "createparty": {
+    "para": {
+      "domain_in_use": "The domain address already in use",
+      "name_in_use": "The party name is already in use",
+      "select": "(Select)",
+      "min": "Minutes",
+      "cancel_confirm": "Your changes are not saved.\nDo you want to stop creating the party?",
+      "noti_djing_limit": "DJing time limit per session is at least 3 minutes",
+      "noti_web_address": "Please enter your party room's web address"
+    },
+    "btn": {
+      "create_party": "Create Party"
+    },
+    "title": {
+      "create_party": "Create Party"
+    }
+  },
+  "party": {
+    "title": {
+      "party_edit": "Edit Party",
+      "party_info": "Party Details",
+      "party_list": "Party List",
+      "party_name": "Party Name",
+      "party_desc": "Party Description"
+    },
+    "para": {
+      "party_created": "The party has been created!",
+      "auto_close_30days": "If there is no DJing for 30 days, the party room will automatically close",
+      "existing_party": "It's already an existing party name",
+      "more_than_3m": "Available for more than 3 minutes",
+      "stop_editing": "The content written so far is not saved.\nWould you like to stop editing?",
+      "copy_completed": "Copied!",
+      "close_party": "Are you sure you want to close the current party room?\nAll data will not be saved.\nPlease enter '{{match}}' for close.",
+      "match_for_close_party": "Confirmed",
+      "no_longer_see_chat": "You will no longer see the user's chat in this room (applies to me only)",
+      "party_rooms": "Party Rooms",
+      "leave_party_confirm": "Your changes won't be saved.\nAre you sure you want to leave the party room?",
+      "closed": "The party room has been closed.",
+      "close": "Close",
+      "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
+    },
+    "btn": {
+      "share_twitter": "Share on Twitter",
+      "copy_link": "Copy"
+    }
+  },
+  "dj": {
+    "title": {
+      "current_dj": "Now DJing",
+      "dj_queue": "DJ Queue",
+      "time_limit": "DJing time limit per session: **{{minutes}}** minutes",
+      "rule_guide": "DJing rule guide"
+    },
+    "btn": {
+      "register_queue": "Register for DJ Queue",
+      "add_dj": "Add DJ",
+      "selection_completed": "Selection Complete",
+      "select_dj_playlist": "Select DJ Playlist"
+    },
+    "para": {
+      "no_dj_crew": "No one is DJing now.\nWhy not become the DJ and make some noise!",
+      "create_playlist_song": "Before you join the queue, please create a playlist with at least one song.",
+      "cancel_dj_queue": "Cancel DJ queue registration",
+      "cancel_dj_queue_confirm": "Do you want to remove yourself from the DJ queue?",
+      "lock_dj_queue": "Do you want to lock the queue? No new DJs will be added.",
+      "skip_dj_song": "Do you want to skip the current song?",
+      "delete_dj_queue": "Remove from DJ Queue",
+      "write_reason": "Please provide a reason (at least 2 characters)",
+      "deleted_queue_by_admin": "You have been removed from the queue by the administrator",
+      "locked_queue_by_admin": "The current DJ queue is locked by an admin",
+      "skipped_song_by_admin": "According to the admin policy, songs longer than {{count}} minutes will be automatically skipped",
+      "dj_in_order": "DJing **one person at a time** \n from the waiting list, in order",
+      "played_sequentially": "Songs from the top of the playlist are \n **played sequentially, one song per person**",
+      "display_count": "Once the song ends, we'll display \n a count of the **Like, Grab, and Boo** received during your DJ set.",
+      "empty_dj": "zZz...No DJ currently playing..."
+    }
+  },
+  "db": {
+    "title": {
+      "recent_dj_list": "Recent DJing list",
+      "domain": "Domain",
+      "dj_time_limit": "DJ session time limit",
+      "shut_down_party": "Shut down this party room",
+      "chat": "Chat"
+    }
+  },
+  "ed": {
+    "btn": {
+      "regi_notice": "Register new announcement"
+    },
+    "para": {
+      "edit_only_admin": "Only Community Manager and above can make edit action",
+      "empty_notice": "Please post the announcement.",
+      "noti_deleted": "When you add a new announcement, the old one will be removed!"
+    }
+  },
+  "playlist": {
+    "title": {
+      "my_playlist": "My playlist",
+      "grabbed_song": "Grabbed song",
+      "song": "song",
+      "n_song": "{{count}} songs",
+      "select": "Select playlist"
+    },
+    "btn": {
+      "add_playlist": "Add playlist",
+      "change_playlist": "Change playlist",
+      "add_song": "Add song",
+      "add_list": "Add list",
+      "delete_playlist": "Delete from playlist",
+      "move_playlist": "Move to another playlist"
+    },
+    "para": {
+      "enter_playlist_name": "Please provide a name for your playlist",
+      "delete_playlist_confirm": "Are you sure you want to delete the selected item from the list?",
+      "delete_duplicated_list_confirm": "The '{{playlist}}' playlist already has this song!\nShould we remove the duplicate and add it again?",
+      "no_list_yet": "There's no list yet! Try to fill it with your favorite songs.",
+      "search_url": "Search for music and URL",
+      "up_to_10_if_connect_wallet": "If you connect your wallet, you can create up to 10!",
+      "no_other_playlist": "There are no other playlists to move this song to",
+      "select_for_move": "Please select the playlist to move the selected song to"
+    },
+    "ec": {
+      "exceeded_list_connect_wallet": "You have already exceeded the number of lists that can be created. ",
+      "exceeded_list": "Oh no! You have exceeded the number of lists that can be created. You can only create up to 10.",
+      "up_to_100_songs": "You can add a maximum of 100 songs to each playlist",
+      "duplicate_track_move": "This song already exists in the selected playlist",
+      "exceeded_track_limit_move": "The selected playlist has reached its song limit (15 songs)"
+    }
+  },
+  "partyroom": {
+    "loading": {
+      "text_1": "Warming up the DJ booth... let’s jam!",
+      "text_2": "Tuning the vibes... almost party time!",
+      "text_3": "Hang tight, the party’s about to start!",
+      "text_4": "Lighting up the dance floor for you!"
+    },
+    "ec": {
+      "shut_down": "The party room no longer exists.",
+      "data_load": "Failed to load data.\nWould you like to try entering again?"
+    }
+  },
+  "crews": {
+    "title": {
+      "all_count": "All {count}",
+      "restriction": "Restriction"
+    }
+  }
+}

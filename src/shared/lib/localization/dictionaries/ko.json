@@ -1,0 +1,309 @@
+{
+  "common": {
+    "btn": {
+      "play": "Let's PFPlay!",
+      "logout": "로그아웃",
+      "withdraw": "탈퇴하기",
+      "enter": "입장하기",
+      "cancel": "취소",
+      "confirm": "확인",
+      "authority": "권한",
+      "sanction": "제재",
+      "block": "차단",
+      "next": "다음",
+      "twitter_login": "트위터 로그인",
+      "google_login": "구글 로그인",
+      "share": "공유하기",
+      "settings": "설정",
+      "add": "추가하기",
+      "delete": "삭제",
+      "complete": "완료",
+      "dont_show_again": "다시 보지 않기",
+      "skip": "건너뛰기",
+      "edit": "수정",
+      "lock": "잠금",
+      "unlock": "잠금 해제",
+      "like": "좋아요",
+      "grab": "그랩",
+      "boo": "싫어요",
+      "save": "저장",
+      "my_profile": "내 프로필",
+      "playlist": "플레이리스트",
+      "home": "PFPlay Home",
+      "view_guide": "가이드 보기",
+      "kor": "한국어",
+      "eng": "English",
+      "language": "언어",
+      "enter_again": "다시 입장하기",
+      "chat_mute": "꿀",
+      "kick": "킥",
+      "ban": "밴"
+    },
+    "para": {
+      "reason": "사유:",
+      "points_to_unlock\t": "{{points}} 포인트가 필요해요",
+      "to": "To."
+    },
+    "ec": {
+      "char_limit_12": "한/영 포함 12자 제한 / 띄어쓰기, 특수문자 사용 불가",
+      "char_limit_50": "한/영 구분 없이 띄어쓰기 포함 50자 제한",
+      "char_limit_20": "한/영 구분없이 띄어쓰기 포함 20자 제한",
+      "char_up_to_50": "최대 50자까지 등록 가능",
+      "char_limit_60_dash": "영문/숫자/하이픈(-) 포함 3자 이상 60자 제한",
+      "char_limit_30": "한글 30자, 영문 30자 제한/특수문자 사용 불가",
+      "char_field_required": "필수 입력란이에요. 내용을 입력해주세요."
+    }
+  },
+  "auth": {
+    "para": {
+      "need_wallet": "해당 기능은 지갑 연결이 필요해요",
+      "about_wallet": "지갑이 뭔가요? 어떻게 하는거죠?",
+      "linking_social": "PFPlay에선 소셜 계정을 연동하면 DJ가 될 수 있어요!",
+      "need_social_login": "해당 기능은 소셜 계정 로그인이 필요해요",
+      "logout_confirm": "로그아웃 하시겠어요? 로그아웃 시 메인 홈으로 이동합니다",
+      "withdraw_confirm": "정말로 탈퇴하시겠습니까? 탈퇴 시 미션 포인트, 플레이리스트 등 데이터가 삭제되며 복구는 불가합니다.",
+      "withdraw_completed": "탈퇴가 완료되었습니다. 다음에 다시 만나요!",
+      "auth_changed": "관리자에 의해 권한이 변경되었습니다!",
+      "auth_quota_exceeded": "해당 권한의 정원이 초과되었어요",
+      "no_change_authority": "상위 계급 유저의 권한은 임의로 변경할 수 없어요",
+      "penalty": "영구 패널티",
+      "block": "차단"
+    },
+    "btn": {
+      "connect_wallet": "지갑 연동하기",
+      "connect_social": "소셜 로그인하기",
+      "back_to_sign_in": "로그인으로 돌아가기",
+      "connect_twitter": "트위터 연동하기",
+      "connect_google": "구글 연동하기"
+    },
+    "title": {
+      "set_nickname": "'**{{nickname}}**'의 권한을 설정해주세요",
+      "current": "현재",
+      "community_manager": "Community Manager",
+      "moderator": "Moderator",
+      "clubber": "Clubber",
+      "listener": "Listener",
+      "withdrawal": "회원탈퇴"
+    }
+  },
+  "chat": {
+    "para": {
+      "delete_confirm": "해당 메시지를 정말로 삭제하시겠어요? 삭제되면 복구할 수 없어요.",
+      "cannot_delete_high_rank": "상위 계급 유저의 메시지는 삭제할 수 없어요",
+      "chat_mute": "30초간 채팅을 금지합니다.",
+      "kick_with_rejoin": "즉시 퇴출되며 재입장이 가능합니다",
+      "kick_no_rejoin": "즉시 퇴출되며 재입장이 불가능합니다",
+      "reason_too_short": "사유는 2자 이상 입력해주세요",
+      "reason_shared": "작성된 사유는 사용자에게 전달됩니다",
+      "muted_by_admin": "관리자에 의해 30초간 채팅이 금지됩니다.",
+      "removed_by_admin": "관리자에 의해 퇴출되셨습니다.",
+      "permanent_ban": "관리자에 의해 영구 퇴출되셨으며/n재입장은 불가합니다.",
+      "start_chat": "무슨 얘기를 해볼까요?",
+      "remove_chat": "'{subject}'가 '{target}'의 채팅을 삭제했습니다."
+    }
+  },
+  "onboard": {
+    "btn": {
+      "pfp_play": "Let your PFP Play",
+      "terms": "Privacy&Terms",
+      "pfp_doing": "당신의 PFP는 안녕한가요?",
+      "take_a_look": "먼저 둘러볼래요",
+      "lang": "한국어",
+      "guest": "비로그인 입장하기"
+    },
+    "title": {
+      "moment": "잠깐만요!"
+    },
+    "para": {
+      "domain_format": "웹 페이지 주소는 pfplay.xyz/도메인으로 시작",
+      "guest_limit": "비로그인 입장 시 접근 가능한 기능이 제한됩니다. 소셜 계정을 연동하면 온전한 서비스를 즐길 수 있어요"
+    }
+  },
+  "settings": {
+    "title": {
+      "who_r_u": "당신은 누구인가요?",
+      "nickname": "닉네임",
+      "introduction": "소개",
+      "body": "몸",
+      "face": "얼굴"
+    },
+    "ec": {
+      "integrated_body": "일체형 몸일 경우 얼굴 선택이 불가해요"
+    },
+    "btn": {
+      "addi_connection": "추가 연결"
+    },
+    "para": {
+      "what_wear": "뭘 입고 놀아볼까요?",
+      "nickname_taken": "이미 사용 중인 닉네임입니다.",
+      "empty_records": "보유한 내역이 없어요"
+    }
+  },
+  "setting": {
+    "title": {
+      "nft": "NFT",
+      "connected_wallet": "연결된 지갑"
+    }
+  },
+  "lobby": {
+    "title": {
+      "be_a_host": "Be a PFPlay Host",
+      "ava_settings": "아바타 설정",
+      "points": "포인트",
+      "join_date": "가입일"
+    },
+    "para": {
+      "freely_host": "원하는 테마의 파티를 자유롭게 호스트 해보세요!",
+      "pfplay_main_stage": "PFPlay Main Stage",
+      "welcome_party": "파티에 오신 것을 환영해요!"
+    }
+  },
+  "createparty": {
+    "para": {
+      "domain_in_use": "이미 존재하는 도메인 주소에요",
+      "name_in_use": "이미 존재하는 파티 이름이에요",
+      "select": "(선택)",
+      "min": "분",
+      "cancel_confirm": "지금까지 작성한 내용은 저장되지 않아요.\n개설을 중단하시겠어요?",
+      "noti_djing_limit": "디제잉 1회 당 제한 시간은 3분 이상부터 가능해요",
+      "noti_web_address": "내 파티룸의 웹 주소를 입력해주세요"
+    },
+    "btn": {
+      "create_party": "파티 개설하기"
+    },
+    "title": {
+      "create_party": "파티 개설"
+    }
+  },
+  "party": {
+    "title": {
+      "party_edit": "파티 수정",
+      "party_info": "파티 정보",
+      "party_list": "파티 목록",
+      "party_name": "파티 이름",
+      "party_desc": "파티 소개"
+    },
+    "para": {
+      "party_created": "파티가 개설되었어요!",
+      "auto_close_30days": "30일 간 디제잉 내역이 없으면 파티룸은 자동으로 폐쇄됩니다",
+      "existing_party": "이미 존재하는 파티 이름이에요",
+      "more_than_3m": "3분 이상 가능",
+      "stop_editing": "지금까지 작성한 내용은 저장되지 않아요.\n수정을 그만하시겠어요?",
+      "copy_completed": "복사 완료!",
+      "close_party": "현재 파티룸을 정말로 폐쇄하시겠어요?\n모든 데이터는 저장되지 않습니다.\n폐쇄하려면 '{{match}}'을 입력해주세요.",
+      "match_for_close_party": "확인",
+      "no_longer_see_chat": "이 방에서 사용자의 채팅을 더이상 보지 않습니다 (나에게만 적용)",
+      "party_rooms": "Party Rooms",
+      "leave_party_confirm": "변경 내용이 저장되지 않아요.\n파티룸으로 나가시겠어요?",
+      "closed": "파티룸이 폐쇄되었습니다",
+      "close": "폐쇄하기",
+      "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
+    },
+    "btn": {
+      "share_twitter": "트위터로 공유하기",
+      "copy_link": "링크 복사"
+    }
+  },
+  "dj": {
+    "title": {
+      "current_dj": "현재 디제잉",
+      "dj_queue": "DJ 대기열",
+      "time_limit": "디제잉 1회당 제한시간 : **{{minutes}}**분",
+      "rule_guide": "디제잉 규칙 안내"
+    },
+    "btn": {
+      "register_queue": "DJ 대기 등록",
+      "add_dj": "DJ 추가",
+      "selection_completed": "선택완료",
+      "select_dj_playlist": "디제잉 플레이리스트 선택"
+    },
+    "para": {
+      "no_dj_crew": "현재 디제잉 인원이 없어요\n파티의 흥을 책임질 DJ가 되어보세요!",
+      "create_playlist_song": "대기 등록을 위해 최소 1곡이 담긴 플레이리스트가 필요해요",
+      "cancel_dj_queue": "DJ 대기 등록 취소",
+      "cancel_dj_queue_confirm": "DJ 대기 등록을 취소하시겠습니까?",
+      "lock_dj_queue": "대기열을 잠그시겠어요? 잠그면 새로운 DJ가 추가되지 않습니다",
+      "skip_dj_song": "현재 곡을 건너뛸까요?",
+      "delete_dj_queue": "DJ 대기열에서 삭제합니다",
+      "write_reason": "사유를 작성해주세요(최소 2자)",
+      "deleted_queue_by_admin": "관리자에 의해 대기열에서 삭제되었습니다",
+      "locked_queue_by_admin": "관리자에 의해 현재 DJ 대기열이 잠금 상태예요",
+      "skipped_song_by_admin": "어드민 정책에 따라 {{count}}분 이상의 곡은 자동으로 스킵됩니다",
+      "dj_in_order": "대기 중인 DJ **한명씩**\n **순서대로** 음악을 디제잉 합니다",
+      "played_sequentially": "플레이리스트의 가장 상단에 있는 곡부터 \n **순차적으로 한명당 하나씩 플레이**됩니다",
+      "display_count": "노래가 끝나면 디제잉하는 동안 받은 \n **좋아요, 그랩, 싫어요**를 카운팅해 보여드려요.",
+      "empty_dj": "진행 중인 디제잉이 없어요 zZz..."
+    }
+  },
+  "db": {
+    "title": {
+      "recent_dj_list": "최근 디제잉 목록",
+      "domain": "도메인",
+      "dj_time_limit": "디제잉 제한시간",
+      "shut_down_party": "파티룸 폐쇄",
+      "chat": "채팅"
+    }
+  },
+  "ed": {
+    "btn": {
+      "regi_notice": "신규 공지 등록"
+    },
+    "para": {
+      "edit_only_admin": "Community Manager이상 관리자만 수정 가능해요",
+      "empty_notice": "공지를 등록해주세요.",
+      "noti_deleted": "공지 등록 시 기존 공지는 삭제됩니다!"
+    }
+  },
+  "playlist": {
+    "title": {
+      "my_playlist": "내 플레이리스트",
+      "grabbed_song": "그랩한 곡",
+      "song": "곡",
+      "n_song": "{{count}} 곡",
+      "select": "재생목록 선택"
+    },
+    "btn": {
+      "add_playlist": "플레이리스트 추가",
+      "change_playlist": "플레이리스트 변경",
+      "add_song": "곡 추가 ",
+      "add_list": "리스트 추가",
+      "delete_playlist": "재생목록에서 삭제",
+      "move_playlist": "다른 재생목록으로 이동"
+    },
+    "para": {
+      "enter_playlist_name": "플레이리스트 이름을 입력해주세요",
+      "delete_playlist_confirm": "정말 선택 항목을 리스트에서 삭제하시겠어요?",
+      "delete_duplicated_list_confirm": "'{{playlist}}'플레이리스트에 이미 존재하는 곡입니다!\n중복곡은 삭제하고 다시 담을까요?",
+      "no_list_yet": "아직 리스트가 없네요!\n취향의 곡을 담아보세요",
+      "search_url": "URL 혹은 음악을 검색할 수 있어요",
+      "up_to_10_if_connect_wallet": "지갑을 연동하시면 10개까지 생성할 수 있어요!",
+      "no_other_playlist": "이동할 수 있는 다른 플레이리스트가 없어요",
+      "select_for_move": "선택한 곡을 이동할 재생목록을 선택해 주세요"
+    },
+    "ec": {
+      "exceeded_list_connect_wallet": "이미 생성 가능한 리스트 수를 초과했어요.\n",
+      "exceeded_list": "이런! 생성 가능한 리스트 수를 초과했어요\n최대 10개 까지만 생성이 가능해요",
+      "up_to_100_songs": "곡은 1개 플레이리스트당 최대 100개 까지만 추가 가능해요",
+      "duplicate_track_move": "선택한 플레이리스트에 이미 존재하는 곡이에요",
+      "exceeded_track_limit_move": "선택한 플레이리스트의 트랙 한도(15개)를 초과했어요"
+    }
+  },
+  "partyroom": {
+    "loading": {
+      "text_1": "DJ 부스 워밍업 중...",
+      "text_2": "비트 준비... 거의 다 됐어요!",
+      "text_3": "파티가 곧 시작됩니다!",
+      "text_4": "댄스 플로어 조명 점검 중..."
+    },
+    "ec": {
+      "shut_down": "더 이상 존재하지 않는 파티룸이에요",
+      "data_load": "데이터를 불러오는데 실패했습니다.\n다시 입장하시겠어요?"
+    }
+  },
+  "crews": {
+    "title": {
+      "all_count": "전체 {count}",
+      "restriction": "제재"
+    }
+  }
+}

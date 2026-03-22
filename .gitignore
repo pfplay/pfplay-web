@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+.swc
 
 # testing
 /coverage
@@ -14,10 +15,15 @@
 
 # production
 /build
+/dist
+/src/shared/ui/icons
 
 # misc
+.idea/
 .DS_Store
+.vscode
 *.pem
+Thumbs.db
 
 # debug
 npm-debug.log*
@@ -25,12 +31,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
+# environment
 .env*.local
 
 # vercel
-.vercel
-.env
+.vercel/*
+!.vercel/project.json
 
 # typescript
 *.tsbuildinfo
+
+certificates

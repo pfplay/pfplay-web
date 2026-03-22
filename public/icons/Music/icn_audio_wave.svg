@@ -1,0 +1,48 @@
+<svg width="24" height="24" viewBox="0 0 24 24"
+     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <style>
+        .bar {
+        fill: #fff;
+        transform-box: fill-box;
+        transform-origin: 50% 100%;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        shape-rendering: crispEdges;
+        }
+
+        .b1 { animation: vuA 2.6s linear infinite; }
+        .b2 { animation: vuB 2.8s linear infinite .2s; }
+        .b3 { animation: vuC 2.4s linear infinite .4s; }
+
+        /* 최대 높이 scaleY 1.15로 제한 */
+        @keyframes vuA {
+        0%   { transform: scaleY(.65) }
+        20%  { transform: scaleY(1.05) }
+        40%  { transform: scaleY(.85) }
+        60%  { transform: scaleY(1.15) }
+        80%  { transform: scaleY(.72) }
+        100% { transform: scaleY(.65) }
+        }
+        @keyframes vuB {
+        0%   { transform: scaleY(.60) }
+        20%  { transform: scaleY(1.12) }
+        40%  { transform: scaleY(.80) }
+        60%  { transform: scaleY(1.15) }
+        80%  { transform: scaleY(.70) }
+        100% { transform: scaleY(.60) }
+        }
+        @keyframes vuC {
+        0%   { transform: scaleY(.72) }
+        20%  { transform: scaleY(1.10) }
+        40%  { transform: scaleY(.66) }
+        60%  { transform: scaleY(1.15) }
+        80%  { transform: scaleY(.84) }
+        100% { transform: scaleY(.72) }
+        }
+    </style>
+
+    <!-- 얇고 작은 막대 3개, 간격 좁힘 -->
+    <rect class="bar b1" x="9"  y="8" width="2" height="8"/>
+    <rect class="bar b2" x="12" y="8" width="2" height="8"/>
+    <rect class="bar b3" x="15" y="8" width="2" height="8"/>
+</svg>

@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --header-height: 100px;
+    --footer-bottom: 52px;
+  }
+  body {
+    @apply text-white bg-black min-h-screen;
+  }
+  body.scroll-hidden {
+    @apply overflow-hidden;
+  }
+  main {
+    @apply min-h-screen bg-cover relative;
+  }
+  strong {
+    font-weight: inherit;
+  }
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number'] {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  *::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 16px;
+    background-color: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 8px;
+    background-color: theme('colors.gray.700');
+  }
+}
+
+@layer components {
+  .pt-app {
+    @apply pt-[calc(var(--header-height)+20px)] laptop:pt-[calc(var(--header-height)+60px)];
+  }
+  .px-app {
+    @apply px-[20px] tablet:px-[40px] laptop:px-[120px];
+  }
+  .pb-app {
+    @apply pb-[calc(var(--footer-bottom)+60px)] laptop:pb-[calc(var(--footer-bottom)+100px)];
+  }
+
+  .flexRow {
+    @apply flex flex-row;
+  }
+  .flexCol {
+    @apply flex flex-col;
+  }
+  .flexRowCenter {
+    @apply flexRow justify-center items-center;
+  }
+  .flexColCenter {
+    @apply flexCol justify-center items-center;
+  }
+
+  .footerText {
+    @apply font-semibold underline underline-offset-4 text-sm cursor-pointer;
+  }
+
+  .opacity-from-zero {
+    @apply opacity-0 transition-[opacity] duration-100;
+  }
+
+  .interaction-outline {
+    @apply outline outline-gray-300;
+  }
+
+  .absolute-user-form-section {
+    @apply absolute inset-x-32 top-28 bottom-20 bg-gray-900 min-h-[620px] max-h-tablet;
+  }
+}
+
+@layer utilities {
+  .polygon-equilateral-triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+}
