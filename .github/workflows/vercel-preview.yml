@@ -3,6 +3,7 @@ name: vercel preview
 on:
   push:
     branches: [development]
+  workflow_dispatch:
 
 jobs:
   deploy:
