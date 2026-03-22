@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_ZLuuyEaV5HTw8mxQSUNwMFkcDyOB",
+  "orgId": "team_KjVmSgTeMNL3FvJ373HYSQNQ",
+  "projectName": "pfplay-web",
+  "settings": {
+    "createdAt": 1773657695536,
+    "framework": "nextjs",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}
