@@ -37,6 +37,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'website',
       images: [`/api/og?linkDomain=${params.linkDomain}`],
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: partyroom?.title ?? 'PFPlay',
+      description: partyroom?.introduction ?? 'PFP Playground for music',
+      images: [`/api/og?linkDomain=${params.linkDomain}`],
+    },
   };
 }
 
