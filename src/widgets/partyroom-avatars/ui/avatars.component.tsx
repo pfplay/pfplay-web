@@ -23,10 +23,23 @@ export default function Avatars() {
 
   const { registerAvatar } = useAvatarDance();
 
-  const { positionedCrews, djQueueCrews } = useAvatarCluster({
+  const { positionedCrews: clusteredCrews, djQueueCrews: clusteredDjQueue } = useAvatarCluster({
     crews: crews,
     djQueueCrewIds: djQueueCrewIds,
   });
+
+  // useAvatarCluster는 위치만 계산하므로, 최신 크루 데이터(motionType 등)를 머지
+  const crewMap = new Map(crews.map((c) => [c.crewId, c]));
+  const positionedCrews = clusteredCrews.map((pc) => ({
+    ...pc,
+    ...crewMap.get(pc.crewId),
+    position: pc.position,
+  }));
+  const djQueueCrews = clusteredDjQueue.map((pc) => ({
+    ...pc,
+    ...crewMap.get(pc.crewId),
+    position: pc.position,
+  }));
 
   return (
     /*
