@@ -23,23 +23,18 @@ export default function Avatars() {
 
   const { registerAvatar } = useAvatarDance();
 
-  const { positionedCrews: clusteredCrews, djQueueCrews: clusteredDjQueue } = useAvatarCluster({
+  const { courtPositions, queuePositions } = useAvatarCluster({
     crews: crews,
     djQueueCrewIds: djQueueCrewIds,
   });
 
-  // useAvatarCluster는 위치만 계산하므로, 최신 크루 데이터(motionType 등)를 머지
   const crewMap = new Map(crews.map((c) => [c.crewId, c]));
-  const positionedCrews = clusteredCrews.map((pc) => ({
-    ...pc,
-    ...crewMap.get(pc.crewId),
-    position: pc.position,
-  }));
-  const djQueueCrews = clusteredDjQueue.map((pc) => ({
-    ...pc,
-    ...crewMap.get(pc.crewId),
-    position: pc.position,
-  }));
+  const positionedCrews = courtPositions
+    .map((pos) => ({ crew: crewMap.get(pos.crewId), position: pos.position }))
+    .filter((item): item is { crew: Crew.Model; position: typeof item.position } => !!item.crew);
+  const djQueueCrews = queuePositions
+    .map((pos) => ({ crew: crewMap.get(pos.crewId), position: pos.position }))
+    .filter((item): item is { crew: Crew.Model; position: typeof item.position } => !!item.crew);
 
   return (
     /*
@@ -74,49 +69,44 @@ export default function Avatars() {
       )}
 
       {/* DJ Queue Avatars  */}
-      {djQueueCrews.map((crew, index) => {
-        return (
-          <div
-            key={'partyroom-dj-queue-' + crew.crewId + index}
-            className='absolute'
-            style={{
-              top: `${crew.position.y}px`,
-              left: `${crew.position.x}px`,
-              transform: 'translate(-50%, -100%)',
-            }}
-          >
-            <Avatar
-              height={AVATAR_GROUP.HEIGHT}
-              bodyUri={crew.avatarBodyUri}
-              compositionType={crew.avatarCompositionType}
-              faceUri={crew.avatarFaceUri}
-              facePosX={crew.combinePositionX}
-              facePosY={crew.combinePositionY}
-              reaction={crew.reactionType}
-              offsetX={crew.offsetX || BASE_X}
-              offsetY={crew.offsetY || BASE_Y}
-              scale={crew.scale || BASE_SCALE}
-              motionType={crew.motionType}
-              avatarRef={registerAvatar}
-            />
-          </div>
-        );
-      })}
+      {djQueueCrews.map(({ crew, position }, index) => (
+        <div
+          key={'partyroom-dj-queue-' + crew.crewId + index}
+          className='absolute'
+          style={{
+            top: `${position.y}px`,
+            left: `${position.x}px`,
+            transform: 'translate(-50%, -100%)',
+          }}
+        >
+          <Avatar
+            height={AVATAR_GROUP.HEIGHT}
+            bodyUri={crew.avatarBodyUri}
+            compositionType={crew.avatarCompositionType}
+            faceUri={crew.avatarFaceUri}
+            facePosX={crew.combinePositionX}
+            facePosY={crew.combinePositionY}
+            reaction={crew.reactionType}
+            offsetX={crew.offsetX || BASE_X}
+            offsetY={crew.offsetY || BASE_Y}
+            scale={crew.scale || BASE_SCALE}
+            motionType={crew.motionType}
+            avatarRef={registerAvatar}
+          />
+        </div>
+      ))}
 
       {/* Cluster Avatars */}
-      {positionedCrews.map((crew, index) => {
-        const isDj = dj?.crewId === crew.crewId;
-        if (isDj) {
-          return null;
-        }
+      {positionedCrews.map(({ crew, position }, index) => {
+        if (dj?.crewId === crew.crewId) return null;
 
         return (
           <div
             key={'partyroom-crew-' + crew.crewId + index}
             className='absolute'
             style={{
-              top: `${crew.position.y}px`,
-              left: `${crew.position.x}px`,
+              top: `${position.y}px`,
+              left: `${position.x}px`,
               transform: 'translate(-100%, -100%)',
             }}
           >
