@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 const WIDTH = 1200;
 const HEIGHT = 630;
 
-const API_BASE = process.env.NEXT_PUBLIC_API_HOST_NAME;
+const API_BASE = process.env.NEXT_PUBLIC_API_HOST_NAME?.replace(/\/+$/, '');
 
 type PartyroomOG = {
   partyroomId: number;
@@ -25,7 +25,7 @@ type PartyroomOG = {
 
 async function fetchPartyroomByLink(linkDomain: string): Promise<PartyroomOG | null> {
   try {
-    const res = await fetch(`${API_BASE}v1/partyrooms/link/${linkDomain}`, {
+    const res = await fetch(`${API_BASE}/v1/partyrooms/link/${linkDomain}`, {
       cache: 'no-store',
     });
     if (!res.ok) return null;

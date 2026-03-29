@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { PropsWithChildren } from 'react';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_HOST_NAME;
+const API_BASE = process.env.NEXT_PUBLIC_API_HOST_NAME?.replace(/\/+$/, '');
 
 type PartyroomOG = {
   title: string;
@@ -10,7 +10,7 @@ type PartyroomOG = {
 
 async function fetchPartyroomByLink(linkDomain: string): Promise<PartyroomOG | null> {
   try {
-    const res = await fetch(`${API_BASE}v1/partyrooms/link/${linkDomain}`, {
+    const res = await fetch(`${API_BASE}/v1/partyrooms/link/${linkDomain}`, {
       next: { revalidate: 60 },
     });
     if (!res.ok) return null;
@@ -35,6 +35,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: partyroom?.title ?? 'PFPlay',
       description: partyroom?.introduction ?? 'PFP Playground for music',
       type: 'website',
+      images: [`/api/og?linkDomain=${params.linkDomain}`],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: partyroom?.title ?? 'PFPlay',
+      description: partyroom?.introduction ?? 'PFP Playground for music',
       images: [`/api/og?linkDomain=${params.linkDomain}`],
     },
   };
