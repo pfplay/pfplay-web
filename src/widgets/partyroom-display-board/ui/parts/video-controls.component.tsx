@@ -1,5 +1,6 @@
 'use client';
 import { useStores } from '@/shared/lib/store/stores.context';
+// @ts-expect-error 아이콘 컴포넌트 미생성 상태
 import { PFFull, PFTheater } from '@/shared/ui/icons';
 import VolumeControl from './volume-control.component';
 

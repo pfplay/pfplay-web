@@ -2,6 +2,7 @@
 import { Avatar } from '@/entities/avatar';
 import { BASE_SCALE, BASE_X, BASE_Y } from '@/entities/avatar/config/base-size';
 import { Crew } from '@/entities/current-partyroom';
+// @ts-expect-error 아이콘 컴포넌트 미생성 상태
 import { PFChatOutlineOff, PFDefault, PFFull, PFTheater } from '@/shared/ui/icons';
 import ActionButtons from './action-buttons.component';
 import VideoTitle from './video-title.component';
