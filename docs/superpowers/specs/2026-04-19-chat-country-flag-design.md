@@ -30,9 +30,8 @@
 
 1. `navigator.language` 값을 읽는다 (예: `"ko-KR"`, `"en-US"`, `"ja"`)
 2. `-` 구분자가 있으면 뒤쪽 부분을 국가 코드로 사용 (`"ko-KR"` → `"KR"`)
-3. 구분자가 없으면 언어 코드로 fallback 매핑:
-   - `ko` → `KR`, `ja` → `JP`, `zh` → `CN`, `en` → `US`, `de` → `DE`, `fr` → `FR`, `es` → `ES`, `pt` → `BR`, `it` → `IT`, `ru` → `RU`
-4. 매핑 불가하면 `null` 반환
+3. 구분자가 없으면 `null` 반환 (언어 코드만으로는 국가를 정확히 특정할 수 없으므로)
+4. SSR 환경(`typeof navigator === 'undefined'`)에서는 `null` 반환
 
 ### 인터페이스
 
@@ -66,9 +65,9 @@ export const CountryFlag: FC<CountryFlagProps>;
 
 ### 동작
 
-- `country-flag-icons/react/3x2` 에서 해당 국가의 SVG 컴포넌트를 렌더링
-- 유효하지 않은 코드인 경우 `null` 반환 (아무것도 렌더링하지 않음)
-- `rounded-sm` 클래스로 약간의 둥근 모서리 적용
+- `country-flag-icons/flags/3x2/{code}.svg` URL을 `<img>` 태그로 렌더링 (named export 방식은 동적 코드 해석이 불가하므로 SVG URL 방식 사용)
+- 유효하지 않은 코드인 경우 `onError`로 이미지 숨김 처리 (아무것도 렌더링하지 않음)
+- `rounded-sm` 클래스와 `overflow-hidden`으로 약간의 둥근 모서리 적용
 
 ---
 
@@ -96,13 +95,27 @@ export type EnterPayload = {
 
 서버는 이 값을 crew 데이터에 저장한다. 값이 없으면 `null`로 저장한다.
 
-### 3.3 영향받는 응답/이벤트
+### 3.3 프론트엔드 호출 위치
 
-- `GetSetUpInfoResponse.crews[]` — 각 crew에 `countryCode` 포함
-- `CrewEnteredEvent.crew` — `countryCode` 필드 추가
+`detectCountryCode()`는 `useEnterPartyroom` 훅 내부에서 `enter()` 호출 시 함께 전달한다:
+
+```ts
+// src/features/partyroom/enter/lib/use-enter-partyroom.ts
+enter(
+  { partyroomId, countryCode: detectCountryCode() ?? undefined },
+  { onSuccess: ... }
+);
+```
+
+### 3.4 영향받는 응답/이벤트
+
+- `GetSetUpInfoResponse.crews[]` — 각 crew에 `countryCode` 포함 (HTTP `PartyroomCrew` 타입 — flat 구조)
+- `CrewEnteredEvent.crew` — `countryCode` 필드 추가 (WebSocket 이벤트 — nested `avatar` 구조)
 - `ChatMessageSentEvent` — 변경 없음 (crew store에서 조회하므로)
 
-### 3.4 WebSocket 이벤트 타입 변경
+> **Note**: HTTP 응답의 `PartyroomCrew`와 WebSocket `CrewEnteredEvent.crew`는 구조가 다르다 (flat vs nested avatar). 두 곳 모두에 `countryCode: string | null` 필드를 추가해야 한다.
+
+### 3.5 WebSocket 이벤트 타입 변경
 
 ```ts
 // CrewEnteredEvent.crew에 countryCode 추가
@@ -132,7 +145,7 @@ navigator.language → detectCountryCode() → "KR"
 getSetupInfo() → crews[].countryCode → Zustand store에 저장
 
 [다른 유저 입장]
-CrewEnteredEvent → crew.countryCode → Zustand store에 추가
+CrewEnteredEvent → crew.countryCode → crew-entered callback에서 PartyroomCrew 형태로 매핑 → Zustand store에 추가
 
 [채팅 수신]
 ChatMessageSentEvent → crewId로 store 조회 → crew.countryCode 획득
@@ -197,7 +210,15 @@ ChatMessageSentEvent → crewId로 store 조회 → crew.countryCode 획득
 
 ---
 
-## 8. 범위 밖 (Out of Scope)
+## 8. 백엔드 의존성
+
+- 백엔드 API 변경은 프론트엔드와 별도로 진행된다
+- 백엔드 배포 전까지 `countryCode`는 응답에 포함되지 않으므로, 프론트엔드는 `countryCode`가 `undefined`인 경우도 안전하게 처리해야 한다 (optional chaining)
+- 백엔드 API 계약 검증은 실제 통합 테스트 시점에 수행한다
+
+---
+
+## 9. 범위 밖 (Out of Scope)
 
 - IP 기반 GeoIP 감지
 - 국가 변경 UI
