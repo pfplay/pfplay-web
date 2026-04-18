@@ -67,6 +67,7 @@ export default function Body({ onCancel }: Props) {
                     onClick={skipPlayback}
                     className='text-gray-50 px-3'
                     typographyType='caption1'
+                    data-testid='dj-skip-button'
                   >
                     {t.common.btn.skip}
                   </TextButton>

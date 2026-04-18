@@ -16,6 +16,7 @@ type ExtraButton = {
   icon: (size: number, className: string) => ReactNode;
   text: string;
   disabled?: boolean;
+  testId?: string;
 };
 
 type SidebarProps = {
@@ -87,6 +88,7 @@ export default function Sidebar({ className, onClickAvatarSetting, extraButtons 
             'cursor-not-allowed opacity-50': extraButton.disabled,
           })}
           disabled={extraButton.disabled}
+          data-testid={extraButton.testId}
         >
           {extraButton.icon(36, 'text-gray-400')}
           <Typography type='caption1' className='text-gray-200'>

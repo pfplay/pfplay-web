@@ -26,6 +26,7 @@ export default function useSignInForDev() {
           <Dialog.ButtonGroup>
             <Dialog.Button
               color='secondary'
+              data-testid='dev-sign-in-full'
               onClick={async () => {
                 await usersService.temporary_SignInFullCrew();
                 onClose?.();
@@ -35,6 +36,7 @@ export default function useSignInForDev() {
               Full
             </Dialog.Button>
             <Dialog.Button
+              data-testid='dev-sign-in-associate'
               onClick={async () => {
                 await usersService.temporary_SignInAssociateCrew();
                 onClose?.();

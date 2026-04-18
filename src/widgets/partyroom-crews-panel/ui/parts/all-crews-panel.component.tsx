@@ -61,11 +61,13 @@ export default function AllCrewsPanel() {
                     label: t.common.btn.kick,
                     onClickItem: () => onClickImposePenalty(PenaltyType.ONE_TIME_EXPULSION),
                     visible: _canImposePenalty,
+                    testId: 'crew-menu-kick',
                   },
                   {
                     label: t.common.btn.ban,
                     onClickItem: () => onClickImposePenalty(PenaltyType.PERMANENT_EXPULSION),
                     visible: _canImposePenalty,
+                    testId: 'crew-menu-ban',
                   },
                   {
                     label: t.common.btn.block,
