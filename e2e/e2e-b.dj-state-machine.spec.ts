@@ -5,13 +5,31 @@ import { ETHEREUM_MOCK_SCRIPT } from './fixtures/ethereum-mock';
 /**
  * E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화
  *
- * REST→WS 파이프라인 4개 지점 검증:
- * 1. User1 DJ 등록 → User2 화면에 User1이 현재 DJ로 표시
- * 2. User2 DJ 대기 등록 → User1 화면에 User2가 대기열에 표시
- * 3. PLAYBACK_STARTED → 두 클라이언트 모두 동일한 곡명
- * 4. User1 turn skip → 두 클라이언트 모두 User2가 현재 DJ로 전환, User1은 일반 크루 복귀
+ * 내가 DJ로 등록하고 곡을 틀면, 대기 중인 다른 사람 화면에도 DJ 순서와 재생 곡이 보여야 하고,
+ * 내 턴이 끝나면 다음 DJ로 자연스럽게 넘어가야 한다.
  *
- * 기준: A (Auth→파티룸입장→WS구독 체인) + B (다중 사용자 실시간 동기화)
+ * 해당 기준: A (Auth→파티룸입장→WS구독 체인) + B (다중 사용자 실시간 동기화)
+ *
+ * 흐름:
+ *   1. User1: DJ 큐 등록 → 현재 DJ 됨          [REST mutation → WebSocket broadcast]
+ *   2. ✅ User2 화면: User1이 현재 DJ로 표시됨
+ *   3. User2: DJ 큐 등록 → 대기석 배치          [REST mutation → WebSocket broadcast]
+ *   4. ✅ User1 화면: User2가 DJ 대기열에 표시됨
+ *   5. User1: 곡 재생 시작                       [REST mutation → WebSocket broadcast]
+ *   6. ✅ User2 화면: User1이 재생한 곡과 동일한 곡이 player에 표시됨
+ *   7. User1 DJ 턴 종료(skip) → DJ_QUEUE_UPDATED broadcast
+ *   8. ✅ User1, User2 화면 모두: User2가 현재 DJ로 전환됨
+ *   9. ✅ User1, User2 화면 모두: User1이 DJ 표시에서 사라지고 일반 참여자로 복귀
+ *
+ * 검증 목표:
+ *   REST mutation → WebSocket broadcast → 다른 클라이언트 UI state 파이프라인이
+ *   DJ 등록(1→2), 대기석 배치(3→4), 곡 재생(5→6), 로테이션(7→8,9) 4개 지점에서 작동하는가.
+ *   특히 DJ 로테이션 후 기존 DJ의 cluster 복귀(orphaned DJ cleanup)를 명시적으로 검증한다.
+ *
+ * 실패의 의미:
+ *   - DJ 큐 등록/표시 실패: 사용자가 DJ가 될 수 없어 음악 재생 자체가 불능
+ *   - player.videoId 불일치: 클라이언트마다 다른 곡을 보는 상태 불일치
+ *   - 로테이션 후 User1 복귀 실패: 이전 DJ가 DJ 상태로 고착(orphaned DJ), 이후 큐 전체가 꼬임
  */
 
 const AUTH_DIR = path.join(__dirname, '.auth');

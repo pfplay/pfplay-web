@@ -1,12 +1,28 @@
 import { expect, test } from './fixtures/auth.fixtures';
 
 /**
- * E2E-A: 파티룸 생성 + Late Join State Sync
+ * E2E-A: 파티룸 생성 + 중간 참여자 상태 동기화 (Late Join State Sync)
  *
- * 검증: 재생 중인 파티룸에 늦게 입장한 User2가
- *       getSetupInfo 초기 상태 스냅샷을 수신해 VideoTitle에 동일한 곡명 표시
+ * 파티룸을 생성하고, 친구가 이미 음악을 틀고 있는 파티룸에 나중에 들어왔을 때,
+ * 지금 재생 중인 곡이 바로 보여야 한다.
  *
- * 기준: A (Auth→파티룸입장→WS구독 체인) + D (window.ethereum mock 주입)
+ * 해당 기준: A (Auth→파티룸입장→WS구독 체인) + D (window.ethereum mock 주입)
+ *
+ * 흐름:
+ *   전제: window.ethereum mock 주입 (지갑 연결 상태)
+ *   1. User1: 파티룸 생성
+ *   2. User1: 파티룸 입장 → STOMP /sub/partyrooms/{id} 구독 수립
+ *   3. User1: 곡 재생 시작
+ *   4. User2: 동일 파티룸 입장 → STOMP 구독 수립
+ *   5. ✅ User2 화면: User1이 재생 중인 곡과 동일한 곡이 player에 표시됨
+ *
+ * 검증 목표:
+ *   재생이 이미 진행 중인 파티룸에 늦게 입장한 사용자가 서버로부터 초기 상태 스냅샷을
+ *   수신하여 player 상태에 정확히 반영하는가. (late join sync)
+ *
+ * 실패의 의미:
+ *   - wagmi → REST 체인 단절: 새 파티룸 자체를 생성할 수 없음
+ *   - late join sync 실패: 중간 입장자가 재생 중인 곡을 받지 못하고 빈 player 표시
  */
 test('User2(late join)는 User1이 재생 중인 곡과 동일한 곡을 player에서 본다', async ({
   user1Context,
