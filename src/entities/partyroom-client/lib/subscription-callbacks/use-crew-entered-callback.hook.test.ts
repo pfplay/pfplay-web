@@ -34,7 +34,11 @@ const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({
   ...overrides,
 });
 
-const createCrewEnteredEvent = (crewId: number, nickname = '새유저'): CrewEnteredEvent => ({
+const createCrewEnteredEvent = (
+  crewId: number,
+  nickname = '새유저',
+  countryCode?: string | null
+): CrewEnteredEvent => ({
   partyroomId: 1,
   id: crypto.randomUUID(),
   timestamp: Date.now(),
@@ -54,6 +58,7 @@ const createCrewEnteredEvent = (crewId: number, nickname = '새유저'): CrewEnt
       offsetY: 0,
       scale: 1,
     },
+    countryCode,
   },
 });
 
@@ -122,5 +127,25 @@ describe('useCrewEnteredCallback', () => {
     expect(crew).toHaveProperty('scale');
     // avatarFaceUri가 null이면 빈 문자열로 변환
     expect(crew.avatarFaceUri).toBe('');
+  });
+
+  test('입장한 크루의 countryCode가 매핑된다', () => {
+    const { result } = renderHook(() => useCrewEnteredCallback());
+    const callback = result.current;
+
+    callback(createCrewEnteredEvent(1, '한국유저', 'KR'));
+
+    const crew = store.getState().crews[0];
+    expect(crew.countryCode).toBe('KR');
+  });
+
+  test('countryCode가 없는 크루는 countryCode가 undefined이다', () => {
+    const { result } = renderHook(() => useCrewEnteredCallback());
+    const callback = result.current;
+
+    callback(createCrewEnteredEvent(1));
+
+    const crew = store.getState().crews[0];
+    expect(crew.countryCode).toBeUndefined();
   });
 });

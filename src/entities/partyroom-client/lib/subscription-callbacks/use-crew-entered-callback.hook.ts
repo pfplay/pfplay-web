@@ -31,5 +31,6 @@ function flattenCrewFromEvent(eventCrew: CrewEnteredEvent['crew']): PartyroomCre
     offsetX: eventCrew.avatar.offsetX,
     offsetY: eventCrew.avatar.offsetY,
     scale: eventCrew.avatar.scale,
+    countryCode: eventCrew.countryCode,
   };
 }
