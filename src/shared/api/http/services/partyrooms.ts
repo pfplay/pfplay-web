@@ -84,8 +84,8 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
         getErrorCode(error) as ErrorCode
       ),
   })
-  public enter({ partyroomId }: EnterPayload) {
-    return this.post<EnterResponse>(`${this.ROUTE_V1}/${partyroomId}/crews`);
+  public enter({ partyroomId, countryCode }: EnterPayload) {
+    return this.post<EnterResponse>(`${this.ROUTE_V1}/${partyroomId}/crews`, { countryCode });
   }
 
   public exit({ partyroomId }: ExitPayload) {
