@@ -15,7 +15,7 @@
 | 국가 감지   | `navigator.language` (client-side) | 가장 간단, 별도 서비스 불필요          |
 | 국기 렌더링 | `country-flag-icons` SVG           | Windows에서 국기 이모지 미지원         |
 | 국기 위치   | 닉네임 앞                          | 가장 자연스럽고 일반적인 패턴          |
-| 국기 크기   | 16px (w-4 h-4)                     | 닉네임 텍스트(`detail2`)와 시각적 균형 |
+| 국기 크기   | width 16px, 3:2 비율 유지          | 닉네임 텍스트(`detail2`)와 시각적 균형 |
 | fallback    | 국가 코드 없으면 국기 미표시       | 기존 UI와 동일하게 유지                |
 
 ---
