@@ -6,6 +6,7 @@ declare module 'pathmap' {
     '/docs/terms-of-service': { path: undefined };
     '/parties': { path: undefined };
     '/parties/[id]': { path: { id: string | number } };
+    '/mobile-notice': { path: undefined };
     '/settings/avatar': { path: undefined };
     '/settings/profile': { path: undefined };
   };
