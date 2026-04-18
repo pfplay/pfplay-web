@@ -3,6 +3,7 @@ import { ChatMessage, Crew } from '@/entities/current-partyroom';
 import { GRADE_TYPE_LABEL } from '@/entities/partyroom-client';
 import { GradeType } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
+import { CountryFlag } from '@/shared/ui/components/country-flag';
 import Profile from '@/shared/ui/components/profile/profile.component';
 import { Typography } from '@/shared/ui/components/typography';
 import { galmuriFont } from '@/shared/ui/foundation/fonts';
@@ -41,7 +42,10 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
       </div>
 
       <div className='flex-1 flexCol items-start gap-1'>
-        <Typography type='detail2'>{crew.nickname}</Typography>
+        <div className='flex items-center gap-1'>
+          {crew.countryCode && <CountryFlag code={crew.countryCode} />}
+          <Typography type='detail2'>{crew.nickname}</Typography>
+        </div>
 
         <Typography
           type='caption1'
