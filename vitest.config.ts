@@ -15,6 +15,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
     include: ['src/**/*.test.{ts,tsx}', 'eslint-custom-plugin/**/*.test.{js,ts}'],
+    exclude: ['e2e/**'],
     css: false,
     env: {
       NEXT_PUBLIC_API_HOST_NAME: 'http://localhost:8080/api/',
