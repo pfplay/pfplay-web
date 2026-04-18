@@ -6,7 +6,7 @@ import { createCurrentPartyroomStore } from '@/entities/current-partyroom/model/
 import { GradeType, MotionType } from '@/shared/api/http/types/@enums';
 import { PartyroomEventType } from '@/shared/api/websocket/types/partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
-import usePartyroomDeactivationCallback from './use-partyroom-deactivation-callback.hook';
+import usePlaybackDeactivatedCallback from './use-playback-deactivated-callback.hook';
 
 let store: ReturnType<typeof createCurrentPartyroomStore>;
 
@@ -32,9 +32,8 @@ const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({
   ...overrides,
 });
 
-describe('usePartyroomDeactivationCallback', () => {
-  test('reset 호출 → 상태 초기화됨', () => {
-    // 상태를 변경해둠
+describe('usePlaybackDeactivatedCallback', () => {
+  test('플레이백 관련 상태만 초기화되고, 파티룸 핵심 데이터는 유지됨', () => {
     store.getState().init({
       id: 99,
       me: { crewId: 1, gradeType: GradeType.HOST },
@@ -43,16 +42,20 @@ describe('usePartyroomDeactivationCallback', () => {
       notice: '공지사항',
     });
 
-    const { result } = renderHook(() => usePartyroomDeactivationCallback());
+    const { result } = renderHook(() => usePlaybackDeactivatedCallback());
     const callback = result.current;
 
     callback({ eventType: PartyroomEventType.PLAYBACK_DEACTIVATED });
 
     const state = store.getState();
-    expect(state.id).toBeUndefined();
-    expect(state.me).toBeUndefined();
+    // 파티룸 핵심 데이터는 유지
+    expect(state.id).toBe(99);
+    expect(state.me).toEqual({ crewId: 1, gradeType: GradeType.HOST });
+    expect(state.crews).toHaveLength(1);
+    expect(state.notice).toBe('공지사항');
+    // 플레이백 관련 상태만 초기화
     expect(state.playbackActivated).toBe(false);
-    expect(state.crews).toEqual([]);
-    expect(state.notice).toBe('');
+    expect(state.playback).toBeUndefined();
+    expect(state.currentDj).toBeUndefined();
   });
 });
