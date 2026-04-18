@@ -2,9 +2,21 @@ import { RequestCookies, ResponseCookies } from 'next/dist/compiled/@edge-runtim
 import { NextRequest, NextResponse } from 'next/server';
 
 import { TEN_YEARS } from '@/shared/config/time';
+import { isMobileUA } from '@/shared/lib/functions/is-mobile-ua';
 import { LANGUAGE_COOKIE_KEY, Language } from './shared/lib/localization/constants';
 
 export const middleware = (req: NextRequest) => {
+  const { pathname } = req.nextUrl;
+
+  // 모바일 UA 감지 → /mobile-notice로 리다이렉트 (단, /mobile-notice 자체는 제외)
+  if (pathname !== '/mobile-notice') {
+    const ua = req.headers.get('user-agent') || '';
+    if (isMobileUA(ua)) {
+      return NextResponse.redirect(new URL('/mobile-notice', req.url));
+    }
+  }
+
+  // 기존 언어 쿠키 로직 (모든 요청에 적용, /mobile-notice 포함)
   const response = NextResponse.next();
 
   if (!req.cookies.get(LANGUAGE_COOKIE_KEY)?.value) {

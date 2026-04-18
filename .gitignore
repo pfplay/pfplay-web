@@ -22,6 +22,8 @@
 .idea/
 .DS_Store
 .vscode
+.claude/
+.superpowers/
 *.pem
 Thumbs.db
 

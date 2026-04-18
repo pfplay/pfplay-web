@@ -305,5 +305,9 @@
       "all_count": "All {count}",
       "restriction": "Restriction"
     }
+  },
+  "mobileNotice": {
+    "title": "The party's better on a big screen!",
+    "description": "PFPlay is currently available on desktop. Please visit us from your PC or laptop!"
   }
 }
