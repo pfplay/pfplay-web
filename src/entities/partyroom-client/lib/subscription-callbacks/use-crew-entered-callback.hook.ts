@@ -9,7 +9,19 @@ export default function useCrewEnteredCallback() {
 
   return (event: CrewEnteredEvent) => {
     const crew = flattenCrewFromEvent(event.crew);
-    updateCrews((prev) => [...prev, { ...crew, motionType: MotionType.NONE }]);
+    updateCrews((prev) => {
+      const existingCrew = prev.find((prevCrew) => prevCrew.crewId === crew.crewId);
+
+      if (!existingCrew) {
+        return [...prev, { ...crew, motionType: MotionType.NONE }];
+      }
+
+      return prev.map((prevCrew) =>
+        prevCrew.crewId === crew.crewId
+          ? { ...prevCrew, ...crew, motionType: prevCrew.motionType }
+          : prevCrew
+      );
+    });
   };
 }
 
