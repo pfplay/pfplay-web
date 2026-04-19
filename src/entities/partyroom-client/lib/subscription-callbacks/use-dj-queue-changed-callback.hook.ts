@@ -7,11 +7,20 @@ import { useStores } from '@/shared/lib/store/stores.context';
 export default function useDjQueueChangedCallback() {
   const queryClient = useQueryClient();
   const { useCurrentPartyroom } = useStores();
-  const partyroomId = useCurrentPartyroom((state) => state.id);
+  const updateCurrentDj = useCurrentPartyroom((state) => state.updateCurrentDj);
 
   return (event: DjQueueChangedEvent) => {
-    queryClient.setQueryData<DjingQueue>([QueryKeys.DjingQueue, partyroomId], (prev) =>
-      prev ? { ...prev, djs: event.djs } : prev
-    );
+    const queryKey = [QueryKeys.DjingQueue, event.partyroomId];
+    const currentDj = event.djs.slice().sort((a, b) => a.orderNumber - b.orderNumber)[0];
+
+    updateCurrentDj(currentDj ? { crewId: currentDj.crewId } : undefined);
+    queryClient.setQueryData<DjingQueue>(queryKey, (prev) => {
+      if (!prev) {
+        queryClient.invalidateQueries({ queryKey });
+        return prev;
+      }
+
+      return { ...prev, djs: event.djs };
+    });
   };
 }
