@@ -64,6 +64,16 @@ describe('useSystemAnnouncementSubscription', () => {
     expect(useSystemAnnouncementStore.getState().currentAnnouncement).toBeNull();
   });
 
+  test('필수 필드가 누락된 메시지는 무시', () => {
+    (useFetchMe as Mock).mockReturnValue({ data: { id: 1 } });
+    renderHook(() => useSystemAnnouncementSubscription());
+    const subscribeCallback = mockSubscribe.mock.calls[0][1];
+    subscribeCallback({
+      body: JSON.stringify({ id: 'ann-invalid', type: 'MAINTENANCE' }),
+    });
+    expect(useSystemAnnouncementStore.getState().currentAnnouncement).toBeNull();
+  });
+
   test('unmount 시 disconnect 호출', () => {
     (useFetchMe as Mock).mockReturnValue({ data: { id: 1 } });
     const { unmount } = renderHook(() => useSystemAnnouncementSubscription());
