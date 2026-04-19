@@ -29,10 +29,9 @@ function isValidAnnouncementEvent(event: unknown): event is SystemAnnouncementEv
  */
 export default function useSystemAnnouncementSubscription() {
   const { data: me } = useFetchMe();
-  const isAuthenticated = !!me;
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!me) return;
 
     const client = new SocketClient();
     client.connect();
@@ -51,5 +50,5 @@ export default function useSystemAnnouncementSubscription() {
     return () => {
       client.disconnect();
     };
-  }, [isAuthenticated]);
+  }, [me]);
 }
