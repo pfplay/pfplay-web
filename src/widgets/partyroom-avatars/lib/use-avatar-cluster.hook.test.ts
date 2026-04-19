@@ -26,8 +26,8 @@ describe('useAvatarCluster', () => {
   test('빈 크루 리스트에서 빈 결과를 반환한다', () => {
     const { result } = renderHook(() => useAvatarCluster({ crews: [], djQueueCrewIds: [] }));
 
-    expect(result.current.positionedCrews).toEqual([]);
-    expect(result.current.djQueueCrews).toEqual([]);
+    expect(result.current.courtPositions).toEqual([]);
+    expect(result.current.queuePositions).toEqual([]);
   });
 
   test('크루에 position을 할당한다', () => {
@@ -35,8 +35,8 @@ describe('useAvatarCluster', () => {
 
     const { result } = renderHook(() => useAvatarCluster({ crews, djQueueCrewIds: [] }));
 
-    expect(result.current.positionedCrews).toHaveLength(3);
-    result.current.positionedCrews.forEach((c) => {
+    expect(result.current.courtPositions).toHaveLength(3);
+    result.current.courtPositions.forEach((c) => {
       expect(c.position).toHaveProperty('x');
       expect(c.position).toHaveProperty('y');
       expect(typeof c.position.x).toBe('number');
@@ -48,9 +48,9 @@ describe('useAvatarCluster', () => {
 
     const { result } = renderHook(() => useAvatarCluster({ crews, djQueueCrewIds: [2] }));
 
-    expect(result.current.positionedCrews).toHaveLength(2);
-    expect(result.current.djQueueCrews).toHaveLength(1);
-    expect(result.current.djQueueCrews[0].crewId).toBe(2);
+    expect(result.current.courtPositions).toHaveLength(2);
+    expect(result.current.queuePositions).toHaveLength(1);
+    expect(result.current.queuePositions[0].crewId).toBe(2);
   });
 
   test('모든 position이 유한한 숫자이다', () => {
@@ -58,7 +58,7 @@ describe('useAvatarCluster', () => {
 
     const { result } = renderHook(() => useAvatarCluster({ crews, djQueueCrewIds: [3, 7] }));
 
-    [...result.current.positionedCrews, ...result.current.djQueueCrews].forEach((c) => {
+    [...result.current.courtPositions, ...result.current.queuePositions].forEach((c) => {
       expect(Number.isFinite(c.position.x)).toBe(true);
       expect(Number.isFinite(c.position.y)).toBe(true);
     });

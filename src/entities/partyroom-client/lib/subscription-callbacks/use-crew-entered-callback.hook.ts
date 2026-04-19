@@ -9,7 +9,10 @@ export default function useCrewEnteredCallback() {
 
   return (event: CrewEnteredEvent) => {
     const crew = flattenCrewFromEvent(event.crew);
-    updateCrews((prev) => [...prev, { ...crew, motionType: MotionType.NONE }]);
+    updateCrews((prev) => {
+      if (prev.some((c) => c.crewId === crew.crewId)) return prev;
+      return [...prev, { ...crew, motionType: MotionType.NONE }];
+    });
   };
 }
 
@@ -28,5 +31,6 @@ function flattenCrewFromEvent(eventCrew: CrewEnteredEvent['crew']): PartyroomCre
     offsetX: eventCrew.avatar.offsetX,
     offsetY: eventCrew.avatar.offsetY,
     scale: eventCrew.avatar.scale,
+    countryCode: eventCrew.countryCode,
   };
 }

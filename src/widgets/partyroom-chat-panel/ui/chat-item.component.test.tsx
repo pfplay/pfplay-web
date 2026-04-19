@@ -57,4 +57,21 @@ describe('ChatItem', () => {
     render(<ChatItem ref={ref} message={makeMessage(GradeType.CLUBBER)} />);
     expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
   });
+
+  test('countryCode가 있으면 국기 이미지가 렌더링된다', () => {
+    const msg = makeMessage(GradeType.CLUBBER);
+    msg.crew.countryCode = 'KR';
+    render(<ChatItem message={msg} />);
+    const flagImg = screen.getByAltText('KR');
+    expect(flagImg).toBeDefined();
+    expect(flagImg.getAttribute('src')).toBe('/flags/KR.svg');
+  });
+
+  test('countryCode가 없으면 국기 이미지가 렌더링되지 않는다', () => {
+    render(<ChatItem message={makeMessage(GradeType.CLUBBER)} />);
+    const flagImgs = screen
+      .queryAllByRole('img')
+      .filter((img) => img.getAttribute('src')?.startsWith('/flags/'));
+    expect(flagImgs).toHaveLength(0);
+  });
 });

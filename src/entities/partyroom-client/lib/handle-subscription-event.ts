@@ -10,8 +10,8 @@ import useCrewPenaltyCallback from './subscription-callbacks/use-crew-penalty-ca
 import useCrewProfileCallback from './subscription-callbacks/use-crew-profile-callback.hook';
 import useDjQueueChangedCallback from './subscription-callbacks/use-dj-queue-changed-callback.hook';
 import usePartyroomCloseCallback from './subscription-callbacks/use-partyroom-close-callback.hook';
-import usePartyroomDeactivationCallback from './subscription-callbacks/use-partyroom-deactivation-callback.hook';
 import usePartyroomNoticeCallback from './subscription-callbacks/use-partyroom-notice-callback.hook';
+import usePlaybackDeactivatedCallback from './subscription-callbacks/use-playback-deactivated-callback.hook';
 import usePlaybackStartCallback from './subscription-callbacks/use-playback-start-callback.hook';
 import useReactionAggregationCallback from './subscription-callbacks/use-reaction-aggregation-callback.hook';
 import useReactionMotionCallback from './subscription-callbacks/use-reaction-motion-callback.hook';
@@ -22,7 +22,7 @@ const infoLogger = logger(specificLog);
 
 export default function useHandleSubscriptionEvent() {
   const partyroomCloseCallback = usePartyroomCloseCallback();
-  const partyroomDeactivationCallback = usePartyroomDeactivationCallback();
+  const playbackDeactivatedCallback = usePlaybackDeactivatedCallback();
   const crewEnteredCallback = useCrewEnteredCallback();
   const crewExitedCallback = useCrewExitedCallback();
   const partyroomNoticeCallback = usePartyroomNoticeCallback();
@@ -55,7 +55,7 @@ export default function useHandleSubscriptionEvent() {
         partyroomCloseCallback(event);
         break;
       case PartyroomEventType.PLAYBACK_DEACTIVATED:
-        partyroomDeactivationCallback(event);
+        playbackDeactivatedCallback(event);
         break;
       case PartyroomEventType.CREW_ENTERED:
         crewEnteredCallback(event);
