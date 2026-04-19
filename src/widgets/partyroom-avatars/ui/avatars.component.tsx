@@ -20,7 +20,9 @@ export default function Avatars() {
     .slice()
     .sort((a, b) => a.orderNumber - b.orderNumber)[0];
   const currentDjCrewId = currentDjFromQueue?.crewId ?? currentDj?.crewId;
-  const dj = currentDjCrewId && crews.find((crew: Crew.Model) => crew.crewId === currentDjCrewId);
+  const dj = currentDjCrewId
+    ? crews.find((crew: Crew.Model) => crew.crewId === currentDjCrewId)
+    : undefined;
   const djQueueCrewIds = djingQueue
     ? djingQueue.djs
         .filter((dj) => dj.crewId !== currentDjCrewId && dj.orderNumber > 1)
