@@ -36,12 +36,21 @@ export default function DjingGuideLayout({ onClose }: Props) {
       {currentPage === 2 && <Guide2 />}
       {currentPage === 3 && <Guide3 />}
       <div className='flex justify-between mt-[20px]'>
-        <button className='text-gray-400 w-[150px]' onClick={handleDontShowAgain}>
+        <button
+          className='text-gray-400 w-[150px]'
+          onClick={handleDontShowAgain}
+          data-testid='dont-show-again-button'
+        >
           {t.common.btn.dont_show_again}
         </button>
         <Paginator totalPages={3} currentPage={currentPage} />
         <div className='w-[150px] flex justify-end'>
-          <Button onClick={isLastPage ? onClose : moveNextPage}>{t.common.btn.confirm}</Button>
+          <Button
+            onClick={isLastPage ? onClose : moveNextPage}
+            data-testid='djing-guide-confirm-button'
+          >
+            {t.common.btn.confirm}
+          </Button>
         </div>
       </div>
     </div>

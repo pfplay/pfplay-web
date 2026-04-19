@@ -73,7 +73,11 @@ export default function Sidebar({ className, onClickAvatarSetting, extraButtons 
           {t.common.btn.my_profile}
         </Typography>
       </button>
-      <button onClick={togglePlaylist} className='gap-2 cursor-pointer flexColCenter'>
+      <button
+        onClick={togglePlaylist}
+        className='gap-2 cursor-pointer flexColCenter'
+        data-testid='playlist-sidebar-button'
+      >
         <PFHeadset width={36} height={36} className='[&_*]:fill-gray-400' />
         <Typography type='caption1' className='text-gray-200'>
           {t.common.btn.playlist}

@@ -25,6 +25,7 @@ const HomePage = () => {
           return '/parties';
         })()}
         linkTitle={t.onboard.btn.pfp_play}
+        data-testid='home-pfp-play-button'
         classNames={{
           button: 'w-[360px]',
         }}

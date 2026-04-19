@@ -25,6 +25,7 @@ export default function SelectPlaylist({ playlists, onSelect }: Props) {
           tabIndex={0}
           className='flex gap-[8px] py-[16px] px-[12px] text-white first-of-type:border-t first-of-type:border-t-gray-600 border-b border-gray-600 cursor-pointer'
           onClick={() => handleSelect(playlist)}
+          data-testid='select-playlist-item'
         >
           {selectedPlaylist?.id === playlist.id ? (
             <PFRadio className='text-red-300' />

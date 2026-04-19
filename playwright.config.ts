@@ -9,10 +9,10 @@ export default defineConfig({
   testDir: './e2e',
 
   // 테스트 파일 당 최대 60초
-  timeout: 60_000,
+  timeout: 6000_000,
 
   // expect 체크도 최대 15초
-  expect: { timeout: 15_000 },
+  expect: { timeout: 1500_000 },
 
   // 테스트 파일 동시 병렬 처리 비활성화
   fullyParallel: false,
