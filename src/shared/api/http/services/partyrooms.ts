@@ -85,7 +85,7 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
       ),
   })
   public enter({ partyroomId }: EnterPayload) {
-    return this.post<EnterResponse>(`${this.ROUTE_V1}/${partyroomId}/crews`);
+    return this.post<EnterResponse>(`${this.ROUTE_V1}/${partyroomId}/crews`, {});
   }
 
   public exit({ partyroomId }: ExitPayload) {
