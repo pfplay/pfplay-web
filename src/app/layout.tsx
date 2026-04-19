@@ -6,7 +6,10 @@ import '@/shared/ui/foundation/globals.css';
 
 import { PropsWithChildren } from 'react';
 
-import { SystemAnnouncementModal } from '@/features/system-announcement';
+import {
+  SystemAnnouncementModal,
+  SystemAnnouncementSubscriber,
+} from '@/features/system-announcement';
 import { DomId } from '@/shared/config/dom-id';
 import { Language } from '@/shared/lib/localization/constants';
 import { LANGUAGE_COOKIE_KEY } from '@/shared/lib/localization/constants';
@@ -45,6 +48,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
                   <DialogProvider>
                     {children}
                     <SystemAnnouncementModal />
+                    <SystemAnnouncementSubscriber />
                   </DialogProvider>
                 </WalletProvider>
               </StoresProvider>
