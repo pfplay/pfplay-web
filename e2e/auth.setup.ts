@@ -19,9 +19,7 @@ async function authenticateUser(browser: Browser, outputPath: string, baseURL: s
   await page.waitForURL(/\/(parties|$)/, { timeout: 30_000 });
   const pfpPlayButton = page.locator('[data-testid="home-pfp-play-button"]');
   if (await pfpPlayButton.isVisible({ timeout: 3_000 }).catch(() => false)) {
-    // useFetchMe 완료 대기 — 완료 전 클릭 시 href가 /sign-in으로 설정됨
-    await page.waitForLoadState('networkidle');
-    await pfpPlayButton.click();
+    await page.goto(`${baseURL}/parties`);
     await page.waitForURL(/\/parties/, { timeout: 10_000 });
   }
   await context.storageState({ path: outputPath });
