@@ -13,12 +13,18 @@ import { AVATAR_GROUP } from '../model/constants';
 export default function Avatars() {
   const { useCurrentPartyroom } = useStores();
   const { crews, currentDj } = useCurrentPartyroom((state) => pick(state, ['crews', 'currentDj']));
-  const dj = currentDj && crews.find((crew: Crew.Model) => crew.crewId === currentDj.crewId);
   const params = useParams<{ id: string }>();
   const { data: djingQueue } = useFetchDjingQueue({ partyroomId: Number(params.id) }, true);
 
+  const currentDjFromQueue = djingQueue?.djs
+    .slice()
+    .sort((a, b) => a.orderNumber - b.orderNumber)[0];
+  const currentDjCrewId = currentDjFromQueue?.crewId ?? currentDj?.crewId;
+  const dj = currentDjCrewId && crews.find((crew: Crew.Model) => crew.crewId === currentDjCrewId);
   const djQueueCrewIds = djingQueue
-    ? djingQueue.djs.filter((dj) => dj.orderNumber > 1).map((dj) => dj.crewId)
+    ? djingQueue.djs
+        .filter((dj) => dj.crewId !== currentDjCrewId && dj.orderNumber > 1)
+        .map((dj) => dj.crewId)
     : [];
 
   const { registerAvatar } = useAvatarDance();
@@ -36,6 +42,7 @@ export default function Avatars() {
     <div className='h-screen aspect-partyroom-bg absolute inset-0 z-0 bg-cover bg-left-bottom overflow-hidden'>
       {!!dj && (
         <div
+          data-testid='partyroom-current-dj'
           className='relative'
           style={{
             top: '98%',
@@ -65,6 +72,7 @@ export default function Avatars() {
         return (
           <div
             key={'partyroom-dj-queue-' + crew.crewId + index}
+            data-testid='partyroom-dj-queue-item'
             className='absolute'
             style={{
               top: `${crew.position.y}px`,

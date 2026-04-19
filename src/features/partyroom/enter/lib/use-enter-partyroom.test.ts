@@ -2,7 +2,15 @@ vi.mock('@/entities/partyroom-client');
 vi.mock('@/shared/lib/store/stores.context');
 vi.mock('@/shared/lib/router/use-app-router.hook');
 vi.mock('../api/use-enter-partyroom.mutation');
+vi.mock('@tanstack/react-query', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@tanstack/react-query')>();
+  return {
+    ...actual,
+    useQueryClient: vi.fn(),
+  };
+});
 
+import { useQueryClient } from '@tanstack/react-query';
 import { renderHook, act } from '@testing-library/react';
 import {
   usePartyroomClient,
@@ -18,6 +26,7 @@ const mockMutate = vi.fn();
 const mockInit = vi.fn();
 const mockMarkExitedOnBackend = vi.fn();
 const mockPush = vi.fn();
+const mockInvalidateQueries = vi.fn();
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -32,6 +41,7 @@ beforeEach(() => {
   });
   (useEnterPartyroomMutation as Mock).mockReturnValue({ mutate: mockMutate });
   (useAppRouter as Mock).mockReturnValue({ push: mockPush });
+  (useQueryClient as Mock).mockReturnValue({ invalidateQueries: mockInvalidateQueries });
 });
 
 describe('useEnterPartyroom', () => {
