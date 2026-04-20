@@ -44,3 +44,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 certificates
+# Playwright e2e
+e2e/.auth/
+playwright-report/
+test-results/

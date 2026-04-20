@@ -60,6 +60,7 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
                     <TextButton
                       Icon={<PFAddPlaylist />}
                       onClick={() => addTrackToPlaylist(selectedPlaylist.id, music)}
+                      data-testid='track-add-button'
                     />
                   ) : (
                     // 선택된 플레이리스트가 없을 경우 플레이리스트 선택 메뉴 표시

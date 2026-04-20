@@ -98,6 +98,7 @@ export default function MyPlaylist() {
                   color='secondary'
                   Icon={<PFAdd />}
                   onClick={execute}
+                  data-testid='add-song-button'
                 >
                   {text}
                 </Button>

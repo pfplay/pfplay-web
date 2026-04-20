@@ -8,7 +8,14 @@ const EntryButton = () => {
   const openAddDialog = useAddPlaylistDialog();
 
   return (
-    <Button size='sm' variant='outline' color='secondary' Icon={<PFAdd />} onClick={openAddDialog}>
+    <Button
+      size='sm'
+      variant='outline'
+      color='secondary'
+      Icon={<PFAdd />}
+      onClick={openAddDialog}
+      data-testid='add-playlist-button'
+    >
       {t.playlist.btn.add_list}
     </Button>
   );

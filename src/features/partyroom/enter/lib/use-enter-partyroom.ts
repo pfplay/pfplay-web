@@ -1,7 +1,9 @@
+import { useQueryClient } from '@tanstack/react-query';
 import {
   useHandlePartyroomSubscriptionEvent,
   usePartyroomClient,
 } from '@/entities/partyroom-client';
+import { QueryKeys } from '@/shared/api/http/query-keys';
 import { partyroomsService } from '@/shared/api/http/services';
 import { MotionType } from '@/shared/api/http/types/@enums';
 import { EnterResponse, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
@@ -20,6 +22,7 @@ export function useEnterPartyroom(partyroomId: number) {
     state.markExitedOnBackend,
   ]);
   const { mutate: enter } = useEnterPartyroomMutation();
+  const queryClient = useQueryClient();
   const router = useAppRouter();
 
   const setup = async (enterResponse: EnterResponse) => {
@@ -63,6 +66,9 @@ export function useEnterPartyroom(partyroomId: number) {
               silent(setup(enterResponse), {
                 onSuccess: () => {
                   client.subscribe(partyroomId, handleEvent);
+                  queryClient.invalidateQueries({
+                    queryKey: [QueryKeys.DjingQueue, partyroomId],
+                  });
                 },
                 onError: () => {
                   router.push('/parties'); // 에러 발생 시 로비로 이동

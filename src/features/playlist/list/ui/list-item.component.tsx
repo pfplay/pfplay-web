@@ -9,14 +9,23 @@ type ListItemProps = {
   PrefixIcon?: ReactNode;
   InfoText?: ReactNode;
   onClick?: () => void;
+  'data-testid'?: string;
 };
 
-const ListItem = ({ title, variant, PrefixIcon, InfoText, onClick }: ListItemProps) => {
+const ListItem = ({
+  title,
+  variant,
+  PrefixIcon,
+  InfoText,
+  onClick,
+  'data-testid': dataTestId,
+}: ListItemProps) => {
   return (
     <div
       role={onClick && 'button'}
       tabIndex={onClick && 0}
       onClick={onClick}
+      data-testid={dataTestId}
       className={cn('mx-auto w-full max-w-md bg-transparent', {
         'cursor-pointer': !!onClick,
       })}

@@ -22,7 +22,7 @@ export default function UnregisterButton() {
   };
 
   return (
-    <Button size='lg' onClick={unregisterMeFromDjQueue}>
+    <Button size='lg' onClick={unregisterMeFromDjQueue} data-testid='unregister-dj-queue'>
       {t.dj.para.cancel_dj_queue}
     </Button>
   );
