@@ -305,5 +305,9 @@
       "all_count": "전체 {count}",
       "restriction": "제재"
     }
+  },
+  "mobileNotice": {
+    "title": "파티는 큰 화면에서!",
+    "description": "PFPlay는 현재 데스크탑에서 즐길 수 있어요. PC나 노트북으로 접속해주세요!"
   }
 }

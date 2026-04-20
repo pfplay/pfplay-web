@@ -36,7 +36,7 @@ vi.mock('./subscription-callbacks/use-partyroom-close-callback.hook', () => ({
   __esModule: true,
   default: vi.fn(),
 }));
-vi.mock('./subscription-callbacks/use-partyroom-deactivation-callback.hook', () => ({
+vi.mock('./subscription-callbacks/use-playback-deactivated-callback.hook', () => ({
   __esModule: true,
   default: vi.fn(),
 }));
@@ -73,8 +73,8 @@ import useCrewPenaltyCallback from './subscription-callbacks/use-crew-penalty-ca
 import useCrewProfileCallback from './subscription-callbacks/use-crew-profile-callback.hook';
 import useDjQueueChangedCallback from './subscription-callbacks/use-dj-queue-changed-callback.hook';
 import usePartyroomCloseCallback from './subscription-callbacks/use-partyroom-close-callback.hook';
-import usePartyroomDeactivationCallback from './subscription-callbacks/use-partyroom-deactivation-callback.hook';
 import usePartyroomNoticeCallback from './subscription-callbacks/use-partyroom-notice-callback.hook';
+import usePlaybackDeactivatedCallback from './subscription-callbacks/use-playback-deactivated-callback.hook';
 import usePlaybackStartCallback from './subscription-callbacks/use-playback-start-callback.hook';
 import useReactionAggregationCallback from './subscription-callbacks/use-reaction-aggregation-callback.hook';
 import useReactionMotionCallback from './subscription-callbacks/use-reaction-motion-callback.hook';
@@ -93,8 +93,8 @@ const CALLBACK_MAP: EventTypeToHook[] = [
   },
   {
     eventType: PartyroomEventType.PLAYBACK_DEACTIVATED,
-    hook: usePartyroomDeactivationCallback as Mock,
-    label: 'usePartyroomDeactivationCallback',
+    hook: usePlaybackDeactivatedCallback as Mock,
+    label: 'usePlaybackDeactivatedCallback',
   },
   {
     eventType: PartyroomEventType.CREW_ENTERED,

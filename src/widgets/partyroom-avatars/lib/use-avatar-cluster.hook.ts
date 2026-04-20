@@ -19,6 +19,7 @@ import {
 
 type D3Node = SimulationNodeDatum & Crew.Model & { fx?: number; fy?: number };
 type PositionedCrew = Crew.Model & { position: Point };
+export type CrewPosition = { crewId: number; position: Point };
 
 export type OvalBounds = {
   centerX: number;
@@ -294,8 +295,8 @@ export function useAvatarCluster({
   crews: Crew.Model[];
   djQueueCrewIds: number[];
 }): {
-  positionedCrews: PositionedCrew[];
-  djQueueCrews: PositionedCrew[];
+  courtPositions: CrewPosition[];
+  queuePositions: CrewPosition[];
 } {
   const [courtClustered, setCourtClustered] = useState<PositionedCrew[]>([]);
   const [queueClustered, setQueueClustered] = useState<PositionedCrew[]>([]);
@@ -343,7 +344,7 @@ export function useAvatarCluster({
   }, [crews, djQueueCrewIds]);
 
   return {
-    positionedCrews: courtClustered,
-    djQueueCrews: queueClustered,
+    courtPositions: courtClustered.map(({ crewId, position }) => ({ crewId, position })),
+    queuePositions: queueClustered.map(({ crewId, position }) => ({ crewId, position })),
   };
 }

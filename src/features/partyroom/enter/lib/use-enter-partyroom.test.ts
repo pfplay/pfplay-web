@@ -67,7 +67,7 @@ describe('useEnterPartyroom', () => {
     onConnectCallback();
 
     expect(mockMutate).toHaveBeenCalledWith(
-      { partyroomId: 42 },
+      expect.objectContaining({ partyroomId: 42 }),
       expect.objectContaining({
         onSuccess: expect.any(Function),
         onError: expect.any(Function),

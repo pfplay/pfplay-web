@@ -43,6 +43,14 @@
 
 ## P1 — High
 
+### TD-013: Avatars 컴포넌트 불필요 리렌더 (pick + shallow 비교 부재)
+
+- **파일**: `src/widgets/partyroom-avatars/ui/avatars.component.tsx:15`
+- **관련**: `src/shared/lib/functions/pick.ts`, `src/widgets/partyroom-avatars/lib/use-avatar-cluster.hook.ts:346-349`, `src/entities/avatar/ui/useAvatarDance.hook.ts:22`
+- **현상**: `pick()` 셀렉터가 매번 새 객체를 반환하고 `shallow` 비교가 없어서, 채팅/공지/재생 등 무관한 상태 변경에도 Avatars 전체가 리렌더됨. 연쇄적으로 O(n) 재계산 + Avatar 자식 리렌더 유발
+- **개선 방향**: `useShallow` 적용, `useAvatarCluster` 반환값 useMemo, `registerAvatar` useCallback, `djQueueCrewIds` useMemo
+- **상세 분석**: [AVATARS_RENDER_PERFORMANCE.md](./AVATARS_RENDER_PERFORMANCE.md)
+
 ### TD-004: STOMP 하트비트 커스텀 구현 → 내장 기능 전환
 
 - **파일**: `src/shared/api/websocket/client.ts:158-183`

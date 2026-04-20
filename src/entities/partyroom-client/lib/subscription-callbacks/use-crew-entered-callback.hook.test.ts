@@ -5,6 +5,7 @@ import type * as Crew from '@/entities/current-partyroom/model/crew.model';
 import { createCurrentPartyroomStore } from '@/entities/current-partyroom/model/current-partyroom.store';
 import { AvatarCompositionType, GradeType, MotionType } from '@/shared/api/http/types/@enums';
 import { PartyroomEventType } from '@/shared/api/websocket/types/partyroom';
+import type { CrewEnteredEvent } from '@/shared/api/websocket/types/partyroom';
 import { useStores } from '@/shared/lib/store/stores.context';
 import useCrewEnteredCallback from './use-crew-entered-callback.hook';
 
@@ -23,7 +24,7 @@ const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({
   avatarBodyUri: 'body.png',
   avatarFaceUri: 'face.png',
   avatarIconUri: 'icon.png',
-  avatarCompositionType: AvatarCompositionType.COMBINED,
+  avatarCompositionType: AvatarCompositionType.NONE,
   combinePositionX: 0,
   combinePositionY: 0,
   offsetX: 0,
@@ -33,26 +34,31 @@ const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({
   ...overrides,
 });
 
-const createCrewEnteredEvent = (crewId = 1) => ({
-  eventType: PartyroomEventType.CREW_ENTERED as const,
+const createCrewEnteredEvent = (
+  crewId: number,
+  nickname = '새유저',
+  countryCode?: string | null
+): CrewEnteredEvent => ({
   partyroomId: 1,
-  id: 'event-id',
+  id: crypto.randomUUID(),
   timestamp: Date.now(),
+  eventType: PartyroomEventType.CREW_ENTERED,
   crew: {
     crewId,
-    nickname: '입장유저',
     gradeType: GradeType.CLUBBER,
+    nickname,
     avatar: {
-      avatarCompositionType: AvatarCompositionType.COMBINED,
-      avatarBodyUri: 'entered-body.png',
+      avatarCompositionType: AvatarCompositionType.NONE,
+      avatarBodyUri: 'body.png',
       avatarFaceUri: null,
-      avatarIconUri: 'entered-icon.png',
-      combinePositionX: 10,
-      combinePositionY: 20,
-      offsetX: 3,
-      offsetY: 4,
-      scale: 1.2,
+      avatarIconUri: 'icon.png',
+      combinePositionX: 0,
+      combinePositionY: 0,
+      offsetX: 0,
+      offsetY: 0,
+      scale: 1,
     },
+    countryCode,
   },
 });
 
