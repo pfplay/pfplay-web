@@ -28,7 +28,7 @@ jobs:
     # Vercel Preview 배포가 성공한 경우에만 실행 (Production / pending / error / failure 시 스킵)
     if: >
       github.event.deployment_status.state == 'success' &&
-      github.event.deployment.environment == 'Preview'
+      startsWith(github.event.deployment.environment, 'Preview')
     env:
       E2E_BASE_URL: ${{ github.event.deployment_status.target_url }}
 
