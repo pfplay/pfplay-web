@@ -21,9 +21,9 @@ import {
  *   1. User1: DJ 큐 등록 → 현재 DJ 됨          [REST mutation → WebSocket broadcast]
  *   2. ✅ User2 화면: User1이 현재 DJ로 표시됨
  *   3. User2: DJ 큐 등록 → 대기석 배치          [REST mutation → WebSocket broadcast]
- *   4. ✅ User2 자신 화면: 본인이 대기열에 표시됨 (dj-queue-me-item)
+ *   4. ✅ User1/User2 화면: User2가 대기열 아바타 영역에 표시됨
  *   5. User2 DJ 대기 등록 취소 → DJ_QUEUE_UPDATED broadcast
- *   6. ✅ User2 화면: User2가 대기열에서 사라짐
+ *   6. ✅ User1/User2 화면: User2가 대기열 아바타 영역에서 사라짐
  *
  * 검증 목표:
  *   REST mutation → WebSocket broadcast → 다른 클라이언트 UI state 파이프라인이
@@ -105,24 +105,37 @@ test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () =
 
     await registerAsDj(page2, user2PlaylistName);
 
-    // User2 자신의 화면: DJ Queue 영역에 정확히 1명 표시
+    // User1/User2 화면: 파티룸 아바타 대기열에 정확히 1명 표시
     // (User1은 현재 DJ 포지션, User2만 대기열에 있으므로 count=1은 User2임을 보장)
-    await expect(page2.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(1, {
-      timeout: 15_000,
-    });
+    await Promise.all([
+      expect(page1.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(1, {
+        timeout: 15_000,
+      }),
+      expect(page2.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(1, {
+        timeout: 15_000,
+      }),
+    ]);
 
     const unregisterButton = page2.locator('[data-testid="unregister-dj-queue"]');
-    if (!(await unregisterButton.isVisible({ timeout: 3_000 }).catch(() => false))) {
+    const isUnregisterButtonVisible = await unregisterButton
+      .isVisible({ timeout: 3_000 })
+      .catch(() => false);
+    if (!isUnregisterButtonVisible) {
       await page2.locator('[data-testid="dj-queue-button"]').click();
     }
-    await expect(page2.locator('[data-testid="unregister-dj-queue"]')).toBeVisible({
+    await expect(unregisterButton).toBeVisible({
       timeout: 10_000,
     });
-    await page2.locator('[data-testid="unregister-dj-queue"]').click();
+    await unregisterButton.click();
     await page2.getByRole('button', { name: 'Confirm' }).click();
 
-    await expect(page2.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(0, {
-      timeout: 15_000,
-    });
+    await Promise.all([
+      expect(page1.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(0, {
+        timeout: 15_000,
+      }),
+      expect(page2.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(0, {
+        timeout: 15_000,
+      }),
+    ]);
   });
 });

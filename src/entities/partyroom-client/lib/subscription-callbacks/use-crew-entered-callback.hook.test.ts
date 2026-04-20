@@ -72,7 +72,7 @@ describe('useCrewEnteredCallback', () => {
     expect(crews).toHaveLength(1);
     expect(crews[0]).toMatchObject({
       crewId: 1,
-      nickname: '입장유저',
+      nickname: '새유저',
       avatarFaceUri: '',
       motionType: MotionType.NONE,
     });
@@ -94,8 +94,8 @@ describe('useCrewEnteredCallback', () => {
     expect(crews).toHaveLength(1);
     expect(crews[0]).toMatchObject({
       crewId: 1,
-      nickname: '입장유저',
-      avatarBodyUri: 'entered-body.png',
+      nickname: '새유저',
+      avatarBodyUri: 'body.png',
       avatarFaceUri: '',
       motionType: MotionType.DANCE_TYPE_1,
     });

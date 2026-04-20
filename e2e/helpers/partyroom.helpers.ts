@@ -6,6 +6,7 @@ import { ETHEREUM_MOCK_SCRIPT } from '../fixtures/ethereum-mock';
 const AUTH_DIR = path.join(__dirname, '../.auth');
 const BASE_URL = process.env.E2E_BASE_URL ?? 'https://localhost:3000';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_HOST_NAME ?? 'https://dev-api.pfplay.xyz/api/';
+const USER_PREFERENCES_STORAGE_KEY = 'user-preferences';
 
 export async function createPlaylistWithTracks(page: Page, playlistName: string) {
   await page.locator('[data-testid="playlist-sidebar-button"]').click();
@@ -51,19 +52,38 @@ export async function registerAsDj(page: Page, playlistName: string) {
     { timeout: 15_000 }
   );
   await page.locator('[data-testid="playlist-confirm"]').click();
+  await dismissDjingGuide(page);
   await expect((await registration).status()).toBeLessThan(400);
-
-  await page.locator('[data-testid="djing-guide-confirm-button"]').click({ force: true });
-
-  const dontShowAgainBtn = page.locator('[data-testid="dont-show-again-button"]');
-  if (await dontShowAgainBtn.isVisible({ timeout: 3_000 }).catch(() => false)) {
-    await dontShowAgainBtn.click({ force: true });
-  }
 
   const djingDialogClose = page.locator('[data-testid="djing-dialog-close"]');
   if (await djingDialogClose.isVisible({ timeout: 3_000 }).catch(() => false)) {
     await djingDialogClose.click({ force: true });
   }
+}
+
+export async function dismissDjingGuide(page: Page) {
+  if (await isDjingGuideHidden(page)) {
+    return;
+  }
+
+  const dontShowAgainBtn = page.locator('[data-testid="dont-show-again-button"]');
+  await expect(dontShowAgainBtn).toBeVisible({ timeout: 10_000 });
+  await dontShowAgainBtn.click();
+}
+
+async function isDjingGuideHidden(page: Page) {
+  return page.evaluate((key) => {
+    const preferences = localStorage.getItem(key);
+    if (!preferences) {
+      return false;
+    }
+
+    try {
+      return JSON.parse(preferences)?.state?.djingGuideHidden === true;
+    } catch {
+      return false;
+    }
+  }, USER_PREFERENCES_STORAGE_KEY);
 }
 
 export async function leavePartyroom(page: Page) {
