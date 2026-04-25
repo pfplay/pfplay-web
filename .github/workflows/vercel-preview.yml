@@ -16,9 +16,9 @@ jobs:
       - name: Deploy to Vercel Preview
         id: deploy
         run: |
-          URL=$(npx vercel deploy --yes --token=${{ secrets.VERCEL_TOKEN }})
+          URL=$(npx vercel deploy --scope dev-8226s-projects --yes --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$URL" >> $GITHUB_OUTPUT
 
       - name: Alias Preview Domain
         run: |
-          npx vercel alias set ${{ steps.deploy.outputs.url }} stg.pfplay.xyz --token=${{ secrets.VERCEL_TOKEN }}
+          npx vercel alias set ${{ steps.deploy.outputs.url }} stg.pfplay.xyz --scope dev-8226s-projects --token=${{ secrets.VERCEL_TOKEN }}
