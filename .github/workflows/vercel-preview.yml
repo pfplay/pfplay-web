@@ -9,7 +9,16 @@ jobs:
   deploy:
     name: deploy preview
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Deploy to Vercel Preview
-        run: npx vercel deploy --yes --token=${{ secrets.VERCEL_TOKEN }}
+        id: deploy
+        run: |
+          URL=$(npx vercel deploy --yes --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$URL" >> $GITHUB_OUTPUT
+
+      - name: Alias Preview Domain
+        run: |
+          npx vercel alias set ${{ steps.deploy.outputs.url }} stg.pfplay.xyz --token=${{ secrets.VERCEL_TOKEN }}

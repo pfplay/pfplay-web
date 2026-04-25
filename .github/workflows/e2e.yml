@@ -6,40 +6,29 @@ name: E2E Tests
 #   - GitHub Environment 'Preview – pfplay-web'에 VERCEL_AUTOMATION_BYPASS_SECRET 설정 필요.
 #
 # 실행 조건:
-#   - development 브랜치가 Vercel에 배포 완료된 시점에만 실행
+#   - vercel-preview 워크플로우(development 브랜치 배포) 완료 후 실행
 #   - 백엔드 스테이징 서버가 stg.pfplay.xyz origin만 허용하므로 E2E_BASE_URL을 고정
 #   - feature 브랜치 Preview 배포는 백엔드 CORS 미허용으로 실행 불가
 on:
-  deployment_status
+  workflow_run:
+    workflows: ['vercel preview']
+    types: [completed]
+    branches: [development]
 
 jobs:
-  log-deployment:
-    name: Log deployment info
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print deployment values
-        run: |
-          echo "state        = ${{ github.event.deployment_status.state }}"
-          echo "target_url   = ${{ github.event.deployment_status.target_url }}"
-          echo "environment  = ${{ github.event.deployment.environment }}"
-          echo "ref          = ${{ github.event.deployment.ref }}"
-
   e2e:
     name: Playwright E2E
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment: Preview – pfplay-web
-    # dev-8226s-projects 계정의 development 브랜치 Preview 배포 완료 시에만 실행
-    # target_url 패턴: pfplay-git-development-dev-8226s-projects.vercel.app
-    if: >
-      github.event.deployment_status.state == 'success' &&
-      contains(github.event.deployment_status.target_url, 'git-development') &&
-      contains(github.event.deployment_status.target_url, 'dev-8226s-projects')
+    if: github.event.workflow_run.conclusion == 'success'
     env:
       E2E_BASE_URL: https://stg.pfplay.xyz
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - uses: actions/setup-node@v4
         with:
