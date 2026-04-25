@@ -6,7 +6,12 @@ import { ETHEREUM_MOCK_SCRIPT } from './fixtures/ethereum-mock';
 const AUTH_DIR = path.join(__dirname, '.auth');
 
 async function authenticateUser(browser: Browser, outputPath: string, baseURL: string) {
-  const context = await browser.newContext({ ignoreHTTPSErrors: true });
+  const context = await browser.newContext({
+    ignoreHTTPSErrors: true,
+    extraHTTPHeaders: process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+      ? { 'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET }
+      : {},
+  });
   const page = await context.newPage();
   await page.addInitScript(ETHEREUM_MOCK_SCRIPT);
   await page.goto(`${baseURL}/sign-in`);
