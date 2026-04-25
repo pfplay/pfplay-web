@@ -6,7 +6,7 @@ name: E2E Tests
 #   - Production에는 dev login 우회 플로우가 없으므로 Preview 배포에서만 실행한다.
 on:
   # 테스트는 Vercel 배포 완료 후 트리거 (push 직후엔 빌드 중인 서버 대상으로 테스트가 실행될 수 있기 때문)
-  deployment_status 
+  deployment_status
 
 jobs:
   debug-deployment:
@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: debug-deployment
+    environment: Preview
     # Vercel Preview 배포가 성공한 경우에만 실행 (Production / pending / error / failure 시 스킵)
     if: >
       github.event.deployment_status.state == 'success' &&
@@ -50,6 +51,8 @@ jobs:
 
       - run: npx playwright install --with-deps chromium
       - run: yarn test:e2e --project=e2e
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
 
       - uses: actions/upload-artifact@v4
         if: always()

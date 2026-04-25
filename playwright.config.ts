@@ -35,6 +35,9 @@ export default defineConfig({
     trace: 'on-first-retry',
     video: 'on-first-retry',
     ignoreHTTPSErrors: true,
+    extraHTTPHeaders: process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+      ? { 'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET }
+      : {},
   },
 
   projects: [
