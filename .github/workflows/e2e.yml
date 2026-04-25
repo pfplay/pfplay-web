@@ -25,11 +25,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: debug-deployment
-    environment: Preview
+    environment: Preview – pfplay-web
     # Vercel Preview 배포가 성공한 경우에만 실행 (Production / pending / error / failure 시 스킵)
+    # dev-8226s-projects Vercel 계정 배포만 대상으로 함 (pfplay 계정 배포는 환경변수 미설정으로 제외)
     if: >
       github.event.deployment_status.state == 'success' &&
-      startsWith(github.event.deployment.environment, 'Preview')
+      startsWith(github.event.deployment.environment, 'Preview') &&
+      contains(github.event.deployment_status.target_url, 'dev-8226s-projects')
     env:
       E2E_BASE_URL: ${{ github.event.deployment_status.target_url }}
 
