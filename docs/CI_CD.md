@@ -2,19 +2,18 @@
 
 > Last Update (26.04.25)
 
-GitHub Actions 워크플로우 5개로 구성되며, 브랜치 및 이벤트 종류에 따라 실행 여부가 결정됩니다.
+GitHub Actions 워크플로우 4개로 구성되며, 브랜치 및 이벤트 종류에 따라 실행 여부가 결정됩니다.
 
 ---
 
 ## 워크플로우 목록
 
-| 파일                     | 이름               | 트리거                         |
-| ------------------------ | ------------------ | ------------------------------ |
-| `lint-check.yml`         | lint check         | 모든 PR                        |
-| `vercel-build-check.yml` | vercel build check | `development`, `main` 대상 PR  |
-| `vercel-preview.yml`     | vercel preview     | `development` 브랜치 push      |
-| `vercel-production.yml`  | vercel production  | `main` 브랜치 push             |
-| `e2e.yml`                | E2E Tests          | `vercel preview` workflow 완료 |
+| 파일                     | 이름                   | 트리거                        |
+| ------------------------ | ---------------------- | ----------------------------- |
+| `lint-check.yml`         | lint check             | 모든 PR                       |
+| `vercel-build-check.yml` | vercel build check     | `development`, `main` 대상 PR |
+| `vercel-preview-e2e.yml` | preview deploy and e2e | `development` 브랜치 push     |
+| `vercel-production.yml`  | vercel production      | `main` 브랜치 push            |
 
 ---
 
@@ -28,7 +27,7 @@ feature 브랜치 작업
 ├─ [push]
 │   └── Vercel GitHub App: feature Preview 자동 배포
 │       └── e2e와 무관
-│           이유: e2e는 `vercel preview` workflow_run만 구독
+│           이유: e2e는 `vercel-preview-e2e.yml` 내부 job
 │
 └─ [PR → development 오픈]
     ├── lint-check ✅
@@ -44,20 +43,15 @@ feature 브랜치 작업
 ```
 feature → development PR 머지 (또는 직접 push)
 │
-├─ vercel-preview ✅
-│   └── CLI로 Vercel Preview 배포 → stg.pfplay.xyz 업데이트
-│
-└─ e2e ✅
-    └── `vercel preview` workflow 완료 후 workflow_run으로 실행
-        ├── conclusion == success ✅
-        ├── branches == development ✅
-        └── checkout ref == workflow_run.head_sha ✅
-            → E2E_BASE_URL: https://stg.pfplay.xyz
+├─ preview deploy and e2e ✅
+│   ├── CLI로 Vercel Preview 배포 → stg.pfplay.xyz 업데이트
+│   └── deploy job 성공 후 e2e job 실행
+│       └── E2E_BASE_URL: https://stg.pfplay.xyz
 ```
 
-**실행되는 워크플로우:** vercel-preview, e2e
+**실행되는 워크플로우:** preview deploy and e2e
 
-> **참고:** `vercel-preview`(CLI)와 Vercel GitHub App이 동시에 배포를 실행해 development push마다 Vercel 배포가 2회 발생합니다.
+> **참고:** `preview deploy and e2e`(CLI)와 Vercel GitHub App이 동시에 배포를 실행해 development push마다 Vercel 배포가 2회 발생합니다.
 
 ---
 
@@ -70,7 +64,7 @@ development → main PR 머지 (또는 직접 push)
 │   └── CLI로 Vercel Production 배포
 │
 └─ e2e 미실행
-    └── `vercel preview`가 main에서 돌지 않으므로 workflow_run 미발생
+    └── e2e는 `vercel-preview-e2e.yml` 내부 job이라 main에서는 실행되지 않음
 ```
 
 **실행되는 워크플로우:** vercel-production
@@ -79,26 +73,22 @@ development → main PR 머지 (또는 직접 push)
 
 ## e2e 실행 조건 상세
 
-e2e는 `workflow_run` 이벤트 기반으로 동작합니다.
+e2e는 별도 workflow가 아니라 `vercel-preview-e2e.yml` 내부 job으로 동작합니다.
 
 ```yaml
-on:
-  workflow_run:
-    workflows: ['vercel preview']
-    types: [completed]
-    branches: [development]
-
 jobs:
+  deploy: ...
+
   e2e:
-    if: github.event.workflow_run.conclusion == 'success'
+    needs: deploy
+    if: ${{ needs.deploy.result == 'success' }}
 ```
 
-| 조건                                   | 의미                                         |
-| -------------------------------------- | -------------------------------------------- |
-| `workflows: ['vercel preview']`        | preview 배포 워크플로우 완료 후에만 실행     |
-| `branches: [development]`              | development 브랜치에서 실행된 preview만 대상 |
-| `conclusion == 'success'`              | preview 배포 성공 시에만 실행                |
-| `checkout ref = workflow_run.head_sha` | preview를 트리거한 정확한 커밋을 테스트      |
+| 조건                             | 의미                                |
+| -------------------------------- | ----------------------------------- |
+| `vercel-preview-e2e.yml` 실행    | development 브랜치 push일 때만 시작 |
+| `needs: deploy`                  | preview deploy job 완료 후 실행     |
+| `needs.deploy.result == success` | preview deploy 성공 시에만 실행     |
 
 **E2E_BASE_URL이 `https://stg.pfplay.xyz`로 고정된 이유:**
 백엔드 스테이징 서버가 `stg.pfplay.xyz` origin만 허용합니다. feature 브랜치의 Vercel Preview URL(`*.vercel.app`)은 CORS 차단으로 API 호출이 불가합니다.
