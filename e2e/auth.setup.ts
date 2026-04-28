@@ -21,9 +21,25 @@ async function authenticateUser(browser: Browser, outputPath: string, baseURL: s
   await devBtn.click();
   await page.locator('[data-testid="dev-sign-in-full"]').click();
 
-  await page.waitForURL(/\/(parties|$)/, { timeout: 30_000 });
   const pfpPlayButton = page.locator('[data-testid="home-pfp-play-button"]');
-  if (await pfpPlayButton.isVisible({ timeout: 3_000 }).catch(() => false)) {
+  await expect
+    .poll(
+      async () => {
+        if (/\/parties(?:$|\/)/.test(page.url())) {
+          return 'ready';
+        }
+
+        if (await pfpPlayButton.isVisible().catch(() => false)) {
+          return (await pfpPlayButton.getAttribute('href')) === '/parties' ? 'ready' : 'waiting';
+        }
+
+        return 'waiting';
+      },
+      { timeout: 30_000 }
+    )
+    .toBe('ready');
+
+  if (!/\/parties(?:$|\/)/.test(page.url())) {
     await page.goto(`${baseURL}/parties`);
     await page.waitForURL(/\/parties/, { timeout: 10_000 });
   }
