@@ -32,10 +32,18 @@ async function authenticateUser(browser: Browser, outputPath: string, baseURL: s
   await context.close();
 }
 
-setup('authenticate User1 (full crew)', async ({ browser, baseURL }) => {
-  await authenticateUser(browser, path.join(AUTH_DIR, 'user1.json'), baseURL ?? '');
+setup('authenticate A User1 (full crew)', async ({ browser, baseURL }) => {
+  await authenticateUser(browser, path.join(AUTH_DIR, 'a-user1.json'), baseURL ?? '');
 });
 
-setup('authenticate User2 (full crew)', async ({ browser, baseURL }) => {
-  await authenticateUser(browser, path.join(AUTH_DIR, 'user2.json'), baseURL ?? '');
+setup('authenticate A User2 (full crew)', async ({ browser, baseURL }) => {
+  await authenticateUser(browser, path.join(AUTH_DIR, 'a-user2.json'), baseURL ?? '');
+});
+
+setup('authenticate B User1 (full crew)', async ({ browser, baseURL }) => {
+  await authenticateUser(browser, path.join(AUTH_DIR, 'b-user1.json'), baseURL ?? '');
+});
+
+setup('authenticate B User2 (full crew)', async ({ browser, baseURL }) => {
+  await authenticateUser(browser, path.join(AUTH_DIR, 'b-user2.json'), baseURL ?? '');
 });

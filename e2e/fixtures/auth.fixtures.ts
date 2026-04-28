@@ -15,9 +15,9 @@ type AuthFixtures = {
  * 모든 테스트가 로그인 상태에서 시작.
  */
 export const test = baseTest.extend<AuthFixtures>({
-  user1Context: async ({ browser }, use) => {
+  user1Context: async ({ browser }, use, testInfo) => {
     const context = await browser.newContext({
-      storageState: path.join(AUTH_DIR, 'user1.json'),
+      storageState: path.join(AUTH_DIR, `${getAuthPrefix(testInfo.file)}-user1.json`),
       ignoreHTTPSErrors: true,
     });
     await context.addInitScript(ETHEREUM_MOCK_SCRIPT);
@@ -25,9 +25,9 @@ export const test = baseTest.extend<AuthFixtures>({
     await context.close();
   },
 
-  user2Context: async ({ browser }, use) => {
+  user2Context: async ({ browser }, use, testInfo) => {
     const context = await browser.newContext({
-      storageState: path.join(AUTH_DIR, 'user2.json'),
+      storageState: path.join(AUTH_DIR, `${getAuthPrefix(testInfo.file)}-user2.json`),
       ignoreHTTPSErrors: true,
     });
     await context.addInitScript(ETHEREUM_MOCK_SCRIPT);
@@ -37,3 +37,11 @@ export const test = baseTest.extend<AuthFixtures>({
 });
 
 export { expect } from '@playwright/test';
+
+function getAuthPrefix(testFile: string) {
+  if (testFile.includes('e2e-b.')) {
+    return 'b';
+  }
+
+  return 'a';
+}

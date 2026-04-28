@@ -1,4 +1,5 @@
 import path from 'path';
+import type { Page } from '@playwright/test';
 import { expect, test } from './fixtures/auth.fixtures';
 import { ETHEREUM_MOCK_SCRIPT } from './fixtures/ethereum-mock';
 import {
@@ -35,11 +36,37 @@ import {
  *
  * 전제:
  *  - 아바타 영역은 신원을 직접 노출하지 않으므로 count로 특정 유저를 추론한다.
- *  - 파티룸에 User1·User2만 존재하는 격리 환경이 전제이며, beforeAll에서 신규 파티룸을 생성해 이를 보장한다.
+ *  - 파티룸에 User1·User2만 존재하는 격리 환경이 전제이며, B 전용 auth state와 beforeAll의 신규 파티룸 생성으로 이를 보장한다.
  */
 
 const AUTH_DIR = path.join(__dirname, '.auth');
 const BASE_URL = process.env.E2E_BASE_URL ?? 'https://localhost:3000';
+const USER1_STORAGE = path.join(AUTH_DIR, 'b-user1.json');
+
+async function enterPartyroomAndWaitUntilReady(page: Page, partyroomUrl: string) {
+  const partyroomId = partyroomUrl.match(/\/parties\/(\d+)/)?.[1];
+  expect(partyroomId).toBeTruthy();
+
+  const setupResponse = page.waitForResponse(
+    (response) =>
+      response.request().method() === 'GET' &&
+      new RegExp(`/v1/partyrooms/${partyroomId}/setup$`).test(response.url()),
+    { timeout: 20_000 }
+  );
+  const djQueueResponse = page.waitForResponse(
+    (response) =>
+      response.request().method() === 'GET' &&
+      new RegExp(`/v1/partyrooms/${partyroomId}/dj-queue$`).test(response.url()),
+    { timeout: 20_000 }
+  );
+
+  await page.goto(partyroomUrl);
+  await Promise.all([
+    expect((await setupResponse).status()).toBeLessThan(400),
+    expect((await djQueueResponse).status()).toBeLessThan(400),
+  ]);
+  await expect(page.getByRole('button', { name: /DJ Queue/i })).toBeVisible({ timeout: 15_000 });
+}
 
 test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () => {
   let partyroomUrl: string;
@@ -53,7 +80,7 @@ test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () =
 
     // User1: 플레이리스트 생성 + 파티룸 생성
     const ctx1 = await browser.newContext({
-      storageState: path.join(AUTH_DIR, 'user1.json'),
+      storageState: USER1_STORAGE,
       ignoreHTTPSErrors: true,
     });
     await ctx1.addInitScript(ETHEREUM_MOCK_SCRIPT);
@@ -69,7 +96,7 @@ test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () =
     await ctx1.close();
 
     // User2: 플레이리스트 생성
-    await setupUserPlaylist(browser, 'user2.json', user2PlaylistName);
+    await setupUserPlaylist(browser, 'b-user2.json', user2PlaylistName);
   });
 
   test.afterAll(async ({ browser }) => {
@@ -78,7 +105,7 @@ test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () =
     }
 
     const ctx = await browser.newContext({
-      storageState: path.join(AUTH_DIR, 'user1.json'),
+      storageState: USER1_STORAGE,
       ignoreHTTPSErrors: true,
     });
     const page = await ctx.newPage();
@@ -90,10 +117,9 @@ test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () =
     test.setTimeout(90_000);
 
     const [page1, page2] = await Promise.all([user1Context.newPage(), user2Context.newPage()]);
-    await Promise.all([page1.goto(partyroomUrl), page2.goto(partyroomUrl)]);
     await Promise.all([
-      expect(page1.getByRole('button', { name: /DJ Queue/i })).toBeVisible({ timeout: 15_000 }),
-      expect(page2.getByRole('button', { name: /DJ Queue/i })).toBeVisible({ timeout: 15_000 }),
+      enterPartyroomAndWaitUntilReady(page1, partyroomUrl),
+      enterPartyroomAndWaitUntilReady(page2, partyroomUrl),
     ]);
 
     await registerAsDj(page1, user1PlaylistName);
