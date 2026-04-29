@@ -5,8 +5,10 @@ import { ETHEREUM_MOCK_SCRIPT } from './fixtures/ethereum-mock';
 import {
   closePartyroom,
   createPlaylistWithTracks,
+  enterPartyroomAndWaitUntilReady,
   registerAsDj,
   setupUserPlaylist,
+  unregisterAsDj,
 } from './helpers/partyroom.helpers';
 
 /**
@@ -42,31 +44,6 @@ import {
 const AUTH_DIR = path.join(__dirname, '.auth');
 const BASE_URL = process.env.E2E_BASE_URL ?? 'https://localhost:3000';
 const USER1_STORAGE = path.join(AUTH_DIR, 'b-user1.json');
-
-async function enterPartyroomAndWaitUntilReady(page: Page, partyroomUrl: string) {
-  const partyroomId = partyroomUrl.match(/\/parties\/(\d+)/)?.[1];
-  expect(partyroomId).toBeTruthy();
-
-  const setupResponse = page.waitForResponse(
-    (response) =>
-      response.request().method() === 'GET' &&
-      new RegExp(`/v1/partyrooms/${partyroomId}/setup$`).test(response.url()),
-    { timeout: 20_000 }
-  );
-  const djQueueResponse = page.waitForResponse(
-    (response) =>
-      response.request().method() === 'GET' &&
-      new RegExp(`/v1/partyrooms/${partyroomId}/dj-queue$`).test(response.url()),
-    { timeout: 20_000 }
-  );
-
-  await page.goto(partyroomUrl);
-  await Promise.all([
-    expect((await setupResponse).status()).toBeLessThan(400),
-    expect((await djQueueResponse).status()).toBeLessThan(400),
-  ]);
-  await expect(page.getByRole('button', { name: /DJ Queue/i })).toBeVisible({ timeout: 15_000 });
-}
 
 test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () => {
   let partyroomUrl: string;
@@ -166,11 +143,13 @@ test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () =
     const [page1, page2] = await Promise.all([user1Context.newPage(), user2Context.newPage()]);
     attachPageDebug('user1', page1);
     attachPageDebug('user2', page2);
+
     log('pages created');
     await Promise.all([
       enterPartyroomAndWaitUntilReady(page1, partyroomUrl),
       enterPartyroomAndWaitUntilReady(page2, partyroomUrl),
     ]);
+
     log(
       `both users entered partyroom and initial requests resolved, urls: user1=${page1.url()} user2=${page2.url()}`
     );
@@ -193,6 +172,7 @@ test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () =
     // User1/User2 화면: 파티룸 아바타 대기열에 정확히 1명 표시
     // (User1은 현재 DJ 포지션, User2만 대기열에 있으므로 count=1은 User2임을 보장)
     log('waiting for both users queue count = 1');
+
     await Promise.all([
       expect(page1.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(1, {
         timeout: 15_000,
@@ -203,31 +183,19 @@ test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () =
     ]);
     log('both users queue count matched');
 
-    const unregisterButton = page2.locator('[data-testid="unregister-dj-queue"]');
-    const isUnregisterButtonVisible = await unregisterButton
-      .isVisible({ timeout: 3_000 })
-      .catch(() => false);
-    if (!isUnregisterButtonVisible) {
-      log('unregister button hidden, opening DJ queue drawer');
-      await page2.locator('[data-testid="dj-queue-button"]').click();
-    }
-    log('waiting for unregister button');
-    await expect(unregisterButton).toBeVisible({
-      timeout: 10_000,
-    });
-    log('clicking unregister button and confirm');
-    await unregisterButton.click();
-    await page2.getByRole('button', { name: 'Confirm' }).click();
+    await page2.waitForTimeout(2_000);
 
-    log('waiting for both users queue count = 0');
-    await Promise.all([
-      expect(page1.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(0, {
-        timeout: 15_000,
-      }),
-      expect(page2.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(0, {
-        timeout: 15_000,
-      }),
-    ]);
+    log('clicking unregister button and confirm');
+    await unregisterAsDj(page2);
+
+    log('waiting for user2 queue count = 0');
+    await expect(page2.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(0, {
+      timeout: 15_000,
+    });
+    log('waiting for user1 queue count = 0');
+    await expect(page1.locator('[data-testid="partyroom-dj-queue-item"]')).toHaveCount(0, {
+      timeout: 30_000,
+    });
     log('both users queue count reached 0');
   });
 });

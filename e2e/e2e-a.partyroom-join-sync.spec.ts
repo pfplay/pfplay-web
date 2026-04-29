@@ -3,6 +3,7 @@ import { expect, test } from './fixtures/auth.fixtures';
 import {
   closePartyroom,
   createPlaylistWithTracks,
+  enterPartyroomAndWaitUntilReady,
   leavePartyroom,
   registerAsDj,
 } from './helpers/partyroom.helpers';
@@ -115,11 +116,9 @@ test('User2(late join)는 User1이 재생 중인 곡과 동일한 곡을 player�
     expect(partyroomUrl).toMatch(/\/parties\/\d+/);
 
     // ─── User1: DJ 등록 + 곡 재생 ──────────────────────────────────────
-    // enter() → getSetupInfo() → client.subscribe() 체인이 완료될 때까지 대기
-    // (networkidle: 500ms 동안 진행 중인 HTTP 요청이 없는 상태)
-    log('waiting for networkidle in partyroom before DJ register');
-    await page1.waitForLoadState('networkidle');
-    log(`networkidle resolved in partyroom, current URL: ${page1.url()}`);
+    log('waiting for partyroom readiness before DJ register');
+    await enterPartyroomAndWaitUntilReady(page1, partyroomUrl);
+    log(`partyroom ready for DJ register, current URL: ${page1.url()}`);
     log(`registering as DJ with playlist: ${uniquePlaylistName}`);
     await registerAsDj(page1, uniquePlaylistName);
     log('DJ registration flow completed');
@@ -136,9 +135,9 @@ test('User2(late join)는 User1이 재생 중인 곡과 동일한 곡을 player�
     // ─── User2: 동일 파티룸 입장 (late join) ──────────────────────────
     page2 = await user2Context.newPage();
     attachPageDebug('user2', page2);
-    log(`user2 goto partyroom: ${partyroomUrl}`);
-    await page2.goto(partyroomUrl);
-    log(`user2 arrived at partyroom, current URL: ${page2.url()}`);
+    log(`user2 entering partyroom: ${partyroomUrl}`);
+    await enterPartyroomAndWaitUntilReady(page2, partyroomUrl);
+    log(`user2 arrived at ready partyroom, current URL: ${page2.url()}`);
 
     // getSetupInfo 응답 → store.playback 세팅 → VideoTitle 렌더
     const videoTitle2 = page2.locator('[data-testid="video-title"]').first();

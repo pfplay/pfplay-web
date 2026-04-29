@@ -129,7 +129,6 @@ const PartyroomPage = () => {
         }}
         className='bg-gray-800 flex items-center justify-center rounded-lg size-9 hover:bg-gray-700 transition-colors'
         title={t.dj.title.dj_queue}
-        data-testid='dj-queue-button'
       >
         <PFDj width={24} height={24} className='text-gray-400' />
       </button>
