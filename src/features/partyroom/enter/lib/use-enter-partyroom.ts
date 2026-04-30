@@ -6,14 +6,24 @@ import {
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import { partyroomsService } from '@/shared/api/http/services';
 import { MotionType } from '@/shared/api/http/types/@enums';
-import { EnterResponse, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
+import {
+  EnterResponse,
+  PartyroomReaction,
+  PartyroomSummary,
+} from '@/shared/api/http/types/partyrooms';
+import type { EntrySource } from '@/shared/lib/analytics/events';
+import { trackPartyroomEntered } from '@/shared/lib/analytics/room-tracking';
 import { detectCountryCode } from '@/shared/lib/functions/detect-country-code';
 import silent from '@/shared/lib/functions/silent';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useEnterPartyroom as useEnterPartyroomMutation } from '../api/use-enter-partyroom.mutation';
 
-export function useEnterPartyroom(partyroomId: number) {
+type Options = {
+  entrySource?: EntrySource;
+};
+
+export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
   const client = usePartyroomClient();
   const handleEvent = useHandlePartyroomSubscriptionEvent();
   const { useCurrentPartyroom } = useStores();
@@ -24,6 +34,8 @@ export function useEnterPartyroom(partyroomId: number) {
   const { mutate: enter } = useEnterPartyroomMutation();
   const queryClient = useQueryClient();
   const router = useAppRouter();
+
+  const entrySource: EntrySource = options.entrySource ?? 'direct';
 
   const setup = async (enterResponse: EnterResponse) => {
     const [setUpInfo, notice] = await Promise.all([
@@ -54,6 +66,19 @@ export function useEnterPartyroom(partyroomId: number) {
         notice: notice.content ?? '',
       })
     );
+
+    // stage_type is not present in the setup response. Read it from the lobby
+    // list cache when available; otherwise omit and let analytics reflect the
+    // gap rather than fabricate a value.
+    const lobbyCache = queryClient.getQueryData<PartyroomSummary[]>([QueryKeys.PartyroomList]);
+    const stageType = lobbyCache?.find((p) => p.partyroomId === partyroomId)?.stageType;
+
+    trackPartyroomEntered({
+      partyroomId,
+      crewCount: setUpInfo.crews.length,
+      entrySource,
+      stageType,
+    });
   };
 
   return () => {

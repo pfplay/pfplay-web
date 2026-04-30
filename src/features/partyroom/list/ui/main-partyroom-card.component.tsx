@@ -24,7 +24,7 @@ export default function MainPartyroomCard({ onClose }: MainPartyroomCardProps) {
   return (
     <BackdropBlurContainer>
       <Link
-        href={`/parties/${partyroom.partyroomId}`}
+        href={`/parties/${partyroom.partyroomId}?source=list`}
         onClick={onClose}
         className='flexCol tablet:flexRow items-start tablet:items-end gap-[20px] tablet:gap-[50px] desktop:gap-[169px] px-7 py-10 backdrop-blur-xl bg-backdrop-black/80'
       >

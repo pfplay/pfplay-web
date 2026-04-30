@@ -8,6 +8,7 @@ export type ReactionTypeLabel = 'like' | 'dislike' | 'grab';
 export type TrackSource = 'search' | 'grab';
 export type DjDeregisterReason = 'self' | 'admin';
 export type StageTypeLabel = 'main' | 'general';
+export type EntrySource = 'list' | 'link' | 'direct';
 
 export type EventPropertyMap = {
   // Session & Auth
@@ -25,6 +26,16 @@ export type EventPropertyMap = {
   // Funnel 1: Retention
   'Partyroom List Viewed': {
     partyroom_count: number;
+  };
+  'Partyroom Entered': {
+    partyroom_id: number;
+    crew_count: number;
+    entry_source: EntrySource;
+    stage_type?: StageTypeLabel;
+  };
+  'Partyroom Exited': {
+    partyroom_id: number;
+    duration_sec: number;
   };
   'Playback Reacted': {
     partyroom_id: number;
@@ -83,6 +94,7 @@ export type UserPropertySet = {
 
 export type UserPropertySetOnce = {
   has_created_partyroom?: boolean;
+  /** ISO 8601 timestamp recorded the first time the user enters any partyroom. */
   first_partyroom_entered_at?: string;
 };
 

@@ -28,7 +28,7 @@ const PartyroomCard = ({ roomId, summary, onClose }: PartyroomCardProps) => {
   return (
     <BackdropBlurContainer>
       <Link
-        href={`/parties/${roomId}`}
+        href={`/parties/${roomId}?source=list`}
         onClick={handleClick}
         className='h-full flexCol justify-between gap-[61px] py-6 px-7 backdrop-blur-xl bg-backdrop-black/80'
       >
