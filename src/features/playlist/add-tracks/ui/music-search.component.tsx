@@ -2,6 +2,7 @@ import { ReactNode, useCallback, useState } from 'react';
 import { usePlaylistAction } from '@/entities/playlist';
 import { useFetchPlaylists } from '@/features/playlist/list';
 import { Music } from '@/shared/api/http/types/playlists';
+import { track } from '@/shared/lib/analytics';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
@@ -26,6 +27,13 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
   const [search, setSearch] = useState('');
   const { data: musics, isFetching } = useSearchMusics(search);
 
+  const handleSearch = useCallback((value: string) => {
+    setSearch(value);
+    if (value) {
+      track('Music Searched', { query: value });
+    }
+  }, []);
+
   const addTrackToPlaylist = useCallback(
     (listId: number, music: Music) => {
       playlistAction.addTrack(listId, {
@@ -42,7 +50,7 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
     <div className='pt-[36px] pb-[12px] pl-[40px] pr-[12px]'>
       <div className='flex items-center gap-7 mb-11 pr-[28px]'>
         <Typography type='title2'>{t.playlist.btn.add_song}</Typography>
-        <SearchInput onSearch={setSearch} />
+        <SearchInput onSearch={handleSearch} />
         {extraAction}
       </div>
 
