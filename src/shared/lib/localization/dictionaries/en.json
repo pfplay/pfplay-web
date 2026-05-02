@@ -297,7 +297,8 @@
     },
     "ec": {
       "shut_down": "The party room no longer exists.",
-      "data_load": "Failed to load data.\nWould you like to try entering again?"
+      "data_load": "Failed to load data.\nWould you like to try entering again?",
+      "profile_required": "Complete your profile setup to join a partyroom."
     }
   },
   "crews": {
