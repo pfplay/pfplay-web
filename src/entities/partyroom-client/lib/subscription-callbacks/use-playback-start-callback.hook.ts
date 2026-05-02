@@ -5,8 +5,6 @@ import { useStores } from '@/shared/lib/store/stores.context';
 export default function usePlaybackStartCallback() {
   const { useCurrentPartyroom } = useStores();
   const [
-    partyroomId,
-    myCrewId,
     updatePlaybackActivated,
     updatePlayback,
     updateCurrentDj,
@@ -14,8 +12,6 @@ export default function usePlaybackStartCallback() {
     updateReaction,
     resetCrewsMotion,
   ] = useCurrentPartyroom((state) => [
-    state.id,
-    state.me?.crewId,
     state.updatePlaybackActivated,
     state.updatePlayback,
     state.updateCurrentDj,
@@ -39,19 +35,23 @@ export default function usePlaybackStartCallback() {
     }));
     resetCrewsMotion();
 
-    if (partyroomId) {
-      track('Track Playback Started', {
+    // Read latest store state at event time. The subscription is registered
+    // before initPartyroom() populates `id`/`me`, so closure-captured values
+    // would be stale; getState() always returns the current snapshot.
+    const { id: partyroomId, me } = useCurrentPartyroom.getState();
+    if (!partyroomId) return;
+
+    track('Track Playback Started', {
+      partyroom_id: partyroomId,
+      track_id: event.playback.linkId,
+    });
+
+    if (me?.crewId !== undefined && event.crewId === me.crewId) {
+      track('DJ Turn Started', {
         partyroom_id: partyroomId,
         track_id: event.playback.linkId,
       });
-
-      if (myCrewId !== undefined && event.crewId === myCrewId) {
-        track('DJ Turn Started', {
-          partyroom_id: partyroomId,
-          track_id: event.playback.linkId,
-        });
-        identify({ add: { total_dj_sessions: 1 } });
-      }
+      identify({ add: { total_dj_sessions: 1 } });
     }
   };
 }

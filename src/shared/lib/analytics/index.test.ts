@@ -1,6 +1,7 @@
 import * as amplitude from '@amplitude/analytics-browser';
 
 import {
+  __preloadSdkForTests,
   __resetForTests,
   identify,
   initAnalytics,
@@ -47,6 +48,7 @@ describe('analytics module', () => {
   beforeEach(() => {
     vi.stubEnv('NEXT_PUBLIC_AMPLITUDE_API_KEY', TEST_API_KEY);
     __resetForTests();
+    __preloadSdkForTests(amplitude);
     vi.clearAllMocks();
   });
 

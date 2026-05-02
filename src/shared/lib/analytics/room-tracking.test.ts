@@ -2,13 +2,16 @@ import * as amplitude from '@amplitude/analytics-browser';
 
 import { StageType } from '@/shared/api/http/types/@enums';
 
-import { __resetForTests } from './index';
+import { __preloadSdkForTests, __resetForTests } from './index';
 import {
   __clearAllEntryTimestamps,
+  __clearSelfDjDeregisterSuppression,
   __testing__,
   consumePartyroomEntry,
   parseEntrySource,
   recordPartyroomEntry,
+  suppressNextSelfDjDeregister,
+  trackDjAdminDeregisterDetected,
   trackPartyroomEntered,
   trackPartyroomExited,
 } from './room-tracking';
@@ -49,7 +52,9 @@ describe('room-tracking', () => {
   beforeEach(() => {
     vi.stubEnv('NEXT_PUBLIC_AMPLITUDE_API_KEY', TEST_API_KEY);
     __resetForTests();
+    __preloadSdkForTests(amplitude);
     __clearAllEntryTimestamps();
+    __clearSelfDjDeregisterSuppression();
     vi.clearAllMocks();
     window.localStorage.clear();
   });
@@ -163,6 +168,43 @@ describe('room-tracking', () => {
     test('does nothing when no matching entry was recorded', () => {
       trackPartyroomExited(42);
       expect(amplitude.track).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('DJ deregister attribution', () => {
+    test('trackDjAdminDeregisterDetected emits admin reason by default', () => {
+      trackDjAdminDeregisterDetected(42);
+      expect(amplitude.track).toHaveBeenCalledWith('DJ Deregistered', {
+        partyroom_id: 42,
+        reason: 'admin',
+      });
+    });
+
+    test('suppression window blocks the next admin emit then resets', () => {
+      suppressNextSelfDjDeregister(5000);
+      trackDjAdminDeregisterDetected(42);
+      expect(amplitude.track).not.toHaveBeenCalled();
+
+      // Suppression is consumed — next call should fire normally.
+      trackDjAdminDeregisterDetected(43);
+      expect(amplitude.track).toHaveBeenCalledTimes(1);
+      expect(amplitude.track).toHaveBeenCalledWith('DJ Deregistered', {
+        partyroom_id: 43,
+        reason: 'admin',
+      });
+    });
+
+    test('expired suppression no longer blocks', () => {
+      vi.useFakeTimers();
+      const start = Date.now();
+      suppressNextSelfDjDeregister(1000, start);
+      vi.setSystemTime(start + 2000);
+      trackDjAdminDeregisterDetected(42);
+      expect(amplitude.track).toHaveBeenCalledWith('DJ Deregistered', {
+        partyroom_id: 42,
+        reason: 'admin',
+      });
+      vi.useRealTimers();
     });
   });
 });

@@ -5,14 +5,9 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import * as Me from '@/entities/me/model/me.model';
 import { QueryKeys } from '@/shared/api/http/query-keys';
-import { AuthorityTier } from '@/shared/api/http/types/@enums';
 import { initAnalytics, track } from '@/shared/lib/analytics';
-import { identifyAuthenticatedUser } from '@/shared/lib/analytics/auth-tracking';
-import type { AuthType, AuthorityTierLabel } from '@/shared/lib/analytics/events';
-
-function authTypeOf(authorityTier: AuthorityTier): AuthType {
-  return authorityTier === AuthorityTier.GT ? 'guest' : 'member';
-}
+import { authTypeOf, identifyAuthenticatedUser } from '@/shared/lib/analytics/auth-tracking';
+import type { AuthorityTierLabel } from '@/shared/lib/analytics/events';
 
 export default function AnalyticsProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();

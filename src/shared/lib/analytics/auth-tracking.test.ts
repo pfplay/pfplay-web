@@ -10,7 +10,7 @@ import {
   trackSignedIn,
   trackSignedUpIfFirstTime,
 } from './auth-tracking';
-import { __resetForTests } from './index';
+import { __preloadSdkForTests, __resetForTests } from './index';
 
 vi.mock('@amplitude/analytics-browser', () => {
   function Identify(this: {
@@ -50,6 +50,7 @@ describe('auth-tracking', () => {
   beforeEach(() => {
     vi.stubEnv('NEXT_PUBLIC_AMPLITUDE_API_KEY', TEST_API_KEY);
     __resetForTests();
+    __preloadSdkForTests(amplitude);
     vi.clearAllMocks();
     window.localStorage.clear();
   });

@@ -92,4 +92,22 @@ describe('useEnterPartyroom', () => {
     expect(mockMarkExitedOnBackend).toHaveBeenCalled();
     expect(mockPush).toHaveBeenCalledWith('/parties');
   });
+
+  test('options.entrySource를 받아도 기존 enter 흐름은 변경되지 않는다 (PR-3 시그니처 회귀)', () => {
+    const { result } = renderHook(() => useEnterPartyroom(7, { entrySource: 'list' }));
+
+    act(() => {
+      result.current();
+    });
+
+    expect(mockOnConnect).toHaveBeenCalledWith(expect.any(Function), { once: true });
+
+    const onConnectCallback = mockOnConnect.mock.calls[0][0];
+    onConnectCallback();
+
+    expect(mockMutate).toHaveBeenCalledWith(
+      expect.objectContaining({ partyroomId: 7 }),
+      expect.objectContaining({ onSuccess: expect.any(Function), onError: expect.any(Function) })
+    );
+  });
 });

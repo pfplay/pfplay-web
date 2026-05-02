@@ -1,17 +1,13 @@
 import { AuthorityTier } from '@/shared/api/http/types/@enums';
 import type { OAuth2Provider } from '@/shared/api/http/types/users';
 
-import type { AuthType, AuthorityTierLabel } from './events';
+import type { AuthType } from './events';
 import { identify, setUserId, track } from './index';
 
 const SEEN_UIDS_STORAGE_KEY = 'pfp_amplitude_seen_uids';
 
-function authTypeOf(authorityTier: AuthorityTier): AuthType {
+export function authTypeOf(authorityTier: AuthorityTier): AuthType {
   return authorityTier === AuthorityTier.GT ? 'guest' : 'member';
-}
-
-function authorityTierLabelOf(authorityTier: AuthorityTier): AuthorityTierLabel {
-  return authorityTier;
 }
 
 function readSeenUids(): Set<string> {
@@ -62,7 +58,7 @@ export function identifyAuthenticatedUser({
   identify({
     set: {
       auth_type: authTypeOf(authorityTier),
-      authority_tier: authorityTierLabelOf(authorityTier),
+      authority_tier: authorityTier,
       ...(oauthProvider ? { oauth_provider: oauthProvider } : {}),
     },
   });
@@ -86,5 +82,4 @@ export function trackSignedUpIfFirstTime({ uid, oauthProvider }: TrackSignedUpAr
 
 export const __testing__ = {
   SEEN_UIDS_STORAGE_KEY,
-  authTypeOf,
 };
