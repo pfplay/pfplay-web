@@ -52,6 +52,7 @@ export type PartyroomSummary = {
   playback?: {
     name: string;
     thumbnailImage: string;
+    duration: string;
   };
   /**
    * 최소한 호스트 1명에 대한 정보는 있음

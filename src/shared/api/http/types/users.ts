@@ -69,28 +69,6 @@ export interface AuthCallbackParams {
   error_description?: string;
 }
 
-export interface GetUserProfileSummaryRequest {
-  uid: string;
-  /**
-   * TODO - API측 미구현 필드
-   * @see https://pfplay.slack.com/archives/C03Q28EAU66/p1719138897610309?thread_ts=1719138389.602689&cid=C03Q28EAU66
-   */
-  // getOtherProfileSummaryRequest: {};
-}
-
-/**
- * TODO - 추측으로 작성됨. API측 구현 완료 시 명세 다시 확인 필요
- */
-export interface GetUserProfileSummaryResponse {
-  nickname: string;
-  introduction?: string;
-  avatarBodyUri: string;
-  avatarFaceUri: string;
-  combinePositionX?: number;
-  combinePositionY?: number;
-  activitySummaries: ActivitySummary[];
-}
-
 export interface AvatarPartsDefaultMeta {
   id: number;
   name: string;
@@ -161,9 +139,6 @@ export interface UsersClient {
   signOut: () => Promise<void>;
   getMyInfo: () => Promise<GetMyInfoResponse>;
   getMyProfileSummary: () => Promise<GetMyProfileSummaryResponse>;
-  getUserProfileSummary: (
-    request: GetUserProfileSummaryRequest
-  ) => Promise<GetUserProfileSummaryResponse>;
   getMyAvatarBodies: () => Promise<AvatarBody[]>;
   getMyAvatarFaces: () => Promise<AvatarFace[]>;
   updateMyWallet: (request: UpdateMyWalletRequest) => Promise<void>;

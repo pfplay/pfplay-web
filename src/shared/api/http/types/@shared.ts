@@ -5,6 +5,12 @@ export enum ErrorCode {
   ACCESS_TOKEN_INVALID = 'JWT-002', // ACCESS_TOKEN 이 유효하지 않음
   ACCESS_TOKEN_EXPIRED = 'JWT-003', // ACCESS_TOKEN 이 만료됨
 
+  // OAuth (AuthException)
+  OAUTH_CHALLENGE_FAILED = 'AUTH-001', // 코드 챌린지 생성에 실패했습니다
+  OAUTH_PROVIDER_NOT_CONFIGURED = 'AUTH-002', // OAuth 제공자가 설정되지 않았습니다
+  INVALID_OAUTH_PROVIDER = 'AUTH-003', // 유효하지 않은 OAuth 제공자입니다
+  INVALID_OAUTH_STATE = 'AUTH-004', // 유효하지 않거나 만료된 state 파라미터입니다
+
   // SessionException
   UNAUTHORIZED_SESSION = 'SESS-001', // 허가되지 않은 세션 요청
 
@@ -19,7 +25,7 @@ export enum ErrorCode {
   PROFILE_REQUIRED = 'CRW-004', // 프로필 등록이 완료되어야 파티룸에 참여할 수 있습니다
 
   // UserAvatarException
-  AVATAR_SELECTION_FORBIDDEN = 'AVT-001', // 제한 사항(e.g. DJ 포인트 부족)으로 아바타 선택이 불가능함 - FIXME: 수정 필요한지 확인 - https://pfplay.slack.com/archives/C051N8A0ZSB/p1737211081003499
+  AVATAR_SELECTION_FORBIDDEN = 'UAV-001', // 제한 사항(e.g. DJ 포인트 부족)으로 아바타 선택이 불가능함
 
   // DjException
   ALREADY_REGISTERED = 'DJ-001', // 이미 DJ로 등록됨
@@ -41,6 +47,7 @@ export enum ErrorCode {
   ACTIVE_ANOTHER_ROOM = 'PTR-004', // 이미 다른 파티룸에 활성화되어 있음
   RESTRICTED_AUTHORITY = 'PTR-005', // 권한이 제한됨 (e.g. 지갑 인증 유저만 파티룸 생성 가능)
   ALREADY_HOST = 'PTR-006', // 이미 다른 파티룸의 호스트임
+  INVALID_PARTYROOM_TRANSITION = 'PTR-007', // 허용되지 않은 파티룸 상태 전이
 
   // PenaltyException
   PERMANENT_EXPULSION = 'PNT-001', // 영구적으로 추방된 사용자
@@ -54,7 +61,7 @@ export enum ErrorCode {
   // PlaylistTrackException
   DUPLICATE_TRACK_IN_PLAYLIST = 'TRK-001', // 재생목록에 이미 존재하는 음악은 추가할 수 없음
   EXCEEDED_TRACK_LIMIT = 'TRK-002', // 재생목록에 추가할 수 있는 음악 개수를 초과함
-  NOT_FOUND_TRACK = 'TRL-003', // 음악을 찾을 수 없음
+  NOT_FOUND_TRACK = 'TRK-003', // 음악을 찾을 수 없음
   INVALID_TRACK_ORDER = 'TRK-004', // 재생목록에 추가할 수 없는 음악 순서
 }
 
