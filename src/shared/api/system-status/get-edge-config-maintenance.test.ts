@@ -1,5 +1,5 @@
 import { get } from '@vercel/edge-config';
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { Mock, afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { getEdgeConfigMaintenance } from './get-edge-config-maintenance';
 
 vi.mock('@vercel/edge-config', () => ({
@@ -13,6 +13,8 @@ const ACTIVE = {
   messageKo: '점검 중',
   messageEn: 'Maintenance',
 };
+
+const EDGE_CONFIG_DUMMY = 'https://edge-config.vercel.com/dummy';
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -29,21 +31,48 @@ describe('getEdgeConfigMaintenance', () => {
     expect(get).not.toHaveBeenCalled();
   });
 
-  test('get이 null을 반환하면 null 반환', async () => {
-    vi.stubEnv('EDGE_CONFIG', 'https://edge-config.vercel.com/dummy');
-    (get as Mock).mockResolvedValueOnce(null);
-    await expect(getEdgeConfigMaintenance()).resolves.toBeNull();
+  test('VERCEL_ENV=production 이면 key "maintenance" 로 조회', async () => {
+    vi.stubEnv('EDGE_CONFIG', EDGE_CONFIG_DUMMY);
+    vi.stubEnv('VERCEL_ENV', 'production');
+    (get as Mock).mockResolvedValueOnce(ACTIVE);
+    await expect(getEdgeConfigMaintenance()).resolves.toEqual(ACTIVE);
     expect(get).toHaveBeenCalledWith('maintenance');
   });
 
-  test('get이 ACTIVE 객체를 반환하면 그대로 반환', async () => {
-    vi.stubEnv('EDGE_CONFIG', 'https://edge-config.vercel.com/dummy');
-    (get as Mock).mockResolvedValueOnce(ACTIVE);
-    await expect(getEdgeConfigMaintenance()).resolves.toEqual(ACTIVE);
+  test('VERCEL_ENV=preview 이면 key "maintenance_preview" 로 조회', async () => {
+    vi.stubEnv('EDGE_CONFIG', EDGE_CONFIG_DUMMY);
+    vi.stubEnv('VERCEL_ENV', 'preview');
+    (get as Mock).mockResolvedValueOnce(null);
+    await getEdgeConfigMaintenance();
+    expect(get).toHaveBeenCalledWith('maintenance_preview');
+  });
+
+  test('VERCEL_ENV=development 이면 key "maintenance_development" 로 조회', async () => {
+    vi.stubEnv('EDGE_CONFIG', EDGE_CONFIG_DUMMY);
+    vi.stubEnv('VERCEL_ENV', 'development');
+    (get as Mock).mockResolvedValueOnce(null);
+    await getEdgeConfigMaintenance();
+    expect(get).toHaveBeenCalledWith('maintenance_development');
+  });
+
+  test('VERCEL_ENV 미설정이면 development key 로 fallback', async () => {
+    vi.stubEnv('EDGE_CONFIG', EDGE_CONFIG_DUMMY);
+    vi.stubEnv('VERCEL_ENV', '');
+    (get as Mock).mockResolvedValueOnce(null);
+    await getEdgeConfigMaintenance();
+    expect(get).toHaveBeenCalledWith('maintenance_development');
+  });
+
+  test('get이 null을 반환하면 null 반환', async () => {
+    vi.stubEnv('EDGE_CONFIG', EDGE_CONFIG_DUMMY);
+    vi.stubEnv('VERCEL_ENV', 'production');
+    (get as Mock).mockResolvedValueOnce(null);
+    await expect(getEdgeConfigMaintenance()).resolves.toBeNull();
   });
 
   test('get이 throw하면 silent하게 null 반환', async () => {
-    vi.stubEnv('EDGE_CONFIG', 'https://edge-config.vercel.com/dummy');
+    vi.stubEnv('EDGE_CONFIG', EDGE_CONFIG_DUMMY);
+    vi.stubEnv('VERCEL_ENV', 'production');
     (get as Mock).mockRejectedValueOnce(new Error('network'));
     await expect(getEdgeConfigMaintenance()).resolves.toBeNull();
   });
