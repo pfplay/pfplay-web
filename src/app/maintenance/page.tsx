@@ -6,7 +6,19 @@ export const metadata: Metadata = {
   title: 'PFPlay - 시스템 점검 중',
 };
 
-const MaintenancePage = () => {
+type SearchParams = {
+  messageKo?: string;
+  messageEn?: string;
+  endAt?: string;
+};
+
+const MaintenancePage = ({ searchParams }: { searchParams: SearchParams }) => {
+  const messageKo =
+    searchParams.messageKo ??
+    '더 나은 서비스를 위해 시스템 점검을 진행하고 있습니다.\n점검이 완료되면 정상적으로 이용하실 수 있습니다.';
+  const messageEn =
+    searchParams.messageEn ?? 'We are performing scheduled maintenance. Please retry shortly.';
+
   return (
     <div className='flex flex-col items-center gap-5 max-w-[480px] text-center px-6'>
       <div className='w-[80px] h-[80px] bg-gradient-red rounded-full flexColCenter'>
@@ -18,9 +30,11 @@ const MaintenancePage = () => {
       </Typography>
 
       <Typography type='detail1' className='text-gray-400 whitespace-pre-line'>
-        {
-          '더 나은 서비스를 위해 시스템 점검을 진행하고 있습니다.\n점검이 완료되면 정상적으로 이용하실 수 있습니다.'
-        }
+        {messageKo}
+      </Typography>
+
+      <Typography type='detail1' className='text-gray-500 whitespace-pre-line'>
+        {messageEn}
       </Typography>
 
       <div className='w-[48px] h-[2px] bg-gray-700 my-1' />
