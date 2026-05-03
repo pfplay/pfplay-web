@@ -20,4 +20,7 @@ export default function usePartyroomEnterErrorAlerts() {
   useOnError(ErrorCode.EXCEEDED_LIMIT, () => {
     openAlertDialog({ content: t.auth.para.auth_quota_exceeded });
   });
+  useOnError(ErrorCode.PROFILE_REQUIRED, () => {
+    openAlertDialog({ content: t.partyroom.ec.profile_required });
+  });
 }

@@ -297,7 +297,8 @@
     },
     "ec": {
       "shut_down": "더 이상 존재하지 않는 파티룸이에요",
-      "data_load": "데이터를 불러오는데 실패했습니다.\n다시 입장하시겠어요?"
+      "data_load": "데이터를 불러오는데 실패했습니다.\n다시 입장하시겠어요?",
+      "profile_required": "프로필 등록을 완료해야 파티룸에 참여할 수 있어요"
     }
   },
   "crews": {
@@ -309,5 +310,24 @@
   "mobileNotice": {
     "title": "파티는 큰 화면에서!",
     "description": "PFPlay는 현재 데스크탑에서 즐길 수 있어요. PC나 노트북으로 접속해주세요!"
+  },
+  "system": {
+    "maintenance": {
+      "active": {
+        "title": "시스템 점검 중",
+        "retry": "재시도"
+      },
+      "planned": {
+        "banner": "{{start}} 부터 점검이 예정되어 있어요"
+      }
+    },
+    "announcement": {
+      "event": {
+        "close": "닫기"
+      },
+      "emergency": {
+        "label": "긴급 공지"
+      }
+    }
   }
 }
