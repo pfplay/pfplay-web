@@ -23,7 +23,7 @@ export function useGrabCurrentPlayback() {
         reactionType: ReactionType.GRAB,
       });
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Playlist],
       });
@@ -32,6 +32,17 @@ export function useGrabCurrentPlayback() {
         partyroom_id: partyroomId,
         reaction_type: reactionTypeLabel(ReactionType.GRAB),
       });
+      // GRAB 성공이 server-side에서 플레이리스트 추가까지 동반한 경우만 발화.
+      // track_id는 search 경로에서는 YouTube linkId(string), grab 경로에서는
+      // backend trackId(number)를 stringify — 형식이 source별로 상이함은
+      // 분석 시 source 필터로 분기해 사용 권장.
+      if (data.addedTrack) {
+        track('Track Added', {
+          playlist_id: data.addedTrack.playlistId,
+          track_id: String(data.addedTrack.trackId),
+          source: 'grab',
+        });
+      }
     },
   });
 }

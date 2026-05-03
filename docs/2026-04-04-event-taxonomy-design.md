@@ -343,12 +343,11 @@ API에 self/admin 구분값이 없다. 그러나 코드 경로가 이미 분리�
 - FE는 `auth-tracking.ts`에서 localStorage `pfp_amplitude_seen_uids` 휴리스틱 제거.
 - `useOAuth2Callback`가 응답의 `isNewUser`에 따라 `User Signed Up` 발화. 디바이스 간 / 시크릿 모드 false positive 해소.
 
-#### L5. `Track Added` `source='grab'` 미발행
+#### L5. `Track Added` `source='grab'` 미발행 — **해소됨 (backend reaction 응답에 addedTrack 추가)**
 
-- `useAddPlaylistTrack` 호출 경로가 검색 1곳뿐.
-- GRAB은 서버가 자동으로 플레이리스트에 추가하며 클라이언트에 trackId/playlistId를 반환하지 않음.
-- 그랩 행위는 `Playback Reacted(reaction_type='grab')`로 캡처되므로 funnel 빈 구멍 없음.
-- 명시적 `Track Added(source='grab')` 분석이 필요해지면 backend 응답 확장 필요.
+- Backend가 `POST /v1/partyrooms/{id}/playbacks/reaction`의 GRAB 응답에 `addedTrack: { trackId, playlistId } | null` 추가.
+- FE는 `useGrabCurrentPlayback` onSuccess에서 `addedTrack` 존재 시 `Track Added(source='grab')` 발화.
+- **잔존 한계**: `track_id` 의미가 source별로 상이 — search는 YouTube linkId(string), grab은 backend trackId stringified(numeric string). 분석 시 `source` 필터로 분기 권장.
 
 #### L6. `DJ Deregistered(reason='admin')` 일부 backend-initiated 케이스 오분류
 
