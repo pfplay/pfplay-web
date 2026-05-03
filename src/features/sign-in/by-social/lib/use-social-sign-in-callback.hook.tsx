@@ -8,7 +8,7 @@ import { OAuth2Provider } from '@/shared/api/http/types/users';
 import {
   identifyAuthenticatedUser,
   trackSignedIn,
-  trackSignedUpIfFirstTime,
+  trackSignedUp,
 } from '@/shared/lib/analytics/auth-tracking';
 import useCallbackLogin from '../api/use-callback-login';
 
@@ -20,7 +20,7 @@ export default function useOAuth2Callback() {
   return useCallback(
     async (oauth2Provider: OAuth2Provider) => {
       try {
-        await callbackLogin(oauth2Provider);
+        const tokenResponse = await callbackLogin(oauth2Provider);
 
         let me: Me.Model | null = null;
         try {
@@ -30,7 +30,9 @@ export default function useOAuth2Callback() {
         }
 
         if (me) {
-          trackSignedUpIfFirstTime({ uid: me.uid, oauthProvider: oauth2Provider });
+          if (tokenResponse.isNewUser) {
+            trackSignedUp(oauth2Provider);
+          }
           trackSignedIn(me.authorityTier);
           identifyAuthenticatedUser({
             uid: me.uid,

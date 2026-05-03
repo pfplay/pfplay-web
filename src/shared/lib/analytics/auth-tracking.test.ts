@@ -2,14 +2,7 @@ import * as amplitude from '@amplitude/analytics-browser';
 
 import { AuthorityTier } from '@/shared/api/http/types/@enums';
 
-import {
-  __testing__,
-  identifyAuthenticatedUser,
-  isFirstTimeSeen,
-  markUidSeen,
-  trackSignedIn,
-  trackSignedUpIfFirstTime,
-} from './auth-tracking';
+import { identifyAuthenticatedUser, trackSignedIn, trackSignedUp } from './auth-tracking';
 import { __preloadSdkForTests, __resetForTests } from './index';
 
 vi.mock('@amplitude/analytics-browser', () => {
@@ -52,42 +45,10 @@ describe('auth-tracking', () => {
     __resetForTests();
     __preloadSdkForTests(amplitude);
     vi.clearAllMocks();
-    window.localStorage.clear();
   });
 
   afterEach(() => {
     vi.unstubAllEnvs();
-  });
-
-  describe('seen-UID tracking', () => {
-    test('first call returns true for unknown uid', () => {
-      expect(isFirstTimeSeen('uid-1')).toBe(true);
-    });
-
-    test('after marking, isFirstTimeSeen returns false', () => {
-      markUidSeen('uid-1');
-      expect(isFirstTimeSeen('uid-1')).toBe(false);
-    });
-
-    test('persists multiple uids independently', () => {
-      markUidSeen('uid-1');
-      markUidSeen('uid-2');
-      expect(isFirstTimeSeen('uid-1')).toBe(false);
-      expect(isFirstTimeSeen('uid-2')).toBe(false);
-      expect(isFirstTimeSeen('uid-3')).toBe(true);
-    });
-
-    test('writes JSON array to localStorage', () => {
-      markUidSeen('uid-1');
-      const raw = window.localStorage.getItem(__testing__.SEEN_UIDS_STORAGE_KEY);
-      expect(raw).not.toBeNull();
-      expect(JSON.parse(raw as string)).toEqual(['uid-1']);
-    });
-
-    test('tolerates corrupted storage gracefully', () => {
-      window.localStorage.setItem(__testing__.SEEN_UIDS_STORAGE_KEY, 'not-json{');
-      expect(isFirstTimeSeen('uid-1')).toBe(true);
-    });
   });
 
   describe('trackSignedIn', () => {
@@ -107,20 +68,15 @@ describe('auth-tracking', () => {
     });
   });
 
-  describe('trackSignedUpIfFirstTime', () => {
-    test('emits and marks on first call', () => {
-      const result = trackSignedUpIfFirstTime({ uid: 'uid-1', oauthProvider: 'google' });
-      expect(result).toBe(true);
+  describe('trackSignedUp', () => {
+    test('emits provider on User Signed Up', () => {
+      trackSignedUp('google');
       expect(amplitude.track).toHaveBeenCalledWith('User Signed Up', { provider: 'google' });
-      expect(isFirstTimeSeen('uid-1')).toBe(false);
     });
 
-    test('does not emit on second call for same uid', () => {
-      trackSignedUpIfFirstTime({ uid: 'uid-1', oauthProvider: 'google' });
-      vi.clearAllMocks();
-      const result = trackSignedUpIfFirstTime({ uid: 'uid-1', oauthProvider: 'google' });
-      expect(result).toBe(false);
-      expect(amplitude.track).not.toHaveBeenCalled();
+    test('emits twitter provider', () => {
+      trackSignedUp('twitter');
+      expect(amplitude.track).toHaveBeenCalledWith('User Signed Up', { provider: 'twitter' });
     });
   });
 

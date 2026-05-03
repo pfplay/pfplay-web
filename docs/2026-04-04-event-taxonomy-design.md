@@ -338,13 +338,11 @@ API에 self/admin 구분값이 없다. 그러나 코드 경로가 이미 분리�
 - `Partyroom Created` 이벤트가 별도로 발행되므로 funnel 누락은 아님.
 - **해소 방법** (선택): `?source=create` query 추가 + `EntrySource` 타입 확장.
 
-#### L4. `User Signed Up` 첫-시도 판정 휴리스틱
+#### L4. `User Signed Up` 첫-시도 판정 휴리스틱 — **해소됨 (backend isNewUser ship 후)**
 
-- 백엔드가 `isNewUser` 시그널을 주지 않음.
-- 클라이언트 측 localStorage `pfp_amplitude_seen_uids`로 처음 본 UID인지 판정.
-- 한계: 디바이스 간 마이그레이션 / 시크릿 모드 / localStorage 클리어 시 false positive (재로그인을 가입으로 카운트) 가능.
-- 분석 추세 파악에는 무해, 절대값 신뢰는 부정확할 수 있음.
-- **해소 방법**: 백엔드 토큰 교환 응답에 `isNewUser` 플래그 추가.
+- Backend가 `POST /v1/auth/oauth/callback` 응답에 `isNewUser: boolean` 추가.
+- FE는 `auth-tracking.ts`에서 localStorage `pfp_amplitude_seen_uids` 휴리스틱 제거.
+- `useOAuth2Callback`가 응답의 `isNewUser`에 따라 `User Signed Up` 발화. 디바이스 간 / 시크릿 모드 false positive 해소.
 
 #### L5. `Track Added` `source='grab'` 미발행
 
