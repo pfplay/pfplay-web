@@ -310,5 +310,24 @@
   "mobileNotice": {
     "title": "파티는 큰 화면에서!",
     "description": "PFPlay는 현재 데스크탑에서 즐길 수 있어요. PC나 노트북으로 접속해주세요!"
+  },
+  "system": {
+    "maintenance": {
+      "active": {
+        "title": "시스템 점검 중",
+        "retry": "재시도"
+      },
+      "planned": {
+        "banner": "{start} 부터 점검이 예정되어 있어요"
+      }
+    },
+    "announcement": {
+      "event": {
+        "close": "닫기"
+      },
+      "emergency": {
+        "label": "긴급 공지"
+      }
+    }
   }
 }
