@@ -31,7 +31,14 @@ import errorEmitter from '@/shared/api/http/error/error-emitter';
 import { getErrorCode } from '@/shared/api/http/error/get-error-code';
 import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
 import { printErrorLog, printResponseLog } from '@/shared/lib/functions/log/network-log';
-import { logResponse, unwrapResponse, logError, unwrapError, emitError } from './response';
+import {
+  logResponse,
+  unwrapResponse,
+  logError,
+  unwrapError,
+  emitError,
+  redirectOnServiceUnavailable,
+} from './response';
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -203,5 +210,57 @@ describe('response interceptors', () => {
 
       await expect(emitError(error)).rejects.toBe(error);
     });
+  });
+});
+
+describe('redirectOnServiceUnavailable', () => {
+  const originalWindow = global.window;
+
+  beforeEach(() => {
+    Object.defineProperty(global, 'window', {
+      value: {
+        location: { href: '', pathname: '/parties/1' },
+      },
+      writable: true,
+    });
+  });
+
+  afterEach(() => {
+    Object.defineProperty(global, 'window', {
+      value: originalWindow,
+      writable: true,
+    });
+  });
+
+  test('503 응답이면 /maintenance로 리다이렉트', async () => {
+    const error = createAxiosError({ responseData: {} });
+    (error.response as AxiosError['response'] & { status: number }).status = 503;
+
+    await expect(redirectOnServiceUnavailable(error)).rejects.toBe(error);
+    expect(window.location.href).toBe('/maintenance');
+  });
+
+  test('503이 아닌 에러는 리다이렉트하지 않음', async () => {
+    const error = createAxiosError({ responseData: {} });
+    (error.response as AxiosError['response'] & { status: number }).status = 500;
+
+    await expect(redirectOnServiceUnavailable(error)).rejects.toBe(error);
+    expect(window.location.href).not.toBe('/maintenance');
+  });
+
+  test('이미 /maintenance에 있으면 리다이렉트하지 않음 (무한 루프 방지)', async () => {
+    window.location.pathname = '/maintenance';
+    const error = createAxiosError({ responseData: {} });
+    (error.response as AxiosError['response'] & { status: number }).status = 503;
+
+    await expect(redirectOnServiceUnavailable(error)).rejects.toBe(error);
+    expect(window.location.href).toBe('');
+  });
+
+  test('response가 없는 에러는 리다이렉트하지 않음', async () => {
+    const error = createAxiosError({ hasResponse: false });
+
+    await expect(redirectOnServiceUnavailable(error)).rejects.toBe(error);
+    expect(window.location.href).toBe('');
   });
 });

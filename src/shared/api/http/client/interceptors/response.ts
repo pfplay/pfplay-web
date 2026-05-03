@@ -65,3 +65,15 @@ export function emitError(e: AxiosError) {
 
   return Promise.reject(e);
 }
+
+export function redirectOnServiceUnavailable(e: AxiosError) {
+  if (
+    e.response?.status === 503 &&
+    typeof window !== 'undefined' &&
+    window.location.pathname !== '/maintenance'
+  ) {
+    window.location.href = '/maintenance';
+  }
+
+  return Promise.reject(e);
+}
