@@ -318,7 +318,7 @@
         "retry": "Retry"
       },
       "planned": {
-        "banner": "Maintenance scheduled from {start}"
+        "banner": "Maintenance scheduled from {{start}}"
       }
     },
     "announcement": {

@@ -318,7 +318,7 @@
         "retry": "재시도"
       },
       "planned": {
-        "banner": "{start} 부터 점검이 예정되어 있어요"
+        "banner": "{{start}} 부터 점검이 예정되어 있어요"
       }
     },
     "announcement": {
