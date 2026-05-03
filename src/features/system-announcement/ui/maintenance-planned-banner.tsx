@@ -26,17 +26,21 @@ export default function MaintenancePlannedBanner({ snapshot }: Props) {
   return (
     <div
       data-testid='maintenance-planned-banner'
-      className='fixed top-0 inset-x-0 z-40 bg-gray-800 border-b border-gray-700 px-4 py-2 flex items-center justify-between'
+      role='status'
+      className='pointer-events-auto bg-gray-800 border border-gray-700 rounded-[6px] px-4 py-2.5 flex items-center gap-3 shadow-lg'
     >
-      <Typography type='detail2' className='text-gray-200'>
+      <span aria-hidden className='text-base leading-none'>
+        🔧
+      </span>
+      <Typography type='detail1' className='flex-1 text-gray-100'>
         {text}
       </Typography>
       <button
         type='button'
         onClick={handleClose}
         data-testid='maintenance-planned-banner-close'
-        className='text-gray-400 px-2'
         aria-label={t.system.announcement.event.close}
+        className='text-gray-400 hover:text-gray-200 leading-none px-1'
       >
         ×
       </button>

@@ -36,16 +36,24 @@ export default function EmergencyBanner({ snapshot }: Props) {
   return (
     <div
       data-testid='emergency-banner'
-      className='fixed top-0 inset-x-0 z-40 bg-red-700 px-4 py-3 flex items-center gap-4'
+      role='alert'
+      className='pointer-events-auto bg-gradient-red rounded-[6px] px-4 py-3 flex items-center gap-3 shadow-lg'
     >
-      <Typography type='detail2' className='text-red-100 font-bold uppercase tracking-wider'>
+      <span aria-hidden className='text-lg leading-none'>
+        ⚠️
+      </span>
+      <Typography
+        type='caption1'
+        className='uppercase tracking-wider font-bold text-red-50 shrink-0'
+      >
         {t.system.announcement.emergency.label}
       </Typography>
-      <div className='flex-1 flex flex-col gap-1'>
-        <Typography type='body3' className='text-white'>
+      <div className='w-px h-4 bg-red-50/40 shrink-0' aria-hidden />
+      <div className='flex-1 flex flex-col gap-0.5 min-w-0'>
+        <Typography type='body3' className='text-white truncate'>
           {title}
         </Typography>
-        <Typography type='detail2' className='text-red-50 whitespace-pre-line'>
+        <Typography type='detail2' className='text-red-50/90 whitespace-pre-line'>
           {message}
         </Typography>
       </div>
