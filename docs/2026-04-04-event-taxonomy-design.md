@@ -324,12 +324,11 @@ API에 self/admin 구분값이 없다. 그러나 코드 경로가 이미 분리�
 - FE는 `use-enter-partyroom.ts`에서 lobby 캐시 lookup 제거하고 setup 응답 필드 직접 사용.
 - 결과: 모든 entry_source(list/link/direct)에 대해 stage_type 100% coverage.
 
-#### L2. 모바일 `Partyroom Exited` 유실 가능성
+#### L2. 모바일 `Partyroom Exited` 유실 가능성 — **해소됨 (backend exit API 멱등성 + pagehide 추가)**
 
-- `beforeunload`만 등록되어 있어 iOS Safari 등에서 tab kill 시 송신 누락 가능.
-- `visibilitychange`/`pagehide` 추가는 의도적으로 보류함 — 기존 `exit()`이 `partyroomsService.exit` API를 호출하며 backend 측 멱등성이 보장되지 않아 중복 호출 위험.
-- §5 Implementation Notes 정책 ("데이터 유실 가능성을 수용한다") 따름.
-- **해소 방법**: backend exit API 멱등성 보장 후 `pagehide` 핸들러 추가 가능.
+- Backend가 `DELETE /v1/partyrooms/{id}/crews/me`의 멱등성을 보장.
+- FE는 room layout에 `pagehide` 리스너 추가 (`beforeunload`와 함께 등록). exit가 두 번 호출돼도 backend가 안전하게 처리.
+- iOS Safari를 비롯한 모바일 환경에서 tab kill 시에도 `Partyroom Exited`가 더 신뢰성 있게 송신.
 
 #### L3. 파티룸 생성자의 즉시 입장 = `entry_source='direct'`
 

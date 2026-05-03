@@ -25,12 +25,17 @@ export default function PartyroomLayout({ children }: PropsWithChildren) {
       router.replace(`/parties/${params.id}`, { scroll: false });
     }
 
+    // beforeunload + pagehide 양쪽 등록 — 모바일 Safari 등에서 beforeunload가
+    // 실행되지 않는 경우를 pagehide가 보강. exit API가 idempotent 보장되어
+    // 중복 호출되더라도 안전.
     window.addEventListener('beforeunload', exit);
+    window.addEventListener('pagehide', exit);
 
     return () => {
       exit();
 
       window.removeEventListener('beforeunload', exit);
+      window.removeEventListener('pagehide', exit);
     };
   });
 
