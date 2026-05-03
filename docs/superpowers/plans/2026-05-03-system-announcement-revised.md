@@ -4,7 +4,7 @@
 
 **Goal:** v1 머지된 시스템 공지 코드를 신 contract(타입 3종 + Edge Config + 다중 표시)로 재작성하고 `feat/admin-api-sync` 브랜치 위에서 점진적으로 commit한다.
 
-**Architecture:** 부팅 시 `middleware.ts`가 Vercel Edge Config(서버사이드)를 조회해 ACTIVE 점검이면 `/maintenance`로 rewrite. root layout server component에서 `/v1/system/status` REST를 1회 호출해 active announcements를 hydrate. 정상 부팅된 세션은 STOMP `/topic/system/announcements`를 구독해 3종 이벤트(`PUBLISHED`/`MAINTENANCE_STARTED`/`CANCELLED`)를 수신, store(Map 기반)에 반영해 4종 UI(overlay/planned-banner/event-toast/emergency-banner)를 동시에 다수 표시한다. Edge Config/REST 둘 다 실패해도 503 axios 인터셉터가 마지막 안전망 역할을 한다.
+**Architecture:** 부팅 시 `middleware.ts`가 Vercel Edge Config(서버사이드)를 조회해 ACTIVE 점검이면 `/maintenance`로 rewrite. root layout server component에서 `/v1/system/status` REST를 1회 호출해 active announcements를 hydrate. 정상 부팅된 세션은 STOMP `/sub/system/announcements`를 구독해 3종 이벤트(`PUBLISHED`/`MAINTENANCE_STARTED`/`CANCELLED`)를 수신, store(Map 기반)에 반영해 4종 UI(overlay/planned-banner/event-toast/emergency-banner)를 동시에 다수 표시한다. Edge Config/REST 둘 다 실패해도 503 axios 인터셉터가 마지막 안전망 역할을 한다.
 
 **Tech Stack:** Next.js 14 App Router · `@vercel/edge-config` · STOMP/SockJS · Zustand · vitest + @testing-library/react
 
@@ -22,7 +22,7 @@
 
 ## Pre-flight (이미 검증됨)
 
-- `SocketClient.subscribe(destination: Destination, callback)` — `Destination = '/${string}'` 이미 path-based (`src/shared/api/websocket/client.ts:107`). v2 토픽 `/topic/system/announcements`도 그대로 사용 가능. 별도 client 변경 불필요.
+- `SocketClient.subscribe(destination: Destination, callback)` — `Destination = '/${string}'` 이미 path-based (`src/shared/api/websocket/client.ts:107`). v2 토픽 `/sub/system/announcements`도 그대로 사용 가능. 별도 client 변경 불필요.
 
 ## i18n keys (확정 — 본 plan에서 도입)
 
@@ -567,7 +567,7 @@ export default MaintenancePage;
 테스트 케이스:
 
 - `me`가 없으면 `client.subscribe`가 호출되지 않는다
-- `me`가 있으면 `client.subscribe('/topic/system/announcements', ...)` 정확한 경로로 1회 호출된다
+- `me`가 있으면 `client.subscribe('/sub/system/announcements', ...)` 정확한 경로로 1회 호출된다
 - `ANNOUNCEMENT_PUBLISHED` 메시지 수신 시 `store.add(payload)` 호출
 - `ANNOUNCEMENT_CANCELLED` 메시지 수신 시 `store.cancel(announcementId)` 호출
 - `MAINTENANCE_STARTED` 메시지 수신 시 `store.add` + `store.setMaintenance({phase:'ACTIVE',...})` 호출
@@ -585,7 +585,7 @@ import SocketClient from '@/shared/api/websocket/client';
 import { useSystemAnnouncementStore } from '../model/system-announcement.store';
 import { SystemAnnouncementEvent } from '../model/system-announcement.types';
 
-const TOPIC = '/topic/system/announcements';
+const TOPIC = '/sub/system/announcements';
 
 function isEvent(value: unknown): value is SystemAnnouncementEvent {
   return typeof value === 'object' && value !== null && 'eventType' in value;

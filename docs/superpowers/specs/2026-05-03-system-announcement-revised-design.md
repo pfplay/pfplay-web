@@ -10,7 +10,7 @@
 
 ### 포함 (In)
 
-- WebSocket 토픽 `/topic/system/announcements` 구독, 3종 이벤트 (`ANNOUNCEMENT_PUBLISHED`/`MAINTENANCE_STARTED`/`ANNOUNCEMENT_CANCELLED`) 처리
+- WebSocket 토픽 `/sub/system/announcements` 구독, 3종 이벤트 (`ANNOUNCEMENT_PUBLISHED`/`MAINTENANCE_STARTED`/`ANNOUNCEMENT_CANCELLED`) 처리
 - 부팅 시점 점검 모드 인지 — Vercel Edge Config 우선, REST `/v1/system/status` fallback, 503 인터셉터 fallback의 fallback
 - UI: 점검 ACTIVE overlay / 점검 PLANNED banner / EVENT toast / EMERGENCY persistent banner — 동시 다수 표시 가능
 - i18n: 한/영 분리 컬럼 (`titleKo`/`titleEn`/`messageKo`/`messageEn`) → user locale 기준 분기 표시
@@ -31,7 +31,7 @@
 | `severity`               | 없음                                         | `'INFO'` / `'WARN'` / `'CRITICAL'`                       |
 | 언어                     | 단일 (`title`/`content`)                     | 분리 (`titleKo`/`titleEn`/`messageKo`/`messageEn`)       |
 | 시간 필드                | `scheduledAt?`                               | `scheduledStartAt`/`scheduledEndAt`/`expiresAt`/`sentAt` |
-| WS 토픽                  | `/sub/system/announcements` (TODO 표시)      | `/topic/system/announcements` (확정)                     |
+| WS 토픽                  | `/sub/system/announcements` (TODO 표시)      | `/sub/system/announcements` (확정)                       |
 | WS 이벤트                | 단일 payload                                 | 3종 분기 (`PUBLISHED`/`MAINTENANCE_STARTED`/`CANCELLED`) |
 | 표시                     | 단일 모달                                    | overlay/banner/toast 4종 분기, 동시 다수                 |
 | store                    | `currentAnnouncement` 1개                    | `announcements: Map<id, ...>` 다수 active                |
@@ -95,7 +95,7 @@ type SystemStatusResponse = {
 };
 ```
 
-### WebSocket 토픽 `/topic/system/announcements`
+### WebSocket 토픽 `/sub/system/announcements`
 
 ```ts
 type AnnouncementSnapshot = {
@@ -182,7 +182,7 @@ i18n 표시: `useI18n()` 컨텍스트 locale에 따라 `titleKo`/`titleEn`, `mes
 - `yarn test:type` — TypeScript 타입 체크
 - `yarn lint`
 - 수기 — Edge Config 실제 토글 후 부팅 시 overlay 노출 확인 (운영자 작업)
-- 수기 — BE staging의 `/topic/system/announcements`에 mock event 발행 후 client UI 분기 확인
+- 수기 — BE staging의 `/sub/system/announcements`에 mock event 발행 후 client UI 분기 확인
 
 ## 범위 외 (YAGNI)
 

@@ -6,7 +6,9 @@ import SocketClient from '@/shared/api/websocket/client';
 import { useSystemAnnouncementStore } from '../model/system-announcement.store';
 import { SystemAnnouncementEvent } from '../model/system-announcement.types';
 
-const TOPIC = '/topic/system/announcements';
+// BE 의 STOMP broker 가 `/sub` prefix 만 등록되어 있어 `/topic/...` 은 silently drop 됨.
+// 따라서 시스템 공지 토픽도 `/sub/system/announcements` 로 발행/구독한다.
+const TOPIC = '/sub/system/announcements';
 
 function isEvent(value: unknown): value is SystemAnnouncementEvent {
   return typeof value === 'object' && value !== null && 'eventType' in value;

@@ -76,11 +76,11 @@ describe('useSystemAnnouncementSubscription', () => {
     expect(mockConnect).not.toHaveBeenCalled();
   });
 
-  test('me가 있으면 connect 및 /topic/system/announcements 구독', () => {
+  test('me가 있으면 connect 및 /sub/system/announcements 구독', () => {
     (useFetchMe as Mock).mockReturnValue({ data: { id: 1 } });
     renderHook(() => useSystemAnnouncementSubscription());
     expect(mockConnect).toHaveBeenCalledOnce();
-    expect(mockSubscribe).toHaveBeenCalledWith('/topic/system/announcements', expect.any(Function));
+    expect(mockSubscribe).toHaveBeenCalledWith('/sub/system/announcements', expect.any(Function));
   });
 
   test('ANNOUNCEMENT_PUBLISHED 수신 시 store.add 호출', () => {
