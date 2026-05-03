@@ -6,22 +6,17 @@ import SocketClient from '@/shared/api/websocket/client';
 import { useSystemAnnouncementStore } from '../model/system-announcement.store';
 import { SystemAnnouncementEvent } from '../model/system-announcement.types';
 
-function isValidAnnouncementEvent(event: unknown): event is SystemAnnouncementEvent {
-  if (typeof event !== 'object' || event === null) return false;
-  const e = event as Record<string, unknown>;
-  return (
-    typeof e.id === 'string' &&
-    typeof e.type === 'string' &&
-    typeof e.title === 'string' &&
-    typeof e.content === 'string'
-  );
+const TOPIC = '/topic/system/announcements';
+
+function isEvent(value: unknown): value is SystemAnnouncementEvent {
+  return typeof value === 'object' && value !== null && 'eventType' in value;
 }
 
 /**
  * 시스템 공지 WebSocket 구독 훅
  *
  * root layout에서 호출하여, 인증된 유저가 있으면 글로벌 토픽을 구독한다.
- * 백엔드에서 시스템 공지 이벤트를 푸시하면 store에 반영 → 모달 표시.
+ * 백엔드에서 시스템 공지 이벤트(3종)를 푸시하면 store에 반영 → display dispatcher가 분기 표시.
  *
  * NOTE: PartyroomClient와 별도의 WebSocket 커넥션을 생성한다.
  * 시스템 공지는 파티룸 진입과 무관하게 전역에서 수신해야 하므로 의도적으로 분리.
@@ -36,14 +31,31 @@ export default function useSystemAnnouncementSubscription() {
     const client = new SocketClient();
     client.connect();
 
-    // TODO: 백엔드와 토픽 경로 확정 후 수정
-    client.subscribe('/sub/system/announcements', (message) => {
+    client.subscribe(TOPIC, (message) => {
       try {
-        const event = JSON.parse(message.body);
-        if (!isValidAnnouncementEvent(event)) return;
-        useSystemAnnouncementStore.getState().showAnnouncement(event);
+        const ev = JSON.parse(message.body);
+        if (!isEvent(ev)) return;
+        const store = useSystemAnnouncementStore.getState();
+        switch (ev.eventType) {
+          case 'ANNOUNCEMENT_PUBLISHED':
+            store.add(ev);
+            break;
+          case 'MAINTENANCE_STARTED':
+            store.add(ev);
+            store.setMaintenance({
+              phase: 'ACTIVE',
+              startAt: ev.scheduledStartAt,
+              endAt: ev.scheduledEndAt,
+              messageKo: ev.messageKo,
+              messageEn: ev.messageEn,
+            });
+            break;
+          case 'ANNOUNCEMENT_CANCELLED':
+            store.cancel(ev.announcementId);
+            break;
+        }
       } catch {
-        // malformed message — ignore
+        // malformed — silent
       }
     });
 
