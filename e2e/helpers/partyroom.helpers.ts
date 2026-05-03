@@ -47,6 +47,37 @@ export async function openDjQueueDrawer(page: Page) {
     .toBe(true);
 }
 
+function parseDurationToMinutes(text: string): number {
+  const parts = text.trim().split(':').map(Number);
+  if (parts.some((n) => Number.isNaN(n))) return Number.POSITIVE_INFINITY;
+  if (parts.length === 3) return parts[0] * 60 + parts[1] + parts[2] / 60;
+  if (parts.length === 2) return parts[0] + parts[1] / 60;
+  return parts[0] / 60;
+}
+
+async function pickShortTrackIndices(
+  page: Page,
+  count: number,
+  maxMinutes: number
+): Promise<number[]> {
+  const durations = page.locator('[data-testid="track-duration"]');
+  const total = await durations.count();
+  const indices: number[] = [];
+  for (let i = 0; i < total; i++) {
+    const text = (await durations.nth(i).textContent()) ?? '';
+    if (parseDurationToMinutes(text) < maxMinutes) {
+      indices.push(i);
+      if (indices.length === count) break;
+    }
+  }
+  if (indices.length < count) {
+    throw new Error(
+      `not enough tracks shorter than ${maxMinutes}min (found ${indices.length}/${count})`
+    );
+  }
+  return indices;
+}
+
 export async function createPlaylistWithTracks(page: Page, playlistName: string) {
   await page.locator('[data-testid="playlist-sidebar-button"]').click();
   await expect(page.locator('[data-testid="add-playlist-button"]')).toBeVisible({ timeout: 5_000 });
@@ -61,8 +92,9 @@ export async function createPlaylistWithTracks(page: Page, playlistName: string)
   await page.waitForTimeout(1_000);
   const trackAddButtons = page.locator('[data-testid="track-add-button"]');
   await expect(trackAddButtons.nth(2)).toBeVisible({ timeout: 15_000 });
-  for (let i = 0; i < 3; i++) {
-    await trackAddButtons.nth(i).click();
+  const shortIndices = await pickShortTrackIndices(page, 3, 5);
+  for (const idx of shortIndices) {
+    await trackAddButtons.nth(idx).click();
     await page.waitForTimeout(300);
   }
   await page.locator('[data-testid="music-search-close"]').click();
