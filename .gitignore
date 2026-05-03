@@ -48,3 +48,6 @@ certificates
 e2e/.auth/
 playwright-report/
 test-results/
+
+# yarn-only project — keep package-lock.json out
+package-lock.json
