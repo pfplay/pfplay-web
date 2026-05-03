@@ -318,13 +318,11 @@ API에 self/admin 구분값이 없다. 그러나 코드 경로가 이미 분리�
 
 ### 알려진 한계 (Known Limitations)
 
-#### L1. `stage_type` 부분 데이터 (`Partyroom Entered`)
+#### L1. `stage_type` 부분 데이터 (`Partyroom Entered`) — **해소됨 (backend setup 응답 확장 + FE 마이그레이션)**
 
-- 현재 `getSetupInfo` / `getPartyroomDetailSummary` 응답에 `stageType` 필드 없음.
-- 차선책으로 lobby `partyroomList` 캐시(`PartyroomSummary[]`)에서 `partyroomId` 매칭으로 추출.
-- 결과: stage_type 부착 여부는 lobby 캐시 hit에 의존. 같은 SPA 세션에서 직전에 lobby를 방문했다면 `entry_source='link'`/`'direct'` 진입이라도 부착됨. 첫 진입이 lobby가 아닐 때만 미부착.
-- 분석 시 stage_type 코호트 비교는 lobby 캐시 warm 사용자에 편향됨에 유의.
-- **해소 방법**: 백엔드 setup 또는 detail-summary 응답에 `stageType` 추가 (follow-up 티켓 권장).
+- Backend가 `GET /v1/partyrooms/{id}/setup` 응답에 `stageType` 필드 추가.
+- FE는 `use-enter-partyroom.ts`에서 lobby 캐시 lookup 제거하고 setup 응답 필드 직접 사용.
+- 결과: 모든 entry_source(list/link/direct)에 대해 stage_type 100% coverage.
 
 #### L2. 모바일 `Partyroom Exited` 유실 가능성
 

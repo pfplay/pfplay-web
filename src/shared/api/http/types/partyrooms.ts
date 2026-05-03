@@ -121,6 +121,7 @@ export type PartyroomReaction = {
 };
 
 export type GetSetUpInfoResponse = {
+  stageType: StageType;
   crews: PartyroomCrew[];
   display: {
     /**
