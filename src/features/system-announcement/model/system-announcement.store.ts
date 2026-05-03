@@ -1,38 +1,47 @@
 import { create } from 'zustand';
-import { SystemAnnouncementEvent } from './system-announcement.types';
+import { AnnouncementSnapshot, MaintenanceState } from './system-announcement.types';
 
 type SystemAnnouncementState = {
-  currentAnnouncement: SystemAnnouncementEvent | null;
-  dismissedIds: Set<string>;
-  showAnnouncement: (event: SystemAnnouncementEvent) => void;
-  dismiss: () => void;
-  isDismissed: (id: string) => boolean;
+  announcements: Map<number, AnnouncementSnapshot>;
+  dismissedIds: Set<number>;
+  maintenance: MaintenanceState | null;
+  add: (snapshot: AnnouncementSnapshot) => void;
+  cancel: (announcementId: number) => void;
+  dismiss: (announcementId: number) => void;
+  setMaintenance: (state: MaintenanceState | null) => void;
 };
 
-export const createSystemAnnouncementStore = () => {
-  return create<SystemAnnouncementState>((set, get) => ({
-    currentAnnouncement: null,
-    dismissedIds: new Set<string>(),
+export const createSystemAnnouncementStore = () =>
+  create<SystemAnnouncementState>((set, get) => ({
+    announcements: new Map(),
+    dismissedIds: new Set(),
+    maintenance: null,
 
-    showAnnouncement: (event) => {
-      if (get().dismissedIds.has(event.id)) return;
-      set({ currentAnnouncement: event });
+    add: (snapshot) => {
+      if (get().dismissedIds.has(snapshot.announcementId)) return;
+      const next = new Map(get().announcements);
+      next.set(snapshot.announcementId, snapshot);
+      set({ announcements: next });
     },
 
-    dismiss: () => {
-      const current = get().currentAnnouncement;
-      if (!current) return;
+    cancel: (announcementId) => {
+      const next = new Map(get().announcements);
+      next.delete(announcementId);
+      set({ announcements: next });
+    },
 
+    dismiss: (announcementId) => {
+      const nextActive = new Map(get().announcements);
+      nextActive.delete(announcementId);
       const nextDismissed = new Set(get().dismissedIds);
-      nextDismissed.add(current.id);
-      set({ currentAnnouncement: null, dismissedIds: nextDismissed });
+      nextDismissed.add(announcementId);
+      set({ announcements: nextActive, dismissedIds: nextDismissed });
     },
 
-    isDismissed: (id) => get().dismissedIds.has(id),
+    setMaintenance: (state) => set({ maintenance: state }),
   }));
-};
 
 /**
- * 모듈 스코프 싱글턴 — SystemAnnouncementModal에서 직접 import하여 사용
+ * 모듈 스코프 싱글턴 — UI/subscription에서 직접 import하여 사용
  */
 export const useSystemAnnouncementStore = createSystemAnnouncementStore();
