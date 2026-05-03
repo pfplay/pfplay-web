@@ -24,6 +24,7 @@ import { DialogProvider } from '@/shared/ui/components/dialog';
 import { MobileGuard } from '@/shared/ui/components/mobile-guard';
 import { pretendardVariable } from '@/shared/ui/foundation/fonts';
 
+import AnalyticsProvider from './_providers/analytics.provider';
 import ReactQueryProvider from './_providers/react-query.provider';
 import StoresProvider from './_providers/stores.provider';
 import { WalletProvider } from './_providers/wallet.provider';
@@ -58,23 +59,25 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
       <body className={pretendardVariable.className}>
         <MobileGuard />
         <ReactQueryProvider>
-          <LangProvider lang={lang as Language}>
-            <I18nProvider dictionary={dictionary}>
-              <StoresProvider>
-                <WalletProvider>
-                  <DialogProvider>
-                    {children}
-                    <HydrateAnnouncementsFromStatus
-                      initialActive={initialActiveAnnouncements}
-                      initialMaintenance={initialMaintenance}
-                    />
-                    <SystemAnnouncementSubscriber />
-                    <SystemAnnouncementDisplay />
-                  </DialogProvider>
-                </WalletProvider>
-              </StoresProvider>
-            </I18nProvider>
-          </LangProvider>
+          <AnalyticsProvider>
+            <LangProvider lang={lang as Language}>
+              <I18nProvider dictionary={dictionary}>
+                <StoresProvider>
+                  <WalletProvider>
+                    <DialogProvider>
+                      {children}
+                      <HydrateAnnouncementsFromStatus
+                        initialActive={initialActiveAnnouncements}
+                        initialMaintenance={initialMaintenance}
+                      />
+                      <SystemAnnouncementSubscriber />
+                      <SystemAnnouncementDisplay />
+                    </DialogProvider>
+                  </WalletProvider>
+                </StoresProvider>
+              </I18nProvider>
+            </LangProvider>
+          </AnalyticsProvider>
         </ReactQueryProvider>
 
         <div id={DomId.DrawerRoot} />

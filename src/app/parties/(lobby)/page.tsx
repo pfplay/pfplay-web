@@ -38,7 +38,7 @@ const PartyLobbyPage = () => {
         >
           <PartyroomCreateCard />
 
-          <PartyroomList />
+          <PartyroomList trackView />
         </section>
       </div>
     </>

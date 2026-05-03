@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import { partyroomsService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
+import { track } from '@/shared/lib/analytics';
 import { useStores } from '@/shared/lib/store/stores.context';
 
 export default function useDeleteDjFromQueueMutation() {
@@ -23,6 +24,12 @@ export default function useDeleteDjFromQueueMutation() {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.DjingQueue, partyroomId],
       });
+      if (partyroomId) {
+        track('DJ Deregistered', {
+          partyroom_id: partyroomId,
+          reason: 'admin',
+        });
+      }
     },
   });
 }

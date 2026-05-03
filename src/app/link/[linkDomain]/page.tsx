@@ -31,7 +31,7 @@ export default function LinkPage() {
     if (linkDomain) {
       getPartyroom(linkDomain, {
         onSuccess: ({ partyroomId }) => {
-          router.push(`/parties/${partyroomId}`);
+          router.push(`/parties/${partyroomId}?source=link`);
         },
       });
     }

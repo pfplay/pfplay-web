@@ -5,6 +5,8 @@ import { partyroomsService } from '@/shared/api/http/services';
 import { ReactionType } from '@/shared/api/http/types/@enums';
 import { APIError } from '@/shared/api/http/types/@shared';
 import type { ReactionResponse } from '@/shared/api/http/types/partyrooms';
+import { track } from '@/shared/lib/analytics';
+import { reactionTypeLabel } from '@/shared/lib/analytics/labels';
 import { useStores } from '@/shared/lib/store/stores.context';
 
 export function useGrabCurrentPlayback() {
@@ -24,6 +26,11 @@ export function useGrabCurrentPlayback() {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Playlist],
+      });
+      if (!partyroomId) return;
+      track('Playback Reacted', {
+        partyroom_id: partyroomId,
+        reaction_type: reactionTypeLabel(ReactionType.GRAB),
       });
     },
   });
