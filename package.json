@@ -85,6 +85,7 @@
     "@tanstack/react-query-devtools": "^5.17.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/d3-force": "^3.0.10",
     "@types/node": "18.16.19",
     "@types/react": "^18.2.33",
