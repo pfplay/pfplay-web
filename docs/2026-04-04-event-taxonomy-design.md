@@ -318,20 +318,17 @@ API에 self/admin 구분값이 없다. 그러나 코드 경로가 이미 분리�
 
 ### 알려진 한계 (Known Limitations)
 
-#### L1. `stage_type` 부분 데이터 (`Partyroom Entered`)
+#### L1. `stage_type` 부분 데이터 (`Partyroom Entered`) — **해소됨 (backend setup 응답 확장 + FE 마이그레이션)**
 
-- 현재 `getSetupInfo` / `getPartyroomDetailSummary` 응답에 `stageType` 필드 없음.
-- 차선책으로 lobby `partyroomList` 캐시(`PartyroomSummary[]`)에서 `partyroomId` 매칭으로 추출.
-- 결과: stage_type 부착 여부는 lobby 캐시 hit에 의존. 같은 SPA 세션에서 직전에 lobby를 방문했다면 `entry_source='link'`/`'direct'` 진입이라도 부착됨. 첫 진입이 lobby가 아닐 때만 미부착.
-- 분석 시 stage_type 코호트 비교는 lobby 캐시 warm 사용자에 편향됨에 유의.
-- **해소 방법**: 백엔드 setup 또는 detail-summary 응답에 `stageType` 추가 (follow-up 티켓 권장).
+- Backend가 `GET /v1/partyrooms/{id}/setup` 응답에 `stageType` 필드 추가.
+- FE는 `use-enter-partyroom.ts`에서 lobby 캐시 lookup 제거하고 setup 응답 필드 직접 사용.
+- 결과: 모든 entry_source(list/link/direct)에 대해 stage_type 100% coverage.
 
-#### L2. 모바일 `Partyroom Exited` 유실 가능성
+#### L2. 모바일 `Partyroom Exited` 유실 가능성 — **해소됨 (backend exit API 멱등성 + pagehide 추가)**
 
-- `beforeunload`만 등록되어 있어 iOS Safari 등에서 tab kill 시 송신 누락 가능.
-- `visibilitychange`/`pagehide` 추가는 의도적으로 보류함 — 기존 `exit()`이 `partyroomsService.exit` API를 호출하며 backend 측 멱등성이 보장되지 않아 중복 호출 위험.
-- §5 Implementation Notes 정책 ("데이터 유실 가능성을 수용한다") 따름.
-- **해소 방법**: backend exit API 멱등성 보장 후 `pagehide` 핸들러 추가 가능.
+- Backend가 `DELETE /v1/partyrooms/{id}/crews/me`의 멱등성을 보장.
+- FE는 room layout에 `pagehide` 리스너 추가 (`beforeunload`와 함께 등록). exit가 두 번 호출돼도 backend가 안전하게 처리.
+- iOS Safari를 비롯한 모바일 환경에서 tab kill 시에도 `Partyroom Exited`가 더 신뢰성 있게 송신.
 
 #### L3. 파티룸 생성자의 즉시 입장 = `entry_source='direct'`
 
@@ -340,20 +337,17 @@ API에 self/admin 구분값이 없다. 그러나 코드 경로가 이미 분리�
 - `Partyroom Created` 이벤트가 별도로 발행되므로 funnel 누락은 아님.
 - **해소 방법** (선택): `?source=create` query 추가 + `EntrySource` 타입 확장.
 
-#### L4. `User Signed Up` 첫-시도 판정 휴리스틱
+#### L4. `User Signed Up` 첫-시도 판정 휴리스틱 — **해소됨 (backend isNewUser ship 후)**
 
-- 백엔드가 `isNewUser` 시그널을 주지 않음.
-- 클라이언트 측 localStorage `pfp_amplitude_seen_uids`로 처음 본 UID인지 판정.
-- 한계: 디바이스 간 마이그레이션 / 시크릿 모드 / localStorage 클리어 시 false positive (재로그인을 가입으로 카운트) 가능.
-- 분석 추세 파악에는 무해, 절대값 신뢰는 부정확할 수 있음.
-- **해소 방법**: 백엔드 토큰 교환 응답에 `isNewUser` 플래그 추가.
+- Backend가 `POST /v1/auth/oauth/callback` 응답에 `isNewUser: boolean` 추가.
+- FE는 `auth-tracking.ts`에서 localStorage `pfp_amplitude_seen_uids` 휴리스틱 제거.
+- `useOAuth2Callback`가 응답의 `isNewUser`에 따라 `User Signed Up` 발화. 디바이스 간 / 시크릿 모드 false positive 해소.
 
-#### L5. `Track Added` `source='grab'` 미발행
+#### L5. `Track Added` `source='grab'` 미발행 — **해소됨 (backend reaction 응답에 addedTrack 추가)**
 
-- `useAddPlaylistTrack` 호출 경로가 검색 1곳뿐.
-- GRAB은 서버가 자동으로 플레이리스트에 추가하며 클라이언트에 trackId/playlistId를 반환하지 않음.
-- 그랩 행위는 `Playback Reacted(reaction_type='grab')`로 캡처되므로 funnel 빈 구멍 없음.
-- 명시적 `Track Added(source='grab')` 분석이 필요해지면 backend 응답 확장 필요.
+- Backend가 `POST /v1/partyrooms/{id}/playbacks/reaction`의 GRAB 응답에 `addedTrack: { trackId, playlistId } | null` 추가.
+- FE는 `useGrabCurrentPlayback` onSuccess에서 `addedTrack` 존재 시 `Track Added(source='grab')` 발화.
+- **잔존 한계**: `track_id` 의미가 source별로 상이 — search는 YouTube linkId(string), grab은 backend trackId stringified(numeric string). 분석 시 `source` 필터로 분기 권장.
 
 #### L6. `DJ Deregistered(reason='admin')` 일부 backend-initiated 케이스 오분류
 

@@ -6,11 +6,7 @@ import {
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import { partyroomsService } from '@/shared/api/http/services';
 import { MotionType } from '@/shared/api/http/types/@enums';
-import {
-  EnterResponse,
-  PartyroomReaction,
-  PartyroomSummary,
-} from '@/shared/api/http/types/partyrooms';
+import { EnterResponse, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import type { EntrySource } from '@/shared/lib/analytics/events';
 import { trackPartyroomEntered } from '@/shared/lib/analytics/room-tracking';
 import { detectCountryCode } from '@/shared/lib/functions/detect-country-code';
@@ -67,17 +63,11 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
       })
     );
 
-    // stage_type is not present in the setup response. Read it from the lobby
-    // list cache when available; otherwise omit and let analytics reflect the
-    // gap rather than fabricate a value.
-    const lobbyCache = queryClient.getQueryData<PartyroomSummary[]>([QueryKeys.PartyroomList]);
-    const stageType = lobbyCache?.find((p) => p.partyroomId === partyroomId)?.stageType;
-
     trackPartyroomEntered({
       partyroomId,
       crewCount: setUpInfo.crews.length,
       entrySource,
-      stageType,
+      stageType: setUpInfo.stageType,
     });
   };
 

@@ -60,6 +60,11 @@ export type TokenExchangeResponse = {
   tokenType: string;
   expiresIn: number;
   issuedAt: string;
+  /**
+   * 이번 호출에서 user 레코드가 신규 INSERT 됐는지 여부.
+   * `User Signed Up` 이벤트 발화의 단일 진실 소스.
+   */
+  isNewUser: boolean;
 };
 
 export interface AuthCallbackParams {
