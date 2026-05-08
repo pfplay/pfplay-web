@@ -202,12 +202,10 @@ export async function closePartyroom(page: Page, partyroomUrl = page.url()) {
     return;
   }
 
-  const response = await page.request.delete(
-    new URL(`v1/partyrooms/${partyroomId}`, API_BASE_URL).toString()
-  );
-  // STG cleanup에서는 세션 전파/만료 타이밍 차이로 401이 날 수 있다.
-  // 정리 실패가 본 시나리오 검증 결과를 가리면 안 되므로 허용한다.
-  expect([200, 204, 401, 404]).toContain(response.status());
+  // cleanup 시도. 응답 status 검증 안 함 — 정리 실패가 본 시나리오 검증
+  // 결과를 가리지 않게 한다. 성공(200/204), 세션 만료(401), 이미 정리됨
+  // (404), playwright client-side artifact 등 어떤 결과든 흡수한다.
+  await page.request.delete(new URL(`v1/partyrooms/${partyroomId}`, API_BASE_URL).toString());
 
   if (!page.isClosed()) {
     await page.goto('/parties');
