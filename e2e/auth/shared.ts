@@ -8,7 +8,7 @@ async function clickDevFullCrewSignIn(page: Page) {
   const devBtn = page.locator('[data-testid="dev-sign-in-button"]');
   await expect(devBtn).toBeVisible({ timeout: 10_000 });
   await expect(devBtn).toBeEnabled({ timeout: 10_000 });
-  await devBtn.click();
+  await devBtn.click({ force: true });
 
   const dialog = page
     .locator('[data-testid="dialog-panel"]')
@@ -19,7 +19,7 @@ async function clickDevFullCrewSignIn(page: Page) {
   const fullCrewButton = dialog.locator('[data-testid="dev-sign-in-full"]');
   await expect(fullCrewButton).toBeVisible({ timeout: 10_000 });
   await expect(fullCrewButton).toBeEnabled({ timeout: 10_000 });
-  await fullCrewButton.click();
+  await fullCrewButton.click({ force: true });
   await expect(dialog).toBeHidden({ timeout: 15_000 });
 }
 

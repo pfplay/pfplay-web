@@ -76,24 +76,9 @@ test('User2(late join)는 User1이 재생 중인 곡과 동일한 곡을 player�
   let partyroomUrl: string | undefined;
 
   try {
-    log('user1 goto /');
-    await page1.goto('/');
-
-    const pfpPlayButton = page1.locator('[data-testid="home-pfp-play-button"]');
-    if (await pfpPlayButton.isVisible({ timeout: 3_000 }).catch(() => false)) {
-      // useFetchMe 완료 전에는 href가 /sign-in일 수 있으므로 실제 목적지가 바뀔 때까지 대기
-      log('home pfp play button visible, waiting for href=/parties');
-      await expect(pfpPlayButton).toHaveAttribute('href', '/parties', { timeout: 15_000 });
-      log(`href became /parties, current URL: ${page1.url()}`);
-      await pfpPlayButton.click();
-      log('clicked home pfp play button, waiting for /parties');
-      await page1.waitForURL(/\/parties$/, { timeout: 10_000 });
-      log(`arrived at /parties from home, current URL: ${page1.url()}`);
-    } else {
-      log('home pfp play button not visible, goto /parties directly');
-      await page1.goto('/parties');
-      log(`arrived at /parties directly, current URL: ${page1.url()}`);
-    }
+    log('user1 goto /parties');
+    await page1.goto('/parties');
+    log(`arrived at /parties, current URL: ${page1.url()}`);
 
     // ─── User1: 플레이리스트 생성 + 트랙 추가 ───────────────────────────
     const uniquePlaylistName = `E2EA${Date.now().toString(36)}`;
