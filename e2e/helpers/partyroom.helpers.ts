@@ -38,15 +38,16 @@ export async function enterPartyroomAndWaitUntilReady(page: Page, partyroomUrl: 
 }
 
 export async function openDjQueueDrawer(page: Page) {
-  const djQueueButton = page.locator('[data-testid="dj-queue-button"]');
+  const djQueueButton = page.getByRole('button', { name: /^dj queue$/i });
   await expect(djQueueButton).toBeVisible({ timeout: 30_000 });
   await expect(djQueueButton).toBeEnabled({ timeout: 40_000 });
 
   await djQueueButton.click({ force: true }); // 알 수 없는 이유로 실패함
   await page.evaluate(() => {
-    const button = document.querySelector(
-      '[data-testid="dj-queue-button"]'
-    ) as HTMLButtonElement | null;
+    const buttons = Array.from(document.querySelectorAll('button'));
+    const button = buttons.find((candidate) =>
+      /dj queue/i.test(candidate.textContent?.trim() ?? '')
+    ) as HTMLButtonElement | undefined;
     button?.click();
   });
 
@@ -98,16 +99,21 @@ async function pickShortTrackIndices(
 }
 
 export async function createPlaylistWithTracks(page: Page, playlistName: string) {
-  await page.locator('[data-testid="playlist-sidebar-button"]').click();
-  await expect(page.locator('[data-testid="add-playlist-button"]')).toBeVisible({ timeout: 5_000 });
-  await page.locator('[data-testid="add-playlist-button"]').click();
-  await expect(page.locator('[role="dialog"] input[name="name"]')).toBeVisible({ timeout: 5_000 });
-  await page.locator('[role="dialog"] input[name="name"]').fill(playlistName);
-  await page.locator('[data-testid="playlist-form-add-button"]').click();
-  await page.locator(`[data-testid="playlist-list-item"]:has-text("${playlistName}")`).click();
-  await page.locator('[data-testid="add-song-button"]').click();
-  await expect(page.locator('[data-testid="music-search-input"]')).toBeVisible({ timeout: 5_000 });
-  await page.locator('[data-testid="music-search-input"]').fill('new jeans');
+  await page.getByRole('button', { name: /^playlist$/i }).click();
+  await expect(page.getByRole('button', { name: /add list/i })).toBeVisible({ timeout: 5_000 });
+  await page.getByRole('button', { name: /add list/i }).click();
+
+  const playlistNameInput = page.locator('[role="dialog"] input[name="name"]');
+  await expect(playlistNameInput).toBeVisible({ timeout: 5_000 });
+  await playlistNameInput.fill(playlistName);
+  await page.getByRole('button', { name: /^add$/i }).click();
+
+  await page.getByRole('button', { name: new RegExp(playlistName) }).click();
+  await page.getByRole('button', { name: /add song/i }).click();
+
+  const musicSearchInput = page.getByPlaceholder(/search|url/i);
+  await expect(musicSearchInput).toBeVisible({ timeout: 5_000 });
+  await musicSearchInput.fill('new jeans');
   await page.waitForTimeout(1_000);
   const trackAddButtons = page.locator('[data-testid="track-add-button"]');
   await expect(trackAddButtons.nth(2)).toBeVisible({ timeout: 15_000 });
@@ -125,10 +131,10 @@ export async function createPartyroom(
   partyroomName: string,
   introduction = 'e2e-test'
 ) {
-  await page.locator('[data-testid="create-partyroom-button"]').click();
+  await page.getByRole('button', { name: /be a pfplay host/i }).click();
   await page.locator('input[name="name"]').fill(partyroomName);
   await page.locator('textarea[name="introduce"]').fill(introduction);
-  await page.locator('button[type="submit"]').click();
+  await page.getByRole('button', { name: /create party/i }).click();
   await page.waitForURL(/\/parties\/\d+/, { timeout: 20_000 });
 
   return page.url();
@@ -137,20 +143,20 @@ export async function createPartyroom(
 export async function registerAsDj(page: Page, playlistName?: string) {
   await openDjQueueDrawer(page);
 
-  const registerButton = page.locator('[data-testid="register-dj-queue"]');
+  const registerButton = page.getByRole('button', { name: /register.*dj queue|dj 대기 등록/i });
   const closeButton = page.locator(DJING_DIALOG_CLOSE_SELECTOR);
   await expect(registerButton).toBeVisible({ timeout: 10_000 });
   await expect(registerButton).toBeEnabled({ timeout: 10_000 });
   await registerButton.click({ force: true });
 
-  const confirmButton = page.locator('[data-testid="playlist-confirm"]');
+  const confirmButton = page.getByRole('button', { name: /^confirm$/i });
   await expect(confirmButton).toBeVisible({ timeout: 15_000 });
 
-  const playlistItems = page.locator('[data-testid="select-playlist-item"]');
+  const playlistItems = page.locator('[role="button"][data-testid="select-playlist-item"]');
   await expect(playlistItems.first()).toBeVisible({ timeout: 15_000 });
 
   const playlistItem = playlistName
-    ? page.locator(`[data-testid="select-playlist-item"]:has-text("${playlistName}")`)
+    ? page.getByRole('button', { name: new RegExp(playlistName) })
     : playlistItems.first();
   await expect(playlistItem).toBeVisible({ timeout: 15_000 });
   await playlistItem.click({ force: true });
@@ -164,7 +170,9 @@ export async function registerAsDj(page: Page, playlistName?: string) {
 export async function unregisterAsDj(page: Page) {
   await openDjQueueDrawer(page);
 
-  const unregisterButton = page.locator('[data-testid="unregister-dj-queue"]');
+  const unregisterButton = page.getByRole('button', {
+    name: /cancel dj queue registration|dj 대기 등록 취소/i,
+  });
   await expect(page.locator('[data-testid="current-dj-item"]')).toBeVisible({
     timeout: 30_000,
   });

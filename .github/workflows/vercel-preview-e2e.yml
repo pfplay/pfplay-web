@@ -52,7 +52,7 @@ jobs:
           key: playwright-${{ hashFiles('**/yarn.lock') }}
 
       - run: npx playwright install --with-deps chromium
-      - run: yarn test:e2e --project=e2e
+      - run: yarn test:e2e
         env:
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
 
