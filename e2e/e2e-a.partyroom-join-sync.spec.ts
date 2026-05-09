@@ -3,6 +3,7 @@ import { expect, test } from './fixtures/auth.fixtures';
 import {
   closePartyroom,
   createPlaylistWithTracks,
+  createPartyroom,
   enterPartyroomAndWaitUntilReady,
   leavePartyroom,
   registerAsDj,
@@ -103,15 +104,7 @@ test('User2(late join)는 User1이 재생 중인 곡과 동일한 곡을 player�
     // ─── User1: 파티룸 생성 ──────────────────────────────────────────────
     const uniquePartyroomName = `E2EA${Date.now().toString(36)}`;
     log(`creating partyroom: ${uniquePartyroomName}`);
-    await page1.locator('[data-testid="create-partyroom-button"]').click();
-    await page1.locator('input[name="name"]').fill(uniquePartyroomName);
-    await page1.locator('textarea[name="introduce"]').fill('e2e-test');
-    await page1.locator('button[type="submit"]').click();
-
-    log('waiting for partyroom URL after create');
-    await page1.waitForURL(/\/parties\/\d+/, { timeout: 20_000 });
-
-    partyroomUrl = page1.url();
+    partyroomUrl = await createPartyroom(page1, uniquePartyroomName);
     log(`partyroom created: ${partyroomUrl}`);
     expect(partyroomUrl).toMatch(/\/parties\/\d+/);
 

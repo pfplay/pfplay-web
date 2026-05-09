@@ -8,7 +8,12 @@ jobs:
   deploy:
     name: deploy production
     runs-on: ubuntu-latest
+    env:
+      VERCEL_CLI_VERSION: 48.4.1
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.0'
       - name: Deploy to Vercel Production
-        run: npx vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+        run: npx --yes vercel@${VERCEL_CLI_VERSION} deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}

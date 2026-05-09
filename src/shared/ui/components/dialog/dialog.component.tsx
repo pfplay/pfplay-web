@@ -120,11 +120,11 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <div className='fixed inset-0 bg-dim' />
+            <div data-testid='dialog-backdrop' className='fixed inset-0 bg-dim' />
           </Transition.Child>
         )}
 
-        <div className='fixed inset-0 overflow-y-auto'>
+        <div data-testid='dialog-overlay-container' className='fixed inset-0 overflow-y-auto'>
           <div className='flex min-h-full items-center justify-center p-4 text-center'>
             <Transition.Child
               as={Fragment}
@@ -136,6 +136,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
               leaveTo='opacity-0 scale-95'
             >
               <HUDialog.Panel
+                data-testid='dialog-panel'
                 className={cn(
                   'pt-[52px] px-[32px] pb-[32px] w-[440px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all',
                   classNames?.container
@@ -157,6 +158,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
                   >
                     {showCloseIcon && (
                       <TextButton
+                        data-testid='dialog-close-button'
                         onClick={handleClose}
                         Icon={<PFClose width={24} height={24} />}
                         className='absolute top-[2.5px] right-0'

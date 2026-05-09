@@ -23,6 +23,7 @@ const AvatarFaceListItem: FC<Props> = ({ meta, hideSelected }) => {
       imageSrc={meta.resourceUri}
       name={meta.name}
       selected={!hideSelected && selectedAvatar.faceUri === meta.resourceUri}
+      testId='avatar-face-list-item'
     />
   );
 };

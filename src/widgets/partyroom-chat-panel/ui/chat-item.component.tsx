@@ -19,7 +19,11 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
   const emphasisGradeLabel = myGradeComparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
 
   return (
-    <div ref={ref} className='flex justify-start items-start gap-[13px]'>
+    <div
+      ref={ref}
+      className='flex justify-start items-start gap-[13px]'
+      data-testid='chat-message-item'
+    >
       <div className='flexCol items-center gap-2 px-[5px] pt-[2px]'>
         <div className='relative'>
           <Profile src={crew.avatarIconUri} size={32} />
@@ -41,12 +45,15 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
       </div>
 
       <div className='flex-1 flexCol items-start gap-1'>
-        <Typography type='detail2'>{crew.nickname}</Typography>
+        <Typography type='detail2' data-testid='chat-message-nickname'>
+          {crew.nickname}
+        </Typography>
 
         <Typography
           type='caption1'
           className='bg-gray-900 p-2 rounded-sm text-white'
           style={{ wordBreak: 'break-word' }}
+          data-testid='chat-message-content'
         >
           {message.message.content}
         </Typography>

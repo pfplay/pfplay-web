@@ -34,6 +34,7 @@ const AvatarFaceList = () => {
             'overflow-hidden': !combinable,
           }
         )}
+        data-testid='avatar-face-list'
       >
         {faces.map((face) => (
           <AvatarFaceListItem key={face.resourceUri} meta={face} hideSelected={!combinable} />

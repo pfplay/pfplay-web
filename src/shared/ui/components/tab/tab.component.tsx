@@ -8,6 +8,7 @@ interface CommonProps {
   tabTitle: string;
   PrefixIcon?: ReactNode;
   className?: string;
+  dataTestId?: string;
 }
 interface BoxProps {
   variant?: 'box';
@@ -24,6 +25,7 @@ const Tab = (props: TabProps) => {
       <HeadlessUITab as={Fragment}>
         {({ selected }) => (
           <button
+            data-testid={props.dataTestId}
             className={cn(
               getCommentTabStyle(selected),
               props.variant === 'box' && 'py-[13px] px-[47px] bg-black text-gray-50',
@@ -43,6 +45,7 @@ const Tab = (props: TabProps) => {
 
   return (
     <HeadlessUITab
+      data-testid={props.dataTestId}
       className={({ selected }) =>
         cn(
           getCommentTabStyle(selected),

@@ -64,6 +64,7 @@ export default function useImposePenalty() {
         return (
           <>
             <Input
+              data-testid='impose-penalty-reason-input'
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               minLength={2}
@@ -71,10 +72,15 @@ export default function useImposePenalty() {
               classNames={{ container: 'mb-9' }}
             />
             <Dialog.ButtonGroup>
-              <Dialog.Button color='secondary' onClick={onClose}>
+              <Dialog.Button
+                data-testid='impose-penalty-cancel-button'
+                color='secondary'
+                onClick={onClose}
+              >
                 {t.common.btn.cancel}
               </Dialog.Button>
               <Dialog.Button
+                data-testid='impose-penalty-confirm-button'
                 loading={isPending}
                 onClick={handleConfirmBtnClick}
                 disabled={disabled}

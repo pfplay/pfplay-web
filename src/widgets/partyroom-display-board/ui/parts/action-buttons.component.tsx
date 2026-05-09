@@ -33,6 +33,8 @@ export default function ActionButtons() {
       <ActionButton
         icon={<PFThumbUpAlt width={18} height={18} />}
         text={reaction.aggregation.likeCount}
+        testId='playback-like-button'
+        textTestId='playback-like-count'
         disabled={!playbackActivated}
         active={flag.isLiked}
         activeColor='red'
@@ -47,6 +49,8 @@ export default function ActionButtons() {
       <ActionButton
         icon={<PFPlaylistAdd width={18} height={18} />}
         text={reaction.aggregation.grabCount}
+        testId='playback-grab-button'
+        textTestId='playback-grab-count'
         disabled={!playbackActivated || flag.isGrabbed} // NOTE: grab은 끌 수 없음
         active={flag.isGrabbed}
         activeColor='green'
@@ -61,6 +65,8 @@ export default function ActionButtons() {
       <ActionButton
         icon={<PFThumbDownAlt width={18} height={18} />}
         text={reaction.aggregation.dislikeCount}
+        testId='playback-dislike-button'
+        textTestId='playback-dislike-count'
         disabled={!playbackActivated}
         active={flag.isDisliked}
         activeColor='white'

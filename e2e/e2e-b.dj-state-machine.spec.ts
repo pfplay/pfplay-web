@@ -5,6 +5,7 @@ import { ETHEREUM_MOCK_SCRIPT } from './fixtures/ethereum-mock';
 import {
   closePartyroom,
   createPlaylistWithTracks,
+  createPartyroom,
   enterPartyroomAndWaitUntilReady,
   registerAsDj,
   setupUserPlaylist,
@@ -101,13 +102,7 @@ test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () =
     await createPlaylistWithTracks(page1, user1PlaylistName);
     log('beforeAll user1 playlist created');
     log('beforeAll user1 creating partyroom');
-    await page1.locator('[data-testid="create-partyroom-button"]').click();
-    await page1.locator('input[name="name"]').fill(`E2EB${timestamp}`);
-    await page1.locator('textarea[name="introduce"]').fill('dj state machine test');
-    await page1.locator('button[type="submit"]').click();
-    log('beforeAll waiting for partyroom URL');
-    await page1.waitForURL(/\/parties\/\d+/, { timeout: 20_000 });
-    partyroomUrl = page1.url();
+    partyroomUrl = await createPartyroom(page1, `E2EB${timestamp}`, 'dj state machine test');
     log(`beforeAll partyroom created: ${partyroomUrl}`);
     await ctx1.close();
     log('beforeAll user1 context closed');

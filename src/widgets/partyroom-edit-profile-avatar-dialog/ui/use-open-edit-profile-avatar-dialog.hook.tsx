@@ -25,6 +25,7 @@ export default function useOpenEditProfileAvatarDialog() {
                 color='secondary'
                 onClick={onCancel}
                 className='w-[200px] max-w-full'
+                data-testid='avatar-edit-cancel-button'
               >
                 {t.common.btn.cancel}
               </Button>
@@ -36,6 +37,7 @@ export default function useOpenEditProfileAvatarDialog() {
                     disabled={!canSubmit}
                     loading={loading}
                     className='w-[200px] max-w-full'
+                    data-testid='avatar-edit-save-button'
                   >
                     {t.common.btn.save}
                   </Button>

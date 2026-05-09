@@ -9,21 +9,26 @@ jobs:
   deploy:
     name: deploy preview
     runs-on: ubuntu-latest
+    env:
+      VERCEL_CLI_VERSION: 48.4.1
     outputs:
       preview_url: ${{ steps.deploy.outputs.url }}
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.0'
 
       - name: Deploy to Vercel Preview
         id: deploy
         run: |
-          URL=$(npx vercel deploy --scope dev-8226s-projects --yes --token=${{ secrets.VERCEL_TOKEN }})
+          URL=$(npx --yes vercel@${VERCEL_CLI_VERSION} deploy --scope dev-8226s-projects --yes --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$URL" >> $GITHUB_OUTPUT
 
       - name: Alias Preview Domain
         run: |
-          npx vercel alias set ${{ steps.deploy.outputs.url }} stg.pfplay.xyz --scope dev-8226s-projects --token=${{ secrets.VERCEL_TOKEN }}
+          npx --yes vercel@${VERCEL_CLI_VERSION} alias set ${{ steps.deploy.outputs.url }} stg.pfplay.xyz --scope dev-8226s-projects --token=${{ secrets.VERCEL_TOKEN }}
 
   e2e:
     name: Playwright E2E
@@ -52,7 +57,7 @@ jobs:
           key: playwright-${{ hashFiles('**/yarn.lock') }}
 
       - run: npx playwright install --with-deps chromium
-      - run: yarn test:e2e --project=e2e
+      - run: yarn test:e2e
         env:
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
 
