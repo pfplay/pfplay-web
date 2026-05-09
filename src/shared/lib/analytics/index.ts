@@ -6,6 +6,17 @@ let sdk: AmplitudeModule | null = null;
 let sdkLoadPromise: Promise<AmplitudeModule> | null = null;
 let pendingActions: Array<(sdk: AmplitudeModule) => void> = [];
 let initialized = false;
+// amplitude HTTP V2 API rejects user_id < 5 chars. super-admin V5 placeholder
+// (user_account.id = 1) trips this. Set on invalid setUserId — until next valid
+// setUserId or resetAnalyticsUser, all track/identify become no-ops to avoid 400s.
+let optedOut = false;
+
+const AMPLITUDE_USER_ID_MIN_LENGTH = 5;
+
+function isValidAmplitudeUserId(userId: string | null | undefined): boolean {
+  if (typeof userId !== 'string') return false;
+  return userId.length >= AMPLITUDE_USER_ID_MIN_LENGTH;
+}
 
 function getApiKey(): string | undefined {
   return process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
@@ -53,7 +64,7 @@ export function initAnalytics(): void {
 }
 
 export function track<E extends EventName>(event: E, properties?: EventPropertyMap[E]): void {
-  if (!isEnabled()) return;
+  if (!isEnabled() || optedOut) return;
   callSdk((sdk) => {
     sdk.track(event, properties as Record<string, unknown> | undefined);
   });
@@ -61,13 +72,32 @@ export function track<E extends EventName>(event: E, properties?: EventPropertyM
 
 export function setUserId(userId: string | null | undefined): void {
   if (!isEnabled()) return;
+
+  // null/undefined = sign-out 등 식별 해제. opt-out 해제 + amplitude reset.
+  if (userId === null || userId === undefined) {
+    optedOut = false;
+    callSdk((sdk) => {
+      sdk.setUserId(undefined);
+    });
+    return;
+  }
+
+  if (!isValidAmplitudeUserId(userId)) {
+    optedOut = true;
+    callSdk((sdk) => {
+      sdk.reset();
+    });
+    return;
+  }
+
+  optedOut = false;
   callSdk((sdk) => {
-    sdk.setUserId(userId ?? undefined);
+    sdk.setUserId(userId);
   });
 }
 
 export function identify(ops: UserPropertyOps): void {
-  if (!isEnabled()) return;
+  if (!isEnabled() || optedOut) return;
 
   callSdk((sdk) => {
     const id = new sdk.Identify();
@@ -95,6 +125,7 @@ export function identify(ops: UserPropertyOps): void {
 
 export function resetAnalyticsUser(): void {
   if (!isEnabled()) return;
+  optedOut = false;
   callSdk((sdk) => {
     sdk.reset();
   });
@@ -105,6 +136,7 @@ export function __resetForTests(): void {
   sdk = null;
   sdkLoadPromise = null;
   pendingActions = [];
+  optedOut = false;
 }
 
 /**
