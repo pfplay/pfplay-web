@@ -39,9 +39,21 @@ export const test = baseTest.extend<AuthFixtures>({
 export { expect } from '@playwright/test';
 
 function getAuthPrefix(testFile: string) {
+  if (testFile.includes('e2e-a.')) {
+    return 'a';
+  }
+
   if (testFile.includes('e2e-b.')) {
     return 'b';
   }
 
-  return 'a';
+  if (testFile.includes('e2e-c.')) {
+    return 'c';
+  }
+
+  if (testFile.includes('e2e-d.')) {
+    return 'd';
+  }
+
+  throw new Error(`No auth prefix configured for test file: ${testFile}`);
 }

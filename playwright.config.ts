@@ -42,14 +42,48 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'auth-setup',
-      testMatch: /auth\.setup\.ts/,
+      name: 'auth-a',
+      testMatch: /auth\/setup\.a\.ts/,
       teardown: undefined,
     },
     {
-      name: 'e2e',
+      name: 'auth-b',
+      testMatch: /auth\/setup\.b\.ts/,
+      teardown: undefined,
+    },
+    {
+      name: 'auth-c',
+      testMatch: /auth\/setup\.c\.ts/,
+      teardown: undefined,
+    },
+    {
+      name: 'auth-d',
+      testMatch: /auth\/setup\.d\.ts/,
+      teardown: undefined,
+    },
+    {
+      name: 'e2e-a',
+      testMatch: /e2e-a\..*\.spec\.ts/,
       use: { ...devices['Desktop Chrome'] },
-      dependencies: ['auth-setup'],
+      dependencies: ['auth-a'],
+    },
+    {
+      name: 'e2e-b',
+      testMatch: /e2e-b\..*\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['auth-b'],
+    },
+    {
+      name: 'e2e-c',
+      testMatch: /e2e-c\..*\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['auth-c'],
+    },
+    {
+      name: 'e2e-d',
+      testMatch: /e2e-d\..*\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['auth-d'],
     },
   ],
 });
