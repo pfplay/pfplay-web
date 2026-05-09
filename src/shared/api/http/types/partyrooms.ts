@@ -82,7 +82,6 @@ export type PartyroomCrew = {
   offsetX: number;
   offsetY: number;
   scale: number;
-  countryCode?: string | null;
 };
 
 export type PartyroomPlayback = {
@@ -187,7 +186,6 @@ export type GetNoticeResponse = {
 
 export type EnterPayload = {
   partyroomId: number;
-  countryCode?: string;
 };
 
 export type GetPartyroomDetailSummaryPayload = {

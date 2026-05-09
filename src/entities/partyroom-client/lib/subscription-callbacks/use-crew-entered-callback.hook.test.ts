@@ -34,11 +34,7 @@ const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({
   ...overrides,
 });
 
-const createCrewEnteredEvent = (
-  crewId: number,
-  nickname = '새유저',
-  countryCode?: string | null
-): CrewEnteredEvent => ({
+const createCrewEnteredEvent = (crewId: number, nickname = '새유저'): CrewEnteredEvent => ({
   partyroomId: 1,
   id: crypto.randomUUID(),
   timestamp: Date.now(),
@@ -58,7 +54,6 @@ const createCrewEnteredEvent = (
       offsetY: 0,
       scale: 1,
     },
-    countryCode,
   },
 });
 
