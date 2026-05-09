@@ -98,14 +98,50 @@ describe('analytics module', () => {
   });
 
   describe('setUserId', () => {
-    test('forwards uid to amplitude.setUserId', () => {
-      setUserId('uid-123');
-      expect(amplitude.setUserId).toHaveBeenCalledWith('uid-123');
+    test('forwards uid to amplitude.setUserId (TSID-shaped, ≥5 chars)', () => {
+      setUserId('840855859502003195');
+      expect(amplitude.setUserId).toHaveBeenCalledWith('840855859502003195');
+      expect(amplitude.reset).not.toHaveBeenCalled();
     });
 
-    test('translates null to undefined for amplitude.setUserId', () => {
+    test('translates null to undefined (sign-out)', () => {
       setUserId(null);
       expect(amplitude.setUserId).toHaveBeenCalledWith(undefined);
+      expect(amplitude.reset).not.toHaveBeenCalled();
+    });
+
+    test('translates undefined to undefined (sign-out)', () => {
+      setUserId(undefined);
+      expect(amplitude.setUserId).toHaveBeenCalledWith(undefined);
+    });
+
+    test('uid < 5 chars (super-admin V5 placeholder "1") triggers SDK reset + opt-out', () => {
+      setUserId('1');
+      expect(amplitude.setUserId).not.toHaveBeenCalled();
+      expect(amplitude.reset).toHaveBeenCalledTimes(1);
+    });
+
+    test('opt-out blocks subsequent track and identify', () => {
+      setUserId('1');
+      track('User Signed In', { auth_type: 'member' });
+      identify({ set: { authority_tier: 'FM' } });
+      expect(amplitude.track).not.toHaveBeenCalled();
+      expect(amplitude.identify).not.toHaveBeenCalled();
+    });
+
+    test('valid uid after opt-out re-enables tracking', () => {
+      setUserId('1');
+      setUserId('840855859502003195');
+      track('User Signed In', { auth_type: 'member' });
+      expect(amplitude.track).toHaveBeenCalledTimes(1);
+      expect(amplitude.setUserId).toHaveBeenLastCalledWith('840855859502003195');
+    });
+
+    test('null uid after opt-out re-enables tracking (sign-out path)', () => {
+      setUserId('1');
+      setUserId(null);
+      track('Session Started');
+      expect(amplitude.track).toHaveBeenCalledTimes(1);
     });
   });
 
