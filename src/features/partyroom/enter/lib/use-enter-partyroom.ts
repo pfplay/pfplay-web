@@ -9,7 +9,6 @@ import { MotionType } from '@/shared/api/http/types/@enums';
 import { EnterResponse, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
 import type { EntrySource } from '@/shared/lib/analytics/events';
 import { trackPartyroomEntered } from '@/shared/lib/analytics/room-tracking';
-import { detectCountryCode } from '@/shared/lib/functions/detect-country-code';
 import silent from '@/shared/lib/functions/silent';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -75,7 +74,7 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
     client.onConnect(
       () => {
         enter(
-          { partyroomId, countryCode: detectCountryCode() ?? undefined },
+          { partyroomId },
           {
             onSuccess: (enterResponse) => {
               silent(setup(enterResponse), {
