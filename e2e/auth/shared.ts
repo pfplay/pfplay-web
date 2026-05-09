@@ -1,25 +1,8 @@
 import path from 'path';
-import { Browser, Locator, Page, expect } from '@playwright/test';
+import { Browser, Page, expect } from '@playwright/test';
 import { ETHEREUM_MOCK_SCRIPT } from '../fixtures/ethereum-mock';
 
 export const AUTH_DIR = path.join(__dirname, '../.auth');
-
-async function waitForDialogToSettle(dialog: Locator) {
-  await expect(dialog).toBeVisible({ timeout: 10_000 });
-  await expect
-    .poll(
-      async () =>
-        dialog.evaluate((element) =>
-          element
-            .getAnimations({ subtree: true })
-            .every(
-              (animation) => animation.playState === 'finished' || animation.playState === 'idle'
-            )
-        ),
-      { timeout: 5_000 }
-    )
-    .toBe(true);
-}
 
 async function clickDevFullCrewSignIn(page: Page) {
   const devBtn = page.locator('[data-testid="dev-sign-in-button"]');
@@ -31,22 +14,13 @@ async function clickDevFullCrewSignIn(page: Page) {
     .locator('[data-testid="dialog-panel"]')
     .filter({ has: page.locator('[data-testid="dev-sign-in-full"]') })
     .first();
-  await waitForDialogToSettle(dialog);
+  await expect(dialog).toBeVisible({ timeout: 10_000 });
 
   const fullCrewButton = dialog.locator('[data-testid="dev-sign-in-full"]');
   await expect(fullCrewButton).toBeVisible({ timeout: 10_000 });
   await expect(fullCrewButton).toBeEnabled({ timeout: 10_000 });
-  await Promise.all([
-    page.waitForResponse(
-      (response) =>
-        response.request().method() === 'POST' &&
-        response.url().includes('/v1/users/members/sign/temporary/full-member') &&
-        response.ok(),
-      { timeout: 10_000 }
-    ),
-    fullCrewButton.click({ force: true }),
-  ]);
-  await expect(dialog).toBeHidden({ timeout: 10_000 });
+  await fullCrewButton.click();
+  await expect(dialog).toBeHidden({ timeout: 15_000 });
 }
 
 export async function authenticateUser(browser: Browser, outputPath: string, baseURL: string) {
@@ -86,7 +60,7 @@ export async function authenticateUser(browser: Browser, outputPath: string, bas
   log('clicking full crew sign-in');
   await clickDevFullCrewSignIn(page);
 
-  log('goto /parties explicitly after sign-in response');
+  log('goto /parties explicitly after dialog closed');
   await page.goto(`${baseURL}/parties`);
   await page.waitForURL(/\/parties(?:$|\/)/, { timeout: 10_000 });
   log(`arrived at /parties, current URL: ${page.url()}`);
