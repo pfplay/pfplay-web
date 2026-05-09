@@ -36,7 +36,17 @@ async function clickDevFullCrewSignIn(page: Page) {
   const fullCrewButton = dialog.locator('[data-testid="dev-sign-in-full"]');
   await expect(fullCrewButton).toBeVisible({ timeout: 10_000 });
   await expect(fullCrewButton).toBeEnabled({ timeout: 10_000 });
-  await fullCrewButton.click({ force: true });
+  await Promise.all([
+    page.waitForResponse(
+      (response) =>
+        response.request().method() === 'POST' &&
+        response.url().includes('/v1/users/members/sign/temporary/full-member') &&
+        response.ok(),
+      { timeout: 10_000 }
+    ),
+    fullCrewButton.click({ force: true }),
+  ]);
+  await expect(dialog).toBeHidden({ timeout: 10_000 });
 }
 
 export async function authenticateUser(browser: Browser, outputPath: string, baseURL: string) {
@@ -76,32 +86,10 @@ export async function authenticateUser(browser: Browser, outputPath: string, bas
   log('clicking full crew sign-in');
   await clickDevFullCrewSignIn(page);
 
-  const pfpPlayButton = page.locator('[data-testid="home-pfp-play-button"]');
-  log('waiting until page is effectively ready for /parties');
-  await expect
-    .poll(
-      async () => {
-        if (/\/parties(?:$|\/)/.test(page.url())) {
-          return 'ready';
-        }
-
-        if (await pfpPlayButton.isVisible().catch(() => false)) {
-          return (await pfpPlayButton.getAttribute('href')) === '/parties' ? 'ready' : 'waiting';
-        }
-
-        return 'waiting';
-      },
-      { timeout: 30_000 }
-    )
-    .toBe('ready');
-  log(`page became ready, current URL: ${page.url()}`);
-
-  if (!/\/parties(?:$|\/)/.test(page.url())) {
-    log('goto /parties explicitly');
-    await page.goto(`${baseURL}/parties`);
-    await page.waitForURL(/\/parties/, { timeout: 10_000 });
-    log(`arrived at /parties, current URL: ${page.url()}`);
-  }
+  log('goto /parties explicitly after sign-in response');
+  await page.goto(`${baseURL}/parties`);
+  await page.waitForURL(/\/parties(?:$|\/)/, { timeout: 10_000 });
+  log(`arrived at /parties, current URL: ${page.url()}`);
   log(`writing storageState to ${outputPath}`);
   await context.storageState({ path: outputPath });
   log('storageState written');

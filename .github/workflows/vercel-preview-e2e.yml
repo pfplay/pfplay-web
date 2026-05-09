@@ -2,7 +2,7 @@ name: preview deploy and e2e
 
 on:
   push:
-    branches: [development]
+    branches: [fix-ci-stg-auth-setup-flake]
   workflow_dispatch:
 
 jobs:
