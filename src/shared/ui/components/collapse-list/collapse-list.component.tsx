@@ -11,6 +11,7 @@ type CollapseListProps = {
   title: string;
   infoText?: string;
   displaySuffix?: boolean;
+  buttonTestId?: string;
   classNames?: {
     button?: string;
     panel?: string;
@@ -24,6 +25,7 @@ const CollapseList = ({
   variant = 'default',
   children,
   displaySuffix = true,
+  buttonTestId,
   classNames,
 }: PropsWithChildren<CollapseListProps>) => {
   return (
@@ -31,6 +33,7 @@ const CollapseList = ({
       {({ open }) => (
         <>
           <DisclosureButton
+            data-testid={buttonTestId}
             className={cn(
               'w-full flexRow justify-between items-center px-4 py-3 rounded bg-gray-800 text-left text-gray-50 hover:bg-gray-700 ',
               variant === 'default' && 'border-none',

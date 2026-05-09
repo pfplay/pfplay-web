@@ -10,6 +10,7 @@ interface Props {
   selected: boolean;
   locked?: boolean;
   lockedMessage?: string;
+  testId?: string;
 }
 
 const AvatarListItem = ({
@@ -19,9 +20,16 @@ const AvatarListItem = ({
   selected,
   locked,
   lockedMessage,
+  testId,
 }: Props) => {
   return (
-    <div className='relative w-full max-width-[200px] aspect-square cursor-pointer group'>
+    <div
+      className='relative w-full max-width-[200px] aspect-square cursor-pointer group'
+      data-testid={testId}
+      data-image-src={imageSrc}
+      data-selected={selected ? 'true' : 'false'}
+      data-locked={locked ? 'true' : 'false'}
+    >
       <Image
         role='button'
         tabIndex={0}

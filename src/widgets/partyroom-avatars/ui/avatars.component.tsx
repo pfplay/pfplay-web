@@ -53,6 +53,9 @@ export default function Avatars() {
       {!!dj && (
         <div
           data-testid='partyroom-current-dj'
+          data-crew-id={String(dj.crewId)}
+          data-avatar-body-uri={dj.avatarBodyUri}
+          data-reaction-type={dj.reactionType ?? ''}
           className='relative'
           style={{
             top: '98%',
@@ -82,6 +85,9 @@ export default function Avatars() {
         <div
           key={'partyroom-dj-queue-' + crew.crewId + index}
           className='absolute'
+          data-crew-id={String(crew.crewId)}
+          data-avatar-body-uri={crew.avatarBodyUri}
+          data-reaction-type={crew.reactionType ?? ''}
           style={{
             top: `${position.y}px`,
             left: `${position.x}px`,
@@ -114,6 +120,10 @@ export default function Avatars() {
           <div
             key={'partyroom-crew-' + crew.crewId + index}
             className='absolute'
+            data-testid='partyroom-crew-item'
+            data-crew-id={String(crew.crewId)}
+            data-avatar-body-uri={crew.avatarBodyUri}
+            data-reaction-type={crew.reactionType ?? ''}
             style={{
               top: `${position.y}px`,
               left: `${position.x}px`,

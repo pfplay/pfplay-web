@@ -18,15 +18,25 @@ export default function PartyroomCrewsPanel() {
             crews.length.toString().padStart(2, '0')
           )}
           variant='text'
+          dataTestId='allCrewsPanel-tab'
           className='w-fit p-0'
         />
-        <Tab tabTitle={t.crews.title.restriction} variant='text' className='w-fit p-0' />
+        <Tab
+          tabTitle={t.crews.title.restriction}
+          variant='text'
+          dataTestId='restrictionPanel-tab'
+          className='w-fit p-0'
+        />
       </TabList>
       <TabPanels className='flex-1 flexCol'>
-        <TabPanel tabIndex={0} className='flex-1 flexCol'>
+        <TabPanel tabIndex={0} className='flex-1 flexCol' data-testid='allCrewsPanel-trigger'>
           <AllCrewsPanel />
         </TabPanel>
-        <TabPanel tabIndex={1} className='flex-1 flexCol overflow-hidden'>
+        <TabPanel
+          tabIndex={1}
+          className='flex-1 flexCol overflow-hidden'
+          data-testid='restrictionPanel-trigger'
+        >
           <RestrictionPanel />
         </TabPanel>
       </TabPanels>

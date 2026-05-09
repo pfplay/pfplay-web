@@ -6,17 +6,20 @@ import { buttonColorsDict, buttonSizeDict } from '../button';
 interface MenuButtonProps {
   type: 'icon' | 'button';
   onMenuIconClick?: () => void;
+  'data-testid'?: string;
 }
 export const MenuButton = ({
   type = 'icon',
   children,
   onMenuIconClick,
+  'data-testid': dataTestId,
 }: PropsWithChildren<MenuButtonProps>) => {
   return (
     <_MenuButton
       onClick={() => {
         onMenuIconClick?.();
       }}
+      data-testid={dataTestId}
       className={cn(
         'flex h-max items-center justify-center gap-[8px] rounded-[4px]',
         type === 'icon' && 'flex items-center gap-2 text-gray-50 p-1',

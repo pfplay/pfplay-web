@@ -14,18 +14,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.0'
 
       # vercel@53.3.0 이 broken transitive dep (@vercel/cli-config 404) 으로
       # publish 됨. 안전한 직전 stable 로 pin — vercel 측 fix 후 풀거나 신규 stable 로 bump.
       - name: Deploy to Vercel Preview
         id: deploy
         run: |
-          URL=$(npx vercel@53.2.0 deploy --scope dev-8226s-projects --yes --token=${{ secrets.VERCEL_TOKEN }})
+          URL=$(npx vercel@48.4.1 deploy --scope dev-8226s-projects --yes --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$URL" >> $GITHUB_OUTPUT
 
       - name: Alias Preview Domain
         run: |
-          npx vercel@53.2.0 alias set ${{ steps.deploy.outputs.url }} stg.pfplay.xyz --scope dev-8226s-projects --token=${{ secrets.VERCEL_TOKEN }}
+          npx vercel@48.4.1 alias set ${{ steps.deploy.outputs.url }} stg.pfplay.xyz --scope dev-8226s-projects --token=${{ secrets.VERCEL_TOKEN }}
 
   e2e:
     name: Playwright E2E
@@ -54,7 +57,7 @@ jobs:
           key: playwright-${{ hashFiles('**/yarn.lock') }}
 
       - run: npx playwright install --with-deps chromium
-      - run: yarn test:e2e --project=e2e
+      - run: yarn test:e2e
         env:
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
 

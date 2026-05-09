@@ -112,17 +112,22 @@ export default function PartyroomChatPanel() {
                   label: t.common.btn.kick,
                   onClickItem: () => onClickImposePenalty(PenaltyType.ONE_TIME_EXPULSION),
                   visible: _canImposePenalty,
+                  testId: 'chat-message-menu-kick',
                 },
                 {
                   label: t.common.btn.ban,
                   onClickItem: () => onClickImposePenalty(PenaltyType.PERMANENT_EXPULSION),
                   visible: _canImposePenalty,
+                  testId: 'chat-message-menu-ban',
                 },
                 {
                   label: t.common.btn.block,
                   onClickItem: () => blockCrew({ crewId: message.crew.crewId }),
+                  testId: 'chat-message-menu-block',
                 },
               ]}
+              menuButtonTestId='chat-message-menu-button'
+              containerTestId='chat-message-hover-item'
             >
               <ChatItem message={message} ref={isLast ? lastItemRef : undefined} />
             </DisplayOptionMenuOnHoverListener>
@@ -133,6 +138,7 @@ export default function PartyroomChatPanel() {
       <SendChatMessage>
         {({ message, setMessage, send, canSend }) => (
           <Input
+            data-testid='chat-message-input'
             size='lg'
             variant='outlined'
             disabled={banned}
@@ -144,6 +150,7 @@ export default function PartyroomChatPanel() {
             }}
             Suffix={
               <Button
+                data-testid='chat-message-send-button'
                 color='secondary'
                 variant='fill'
                 Icon={<PFSend width={20} height={20} />}

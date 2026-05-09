@@ -23,7 +23,11 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
   return (
     <div className='gap-5 flexRow'>
       <div className='flexCol gap-9'>
-        <div className='w-max h-[216px] flexRowCenter bg-[#1D1D1D] pointer-events-none select-none'>
+        <div
+          className='w-max h-[216px] flexRowCenter bg-[#1D1D1D] pointer-events-none select-none'
+          data-testid='my-profile-avatar-preview'
+          data-avatar-body-uri={me.avatarBodyUri ?? ''}
+        >
           {!!me.avatarBodyUri && (
             <Avatar
               height={180}
@@ -39,7 +43,12 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
           )}
         </div>
 
-        <Button size='sm' variant='outline' onClick={onAvatarSettingClick}>
+        <Button
+          size='sm'
+          variant='outline'
+          onClick={onAvatarSettingClick}
+          data-testid='my-profile-avatar-settings-button'
+        >
           {t.lobby.title.ava_settings}
         </Button>
       </div>

@@ -11,10 +11,12 @@ export default class PartyroomClient {
 
   public constructor() {
     this.socketClient = new SocketClient();
+    this.syncE2EDebugState();
   }
 
   public connect() {
     this.socketClient.connect();
+    this.syncE2EDebugState();
   }
 
   public get connected() {
@@ -33,11 +35,13 @@ export default class PartyroomClient {
 
     this.socketClient.subscribe(`/sub/partyrooms/${partyroomId}`, handler);
     this.subscribedRoomId = partyroomId;
+    this.syncE2EDebugState();
   }
 
   public unsubscribeCurrentRoom() {
     this.socketClient.unsubscribe(`/sub/partyrooms/${this.subscribedRoomId}`);
     this.subscribedRoomId = undefined;
+    this.syncE2EDebugState();
   }
 
   public sendChatMessage(message: string) {
@@ -47,5 +51,23 @@ export default class PartyroomClient {
     this.socketClient.send(`/pub/groups/${this.subscribedRoomId}/send`, {
       content: message,
     });
+  }
+
+  private syncE2EDebugState() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    (
+      window as Window & {
+        __PFPLAY_E2E__?: {
+          partyroomConnected: boolean;
+          subscribedRoomId?: number;
+        };
+      }
+    ).__PFPLAY_E2E__ = {
+      partyroomConnected: this.socketClient.connected,
+      subscribedRoomId: this.subscribedRoomId,
+    };
   }
 }

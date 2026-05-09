@@ -24,11 +24,13 @@ export default function RestrictionPanel() {
           key={'RestrictionPanel' + category}
           title={RestrictionPanelListItem.getCategoryLabel(category, t)}
           displaySuffix={false}
+          buttonTestId={`restriction-category-${category}`}
         >
           {items.map((item) => (
             <UserListItem
               key={'RestrictionPanel' + category + item.crewId}
               userListItemConfig={item}
+              dataTestId='restriction-list-item'
               suffix={{
                 type: 'button',
                 Component: item.suffix,
