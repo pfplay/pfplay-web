@@ -1,7 +1,7 @@
 import { GradeType } from '@/shared/api/http/types/@enums';
 
 export const GRADE_TYPE_LABEL: Record<GradeType, string> = {
-  [GradeType.HOST]: 'Admin',
+  [GradeType.HOST]: 'Host',
   [GradeType.COMMUNITY_MANAGER]: 'CM',
   [GradeType.MODERATOR]: 'Mod',
   [GradeType.CLUBBER]: 'Clubber',
