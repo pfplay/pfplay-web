@@ -6,7 +6,12 @@ const SelectedAvatar = () => {
   const selectedAvatar = useSelectedAvatarState();
 
   return (
-    <div className='w-[360px] h-full min-h-[500px] flexCol justify-center items-center bg-black select-none'>
+    <div
+      className='w-[360px] h-full min-h-[500px] flexCol justify-center items-center bg-black select-none'
+      data-testid='avatar-edit-selected-preview'
+      data-avatar-body-uri={selectedAvatar.body?.resourceUri ?? ''}
+      data-avatar-face-uri={selectedAvatar.faceUri ?? ''}
+    >
       {selectedAvatar.body && (
         <Avatar
           height={400}

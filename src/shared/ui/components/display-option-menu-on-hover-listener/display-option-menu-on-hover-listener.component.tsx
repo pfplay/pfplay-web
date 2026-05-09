@@ -11,6 +11,8 @@ interface DisplayOptionMenuOnHoverListenerProps {
   children: ReactElement | ((isHover: boolean) => ReactElement);
   menuPositionClassName?: string;
   menuItemPanelSize?: MenuItemPanelSize;
+  menuButtonTestId?: string;
+  containerTestId?: string;
   disabled?: boolean;
 }
 
@@ -19,6 +21,8 @@ const DisplayOptionMenuOnHoverListener = ({
   children,
   menuPositionClassName,
   menuItemPanelSize = 'md',
+  menuButtonTestId,
+  containerTestId,
   listenerDisabled = false,
   disabled,
 }: DisplayOptionMenuOnHoverListenerProps) => {
@@ -63,6 +67,7 @@ const DisplayOptionMenuOnHoverListener = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
+      data-testid={containerTestId}
       className='relative'
     >
       {typeof children === 'function' ? children(isHover) : children}
@@ -80,6 +85,7 @@ const DisplayOptionMenuOnHoverListener = ({
 
           <IconMenu
             MenuButtonIcon={<PFMoreVert />}
+            menuButtonTestId={menuButtonTestId}
             menuItemConfig={menuConfig}
             onMenuIconClick={handleMenuIconClick}
             onMenuClose={handleMenuClose}

@@ -23,6 +23,7 @@ export default function ProfileAvatarEditPanel({ titleRender, actions }: Props) 
     <div
       ref={containerRef}
       className='flexRow justify-start max-w-screen-desktop mx-auto gap-5 p-10 px-[60px]'
+      data-testid='avatar-edit-panel'
     >
       <SelectedAvatarStateProvider>
         <div className='flexCol items-start gap-10'>
@@ -32,8 +33,18 @@ export default function ProfileAvatarEditPanel({ titleRender, actions }: Props) 
         <div className='flex-1 h-full flexCol gap-2'>
           <TabGroup className='flex-1 flexCol overflow-hidden'>
             <TabList className='w-full flexRow'>
-              <Tab tabTitle='body' variant='line' className='w-auto' />
-              <Tab tabTitle='face' variant='line' className='w-auto' />
+              <Tab
+                tabTitle='body'
+                variant='line'
+                className='w-auto'
+                dataTestId='avatar-edit-body-tab'
+              />
+              <Tab
+                tabTitle='face'
+                variant='line'
+                className='w-auto'
+                dataTestId='avatar-edit-face-tab'
+              />
               <div className='flex-1 border-b-[1px] border-b-gray-400' />
             </TabList>
             <TabPanels className='flex-1 flexCol pb-2 overflow-hidden'>

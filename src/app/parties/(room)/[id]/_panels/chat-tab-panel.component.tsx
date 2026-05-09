@@ -22,19 +22,21 @@ export default function ChatTabPanel({ className }: Props) {
         <Tab
           tabTitle={t.db.title.chat}
           variant='line'
+          dataTestId='partyroomChatPanel-tab'
           PrefixIcon={<PFChatFilled width={20} height={20} />}
         />
         <Tab
           tabTitle={crewsCount.toString()}
           variant='line'
+          dataTestId='partyroomCrewsPanel-tab'
           PrefixIcon={<PFPersonOutline width={20} height={20} />}
         />
       </TabList>
       <TabPanels className='flex-1 flexCol'>
-        <TabPanel tabIndex={0} className='flex-1 flexCol'>
+        <TabPanel tabIndex={0} className='flex-1 flexCol' data-testid='partyroomChatPanel-trigger'>
           <PartyroomChatPanel />
         </TabPanel>
-        <TabPanel tabIndex={1} className='flex-1 flexCol'>
+        <TabPanel tabIndex={1} className='flex-1 flexCol' data-testid='partyroomCrewsPanel-trigger'>
           <PartyroomCrewsPanel />
         </TabPanel>
       </TabPanels>

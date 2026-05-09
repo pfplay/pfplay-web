@@ -43,7 +43,9 @@ export const useDialog = () => {
               )}
 
               <Dialog.ButtonGroup>
-                <Dialog.Button onClick={onCancel}>{okText}</Dialog.Button>
+                <Dialog.Button data-testid='alert-dialog-confirm-button' onClick={onCancel}>
+                  {okText}
+                </Dialog.Button>
               </Dialog.ButtonGroup>
             </>
           ),
@@ -71,10 +73,19 @@ export const useDialog = () => {
               )}
 
               <Dialog.ButtonGroup>
-                <Dialog.Button color='secondary' onClick={() => onOk(false)}>
+                <Dialog.Button
+                  data-testid='confirm-dialog-cancel-button'
+                  color='secondary'
+                  onClick={() => onOk(false)}
+                >
                   {cancelText}
                 </Dialog.Button>
-                <Dialog.Button onClick={() => onOk(true)}>{okText}</Dialog.Button>
+                <Dialog.Button
+                  data-testid='confirm-dialog-confirm-button'
+                  onClick={() => onOk(true)}
+                >
+                  {okText}
+                </Dialog.Button>
               </Dialog.ButtonGroup>
             </>
           ),
@@ -103,7 +114,9 @@ export const useDialog = () => {
               </Typography>
 
               <Dialog.ButtonGroup>
-                <Dialog.Button onClick={onCancel}>{t.common.btn.confirm}</Dialog.Button>
+                <Dialog.Button data-testid='error-dialog-confirm-button' onClick={onCancel}>
+                  {t.common.btn.confirm}
+                </Dialog.Button>
               </Dialog.ButtonGroup>
             </>
           ),

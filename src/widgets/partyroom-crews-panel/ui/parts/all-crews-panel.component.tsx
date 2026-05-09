@@ -21,7 +21,12 @@ export default function AllCrewsPanel() {
   return (
     <div className='flex flex-col gap-6'>
       {Object.entries(Crews.categorizeByGradeType(crews)).map(([category, crews]) => (
-        <CollapseList key={'AllCrewsPanel' + category} title={category} displaySuffix={false}>
+        <CollapseList
+          key={'AllCrewsPanel' + category}
+          title={category}
+          displaySuffix={false}
+          buttonTestId={`all-crews-category-${category}`}
+        >
           {crews.map((crew) => {
             const _canImposePenalty = canImposePenalty(crew.gradeType);
             const onClickImposePenalty = (penaltyType: PenaltyType) => {
@@ -72,9 +77,12 @@ export default function AllCrewsPanel() {
                   {
                     label: t.common.btn.block,
                     onClickItem: () => blockCrew({ crewId: crew.crewId }),
+                    testId: 'crew-menu-block',
                   },
                 ]}
                 menuItemPanelSize='sm'
+                dataTestId='crew-list-item'
+                menuButtonTestId='crew-menu-button'
                 suffix={suffix && { type: 'tag', Component: suffix }}
                 menuDisabled={me?.crewId === crew.crewId}
               />

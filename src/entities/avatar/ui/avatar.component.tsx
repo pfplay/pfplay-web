@@ -65,6 +65,11 @@ const Avatar = memo(
         ref={ref}
         aria-label='Avatar View'
         role='presentation'
+        data-testid='avatar-view'
+        data-avatar-body-uri={bodyUri}
+        data-avatar-face-uri={faceUri ?? ''}
+        data-reaction-type={reaction ?? ''}
+        data-motion-type={motionType ?? ''}
         className={cn('relative will-change-transform')}
         style={{
           width: dimensions.width,
@@ -77,6 +82,7 @@ const Avatar = memo(
           <div
             aria-label='Avatar Reaction'
             role='presentation'
+            data-testid='avatar-reaction'
             className='absolute left-1/2 -top-6 transform -translate-x-1/2 -z-1'
           >
             <ReactionLottie reaction={reaction} />

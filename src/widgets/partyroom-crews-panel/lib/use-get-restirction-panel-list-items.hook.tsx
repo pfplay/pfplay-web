@@ -31,6 +31,7 @@ export default function useGetRestrictionPanelListItems() {
         size='xs'
         color='secondary'
         variant='outline'
+        data-testid='restriction-penalty-lift-button'
         onClick={() => liftPenalty({ partyroomId, penaltyId: penalty.penaltyId })}
       >
         Lift{/* TODO: i18n */}
@@ -41,6 +42,7 @@ export default function useGetRestrictionPanelListItems() {
         size='xs'
         color='secondary'
         variant='outline'
+        data-testid='restriction-block-lift-button'
         onClick={() => unblockCrew({ blockId: blockedCrew.blockId })}
       >
         Lift{/* TODO: i18n */}

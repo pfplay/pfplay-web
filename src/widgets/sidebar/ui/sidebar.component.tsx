@@ -67,7 +67,11 @@ export default function Sidebar({ className, onClickAvatarSetting, extraButtons 
 
   return (
     <aside className={className}>
-      <button onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
+      <button
+        onClick={handleClickProfileButton}
+        className='gap-2 cursor-pointer flexColCenter'
+        data-testid='sidebar-my-profile-button'
+      >
         <Profile size={48} src={me.avatarIconUri} />
         <Typography type='caption1' className='text-gray-200'>
           {t.common.btn.my_profile}

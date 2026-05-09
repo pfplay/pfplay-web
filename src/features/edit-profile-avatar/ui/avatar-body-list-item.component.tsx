@@ -31,6 +31,7 @@ const AvatarBodyListItem: FC<Props> = ({ meta }) => {
       selected={selectedAvatar.body?.resourceUri === meta.resourceUri}
       locked={locked.is}
       lockedMessage={locked.reason}
+      testId='avatar-body-list-item'
     />
   );
 };
