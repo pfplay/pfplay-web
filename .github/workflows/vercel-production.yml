@@ -8,12 +8,12 @@ jobs:
   deploy:
     name: deploy production
     runs-on: ubuntu-latest
-    env:
-      VERCEL_CLI_VERSION: 48.4.1
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20.19.0'
+      # vercel@53.3.0 이 broken transitive dep (@vercel/cli-config 404) 으로
+      # publish 됨. 안전한 직전 stable 로 pin — vercel 측 fix 후 풀거나 신규 stable 로 bump.
       - name: Deploy to Vercel Production
-        run: npx --yes vercel@${VERCEL_CLI_VERSION} deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel@48.4.1 deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}

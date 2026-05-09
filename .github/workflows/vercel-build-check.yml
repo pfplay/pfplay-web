@@ -8,8 +8,6 @@ jobs:
   build:
     name: vercel build
     runs-on: ubuntu-latest
-    env:
-      VERCEL_CLI_VERSION: 48.4.1
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,4 +16,6 @@ jobs:
       - name: Build
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: npx --yes vercel@${VERCEL_CLI_VERSION} build --yes --token=${{ secrets.VERCEL_TOKEN }}
+        # vercel@53.3.0 이 broken transitive dep (@vercel/cli-config 404) 으로
+        # publish 됨. 안전한 직전 stable 로 pin — vercel 측 fix 후 풀거나 신규 stable 로 bump.
+        run: npx vercel@48.4.1 build --yes
