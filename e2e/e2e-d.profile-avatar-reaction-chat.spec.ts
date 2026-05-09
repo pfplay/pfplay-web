@@ -5,6 +5,7 @@ import {
   createPartyroom,
   createPlaylistWithTracks,
   enterPartyroomAndWaitUntilReady,
+  getCurrentDjAvatarBodyUri,
   leavePartyroom,
   likeCurrentPlayback,
   openAvatarSettingsFromMyProfile,
@@ -108,9 +109,7 @@ test('User1은 avatar 변경 후 like 리액션과 채팅 송신을 확인할 �
     await registerAsDj(page1, playlistName);
     log('DJ registration completed');
 
-    const currentDj = page1.locator('[data-testid="partyroom-current-dj"]');
-    await expect(currentDj).toBeVisible({ timeout: 20_000 });
-    const initialAvatarBodyUri = await currentDj.getAttribute('data-avatar-body-uri');
+    const initialAvatarBodyUri = await getCurrentDjAvatarBodyUri(page1);
     log(`captured initial current DJ avatar body: ${initialAvatarBodyUri ?? '<empty>'}`);
     expect(initialAvatarBodyUri).toBeTruthy();
 

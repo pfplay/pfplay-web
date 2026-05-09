@@ -9,6 +9,7 @@ import {
   createPartyroom,
   enterPartyroomAndWaitUntilReady,
   getChatNicknameByMessage,
+  waitForRestrictionItemToDisappear,
   liftBlockedCrew,
   openAllCrewsPanel,
   openPartyroomChatPanel,
@@ -133,11 +134,7 @@ test('관리자는 block 해제 후 kick / ban 제재 흐름을 제어할 수 �
     await openRestrictionPanel(page1);
     await openRestrictionCategory(page1, 'BLOCK');
     await liftBlockedCrew(page1, user2Nickname);
-    await expect(
-      page1.locator('[data-testid="restriction-list-item"]').filter({ hasText: user2Nickname })
-    ).toHaveCount(0, {
-      timeout: 15_000,
-    });
+    await waitForRestrictionItemToDisappear(page1, user2Nickname);
 
     log('user1 kicking user2 from all crews panel');
     await openAllCrewsPanel(page1);

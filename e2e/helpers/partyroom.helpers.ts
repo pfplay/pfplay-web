@@ -199,18 +199,14 @@ export async function openPartyroomChatPanel(page: Page) {
   const chatTab = page.getByRole('tab', { name: /chat/i });
   await expect(chatTab).toBeVisible({ timeout: 10_000 });
   await chatTab.click();
-  await expect(page.locator('[data-testid="partyroomChatPanel-trigger"]')).toBeVisible({
-    timeout: 10_000,
-  });
+  await expect(page.getByRole('textbox').last()).toBeVisible({ timeout: 10_000 });
 }
 
 export async function openPartyroomCrewsPanel(page: Page) {
   const crewsTab = page.locator('[data-testid="partyroomCrewsPanel-tab"]');
   await expect(crewsTab).toBeVisible({ timeout: 10_000 });
   await crewsTab.click();
-  await expect(page.locator('[data-testid="partyroomCrewsPanel-trigger"]')).toBeVisible({
-    timeout: 10_000,
-  });
+  await expect(page.getByRole('tab', { name: /all/i })).toBeVisible({ timeout: 10_000 });
 }
 
 export async function openAllCrewsPanel(page: Page) {
@@ -219,9 +215,6 @@ export async function openAllCrewsPanel(page: Page) {
   const allCrewsTab = page.getByRole('tab', { name: /all/i });
   await expect(allCrewsTab).toBeVisible({ timeout: 10_000 });
   await allCrewsTab.click();
-  await expect(page.locator('[data-testid="allCrewsPanel-trigger"]')).toBeVisible({
-    timeout: 10_000,
-  });
   await expandAllCrewCategories(page);
 }
 
@@ -231,9 +224,24 @@ export async function openRestrictionPanel(page: Page) {
   const restrictionTab = page.getByRole('tab', { name: /restriction/i });
   await expect(restrictionTab).toBeVisible({ timeout: 10_000 });
   await restrictionTab.click();
-  await expect(page.locator('[data-testid="restrictionPanel-trigger"]')).toBeVisible({
-    timeout: 10_000,
-  });
+  await expect
+    .poll(
+      async () => {
+        const emptyStateVisible = await page
+          .getByText('There are no restrictions.')
+          .isVisible()
+          .catch(() => false);
+        if (emptyStateVisible) return true;
+
+        return page
+          .locator('[data-testid^="restriction-category-"]')
+          .first()
+          .isVisible()
+          .catch(() => false);
+      },
+      { timeout: 10_000 }
+    )
+    .toBe(true);
 }
 
 export async function openRestrictionCategory(
@@ -270,7 +278,7 @@ export async function openMyProfileDialog(page: Page) {
 
   const dialog = page
     .locator('[data-testid="dialog-panel"]')
-    .filter({ has: page.locator('[data-testid="my-profile-avatar-settings-button"]') })
+    .filter({ has: page.getByRole('button', { name: /avatar settings/i }) })
     .first();
   await expect(dialog).toBeVisible({ timeout: 10_000 });
   return dialog;
@@ -282,19 +290,20 @@ export async function openAvatarSettingsFromMyProfile(page: Page) {
   await expect(avatarSettingsButton).toBeVisible({ timeout: 10_000 });
   await avatarSettingsButton.click();
 
-  const avatarEditPanel = page.locator('[data-testid="avatar-edit-panel"]');
+  const avatarEditPanel = page.getByRole('tab', { name: /body/i });
   await expect(avatarEditPanel).toBeVisible({ timeout: 10_000 });
   return avatarEditPanel;
 }
 
 export async function selectAvatarBodyByIndex(page: Page, index: number) {
-  const avatarItems = page.locator('[data-testid="avatar-body-list-item"]');
+  const avatarItems = page.getByRole('button', { name: /Avatar Parts/i });
   await expect(avatarItems.nth(index)).toBeVisible({ timeout: 15_000 });
 
   const selectedItem = avatarItems.nth(index);
-  const avatarBodyUri = await selectedItem.getAttribute('data-image-src');
+  const avatarItemContainer = selectedItem.locator('xpath=..');
+  const avatarBodyUri = await avatarItemContainer.getAttribute('data-image-src');
   await selectedItem.click();
-  await expect(selectedItem).toHaveAttribute('data-selected', 'true', { timeout: 10_000 });
+  await expect(avatarItemContainer).toHaveAttribute('data-selected', 'true', { timeout: 10_000 });
 
   const selectedPreview = page.locator('[data-testid="avatar-edit-selected-preview"]');
   await expect(selectedPreview).toHaveAttribute('data-avatar-body-uri', avatarBodyUri ?? '', {
@@ -308,12 +317,22 @@ export async function saveAvatarSettings(page: Page) {
   const saveButton = page.getByRole('button', { name: /save/i });
   await expect(saveButton).toBeEnabled({ timeout: 10_000 });
   await saveButton.click();
-  await expect(page.locator('[data-testid="avatar-edit-panel"]')).toBeHidden({ timeout: 20_000 });
+  await expect(saveButton).toBeHidden({ timeout: 20_000 });
   await closeVisibleDialogOverlays(page);
 }
 
+function getCurrentDj(page: Page) {
+  return page.locator('[data-testid="partyroom-current-dj"]');
+}
+
+export async function getCurrentDjAvatarBodyUri(page: Page) {
+  const currentDj = getCurrentDj(page);
+  await expect(currentDj).toBeVisible({ timeout: 20_000 });
+  return (await currentDj.getAttribute('data-avatar-body-uri')) ?? '';
+}
+
 export async function waitForCurrentDjAvatarBody(page: Page, avatarBodyUri: string) {
-  const currentDj = page.locator('[data-testid="partyroom-current-dj"]');
+  const currentDj = getCurrentDj(page);
   await expect(currentDj).toHaveAttribute('data-avatar-body-uri', avatarBodyUri, {
     timeout: 20_000,
   });
@@ -368,7 +387,7 @@ export async function closeVisibleDialogOverlays(page: Page) {
 }
 
 export async function waitForCurrentDjLikeReaction(page: Page) {
-  const currentDj = page.locator('[data-testid="partyroom-current-dj"]');
+  const currentDj = getCurrentDj(page);
   await expect(currentDj).toHaveAttribute('data-reaction-type', 'LIKE', { timeout: 15_000 });
   await expect(currentDj.locator('[data-testid="avatar-reaction"]')).toBeVisible({
     timeout: 15_000,
@@ -433,6 +452,14 @@ export async function liftBlockedCrew(page: Page, nickname: string) {
     .first();
   await expect(blockedItem).toBeVisible({ timeout: 15_000 });
   await blockedItem.locator('[data-testid="restriction-block-lift-button"]').click();
+}
+
+export async function waitForRestrictionItemToDisappear(page: Page, nickname: string) {
+  await expect(
+    page.locator('[data-testid="restriction-list-item"]').filter({ hasText: nickname })
+  ).toHaveCount(0, {
+    timeout: 15_000,
+  });
 }
 
 export async function confirmPenaltyDialog(page: Page, reason: string) {
