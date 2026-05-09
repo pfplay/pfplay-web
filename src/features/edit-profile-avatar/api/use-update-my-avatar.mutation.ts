@@ -5,6 +5,7 @@ import { QueryKeys } from '@/shared/api/http/query-keys';
 import { usersService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { AvatarBody, AvatarFacePos } from '@/shared/api/http/types/users';
+import { track } from '@/shared/lib/analytics';
 
 export function useUpdateMyAvatar() {
   const queryClient = useQueryClient();
@@ -44,6 +45,7 @@ export function useUpdateMyAvatar() {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Me],
       });
+      track('Avatar Changed', {});
     },
   });
 }

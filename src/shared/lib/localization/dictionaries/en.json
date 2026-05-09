@@ -297,7 +297,8 @@
     },
     "ec": {
       "shut_down": "The party room no longer exists.",
-      "data_load": "Failed to load data.\nWould you like to try entering again?"
+      "data_load": "Failed to load data.\nWould you like to try entering again?",
+      "profile_required": "Complete your profile setup to join a partyroom."
     }
   },
   "crews": {
@@ -309,5 +310,24 @@
   "mobileNotice": {
     "title": "The party's better on a big screen!",
     "description": "PFPlay is currently available on desktop. Please visit us from your PC or laptop!"
+  },
+  "system": {
+    "maintenance": {
+      "active": {
+        "title": "System Maintenance",
+        "retry": "Retry"
+      },
+      "planned": {
+        "banner": "Maintenance scheduled from {{start}}"
+      }
+    },
+    "announcement": {
+      "event": {
+        "close": "Close"
+      },
+      "emergency": {
+        "label": "Emergency Notice"
+      }
+    }
   }
 }

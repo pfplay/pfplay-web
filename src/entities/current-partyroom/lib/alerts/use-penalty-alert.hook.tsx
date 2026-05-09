@@ -53,7 +53,9 @@ function useOpenPenaltyAlertDialog() {
             </Typography>
 
             <Dialog.ButtonGroup>
-              <Dialog.Button onClick={onCancel}>{t.common.btn.confirm}</Dialog.Button>
+              <Dialog.Button data-testid='penalty-alert-confirm-button' onClick={onCancel}>
+                {t.common.btn.confirm}
+              </Dialog.Button>
             </Dialog.ButtonGroup>
           </>
         ),

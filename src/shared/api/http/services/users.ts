@@ -9,8 +9,6 @@ import isAuthError from '../error/is-auth-error';
 import type {
   GetMyInfoResponse,
   GetMyProfileSummaryResponse,
-  GetUserProfileSummaryRequest,
-  GetUserProfileSummaryResponse,
   AvatarBody,
   AvatarFace,
   UpdateMyWalletRequest,
@@ -60,12 +58,6 @@ export default class UsersService extends HTTPClient implements UsersClient {
   })
   public getMyInfo() {
     return this.get<GetMyInfoResponse>(`${this.ROUTE_USER}/me/info`);
-  }
-
-  public getUserProfileSummary(request: GetUserProfileSummaryRequest) {
-    return this.get<GetUserProfileSummaryResponse>(
-      `${this.ROUTE_USER}/${request.uid}/profile/summary`
-    );
   }
 
   public getMyProfileSummary() {

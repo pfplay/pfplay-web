@@ -210,4 +210,44 @@ describe('SocketClient', () => {
       });
     });
   });
+
+  describe('STOMP 내장 heartbeat 옵트인 (presence disconnect 감지)', () => {
+    test('Client 생성 시 heartbeatIncoming=10s / heartbeatOutgoing=5s 가 설정된다', () => {
+      const sc = new SocketClient();
+      const config = getStompClient(sc).__config;
+      expect(config.heartbeatIncoming).toBe(10_000);
+      expect(config.heartbeatOutgoing).toBe(5_000);
+    });
+  });
+
+  describe('커스텀 heartbeat (LB keep-alive)', () => {
+    test('연결 후 15초 간격으로 /pub/heartbeat 에 PING 을 publish 한다', () => {
+      const sc = new SocketClient();
+      triggerConnect(sc);
+
+      const publish = getStompClient(sc).publish;
+      publish.mockClear();
+
+      vi.advanceTimersByTime(15_000);
+      expect(publish).toHaveBeenCalledWith({
+        destination: '/pub/heartbeat',
+        body: JSON.stringify('PING'),
+      });
+      expect(publish).toHaveBeenCalledTimes(1);
+
+      vi.advanceTimersByTime(15_000);
+      expect(publish).toHaveBeenCalledTimes(2);
+    });
+
+    test('15초 미만 경과에서는 PING 을 보내지 않는다 (4초 이전 동작 회귀 방지)', () => {
+      const sc = new SocketClient();
+      triggerConnect(sc);
+
+      const publish = getStompClient(sc).publish;
+      publish.mockClear();
+
+      vi.advanceTimersByTime(14_999);
+      expect(publish).not.toHaveBeenCalled();
+    });
+  });
 });

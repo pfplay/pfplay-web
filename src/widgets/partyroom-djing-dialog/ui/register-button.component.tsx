@@ -38,7 +38,7 @@ export default function RegisterButton() {
   };
 
   return (
-    <Button size='lg' onClick={registerMeToDjQueue}>
+    <Button size='lg' onClick={registerMeToDjQueue} data-testid='register-dj-queue'>
       {t.dj.btn.register_queue}
     </Button>
   );

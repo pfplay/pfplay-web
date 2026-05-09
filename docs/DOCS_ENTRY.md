@@ -8,6 +8,7 @@
 
 - [docs/README.md](./README.md) - 프로젝트의 전반적인 개요, 설정 방법, 실행 방법 등을 안내합니다. 프로젝트를 처음 시작하거나 전체 구조를 파악하고 싶을 때 읽어보세요.
 - [docs/CONTRIBUTING.md](./CONTRIBUTING.md) - 프로젝트에 기여하는 방법을 안내합니다. 코드 스타일, 브랜치 전략, PR 규칙 등을 확인할 수 있습니다.
+- [docs/CI_CD.md](./CI_CD.md) - GitHub Actions 워크플로우 구성을 설명합니다. feature/development/main 브랜치별 실행 조건, e2e 트리거 조건, 필요한 설정값을 확인할 수 있습니다.
 - [docs/FLOW.md](./FLOW.md) - 프로젝트의 주요 기능 흐름 또는 개발 워크플로우를 설명합니다. 특정 기능의 동작 방식이나 전체적인 서비스 흐름을 이해하고 싶을 때 유용합니다.
 - [docs/REACT_QUERY.md](./REACT_QUERY.md) - 서버 상태 관리를 위한 React Query 라이브러리 사용 가이드. API 데이터 호출, 캐싱, 동기화 등을 효율적으로 처리하고 싶을 때 참고하세요.
 - [docs/TESTING.md](./TESTING.md) - 테스트 작성 가이드. 테스트 기법(유닛/통합), MSW 인프라, 파일 네이밍 컨벤션, 패턴별 코드 예시 등을 확인할 수 있습니다.

@@ -13,12 +13,20 @@ import { AVATAR_GROUP } from '../model/constants';
 export default function Avatars() {
   const { useCurrentPartyroom } = useStores();
   const { crews, currentDj } = useCurrentPartyroom((state) => pick(state, ['crews', 'currentDj']));
-  const dj = currentDj && crews.find((crew: Crew.Model) => crew.crewId === currentDj.crewId);
   const params = useParams<{ id: string }>();
   const { data: djingQueue } = useFetchDjingQueue({ partyroomId: Number(params.id) }, true);
 
+  const currentDjFromQueue = djingQueue?.djs
+    .slice()
+    .sort((a, b) => a.orderNumber - b.orderNumber)[0];
+  const currentDjCrewId = currentDjFromQueue?.crewId ?? currentDj?.crewId;
+  const dj = currentDjCrewId
+    ? crews.find((crew: Crew.Model) => crew.crewId === currentDjCrewId)
+    : undefined;
   const djQueueCrewIds = djingQueue
-    ? djingQueue.djs.filter((dj) => dj.orderNumber > 1).map((dj) => dj.crewId)
+    ? djingQueue.djs
+        .filter((dj) => dj.crewId !== currentDjCrewId && dj.orderNumber > 1)
+        .map((dj) => dj.crewId)
     : [];
 
   const { registerAvatar } = useAvatarDance();
@@ -44,6 +52,10 @@ export default function Avatars() {
     <div className='h-screen aspect-partyroom-bg absolute inset-0 z-0 bg-cover bg-left-bottom overflow-hidden'>
       {!!dj && (
         <div
+          data-testid='partyroom-current-dj'
+          data-crew-id={String(dj.crewId)}
+          data-avatar-body-uri={dj.avatarBodyUri}
+          data-reaction-type={dj.reactionType ?? ''}
           className='relative'
           style={{
             top: '98%',
@@ -73,11 +85,15 @@ export default function Avatars() {
         <div
           key={'partyroom-dj-queue-' + crew.crewId + index}
           className='absolute'
+          data-crew-id={String(crew.crewId)}
+          data-avatar-body-uri={crew.avatarBodyUri}
+          data-reaction-type={crew.reactionType ?? ''}
           style={{
             top: `${position.y}px`,
             left: `${position.x}px`,
             transform: 'translate(-50%, -100%)',
           }}
+          data-testid='partyroom-dj-queue-item'
         >
           <Avatar
             height={AVATAR_GROUP.HEIGHT}
@@ -104,6 +120,10 @@ export default function Avatars() {
           <div
             key={'partyroom-crew-' + crew.crewId + index}
             className='absolute'
+            data-testid='partyroom-crew-item'
+            data-crew-id={String(crew.crewId)}
+            data-avatar-body-uri={crew.avatarBodyUri}
+            data-reaction-type={crew.reactionType ?? ''}
             style={{
               top: `${position.y}px`,
               left: `${position.x}px`,

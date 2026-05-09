@@ -52,6 +52,7 @@ export type PartyroomSummary = {
   playback?: {
     name: string;
     thumbnailImage: string;
+    duration: string;
   };
   /**
    * 최소한 호스트 1명에 대한 정보는 있음
@@ -81,7 +82,6 @@ export type PartyroomCrew = {
   offsetX: number;
   offsetY: number;
   scale: number;
-  countryCode?: string | null;
 };
 
 export type PartyroomPlayback = {
@@ -120,6 +120,7 @@ export type PartyroomReaction = {
 };
 
 export type GetSetUpInfoResponse = {
+  stageType: StageType;
   crews: PartyroomCrew[];
   display: {
     /**
@@ -185,7 +186,6 @@ export type GetNoticeResponse = {
 
 export type EnterPayload = {
   partyroomId: number;
-  countryCode?: string;
 };
 
 export type GetPartyroomDetailSummaryPayload = {
@@ -231,6 +231,14 @@ export type ReactionResponse = {
   isLiked: boolean;
   isDisliked: boolean;
   isGrabbed: boolean;
+  /**
+   * GRAB 리액션이 server-side에서 사용자 플레이리스트에 트랙을 추가한 결과.
+   * LIKE/DISLIKE 응답에서는 미존재 / null. GRAB 성공 시 추가된 트랙 식별 정보 제공.
+   */
+  addedTrack?: {
+    trackId: number;
+    playlistId: number;
+  } | null;
 };
 
 export type GetPenaltyListPayload = {

@@ -9,6 +9,8 @@ type Props = {
   active: boolean;
   activeColor?: 'red' | 'green' | 'white';
   onClick: () => void;
+  testId?: string;
+  textTestId?: string;
 };
 
 export default function ActionButton({
@@ -18,11 +20,14 @@ export default function ActionButton({
   active,
   activeColor,
   onClick,
+  testId,
+  textTestId,
 }: Props) {
   return (
     <button
       disabled={disabled}
       onClick={onClick}
+      data-testid={testId}
       className={cn(
         'appearance-none w-[48px] h-[44px] flexColCenter text-center gap-[4px] rounded bg-gray-800 text-gray-200',
         {
@@ -41,7 +46,7 @@ export default function ActionButton({
       }}
     >
       {icon}
-      <Typography type='detail1' className='leading-none'>
+      <Typography type='detail1' className='leading-none' data-testid={textTestId}>
         {text}
       </Typography>
     </button>

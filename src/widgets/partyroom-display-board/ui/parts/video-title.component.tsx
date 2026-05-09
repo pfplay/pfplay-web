@@ -13,14 +13,14 @@ export default function VideoTitle() {
 
   if (!playback) {
     return (
-      <Typography type='caption1' className={typoClassName}>
+      <Typography type='caption1' className={typoClassName} data-testid='video-title-empty'>
         {t.dj.para.empty_dj}
       </Typography>
     );
   }
   return (
     <Marquee delay={4} speed={20} gradientWidth={0} className='z-0'>
-      <Typography type='body3' className={typoClassName}>
+      <Typography type='body3' className={typoClassName} data-testid='video-title'>
         {playback.name}
       </Typography>
     </Marquee>

@@ -51,12 +51,12 @@
 - **개선 방향**: `useShallow` 적용, `useAvatarCluster` 반환값 useMemo, `registerAvatar` useCallback, `djQueueCrewIds` useMemo
 - **상세 분석**: [AVATARS_RENDER_PERFORMANCE.md](./AVATARS_RENDER_PERFORMANCE.md)
 
-### TD-004: STOMP 하트비트 커스텀 구현 → 내장 기능 전환
+### TD-004: STOMP 하트비트 — 두 heartbeat 책임 분리 영구화
 
-- **파일**: `src/shared/api/websocket/client.ts:158-183`
-- **현상**: GCP 60초 타임아웃 우회를 위해 4초 간격 커스텀 heartbeat(`/pub/heartbeat`)를 `setInterval`로 구현. STOMP 프로토콜 내장 heartbeat를 사용하지 않음
-- **개선 방향**: STOMP built-in heartbeat로 마이그레이션 (Slack 논의 참조)
-- **참고**: 코드 내 주석에 마이그레이션 계획 기재됨
+- **파일**: `src/shared/api/websocket/client.ts:158-187`
+- **현상**: GCP 30초 타임아웃 우회를 위해 15초 간격 커스텀 heartbeat(`/pub/heartbeat`)를 `setInterval`로 구현. 별도로 STOMP 내장 heartbeat(`heartbeatIncoming/Outgoing`)도 활성화하여 silent disconnect 감지에 사용
+- **개선 방향**: STOMP built-in heartbeat을 LB keep-alive와 별개의 disconnect 감지(presence) 책임으로 추가 활성화. 기존 커스텀 heartbeat은 LB keep-alive 책임자로 영구 유지. 두 heartbeat 영구 공존
+- **참고**: backend spec `pfplay-platform/docs/superpowers/specs/2026-05-09-presence-grace-window-design.md` § STOMP heartbeat resolved
 
 ### TD-005: TODO/FIXME 41개 미해결
 

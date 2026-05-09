@@ -16,7 +16,11 @@ export default function EmptyBody({ onCancel }: { onCancel: () => void | undefin
           {t.dj.title.current_dj}
         </Typography>
 
-        <TextButton onClick={onCancel} Icon={<PFClose width={24} height={24} />} />
+        <TextButton
+          data-testid='djing-dialog-close'
+          onClick={onCancel}
+          Icon={<PFClose width={24} height={24} />}
+        />
       </header>
 
       <div className='h-[388px] flexRowCenter'>

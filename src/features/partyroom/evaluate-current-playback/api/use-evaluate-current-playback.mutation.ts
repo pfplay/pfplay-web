@@ -4,6 +4,8 @@ import { partyroomsService } from '@/shared/api/http/services';
 import { ReactionType } from '@/shared/api/http/types/@enums';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { ReactionResponse } from '@/shared/api/http/types/partyrooms';
+import { track } from '@/shared/lib/analytics';
+import { reactionTypeLabel } from '@/shared/lib/analytics/labels';
 import { useStores } from '@/shared/lib/store/stores.context';
 
 export function useEvaluateCurrentPlayback() {
@@ -21,6 +23,13 @@ export function useEvaluateCurrentPlayback() {
       return await partyroomsService.reaction({
         partyroomId,
         reactionType,
+      });
+    },
+    onSuccess: (_, reactionType) => {
+      if (!partyroomId) return;
+      track('Playback Reacted', {
+        partyroom_id: partyroomId,
+        reaction_type: reactionTypeLabel(reactionType),
       });
     },
   });

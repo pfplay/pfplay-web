@@ -1,5 +1,7 @@
 # Chat Country Flag Display — Design Spec
 
+> **STATUS — REMOVED 2026-05-09**: frontend 파이프라인 전체 제거됨 (관련 plan 문서 헤더 참조). 본 design은 향후 재도입 시 reference로 보존.
+
 ## Goal
 
 채팅 메시지에서 닉네임 앞에 국기를 표시하여 유저의 국가를 시각적으로 보여준다.

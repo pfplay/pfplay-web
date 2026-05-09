@@ -4,6 +4,7 @@ import { QueryKeys } from '@/shared/api/http/query-keys';
 import { usersService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { UpdateMyBioRequest } from '@/shared/api/http/types/users';
+import { track } from '@/shared/lib/analytics';
 
 export const useUpdateMyBio = () => {
   const queryClient = useQueryClient();
@@ -14,6 +15,7 @@ export const useUpdateMyBio = () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Me],
       });
+      track('Bio Updated', {});
     },
   });
 };

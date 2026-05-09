@@ -8,6 +8,7 @@ export type MenuItem = {
   label: string;
   Icon?: ReactNode;
   visible?: boolean;
+  testId?: string;
 };
 export type MenuItemPanelSize = 'lg' | 'md' | 'sm';
 const MenuItemBoxSize: Record<MenuItemPanelSize, string> = {
@@ -75,6 +76,7 @@ const MenuItemPanel = ({
                     focus && 'bg-gray-700',
                     size === 'sm' && `text-sm`
                   )}
+                  data-testid={config.testId}
                 >
                   {MenuItemPrefixIcon && size !== 'sm' && MenuItemPrefixIcon}
 

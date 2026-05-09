@@ -10,6 +10,7 @@ type ButtonLinkProps<P extends Href> = {
     container?: string;
     button?: string;
   };
+  'data-testid'?: string;
 } & Pick<
   ButtonProps,
   'variant' | 'color' | 'size' | 'typo' | 'Icon' | 'iconPlacement' | 'disabled'
@@ -21,6 +22,7 @@ const ButtonLink = <P extends Href>({
   linkTitle,
   classNames,
   disabled,
+  'data-testid': dataTestId,
   ...props
 }: ButtonLinkProps<P>) => {
   return (
@@ -28,6 +30,7 @@ const ButtonLink = <P extends Href>({
       href={href}
       path={('path' in props ? props.path : {}) as PathMap[P]['path']}
       className={cn('max-w-full', classNames?.container)}
+      data-testid={dataTestId}
       onClick={(e) => {
         if (disabled) {
           e.preventDefault();

@@ -101,7 +101,11 @@ export default function useSelectPlaylist({ playlists }: Props): () => Promise<P
               <Dialog.Button onClick={handleCancel} color='secondary'>
                 {t.common.btn.cancel}
               </Dialog.Button>
-              <Dialog.Button onClick={handleConfirm} disabled={!selected}>
+              <Dialog.Button
+                onClick={handleConfirm}
+                disabled={!selected}
+                data-testid='playlist-confirm'
+              >
                 {t.common.btn.confirm}
               </Dialog.Button>
             </Dialog.ButtonGroup>

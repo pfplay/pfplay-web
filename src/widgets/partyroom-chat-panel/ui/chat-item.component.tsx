@@ -3,7 +3,6 @@ import { ChatMessage, Crew } from '@/entities/current-partyroom';
 import { GRADE_TYPE_LABEL } from '@/entities/partyroom-client';
 import { GradeType } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
-import { CountryFlag } from '@/shared/ui/components/country-flag';
 import Profile from '@/shared/ui/components/profile/profile.component';
 import { Typography } from '@/shared/ui/components/typography';
 import { galmuriFont } from '@/shared/ui/foundation/fonts';
@@ -20,7 +19,11 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
   const emphasisGradeLabel = myGradeComparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
 
   return (
-    <div ref={ref} className='flex justify-start items-start gap-[13px]'>
+    <div
+      ref={ref}
+      className='flex justify-start items-start gap-[13px]'
+      data-testid='chat-message-item'
+    >
       <div className='flexCol items-center gap-2 px-[5px] pt-[2px]'>
         <div className='relative'>
           <Profile src={crew.avatarIconUri} size={32} />
@@ -42,15 +45,15 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
       </div>
 
       <div className='flex-1 flexCol items-start gap-1'>
-        <div className='flex items-center gap-1'>
-          {crew.countryCode && <CountryFlag code={crew.countryCode} />}
-          <Typography type='detail2'>{crew.nickname}</Typography>
-        </div>
+        <Typography type='detail2' data-testid='chat-message-nickname'>
+          {crew.nickname}
+        </Typography>
 
         <Typography
           type='caption1'
           className='bg-gray-900 p-2 rounded-sm text-white'
           style={{ wordBreak: 'break-word' }}
+          data-testid='chat-message-content'
         >
           {message.message.content}
         </Typography>

@@ -25,6 +25,7 @@ const List = ({ onClickItem }: Props) => {
             />
           }
           onClick={() => onClickItem?.(playlist)}
+          data-testid='playlist-list-item'
         />
       ))}
     </div>

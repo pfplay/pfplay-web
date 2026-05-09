@@ -16,6 +16,7 @@ type ExtraButton = {
   icon: (size: number, className: string) => ReactNode;
   text: string;
   disabled?: boolean;
+  testId?: string;
 };
 
 type SidebarProps = {
@@ -66,13 +67,21 @@ export default function Sidebar({ className, onClickAvatarSetting, extraButtons 
 
   return (
     <aside className={className}>
-      <button onClick={handleClickProfileButton} className='gap-2 cursor-pointer flexColCenter'>
+      <button
+        onClick={handleClickProfileButton}
+        className='gap-2 cursor-pointer flexColCenter'
+        data-testid='sidebar-my-profile-button'
+      >
         <Profile size={48} src={me.avatarIconUri} />
         <Typography type='caption1' className='text-gray-200'>
           {t.common.btn.my_profile}
         </Typography>
       </button>
-      <button onClick={togglePlaylist} className='gap-2 cursor-pointer flexColCenter'>
+      <button
+        onClick={togglePlaylist}
+        className='gap-2 cursor-pointer flexColCenter'
+        data-testid='playlist-sidebar-button'
+      >
         <PFHeadset width={36} height={36} className='[&_*]:fill-gray-400' />
         <Typography type='caption1' className='text-gray-200'>
           {t.common.btn.playlist}
@@ -87,6 +96,7 @@ export default function Sidebar({ className, onClickAvatarSetting, extraButtons 
             'cursor-not-allowed opacity-50': extraButton.disabled,
           })}
           disabled={extraButton.disabled}
+          data-testid={extraButton.testId}
         >
           {extraButton.icon(36, 'text-gray-400')}
           <Typography type='caption1' className='text-gray-200'>

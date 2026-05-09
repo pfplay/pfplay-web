@@ -217,6 +217,7 @@ const PartyroomPage = () => {
             },
             icon: (size, className) => <PFDj width={size} height={size} className={className} />,
             text: t.dj.title.dj_queue,
+            testId: 'dj-queue-button',
           },
           {
             onClick: sharePartyroom,

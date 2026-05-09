@@ -1,17 +1,24 @@
+import { useQueryClient } from '@tanstack/react-query';
 import {
   useHandlePartyroomSubscriptionEvent,
   usePartyroomClient,
 } from '@/entities/partyroom-client';
+import { QueryKeys } from '@/shared/api/http/query-keys';
 import { partyroomsService } from '@/shared/api/http/services';
 import { MotionType } from '@/shared/api/http/types/@enums';
 import { EnterResponse, PartyroomReaction } from '@/shared/api/http/types/partyrooms';
-import { detectCountryCode } from '@/shared/lib/functions/detect-country-code';
+import type { EntrySource } from '@/shared/lib/analytics/events';
+import { trackPartyroomEntered } from '@/shared/lib/analytics/room-tracking';
 import silent from '@/shared/lib/functions/silent';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useEnterPartyroom as useEnterPartyroomMutation } from '../api/use-enter-partyroom.mutation';
 
-export function useEnterPartyroom(partyroomId: number) {
+type Options = {
+  entrySource?: EntrySource;
+};
+
+export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
   const client = usePartyroomClient();
   const handleEvent = useHandlePartyroomSubscriptionEvent();
   const { useCurrentPartyroom } = useStores();
@@ -20,7 +27,10 @@ export function useEnterPartyroom(partyroomId: number) {
     state.markExitedOnBackend,
   ]);
   const { mutate: enter } = useEnterPartyroomMutation();
+  const queryClient = useQueryClient();
   const router = useAppRouter();
+
+  const entrySource: EntrySource = options.entrySource ?? 'direct';
 
   const setup = async (enterResponse: EnterResponse) => {
     const [setUpInfo, notice] = await Promise.all([
@@ -51,18 +61,28 @@ export function useEnterPartyroom(partyroomId: number) {
         notice: notice.content ?? '',
       })
     );
+
+    trackPartyroomEntered({
+      partyroomId,
+      crewCount: setUpInfo.crews.length,
+      entrySource,
+      stageType: setUpInfo.stageType,
+    });
   };
 
   return () => {
     client.onConnect(
       () => {
         enter(
-          { partyroomId, countryCode: detectCountryCode() ?? undefined },
+          { partyroomId },
           {
             onSuccess: (enterResponse) => {
               silent(setup(enterResponse), {
                 onSuccess: () => {
                   client.subscribe(partyroomId, handleEvent);
+                  queryClient.invalidateQueries({
+                    queryKey: [QueryKeys.DjingQueue, partyroomId],
+                  });
                 },
                 onError: () => {
                   router.push('/parties'); // 에러 발생 시 로비로 이동

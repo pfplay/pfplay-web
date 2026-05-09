@@ -32,7 +32,13 @@ export default function AddTracks({ children }: Props) {
       Body: (
         <PlaylistActionBypassProvider action={playlistAction}>
           <MusicSearch
-            extraAction={<TextButton onClick={onClose} Icon={<PFClose width={24} height={24} />} />}
+            extraAction={
+              <TextButton
+                onClick={onClose}
+                Icon={<PFClose width={24} height={24} />}
+                data-testid='music-search-close'
+              />
+            }
           />
         </PlaylistActionBypassProvider>
       ),

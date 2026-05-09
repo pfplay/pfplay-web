@@ -1,9 +1,13 @@
 vi.mock('@/entities/partyroom-client');
 vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/analytics/room-tracking', () => ({
+  trackPartyroomExited: vi.fn(),
+}));
 vi.mock('../api/use-exit-partyroom.mutation');
 
 import { renderHook, act } from '@testing-library/react';
 import { usePartyroomClient } from '@/entities/partyroom-client';
+import { trackPartyroomExited } from '@/shared/lib/analytics/room-tracking';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useExitPartyroom } from './use-exit-partyroom';
 import { useExitPartyroom as useExitPartyroomMutation } from '../api/use-exit-partyroom.mutation';
@@ -52,5 +56,16 @@ describe('useExitPartyroom (lib)', () => {
     expect(mockMutate).not.toHaveBeenCalled();
     expect(mockUnsubscribe).toHaveBeenCalled();
     expect(mockReset).toHaveBeenCalled();
+  });
+
+  test('exit 호출 시 trackPartyroomExited 1회 발화 (분석 회귀 방지)', () => {
+    const { result } = renderHook(() => useExitPartyroom(42));
+
+    act(() => {
+      result.current();
+    });
+
+    expect(trackPartyroomExited).toHaveBeenCalledWith(42);
+    expect(trackPartyroomExited).toHaveBeenCalledTimes(1);
   });
 });

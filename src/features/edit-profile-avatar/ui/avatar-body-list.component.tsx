@@ -6,7 +6,10 @@ const AvatarBodyList = () => {
   const { data: bodies = [] } = useFetchAvatarBodies();
 
   return (
-    <div className='flex-1 grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5 grid-rows-max auto-rows-max overflow-auto'>
+    <div
+      className='flex-1 grid grid-cols-2 gap-3 laptop:grid-cols-3 desktop:grid-cols-5 grid-rows-max auto-rows-max overflow-auto'
+      data-testid='avatar-body-list'
+    >
       {bodies.map((body) => (
         <AvatarBodyListItem key={body.id} meta={body} />
       ))}

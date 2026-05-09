@@ -1,3 +1,5 @@
+import { AuthorityTier } from '@/shared/api/http/types/@enums';
+import { trackSignedIn } from '@/shared/lib/analytics/auth-tracking';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
@@ -28,7 +30,10 @@ export default function useSignIn({ onSuccess }: Props) {
             color='secondary'
             onClick={() => {
               mutate(undefined, {
-                onSuccess,
+                onSuccess: () => {
+                  trackSignedIn(AuthorityTier.GT);
+                  onSuccess();
+                },
                 onSettled: () => {
                   onClose?.();
                 },

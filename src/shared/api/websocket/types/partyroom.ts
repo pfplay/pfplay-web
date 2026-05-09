@@ -72,7 +72,6 @@ export type CrewEnteredEvent = WebSocketEventBase & {
     gradeType: GradeType;
     nickname: string;
     avatar: CrewAvatar;
-    countryCode?: string | null;
   };
 };
 

@@ -53,6 +53,11 @@ export default class SocketClient {
     this.client = new Client({
       brokerURL: process.env.NEXT_PUBLIC_API_WS_HOST_NAME as string,
       reconnectDelay: 5000,
+      // STOMP 내장 heartbeat — 양측 옵트인 시에만 동작 (미옵트인 시 협상이 0,0 폴백).
+      // backend WebSocketConfig.setHeartbeatValue([10000, 5000]) 와 매칭.
+      // 모바일 백그라운드 / silent disconnect 를 ~7.5초 안에 감지 — presence grace 모델 전제.
+      heartbeatIncoming: 10_000,
+      heartbeatOutgoing: 5_000,
       debug: log,
       onConnect: handleConnect,
       onWebSocketClose: handleDisconnect,
@@ -156,10 +161,11 @@ export default class SocketClient {
   }
 
   /**
-   * NOTE: 소켓 커넥션 유지를 위해 heartbeat를 전송합니다.
-   * (60초 동안 클라이언트 측 송신이 없다면 백엔드 측 GCP가 연결을 끊어버립니다)
+   * NOTE: GCP HTTP(S) LB keep-alive 용 커스텀 heartbeat.
+   * (30초 동안 클라이언트 측 송신이 없다면 백엔드 측 GCP가 연결을 끊어버립니다)
    *
-   * 후에 Stomp 내장 heartbeat 기능을 사용하도록 변경할 예정
+   * STOMP 내장 heartbeat 와 책임이 다름 — 본 PING/PONG 은 LB keep-alive 전용,
+   * STOMP 내장 heartbeat 는 disconnect 감지(presence) 전용. 두 heartbeat 영구 공존.
    * @see https://pfplay.slack.com/archives/C051N8A0ZSB/p1724609022991849
    */
   private startHeartbeat() {
@@ -172,9 +178,11 @@ export default class SocketClient {
       /* Do nothing */
     });
 
+    // 30초 LB timeout 의 50% 안전 마진 (75% 룰 기준 22.5초까지 안전).
+    // 트래픽 3.75배 감소 (이전 4초 → 15초).
     this.heartbeatIntervalId = setInterval(() => {
       this.send(DESTINATION.PUB, 'PING');
-    }, 4000);
+    }, 15_000);
   }
 
   private stopHeartbeat() {

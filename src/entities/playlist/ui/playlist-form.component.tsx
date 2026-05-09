@@ -37,7 +37,9 @@ const Form = ({ defaultValues, onCancel, onSubmit }: FormProps) => {
         <Dialog.Button type='button' color='secondary' onClick={onCancel}>
           {t.common.btn.cancel}
         </Dialog.Button>
-        <Dialog.Button type='submit'>{t.common.btn.add}</Dialog.Button>
+        <Dialog.Button type='submit' data-testid='playlist-form-add-button'>
+          {t.common.btn.add}
+        </Dialog.Button>
       </Dialog.ButtonGroup>
     </form>
   );

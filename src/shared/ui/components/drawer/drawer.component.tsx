@@ -71,7 +71,11 @@ const Drawer = ({
                       {title}
                     </Typography>
                     {close && (
-                      <TextButton onClick={close} Icon={<PFClose width={24} height={24} />} />
+                      <TextButton
+                        onClick={close}
+                        Icon={<PFClose width={24} height={24} />}
+                        data-testid='drawer-close-button'
+                      />
                     )}
                   </div>
                   {children}

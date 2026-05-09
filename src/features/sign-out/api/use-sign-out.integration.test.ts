@@ -1,8 +1,12 @@
 vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/analytics', () => ({
+  setUserId: vi.fn(),
+}));
 
 import '@/shared/api/__test__/msw-server';
 import { act, waitFor } from '@testing-library/react';
 import { renderWithClient } from '@/shared/api/__test__/test-utils';
+import { setUserId } from '@/shared/lib/analytics';
 import { useStores } from '@/shared/lib/store/stores.context';
 import useSignOut from './use-sign-out.mutation';
 
@@ -62,5 +66,20 @@ describe('useSignOut 통합', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(locationHrefSetter).toHaveBeenCalledWith('/');
+  });
+
+  test('성공 시 setUserId(null)을 호출하고, location.href 이전에 호출한다 (분석 회귀 방지)', async () => {
+    const { result } = renderWithClient(() => useSignOut());
+
+    await act(async () => {
+      result.current.mutate();
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(setUserId).toHaveBeenCalledWith(null);
+    // setUserId가 location.href setter보다 먼저 호출됐는지 확인
+    const setUserIdOrder = (setUserId as Mock).mock.invocationCallOrder[0];
+    const locationOrder = locationHrefSetter.mock.invocationCallOrder[0];
+    expect(setUserIdOrder).toBeLessThan(locationOrder);
   });
 });

@@ -1,10 +1,15 @@
 vi.mock('@/shared/lib/store/stores.context');
+vi.mock('@/shared/lib/analytics', () => ({
+  track: vi.fn(),
+  identify: vi.fn(),
+}));
 
 import { renderHook } from '@testing-library/react';
 import type * as Crew from '@/entities/current-partyroom/model/crew.model';
 import { createCurrentPartyroomStore } from '@/entities/current-partyroom/model/current-partyroom.store';
 import { GradeType, MotionType } from '@/shared/api/http/types/@enums';
 import { PartyroomEventType } from '@/shared/api/websocket/types/partyroom';
+import { identify, track } from '@/shared/lib/analytics';
 import { useStores } from '@/shared/lib/store/stores.context';
 import usePlaybackStartCallback from './use-playback-start-callback.hook';
 
@@ -92,5 +97,58 @@ describe('usePlaybackStartCallback', () => {
     const crews = store.getState().crews;
     expect(crews[0].motionType).toBe(MotionType.NONE);
     expect(crews[1].motionType).toBe(MotionType.NONE);
+  });
+
+  describe('analytics emission (regression: lazy state read)', () => {
+    test('partyroomId 미설정 상태에서는 분석 이벤트 발화 안 함', () => {
+      const { result } = renderHook(() => usePlaybackStartCallback());
+      result.current(createPlaybackEvent());
+      expect(track).not.toHaveBeenCalled();
+      expect(identify).not.toHaveBeenCalled();
+    });
+
+    test('hook render 후 store가 갱신돼도 콜백은 최신 partyroomId로 동작 (C1 회귀 방지)', () => {
+      // 1) 첫 render — partyroomId 아직 undefined
+      const { result } = renderHook(() => usePlaybackStartCallback());
+      const callback = result.current;
+
+      // 2) re-render 없이 store만 갱신 (initPartyroom() 흐름 모사)
+      store.getState().init({ id: 42, me: { crewId: 99, gradeType: GradeType.CLUBBER } });
+
+      // 3) 동일한 콜백 참조로 이벤트 처리 — getState() 가 최신값을 읽어야 함
+      callback(createPlaybackEvent());
+
+      expect(track).toHaveBeenCalledWith('Track Playback Started', {
+        partyroom_id: 42,
+        track_id: 'yt-abc123',
+      });
+    });
+
+    test('event.crewId !== my.crewId 일 때는 Track Playback Started만, DJ Turn Started 없음', () => {
+      store.getState().init({ id: 42, me: { crewId: 99, gradeType: GradeType.CLUBBER } });
+
+      const { result } = renderHook(() => usePlaybackStartCallback());
+      result.current(createPlaybackEvent()); // event.crewId=10, me.crewId=99
+
+      expect(track).toHaveBeenCalledWith('Track Playback Started', expect.any(Object));
+      const djTurnCalls = (track as ReturnType<typeof vi.fn>).mock.calls.filter(
+        (call) => call[0] === 'DJ Turn Started'
+      );
+      expect(djTurnCalls).toHaveLength(0);
+      expect(identify).not.toHaveBeenCalled();
+    });
+
+    test('event.crewId === my.crewId 일 때 DJ Turn Started + total_dj_sessions add+1', () => {
+      store.getState().init({ id: 42, me: { crewId: 10, gradeType: GradeType.CLUBBER } });
+
+      const { result } = renderHook(() => usePlaybackStartCallback());
+      result.current(createPlaybackEvent()); // event.crewId=10, me.crewId=10
+
+      expect(track).toHaveBeenCalledWith('DJ Turn Started', {
+        partyroom_id: 42,
+        track_id: 'yt-abc123',
+      });
+      expect(identify).toHaveBeenCalledWith({ add: { total_dj_sessions: 1 } });
+    });
   });
 });

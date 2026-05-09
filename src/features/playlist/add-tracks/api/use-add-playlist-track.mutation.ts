@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import { playlistsService } from '@/shared/api/http/services';
 import { AddTrackToPlaylistRequestBody } from '@/shared/api/http/types/playlists';
+import { track } from '@/shared/lib/analytics';
 
 export const useAddPlaylistTrack = () => {
   const queryClient = useQueryClient();
@@ -16,6 +17,11 @@ export const useAddPlaylistTrack = () => {
       });
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Playlist], // for refetch count
+      });
+      track('Track Added', {
+        playlist_id: variables.listId,
+        track_id: variables.linkId,
+        source: 'search',
       });
     },
   });

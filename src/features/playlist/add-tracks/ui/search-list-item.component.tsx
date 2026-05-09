@@ -29,7 +29,7 @@ export default function SearchListItem({ music, Suffix }: SearchListItemProps) {
 
         {/* 일본어, 중국어 등의 정상 렌더링을 위해 url encode, title decode 해줘야 함 */}
         <Typography className='flex-1 text-left mx-3'>{safeDecodeURI(music.videoTitle)}</Typography>
-        <Typography>{formatDuration(music.runningTime)}</Typography>
+        <Typography data-testid='track-duration'>{formatDuration(music.runningTime)}</Typography>
       </div>
 
       {Suffix}

@@ -1,12 +1,25 @@
 import { RequestCookies, ResponseCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { getEdgeConfigMaintenance } from '@/shared/api/system-status';
 import { TEN_YEARS } from '@/shared/config/time';
 import { isMobileUA } from '@/shared/lib/functions/is-mobile-ua';
 import { LANGUAGE_COOKIE_KEY, Language } from './shared/lib/localization/constants';
 
-export const middleware = (req: NextRequest) => {
+export const middleware = async (req: NextRequest) => {
   const { pathname } = req.nextUrl;
+
+  // 점검 ACTIVE 상태면 /maintenance 로 rewrite (URL 유지, 컨텐츠만 가림)
+  // /maintenance 자체와 정적 자원은 matcher 에서 제외됨
+  const maintenance = await getEdgeConfigMaintenance();
+  if (maintenance?.phase === 'ACTIVE') {
+    const url = req.nextUrl.clone();
+    url.pathname = '/maintenance';
+    url.searchParams.set('messageKo', maintenance.messageKo);
+    url.searchParams.set('messageEn', maintenance.messageEn);
+    url.searchParams.set('endAt', maintenance.endAt);
+    return NextResponse.rewrite(url);
+  }
 
   // 모바일 UA 감지 → /mobile-notice로 리다이렉트 (단, /mobile-notice 자체는 제외)
   if (pathname !== '/mobile-notice') {
@@ -43,7 +56,7 @@ export const config = {
      * - images/
      * - icons/
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|images|icons).*)',
+    '/((?!maintenance|api|_next/static|_next/image|favicon.ico|images|icons).*)',
   ],
 };
 

@@ -1,5 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { usePartyroomClient } from '@/entities/partyroom-client';
+import { track } from '@/shared/lib/analytics';
+import { useStores } from '@/shared/lib/store/stores.context';
 
 type ChildrenProps = {
   message: string;
@@ -14,12 +16,16 @@ type Props = {
 
 export default function SendMessage({ children }: Props) {
   const client = usePartyroomClient();
+  const partyroomId = useStores().useCurrentPartyroom((state) => state.id);
   const [message, setMessage] = useState('');
   const canSend = message.length > 0;
 
   const send = () => {
     if (!canSend) return;
     client.sendChatMessage(message);
+    if (partyroomId) {
+      track('Chat Message Sent', { partyroom_id: partyroomId });
+    }
     setMessage('');
   };
 

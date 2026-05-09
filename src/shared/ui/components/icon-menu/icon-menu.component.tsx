@@ -13,6 +13,7 @@ interface IconMenuProps {
   };
   menuContainerClassName?: string;
   MenuButtonIcon: ReactNode;
+  menuButtonTestId?: string;
   onMenuClose?: () => void;
   onMenuIconClick?: () => void;
 }
@@ -21,6 +22,7 @@ const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
   (
     {
       MenuButtonIcon,
+      menuButtonTestId,
       menuItemConfig,
       menuContainerClassName,
       onMenuClose,
@@ -39,7 +41,11 @@ const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
         <Menu as='section' className={`relative w-fit`}>
           {({ close }) => (
             <>
-              <MenuButton type='icon' onMenuIconClick={onMenuIconClick}>
+              <MenuButton
+                type='icon'
+                onMenuIconClick={onMenuIconClick}
+                data-testid={menuButtonTestId}
+              >
                 {MenuButtonIcon}
               </MenuButton>
               <MenuItemPanel

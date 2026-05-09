@@ -67,6 +67,7 @@ export default function Body({ onCancel }: Props) {
                     onClick={skipPlayback}
                     className='text-gray-50 px-3'
                     typographyType='caption1'
+                    data-testid='dj-skip-button'
                   >
                     {t.common.btn.skip}
                   </TextButton>
@@ -75,11 +76,17 @@ export default function Body({ onCancel }: Props) {
             </div>
           </div>
 
-          <DjListItem variant='accent' userConfig={Dj.toListItemConfig(currentDj)} />
+          <div data-testid='current-dj-item'>
+            <DjListItem variant='accent' userConfig={Dj.toListItemConfig(currentDj)} />
+          </div>
         </div>
 
         <div className='pt-[12px] flex justify-end' style={{ width: RIGHT_PAD }}>
-          <TextButton onClick={onCancel} Icon={<PFClose width={24} height={24} />} />
+          <TextButton
+            onClick={onCancel}
+            Icon={<PFClose width={24} height={24} />}
+            data-testid='djing-dialog-close'
+          />
         </div>
       </header>
 
@@ -110,7 +117,7 @@ export default function Body({ onCancel }: Props) {
 
         <div className='flex-1 h-[240px] overflow-y-auto'>
           {!queue?.length && (
-            <Typography type='detail2' className='text-gray-200'>
+            <Typography type='detail2' className='text-gray-200' data-testid='dj-queue-empty'>
               -
             </Typography>
           )}
@@ -119,7 +126,11 @@ export default function Body({ onCancel }: Props) {
               const isMe = dj.crewId === myCrewId;
 
               return (
-                <div key={'queue' + dj.crewId} className='flex justify-between items-center'>
+                <div
+                  key={'queue' + dj.crewId}
+                  className='flex justify-between items-center'
+                  data-testid={isMe ? 'dj-queue-me-item' : 'dj-queue-item'}
+                >
                   <DjListItem
                     order={`${index + 1}`}
                     userConfig={Dj.toListItemConfig(dj)}

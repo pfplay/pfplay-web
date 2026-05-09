@@ -20,6 +20,7 @@ const SearchInput = ({ onSearch }: SearchInputProps) => {
       classNames={{ container: 'flex-1' }}
       defaultValue={value}
       onChange={handleChange}
+      data-testid='music-search-input'
     />
   );
 };

@@ -4,6 +4,7 @@ import { QueryKeys } from '@/shared/api/http/query-keys';
 import { djsService } from '@/shared/api/http/services';
 import { APIError } from '@/shared/api/http/types/@shared';
 import { RegisterMeToQueuePayload } from '@/shared/api/http/types/djs';
+import { track } from '@/shared/lib/analytics';
 
 export const useRegisterMeToQueue = () => {
   const queryClient = useQueryClient();
@@ -13,6 +14,10 @@ export const useRegisterMeToQueue = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.DjingQueue, variables.partyroomId],
+      });
+      track('DJ Registered', {
+        partyroom_id: variables.partyroomId,
+        playlist_id: variables.playlistId,
       });
     },
   });

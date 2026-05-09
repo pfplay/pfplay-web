@@ -7,16 +7,19 @@ import {
   CreatePlaylistRequestBody,
   CreatePlaylistResponse,
 } from '@/shared/api/http/types/playlists';
+import { identify, track } from '@/shared/lib/analytics';
 
 export const useCreatePlaylist = () => {
   const queryClient = useQueryClient();
 
   return useMutation<CreatePlaylistResponse, AxiosError<APIError>, CreatePlaylistRequestBody>({
     mutationFn: (request) => playlistsService.createPlaylist(request),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Playlist],
       });
+      track('Playlist Created', { playlist_id: data.id });
+      identify({ add: { total_playlists: 1 } });
     },
   });
 };

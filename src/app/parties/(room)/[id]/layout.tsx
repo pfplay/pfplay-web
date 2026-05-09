@@ -1,26 +1,41 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 import { useEnterPartyroom } from '@/features/partyroom/enter';
 import { useExitPartyroom } from '@/features/partyroom/exit';
+import { parseEntrySource } from '@/shared/lib/analytics/room-tracking';
 import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
 
 export default function PartyroomLayout({ children }: PropsWithChildren) {
   const params = useParams<{ id: string }>();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const partyroomId = Number(params.id);
-  const enter = useEnterPartyroom(partyroomId);
+  const entrySource = parseEntrySource(searchParams.get('source'));
+  const enter = useEnterPartyroom(partyroomId, { entrySource });
   const exit = useExitPartyroom(partyroomId);
 
   useDidMountEffect(() => {
     enter();
 
+    // `?source=` 는 진입 attribution 1회 분류용이므로 즉시 제거.
+    // 그대로 두면 사용자가 URL을 복사/공유할 때 잘못된 entry_source가 전파됨.
+    if (searchParams.get('source')) {
+      router.replace(`/parties/${params.id}`, { scroll: false });
+    }
+
+    // beforeunload + pagehide 양쪽 등록 — 모바일 Safari 등에서 beforeunload가
+    // 실행되지 않는 경우를 pagehide가 보강. exit API가 idempotent 보장되어
+    // 중복 호출되더라도 안전.
     window.addEventListener('beforeunload', exit);
+    window.addEventListener('pagehide', exit);
 
     return () => {
       exit();
 
       window.removeEventListener('beforeunload', exit);
+      window.removeEventListener('pagehide', exit);
     };
   });
 

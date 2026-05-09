@@ -3,6 +3,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import isAuthError from '@/shared/api/http/error/is-auth-error';
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import { usersService } from '@/shared/api/http/services';
+import { AuthorityTier } from '@/shared/api/http/types/@enums';
+import { trackSignedIn } from '@/shared/lib/analytics/auth-tracking';
 
 /**
  * 비로그인 상태에서 파티룸 직접 접속 시 guest 자동 로그인 수행
@@ -21,7 +23,10 @@ export default function useAutoSignIn(error: unknown, partyroomId: number | null
 
     usersService
       .signInGuest()
-      .then(() => queryClient.refetchQueries({ queryKey: [QueryKeys.Me] }))
+      .then(() => {
+        trackSignedIn(AuthorityTier.GT);
+        return queryClient.refetchQueries({ queryKey: [QueryKeys.Me] });
+      })
       .catch(() => {
         location.href = '/';
       })
