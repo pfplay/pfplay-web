@@ -50,7 +50,7 @@ export default function PartyroomCreateForm({ onSuccess }: Props) {
         <FormItem
           label={
             <Typography as='span' type='body2'>
-              Admin
+              Host
             </Typography>
           }
           classNames={{ label: 'text-gray-200' }}
