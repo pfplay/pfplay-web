@@ -125,7 +125,12 @@ async function pickShortTrackIndices(
 }
 
 export async function createPlaylistWithTracks(page: Page, playlistName: string) {
-  await page.getByRole('button', { name: /^playlist$/i }).click();
+  // Sidebar 의 Playlist 버튼은 ProtectedLayout 이 me 쿼리 로드 완료 후에만 그려진다.
+  // CI cold-start 시 me fetch 가 길어져 sidebar 가 늦게 mount 되므로 명시적 wait 으로
+  // 실패 메시지를 명확히 하고, 기본 expect 타임아웃(15s)보다 넉넉하게 둔다.
+  const playlistButton = page.getByRole('button', { name: /^playlist$/i });
+  await expect(playlistButton).toBeVisible({ timeout: 30_000 });
+  await playlistButton.click();
   await expect(page.getByRole('button', { name: /add list/i })).toBeVisible({ timeout: 5_000 });
   await page.getByRole('button', { name: /add list/i }).click();
 
