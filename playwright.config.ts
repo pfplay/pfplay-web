@@ -24,7 +24,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
 
   // 테스트 작업 나눠서 돌릴 워커 수
-  workers: 1,
+  workers: process.env.CI ? 2 : 1,
 
   // 테스트 결과 출력할 형식
   reporter: process.env.CI ? 'github' : 'list',
