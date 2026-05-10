@@ -24,7 +24,10 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
 
   // 테스트 작업 나눠서 돌릴 워커 수
-  workers: process.env.CI ? 2 : 1,
+  // CI 의 cross-region + cold-start 환경에서 2 workers 가 동일 백엔드/Vercel 을
+  // 동시 hit 하면 워밍 안 된 상태에서 상호 간섭으로 flake 가 발생한다. 총 소요
+  // 시간이 늘더라도 안정성 우선으로 CI 도 1 worker 로 직렬화.
+  workers: 1,
 
   // 테스트 결과 출력할 형식
   reporter: process.env.CI ? 'github' : 'list',

@@ -82,6 +82,11 @@ test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () =
   };
 
   test.beforeAll(async ({ browser }) => {
+    // CI cold-start 시 me fetch + sidebar mount 가 지연되어 60s 내 setup 이 끝나지
+    // 못해 timeout 이 발생했다. 두 사용자의 playlist 생성 + partyroom 생성을 모두
+    // 포함하므로 기본 60s 보다 넉넉하게 잡는다.
+    test.setTimeout(90_000);
+
     const timestamp = Date.now().toString(36);
     user1PlaylistName = `E2EB-U1-${timestamp}`;
     user2PlaylistName = `E2EB-U2-${timestamp}`;
