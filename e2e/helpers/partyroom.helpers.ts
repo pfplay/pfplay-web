@@ -70,6 +70,29 @@ export async function openDjQueueDrawer(page: Page) {
   await expect.poll(isDrawerOpen, { timeout: 10_000 }).toBe(true);
 }
 
+// Headless UI v2 Dialog는 열려 있는 동안 다른 컨텐츠에 inert 를 적용해 a11y 트리에서
+// 제외시킨다. 닫기 클릭이 force 클릭만으로 끝나면 transition 도중 무시될 수 있고,
+// 결과적으로 drawer 가 닫히지 않은 채 다음 step 의 getByRole 쿼리가 실패한다.
+// (e.g. CI 에서 `My profile` 버튼이 inert 트리에 있어 보이지 않음)
+async function closeDjQueueDrawer(page: Page) {
+  const drawerCloseButton = page
+    .locator(DJING_DIALOG_CLOSE_SELECTOR)
+    .or(page.locator(DJING_DIALOG_CLOSE_SELECTOR_EMPTY))
+    .first();
+  const isDrawerOpen = () => drawerCloseButton.isVisible().catch(() => false);
+
+  await expect
+    .poll(
+      async () => {
+        if (!(await isDrawerOpen())) return true;
+        await drawerCloseButton.click({ force: true }).catch(() => null);
+        return false;
+      },
+      { timeout: 10_000 }
+    )
+    .toBe(true);
+}
+
 function parseDurationToMinutes(text: string): number {
   const parts = text.trim().split(':').map(Number);
   if (parts.some((n) => Number.isNaN(n))) return Number.POSITIVE_INFINITY;
@@ -147,7 +170,6 @@ export async function registerAsDj(page: Page, playlistName?: string) {
   await openDjQueueDrawer(page);
 
   const registerButton = page.getByRole('button', { name: /register.*dj queue|dj 대기 등록/i });
-  const closeButton = page.locator(DJING_DIALOG_CLOSE_SELECTOR);
   await expect(registerButton).toBeVisible({ timeout: 10_000 });
   await expect(registerButton).toBeEnabled({ timeout: 10_000 });
   await registerButton.click({ force: true });
@@ -167,7 +189,7 @@ export async function registerAsDj(page: Page, playlistName?: string) {
   await confirmButton.click({ force: true });
   await dismissDjingGuide(page);
 
-  await closeButton.click({ force: true });
+  await closeDjQueueDrawer(page);
 }
 
 export async function unregisterAsDj(page: Page) {
@@ -192,8 +214,7 @@ export async function unregisterAsDj(page: Page) {
   await expect(confirmButton).toBeEnabled({ timeout: 10_000 });
   await confirmButton.click({ force: true });
 
-  const closeButton = page.locator(DJING_DIALOG_CLOSE_SELECTOR);
-  await closeButton.click({ force: true });
+  await closeDjQueueDrawer(page);
 }
 
 export async function dismissDjingGuide(page: Page) {
