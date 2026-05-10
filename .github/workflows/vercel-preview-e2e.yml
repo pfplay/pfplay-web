@@ -2,7 +2,7 @@ name: preview deploy and e2e
 
 on:
   push:
-    branches: [development]
+    branches: [fix/e2e-b-dj-queue-drawer-flake]
   workflow_dispatch:
 
 jobs:
