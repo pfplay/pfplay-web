@@ -38,33 +38,36 @@ export async function enterPartyroomAndWaitUntilReady(page: Page, partyroomUrl: 
 }
 
 export async function openDjQueueDrawer(page: Page) {
+  const drawerCloseButton = page
+    .locator(DJING_DIALOG_CLOSE_SELECTOR)
+    .or(page.locator(DJING_DIALOG_CLOSE_SELECTOR_EMPTY))
+    .first();
+  const isDrawerOpen = () => drawerCloseButton.isVisible().catch(() => false);
+
+  if (await isDrawerOpen()) {
+    return;
+  }
+
+  if (await page.locator('[data-testid="dialog-panel"]:visible').count()) {
+    await closeVisibleDialogOverlays(page);
+  }
+
   const djQueueButton = page.getByRole('button', { name: /^dj queue$/i });
   await expect(djQueueButton).toBeVisible({ timeout: 30_000 });
   await expect(djQueueButton).toBeEnabled({ timeout: 40_000 });
 
-  await djQueueButton.click({ force: true }); // 알 수 없는 이유로 실패함
-  await page.evaluate(() => {
-    const buttons = Array.from(document.querySelectorAll('button'));
-    const button = buttons.find((candidate) =>
-      /dj queue/i.test(candidate.textContent?.trim() ?? '')
-    ) as HTMLButtonElement | undefined;
-    button?.click();
-  });
+  await djQueueButton.click({ force: true });
+  if (!(await isDrawerOpen())) {
+    await page.evaluate(() => {
+      const buttons = Array.from(document.querySelectorAll('button'));
+      const button = buttons.find((candidate) =>
+        /dj queue/i.test(candidate.textContent?.trim() ?? '')
+      ) as HTMLButtonElement | undefined;
+      button?.click();
+    });
+  }
 
-  await expect
-    .poll(
-      async () =>
-        (await page
-          .locator(DJING_DIALOG_CLOSE_SELECTOR)
-          .isVisible()
-          .catch(() => false)) ||
-        (await page
-          .locator(DJING_DIALOG_CLOSE_SELECTOR_EMPTY)
-          .isVisible()
-          .catch(() => false)),
-      { timeout: 10_000 }
-    )
-    .toBe(true);
+  await expect.poll(isDrawerOpen, { timeout: 10_000 }).toBe(true);
 }
 
 function parseDurationToMinutes(text: string): number {
