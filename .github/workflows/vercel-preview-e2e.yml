@@ -2,7 +2,7 @@ name: preview deploy and e2e
 
 on:
   push:
-    branches: [fix/e2e-b-cold-start-flake]
+    branches: [development]
   workflow_dispatch:
 
 jobs:
