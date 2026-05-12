@@ -1,8 +1,18 @@
 # Backend 협업 요청 — Amplitude 분석 정확도 향상
 
 작성일: 2026-05-02
+최종 검토: 2026-05-13
 관련 문서: [`2026-04-04-event-taxonomy-design.md`](./2026-04-04-event-taxonomy-design.md) §7 (Known Limitations)
 관련 PR: pfplay-web `feat/amplitude-foundation` (4 commits, development 대비 ahead)
+
+## Backend 처리 현황 (2026-05-13 시점)
+
+L1~L4 항목별 백엔드 머지 여부는 본 문서가 직접 추적하지 않습니다. frontend 측 요청만 기록되어 있고, 실제 릴리스 상태는 pfplay-platform 측 PR/이슈에서 확인하세요:
+
+- BE 측 amplitude 관련 PR **#188 / #189**가 머지되어 prod 진입(2026-05-09). L1~L4 중 일부가 이 묶음에 포함되어 있을 가능성이 큽니다 — 정확한 매핑은 PR 본문/diff 확인 필요.
+- 후속 처리: pfplay-platform issue **#204**(admin 계정 일괄 opt-out, B2)에서 추적.
+
+각 L 항목에 반영 확인 시 §머리에 "✅ Shipped (PR #xxx)" 한 줄을 추가하는 식으로 갱신해 주세요. 미반영 항목은 그대로 유지.
 
 ## 배경
 

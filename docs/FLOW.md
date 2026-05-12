@@ -1,5 +1,13 @@
 # 프로젝트 주요 데이터 흐름 (Mermaid Sequence Diagrams)
 
+> Last Update (26.05.13)
+>
+> **2026-05 갱신 노트**:
+>
+> - 다이어그램 2(파티룸 연결/구독)에 **STOMP heartbeat 옵트인 + 커스텀 15s 간격** 반영 (2026-05-09 TECH_DEBT TD-004 정정)
+> - 다이어그램 4 **시스템 공지 + 점검 가드 흐름** 신규 추가 (V14, Edge Config / `/sub/system/announcements`)
+> - V16 백엔드 presence grace window는 프론트에 broadcast가 없어 다이어그램에 변동 없음 — 클라이언트는 기존 `crew_exited`만 수신
+
 ## 다이어그램 1: `StoresProvider`를 사용한 의존성 역전 및 스토어 접근 흐름
 
 ```mermaid
@@ -59,12 +67,13 @@ sequenceDiagram
     %% Initial Connection (App Load)
     PCP->>PClient: 사용자 인증 확인 및 웹소켓 연결 시도
     alt User Authenticated
-        PClient->>WSServer: WebSocket Connect Request
+        PClient->>WSServer: WebSocket Connect Request<br/>(STOMP heartbeat 옵트인, 커스텀 15s/30s)
         WSServer-->>PClient: Connected
         PClient-->>PCP: Connected
     else User Not Authenticated
         PCP->>PClient: (No connect call)
     end
+    Note over PClient,WSServer: heartbeat은 명시적 옵트인 시에만 활성<br/>(클라 15s outgoing / 서버 30s incoming 기대) — TECH_DEBT TD-004 참조
 
     %% Partyroom Entry (User navigates to /parties/(room)/[id])
     User->>Layout: Navigate to Partyroom Page (e.g., /parties/(room)/123)
@@ -173,3 +182,53 @@ sequenceDiagram
 5.  훅은 데이터, 로딩 상태 등을 페이지 컴포넌트에 반환합니다.
 6.  페이지 컴포넌트는 이 데이터를 사용하여 UI를 렌더링하고 사용자에게 보여줍니다.
     - 이는 FSD에서 `features` 레이어의 훅이 `shared/api`를 사용하여 데이터를 가져오고, 이 데이터를 `pages` 또는 `widgets` 레이어에서 소비하는 일반적인 흐름입니다. `ReactQueryProvider`는 `app` 레이어에 위치하여 전역적으로 캐싱 및 상태 관리를 지원합니다.
+
+## 다이어그램 4: 시스템 공지 + 점검 가드 흐름 (V14)
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant Edge as middleware.ts (edge runtime)
+    participant EdgeConfig as Vercel Edge Config<br/>(system-status)
+    participant Page as Page (Next.js)
+    participant SAFeature as features/system-announcement
+    participant PClient as PartyroomClient (STOMP)
+    participant WSServer as WebSocket Server
+    participant Backend as pfplay-platform
+
+    %% Maintenance gate (every request)
+    User->>Edge: 모든 라우트 요청
+    Edge->>EdgeConfig: getEdgeConfigMaintenance()
+    alt phase === 'ACTIVE'
+        EdgeConfig-->>Edge: { phase: 'ACTIVE', messageKo/En, endAt }
+        Edge->>Page: rewrite → /maintenance (URL 유지)
+        Page-->>User: 점검 페이지 표시
+    else phase !== 'ACTIVE'
+        EdgeConfig-->>Edge: null / INACTIVE
+        Edge->>Page: 원래 라우트 그대로 진행
+        Page-->>User: 정상 페이지
+    end
+
+    %% System announcement broadcast (active session)
+    Note over SAFeature,WSServer: 일반 페이지 진입 후 (인증 세션 보유)
+    SAFeature->>PClient: subscribe('/sub/system/announcements')
+    PClient->>WSServer: STOMP SUBSCRIBE
+    Backend->>WSServer: AnnouncementBroadcaster.broadcast(<br/>ANNOUNCEMENT_PUBLISHED / CANCELLED / MAINTENANCE_STARTED)
+    WSServer->>PClient: 메시지 수신
+    PClient->>SAFeature: handleSystemAnnouncement(payload)
+    SAFeature->>SAFeature: 토스트/배너 표시 + store 업데이트
+    SAFeature-->>User: 공지 UI 노출
+
+    %% Maintenance window자체 시작 시점
+    Note over Backend,EdgeConfig: MaintenanceSchedulerService(1분 cron)가<br/>scheduled_start_at 도달 시:
+    Backend->>WSServer: broadcast MAINTENANCE_STARTED
+    Backend->>EdgeConfig: VercelEdgeConfigAdapter로<br/>system-status.phase = 'ACTIVE' 반영
+    Note over Edge: 다음 요청부터 maintenance gate 적용
+```
+
+**설명:**
+
+1.  **점검 가드(매 요청)**: `middleware.ts`(edge runtime)가 모든 라우트 진입 시 Vercel Edge Config의 `system-status`를 동기 조회합니다. `phase === 'ACTIVE'`면 URL은 유지한 채 컨텐츠만 `/maintenance`로 rewrite하여 백엔드 왕복 없이 즉시 차단합니다.
+2.  **공지 실시간 수신**: 점검이 아닌 일반 세션에서 `features/system-announcement`가 STOMP의 `/sub/system/announcements` 채널을 구독합니다. 백엔드 `AnnouncementBroadcaster`가 `ANNOUNCEMENT_PUBLISHED` / `ANNOUNCEMENT_CANCELLED` / `MAINTENANCE_STARTED` 이벤트를 발행하면 토스트/배너로 노출됩니다.
+3.  **점검 시작 자동 트리거**: 백엔드 `MaintenanceSchedulerService`(1분 cron)가 `scheduled_start_at`을 넘어서면 `MAINTENANCE_STARTED`를 broadcast하고 Edge Config의 `phase`를 `ACTIVE`로 갱신합니다. 두 경로(WS broadcast + Edge Config) 모두 작동하므로, 이미 페이지에 머문 사용자는 즉시 UI 알림을 받고, 새로 진입하는 사용자는 middleware 가드로 점검 페이지를 본다.
+4.  관련 ADR / 문서: pfplay-platform ADR-007(시스템 공지 아키텍처), `docs/asyncapi/asyncapi.yml`의 `systemAnnouncementBroadcast` 채널.

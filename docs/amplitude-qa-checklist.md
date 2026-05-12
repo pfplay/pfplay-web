@@ -1,8 +1,15 @@
 # Amplitude QA Checklist
 
 설계 문서: [`2026-04-04-event-taxonomy-design.md`](./2026-04-04-event-taxonomy-design.md)
+최종 검토: 2026-05-13
 
 이 체크리스트는 PR-1~4 머지 후 staging 환경에서 한 번 돌려서 18개 이벤트 + 7개 user property가 모두 의도대로 송신되는지 검증하기 위한 시나리오 모음이다.
+
+## 2026-05 갱신 노트
+
+- **`stage_type` 의존 시나리오**: L1(`stageType` 백엔드 추가) 머지 여부에 따라 결과가 달라집니다. pfplay-platform PR #188/#189에 포함되었는지 확인 후 PASS 기준을 결정하세요.
+- **`isNewUser` 플래그 의존 시나리오**: L4(`isNewUser` 백엔드 신호) 머지 여부에 따라 `pfp_amplitude_seen_uids` localStorage 캐싱 방식이 달라질 수 있습니다.
+- **B1 super-admin opt-out 신규**: 아래 [S30. Super-admin 자동 opt-out (B1)](#s30-super-admin-자동-opt-out-b1) 시나리오 추가.
 
 ## 사전 준비
 
@@ -182,3 +189,23 @@
 - **이벤트가 늦게 보임**: Amplitude flush 주기상 5~30초 지연 가능. Live Stream보다 User Look-Up이 즉시성 떨어짐
 - **`User Signed Up` 중복 의심**: Local Storage `pfp_amplitude_seen_uids` 확인. 시크릿 창/캐시 클리어 후 재로그인하면 의도적으로 1회 더 발행됨
 - **`duration_sec` 정확도 의심**: 모바일 Safari는 알려진 한계 (L2)
+
+---
+
+## S30. Super-admin 자동 opt-out (B1)
+
+pfplay-web은 super-admin이 발급한 단축 `user_id`(5자 미만)을 자동으로 감지해 Amplitude SDK를 `reset() + optOut()` 합니다. 운영자가 사용자 콘솔에 진입했을 때 super-admin 이벤트가 분석 결과를 오염시키지 않도록 하는 가드입니다 (pfplay-web PR #285).
+
+- **사전**: super-admin 권한으로 로그인 가능한 staging 계정 확보. 일반 사용자 id가 5자 미만이 되지 않는다는 백엔드 정책 확인.
+- **동작 1 — opt-out 활성화**:
+  1. 사용자 콘솔(`https://stg.pfplay.xyz` 또는 dev)에 super-admin 자격으로 로그인
+  2. DevTools Network 탭에 `api2.amplitude.com` 호출이 **추가되지 않는** 것 확인
+  3. DevTools Console에서 `amplitude.getOptOut()`이 `true` 반환 (또는 SDK 내부 상태 점검)
+- **동작 2 — 일반 사용자 비교**:
+  1. 시크릿 창에서 일반 사용자(`user_id` 5자 이상)로 로그인
+  2. Amplitude 호출 정상 발생 + Network에 요청 1건 이상
+- **PASS 기준**:
+  - super-admin: amplitude 이벤트 0건
+  - 일반 사용자: 통상 시나리오대로 이벤트 송신
+  - 둘 사이 전환 시 SDK 내부 상태가 깔끔히 `reset()` (이전 사용자 정보 잔류 X)
+- **참고**: 백엔드 측 admin 계정 일괄 opt-out 처리는 pfplay-platform issue #204(B2)에서 별도 추적.
