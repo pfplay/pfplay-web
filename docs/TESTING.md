@@ -1,23 +1,32 @@
 # 테스트 가이드
 
-> Last Update (26.03.02)
+> Last Update (26.05.13)
+
+이 프로젝트의 테스트 러너는 **Vitest**입니다 (Jest 아님). MSW로 백엔드를 가짜 응답으로 대체하고, Playwright는 e2e 전용입니다.
 
 ## 1. 실행 방법
 
 ```bash
-# 전체 테스트 실행
-yarn test
-
-# 커버리지 없이 실행 (빠름)
-npx jest --no-coverage
-
-# 특정 파일/패턴만 실행
-npx jest src/shared/ui --no-coverage
-npx jest --testPathPattern="integration" --no-coverage
+# 전체 테스트 (단발, CI용)
+yarn test          # = vitest run
 
 # 타입 체크
-yarn test:type
+yarn test:type     # = tsc --noEmit
+
+# e2e (Playwright)
+yarn test:e2e
+yarn test:e2e:headed
+
+# watch / UI
+npx vitest             # watch mode
+npx vitest --ui        # 브라우저 UI
+
+# 특정 파일/패턴만
+npx vitest src/shared/ui
+npx vitest run "integration"
 ```
+
+> Jest 시절의 `npx jest --no-coverage` 명령은 더 이상 동작하지 않습니다.
 
 ## 2. 테스트 기법
 
@@ -60,22 +69,23 @@ src/shared/api/http/services/
 
 ## 4. MSW 통합 테스트 작성법
 
-MSW(Mock Service Worker)를 사용하여 `jest.mock` 없이 실제 axios → 인터셉터 → 응답 처리 파이프라인을 검증합니다.
+MSW(Mock Service Worker)를 사용해 `vi.mock` 없이 실제 axios → 인터셉터 → 응답 처리 파이프라인을 검증합니다.
 
 ### 인프라 파일 구조
 
 ```
 src/shared/api/__test__/
-├── jest-msw-env.ts    # 커스텀 Jest 환경 (jsdom + Node.js fetch 글로벌)
 ├── msw-server.ts      # setupServer + beforeAll/afterEach/afterAll 라이프사이클
 ├── handlers.ts        # 25+ 엔드포인트 핸들러
 └── test-utils.tsx     # createTestQueryClient, TestWrapper, renderWithClient
 ```
 
+루트의 `vitest.setup.ts`가 jsdom 환경 + RTL matchers (`@testing-library/jest-dom/vitest`)를 자동 로드합니다.
+
 ### 기본 패턴: 서비스 호출 테스트
 
 ```typescript
-// src/shared/api/__test__/msw-server.ts 를 반드시 import
+// msw-server를 반드시 import해야 라이프사이클 훅이 등록됩니다
 import '@/shared/api/__test__/msw-server';
 import { playlistsService } from '@/shared/api/http/services';
 
@@ -90,6 +100,7 @@ describe('playlistsService', () => {
 ### 기본 패턴: React Query 훅 통합 테스트
 
 ```typescript
+import { vi } from 'vitest';
 import { server } from '@/shared/api/__test__/msw-server';
 import { renderWithClient } from '@/shared/api/__test__/test-utils';
 import { http, HttpResponse } from 'msw';
@@ -100,7 +111,7 @@ const API = process.env.NEXT_PUBLIC_API_HOST_NAME;
 
 test('뮤테이션 성공 시 캐시를 무효화한다', async () => {
   const { result, queryClient } = renderWithClient(() => useCreatePlaylist());
-  const invalidate = jest.spyOn(queryClient, 'invalidateQueries');
+  const invalidate = vi.spyOn(queryClient, 'invalidateQueries');
 
   await act(async () => {
     result.current.mutate({ name: 'Test' });
@@ -167,20 +178,21 @@ export const handlers = [
 `useStores` 컨텍스트에 의존하는 훅 테스트 패턴입니다.
 
 ```typescript
-jest.mock('@/shared/lib/store/stores.context');
-
+import { vi, type Mock } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { createCurrentPartyroomStore } from '@/entities/current-partyroom/model/current-partyroom.store';
 import { GradeType } from '@/shared/api/http/types/@enums';
 import { useStores } from '@/shared/lib/store/stores.context';
 import useCanClose from './use-can-close-current-partyroom.hook';
 
+vi.mock('@/shared/lib/store/stores.context');
+
 let store: ReturnType<typeof createCurrentPartyroomStore>;
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   store = createCurrentPartyroomStore();
-  (useStores as jest.Mock).mockReturnValue({ useCurrentPartyroom: store });
+  (useStores as unknown as Mock).mockReturnValue({ useCurrentPartyroom: store });
 });
 
 test('HOST는 파티룸을 닫을 수 있다', () => {
@@ -193,13 +205,14 @@ test('HOST는 파티룸을 닫을 수 있다', () => {
 ### React Query 캐시 모킹
 
 ```typescript
-const mockGetQueryData = jest.fn();
-jest.mock('@tanstack/react-query', () => ({
-  useQueryClient: () => ({ getQueryData: mockGetQueryData }),
-}));
-
+import { vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import useIsNft from './use-is-nft.hook';
+
+const mockGetQueryData = vi.fn();
+vi.mock('@tanstack/react-query', () => ({
+  useQueryClient: () => ({ getQueryData: mockGetQueryData }),
+}));
 
 test('NFT 목록에 URI가 존재하면 true를 반환한다', () => {
   mockGetQueryData.mockReturnValue([
@@ -215,17 +228,18 @@ test('NFT 목록에 URI가 존재하면 true를 반환한다', () => {
 Headless UI 컴포넌트(`Select`, `Tab`, `Dialog` 등)를 사용하는 컴포넌트는 `ResizeObserver` mock이 필요합니다.
 
 ```typescript
+import { vi } from 'vitest';
+import { render, fireEvent } from '@testing-library/react';
+import Button from './button.component';
+
 global.ResizeObserver = class ResizeObserver {
   public observe() { /* noop */ }
   public unobserve() { /* noop */ }
   public disconnect() { /* noop */ }
 } as any;
 
-import { render, fireEvent } from '@testing-library/react';
-import Button from './button.component';
-
 test('클릭 이벤트가 발생한다', () => {
-  const onClick = jest.fn();
+  const onClick = vi.fn();
   const { getByRole } = render(<Button onClick={onClick}>Click</Button>);
   fireEvent.click(getByRole('button'));
   expect(onClick).toHaveBeenCalledTimes(1);
@@ -236,22 +250,41 @@ test('클릭 이벤트가 발생한다', () => {
 
 | 제약                | 설명                                                            | 대응                                                                        |
 | ------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| **jest-dom 미설정** | `toBeInTheDocument()` 사용 불가                                 | `toBeTruthy()` / `toBeFalsy()` 대체                                         |
 | **ErrorCode 검증**  | `getErrorCode()`가 enum에 없는 코드를 무시하고 `undefined` 반환 | 테스트 시 반드시 `ErrorCode` enum 값 사용                                   |
 | **MSW 서버 import** | `msw-server.ts`를 명시적 import 해야 라이프사이클 훅 실행됨     | `server.use()` 없는 파일도 `import '@/shared/api/__test__/msw-server'` 필수 |
 | **useIsNft 반환값** | `nfts && nfts.find(...)` → 데이터 없으면 `undefined` 반환       | `toBe(false)` 대신 `toBeFalsy()` 사용                                       |
 | **ResizeObserver**  | jsdom에 미구현 → Headless UI 컴포넌트 테스트 시 에러            | 테스트 상단에 글로벌 mock 추가                                              |
 
+> 참고: 과거 "jest-dom 미설정" 제약은 해소되었습니다. `@testing-library/jest-dom@^6.9.1` + `vitest.setup.ts`에서 `import '@testing-library/jest-dom/vitest'`로 자동 로드되어 `toBeInTheDocument()` 등의 matcher를 그대로 사용할 수 있습니다.
+
 ## 7. 환경 설정 요약
 
-| 항목                       | 값                                              |
-| -------------------------- | ----------------------------------------------- |
-| 테스트 러너                | Jest 29                                         |
-| 테스트 환경                | jsdom (`jest-msw-env.ts`로 fetch 글로벌 복원)   |
-| 트랜스파일러               | @swc/jest                                       |
-| 모듈 별칭                  | `@/` → `src/`                                   |
-| MSW 버전                   | v2 (Node.js `setupServer`)                      |
-| React Testing Library      | v16                                             |
-| React Query                | TanStack Query v5                               |
-| QueryClient 기본 staleTime | 5분 (300,000ms)                                 |
-| QueryClient 기본 retry     | dev: 비활성화 / prod: 최대 3회 (인증 에러 제외) |
+| 항목                       | 값                                                 |
+| -------------------------- | -------------------------------------------------- |
+| 테스트 러너                | **Vitest 4**                                       |
+| 테스트 환경                | jsdom (`vitest.config.ts` + `vitest.setup.ts`)     |
+| 트랜스파일러               | Vitest 내장 (esbuild) — `@swc/jest` 더 이상 사용 X |
+| DOM matchers               | `@testing-library/jest-dom@^6.9.1` (Vitest 통합)   |
+| 모듈 별칭                  | `@/` → `src/`                                      |
+| MSW 버전                   | v2 (Node.js `setupServer`)                         |
+| React Testing Library      | v16                                                |
+| React Query                | TanStack Query v5                                  |
+| QueryClient 기본 staleTime | 5분 (300,000ms)                                    |
+| QueryClient 기본 retry     | dev: 비활성화 / prod: 최대 3회 (인증 에러 제외)    |
+
+## 8. Jest → Vitest 마이그레이션 참고
+
+기존 Jest 패턴을 Vitest로 옮길 때 자주 쓰이는 매핑:
+
+| Jest                   | Vitest                                |
+| ---------------------- | ------------------------------------- |
+| `jest.fn()`            | `vi.fn()`                             |
+| `jest.spyOn(...)`      | `vi.spyOn(...)`                       |
+| `jest.mock('...')`     | `vi.mock('...')`                      |
+| `jest.clearAllMocks()` | `vi.clearAllMocks()`                  |
+| `jest.resetAllMocks()` | `vi.resetAllMocks()`                  |
+| `jest.useFakeTimers()` | `vi.useFakeTimers()`                  |
+| `jest.Mock` 타입       | `import { type Mock } from 'vitest'`  |
+| `@swc/jest` 설정       | `vitest.config.ts` (별도 설정 불필요) |
+
+Vitest는 `vi`를 `import { vi } from 'vitest'`로 명시 import해야 합니다 (Jest 전역과 달리).
