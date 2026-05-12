@@ -42,6 +42,11 @@
 - [009 Error Monitoring](./adr/009-error-monitoring.md)
 - [010 Accessibility Strategy](./adr/010-accessibility-strategy.md)
 - [011 FSD Import Boundary](./adr/011-fsd-import-boundary.md)
+- [012 파티룸 신고 UI 설계 (V13)](./adr/012-partyroom-report-ui.md)
+- [013 시스템 공지 feature 도메인 설계 (V14)](./adr/013-system-announcement-feature.md)
+- [014 Amplitude super-admin 자동 opt-out](./adr/014-amplitude-super-admin-opt-out.md)
+- [015 STOMP heartbeat 옵트인 + 커스텀 간격](./adr/015-stomp-heartbeat-split.md)
+- [016 middleware 점검 가드 (Vercel Edge Config)](./adr/016-maintenance-edge-gate.md)
 
 ## src (코드 옆 README)
 
