@@ -1,5 +1,10 @@
 # Amplitude Event Taxonomy Design
 
+> 최초 작성: 2026-04-04
+> 최종 검토: 2026-05-13
+>
+> **2026-05 보강 (PR #285, ADR-014)**: 본 문서가 정의한 18개 이벤트는 super-admin 로그인 시 **자동 opt-out**됩니다. 백엔드가 발급한 `user_id`의 길이가 **5자 미만**이면 Amplitude SDK가 `reset() + setOptOut(true)`를 호출해 이벤트 송신을 중지합니다. 일반 사용자 ID는 5자 이상이라는 백엔드 정책 가정이 깨지면 본 가드를 다시 검토하세요. 자세한 사항은 [ADR-014](./adr/014-amplitude-super-admin-opt-out.md), QA 시나리오는 [amplitude-qa-checklist.md S30](./amplitude-qa-checklist.md).
+
 ## Context
 
 PFPlay는 파티룸 기반 음악 스트리밍 서비스다. Amplitude를 도입하여 두 가지 핵심 질문에 답하고자 한다:

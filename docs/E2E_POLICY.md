@@ -1,5 +1,21 @@
 # E2E 테스트 정책
 
+> Last Update (26.05.13)
+
+## 현재 구성 (참고용)
+
+본 정책에 따라 현재 운영 중인 e2e 구성:
+
+| 구분     | Playwright 프로젝트 | 위치                                             | 책임                                                   |
+| -------- | ------------------- | ------------------------------------------------ | ------------------------------------------------------ |
+| Setup    | `auth-a` ~ `auth-d` | `e2e/auth/setup.{a-d}.ts`                        | 4명의 사용자 인증 세션 사전 수립 (dev-token 직접 발급) |
+| Scenario | `e2e-a`             | `e2e/e2e-a.partyroom-join-sync.spec.ts`          | 파티룸 입장 + 다중 사용자 WebSocket 동기화             |
+| Scenario | `e2e-b`             | `e2e/e2e-b.dj-state-machine.spec.ts`             | DJ 큐 등록 → 재생 상태머신 전이                        |
+| Scenario | `e2e-c`             | `e2e/e2e-c.partyroom-moderation.spec.ts`         | HOST의 크루 강등/페널티/종료 등 비가역 모더레이션      |
+| Scenario | `e2e-d`             | `e2e/e2e-d.profile-avatar-reaction-chat.spec.ts` | 프로필·아바타·반응·채팅 통합 흐름                      |
+
+총 시나리오 4개로 §"총 E2E 시나리오는 최대 5개" 정책 한도 내에 운영 중입니다. 신규 시나리오 추가 시 본 표를 갱신하세요.
+
 ## 배경
 
 PFPlay는 실시간 파티룸 음악 플랫폼으로, 다음 두 가지 구조적 특성이 있다.

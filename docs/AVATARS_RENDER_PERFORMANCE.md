@@ -1,7 +1,8 @@
 # Avatars 컴포넌트 렌더 성능 분석
 
 > **작성일**: 2026-04-19
-> **대상 파일**: `src/widgets/partyroom-avatars/ui/avatars.component.tsx` > **관련 파일**: `src/widgets/partyroom-avatars/lib/use-avatar-cluster.hook.ts`, `src/entities/avatar/ui/useAvatarDance.hook.ts`, `src/shared/lib/functions/pick.ts`
+> **최종 검토**: 2026-05-13
+> **대상 파일**: `src/widgets/partyroom-avatars/ui/avatars.component.tsx` > **관련 파일**: `src/widgets/partyroom-avatars/lib/use-avatar-cluster.hook.ts`, `src/entities/avatar/ui/useAvatarDance.hook.ts`, `src/shared/lib/functions/pick.ts` > **추적**: 본 문서의 Fix 1~5는 TECH_DEBT.md TD-013 항목에서 진행 상태를 추적합니다. 미구현 항목은 향후 PR로 분리 진행 (`useShallow` 셀렉터, `registerAvatar` `useCallback` 메모이제이션 등).
 
 ---
 
