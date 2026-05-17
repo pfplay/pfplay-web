@@ -27,10 +27,24 @@ export default class PartyroomClient {
     this.socketClient.onConnect(callback, options);
   }
 
+  /**
+   * partyroom 을 구독합니다. **replace 정책**:
+   * 이미 다른 방을 구독 중이면 기존 방을 먼저 해지한 뒤 새 방을 구독합니다 (throw 없음).
+   *
+   * - 과거의 "다중 구독 시 throw" 가드는 #30 (throw → silent → router.push → unmount → 강제 퇴장)
+   *   증폭의 발원지였으므로 제거되었습니다. 동기적 unsubscribe-then-subscribe 로 대체합니다.
+   * - 동시에 이는 SocketClient.subscriptions[] (T3.1 단일 진실원천)의
+   *   "destination 당 활성 구독 1개" 전제를 소비자 계층에서 강제합니다.
+   * - 동일 방으로의 재구독은 idempotent — 중복 SoT 엔트리를 만들지 않기 위해 no-op 합니다.
+   */
   public subscribe(partyroomId: number, handler: (message: IMessage) => void) {
-    if (this.socketClient.subscriptions.length) {
-      // TODO: 다른 방 연결 끊고 이 방에 연결할래? 라는 문구 출력하도록 작업
-      throw new Error('Cannot connect to multiple partyrooms at the same time.');
+    if (this.subscribedRoomId === partyroomId) {
+      // 동일 destination 재구독은 T3.1 단일 destination 전제를 위반(중복 SoT 엔트리)하므로 no-op.
+      return;
+    }
+
+    if (this.subscribedRoomId != null) {
+      this.unsubscribeCurrentRoom();
     }
 
     this.socketClient.subscribe(`/sub/partyrooms/${partyroomId}`, handler);
