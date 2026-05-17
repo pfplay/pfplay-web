@@ -17,6 +17,6 @@ export function useTeardownPartyroom(partyroomId: number) {
   return () => {
     trackPartyroomExited(partyroomId);
     client.unsubscribeCurrentRoom();
-    resetPartyroomStore(); // NOTE: 클라 정리는 무조건 실행되므로 플래그 체크 없음. 스토어 리셋은 마지막에 유지.
+    resetPartyroomStore(); // NOTE: 순서 의존성 없음(unsubscribeCurrentRoom은 스토어 비의존). 리셋을 마지막에 둔 건 가독성/삭제된 useExitPartyroom과의 형태 일치 목적뿐.
   };
 }
