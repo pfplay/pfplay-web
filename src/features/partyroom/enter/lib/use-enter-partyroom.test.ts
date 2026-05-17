@@ -24,7 +24,6 @@ import { useEnterPartyroom as useEnterPartyroomMutation } from '../api/use-enter
 const mockOnConnect = vi.fn();
 const mockMutate = vi.fn();
 const mockInit = vi.fn();
-const mockMarkExitedOnBackend = vi.fn();
 const mockPush = vi.fn();
 const mockInvalidateQueries = vi.fn();
 
@@ -36,8 +35,7 @@ beforeEach(() => {
   });
   (useHandlePartyroomSubscriptionEvent as Mock).mockReturnValue(vi.fn());
   (useStores as Mock).mockReturnValue({
-    useCurrentPartyroom: (selector: (...args: any[]) => any) =>
-      selector({ init: mockInit, markExitedOnBackend: mockMarkExitedOnBackend }),
+    useCurrentPartyroom: (selector: (...args: any[]) => any) => selector({ init: mockInit }),
   });
   (useEnterPartyroomMutation as Mock).mockReturnValue({ mutate: mockMutate });
   (useAppRouter as Mock).mockReturnValue({ push: mockPush });
@@ -75,7 +73,7 @@ describe('useEnterPartyroom', () => {
     );
   });
 
-  test('enter 실패 시 markExitedOnBackend 호출 후 로비로 이동한다', () => {
+  test('enter 실패 시 로비로 이동한다 (백엔드 exit 워크어라운드 없음)', () => {
     const { result } = renderHook(() => useEnterPartyroom(1));
 
     act(() => {
@@ -89,7 +87,8 @@ describe('useEnterPartyroom', () => {
     const mutateOptions = mockMutate.mock.calls[0][1];
     mutateOptions.onError();
 
-    expect(mockMarkExitedOnBackend).toHaveBeenCalled();
+    // enter 자체가 실패했으므로 입장한 룸이 없다. 레이아웃 언마운트는 더 이상
+    // 백엔드 exit을 호출하지 않으므로 별도의 억제 워크어라운드가 필요 없다.
     expect(mockPush).toHaveBeenCalledWith('/parties');
   });
 

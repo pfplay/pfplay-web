@@ -56,7 +56,6 @@ describe('current-partyroom store', () => {
     const state = store.getState();
 
     expect(state.id).toBeUndefined();
-    expect(state.exitedOnBackend).toBe(false);
     expect(state.me).toBeUndefined();
     expect(state.playbackActivated).toBe(false);
     expect(state.playback).toBeUndefined();
@@ -70,16 +69,6 @@ describe('current-partyroom store', () => {
     expect(state.notice).toBe('');
     expect(state.chat).toBeDefined();
     expect(state.alert).toBeDefined();
-  });
-
-  describe('markExitedOnBackend', () => {
-    test('exitedOnBackend가 true로 변경된다', () => {
-      const store = createCurrentPartyroomStore();
-
-      store.getState().markExitedOnBackend();
-
-      expect(store.getState().exitedOnBackend).toBe(true);
-    });
   });
 
   describe('updateMe', () => {
@@ -294,7 +283,6 @@ describe('current-partyroom store', () => {
       const store = createCurrentPartyroomStore();
       // 먼저 상태를 변경
       store.getState().updateNotice('이전 공지');
-      store.getState().markExitedOnBackend();
 
       const crews = [createCrew({ crewId: 10 })];
       store.getState().init({
@@ -311,8 +299,6 @@ describe('current-partyroom store', () => {
       expect(state.playbackActivated).toBe(true);
       expect(state.crews).toEqual(crews);
       expect(state.notice).toBe('새 공지');
-      // 초기 상태로 리셋된 값
-      expect(state.exitedOnBackend).toBe(false);
     });
   });
 
@@ -327,13 +313,11 @@ describe('current-partyroom store', () => {
         crews: [createCrew()],
         notice: '공지사항',
       });
-      store.getState().markExitedOnBackend();
 
       store.getState().reset();
 
       const state = store.getState();
       expect(state.id).toBeUndefined();
-      expect(state.exitedOnBackend).toBe(false);
       expect(state.me).toBeUndefined();
       expect(state.playbackActivated).toBe(false);
       expect(state.playback).toBeUndefined();

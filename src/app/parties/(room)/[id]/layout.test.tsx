@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 const mockEnter = vi.fn();
 const mockTeardown = vi.fn();
-const mockExit = vi.fn();
 const mockReplace = vi.fn();
 let searchParamsValue: string | null = null;
 
@@ -19,7 +18,6 @@ vi.mock('@/features/partyroom/enter', () => ({
 
 vi.mock('@/features/partyroom/exit', () => ({
   useTeardownPartyroom: () => mockTeardown,
-  useExitPartyroom: () => mockExit,
 }));
 
 vi.mock('@/shared/lib/analytics/room-tracking', () => ({
@@ -56,7 +54,7 @@ describe('PartyroomLayout (Cluster A PR-4 L2: unmount=teardown, no unload backen
     expect(mockReplace).toHaveBeenCalledWith('/parties/7', { scroll: false });
   });
 
-  test('언마운트 시 teardown(클라 정리)만 호출하고 백엔드 exit 은 절대 호출하지 않는다', () => {
+  test('언마운트 시 teardown(클라 정리)만 호출한다 (백엔드 exit 훅 자체를 더 이상 참조하지 않음)', () => {
     const { unmount } = render(
       <PartyroomLayout>
         <div>child</div>
@@ -66,7 +64,6 @@ describe('PartyroomLayout (Cluster A PR-4 L2: unmount=teardown, no unload backen
     unmount();
 
     expect(mockTeardown).toHaveBeenCalledTimes(1);
-    expect(mockExit).not.toHaveBeenCalled();
   });
 
   test('beforeunload / pagehide 리스너를 등록하지 않는다', () => {

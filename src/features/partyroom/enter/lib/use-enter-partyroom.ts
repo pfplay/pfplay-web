@@ -22,10 +22,7 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
   const client = usePartyroomClient();
   const handleEvent = useHandlePartyroomSubscriptionEvent();
   const { useCurrentPartyroom } = useStores();
-  const [initPartyroom, markExitedOnBackend] = useCurrentPartyroom((state) => [
-    state.init,
-    state.markExitedOnBackend,
-  ]);
+  const initPartyroom = useCurrentPartyroom((state) => state.init);
   const { mutate: enter } = useEnterPartyroomMutation();
   const queryClient = useQueryClient();
   const router = useAppRouter();
@@ -90,7 +87,8 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
               });
             },
             onError: () => {
-              markExitedOnBackend(); // enter 자체가 안됐으니, 페이지 벗어날 때 exit api 호출 방지
+              // enter 자체가 실패해 입장한 룸이 없다. 레이아웃 언마운트는 더 이상
+              // 백엔드 exit을 호출하지 않으므로 별도의 억제 워크어라운드가 필요 없다.
               router.push('/parties'); // 에러 발생 시 로비로 이동
             },
           }
