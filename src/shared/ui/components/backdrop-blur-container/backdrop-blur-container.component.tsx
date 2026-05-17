@@ -16,16 +16,19 @@ const BackdropBlurContainer = ({
   children,
 }: PropsWithChildren<BackdropBlurContainerProps>) => {
   return (
-    <div className={cn('relative border border-gray-800 rounded cursor-pointer', className)}>
+    <div
+      className={cn(
+        'relative overflow-hidden border border-gray-800 rounded cursor-pointer',
+        className
+      )}
+    >
       <div className='absolute inset-1'>
-        {/* FIXME: replace the image according to api spec */}
         <Image
           priority
           src={src || '/images/ETC/PlaylistThumbnail.png'}
           alt={alt || 'backdrop image'}
-          width={80}
-          height={40}
-          className='object-fill w-full h-full p-2 select-none'
+          fill
+          className='object-cover select-none scale-105'
         />
       </div>
       {children}

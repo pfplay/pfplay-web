@@ -26,11 +26,14 @@ const PartyroomCard = ({ roomId, summary, onClose }: PartyroomCardProps) => {
   };
 
   return (
-    <BackdropBlurContainer>
+    <BackdropBlurContainer
+      src={summary.playback?.thumbnailImage}
+      alt={summary.playback?.name || summary.title}
+    >
       <Link
         href={`/parties/${roomId}?source=list`}
         onClick={handleClick}
-        className='h-full flexCol justify-between gap-[61px] py-6 px-7 backdrop-blur-xl bg-backdrop-black/80'
+        className='h-full flexCol justify-between gap-[61px] py-6 px-7 backdrop-blur-sm bg-backdrop-black/80'
       >
         <Typography type='title2' className='text-gray-50'>
           {summary.title}
