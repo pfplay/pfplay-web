@@ -9,6 +9,7 @@ import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-cont
 import { Typography } from '@/shared/ui/components/typography';
 import { PFInfoOutline } from '@/shared/ui/icons';
 import Crews from './crews.component';
+import { getPartyroomCardBackdropProps } from './partyroom-card-backdrop';
 
 interface PartyroomCardProps {
   roomId: number;
@@ -26,11 +27,14 @@ const PartyroomCard = ({ roomId, summary, onClose }: PartyroomCardProps) => {
   };
 
   return (
-    <BackdropBlurContainer>
+    <BackdropBlurContainer
+      src={summary.playback?.thumbnailImage}
+      {...getPartyroomCardBackdropProps(summary.playback?.thumbnailImage)}
+    >
       <Link
         href={`/parties/${roomId}?source=list`}
         onClick={handleClick}
-        className='h-full flexCol justify-between gap-[61px] py-6 px-7 backdrop-blur-xl bg-backdrop-black/80'
+        className='h-full flexCol justify-between gap-[61px] py-6 px-7 backdrop-blur-sm bg-backdrop-black/80'
       >
         <Typography type='title2' className='text-gray-50'>
           {summary.title}

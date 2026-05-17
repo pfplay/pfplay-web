@@ -7,6 +7,7 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
 import { Typography } from '@/shared/ui/components/typography';
 import Crews from './crews.component';
+import { getPartyroomCardBackdropProps } from './partyroom-card-backdrop';
 import { useSuspenseFetchMainPartyroom } from '../api/use-fetch-main-partyroom.query';
 
 interface MainPartyroomCardProps {
@@ -22,11 +23,14 @@ export default function MainPartyroomCard({ onClose }: MainPartyroomCardProps) {
     return null; // 메인 파티룸은 항상 존재한다고 가정하지만, 최소한의 안전장치.
   }
   return (
-    <BackdropBlurContainer>
+    <BackdropBlurContainer
+      src={partyroom.playback?.thumbnailImage}
+      {...getPartyroomCardBackdropProps(partyroom.playback?.thumbnailImage)}
+    >
       <Link
         href={`/parties/${partyroom.partyroomId}?source=list`}
         onClick={onClose}
-        className='flexCol tablet:flexRow items-start tablet:items-end gap-[20px] tablet:gap-[50px] desktop:gap-[169px] px-7 py-10 backdrop-blur-xl bg-backdrop-black/80'
+        className='flexCol tablet:flexRow items-start tablet:items-end gap-[20px] tablet:gap-[50px] desktop:gap-[169px] px-7 py-10 backdrop-blur-sm bg-backdrop-black/80'
       >
         <div className='flexCol gap-6 tablet:gap-12 pb-[21px]'>
           <div className='gap-3 flexCol'>

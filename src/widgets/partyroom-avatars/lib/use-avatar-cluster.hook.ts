@@ -20,6 +20,7 @@ import {
 type D3Node = SimulationNodeDatum & Crew.Model & { fx?: number; fy?: number };
 type PositionedCrew = Crew.Model & { position: Point };
 export type CrewPosition = { crewId: number; position: Point };
+export type StageBounds = { width: number; height: number };
 
 export type OvalBounds = {
   centerX: number;
@@ -90,17 +91,20 @@ function runClusterSimulation({
   crews,
   existingNodes,
   ovalConfig,
+  stageBounds,
+  prevStageBounds,
 }: {
   crews: Crew.Model[];
   existingNodes: D3Node[];
   ovalConfig: OvalConfig;
+  stageBounds: StageBounds;
+  prevStageBounds?: StageBounds;
 }): { positionedCrews: PositionedCrew[]; updatedNodes: D3Node[] } {
   if (crews.length === 0) {
     return { positionedCrews: [], updatedNodes: [] };
   }
 
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  const { width, height } = stageBounds;
   const centerX = width * ovalConfig.CENTER_X_RATIO;
   const centerY = height * ovalConfig.CENTER_Y_RATIO;
 
@@ -201,6 +205,32 @@ function runClusterSimulation({
     return bestPosition;
   };
 
+  const normalizeNodeToStage = (node: D3Node): D3Node => {
+    if (!prevStageBounds) {
+      return node;
+    }
+
+    const prevCenterX = prevStageBounds.width * ovalConfig.CENTER_X_RATIO;
+    const prevCenterY = prevStageBounds.height * ovalConfig.CENTER_Y_RATIO;
+    const prevRadiusX = prevStageBounds.width * ovalConfig.RADIUS_X_RATIO;
+    const prevRadiusY = prevStageBounds.height * ovalConfig.RADIUS_Y_RATIO;
+    const x = node.x ?? prevCenterX;
+    const y = node.y ?? prevCenterY;
+
+    const normalizedX = prevRadiusX === 0 ? 0 : (x - prevCenterX) / prevRadiusX;
+    const normalizedY = prevRadiusY === 0 ? 0 : (y - prevCenterY) / prevRadiusY;
+    const nextX = centerX + normalizedX * ovalRadiusX;
+    const nextY = centerY + normalizedY * ovalRadiusY;
+
+    return {
+      ...node,
+      x: nextX,
+      y: nextY,
+      fx: nextX,
+      fy: nextY,
+    };
+  };
+
   // 기존 노드 위치 고정
   const keptNodes = existingNodes.map((n) => {
     if (!incomingIds.has(n.crewId)) return n;
@@ -208,13 +238,13 @@ function runClusterSimulation({
     const updatedCrew = crews.find((c) => c.crewId === n.crewId);
     if (!updatedCrew) return n;
 
-    return {
+    return normalizeNodeToStage({
       ...updatedCrew,
       x: n.x,
       y: n.y,
       fx: n.x,
       fy: n.y,
-    };
+    });
   });
 
   // 기존 노드들의 위치 정보
@@ -291,9 +321,11 @@ function runClusterSimulation({
 export function useAvatarCluster({
   crews,
   djQueueCrewIds,
+  stageBounds,
 }: {
   crews: Crew.Model[];
   djQueueCrewIds: number[];
+  stageBounds: StageBounds;
 }): {
   courtPositions: CrewPosition[];
   queuePositions: CrewPosition[];
@@ -305,14 +337,24 @@ export function useAvatarCluster({
   const queueNodesRef = useRef<D3Node[]>([]);
   const prevCrewIdsRef = useRef<string>('');
   const prevQueueIdsRef = useRef<string>('');
+  const prevCourtStageBoundsRef = useRef<StageBounds>();
+  const prevQueueStageBoundsRef = useRef<StageBounds>();
 
   useEffect(() => {
+    if (stageBounds.width <= 0 || stageBounds.height <= 0) {
+      return;
+    }
+
     const currentCrewIdsKey = JSON.stringify(crews.map((c) => c.crewId).sort());
     const currentQueueIdsKey = JSON.stringify([...djQueueCrewIds].sort());
+    const stageBoundsChanged =
+      prevCourtStageBoundsRef.current?.width !== stageBounds.width ||
+      prevCourtStageBoundsRef.current?.height !== stageBounds.height;
 
     if (
       prevCrewIdsRef.current === currentCrewIdsKey &&
-      prevQueueIdsRef.current === currentQueueIdsKey
+      prevQueueIdsRef.current === currentQueueIdsKey &&
+      !stageBoundsChanged
     ) {
       return; // 미변경 시 early return
     }
@@ -329,19 +371,25 @@ export function useAvatarCluster({
       crews: courtCrews,
       existingNodes: courtNodesRef.current,
       ovalConfig: OVAL_CONFIG_COURT,
+      stageBounds,
+      prevStageBounds: prevCourtStageBoundsRef.current,
     });
     courtNodesRef.current = courtResult.updatedNodes;
     setCourtClustered(courtResult.positionedCrews);
+    prevCourtStageBoundsRef.current = stageBounds;
 
     const queueResult = runClusterSimulation({
       crews: queueCrews,
       existingNodes: queueNodesRef.current,
       ovalConfig: OVAL_CONFIG_QUEUE,
+      stageBounds,
+      prevStageBounds: prevQueueStageBoundsRef.current,
     });
 
     queueNodesRef.current = queueResult.updatedNodes;
     setQueueClustered(queueResult.positionedCrews);
-  }, [crews, djQueueCrewIds]);
+    prevQueueStageBoundsRef.current = stageBounds;
+  }, [crews, djQueueCrewIds, stageBounds]);
 
   return {
     courtPositions: courtClustered.map(({ crewId, position }) => ({ crewId, position })),
