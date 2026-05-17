@@ -3,7 +3,6 @@ import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { LineBreakProcessor } from '@/shared/lib/localization/renderer';
 import { Trans } from '@/shared/lib/localization/renderer/index.ui';
-import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
 import useAlert from './use-alert.hook';
@@ -27,13 +26,13 @@ export default function usePenaltyAlert() {
 function useOpenPenaltyAlertDialog() {
   const t = useI18n();
   const { openDialog } = useDialog();
-  const markExitedOnBackend = useStores().useCurrentPartyroom((state) => state.markExitedOnBackend);
 
   const afterConfirm = (penaltyType: PenaltyType) => {
     switch (penaltyType) {
       case PenaltyType.ONE_TIME_EXPULSION:
       case PenaltyType.PERMANENT_EXPULSION:
-        markExitedOnBackend();
+        // 강제 퇴장은 서버 측에서 처리되므로 클라이언트는 백엔드 exit을 호출하지 않고
+        // 로비로만 이동한다. 클라이언트 정리는 레이아웃 언마운트(teardown)가 수행한다.
         location.href = '/parties';
     }
   };

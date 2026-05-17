@@ -8,12 +8,10 @@ vi.mock('@/shared/lib/localization/renderer/index.ui', () => ({
 import { renderHook, act } from '@testing-library/react';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import usePenaltyAlert from './use-penalty-alert.hook';
 
 const mockOpenDialog = vi.fn().mockResolvedValue(undefined);
-const mockMarkExitedOnBackend = vi.fn();
 let alertCallback: (...args: any[]) => void;
 
 vi.mock('./use-alert.hook', () => ({
@@ -29,10 +27,6 @@ beforeEach(() => {
     common: { para: { reason: 'Reason' }, btn: { confirm: 'Confirm' } },
   });
   (useDialog as Mock).mockReturnValue({ openDialog: mockOpenDialog });
-  (useStores as Mock).mockReturnValue({
-    useCurrentPartyroom: (selector: (...args: any[]) => any) =>
-      selector({ markExitedOnBackend: mockMarkExitedOnBackend }),
-  });
   Object.defineProperty(window, 'location', {
     value: { href: '/' },
     writable: true,
@@ -50,14 +44,15 @@ describe('usePenaltyAlert', () => {
     expect(mockOpenDialog).toHaveBeenCalled();
   });
 
-  test('강제 퇴장 패널티면 markExitedOnBackend를 호출한다', async () => {
+  test('강제 퇴장 패널티면 클라이언트 백엔드 exit 없이 로비로 리다이렉트한다 (서버가 expel 처리)', async () => {
     renderHook(() => usePenaltyAlert());
 
     await act(async () => {
       alertCallback({ type: PenaltyType.ONE_TIME_EXPULSION, reason: 'rule violation' });
     });
 
-    expect(mockMarkExitedOnBackend).toHaveBeenCalled();
+    // 서버 측 expel이므로 클라이언트는 백엔드 exit을 호출하지 않고 로비로만 이동한다.
+    expect(window.location.href).toBe('/parties');
   });
 
   test('등급 변경 메시지는 무시한다', async () => {
