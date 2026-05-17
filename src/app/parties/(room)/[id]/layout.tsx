@@ -3,7 +3,7 @@
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 import { useEnterPartyroom } from '@/features/partyroom/enter';
-import { useExitPartyroom } from '@/features/partyroom/exit';
+import { useTeardownPartyroom } from '@/features/partyroom/exit';
 import { parseEntrySource } from '@/shared/lib/analytics/room-tracking';
 import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
 
@@ -14,7 +14,7 @@ export default function PartyroomLayout({ children }: PropsWithChildren) {
   const partyroomId = Number(params.id);
   const entrySource = parseEntrySource(searchParams.get('source'));
   const enter = useEnterPartyroom(partyroomId, { entrySource });
-  const exit = useExitPartyroom(partyroomId);
+  const teardown = useTeardownPartyroom(partyroomId);
 
   useDidMountEffect(() => {
     enter();
@@ -25,17 +25,12 @@ export default function PartyroomLayout({ children }: PropsWithChildren) {
       router.replace(`/parties/${params.id}`, { scroll: false });
     }
 
-    // beforeunload + pagehide 양쪽 등록 — 모바일 Safari 등에서 beforeunload가
-    // 실행되지 않는 경우를 pagehide가 보강. exit API가 idempotent 보장되어
-    // 중복 호출되더라도 안전.
-    window.addEventListener('beforeunload', exit);
-    window.addEventListener('pagehide', exit);
-
+    // 언로드/언마운트 시 백엔드 exit(DELETE /crews/me)는 호출하지 않습니다.
+    // 비자발적 이탈은 서버의 presence grace window가 처리하므로 beforeunload /
+    // pagehide 리스너를 등록하지 않습니다(Cluster A PR-4 L2, #225a/#30 증폭 종결).
+    // 언마운트 시에는 클라이언트 정리만 수행하면 충분합니다.
     return () => {
-      exit();
-
-      window.removeEventListener('beforeunload', exit);
-      window.removeEventListener('pagehide', exit);
+      teardown();
     };
   });
 
