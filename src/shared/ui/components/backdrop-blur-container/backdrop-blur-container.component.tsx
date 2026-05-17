@@ -5,14 +5,16 @@ import { cn } from '@/shared/lib/functions/cn';
 
 interface BackdropBlurContainerProps {
   src?: string;
-  alt?: string;
   className?: string;
+  fallbackSrc?: string;
+  imageClassName?: string;
 }
 
 const BackdropBlurContainer = ({
   src,
-  alt,
   className,
+  fallbackSrc,
+  imageClassName,
   children,
 }: PropsWithChildren<BackdropBlurContainerProps>) => {
   return (
@@ -25,10 +27,10 @@ const BackdropBlurContainer = ({
       <div className='absolute inset-1'>
         <Image
           priority
-          src={src || '/images/ETC/PlaylistThumbnail.png'}
-          alt={alt || 'backdrop image'}
+          src={src || fallbackSrc || '/images/ETC/PlaylistThumbnail.png'}
+          alt={'backdrop image'}
           fill
-          className='object-cover select-none scale-105'
+          className={cn('object-cover select-none scale-105', imageClassName)}
         />
       </div>
       {children}

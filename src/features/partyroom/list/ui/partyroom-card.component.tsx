@@ -9,6 +9,7 @@ import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-cont
 import { Typography } from '@/shared/ui/components/typography';
 import { PFInfoOutline } from '@/shared/ui/icons';
 import Crews from './crews.component';
+import { getPartyroomCardBackdropProps } from './partyroom-card-backdrop';
 
 interface PartyroomCardProps {
   roomId: number;
@@ -28,7 +29,7 @@ const PartyroomCard = ({ roomId, summary, onClose }: PartyroomCardProps) => {
   return (
     <BackdropBlurContainer
       src={summary.playback?.thumbnailImage}
-      alt={summary.playback?.name || summary.title}
+      {...getPartyroomCardBackdropProps(summary.playback?.thumbnailImage)}
     >
       <Link
         href={`/parties/${roomId}?source=list`}

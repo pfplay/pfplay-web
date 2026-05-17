@@ -7,6 +7,7 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
 import { Typography } from '@/shared/ui/components/typography';
 import Crews from './crews.component';
+import { getPartyroomCardBackdropProps } from './partyroom-card-backdrop';
 import { useSuspenseFetchMainPartyroom } from '../api/use-fetch-main-partyroom.query';
 
 interface MainPartyroomCardProps {
@@ -24,7 +25,7 @@ export default function MainPartyroomCard({ onClose }: MainPartyroomCardProps) {
   return (
     <BackdropBlurContainer
       src={partyroom.playback?.thumbnailImage}
-      alt={partyroom.playback?.name || t.lobby.para.pfplay_main_stage}
+      {...getPartyroomCardBackdropProps(partyroom.playback?.thumbnailImage)}
     >
       <Link
         href={`/parties/${partyroom.partyroomId}?source=list`}
