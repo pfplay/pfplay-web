@@ -128,6 +128,11 @@ export default class SocketClient {
    * 이미 connect 상태라면 즉시 실제 STOMP 구독을 수행하고,
    * 아니라면 connect 시 connect 핸들러가 `subscriptions[]` 기준으로 (재)구독합니다.
    * reconnect 시에도 `subscriptions[]` 만으로 reconcile 됩니다.
+   *
+   * @precondition 호출자는 destination 의 유일성을 보장해야 합니다 (destination 당 활성 구독 1개).
+   *   intervening `unsubscribe` 없이 동일 destination 으로 재호출하면 `subscriptions[]` 에
+   *   중복 항목이 쌓여 reconnect reconcile 시 중복 live 핸들이 생성되므로 미지원입니다.
+   *   단일 destination / replace 강제는 소비자 책임입니다 (PartyroomClient single-room guard / replace 정책).
    */
   public subscribe(destination: Destination, callback: messageCallbackType) {
     const subscription: Subscription = { destination, callback };
