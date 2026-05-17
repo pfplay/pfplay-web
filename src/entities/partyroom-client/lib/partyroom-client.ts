@@ -36,6 +36,8 @@ export default class PartyroomClient {
    * - 동시에 이는 SocketClient.subscriptions[] (T3.1 단일 진실원천)의
    *   "destination 당 활성 구독 1개" 전제를 소비자 계층에서 강제합니다.
    * - 동일 방으로의 재구독은 idempotent — 중복 SoT 엔트리를 만들지 않기 위해 no-op 합니다.
+   *   이때 새로 전달된 handler 는 의도적으로 무시됩니다 (이미 구독 중인 방에 대해 다른 handler 로
+   *   재구독해도 교체되지 않는 no-op 이므로, 향후 두 번째 호출자는 이 점에 유의해야 합니다).
    */
   public subscribe(partyroomId: number, handler: (message: IMessage) => void) {
     if (this.subscribedRoomId === partyroomId) {
