@@ -96,6 +96,12 @@ export type UserPropertySetOnce = {
   has_created_partyroom?: boolean;
   /** ISO 8601 timestamp recorded the first time the user enters any partyroom. */
   first_partyroom_entered_at?: string;
+  /**
+   * GUEST→MEMBER 가입 경계에서 한 사람의 amplitude identity 를 잇는 anchor.
+   * GUEST·MEMBER 양쪽 user 에 동일한 (최초 GUEST) id 를 setOnce 로 pin 하여
+   * Cohort/SQL join 으로 가입 전후 행동을 연결한다. ADR-012 (Phase 1 = B).
+   */
+  canonical_user_id?: string;
 };
 
 export type UserPropertyAdd = {

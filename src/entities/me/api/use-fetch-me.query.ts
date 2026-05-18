@@ -24,8 +24,14 @@ export function useSuspenseFetchMe(): UseSuspenseQueryResult<Me.Model, AxiosErro
 export const queryOptions: UseQueryOptions<Me.Model, AxiosError<APIError>> = {
   queryKey: [QueryKeys.Me],
   queryFn: async () => {
-    const meInfo = await usersService.getMyInfo();
-    const meProfileSummary = await usersService.getMyProfileSummary();
+    // 동시 발사 — 두 endpoint 가 항상 같은 cookie/session 으로 호출됨을 보장.
+    // 순차 await 면 token 변경 시점(login/logout/promote)에 info=GUEST cookie,
+    // summary=새 cookie 로 갈려 spread merge 가 하이브리드 좀비 me 를 만든다.
+    // Promise.all 이 그 race window 자체를 영구히 닫는다 (옵션 5a, #7).
+    const [meInfo, meProfileSummary] = await Promise.all([
+      usersService.getMyInfo(),
+      usersService.getMyProfileSummary(),
+    ]);
 
     return {
       ...meInfo,
