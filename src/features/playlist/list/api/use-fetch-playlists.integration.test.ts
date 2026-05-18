@@ -36,4 +36,32 @@ describe('useFetchPlaylists 통합', () => {
       expect(grablist.name).toBe('Grabbed Songs');
     }
   });
+
+  test('enabled: false 이면 쿼리를 발사하지 않는다', async () => {
+    const { result } = renderWithClient(() => useFetchPlaylists({ enabled: false }));
+
+    // 비활성 쿼리는 fetch 자체가 일어나지 않고 idle/pending 상태로 유지된다
+    await waitFor(() => expect(result.current.fetchStatus).toBe('idle'));
+    expect(result.current.isPending).toBe(true);
+    expect(result.current.data).toBeUndefined();
+    expect(result.current.isSuccess).toBe(false);
+  });
+
+  test('enabled: true 이면 쿼리를 발사한다', async () => {
+    const { result } = renderWithClient(() => useFetchPlaylists({ enabled: true }));
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: expect.any(Number), name: expect.any(String) }),
+      ])
+    );
+  });
+
+  test('options 미지정 시 기존처럼 쿼리를 발사한다 (default-true 하위호환)', async () => {
+    const { result } = renderWithClient(() => useFetchPlaylists());
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 });

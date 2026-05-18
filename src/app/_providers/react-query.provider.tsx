@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
 import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
 import isAuthError from '@/shared/api/http/error/is-auth-error';
+import isForbiddenError from '@/shared/api/http/error/is-forbidden-error';
 import { FIVE_MINUTES } from '@/shared/config/time';
 import { shouldSkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
 import { Dialog } from '@/shared/ui/components/dialog';
@@ -42,6 +43,7 @@ function makeQueryClient() {
         retry: (failureCount, error) => {
           if (process.env.NODE_ENV === 'development') return false;
           if (isAuthError(error)) return false;
+          if (isForbiddenError(error)) return false;
           return failureCount <= 3;
         },
       },

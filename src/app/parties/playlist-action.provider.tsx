@@ -1,4 +1,5 @@
 import { ReactNode, useCallback } from 'react';
+import { useFetchMe } from '@/entities/me';
 import { PlaylistActionContext } from '@/entities/playlist';
 import { PlaylistActionOptions } from '@/entities/playlist/lib/playlist-action.context';
 import { useAddPlaylistDialog } from '@/features/playlist/add';
@@ -9,6 +10,7 @@ import { useMoveTrackToPlaylistDialog } from '@/features/playlist/move-track-to-
 import { useChangeTrackOrder } from '@/features/playlist/move-track-to-the-other-playlist';
 import { useRemovePlaylist } from '@/features/playlist/remove';
 import { useRemovePlaylistTrack } from '@/features/playlist/remove-track';
+import { AuthorityTier } from '@/shared/api/http/types/@enums';
 import {
   AddTrackToPlaylistRequestBody,
   ChangeTrackOrderRequest,
@@ -16,7 +18,11 @@ import {
 } from '@/shared/api/http/types/playlists';
 
 export default function PlaylistActionProvider({ children }: { children: ReactNode }) {
-  const { data: list = [] } = useFetchPlaylists();
+  const { data: me } = useFetchMe();
+  // 게스트(GT)는 플레이리스트 보유 자격이 없어 prefetch 가 무의미하다.
+  // me 가 아직 없으면 게스트 안전 기본값(미발사)으로 둔다.
+  const isMember = !!me && me.authorityTier !== AuthorityTier.GT;
+  const { data: list = [] } = useFetchPlaylists({ enabled: isMember });
   const add = useAddPlaylistDialog();
   const edit = useEditPlaylistDialog(list);
   const moveTrack = useMoveTrackToPlaylistDialog(list);
