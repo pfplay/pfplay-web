@@ -1,8 +1,9 @@
-import { Client } from '@stomp/stompjs';
+import { Client, IFrame } from '@stomp/stompjs';
 import { StompSubscription } from '@stomp/stompjs/src/stomp-subscription';
 import { messageCallbackType } from '@stomp/stompjs/src/types';
 import { specificLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
+import { recordClientEvent } from '@/shared/lib/observability/client-events';
 
 const logger = withDebugger(0);
 const log = logger<string>((msg) => {
@@ -47,6 +48,7 @@ export default class SocketClient {
 
   public constructor() {
     const handleConnect = () => {
+      recordClientEvent({ type: 'WS_CONNECT', brokerURL: this.client.brokerURL ?? '' });
       this.startHeartbeat();
 
       // subscriptions[] (원하는 구독 집합) 기준으로 reconcile.
@@ -64,8 +66,21 @@ export default class SocketClient {
     };
 
     const handleDisconnect = () => {
+      recordClientEvent({
+        type: 'WS_DISCONNECT',
+        reason: 'transport-closed',
+        subscriptionCount: this.subscriptions.length,
+      });
       this.stopHeartbeat();
       this.teardownLiveSubscriptions();
+    };
+
+    const handleStompError = (frame: IFrame) => {
+      recordClientEvent({
+        type: 'WS_STOMP_ERROR',
+        message: frame.headers?.['message'] ?? frame.body ?? 'unknown',
+      });
+      handleDisconnect();
     };
 
     this.client = new Client({
@@ -79,7 +94,7 @@ export default class SocketClient {
       debug: log,
       onConnect: handleConnect,
       onWebSocketClose: handleDisconnect,
-      onStompError: handleDisconnect,
+      onStompError: handleStompError,
     });
   }
 

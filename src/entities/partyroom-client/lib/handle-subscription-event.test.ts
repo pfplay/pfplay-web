@@ -61,6 +61,19 @@ vi.mock('./subscription-callbacks/use-dj-queue-changed-callback.hook', () => ({
   default: vi.fn(),
 }));
 
+const obs = vi.hoisted(() => ({
+  currentPartyroomId: undefined as number | undefined,
+  recordClientEvent: vi.fn(),
+}));
+vi.mock('@/shared/lib/store/stores.context', () => ({
+  useStores: () => ({
+    useCurrentPartyroom: { getState: () => ({ id: obs.currentPartyroomId }) },
+  }),
+}));
+vi.mock('@/shared/lib/observability/client-events', () => ({
+  recordClientEvent: obs.recordClientEvent,
+}));
+
 import { renderHook } from '@testing-library/react';
 import { PartyroomEventType } from '@/shared/api/websocket/types/partyroom';
 import { warnLog } from '@/shared/lib/functions/log/logger';
@@ -172,6 +185,7 @@ function setupCallbacks() {
 describe('useHandleSubscriptionEvent', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    obs.currentPartyroomId = undefined;
   });
 
   test('유효한 JSON + 알려진 eventType → 해당 콜백이 호출된다', () => {
@@ -221,6 +235,60 @@ describe('useHandleSubscriptionEvent', () => {
     for (const cb of callbacks.values()) {
       expect(cb).not.toHaveBeenCalled();
     }
+  });
+
+  describe('client observability (EVENT_RECEIVED / EVENT_RECEIVED_FOREIGN)', () => {
+    const baseEvent = {
+      eventType: PartyroomEventType.CHAT_MESSAGE_SENT,
+      partyroomId: 42,
+      id: 'msg-uuid-1',
+    };
+
+    test('현재 룸과 동일 partyroomId → EVENT_RECEIVED', () => {
+      setupCallbacks();
+      obs.currentPartyroomId = 42;
+      const { result } = renderHook(() => useHandleSubscriptionEvent());
+
+      result.current(createMessage(JSON.stringify(baseEvent)));
+
+      expect(obs.recordClientEvent).toHaveBeenCalledWith({
+        type: 'EVENT_RECEIVED',
+        eventType: PartyroomEventType.CHAT_MESSAGE_SENT,
+        partyroomId: 42,
+        messageId: 'msg-uuid-1',
+      });
+    });
+
+    test('현재 룸과 다른 partyroomId → EVENT_RECEIVED_FOREIGN (#3 신호)', () => {
+      setupCallbacks();
+      obs.currentPartyroomId = 7;
+      const { result } = renderHook(() => useHandleSubscriptionEvent());
+
+      result.current(createMessage(JSON.stringify(baseEvent)));
+
+      expect(obs.recordClientEvent).toHaveBeenCalledWith({
+        type: 'EVENT_RECEIVED_FOREIGN',
+        eventType: PartyroomEventType.CHAT_MESSAGE_SENT,
+        receivedPartyroomId: 42,
+        currentPartyroomId: 7,
+        messageId: 'msg-uuid-1',
+      });
+    });
+
+    test('현재 룸 미설정(undefined) → FOREIGN 미발사, EVENT_RECEIVED 로 폴백', () => {
+      setupCallbacks();
+      obs.currentPartyroomId = undefined;
+      const { result } = renderHook(() => useHandleSubscriptionEvent());
+
+      result.current(createMessage(JSON.stringify(baseEvent)));
+
+      expect(obs.recordClientEvent).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'EVENT_RECEIVED' })
+      );
+      expect(obs.recordClientEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'EVENT_RECEIVED_FOREIGN' })
+      );
+    });
   });
 
   describe.each(CALLBACK_MAP.map(({ eventType, label }) => ({ eventType, label })))(

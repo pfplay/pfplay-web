@@ -2,6 +2,8 @@ import { IMessage } from '@stomp/stompjs';
 import { PartyroomEventType, PartyroomSubEvent } from '@/shared/api/websocket/types/partyroom';
 import { specificLog, warnLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
+import { recordClientEvent } from '@/shared/lib/observability/client-events';
+import { useStores } from '@/shared/lib/store/stores.context';
 import useChatCallback from './subscription-callbacks/use-chat-callback.hook';
 import useCrewEnteredCallback from './subscription-callbacks/use-crew-entered-callback.hook';
 import useCrewExitedCallback from './subscription-callbacks/use-crew-exited-callback.hook';
@@ -21,6 +23,7 @@ const warnLogger = logger(warnLog);
 const infoLogger = logger(specificLog);
 
 export default function useHandleSubscriptionEvent() {
+  const { useCurrentPartyroom } = useStores();
   const partyroomCloseCallback = usePartyroomCloseCallback();
   const playbackDeactivatedCallback = usePlaybackDeactivatedCallback();
   const crewEnteredCallback = useCrewEnteredCallback();
@@ -49,6 +52,25 @@ export default function useHandleSubscriptionEvent() {
     }
 
     infoLogger('Received event:', event);
+
+    const currentPartyroomId = useCurrentPartyroom.getState().id;
+    if (currentPartyroomId != null && event.partyroomId !== currentPartyroomId) {
+      // #3 결정적 신호 — 화면 partyroom 과 다른 룸 이벤트 수신 (cross-room hijack).
+      recordClientEvent({
+        type: 'EVENT_RECEIVED_FOREIGN',
+        eventType: String(event.eventType),
+        receivedPartyroomId: event.partyroomId,
+        currentPartyroomId,
+        messageId: event.id,
+      });
+    } else {
+      recordClientEvent({
+        type: 'EVENT_RECEIVED',
+        eventType: String(event.eventType),
+        partyroomId: event.partyroomId,
+        messageId: event.id,
+      });
+    }
 
     switch (event.eventType) {
       case PartyroomEventType.PARTYROOM_CLOSED:
