@@ -3,9 +3,10 @@ import { ReactNode } from 'react';
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
+import isAuthError from '@/shared/api/http/error/is-auth-error';
+import isForbiddenError from '@/shared/api/http/error/is-forbidden-error';
 import { FIVE_MINUTES } from '@/shared/config/time';
 import { handleBubbledError } from './handle-bubbled-error';
-import { shouldRetryQuery } from './should-retry-query';
 
 /**
  * @see https://github.com/TanStack/query/issues/6116#issuecomment-1904051005
@@ -36,7 +37,12 @@ function makeQueryClient() {
          */
         staleTime: FIVE_MINUTES,
         refetchOnWindowFocus: false,
-        retry: shouldRetryQuery,
+        retry: (failureCount, error) => {
+          if (process.env.NODE_ENV === 'development') return false;
+          if (isAuthError(error)) return false;
+          if (isForbiddenError(error)) return false;
+          return failureCount <= 3;
+        },
       },
     },
     queryCache: new QueryCache({
