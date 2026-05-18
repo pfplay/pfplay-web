@@ -33,6 +33,20 @@ describe('me model', () => {
       const model = createModel({ profileUpdated: true });
       expect(serviceEntry(model)).toBe('/parties');
     });
+
+    test('isNewUser=true 면 profileUpdated=true 여도 설정 페이지 강제 (좀비 me 안전망)', () => {
+      const model = createModel({ profileUpdated: true });
+      expect(serviceEntry(model, true)).toBe('/settings/profile');
+    });
+
+    test('isNewUser=false 면 profileUpdated 기준 동작 (기존 회귀)', () => {
+      const model = createModel({ profileUpdated: true });
+      expect(serviceEntry(model, false)).toBe('/parties');
+    });
+
+    test('isNewUser=true 라도 model null 이면 루트 (가드 우선순위)', () => {
+      expect(serviceEntry(null, true)).toBe('/');
+    });
   });
 
   describe('score', () => {

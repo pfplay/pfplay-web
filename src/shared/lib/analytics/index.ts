@@ -131,6 +131,16 @@ export function resetAnalyticsUser(): void {
   });
 }
 
+/**
+ * 현재 amplitude user_id (SDK 미로드 시 undefined).
+ * GUEST→MEMBER 경계에서 setUserId 직전 GUEST id 를 캡처하는 데 쓴다 (ADR-012).
+ * SDK 가 아직 로드 전이면 GUEST id 미상이라 undefined — caller 가 fallback 처리.
+ */
+export function getCurrentUserId(): string | undefined {
+  if (!isEnabled() || !sdk) return undefined;
+  return sdk.getUserId();
+}
+
 export function __resetForTests(): void {
   initialized = false;
   sdk = null;

@@ -3,6 +3,7 @@ import * as amplitude from '@amplitude/analytics-browser';
 import {
   __preloadSdkForTests,
   __resetForTests,
+  getCurrentUserId,
   identify,
   initAnalytics,
   resetAnalyticsUser,
@@ -26,6 +27,7 @@ vi.mock('@amplitude/analytics-browser', () => {
     init: vi.fn(),
     track: vi.fn(),
     setUserId: vi.fn(),
+    getUserId: vi.fn(),
     identify: vi.fn(),
     reset: vi.fn(),
     Identify,
@@ -179,6 +181,18 @@ describe('analytics module', () => {
     test('calls amplitude.reset', () => {
       resetAnalyticsUser();
       expect(amplitude.reset).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('getCurrentUserId', () => {
+    test('SDK 로드 상태면 amplitude.getUserId 결과 반환', () => {
+      (amplitude.getUserId as ReturnType<typeof vi.fn>).mockReturnValue('current-id');
+      expect(getCurrentUserId()).toBe('current-id');
+    });
+
+    test('SDK 미로드면 undefined (GUEST id 미상 — caller fallback)', () => {
+      __resetForTests(); // sdk = null
+      expect(getCurrentUserId()).toBeUndefined();
     });
   });
 });
