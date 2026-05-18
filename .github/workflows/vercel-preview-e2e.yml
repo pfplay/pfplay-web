@@ -57,6 +57,29 @@ jobs:
           key: playwright-${{ hashFiles('**/yarn.lock') }}
 
       - run: npx playwright install --with-deps chromium
+
+      # web#303: 매 run 새로 배포되는 Vercel preview 프론트는 구조상 cold —
+      # serverless/SSR 함수의 첫 히트가 느려 me-fetch-게이트 ProtectedLayout
+      # 사이드바(Playlist 버튼)가 30s 안에 안 그려져 E2E 가 만성 flake.
+      # yarn install/playwright install 동안 함수가 다시 식으므로, 테스트 직전
+      # 에 핵심 경로를 다회 선접속해 함수 인스턴스를 데운다(best-effort, 실패해도
+      # 테스트 진행). Vercel 배포 보호 우회 헤더 필수 — 없으면 보호 월만 데움.
+      - name: Warm up preview (mitigate cold-start flake — web#303)
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          set +e
+          routes="/ /sign-in /parties"
+          for pass in 1 2 3; do
+            for r in $routes; do
+              out=$(curl -s -o /dev/null -w "%{http_code} %{time_total}s" \
+                -H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
+                --max-time 60 "$E2E_BASE_URL$r")
+              echo "warm pass$pass $r -> $out"
+            done
+          done
+          exit 0
+
       - run: yarn test:e2e
         env:
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}

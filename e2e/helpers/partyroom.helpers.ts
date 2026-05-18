@@ -126,8 +126,25 @@ async function pickShortTrackIndices(
 
 export async function createPlaylistWithTracks(page: Page, playlistName: string) {
   // Sidebar 의 Playlist 버튼은 ProtectedLayout 이 me 쿼리 로드 완료 후에만 그려진다.
-  // CI cold-start 시 me fetch 가 길어져 sidebar 가 늦게 mount 되므로 명시적 wait 으로
-  // 실패 메시지를 명확히 하고, 기본 expect 타임아웃(15s)보다 넉넉하게 둔다.
+  // cold-start 시 me-fetch 가 늦으면 (1) sidebar 가 늦게 mount 되거나, (2) 가드가
+  // me-pending 을 미인증으로 오판해 `/` 로 바운스한다(web#303). (2) 의 제품측
+  // 근본 해결(ProtectedLayout 이 me-pending 중 `/` 로 하드리다이렉트 안 하기)은
+  // **B 로 후속 분리** — 본 변경은 테스트 레벨 방어다: storageState 는 유효
+  // 인증이므로 `/` 로 바운스됐으면 me 안정 후 /parties 1회 재진입으로 복구.
+  const partiesUrl = /\/parties(?:$|[/?#])/;
+  let onParties = false;
+  for (let attempt = 0; attempt < 2 && !onParties; attempt++) {
+    if (!partiesUrl.test(page.url())) {
+      await page.goto('/parties');
+    }
+    try {
+      await page.waitForURL(partiesUrl, { timeout: 30_000 });
+      onParties = true;
+    } catch {
+      await page.goto('/parties'); // me-pending 가드 바운스 의심 — 재진입
+    }
+  }
+
   const playlistButton = page.getByRole('button', { name: /^playlist$/i });
   await expect(playlistButton).toBeVisible({ timeout: 30_000 });
   await playlistButton.click();
