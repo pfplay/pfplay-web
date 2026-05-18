@@ -1,5 +1,6 @@
 import { IMessage } from '@stomp/stompjs';
 import SocketClient, { OnConnectOptions } from '@/shared/api/websocket/client';
+import { recordClientEvent } from '@/shared/lib/observability/client-events';
 
 /**
  * Socket Client를 캡슐화하여 최소한의 인터페이스만을 노출하며,
@@ -46,17 +47,27 @@ export default class PartyroomClient {
     }
 
     if (this.subscribedRoomId != null) {
+      recordClientEvent({
+        type: 'PARTYROOM_SUBSCRIBE_REPLACED',
+        fromPartyroomId: this.subscribedRoomId,
+        toPartyroomId: partyroomId,
+      });
       this.unsubscribeCurrentRoom();
     }
 
     this.socketClient.subscribe(`/sub/partyrooms/${partyroomId}`, handler);
     this.subscribedRoomId = partyroomId;
+    recordClientEvent({ type: 'PARTYROOM_SUBSCRIBE', partyroomId });
     this.syncE2EDebugState();
   }
 
   public unsubscribeCurrentRoom() {
-    this.socketClient.unsubscribe(`/sub/partyrooms/${this.subscribedRoomId}`);
+    const roomId = this.subscribedRoomId;
+    this.socketClient.unsubscribe(`/sub/partyrooms/${roomId}`);
     this.subscribedRoomId = undefined;
+    if (roomId != null) {
+      recordClientEvent({ type: 'PARTYROOM_UNSUBSCRIBE', partyroomId: roomId });
+    }
     this.syncE2EDebugState();
   }
 
