@@ -1,5 +1,10 @@
 # #303 auth-setup 미인증 storageState 오염 근본 수정 — 구현 계획
 
+> **개정 (2026-05-19, 검증 후)**: Task 1(B① shouldRetryQuery)은 사이드이펙트
+> (게스트 자동로그인 ~3s 지연) 검증 발견으로 **드롭**됨. #303 근본 해소는
+> Task 3·4(B②)+Task 5(A, +리스너 클릭전 arm 보정)만으로 충분(E2E 11/11 green).
+> 상세 근거는 스펙 문서 상단 개정 노트 참조. 본 계획 Task 1 절은 역사적 기록.
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 사전인증 401 → `handleBubbledError` 하드 redirect 가 진행 중 sign-in POST 를 abort 해 E2E auth-setup 이 미인증 storageState 를 기록하던 #303 근본을 A+B 통합으로 제거한다.

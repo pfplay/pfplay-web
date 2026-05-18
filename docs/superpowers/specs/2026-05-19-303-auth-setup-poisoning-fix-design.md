@@ -5,6 +5,17 @@
 - 대상 레포: pfplay-web (development=stg)
 - 분류: E2E 인프라(테스트) + 제품 인증 에러처리 (cross-cutting)
 
+> **개정 (2026-05-19, 구현·검증 후)**: **B① (bounded 401 query retry) 드롭**.
+> 사이드이펙트 검증서 발견 — `useAutoSignIn` 이 `useFetchMe` 의 _확정_ error 에
+> 의존하는데 B① 의 bounded retry(RQ 기본 지수백오프 ~1s+2s)가 게스트의 _예상된_
+> 401 을 무의미하게 재시도해 `/parties/<id>`·공유링크 게스트 입장이 ~3s 지연 +
+> me-query 3배 호출. 계측상 authed `/me/info` 200 은 항상 성공 → B① 은 #303
+> green 에 **load-bearing 아님**. **#303 근본 해소 = A(auth-setup 게이트) +
+> B②(public-route redirect 억제)** 만으로 충분(E2E 11/11 green 실증). 따라서
+> 본 문서의 B① 관련 절(§3 B①, §6 단위테스트 7 등)은 폐기. #313 supersede/close
+> 유지(bounded-retry 단독 불충분 판명). A 게이트는 리스너를 sign-in 클릭 _전_
+> arm 으로 추가 보정(등록-레이스 제거). [[user_values_troubleshooting_history]]
+
 ## 1. 배경 / 문제
 
 `vercel-preview-e2e.yml` Playwright E2E 가 만성적으로 `createPlaylistWithTracks`
