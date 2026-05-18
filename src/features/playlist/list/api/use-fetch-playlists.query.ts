@@ -10,7 +10,7 @@ import { GetPlaylistsResponse, Playlist } from '@/shared/api/http/types/playlist
 import { FIVE_MINUTES, ONE_MINUTE } from '@/shared/config/time';
 import { Dictionary, useI18n } from '@/shared/lib/localization/i18n.context';
 
-export default function useFetchPlaylists() {
+export default function useFetchPlaylists(options?: { enabled?: boolean }) {
   const queryClient = useQueryClient();
   const t = useI18n();
 
@@ -31,6 +31,7 @@ export default function useFetchPlaylists() {
     select: ({ playlists }) => overwriteGrabPlaylistName(playlists, t),
     staleTime: ONE_MINUTE,
     gcTime: FIVE_MINUTES,
+    enabled: options?.enabled ?? true,
   });
 }
 
