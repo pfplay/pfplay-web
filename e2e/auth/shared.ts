@@ -73,29 +73,32 @@ export async function authenticateUser(browser: Browser, outputPath: string, bas
 
   log('waiting for dev sign-in button');
   log('clicking full crew sign-in');
+  // web#303 A: storageState 기록 전 "인증이 실제 성공" 을 authed /me/info 200
+  // 으로 검증. sign-in POST 가 사전인증-401 redirect 로 abort 되면 200 이
+  // 안 와 30s 후 throw → 미인증 storageState 사일런트 기록을 차단(fail-loud).
+  // 재시도 없음 — 진짜 sign-in 회귀를 은폐하지 않기 위함.
+  //
+  // 리스너는 sign-in 클릭 *전에* arm 한다(canonical Playwright 패턴):
+  // dev-full-crew 플로우가 빨라 authed /me/info 200 이 clickDevFullCrewSignIn
+  // 도중(다이얼로그 hidden ~ 본 await 사이)에 완료될 수 있고, 클릭 후 등록하면
+  // 그 200 을 놓쳐 30s 헛대기한다(계측으로 확정). status===200 술어가 사전인증
+  // 401 을 무시하므로 클릭 전 arm 해도 안전(첫 200 은 항상 쿠키 발급 후).
+  log('arming authed GET /me/info 200 listener before sign-in');
+  const authedMeInfo = page.waitForResponse(
+    (res) =>
+      res.url().includes('/v1/users/me/info') &&
+      res.request().method() === 'GET' &&
+      res.status() === 200,
+    { timeout: 30_000 }
+  );
+
   await clickDevFullCrewSignIn(page);
 
-  log('goto /parties explicitly after dialog closed');
-  // web#303: dev-crew 로그인 직후 me-fetch 가 아직 pending 이면 ProtectedLayout
-  // 가드가 미인증으로 오판해 `/` 로 바운스한다(= createPlaylistWithTracks 의
-  // "navigated to /" 와 동일 메커니즘). 제품측 근본 해결(ProtectedLayout 이
-  // me-pending 중 하드리다이렉트 안 하기)은 **B 로 후속 분리**. 여기선
-  // 테스트 레벨 방어: storageState 쿠키 인증은 유효하므로 `/` 로 바운스되면
-  // me 안정 후 재진입하면 /parties 가 유지된다. 최대 3회 재시도.
-  const partiesUrl = /\/parties(?:$|[/?#])/;
-  let onParties = false;
-  for (let attempt = 0; attempt < 3 && !onParties; attempt++) {
-    if (!partiesUrl.test(page.url())) {
-      await page.goto(`${baseURL}/parties`);
-    }
-    try {
-      await page.waitForURL(partiesUrl, { timeout: STEP_TIMEOUT });
-      onParties = true;
-    } catch {
-      log(`/parties bounced to ${page.url()} (attempt ${attempt + 1}) — retrying`);
-      await page.goto(`${baseURL}/parties`);
-    }
-  }
+  log('waiting for authenticated GET /me/info 200');
+  await authedMeInfo;
+  log('authenticated (me/info 200) — navigating to /parties');
+  await page.goto(`${baseURL}/parties`);
+  await page.waitForURL(/\/parties(?:$|[/?#])/, { timeout: 30_000 });
   log(`arrived at /parties, current URL: ${page.url()}`);
   log(`writing storageState to ${outputPath}`);
   await context.storageState({ path: outputPath });
