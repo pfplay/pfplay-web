@@ -3,13 +3,9 @@ import { ReactNode } from 'react';
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
-import { getErrorMessage } from '@/shared/api/http/error/get-error-message';
-import isAuthError from '@/shared/api/http/error/is-auth-error';
-import isForbiddenError from '@/shared/api/http/error/is-forbidden-error';
 import { FIVE_MINUTES } from '@/shared/config/time';
-import { shouldSkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
-import { Dialog } from '@/shared/ui/components/dialog';
-import { Typography } from '@/shared/ui/components/typography';
+import { handleBubbledError } from './handle-bubbled-error';
+import { shouldRetryQuery } from './should-retry-query';
 
 /**
  * @see https://github.com/TanStack/query/issues/6116#issuecomment-1904051005
@@ -40,12 +36,7 @@ function makeQueryClient() {
          */
         staleTime: FIVE_MINUTES,
         refetchOnWindowFocus: false,
-        retry: (failureCount, error) => {
-          if (process.env.NODE_ENV === 'development') return false;
-          if (isAuthError(error)) return false;
-          if (isForbiddenError(error)) return false;
-          return failureCount <= 3;
-        },
+        retry: shouldRetryQuery,
       },
     },
     queryCache: new QueryCache({
@@ -67,42 +58,4 @@ function getQueryClient() {
   // Browser: make a new query client if we don't already have one
   if (!clientQueryClient) clientQueryClient = makeQueryClient();
   return clientQueryClient;
-}
-
-function handleBubbledError(error: unknown) {
-  if (shouldSkipGlobalErrorHandling(error)) {
-    return;
-  }
-
-  const errorMessage = getErrorMessage(error);
-
-  if (typeof window === 'undefined') {
-    console.error(`[ERROR] ${errorMessage}`);
-    return;
-  }
-
-  if (isAuthError(error)) {
-    if (location.pathname !== '/' && !location.pathname.startsWith('/link/')) {
-      location.href = '/';
-    }
-    return;
-  }
-
-  console.error(error);
-
-  const { destroy } = Dialog.open({
-    title: 'Error',
-    Body: () => (
-      <>
-        <Typography type='caption1' className='text-gray-50'>
-          {errorMessage}
-        </Typography>
-
-        <Dialog.ButtonGroup>
-          <Dialog.Button onClick={() => destroy()}>Close</Dialog.Button>
-        </Dialog.ButtonGroup>
-      </>
-    ),
-    onClose: () => destroy(),
-  });
 }
