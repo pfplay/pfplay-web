@@ -80,7 +80,7 @@ describe('useOAuth2Callback (D/#7+#9 Phase1)', () => {
     );
   });
 
-  test('#9: identify(setUserId+canonical) 가 trackSignedUp/In 보다 먼저 발사', async () => {
+  test('#9: identify(setUserId) 가 trackSignedUp/In 보다 먼저 발사', async () => {
     callbackLogin.mockResolvedValue({ isNewUser: true });
     fetchMeAsync.mockResolvedValue(meModel({ authorityTier: AuthorityTier.FM }));
 
