@@ -32,9 +32,10 @@
 
 - [ ] **Step 1: 실패 테스트** `parse-duration.test.ts`:
 
-  - `'3:45'` → 225, `'0:00'` → 0, `'1:02:03'` → 3723, `'12:34'` → 754.
-  - 무효: `''`, `'abc'`, `'1:2:3:4'`, `undefined as any`, `'1:60'`(분/초 비정상은 허용 or null — **정책: 숫자 파싱 가능하면 산술 그대로**(`1:60`→120) `parseInt` 기반, 토큰 비숫자/빈 → `null`). null 케이스: `'abc'`,`''`,`'1:'`(빈 토큰 NaN)→`null`.
-  - (테스트는 위 계약을 명시 assert.)
+  - 유효: `'3:45'` → 225, `'0:00'` → 0, `'1:02:03'` → 3723, `'12:34'` → 754, `'1:60'` → 120.
+  - null: `''`, `'abc'`, `'1:2:3:4'`, `'1:'`, `undefined as any` → `null`.
+  - **계약(Step 3 구현과 정확히 일치):** `:` 로 split 한 각 토큰이 `/^\d+$/`(음수·소수·빈 토큰 불가, 비음 정수만) 통과해야 함. 토큰 개수 2 또는 3 만 허용(그 외 `null`). 값은 positional base-60 누적(`acc*60+n`)이라 분/초 범위 검증 없음 → `'1:60'`=120. `parseInt`/범위검증/NaN 토큰 같은 메커니즘 표현 쓰지 말 것 — 위 정수·개수 규칙이 전부.
+  - (테스트는 위 유효/`null` 값들을 그대로 assert.)
 
 - [ ] **Step 2: 실패 확인** — `yarn vitest run src/features/playlist/list-tracks/lib/parse-duration.test.ts` → FAIL(모듈 없음).
 
@@ -51,7 +52,7 @@
   }
   ```
 - [ ] **Step 4: 통과** — Step2 cmd → PASS. `yarn tsc --noEmit` 0.
-- [ ] **Step 5: i18n** — `en.json` 먼저 → `ko.json` 동일 키. `dj.para` 섹션(기존 playback*stopped*\* 인근):
+- [ ] **Step 5: i18n** — `en.json` 먼저 → `ko.json` 동일 키. `dj.para` 섹션의 `playback_stopped_no_limit` **바로 옆**에 삽입(E/#3 키 클러스터·parity 육안검증 용이):
   - `dj.para.not_playable_in_room` en: `"Not playable here (exceeds this room's time limit)"` ko: `"이 방에선 재생 안 돼요 (재생 시간 제한 초과)"`
     (변수 없음. JSON 스타일/순서 sibling 일치. parity 확인.)
 - [ ] **Step 6: 커밋** — `git add` parse-duration(.ts/.test.ts) en.json ko.json → `git commit -m "feat(E/#3): parseDurationToSeconds 유틸 + not_playable_in_room i18n(ko/en)"`
@@ -65,13 +66,13 @@
 - [ ] **Step 1: 실패/회귀 테스트**
 
   - `Track`: prop `isOverRoomLimit=true` → `t.dj.para.not_playable_in_room` 텍스트(배지) 렌더 + 디밍 class 적용; `false`/미전달 → 배지 없음, 기존 렌더(name/duration/menu/DnD) 무변경. (mock `useI18n` 기존 컴포넌트 테스트 패턴.)
-  - `TracksInPlaylist`: `useFetchPartyroomDetailSummary` mock 으로 `playbackTimeLimit=5`(분), 트랙들 duration 문자열 — `'6:00'`(>5분)→ 그 Track 에 `isOverRoomLimit=true`, `'3:00'`→false; summary 없음/limit 0/파싱 불가 → 전부 false(비차단·fail-safe); partyroomId 없을 때 query `enabled=false` → 배지 없음. (route param mock 은 `main-panel` 테스트나 기존 라우트 mock 패턴 따름.)
+  - `TracksInPlaylist`: `useFetchPartyroomDetailSummary` mock 으로 `playbackTimeLimit=5`(분), 트랙들 duration 문자열 — `'6:00'`(>5분)→ 그 Track 에 `isOverRoomLimit=true`, `'3:00'`→false; summary 없음/limit 0/파싱 불가 → 전부 false(비차단·fail-safe); partyroomId 없을 때(로비) query `enabled=false` → 배지 없음. (RTL+`useI18n` mock·route param mock 은 in-repo 실존 테스트 `src/app/parties/playlist-action.provider.test.tsx` 또는 `src/app/parties/(room)/[id]/layout.test.tsx` 의 컨벤션을 그대로 미러 — 새 컨벤션 발명 금지.)
 
 - [ ] **Step 2: 실패 확인** — `yarn vitest run src/features/playlist/list-tracks` → FAIL.
 
 - [ ] **Step 3: 구현**
 
-  - `tracks.component.tsx`: 현재 방 id 취득 — `main-panel.component.tsx` 와 동일 패턴(`useParams`→`Number(params.id)`; import 위치/방식 그 파일 참조). `const { data: summary } = useFetchPartyroomDetailSummary(partyroomId, !!partyroomId);` `const limitMin = summary?.playbackTimeLimit ?? 0;` 각 트랙 렌더 시 `const sec = parseDurationToSeconds(track.duration); const isOverRoomLimit = limitMin > 0 && sec !== null && sec > limitMin * 60;` → `<Track ... isOverRoomLimit={isOverRoomLimit} />`. (DnD/SortableContext/items/menuItems 로직 무변경 — prop 1개 추가만.)
+  - `tracks.component.tsx`: 현재 방 id 취득 — `main-panel.component.tsx` 와 동일 패턴(`useParams<{id:string}>()`→`Number(params.id)`). **주의:** `TracksInPlaylist`(MyPlaylist) 는 `src/app/parties/layout.tsx` 아래 마운트되어 **로비+방 양쪽**에서 렌더됨 — 로비에선 `[id]` 세그먼트 없어 `params.id===undefined`→`Number(undefined)=NaN`→`!!NaN=false`→`enabled:false`→배지 없음. 이는 **정상 동작**(로비 무배지를 버그로 오인해 "고치지" 말 것). `useFetchPartyroomDetailSummary` 는 **배럴** `@/features/partyroom/get-summary` 에서 import(`main-panel` 과 동일, deep path 금지). `const { data: summary } = useFetchPartyroomDetailSummary(partyroomId, !!partyroomId);` `const limitMin = summary?.playbackTimeLimit ?? 0;` 각 트랙 렌더 시 `const sec = parseDurationToSeconds(track.duration); const isOverRoomLimit = limitMin > 0 && sec !== null && sec > limitMin * 60;` → `<Track ... isOverRoomLimit={isOverRoomLimit} />`. (DnD/SortableContext/items/menuItems 로직 무변경 — prop 1개 추가만.)
   - `track.component.tsx`: `TrackProps` 에 `isOverRoomLimit?: boolean` 추가. true 시: duration Typography 인근(또는 트랙 행)에 작은 배지 — 기존 `Typography`(type='caption1') + `cn` 으로 경고색/디밍(예: 트랙 행 `opacity-50` + duration 옆 `t.dj.para.not_playable_in_room` 작은 텍스트). 신규 UI 컴포넌트 발명 금지 — 기존 Typography/색 토큰/cn 재사용. `useI18n()` 추가(컴포넌트 'use client'). 기존 thumbnail/menu/DnD/attributes **무변경**.
 
 - [ ] **Step 4: 통과 + 전 회귀** — Step2 cmd PASS. `yarn vitest run` 전체 GREEN. `yarn tsc --noEmit` 0. `yarn eslint src/features/playlist/list-tracks src/shared/lib/localization --quiet` 0 error.
