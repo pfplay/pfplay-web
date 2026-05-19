@@ -41,14 +41,14 @@ OAuth 가입 시 백엔드는 **새 `user_account`(새 TSID)** 를 발급한다(
 `src/features/sign-in/by-social/lib/use-social-sign-in-callback.hook.tsx`, `src/shared/lib/analytics/auth-tracking.ts`
 
 - 멤버 식별 지점(:45)·#310 의 zombie-me 방어(`cancelQueries`+`removeQueries`+`fetchMeAsync`)·track 재배치(identify→trackSignedUp/In) **유지**.
-- **잔여 명시버그 fix**: `User Signed In`/`Signed Up` 의 `auth_type` 을 stale `me` 가 아니라 **권위 결과에서 도출**. 콜백은 가입/로그인 완료 = 정의상 member 컨텍스트 → SIGNED 이벤트 auth_type 은 member 로 확정(게스트 me 가 늦게 resolve 돼도 `auth_type:guest` 가 안 새도록). 구현: 콜백 경로의 SIGNED 발사를 me.authorityTier 의존이 아니라 "이 경로 = member 인증 완료" 사실에 결속.
+- **잔여 명시버그 fix (구체 메커니즘 명시)**: 현재 `trackSignedIn(me.authorityTier)` 는 `fetchMeAsync()` 결과에서 tier 를 읽는다 — zombie-me 레이스로 그 `me` 가 게스트로 resolve 되면 `User Signed In {auth_type:guest}` 가 샌다. **콜백 경로는 정의상 member 인증 완료이므로 `me` 의존을 끊는다.** 구체 변경: `trackSignedIn` 에 명시적 `authType` 오버라이드 인자를 추가(예: `trackSignedIn(authorityTier, authTypeOverride?: AuthType)`)하고, 소셜 콜백에서는 `trackSignedIn(me.authorityTier, 'member')` 로 호출(또는 콜백 전용 member-고정 상수로 `authTypeOf` 우회). 즉 SIGNED 이벤트의 `auth_type` 은 `fetchMeAsync` 결과와 **분리**되어 이 경로에서 항상 `member`. `trackSignedUp` 은 tier 미사용이라 무변경(단 setUserId 후 발사 순서 유지로 멤버 user 귀속). 다른 호출지(`use-auto-sign-in`/`use-sign-in` 의 `trackSignedIn(GT)`)는 오버라이드 미전달 → 기존대로 `authTypeOf(GT)='guest'`(게스트 익명 이벤트, 정상).
 
 ### C3. `identifyAuthenticatedUser` — canonical pin 제거 (B′ 로 불필요)
 
 `src/shared/lib/analytics/auth-tracking.ts`
 
 - B′ 에선 게스트가 식별되지 않으므로 `getCurrentUserId()`(이전 게스트 id 캡처)·`canonical_user_id` setOnce(게스트/멤버 양쪽 pin) 로직은 **무의미 → 제거**. 함수는 멤버 `setUserId(uid)` + user property(`auth_type`, `authority_tier`, `oauth_provider`) set 으로 단순화.
-- `getCurrentUserId` 가 다른 곳서 안 쓰이면 함께 정리(grep 확인 후). SDK-load race(`!sdk`→undefined) 관련 복잡성도 canonical 제거로 동반 소거.
+- **제거 surface (확정)**: `auth-tracking.ts` 의 `previousUserId`/`canonicalUserId` 캡처·게스트측 setOnce·멤버측 setOnce(:22-33,:42 영역) · `index.ts` 의 `getCurrentUserId` export(소비자 0 — 검증됨) + 그 단위테스트(`index.test.ts` `getCurrentUserId` describe) · **`events.ts` 의 `UserPropertySet.canonical_user_id?: string` 멤버 + 그 JSDoc(:100-104 영역)** — dead 가 되므로 동반 제거(스펙 일관 — 잔여 dead-code 금지). SDK-load race(`!sdk`→undefined) 복잡성도 canonical 제거로 동반 소거.
 
 ### C4. 게스트 측 이벤트 (`trackSignedIn(GT)`)
 
@@ -81,7 +81,9 @@ OAuth 가입 시 백엔드는 **새 `user_account`(새 TSID)** 를 발급한다(
 
 - `AnalyticsProvider`: 게스트 me(GT) → `setUserId`/`identify` **미호출**(스킵) / 멤버 me → 1회 식별 / 게스트→멤버 전이 시 멤버 식별 발생. (RTL + analytics mock, 기존 컴포넌트 테스트 컨벤션.)
 - `auth-tracking`: 단순화된 `identifyAuthenticatedUser` = 멤버 setUserId + property only, canonical/getCurrentUserId 미사용. `authTypeOf` 회귀.
-- 소셜 콜백: SIGNED 이벤트 `auth_type=member`(게스트 me 늦게 resolve 시나리오 mock 으로도 member 고정) + #310 zombie-me 방어 회귀 유지.
+- 소셜 콜백: SIGNED 이벤트 `auth_type=member`(게스트 me 늦게 resolve 시나리오 mock 으로도 member 고정 — 새 `authType` 오버라이드 경로) + #310 zombie-me 방어 회귀 유지.
+- **삭제 항목 명시(회귀 오인 방지)**: `auth-tracking.test.ts` 의 `canonical_user_id pinning` describe(≈:108-145)·`index.test.ts` 의 `getCurrentUserId` describe(≈:187-195)·`use-social-sign-in-callback.hook.test.tsx:83` 의 "canonical" 테스트명 — B′ 로 **의도된 삭제/개명**(coverage 회귀 아님, 리뷰어 안내용). `auth-tracking.ts` 의 `identifyAuthenticatedUser` 는 tier-agnostic 유지(GT 가드는 provider 에만 — C1; 함수에 밀어넣지 않음).
+- **net-new**: `AnalyticsProvider` 테스트 파일 신규(`src/app/_providers/` 엔 현재 `handle-bubbled-error.test.tsx` 만 존재) — 기존 RTL 컨벤션 미러.
 - 전 vitest·tsc·scoped eslint green.
 
 ## 검증 (post-implementation, 실증)
