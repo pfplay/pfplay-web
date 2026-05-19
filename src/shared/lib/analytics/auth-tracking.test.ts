@@ -82,66 +82,36 @@ describe('auth-tracking', () => {
   });
 
   describe('identifyAuthenticatedUser', () => {
-    test('sets userId and applies auth_type / authority_tier user properties', () => {
-      identifyAuthenticatedUser({ uid: 'uid-1', authorityTier: AuthorityTier.FM });
-      expect(amplitude.setUserId).toHaveBeenCalledWith('uid-1');
-      expect(identifyProto.set).toHaveBeenCalledWith('auth_type', 'member');
-      expect(identifyProto.set).toHaveBeenCalledWith('authority_tier', 'FM');
-    });
-
-    test('includes oauth_provider when provided', () => {
+    test('setUserId(uid) 1회 + member 속성 identify 1회, setOnce 없음, getCurrentUserId 미호출', () => {
       identifyAuthenticatedUser({
-        uid: 'uid-1',
+        uid: 'u12345',
         authorityTier: AuthorityTier.FM,
-        oauthProvider: 'google',
+        oauthProvider: 'GOOGLE',
       });
-      expect(identifyProto.set).toHaveBeenCalledWith('oauth_provider', 'google');
-    });
 
-    test('omits oauth_provider when not provided', () => {
-      identifyAuthenticatedUser({ uid: 'uid-1', authorityTier: AuthorityTier.GT });
-      const setCalls = identifyProto.set.mock.calls.map((call) => call[0]);
-      expect(setCalls).not.toContain('oauth_provider');
-    });
-  });
+      expect(amplitude.setUserId).toHaveBeenCalledTimes(1);
+      expect(amplitude.setUserId).toHaveBeenCalledWith('u12345');
 
-  describe('canonical_user_id pinning (ADR-012 Phase 1 = B)', () => {
-    test('GUEST id 존재 & uid 와 다르면 GUEST·MEMBER 양쪽에 canonical pin + 순서(GUEST identify → setUserId → MEMBER identify)', () => {
-      (amplitude.getUserId as ReturnType<typeof vi.fn>).mockReturnValue('guest-account-id');
-
-      identifyAuthenticatedUser({ uid: 'member-uid-1', authorityTier: AuthorityTier.FM });
-
-      expect(amplitude.setUserId).toHaveBeenCalledWith('member-uid-1');
-      expect(identifyProto.setOnce).toHaveBeenCalledWith('canonical_user_id', 'guest-account-id');
-      // GUEST 측 + MEMBER 측 = identify 2회 호출, setUserId 가 그 사이.
-      expect(amplitude.identify).toHaveBeenCalledTimes(2);
-      const firstIdentifyOrder = (amplitude.identify as ReturnType<typeof vi.fn>).mock
-        .invocationCallOrder[0];
-      const setUserIdOrder = (amplitude.setUserId as ReturnType<typeof vi.fn>).mock
-        .invocationCallOrder[0];
-      const secondIdentifyOrder = (amplitude.identify as ReturnType<typeof vi.fn>).mock
-        .invocationCallOrder[1];
-      expect(firstIdentifyOrder).toBeLessThan(setUserIdOrder);
-      expect(setUserIdOrder).toBeLessThan(secondIdentifyOrder);
-    });
-
-    test('GUEST id 미상(SDK 미로드) 면 canonical=uid, GUEST 측 pre-pin 생략', () => {
-      (amplitude.getUserId as ReturnType<typeof vi.fn>).mockReturnValue(undefined);
-
-      identifyAuthenticatedUser({ uid: 'member-uid-2', authorityTier: AuthorityTier.FM });
-
-      expect(amplitude.setUserId).toHaveBeenCalledWith('member-uid-2');
-      expect(identifyProto.setOnce).toHaveBeenCalledWith('canonical_user_id', 'member-uid-2');
-      expect(amplitude.identify).toHaveBeenCalledTimes(1); // MEMBER 측 1회만
-    });
-
-    test('현재 id 가 이미 uid (재로그인) 면 GUEST 측 pre-pin 생략, canonical=uid', () => {
-      (amplitude.getUserId as ReturnType<typeof vi.fn>).mockReturnValue('member-uid-3');
-
-      identifyAuthenticatedUser({ uid: 'member-uid-3', authorityTier: AuthorityTier.AM });
-
-      expect(identifyProto.setOnce).toHaveBeenCalledWith('canonical_user_id', 'member-uid-3');
       expect(amplitude.identify).toHaveBeenCalledTimes(1);
+      expect(identifyProto.set).toHaveBeenCalledWith('auth_type', 'member');
+      expect(identifyProto.set).toHaveBeenCalledWith('authority_tier', AuthorityTier.FM);
+      expect(identifyProto.set).toHaveBeenCalledWith('oauth_provider', 'GOOGLE');
+
+      expect(identifyProto.setOnce).not.toHaveBeenCalled();
+      expect(amplitude.getUserId).not.toHaveBeenCalled();
+      const setKeys = identifyProto.set.mock.calls.map((call) => call[0]);
+      expect(setKeys).not.toContain('canonical_user_id');
+    });
+
+    test('oauthProvider 생략 시 set 에 oauth_provider 키 없음', () => {
+      identifyAuthenticatedUser({ uid: 'u12345', authorityTier: AuthorityTier.FM });
+      const setKeys = identifyProto.set.mock.calls.map((call) => call[0]);
+      expect(setKeys).not.toContain('oauth_provider');
+    });
+
+    test('AuthorityTier.GT 면 auth_type=guest (함수는 tier-agnostic, GT 가드는 별도)', () => {
+      identifyAuthenticatedUser({ uid: 'u12345', authorityTier: AuthorityTier.GT });
+      expect(identifyProto.set).toHaveBeenCalledWith('auth_type', 'guest');
     });
   });
 });
