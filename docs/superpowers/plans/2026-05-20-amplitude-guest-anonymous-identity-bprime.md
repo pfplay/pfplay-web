@@ -29,7 +29,7 @@
 
 - Modify: `src/shared/lib/analytics/auth-tracking.ts` (`identifyAuthenticatedUser` 본문, `getCurrentUserId` import 제거)
 - Modify: `src/shared/lib/analytics/index.ts` (`getCurrentUserId` export + JSDoc 삭제)
-- Modify: `src/shared/lib/analytics/events.ts` (`UserPropertySet` 의 `canonical_user_id` 멤버 + JSDoc 삭제)
+- Modify: `src/shared/lib/analytics/events.ts` (`UserPropertySetOnce` 의 `canonical_user_id` 멤버 + JSDoc 삭제 — **`UserPropertySet` 아님**, 리뷰 정정. 실제 위치 `events.ts:99-104` 영역, grep 으로 앵커 확인)
 - Test: `src/shared/lib/analytics/auth-tracking.test.ts` (canonical describe 삭제 + identify 단순화 assert), `src/shared/lib/analytics/index.test.ts` (`getCurrentUserId` describe 삭제)
 
 - [ ] **Step 1: 현행 확인 (편집 전 앵커)**
@@ -77,10 +77,10 @@
       `getCurrentUserId` export 함수 + 그 위 JSDoc(`현재 amplitude user_id ...`) 삭제. `__resetForTests`/`__preloadSdkForTests` 는 유지.
 
 - [ ] **Step 6: 구현 — `events.ts` `canonical_user_id` 타입 제거**
-      `UserPropertySet`(setOnce/set 에 쓰이는 타입) 에서 `canonical_user_id?: string;` 멤버 + 그 JSDoc 삭제. `identify`(index.ts)는 키를 제네릭 순회하므로 런타임 영향 없음 — 타입만 정리.
+      **`UserPropertySetOnce`** 타입(≈`events.ts:99-104`, `UserPropertySet` 아님 — `UserPropertySet`엔 `auth_type`/`authority_tier`/`oauth_provider`만 있음)에서 `canonical_user_id?: string;` 멤버 + 그 JSDoc(≈:99-103) 삭제. `identify`(index.ts)는 키를 제네릭 `Object.entries` 순회(검증됨)하므로 런타임 영향 없음 — 타입만 정리.
 
-- [ ] **Step 7: `index.test.ts` 의 `getCurrentUserId` describe 삭제**
-      해당 describe/it 블록 전체 삭제(의도된 삭제 — coverage 회귀 아님, spec §테스트 명시).
+- [ ] **Step 7: `index.test.ts` 의 `getCurrentUserId` 테스트 + import 삭제**
+      해당 `getCurrentUserId` describe/it 블록 전체 삭제(의도된 삭제 — coverage 회귀 아님, spec §테스트 명시). **+ 상단 import 목록(≈`index.test.ts:3-12`)에서 `getCurrentUserId` 도 제거**(미제거 시 unused-import tsc/eslint 실패 — 리뷰 정정).
 
 - [ ] **Step 8: 통과 확인**
       Run: `yarn vitest run src/shared/lib/analytics` → GREEN
@@ -156,7 +156,7 @@
 **Files:**
 
 - Modify: `src/app/_providers/analytics.provider.tsx`
-- Test: `src/app/_providers/analytics.provider.test.tsx` (**신규** — `src/app/_providers/` 엔 `handle-bubbled-error.test.tsx` 만 존재; 그 파일/기존 RTL 컨벤션 미러)
+- Test: `src/app/_providers/analytics.provider.test.tsx` (**신규**). ⚠️ 리뷰 정정: `src/app/_providers/handle-bubbled-error.test.tsx` 는 컴포넌트 렌더 안 함(순수 함수 호출) — **미러 대상 아님**. `test-utils.tsx` 의 `renderWithClient` 는 hook 전용(`renderHook`) — 사용 불가. **올바른 미러**: 실제 컴포넌트-렌더 테스트 `src/features/system-announcement/ui/hydrate-announcements-from-status.test.tsx`(또는 `src/widgets/partyroom-crews-panel/ui/partyroom-crews-panel.component.test.tsx`) — RTL `render`+`screen` (`@testing-library/react`) + 수동 `QueryClient`/`QueryClientProvider` 래퍼로 `[QueryKeys.Me]` 캐시 주입.
 
 - [ ] **Step 1: 현행 확인**
       Read `analytics.provider.tsx`. 앵커: QueryCache `subscribe` 콜백(게스트/멤버 공통 `identifyAuthenticatedUser({ uid: me.uid, authorityTier: me.authorityTier })`), warm-cache peek(동일), `lastIdentifiedUidRef`, `Session Started`. `AuthorityTier` import 경로 = `@/shared/api/http/types/@enums`.
@@ -168,7 +168,7 @@
   - 캐시에 **멤버 me**(`AuthorityTier.FM`) 세팅 → `identifyAuthenticatedUser` 1회 호출(uid·tier 전달).
   - **게스트→멤버 전이**: 게스트 me 로 시작(식별 없음) → 같은 캐시키에 멤버 me 로 갱신 → 멤버로 1회 식별.
   - `Session Started` 는 게스트 캐시여도 발사됨(귀속은 무관 — 식별과 분리; `track('Session Started', ...)` 호출 자체는 유지)。
-    (기존 `handle-bubbled-error.test.tsx` 의 provider 렌더/mock 패턴을 미러. 새 컨벤션 발명 금지.)
+    (미러 대상 = `hydrate-announcements-from-status.test.tsx` 등 실제 컴포넌트-렌더 테스트의 RTL `render`+수동 `QueryClientProvider` 패턴. `handle-bubbled-error.test.tsx`/`renderWithClient` 아님 — 위 Files 정정 참조. 새 컨벤션 발명 금지.)
 
 - [ ] **Step 3: 실패 확인**
       Run: `yarn vitest run src/app/_providers/analytics.provider.test.tsx` → FAIL (현재 게스트도 식별)
