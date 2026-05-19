@@ -18,9 +18,10 @@
 - `src/entities/current-partyroom/model/alert-message.model.ts` — `DjRemovedAlertMessage` variant(들) + `Model` union + type guard.
 - `src/shared/lib/analytics/room-tracking.ts` — `trackDjAdminDeregisterDetected` 가 changeType 기반 reason 도출.
 - `src/entities/partyroom-client/lib/subscription-callbacks/use-dj-queue-changed-callback.hook.ts` — self-removed 분기 changeType별 `alert.notify`/track.
-- 알림 렌더 consumer(penalty/grade 를 처리하는 `useAlert(cb)` 콜백 — 구현자가 위치 식별: `git grep -ln "useAlert(" src` → penalty/grade switch 가진 곳, 예상 `widgets/partyroom-chat-panel/...` 또는 전용 alert 핸들러) — DJ variant 렌더 분기.
-- `src/shared/lib/localization/dictionaries/{ko,en}.json` — 신규 키(en 먼저=Dictionary 타입 갱신, ko 미러).
-- 테스트: `use-dj-queue-changed-callback.hook.test.ts`(확장), `alert-message.model` guard, `room-tracking` reason, 렌더 consumer 테스트(있으면 확장).
+- `src/entities/current-partyroom/lib/alerts/use-dj-removed-alert.hook.tsx` — **신규**(렌더). 아키텍처 정정: 단일 `useAlert(cb)` switch 없음 — variant별 전용 훅(`use-penalty-alert.hook.tsx`, `use-grade-adjusted-alert.hook.tsx`)이 각자 `useAlert(useCallback(...))`+단일 `if(isXxx)` 가드로 구성되고 `use-alerts.hook.tsx`(`useAlerts()`)가 모두 호출·집계. 따라서 `use-grade-adjusted-alert.hook.tsx` 를 모델로 `useDjRemovedAlert()` 신설(가드 `isDjRemovedAlertMessage` → `useDialog().openAlertDialog`).
+- `src/entities/current-partyroom/lib/alerts/use-alerts.hook.tsx` — `useDjRemovedAlert()` 를 기존 `usePenaltyAlert()`/`useGradeAdjustedAlert()` 옆에 등록.
+- `src/shared/lib/localization/dictionaries/{ko,en}.json` — 신규 키(en 먼저=Dictionary 타입 갱신, ko 미러). 변수는 **`{{minutes}}`(이중 중괄호, VariableProcessor 컨벤션)**. 기존 `dj.para.deleted_queue_by_admin` 는 ko/en 양쪽 이미 존재(재사용, 보강 불요).
+- 테스트: `use-dj-queue-changed-callback.hook.test.ts`(확장), `alert-message.model.test.ts`(**기존 존재 → describe 블록 확장**, named-import 스타일 일치), `room-tracking.test.ts`(기존 존재 → 확장), `use-dj-removed-alert.hook.test.tsx`(신규, `use-penalty-alert`/grade 테스트의 renderHook+mock 패턴 복제).
 
 ---
 
@@ -28,7 +29,7 @@
 
 ### Task 1: TS 타입 — DjChangeType + 이벤트/알림 모델 (additive)
 
-**Files:** Modify `src/shared/api/websocket/types/partyroom.ts`, `src/entities/current-partyroom/model/alert-message.model.ts`; Test `alert-message.model.test.ts`(없으면 신설, 동 디렉터리 테스트 컨벤션).
+**Files:** Modify `src/shared/api/websocket/types/partyroom.ts`, `src/entities/current-partyroom/model/alert-message.model.ts`; Test `alert-message.model.test.ts`(**기존 존재** — `isPenaltyAlertMessage`/`isGradeAdjustedAlertMessage` 커버 중. `describe('isDjRemovedAlertMessage')` 블록 **추가**, 기존 파일의 named-import 스타일 일치).
 
 - [ ] **Step 1: 실패 테스트** (alert-message.model guard) — 신규 variant guard:
 
@@ -104,7 +105,7 @@ test('기존 grade/penalty guard 회귀', () => {
 
 **Files:** Modify `src/shared/lib/analytics/room-tracking.ts`; Test `room-tracking.test.ts`(있으면 확장, 없으면 신설; `track` mock — 기존 analytics 테스트 패턴).
 
-- [ ] **Step 1: 실패 테스트** — `trackDjRemovalDetected(partyroomId, changeType)`(또는 기존 함수에 changeType 인자 추가; 기존 시그니처 영향 최소 — **신규 인자 optional default 'admin'** 로 backward-compat): DEQUEUE_ADMIN→`reason:'admin'`, DEACTIVATE→`reason:'deactivated'`, undefined→`reason:'admin'`(기존 동작 보존), suppression 윈도우 동작 보존(self dequeue skip). DEQUEUE_EXIT→호출 안 함(silent; 호출지에서 분기).
+- [ ] **Step 1: 실패 테스트** — **함수명 변경 금지**(`trackDjAdminDeregisterDetected` 유지; rename 시 기존 3 테스트 + hook 테스트 mock(`vi.mock(... trackDjAdminDeregisterDetected)`) 깨짐). 기존 함수에 **optional `changeType?: DjChangeType` 인자만 추가**(무인자 호출 backward-compat). 테스트(기존 `room-tracking.test.ts` 의 `describe('DJ deregister attribution')` 확장): DEQUEUE_ADMIN→`reason:'admin'`, DEACTIVATE→`reason:'deactivated'`, 인자 없음(undefined)→`reason:'admin'`(**기존 3 테스트 그대로 green**), suppression 윈도우 동작 보존(self dequeue skip 우선). DEQUEUE_EXIT 는 이 함수 호출 자체를 안 함(호출지=Task3 에서 분기).
 
 - [ ] **Step 2: 실패 확인** — `yarn vitest run <room-tracking.test>` → FAIL.
 
@@ -162,19 +163,21 @@ test('기존 grade/penalty guard 회귀', () => {
 
 ---
 
-### Task 4: 알림 렌더 + i18n (ko/en)
+### Task 4: 알림 렌더 신규 훅 + 등록 + i18n (ko/en)
 
-**Files:** Modify the `useAlert(cb)` consumer that switches on penalty/grade (구현자: `git grep -ln "useAlert(" src` → penalty(`isPenaltyAlertMessage`)/grade 분기 가진 콜백 파일 식별; 그 switch 에 DJ variant 추가, 기존 penalty/grade UX(토스트/알림 표시)와 동일 표현 재사용); `src/shared/lib/localization/dictionaries/en.json` 먼저 → `ko.json` 미러. Test: 렌더 consumer 테스트 있으면 확장.
+**아키텍처(정정)**: 단일 switch consumer 없음. variant별 전용 훅 — `src/entities/current-partyroom/lib/alerts/use-penalty-alert.hook.tsx`(가드 `isPenaltyAlertMessage` → `useDialog().openDialog`), `use-grade-adjusted-alert.hook.tsx`(`isGradeAdjustedAlertMessage` → `useDialog().openAlertDialog`). `use-alerts.hook.tsx`(`useAlerts()`)가 각 훅을 호출·집계. → **신규 `useDjRemovedAlert()` 훅**을 `use-grade-adjusted-alert.hook.tsx` 패턴으로 만들고 `use-alerts.hook.tsx` 에 등록.
 
-- [ ] **Step 1: i18n 키 추가** (en.json 먼저=Dictionary 타입 갱신; ko.json 동일 키). 기존 `dj.para` 섹션에 추가(키 위치는 그 consumer 가 `t.` 로 접근하기 좋은 곳, 기존 penalty/grade 알림 문자열과 동일 섹션 컨벤션):
-  - `dj.para.playback_stopped_time_limit` ko: "재생 시간 제한({minutes}분)을 초과하는 곡으로 재생이 중단되었습니다" / en: "Playback stopped: a track exceeds this room's time limit ({minutes} min)."
-  - `dj.para.playback_stopped_no_limit` (graceful: minutes 0/null/undefined) ko: "재생 가능한 곡이 없어 재생이 중단되었습니다" / en: "Playback stopped: no playable track."
-  - admin: 기존 `dj.para.deleted_queue_by_admin`("관리자에 의해 대기열에서 삭제되었습니다") **재사용**(신규 키 X — DRY). en 동등 문자열 존재 확인, 없으면 동 키 en 보강.
-- [ ] **Step 2: 실패 테스트** — 렌더 consumer 테스트(있으면): `{type:'dj-deactivated', playbackTimeLimitMinutes:5}` → `playback_stopped_time_limit` (processI18nString {minutes:5}) 표시; `playbackTimeLimitMinutes:0|null` → `playback_stopped_no_limit`; `{type:'dj-admin-removed'}` → `deleted_queue_by_admin`. 없으면 이 분기를 검증하는 단위 테스트 신설(consumer 콜백 추출 가능 형태면 그 함수, 아니면 컴포넌트 렌더 테스트 — 기존 penalty 알림 테스트 패턴 따름).
-- [ ] **Step 3: 실패 확인** → FAIL.
-- [ ] **Step 4: 구현** — consumer 의 alert switch 에 `isDjRemovedAlertMessage` 분기: `dj-deactivated` → minutes 유효(>0)면 `processI18nString(t.dj.para.playback_stopped_time_limit,{minutes})` 아니면 `t.dj.para.playback_stopped_no_limit`; `dj-admin-removed` → `t.dj.para.deleted_queue_by_admin`. 표시 수단(토스트/알림 컴포넌트)은 기존 penalty/grade 와 동일 메커니즘 재사용(신규 UI 발명 금지).
-- [ ] **Step 5: 통과 + 전 회귀** — `yarn vitest run` 전체 GREEN, `yarn tsc --noEmit` 0, `yarn eslint src/entities/current-partyroom src/entities/partyroom-client src/shared/api/websocket src/shared/lib/analytics <consumer dir> --quiet` 0 error. `git diff origin/development..HEAD --stat` scope 확인(위 파일+테스트+ko/en json+plan 만; use-playback-deactivated-callback·PR-1/2 코드·배지 무변경).
-- [ ] **Step 6: 커밋** — `feat(E/#3): changeType별 self-removed 알림 렌더 + i18n(ko/en) — deactivate(limit-only·graceful)/admin`
+**Files:** Create `src/entities/current-partyroom/lib/alerts/use-dj-removed-alert.hook.tsx` + `use-dj-removed-alert.hook.test.tsx`; Modify `src/entities/current-partyroom/lib/alerts/use-alerts.hook.tsx`, `src/shared/lib/localization/dictionaries/en.json`(먼저=Dictionary 타입), `src/shared/lib/localization/dictionaries/ko.json`(미러).
+
+- [ ] **Step 1: i18n 키 추가** (en.json 먼저 → ko.json 동일 키). 기존 `dj.para` 섹션(ko L207/en L220 존재)에 추가. **변수는 이중 중괄호 `{{minutes}}`**(VariableProcessor 컨벤션 — `dj.title.time_limit` 등이 `{{minutes}}` 사용; 단일 `{}`면 치환 실패):
+  - `dj.para.playback_stopped_time_limit` ko: `"재생 시간 제한({{minutes}}분)을 초과하는 곡으로 재생이 중단되었습니다"` / en: `"Playback stopped: a track exceeds this room's time limit ({{minutes}} min)."`
+  - `dj.para.playback_stopped_no_limit` (graceful: minutes 0/null/undefined) ko: `"재생 가능한 곡이 없어 재생이 중단되었습니다"` / en: `"Playback stopped: no playable track."`
+  - admin: 기존 `dj.para.deleted_queue_by_admin` ko/en **양쪽 이미 존재**(en L229 "You have been removed from the queue by the administrator") → **재사용**(신규 키 X·보강 불요).
+- [ ] **Step 2: 실패 테스트** `use-dj-removed-alert.hook.test.tsx` — `use-penalty-alert`/`use-grade-adjusted-alert` 테스트의 renderHook + store/`useDialog` mock 패턴 복제. `alert.notify({type:'dj-deactivated', playbackTimeLimitMinutes:5})` → `openAlertDialog` 가 `processI18nString(t.dj.para.playback_stopped_time_limit,{minutes:'5'})` 내용으로 호출; `playbackTimeLimitMinutes:0|null` → `playback_stopped_no_limit`; `{type:'dj-admin-removed'}` → `deleted_queue_by_admin`; 비-DJ variant(penalty/grade)는 무시(가드).
+- [ ] **Step 3: 실패 확인** — `yarn vitest run src/entities/current-partyroom/lib/alerts/use-dj-removed-alert.hook.test.tsx` → FAIL.
+- [ ] **Step 4: 구현** — `use-dj-removed-alert.hook.tsx`: `use-grade-adjusted-alert.hook.tsx` 구조 그대로(`useAlert(useCallback(cb,[deps]))`, `useDialog().openAlertDialog`, `useI18n()`). 콜백: `if(!AlertMessage.isDjRemovedAlertMessage(message)) return;` 그다음 `message.type==='dj-deactivated'` 면 `const m = message.playbackTimeLimitMinutes; const content = (typeof m==='number' && m>0) ? processI18nString(t.dj.para.playback_stopped_time_limit, { minutes: String(m) }) : t.dj.para.playback_stopped_no_limit;` (★`processI18nString` 의 vars 는 `Record<string,string>` → 반드시 `String(m)`), `'dj-admin-removed'` 면 `t.dj.para.deleted_queue_by_admin`; `openAlertDialog` 로 표시(grade 훅과 동일 호출 형태). `use-alerts.hook.tsx` 에 `useDjRemovedAlert()` 추가(usePenaltyAlert/useGradeAdjustedAlert 옆, 동일 호출 컨벤션).
+- [ ] **Step 5: 통과 + 전 회귀** — Step3 cmd PASS. `yarn vitest run` 전체 GREEN, `yarn tsc --noEmit` 0, `yarn eslint src/entities/current-partyroom src/entities/partyroom-client src/shared/api/websocket src/shared/lib/analytics --quiet` 0 error. `git diff origin/development..HEAD --stat` scope(Task1~4 파일+테스트+ko/en json+plan 만; `use-playback-deactivated-callback`·PR-1/2 코드·배지 무변경).
+- [ ] **Step 6: 커밋** — `feat(E/#3): useDjRemovedAlert 신규 훅 + use-alerts 등록 + i18n(ko/en) — deactivate(limit-only·graceful)/admin`
 
 ---
 
