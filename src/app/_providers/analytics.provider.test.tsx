@@ -73,4 +73,23 @@ describe('AnalyticsProvider — B′ 게스트(GT) 미식별 가드', () => {
       expect.objectContaining({ authority_tier: AuthorityTier.GT })
     );
   });
+
+  test('동일 uid 멤버 me 가 재설정돼도 identifyAuthenticatedUser 는 1회만 호출된다 (ref dedup)', () => {
+    const { queryClient } = renderWithCache(memberMe);
+    expect(identifyAuthenticatedUser).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      queryClient.setQueryData([QueryKeys.Me], {
+        uid: 'm456',
+        authorityTier: AuthorityTier.FM,
+      } as unknown as Me.Model);
+    });
+
+    expect(identifyAuthenticatedUser).toHaveBeenCalledTimes(1);
+  });
+
+  test('uid 없는 게스트성 me 는 조기 반환되어 identifyAuthenticatedUser 를 호출하지 않는다', () => {
+    renderWithCache({ authorityTier: AuthorityTier.GT } as unknown as Me.Model);
+    expect(identifyAuthenticatedUser).not.toHaveBeenCalled();
+  });
 });
