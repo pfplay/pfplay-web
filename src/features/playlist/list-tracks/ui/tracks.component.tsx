@@ -1,3 +1,4 @@
+import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import {
   DndContext,
@@ -15,6 +16,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { usePlaylistAction } from '@/entities/playlist';
+import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
 import { Playlist, PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
@@ -22,6 +24,7 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { PFAddPlaylist, PFDelete } from '@/shared/ui/icons';
 import Track from './track.component';
 import { useFetchPlaylistTracks } from '../api/use-fetch-playlist-tracks.query';
+import { parseDurationToSeconds } from '../lib/parse-duration';
 
 const logger = withDebugger(0);
 const errorLogger = logger(errorLog);
@@ -32,6 +35,10 @@ type TracksInPlaylistProps = {
 
 const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
   const t = useI18n();
+  const params = useParams<{ id: string }>();
+  const partyroomId = Number(params.id);
+  const { data: summary } = useFetchPartyroomDetailSummary(partyroomId, !!partyroomId);
+  const limitMin = summary?.playbackTimeLimit ?? 0;
   const { data } = useFetchPlaylistTracks(playlist.id);
   const playlistAction = usePlaylistAction();
 
@@ -88,24 +95,29 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
         strategy={verticalListSortingStrategy}
       >
         <div className='flex flex-col gap-3'>
-          {items.map((track) => (
-            <Track
-              key={track.linkId}
-              track={track}
-              menuItems={[
-                {
-                  onClickItem: () => playlistAction.removeTrack(playlist.id, track.trackId),
-                  label: t.playlist.btn.delete_playlist,
-                  Icon: <PFDelete />,
-                },
-                {
-                  onClickItem: () => playlistAction.moveTrack(playlist.id, track.trackId),
-                  label: t.playlist.btn.move_playlist,
-                  Icon: <PFAddPlaylist />,
-                },
-              ]}
-            />
-          ))}
+          {items.map((track) => {
+            const sec = parseDurationToSeconds(track.duration);
+            const isOverRoomLimit = limitMin > 0 && sec !== null && sec > limitMin * 60;
+            return (
+              <Track
+                key={track.linkId}
+                track={track}
+                isOverRoomLimit={isOverRoomLimit}
+                menuItems={[
+                  {
+                    onClickItem: () => playlistAction.removeTrack(playlist.id, track.trackId),
+                    label: t.playlist.btn.delete_playlist,
+                    Icon: <PFDelete />,
+                  },
+                  {
+                    onClickItem: () => playlistAction.moveTrack(playlist.id, track.trackId),
+                    label: t.playlist.btn.move_playlist,
+                    Icon: <PFAddPlaylist />,
+                  },
+                ]}
+              />
+            );
+          })}
         </div>
       </SortableContext>
     </DndContext>

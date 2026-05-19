@@ -5,6 +5,7 @@ import { convertPlaylistTrackToPreview } from '@/entities/music-preview';
 import { ThumbnailWithPreview } from '@/entities/music-preview/index.ui';
 import { PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
@@ -13,9 +14,11 @@ import { PFDragAndDrop, PFMoreVert } from '@/shared/ui/icons';
 type TrackProps = {
   track: PlaylistTrack;
   menuItems: MenuItem[];
+  isOverRoomLimit?: boolean;
 };
 
-const Track = ({ track, menuItems }: TrackProps) => {
+const Track = ({ track, menuItems, isOverRoomLimit = false }: TrackProps) => {
+  const t = useI18n();
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: track.linkId,
   });
@@ -31,7 +34,10 @@ const Track = ({ track, menuItems }: TrackProps) => {
   return (
     <div
       ref={setNodeRef}
-      className='relative grid grid-cols-[24px_1fr_32px] items-center gap-2 cursor-default'
+      className={cn(
+        'relative grid grid-cols-[24px_1fr_32px] items-center gap-2 cursor-default',
+        isOverRoomLimit && 'opacity-50'
+      )}
       style={style}
       {...attributes}
     >
@@ -60,6 +66,11 @@ const Track = ({ track, menuItems }: TrackProps) => {
           <Typography type='caption1' className='text-gray-400'>
             {track.duration}
           </Typography>
+          {isOverRoomLimit && (
+            <Typography type='caption1' overflow='ellipsis' className='text-red-300'>
+              {t.dj.para.not_playable_in_room}
+            </Typography>
+          )}
         </div>
       </div>
 
