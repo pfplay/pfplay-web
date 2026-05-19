@@ -82,7 +82,7 @@ describe('auth-tracking', () => {
   });
 
   describe('identifyAuthenticatedUser', () => {
-    test('setUserId(uid) 1회 + member 속성 identify 1회, setOnce 없음, getCurrentUserId 미호출', () => {
+    test('setUserId(uid) 1회 + member 속성 identify 1회, setOnce 없음, amplitude.getUserId 를 호출하지 않는다 (canonical 캡처 제거됨)', () => {
       identifyAuthenticatedUser({
         uid: 'u12345',
         authorityTier: AuthorityTier.FM,

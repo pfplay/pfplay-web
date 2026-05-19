@@ -40,8 +40,8 @@ export default function useOAuth2Callback() {
         }
 
         if (me) {
-          // #9 (ADR-012 B): identify(→setUserId + canonical pin) 를 먼저 수행한
-          // 뒤 track 발사 — 이전엔 track 이 setUserId 전이라 GUEST id 로 귀속됐다.
+          // identify(→setUserId)를 먼저 수행한 뒤 track 발사 — track 이 setUserId 전이면
+          // 직전 식별자(게스트/익명)로 귀속되므로 순서 보장 필요.
           identifyAuthenticatedUser({
             uid: me.uid,
             authorityTier: me.authorityTier,
