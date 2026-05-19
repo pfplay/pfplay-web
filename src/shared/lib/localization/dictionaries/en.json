@@ -229,6 +229,7 @@
       "deleted_queue_by_admin": "You have been removed from the queue by the administrator",
       "playback_stopped_time_limit": "Playback stopped: a track exceeds this room's time limit ({{minutes}} min).",
       "playback_stopped_no_limit": "Playback stopped: no playable track.",
+      "not_playable_in_room": "Not playable here (exceeds this room's time limit)",
       "locked_queue_by_admin": "The current DJ queue is locked by an admin",
       "skipped_song_by_admin": "According to the admin policy, songs longer than {{count}} minutes will be automatically skipped",
       "dj_in_order": "DJing **one person at a time** \n from the waiting list, in order",
