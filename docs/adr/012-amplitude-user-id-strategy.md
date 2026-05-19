@@ -1,9 +1,30 @@
 # ADR-012: amplitude user_id 전략 (GUEST→MEMBER 경계 연속성)
 
-- **상태**: 채택 — 단계적 (Phase 1 = B, Phase 2 = E)
-- **일자**: 2026-05-18
-- **관련 이슈**: pfplay-web (analytics identity 단절), pfplay-platform `MemberSignService` (Phase 2)
-- **관련 노트**: `bugs/2026-05-14-amplitude-user-id-discontinuity.md`, `bugs/2026-05-14-guest-social-promotion-skips-profile-setup.md` (같은 `use-social-sign-in-callback.hook` 공유 — Phase 1 번들)
+- **상태**: ✅ **B′ 채택·구현 완료(dev/stg)** — 2026-05-20. 기존 "B→E 단계적"은 **폐기**(아래 §2026-05-20 최종결정). prod 미반영=별도 release 게이트.
+- **일자**: 2026-05-18 (B→E 채택) / 2026-05-20 (B′ 로 대체·구현)
+- **관련 이슈**: pfplay-web (analytics identity 단절), pfplay-web #320(정정·close), pfplay-web PR #321(B′ 구현, development `539a63d`)
+- **관련 노트**: `bugs/2026-05-14-amplitude-user-id-discontinuity.md`, `bugs/2026-05-14-guest-social-promotion-skips-profile-setup.md` (같은 `use-social-sign-in-callback.hook` 공유)
+
+> ## ✅ 2026-05-20 최종 결정: 옵션 B′ 채택 (B→E 폐기)
+>
+> ### 정정 이력 (정직 기록)
+>
+> - 2026-05-19 D/#9 P2(옵션 E backend FK) 진입 brainstorm 중, amplitude 콘솔 관찰로 "본 ADR 전제(두 user_id→canonical join) 실측 반증, setUserId 신뢰성 결함" 으로 ADR/#9/로드맵/메모리를 강하게 기재 → **잘못된 lock**. 2026-05-20 확인: 그 근거 데이터는 **~05-17 pre-#310(패치 미적용)** = 본 ADR/#7/#9 가 *고치려던 원본 증상의 재확인*이었지 반증이 아님. 더 최근 데이터선 게스트·멤버 모두 user_id 정상 — 식별 자체는 정상. ([[feedback_root_cause_premature_lock]] 자기적용 사례.)
+> - 정정 후 사용자와 재설계: 핵심 요구 = "콘솔 단일 user, **User ID=최신(멤버)**". 옵션 B(#310 canonical pin)는 콘솔 2-user 분리 잔존(B 의 알려진 한계)이라 요구 미충족. 옵션 D(user_account 보존)는 IAM 대수술이라 폐기. 게스트→멤버 도메인 단절(crew/페널티/영구추방 미승계)은 **제품 결정상 의도된 정상 동작**으로 확정(옵션 D·D/#9 P2 backend FK 모두 폐기).
+>
+> ### 채택: B′ — 게스트는 amplitude 에서 식별하지 않음
+>
+> 게스트 단계 `setUserId` 미호출(익명·device_id only) → 멤버 인증 시에만 `setUserId(memberUid)` → amplitude **익명→식별 device_id 병합**(SDK 가 지원하는 단일 자동 병합; 두 non-null user_id 병합과 반대)이 직전 게스트 활동을 멤버 user 로 흡수 → **콘솔 단일 user = 멤버(최신 user_id), 가입 전후 연속**. canonical_user_id pin·backend FK 불필요. DB/스키마/백엔드 무변경.
+>
+> 부수: `User Signed In` 의 `auth_type` 을 stale `me` 가 아닌 콜백 member 권위로 고정(zombie GUEST me 여도 member). 게스트 측 `trackSignedIn(GT)` 은 익명 이벤트로 유지(의도).
+>
+> ### 구현 (pfplay-web PR #321, development `539a63d`, 2026-05-20)
+>
+> Task1 canonical_user_id·getCurrentUserId dead-code 제거 + `identifyAuthenticatedUser` 단순화 / Task2 `trackSignedIn` authType 오버라이드 + 콜백 member 고정 / Task3 `AnalyticsProvider` 게스트(GT) 식별 가드. 전 vitest 1279/1279·tsc0·eslint0. spec→plan→subagent-driven TDD(각 2단+최종 holistic 리뷰) 통과. **prod 미반영(별도 release 게이트). post-impl 실증**: stg/amplitude 콘솔에서 게스트→가입 케이스 단일 user=멤버·게스트활동 병합·멤버 SIGNED 에 auth_type:guest 부재 — 머지=stg배포 후 모니터링.
+>
+> ### B′ 트레이드오프 (수용됨)
+>
+> 영구 게스트(가입 안 함)는 익명 device user 로 잔존 → 게스트-한정 분석은 user_id 아닌 device/`auth_type` property 기반. 크로스-디바이스 게스트→멤버 연결 불가(비시나리오로 수용). 아래 원본 "B→E" 결정/근거/결과는 **폐기된 기록**으로 보존(맥락·옵션표 참고용).
 
 ## 맥락
 
