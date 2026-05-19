@@ -50,6 +50,7 @@ export default function useOAuth2Callback() {
           if (tokenResponse.isNewUser) {
             trackSignedUp(oauth2Provider);
           }
+          // 콜백 도달 = OAuth 인증 완료. me 가 좀비 GUEST 로 늦게 풀려도 SIGNED_IN auth_type 은 member 로 고정.
           trackSignedIn(me.authorityTier, 'member');
         }
 

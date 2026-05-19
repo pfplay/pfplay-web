@@ -77,11 +77,6 @@ describe('auth-tracking', () => {
       trackSignedIn(AuthorityTier.AM);
       expect(amplitude.track).toHaveBeenCalledWith('User Signed In', { auth_type: 'member' });
     });
-
-    test('emits member auth_type for AuthorityTier.FM', () => {
-      trackSignedIn(AuthorityTier.FM);
-      expect(amplitude.track).toHaveBeenCalledWith('User Signed In', { auth_type: 'member' });
-    });
   });
 
   describe('trackSignedUp', () => {

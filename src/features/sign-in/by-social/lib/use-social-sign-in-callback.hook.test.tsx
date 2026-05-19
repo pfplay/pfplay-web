@@ -128,8 +128,6 @@ describe('useOAuth2Callback (D/#7+#9 Phase1)', () => {
 
     // tier 가 GT(guest-ish 좀비) 여도 콜백은 member 권위로 SIGNED_IN 을 고정한다.
     expect(trackSignedIn).toHaveBeenCalledWith(AuthorityTier.GT, 'member');
-    const overrideArg = trackSignedIn.mock.calls[0][1];
-    expect(overrideArg).toBe('member');
   });
 
   test('callbackLogin 실패 시 /sign-in 으로', async () => {
