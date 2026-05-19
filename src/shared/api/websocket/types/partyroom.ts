@@ -168,6 +168,15 @@ export type CrewProfileChangedEvent = WebSocketEventBase & {
   avatar: CrewAvatar;
 };
 
+/** DJ 큐 변경 사유 */
+export type DjChangeType =
+  | 'ENQUEUE'
+  | 'DEQUEUE'
+  | 'DEQUEUE_ADMIN'
+  | 'DEQUEUE_EXIT'
+  | 'ROTATE'
+  | 'DEACTIVATE';
+
 /** DJ 큐 변경 이벤트 */
 export type DjQueueChangedEvent = WebSocketEventBase & {
   eventType: PartyroomEventType.DJ_QUEUE_CHANGED;
@@ -177,6 +186,8 @@ export type DjQueueChangedEvent = WebSocketEventBase & {
     nickname: string;
     avatarIconUri: string;
   }>;
+  changeType?: DjChangeType;
+  playbackTimeLimitMinutes?: number | null;
 };
 
 // ──────────────────────────────────────────────

@@ -1,4 +1,5 @@
 import type { StageType } from '@/shared/api/http/types/@enums';
+import type { DjChangeType } from '@/shared/api/websocket/types/partyroom';
 
 import type { EntrySource } from './events';
 import { identify, track } from './index';
@@ -115,11 +116,23 @@ function consumeSelfDjDeregisterSuppression(now: number = Date.now()): boolean {
   return false;
 }
 
-export function trackDjAdminDeregisterDetected(partyroomId: number): void {
+/**
+ * DJ 강제 해제 이벤트를 추적한다.
+ *
+ * changeType 에 따라 reason 을 결정한다:
+ *  - `'DEACTIVATE'` → `'deactivated'` (DJ 비활성화에 의한 자동 해제)
+ *  - 그 외 / 미지정  → `'admin'` (관리자 강제 해제 또는 알 수 없음)
+ *
+ * suppression 이 활성화되어 있으면 self-removal 중복 방지를 위해 즉시 반환한다.
+ */
+export function trackDjAdminDeregisterDetected(
+  partyroomId: number,
+  changeType?: DjChangeType
+): void {
   if (consumeSelfDjDeregisterSuppression()) return;
   track('DJ Deregistered', {
     partyroom_id: partyroomId,
-    reason: 'admin',
+    reason: changeType === 'DEACTIVATE' ? 'deactivated' : 'admin',
   });
 }
 
