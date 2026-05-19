@@ -109,6 +109,29 @@ describe('useOAuth2Callback (D/#7+#9 Phase1)', () => {
     expect(trackSignedIn).toHaveBeenCalledTimes(1);
   });
 
+  test("B′: 정상 member-me 면 trackSignedIn 이 'member' override 와 함께 발사", async () => {
+    callbackLogin.mockResolvedValue({ isNewUser: false });
+    fetchMeAsync.mockResolvedValue(meModel({ authorityTier: AuthorityTier.FM }));
+
+    const { result } = renderWithClient(() => useOAuth2Callback());
+    await result.current('google');
+
+    expect(trackSignedIn).toHaveBeenCalledWith(AuthorityTier.FM, 'member');
+  });
+
+  test("B′: 좀비(GUEST-ish) me(GT) 가 와도 SIGNED_IN auth_type 은 'member' 로 고정", async () => {
+    callbackLogin.mockResolvedValue({ isNewUser: false });
+    fetchMeAsync.mockResolvedValue(meModel({ authorityTier: AuthorityTier.GT }));
+
+    const { result } = renderWithClient(() => useOAuth2Callback());
+    await result.current('google');
+
+    // tier 가 GT(guest-ish 좀비) 여도 콜백은 member 권위로 SIGNED_IN 을 고정한다.
+    expect(trackSignedIn).toHaveBeenCalledWith(AuthorityTier.GT, 'member');
+    const overrideArg = trackSignedIn.mock.calls[0][1];
+    expect(overrideArg).toBe('member');
+  });
+
   test('callbackLogin 실패 시 /sign-in 으로', async () => {
     callbackLogin.mockRejectedValue(new Error('exchange failed'));
 

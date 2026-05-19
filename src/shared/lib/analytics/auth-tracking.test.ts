@@ -58,6 +58,21 @@ describe('auth-tracking', () => {
       expect(amplitude.track).toHaveBeenCalledWith('User Signed In', { auth_type: 'guest' });
     });
 
+    test('override 미전달 시 tier 기준 유지 (회귀: GT → guest)', () => {
+      trackSignedIn(AuthorityTier.GT);
+      expect(amplitude.track).toHaveBeenCalledWith('User Signed In', { auth_type: 'guest' });
+    });
+
+    test('authTypeOverride 가 tier 보다 우선 (GT 라도 member)', () => {
+      trackSignedIn(AuthorityTier.GT, 'member');
+      expect(amplitude.track).toHaveBeenCalledWith('User Signed In', { auth_type: 'member' });
+    });
+
+    test('emits member auth_type for AuthorityTier.FM (override 없음)', () => {
+      trackSignedIn(AuthorityTier.FM);
+      expect(amplitude.track).toHaveBeenCalledWith('User Signed In', { auth_type: 'member' });
+    });
+
     test('emits member auth_type for AuthorityTier.AM', () => {
       trackSignedIn(AuthorityTier.AM);
       expect(amplitude.track).toHaveBeenCalledWith('User Signed In', { auth_type: 'member' });

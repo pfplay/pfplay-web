@@ -50,7 +50,7 @@ export default function useOAuth2Callback() {
           if (tokenResponse.isNewUser) {
             trackSignedUp(oauth2Provider);
           }
-          trackSignedIn(me.authorityTier);
+          trackSignedIn(me.authorityTier, 'member');
         }
 
         // 옵션2(#7): 신규 가입자는 좀비 me 와 무관하게 프로필 설정 강제.
