@@ -82,6 +82,15 @@ describe('TracksInPlaylist over-limit 계산', () => {
     expect(under?.isOverRoomLimit).toBe(false);
   });
 
+  test('limit 5분: 정확히 5:00 트랙은 isOverRoomLimit=false (strict > 경계값)', () => {
+    setTracks([makeTrack('t1', '5:00')]);
+
+    render(<TracksInPlaylist playlist={playlist} />);
+
+    const exact = lastTrackProps.find((p) => p.duration === '5:00');
+    expect(exact?.isOverRoomLimit).toBe(false);
+  });
+
   test('summary undefined 면 모든 트랙 false (fail-safe)', () => {
     setSummary(undefined);
     setTracks([makeTrack('t1', '6:00')]);
