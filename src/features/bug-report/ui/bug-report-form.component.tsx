@@ -20,12 +20,11 @@ type Props = {
 
 export function BugReportForm({ onSubmitted }: Props) {
   const t = useI18n();
-  const { register, handleSubmit, watch, formState } = useForm<BugReportSchema>({
+  const { register, handleSubmit, formState } = useForm<BugReportSchema>({
     resolver: zodResolver(bugReportSchema),
     mode: 'onChange',
     defaultValues: { content: '' },
   });
-  const content = watch('content') ?? '';
   const mutation = useSubmitBugReport();
   const toast = useBugReportToast();
 
@@ -60,19 +59,9 @@ export function BugReportForm({ onSubmitted }: Props) {
         aria-label={t.bug_report.title.report_bug}
         data-testid='bug-report-content'
       />
-      <div className='flex justify-between'>
-        <Typography type='detail2' className='text-gray-300'>
-          {t.bug_report.help}
-        </Typography>
-        <Typography
-          type='detail2'
-          className={
-            content.length > BUG_REPORT_CONTENT_MAX * 0.9 ? 'text-red-400' : 'text-gray-300'
-          }
-        >
-          {content.length}/{BUG_REPORT_CONTENT_MAX}
-        </Typography>
-      </div>
+      <Typography type='detail2' className='text-gray-300'>
+        {t.bug_report.help}
+      </Typography>
       {errorMessageKey && (
         <Typography type='detail2' className='text-red-400'>
           {t.bug_report.validation[errorMessageKey]}
