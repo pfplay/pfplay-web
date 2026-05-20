@@ -24,7 +24,19 @@ export default function SkipGlobalErrorHandling<E = unknown>({
       try {
         return await originalMethod.apply(this, args);
       } catch (error) {
-        const shouldSkipGlobalErrorHandling = typeof when === 'function' ? when(error as E) : when;
+        // predicate 평가는 fail-safe — predicate 가 throw 하면(SSR-unsafe 글로벌 참조,
+        // 사용자 predicate 버그 등) 원본 에러가 predicate 의 throw 로 가려지지 않도록
+        // catch 하고 skip 플래그 미부착(전역 에러 핸들러 정상 도달). (web#314 L3)
+        let shouldSkipGlobalErrorHandling: boolean;
+        if (typeof when === 'function') {
+          try {
+            shouldSkipGlobalErrorHandling = when(error as E);
+          } catch {
+            shouldSkipGlobalErrorHandling = false;
+          }
+        } else {
+          shouldSkipGlobalErrorHandling = when;
+        }
 
         if (shouldSkipGlobalErrorHandling) {
           Object.defineProperty(error, KEY, {
