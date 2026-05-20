@@ -332,5 +332,26 @@
         "label": "Emergency Notice"
       }
     }
+  },
+  "bug_report": {
+    "btn": {
+      "open": "Report a Bug",
+      "submit": "Submit",
+      "cancel": "Cancel"
+    },
+    "title": {
+      "report_bug": "Report a Bug"
+    },
+    "placeholder": "What bug did you experience? (5–2000 chars)",
+    "help": "Our team will review and respond. We may not be able to reply.",
+    "toast": {
+      "success": "Feedback submitted",
+      "rate_limit": "Please try again in a moment",
+      "error": "Submission failed"
+    },
+    "validation": {
+      "too_short": "Please enter at least 5 characters",
+      "too_long": "Up to 2000 characters allowed"
+    }
   }
 }

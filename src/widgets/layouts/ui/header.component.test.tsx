@@ -12,6 +12,9 @@ vi.mock('@/entities/me', () => ({
 vi.mock('@/features/sign-out', () => ({
   useSignOut: vi.fn(),
 }));
+vi.mock('@/features/bug-report', () => ({
+  BugReportButton: () => <button data-testid='bug-report-button' />,
+}));
 vi.mock('@/shared/lib/localization/i18n.context');
 vi.mock('@/shared/lib/localization/language-change-menu.component', () => ({
   __esModule: true,
@@ -33,6 +36,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   (useI18n as Mock).mockReturnValue({
     common: { btn: { logout: 'Logout' } },
+    bug_report: { btn: { open: 'Report a Bug' } },
   });
   (useSignOut as Mock).mockReturnValue(vi.fn());
 });

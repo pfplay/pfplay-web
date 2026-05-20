@@ -332,5 +332,26 @@
         "label": "긴급 공지"
       }
     }
+  },
+  "bug_report": {
+    "btn": {
+      "open": "버그 제보",
+      "submit": "제출",
+      "cancel": "취소"
+    },
+    "title": {
+      "report_bug": "버그 제보"
+    },
+    "placeholder": "어떤 버그를 경험하셨나요? (5~2000자)",
+    "help": "운영팀이 확인 후 조치합니다. 답변이 어려울 수 있어요.",
+    "toast": {
+      "success": "피드백이 등록되었습니다",
+      "rate_limit": "잠시 후 다시 시도해주세요",
+      "error": "제출에 실패했어요"
+    },
+    "validation": {
+      "too_short": "최소 5자 이상 입력해주세요",
+      "too_long": "최대 2000자까지 입력할 수 있어요"
+    }
   }
 }
