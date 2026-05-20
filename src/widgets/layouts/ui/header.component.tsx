@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FC } from 'react';
 import { Menu } from '@headlessui/react';
 import { useFetchMe } from '@/entities/me';
+import { BugReportButton } from '@/features/bug-report';
 import { useSignOut } from '@/features/sign-out';
 import { AuthorityTier } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
@@ -71,6 +72,7 @@ const Header: FC<Props> = ({ withLogo }) => {
             </Menu>
           )}
 
+          {me && <BugReportButton />}
           <LanguageChangeMenu />
         </div>
       </header>
