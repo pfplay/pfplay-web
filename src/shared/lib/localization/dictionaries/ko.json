@@ -201,7 +201,8 @@
     },
     "btn": {
       "share_twitter": "트위터로 공유하기",
-      "copy_link": "링크 복사"
+      "copy_link": "링크 복사",
+      "click_to_play": "클릭하여 재생"
     }
   },
   "dj": {
