@@ -36,13 +36,13 @@ const AvatarFaceList = () => {
         )}
         data-testid='avatar-face-list'
       >
-        {faces.map((face) => (
-          <AvatarFaceListItem key={face.resourceUri} meta={face} hideSelected={!combinable} />
-        ))}
+        {/* combinable=false(전신 아이템)이면 face 선택 자체가 불가하므로 리스트를
+            렌더하지 않는다. 과거엔 렌더한 채 반투명 overlay 로만 덮어 face 이미지가
+            비쳐 보였다(ⓐ). */}
+        {combinable &&
+          faces.map((face) => <AvatarFaceListItem key={face.resourceUri} meta={face} />)}
 
-        {nfts.map((nft) => (
-          <AvatarFaceListItem key={nft.resourceUri} meta={nft} hideSelected={!combinable} />
-        ))}
+        {combinable && nfts.map((nft) => <AvatarFaceListItem key={nft.resourceUri} meta={nft} />)}
 
         {!combinable && (
           <div className='absolute inset-0 flexColCenter gap-[16px] px-2 text-center bg-dim text-white cursor-not-allowed select-none'>
