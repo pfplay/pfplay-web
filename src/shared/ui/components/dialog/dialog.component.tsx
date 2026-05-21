@@ -99,85 +99,84 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   };
 
   return (
-    <Transition appear show={open} as={Fragment}>
-      <HUDialog
-        as='div'
-        className='relative'
-        style={{ zIndex }}
-        onClick={closeWhenOverlayClicked ? handleClose : undefined}
-        onClose={
-          () => {} /* 여기 close function 을 넣으면 중첩 모달 띄울 때 중첩 모달 내 인터랙션에 의해 직전 모달이 닫혀 버리는 문제가 있음. 해서 onClick 에서 컨트롤 */
-        }
-        id={id}
-      >
-        {!hideDim && (
+    <HUDialog
+      as='div'
+      open={open}
+      className='relative'
+      style={{ zIndex }}
+      onClick={closeWhenOverlayClicked ? handleClose : undefined}
+      onClose={
+        () => {} /* 여기 close function 을 넣으면 중첩 모달 띄울 때 중첩 모달 내 인터랙션에 의해 직전 모달이 닫혀 버리는 문제가 있음. 해서 onClick 에서 컨트롤 */
+      }
+      id={id}
+    >
+      {!hideDim && (
+        <Transition.Child
+          as={Fragment}
+          enter='ease-out duration-300'
+          enterFrom='opacity-0'
+          enterTo='opacity-100'
+          leave='ease-in duration-200'
+          leaveFrom='opacity-100'
+          leaveTo='opacity-0'
+        >
+          <div data-testid='dialog-backdrop' className='fixed inset-0 bg-dim' />
+        </Transition.Child>
+      )}
+
+      <div data-testid='dialog-overlay-container' className='fixed inset-0 overflow-y-auto'>
+        <div className='flex min-h-full items-center justify-center p-4 text-center'>
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
-            enterFrom='opacity-0'
-            enterTo='opacity-100'
+            enterFrom='opacity-0 scale-95'
+            enterTo='opacity-100 scale-100'
             leave='ease-in duration-200'
-            leaveFrom='opacity-100'
-            leaveTo='opacity-0'
+            leaveFrom='opacity-100 scale-100'
+            leaveTo='opacity-0 scale-95'
           >
-            <div data-testid='dialog-backdrop' className='fixed inset-0 bg-dim' />
-          </Transition.Child>
-        )}
-
-        <div data-testid='dialog-overlay-container' className='fixed inset-0 overflow-y-auto'>
-          <div className='flex min-h-full items-center justify-center p-4 text-center'>
-            <Transition.Child
-              as={Fragment}
-              enter='ease-out duration-300'
-              enterFrom='opacity-0 scale-95'
-              enterTo='opacity-100 scale-100'
-              leave='ease-in duration-200'
-              leaveFrom='opacity-100 scale-100'
-              leaveTo='opacity-0 scale-95'
+            <HUDialog.Panel
+              data-testid='dialog-panel'
+              className={cn(
+                'relative pt-[52px] px-[32px] pb-[32px] w-[440px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all',
+                classNames?.container
+              )}
+              style={{
+                overflowWrap: 'anywhere',
+              }}
             >
-              <HUDialog.Panel
-                data-testid='dialog-panel'
-                className={cn(
-                  'relative pt-[52px] px-[32px] pb-[32px] w-[440px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all',
-                  classNames?.container
-                )}
-                style={{
-                  overflowWrap: 'anywhere',
-                }}
-              >
-                {showCloseIcon && (
-                  <TextButton
-                    data-testid='dialog-close-button'
-                    onClick={handleClose}
-                    Icon={<PFClose width={24} height={24} />}
-                    className='absolute top-[16px] right-[16px] z-10'
-                  />
-                )}
+              {showCloseIcon && (
+                <TextButton
+                  data-testid='dialog-close-button'
+                  onClick={handleClose}
+                  Icon={<PFClose width={24} height={24} />}
+                  className='absolute top-[16px] right-[16px] z-10'
+                />
+              )}
 
-                {title && (
-                  <HUDialog.Title
-                    as='div'
-                    className={cn([
-                      'flexCol gap-[12px] mb-[24px]',
-                      {
-                        'items-start': titleAlign === 'left',
-                        'items-center': titleAlign === 'center',
-                      },
-                    ])}
-                  >
-                    {Title}
+              {title && (
+                <HUDialog.Title
+                  as='div'
+                  className={cn([
+                    'flexCol gap-[12px] mb-[24px]',
+                    {
+                      'items-start': titleAlign === 'left',
+                      'items-center': titleAlign === 'center',
+                    },
+                  ])}
+                >
+                  {Title}
 
-                    {Sub}
-                  </HUDialog.Title>
-                )}
+                  {Sub}
+                </HUDialog.Title>
+              )}
 
-                {typeof Body === 'function' ? <Body /> : Body}
-              </HUDialog.Panel>
-            </Transition.Child>
-          </div>
+              {typeof Body === 'function' ? <Body /> : Body}
+            </HUDialog.Panel>
+          </Transition.Child>
         </div>
-      </HUDialog>
-    </Transition>
+      </div>
+    </HUDialog>
   );
 };
 
