@@ -65,6 +65,10 @@ export type EventPropertyMap = {
     partyroom_id: number;
     playlist_id: number;
   };
+  'DJ Playlist Changed': {
+    partyroom_id: number;
+    playlist_id: number;
+  };
   'DJ Deregistered': {
     partyroom_id: number;
     reason: DjDeregisterReason;
