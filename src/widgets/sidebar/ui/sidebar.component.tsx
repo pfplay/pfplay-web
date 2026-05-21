@@ -34,7 +34,11 @@ export default function Sidebar({ className, onClickAvatarSetting, extraButtons 
   const setPlaylistDrawer = useUIState((state) => state.setPlaylistDrawer);
   const informSocialType = useInformSocialType();
 
-  const togglePlaylist = () => {
+  const togglePlaylist = async () => {
+    if (await isGuest()) {
+      informSocialType();
+      return;
+    }
     setPlaylistDrawer((prev) => mergeDeep(prev, { open: !prev.open }));
   };
 

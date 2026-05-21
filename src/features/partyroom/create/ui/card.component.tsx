@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
-import { useInformWalletLinkage, useIsWalletLinked } from '@/entities/wallet';
+import { useIsGuest } from '@/entities/me';
+import { useInformSocialType } from '@/features/sign-in/by-social';
 import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useLang } from '@/shared/lib/localization/lang.context';
@@ -12,12 +13,14 @@ export default function PartyroomCreateCard() {
   const t = useI18n();
   const lang = useLang();
   const { openDialog, openConfirmDialog } = useDialog();
-  const isWalletLinked = useIsWalletLinked();
-  const informWalletLinkage = useInformWalletLinkage();
+  const isGuest = useIsGuest();
+  const informSocialType = useInformSocialType();
 
+  // 게스트(GT)만 차단. AM/FM 모두 파티룸 생성 가능 (backend PartyroomCreationPolicy = FM|AM).
+  // 지갑 연결 게이트는 제거 — 지갑 미연결 AM 도 생성 가능해야 하므로(지갑=FM 승급 경로는 별개).
   const handleClickBeAHostBtn = async () => {
-    if (!(await isWalletLinked())) {
-      informWalletLinkage();
+    if (await isGuest()) {
+      informSocialType();
       return;
     }
 
