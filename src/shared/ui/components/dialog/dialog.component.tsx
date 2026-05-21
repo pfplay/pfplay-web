@@ -138,33 +138,33 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
               <HUDialog.Panel
                 data-testid='dialog-panel'
                 className={cn(
-                  'pt-[52px] px-[32px] pb-[32px] w-[440px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all',
+                  'relative pt-[52px] px-[32px] pb-[32px] w-[440px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all',
                   classNames?.container
                 )}
                 style={{
                   overflowWrap: 'anywhere',
                 }}
               >
+                {showCloseIcon && (
+                  <TextButton
+                    data-testid='dialog-close-button'
+                    onClick={handleClose}
+                    Icon={<PFClose width={24} height={24} />}
+                    className='absolute top-[16px] right-[16px] z-10'
+                  />
+                )}
+
                 {title && (
                   <HUDialog.Title
                     as='div'
                     className={cn([
-                      'relative flexCol gap-[12px] mb-[24px]',
+                      'flexCol gap-[12px] mb-[24px]',
                       {
                         'items-start': titleAlign === 'left',
                         'items-center': titleAlign === 'center',
                       },
                     ])}
                   >
-                    {showCloseIcon && (
-                      <TextButton
-                        data-testid='dialog-close-button'
-                        onClick={handleClose}
-                        Icon={<PFClose width={24} height={24} />}
-                        className='absolute top-[2.5px] right-0'
-                      />
-                    )}
-
                     {Title}
 
                     {Sub}

@@ -67,7 +67,7 @@ export function BugReportForm({ onSubmitted }: Props) {
           {t.bug_report.validation[errorMessageKey]}
         </Typography>
       )}
-      <div className='flex justify-end gap-3'>
+      <div className='flex items-center justify-end gap-3'>
         <TextButton onClick={onSubmitted} type='button'>
           {t.bug_report.btn.cancel}
         </TextButton>

@@ -9,6 +9,9 @@
   }
   body {
     @apply text-white bg-black min-h-screen;
+    /* scrollbar 가 사라져도(모달/드로어 overflow-hidden) gutter 공간을 유지해
+       콘텐츠가 우측으로 밀리는 layout shift 를 방지한다. */
+    scrollbar-gutter: stable;
   }
   body.scroll-hidden {
     @apply overflow-hidden;
