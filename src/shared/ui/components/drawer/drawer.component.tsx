@@ -31,14 +31,22 @@ const Drawer = ({
   const root = usePortalRoot(DomId.DrawerRoot);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add('scroll-hidden');
-    } else {
-      document.body.classList.remove('scroll-hidden');
+    if (!isOpen) return;
+    // 배경 스크롤 잠금(body overflow:hidden, viewport 로 전파). 전파로 <html>
+    // scrollbar 가 사라지므로 그 폭만큼 padding-right 로 보상해 콘텐츠가 좌측으로
+    // 밀리는 layout shift 를 막는다. 보상은 <body> 에 건다 — headlessui Dialog 는
+    // <html> 의 padding-right 를 자기 계산값으로 덮어쓰므로(드로어 위에서 모달을
+    // 열면 r=0 으로 계산해 보상을 0 으로 만든다), 같은 <html> 에 걸면 충돌한다.
+    // <body> 는 headlessui 가 건드리지 않아 모달 토글과 무관하게 16px 가 유지된다.
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const prevPaddingRight = document.body.style.paddingRight;
+    document.body.classList.add('scroll-hidden');
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
-
     return () => {
       document.body.classList.remove('scroll-hidden');
+      document.body.style.paddingRight = prevPaddingRight;
     };
   }, [isOpen]);
 
