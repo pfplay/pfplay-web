@@ -26,8 +26,15 @@ function isClient(): boolean {
   return typeof window !== 'undefined';
 }
 
+// E2E(Playwright 등 자동화 브라우저)는 navigator.webdriver=true 다. prod/stg 와
+// MTU 를 공유하므로 자동화 트래픽이 amplitude 를 호출하면 MTU 가 낭비된다.
+// 실제 사용자(webdriver=false/undefined)는 영향 없음.
+function isAutomated(): boolean {
+  return typeof navigator !== 'undefined' && navigator.webdriver === true;
+}
+
 function isEnabled(): boolean {
-  return isClient() && Boolean(getApiKey());
+  return isClient() && Boolean(getApiKey()) && !isAutomated();
 }
 
 function loadSdk(): Promise<AmplitudeModule> {
@@ -53,7 +60,7 @@ function callSdk(action: (sdk: AmplitudeModule) => void): void {
 
 export function initAnalytics(): void {
   const apiKey = getApiKey();
-  if (!isClient() || !apiKey || initialized) return;
+  if (!isClient() || !apiKey || initialized || isAutomated()) return;
   initialized = true;
   callSdk((sdk) => {
     sdk.init(apiKey, undefined, {
