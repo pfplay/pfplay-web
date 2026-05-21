@@ -17,6 +17,7 @@ import { DjListItem } from '@/shared/ui/components/dj-list-item';
 import { TextButton } from '@/shared/ui/components/text-button';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
+import ChangePlaylistButton from './change-playlist-button.component';
 import RegisterButton from './register-button.component';
 import UnregisterButton from './unregister-button.component';
 import { useDjingQueue } from '../lib/djing-queue.context';
@@ -137,16 +138,7 @@ export default function Body({ onCancel }: Props) {
                     suffixTagValue={isMe ? 'Me' : undefined}
                   />
                   <div className='flex items-center gap-2'>
-                    {isMe && (
-                      <Button
-                        color='primary'
-                        variant='outline'
-                        size='sm'
-                        onClick={() => alert('Not Impl')}
-                      >
-                        {t.playlist.btn.change_playlist}
-                      </Button>
-                    )}
+                    {isMe && <ChangePlaylistButton />}
                     {canDeleteDjFromQueue && (
                       <Button
                         size='sm'
