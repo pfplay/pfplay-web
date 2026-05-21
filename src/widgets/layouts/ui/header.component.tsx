@@ -72,8 +72,8 @@ const Header: FC<Props> = ({ withLogo }) => {
             </Menu>
           )}
 
-          {me && <BugReportButton />}
           <LanguageChangeMenu />
+          {me && <BugReportButton />}
         </div>
       </header>
     </>
