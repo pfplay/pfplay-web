@@ -106,6 +106,12 @@ describe('useAvatarCluster', () => {
       expect(position.position.y).not.toBe(initialPositions[index].position.y);
       expect(position.position.x).toBeGreaterThanOrEqual(0);
       expect(position.position.y).toBeGreaterThanOrEqual(0);
+      expect(
+        Math.abs(position.position.x - initialPositions[index].position.x / 2)
+      ).toBeLessThanOrEqual(1);
+      expect(
+        Math.abs(position.position.y - initialPositions[index].position.y / 2)
+      ).toBeLessThanOrEqual(1);
     });
   });
 });
