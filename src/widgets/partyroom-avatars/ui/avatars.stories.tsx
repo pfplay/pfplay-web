@@ -72,8 +72,12 @@ function SeedPartyroomStore({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     useCurrentPartyroom.getState().init({
+      id: 1,
+      me: undefined,
+      playbackActivated: false,
       crews: [...mockCrews],
       currentDj: { crewId: 1 },
+      notice: '',
     });
 
     return () => {
