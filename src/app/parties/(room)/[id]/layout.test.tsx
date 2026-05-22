@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 const mockEnter = vi.fn();
 const mockTeardown = vi.fn();
+const mockResync = vi.fn();
 const mockReplace = vi.fn();
 let searchParamsValue: string | null = null;
 
@@ -18,6 +19,10 @@ vi.mock('@/features/partyroom/enter', () => ({
 
 vi.mock('@/features/partyroom/exit', () => ({
   useTeardownPartyroom: () => mockTeardown,
+}));
+
+vi.mock('@/features/partyroom/resync', () => ({
+  usePlaybackResync: (id: number) => mockResync(id),
 }));
 
 vi.mock('@/shared/lib/analytics/room-tracking', () => ({
@@ -40,6 +45,16 @@ describe('PartyroomLayout (Cluster A PR-4 L2: unmount=teardown, no unload backen
     );
 
     expect(mockEnter).toHaveBeenCalledTimes(1);
+  });
+
+  test('마운트 시 usePlaybackResync(partyroomId) 를 호출한다 (재연결/복귀 시 재생상태 self-heal)', () => {
+    render(
+      <PartyroomLayout>
+        <div>child</div>
+      </PartyroomLayout>
+    );
+
+    expect(mockResync).toHaveBeenCalledWith(7);
   });
 
   test('?source= 가 있으면 router.replace 로 즉시 제거한다', () => {

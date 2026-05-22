@@ -29,6 +29,14 @@ export default class PartyroomClient {
   }
 
   /**
+   * 재연결(최초 connect 이후) 시마다 콜백을 실행합니다. 최초 connect 에선 실행되지 않습니다.
+   * @returns 등록 해제 함수
+   */
+  public onReconnect(callback: () => void): () => void {
+    return this.socketClient.onReconnect(callback);
+  }
+
+  /**
    * partyroom 을 구독합니다. **replace 정책**:
    * 이미 다른 방을 구독 중이면 기존 방을 먼저 해지한 뒤 새 방을 구독합니다 (throw 없음).
    *

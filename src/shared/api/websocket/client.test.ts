@@ -135,6 +135,45 @@ describe('SocketClient', () => {
     });
   });
 
+  describe('onReconnect', () => {
+    test('최초 connect 에서는 실행되지 않는다', () => {
+      const sc = new SocketClient();
+      const cb = vi.fn();
+      sc.onReconnect(cb);
+
+      triggerConnect(sc);
+
+      expect(cb).not.toHaveBeenCalled();
+    });
+
+    test('최초 이후의 connect(재연결)부터 매번 실행된다', () => {
+      const sc = new SocketClient();
+      const cb = vi.fn();
+      sc.onReconnect(cb);
+
+      triggerConnect(sc); // 최초
+      expect(cb).not.toHaveBeenCalled();
+
+      triggerConnect(sc); // 재연결 1
+      expect(cb).toHaveBeenCalledTimes(1);
+
+      triggerConnect(sc); // 재연결 2
+      expect(cb).toHaveBeenCalledTimes(2);
+    });
+
+    test('반환된 해제 함수를 호출하면 이후 재연결에서 실행되지 않는다', () => {
+      const sc = new SocketClient();
+      const cb = vi.fn();
+      const unregister = sc.onReconnect(cb);
+
+      triggerConnect(sc); // 최초
+      unregister();
+      triggerConnect(sc); // 재연결
+
+      expect(cb).not.toHaveBeenCalled();
+    });
+  });
+
   describe('subscribe', () => {
     test('onConnect를 경유하여 client.subscribe를 호출하고 subscriptions에 추가한다', () => {
       const sc = new SocketClient();

@@ -44,6 +44,17 @@ describe('PartyroomClient', () => {
     expect(mockSocketInstance.onConnect).toHaveBeenCalledWith(callback, options);
   });
 
+  test('onReconnect → socketClient.onReconnect 에 위임하고 해제 함수를 그대로 반환한다', () => {
+    const callback = vi.fn();
+    const unregister = vi.fn();
+    mockSocketInstance.onReconnect.mockReturnValue(unregister);
+
+    const result = client.onReconnect(callback);
+
+    expect(mockSocketInstance.onReconnect).toHaveBeenCalledWith(callback);
+    expect(result).toBe(unregister);
+  });
+
   describe('subscribe', () => {
     test('구독이 없으면 올바른 경로로 subscribe를 호출한다', () => {
       const handler = vi.fn();

@@ -4,6 +4,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 import { useEnterPartyroom } from '@/features/partyroom/enter';
 import { useTeardownPartyroom } from '@/features/partyroom/exit';
+import { usePlaybackResync } from '@/features/partyroom/resync';
 import { parseEntrySource } from '@/shared/lib/analytics/room-tracking';
 import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
 
@@ -15,6 +16,9 @@ export default function PartyroomLayout({ children }: PropsWithChildren) {
   const entrySource = parseEntrySource(searchParams.get('source'));
   const enter = useEnterPartyroom(partyroomId, { entrySource });
   const teardown = useTeardownPartyroom(partyroomId);
+
+  // 재연결 / 백그라운드 탭 복귀 시 놓친 재생상태를 서버에서 재조회해 self-heal 한다(#335).
+  usePlaybackResync(partyroomId);
 
   useDidMountEffect(() => {
     enter();

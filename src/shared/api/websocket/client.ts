@@ -42,6 +42,9 @@ type OnConnect = {
 export default class SocketClient {
   private client: Client;
   private onConnectQueue: OnConnect[] = [];
+  private onReconnectQueue: Array<() => void> = [];
+  // 최초 connect 와 재연결을 구분하기 위한 플래그. onReconnect 콜백은 최초 connect 에선 건너뛴다.
+  private hasConnectedBefore = false;
   public subscriptions: Subscription[] = [];
   private heartbeatIntervalId: ReturnType<typeof setInterval> | undefined;
   private heartbeatSubscription: StompSubscription | undefined;
@@ -63,6 +66,13 @@ export default class SocketClient {
 
       this.onConnectQueue.forEach(({ callback }) => callback());
       this.onConnectQueue = this.onConnectQueue.filter(({ options }) => !options?.once);
+
+      // 재연결(최초 connect 이후)에서만 resync 등 복구 콜백을 실행한다.
+      // 최초 connect 의 초기 셋업(getSetupInfo)은 onConnect once 경로가 담당하므로 중복 방지.
+      if (this.hasConnectedBefore) {
+        this.onReconnectQueue.forEach((callback) => callback());
+      }
+      this.hasConnectedBefore = true;
     };
 
     const handleDisconnect = () => {
@@ -135,6 +145,23 @@ export default class SocketClient {
     }
 
     this.onConnectQueue.push({ callback, options });
+  }
+
+  /**
+   * 재연결(최초 connect 이후의 모든 connect) 시마다 콜백을 실행합니다.
+   * **최초 connect 에서는 실행되지 않습니다** — 초기 셋업은 `onConnect`(once) 가 담당하므로,
+   * 본 콜백은 끊겼다 다시 붙었을 때의 상태 복구(resync) 전용입니다.
+   *
+   * fire-and-forget broadcast(예: PLAYBACK_STARTED)는 끊긴 구간에 발행되면 영구 유실되므로,
+   * 재연결 시 서버 상태를 다시 조회해 self-heal 하는 용도로 사용합니다.
+   *
+   * @returns 등록 해제 함수 (컴포넌트 언마운트 시 호출하여 누수 방지)
+   */
+  public onReconnect(callback: () => void): () => void {
+    this.onReconnectQueue.push(callback);
+    return () => {
+      this.onReconnectQueue = this.onReconnectQueue.filter((registered) => registered !== callback);
+    };
   }
 
   /**
