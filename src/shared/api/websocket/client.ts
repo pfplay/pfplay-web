@@ -1,8 +1,9 @@
-import { Client } from '@stomp/stompjs';
+import { Client, IFrame } from '@stomp/stompjs';
 import { StompSubscription } from '@stomp/stompjs/src/stomp-subscription';
 import { messageCallbackType } from '@stomp/stompjs/src/types';
 import { specificLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
+import { recordClientEvent } from '@/shared/lib/observability/client-events';
 
 const logger = withDebugger(0);
 const log = logger<string>((msg) => {
@@ -14,8 +15,16 @@ const log = logger<string>((msg) => {
 });
 
 export type Destination = `/${string}`;
-export interface Subscription extends StompSubscription {
+/**
+ * 구독의 단일 진실원천(SoT) 엔트리.
+ * `destination` + `callback` 은 "원하는 구독 집합"을 표현하며,
+ * `stompSubscription` 은 현재 살아있는 STOMP 핸들(연결 시에만 존재)이다.
+ * reconnect 는 오직 이 배열을 기준으로 reconcile 한다.
+ */
+export interface Subscription {
   destination: Destination;
+  callback: messageCallbackType;
+  stompSubscription?: StompSubscription;
 }
 
 export type OnConnectOptions = {
@@ -39,15 +48,39 @@ export default class SocketClient {
 
   public constructor() {
     const handleConnect = () => {
+      recordClientEvent({ type: 'WS_CONNECT', brokerURL: this.client.brokerURL ?? '' });
       this.startHeartbeat();
+
+      // subscriptions[] (원하는 구독 집합) 기준으로 reconcile.
+      // 살아있는 STOMP 핸들이 있으면 깔끔히 버리고 다시 구독 → 중복 구독 방지.
+      this.subscriptions.forEach((subscription) => {
+        subscription.stompSubscription?.unsubscribe();
+        subscription.stompSubscription = this.client.subscribe(
+          subscription.destination,
+          subscription.callback
+        );
+      });
 
       this.onConnectQueue.forEach(({ callback }) => callback());
       this.onConnectQueue = this.onConnectQueue.filter(({ options }) => !options?.once);
     };
 
     const handleDisconnect = () => {
+      recordClientEvent({
+        type: 'WS_DISCONNECT',
+        reason: 'transport-closed',
+        subscriptionCount: this.subscriptions.length,
+      });
       this.stopHeartbeat();
-      this.unsubscribeAll();
+      this.teardownLiveSubscriptions();
+    };
+
+    const handleStompError = (frame: IFrame) => {
+      recordClientEvent({
+        type: 'WS_STOMP_ERROR',
+        message: frame.headers?.['message'] ?? frame.body ?? 'unknown',
+      });
+      handleDisconnect();
     };
 
     this.client = new Client({
@@ -61,7 +94,7 @@ export default class SocketClient {
       debug: log,
       onConnect: handleConnect,
       onWebSocketClose: handleDisconnect,
-      onStompError: handleDisconnect,
+      onStompError: handleStompError,
     });
   }
 
@@ -106,43 +139,61 @@ export default class SocketClient {
 
   /**
    * 구독을 시작합니다.
-   * connect 상태가 아니라면, connect 되길 기다린 후 구독됩니다.
-   * reconnect 시 자동으로 재구독됩니다.
+   * `subscriptions[]` (원하는 구독 집합)에 동기적으로 기록합니다 — 단일 진실원천.
+   * 이미 connect 상태라면 즉시 실제 STOMP 구독을 수행하고,
+   * 아니라면 connect 시 connect 핸들러가 `subscriptions[]` 기준으로 (재)구독합니다.
+   * reconnect 시에도 `subscriptions[]` 만으로 reconcile 됩니다.
+   *
+   * @precondition 호출자는 destination 의 유일성을 보장해야 합니다 (destination 당 활성 구독 1개).
+   *   intervening `unsubscribe` 없이 동일 destination 으로 재호출하면 `subscriptions[]` 에
+   *   중복 항목이 쌓여 reconnect reconcile 시 중복 live 핸들이 생성되므로 미지원입니다.
+   *   단일 destination / replace 강제는 소비자 책임입니다 (PartyroomClient single-room guard / replace 정책).
    */
   public subscribe(destination: Destination, callback: messageCallbackType) {
-    this.onConnect(() => {
-      const subscription = this.client.subscribe(destination, callback);
+    const subscription: Subscription = { destination, callback };
 
-      this.subscriptions.push({
-        ...subscription,
-        destination,
-      });
-    });
+    if (this.connected) {
+      subscription.stompSubscription = this.client.subscribe(destination, callback);
+    }
+
+    this.subscriptions.push(subscription);
   }
 
   /**
    * 구독을 해지합니다.
+   * `connected` 여부와 무관하게 `subscriptions[]` (원하는 구독 집합)에서 무조건 제거합니다.
+   * 살아있는 STOMP 핸들이 있으면 실제 해지도 수행합니다.
+   * 제거 후에는 이후 reconnect 가 이 destination 을 재구독하지 않습니다 (#5 부활 차단).
    */
   public unsubscribe(destination: Destination) {
-    if (!this.connected) return;
-
     const subscription = this.subscriptions.find(
       (subscription) => subscription.destination === destination
     );
     if (!subscription) return;
 
-    subscription.unsubscribe();
+    subscription.stompSubscription?.unsubscribe();
     this.subscriptions = this.subscriptions.filter(
       (subscription) => subscription.destination !== destination
     );
   }
 
   /**
-   * 모든 구독을 해지합니다.
+   * 모든 구독을 해지합니다 (원하는 구독 집합까지 비웁니다).
    */
   public unsubscribeAll() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.stompSubscription?.unsubscribe());
     this.subscriptions = [];
+  }
+
+  /**
+   * 살아있는 STOMP 핸들만 정리합니다.
+   * `subscriptions[]` (원하는 구독 집합)은 보존하여 reconnect 시 reconcile 가능하게 합니다.
+   */
+  private teardownLiveSubscriptions() {
+    this.subscriptions.forEach((subscription) => {
+      subscription.stompSubscription?.unsubscribe();
+      subscription.stompSubscription = undefined;
+    });
   }
 
   /*

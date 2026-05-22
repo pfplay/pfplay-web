@@ -6,7 +6,7 @@ export type AuthorityTierLabel = `${AuthorityTier}`;
 export type OAuthProviderLabel = OAuth2Provider;
 export type ReactionTypeLabel = 'like' | 'dislike' | 'grab';
 export type TrackSource = 'search' | 'grab';
-export type DjDeregisterReason = 'self' | 'admin';
+export type DjDeregisterReason = 'self' | 'admin' | 'deactivated';
 export type StageTypeLabel = 'main' | 'general';
 export type EntrySource = 'list' | 'link' | 'direct';
 
@@ -62,6 +62,10 @@ export type EventPropertyMap = {
     query: string;
   };
   'DJ Registered': {
+    partyroom_id: number;
+    playlist_id: number;
+  };
+  'DJ Playlist Changed': {
     partyroom_id: number;
     playlist_id: number;
   };

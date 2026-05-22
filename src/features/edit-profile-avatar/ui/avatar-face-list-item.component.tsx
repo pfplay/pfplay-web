@@ -7,10 +7,9 @@ import { useSelectedAvatarState } from '../lib/selected-avatar-state.context';
 
 interface Props {
   meta: AvatarFace | Nft.Model;
-  hideSelected: boolean;
 }
 
-const AvatarFaceListItem: FC<Props> = ({ meta, hideSelected }) => {
+const AvatarFaceListItem: FC<Props> = ({ meta }) => {
   const selectedAvatar = useSelectedAvatarState();
 
   const handleAvatarImgClick = () => {
@@ -22,7 +21,7 @@ const AvatarFaceListItem: FC<Props> = ({ meta, hideSelected }) => {
       handleClick={handleAvatarImgClick}
       imageSrc={meta.resourceUri}
       name={meta.name}
-      selected={!hideSelected && selectedAvatar.faceUri === meta.resourceUri}
+      selected={selectedAvatar.faceUri === meta.resourceUri}
       testId='avatar-face-list-item'
     />
   );

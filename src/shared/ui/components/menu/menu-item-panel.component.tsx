@@ -52,6 +52,10 @@ const MenuItemPanel = ({
       <MenuItems
         as='ul'
         anchor='bottom end'
+        // 드롭다운은 배경 스크롤을 잠글 이유가 없다. headlessui v2 의 modal 기본값(true)은
+        // 열릴 때 scroll-lock(scrollbar 보상)을 걸어, 세로 스크롤이 있는 화면에서 드롭다운을
+        // 열면 scrollbar 가 사라지며 헤더가 좌우로 흔들린다. modal=false 로 비활성화.
+        modal={false}
         className={cn(
           'absolute right-0 mt-2 py-2 origin-top-right rounded-[4px] bg-gray-800 shadow-lg z-50',
           menuItemPanelStyle,

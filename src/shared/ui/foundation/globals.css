@@ -10,6 +10,11 @@
   body {
     @apply text-white bg-black min-h-screen;
   }
+  /* 드로어/모달이 열리면 배경 스크롤을 잠근다. body overflow:hidden 은 viewport
+     로 전파되어 <html> scrollbar 를 제거하는데, 그 16px 보상은 Drawer 가
+     <html> 의 padding-right 로 직접 넣는다(headlessui Dialog 와 동일 메커니즘·
+     동일 요소). scrollbar-gutter(body) 는 body 가 스크롤 컨테이너가 아니라
+     무효였고, headlessui 의 html padding 과 이중 보상이 되어 제거했다. */
   body.scroll-hidden {
     @apply overflow-hidden;
   }

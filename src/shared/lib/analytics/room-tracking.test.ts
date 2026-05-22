@@ -1,6 +1,7 @@
 import * as amplitude from '@amplitude/analytics-browser';
 
 import { StageType } from '@/shared/api/http/types/@enums';
+import type { DjChangeType } from '@/shared/api/websocket/types/partyroom';
 
 import { __preloadSdkForTests, __resetForTests } from './index';
 import {
@@ -205,6 +206,40 @@ describe('room-tracking', () => {
         reason: 'admin',
       });
       vi.useRealTimers();
+    });
+
+    describe('changeType 기반 reason 매핑', () => {
+      test('DEQUEUE_ADMIN → reason: admin', () => {
+        const changeType: DjChangeType = 'DEQUEUE_ADMIN';
+        trackDjAdminDeregisterDetected(42, changeType);
+        expect(amplitude.track).toHaveBeenCalledWith('DJ Deregistered', {
+          partyroom_id: 42,
+          reason: 'admin',
+        });
+      });
+
+      test('DEACTIVATE → reason: deactivated', () => {
+        const changeType: DjChangeType = 'DEACTIVATE';
+        trackDjAdminDeregisterDetected(42, changeType);
+        expect(amplitude.track).toHaveBeenCalledWith('DJ Deregistered', {
+          partyroom_id: 42,
+          reason: 'deactivated',
+        });
+      });
+
+      test('인자 없음 (legacy) → reason: admin', () => {
+        trackDjAdminDeregisterDetected(42);
+        expect(amplitude.track).toHaveBeenCalledWith('DJ Deregistered', {
+          partyroom_id: 42,
+          reason: 'admin',
+        });
+      });
+
+      test('suppression 이 changeType=DEACTIVATE 도 차단함', () => {
+        suppressNextSelfDjDeregister(5000);
+        trackDjAdminDeregisterDetected(42, 'DEACTIVATE');
+        expect(amplitude.track).not.toHaveBeenCalled();
+      });
     });
   });
 });

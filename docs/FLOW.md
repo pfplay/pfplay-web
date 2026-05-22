@@ -52,7 +52,7 @@ sequenceDiagram
     participant PClient as PartyroomClient (Entity)
     participant WSServer as WebSocket Server
     participant EnterHook as useEnterPartyroom (Feature Hook)
-    participant ExitHook as useExitPartyroom (Feature Hook)
+    participant TeardownHook as useTeardownPartyroom (Feature Hook)
     participant CPStore as CurrentPartyroomStore
     participant APIServer as Partyroom API Server
 
@@ -92,25 +92,20 @@ sequenceDiagram
     PClient->>CPStore: handlePartyroomEvent(message)
     CPStore->>Layout: (Reactively) Update UI
 
-    %% Partyroom Exit (User leaves page or closes tab)
-    User->>Layout: Navigate away / Close tab
-    Layout->>ExitHook: exit()
-    activate ExitHook
-    alt Not exited on backend yet
-        ExitHook->>APIServer: POST /partyrooms/{partyroomId}/exit
-        APIServer-->>ExitHook: (Success)
-    end
-
-    ExitHook->>PClient: unsubscribeFromPartyroomEvents()
+    %% Partyroom Teardown (User navigates away in-app: layout unmount)
+    User->>Layout: Navigate away (in-app)
+    Layout->>TeardownHook: teardown() (layout unmount cleanup)
+    activate TeardownHook
+    Note over TeardownHook,APIServer: 백엔드 exit(DELETE /crews/me)는 호출하지 않음.<br/>비자발적 이탈은 서버 presence grace window가 소유.
+    TeardownHook->>PClient: unsubscribeCurrentRoom()
     PClient->>WSServer: STOMP UNSUBSCRIBE
     WSServer-->>PClient: (Unsubscription Confirmed)
+    TeardownHook->>CPStore: resetPartyroomStore()
+    deactivate TeardownHook
 
-    ExitHook->>CPStore: resetPartyroomStore()
-    deactivate ExitHook
-
-    alt User closes tab (WebSocket connection drops)
+    alt User closes tab / 새로고침 / 네트워크 끊김 (WebSocket connection drops)
         PClient->>WSServer: WebSocket Disconnected
-        PClient->>PClient: Handle disconnect (unsubscribe all, cleanup)
+        WSServer->>WSServer: presence grace window 시작 → 만료 시 서버 측 퇴장 확정
     end
 ```
 
@@ -123,10 +118,11 @@ sequenceDiagram
     - `enter` 함수는 웹소켓 연결을 확인 후, API 서버에서 파티룸 입장 처리 및 필요한 데이터(설정 정보, 공지 등)를 가져와 `CurrentPartyroomStore`를 초기화합니다.
     - 이후 `PartyroomClient`를 통해 해당 파티룸의 실시간 이벤트 구독을 시작합니다.
     - 웹소켓 서버로부터 이벤트 메시지가 수신되면 `PartyroomClient`가 이를 처리하여 `CurrentPartyroomStore`를 업데이트하고, UI가 이에 반응하여 변경됩니다.
-3.  **파티룸 퇴장:**
-    - 사용자가 페이지를 벗어나면 `PartyroomLayout`이 `useExitPartyroom` 훅의 `exit` 함수를 호출합니다.
-    - `exit` 함수는 필요한 경우 API 서버에 퇴장을 알리고, `PartyroomClient`를 통해 이벤트 구독을 해제하며, `CurrentPartyroomStore`를 초기 상태로 리셋합니다.
-    - 브라우저 탭 종료 등으로 웹소켓 연결이 직접 끊어지는 경우, `PartyroomClient`가 이를 감지하여 모든 구독을 해제하고 정리 작업을 수행합니다.
+3.  **파티룸 퇴장(클라이언트 정리 = teardown):**
+    - 사용자가 인앱 네비게이션으로 페이지를 벗어나 룸 레이아웃이 언마운트되면 `PartyroomLayout`이 `useTeardownPartyroom` 훅의 `teardown` 함수를 호출합니다.
+    - `teardown`은 **클라이언트 정리만** 수행합니다: `PartyroomClient` 이벤트 구독 해제 + `CurrentPartyroomStore` 리셋 + 분석 이벤트. **백엔드 exit(`DELETE /crews/me`)은 언로드/언마운트 시 호출하지 않습니다.**
+    - 새로고침/탭 종료/네트워크 끊김 등 비자발적 이탈은 클라이언트가 아니라 **서버의 WS-disconnect presence grace window**(Cluster A PR-1, platform)가 소유하여 grace 만료 시 서버 측에서 퇴장을 확정합니다.
+    - 명시적 백엔드 퇴장은 서버 측 자동 처리로만 발생합니다: 룸 전환(`tryEnter` 시 서버 측 auto-exit), 패널티/강퇴, 사인아웃 로그아웃.
 
 ## 다이어그램 3: 일반적인 데이터 조회 흐름 (예: 파티룸 상세 정보)
 

@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import * as Me from '@/entities/me/model/me.model';
 import { QueryKeys } from '@/shared/api/http/query-keys';
+import { AuthorityTier } from '@/shared/api/http/types/@enums';
 import { initAnalytics, track } from '@/shared/lib/analytics';
 import { authTypeOf, identifyAuthenticatedUser } from '@/shared/lib/analytics/auth-tracking';
 import type { AuthorityTierLabel } from '@/shared/lib/analytics/events';
@@ -43,6 +44,9 @@ export default function AnalyticsProvider({ children }: { children: ReactNode })
       if (event.query.queryKey[0] !== QueryKeys.Me) return;
       const me = event.query.state.data as Me.Model | undefined;
       if (!me?.uid) return;
+      // B′: 게스트는 amplitude 에서 식별하지 않는다(익명·device_id only).
+      // 멤버 인증 시 device_id 익명→식별 병합으로 콘솔 단일 user=멤버.
+      if (me.authorityTier === AuthorityTier.GT) return;
       if (lastIdentifiedUidRef.current === me.uid) return;
       lastIdentifiedUidRef.current = me.uid;
       identifyAuthenticatedUser({ uid: me.uid, authorityTier: me.authorityTier });
@@ -50,7 +54,11 @@ export default function AnalyticsProvider({ children }: { children: ReactNode })
 
     // Apply identity for cache that was already warm at mount.
     const cached = queryClient.getQueryData<Me.Model>([QueryKeys.Me]);
-    if (cached?.uid && lastIdentifiedUidRef.current !== cached.uid) {
+    if (
+      cached?.uid &&
+      cached.authorityTier !== AuthorityTier.GT &&
+      lastIdentifiedUidRef.current !== cached.uid
+    ) {
       lastIdentifiedUidRef.current = cached.uid;
       identifyAuthenticatedUser({ uid: cached.uid, authorityTier: cached.authorityTier });
     }

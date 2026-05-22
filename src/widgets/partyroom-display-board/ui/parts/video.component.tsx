@@ -8,6 +8,7 @@ import { useUserPreferenceStore } from '@/entities/preference';
 import { PartyroomPlayback } from '@/shared/api/http/types/partyrooms';
 import { cn } from '@/shared/lib/functions/cn';
 import { pick } from '@/shared/lib/functions/pick';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { LoadingPanel } from '@/shared/ui/components/loading';
 import CinemaFooter from './cinema-footer.component';
@@ -51,6 +52,7 @@ export default function Video({
   sidePanelContent,
   chatPanelContent,
 }: Props) {
+  const t = useI18n();
   const { useCurrentPartyroom, useUIState } = useStores();
   const { playback, crews, currentDj } = useCurrentPartyroom((state) =>
     pick(state, ['playback', 'currentDj', 'me', 'crews'])
@@ -70,7 +72,13 @@ export default function Video({
   const [played, setPlayed] = useState(false);
   const [isFullscreenOverlayVisible, setIsFullscreenOverlayVisible] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
+  // 브라우저 autoplay 정책(Chrome MEI/Edge 차이)으로 새로고침·숏링크 진입 시 muted 아닌
+  // 비디오가 자동재생되지 않을 수 있다. onReady 후 일정 시간 onPlay 가 없으면 차단으로 간주하고
+  // gesture gate(클릭 유도)를 띄운다. 이미 재생되는(MEI 높은) 경우엔 onPlay 가 와서 gate 미표시.
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
+  const playerRef = useRef<TReactPlayer | null>(null);
   const playable = !!videoId && playerReady;
+  const showGestureGate = playable && !played && autoplayBlocked;
 
   const cinemaContainerRef = useRef<HTMLDivElement>(null);
   const defaultContainerRef = useRef<HTMLDivElement>(null);
@@ -91,13 +99,35 @@ export default function Video({
 
   const onPlayerReady = (player: TReactPlayer) => {
     // NOTE: onReady는 미디어가 재생 준비되었을 때 호출되므로, 이 콜백이 실행되었다는건 playback.linkId가 존재한다는 것을 의미함
+    playerRef.current = player;
     const initialSeek = Playback.getInitialSeek(playback as PartyroomPlayback);
     player.seekTo(initialSeek, 'seconds');
     player.forceUpdate();
     setPlayerReady(true);
   };
 
-  const onPlay = () => setPlayed(true);
+  const onPlay = () => {
+    setPlayed(true);
+    setAutoplayBlocked(false);
+  };
+
+  // autoplay 차단 감지: onReady(playerReady) 후 일정 시간 onPlay(played) 가 없으면 차단으로 간주.
+  // 트랙(videoId)이 바뀌면 다시 판정.
+  useEffect(() => {
+    if (!playerReady || played) return;
+    const timer = setTimeout(() => setAutoplayBlocked(true), AUTOPLAY_DETECT_MS);
+    return () => clearTimeout(timer);
+  }, [playerReady, played, videoId]);
+
+  // 사용자 제스처(클릭)로 재생을 트리거한다. 이 클릭이 브라우저가 요구하는 user activation 이 되어
+  // autoplay 차단이 풀린다. YouTube internal player 의 playVideo() 직접 호출.
+  const handleGesturePlay = () => {
+    const internal = playerRef.current?.getInternalPlayer() as
+      | { playVideo?: () => void }
+      | undefined;
+    internal?.playVideo?.();
+    setAutoplayBlocked(false);
+  };
 
   const handleTheater = () => setCinemaView(true);
 
@@ -127,8 +157,25 @@ export default function Video({
     'pointer-events-none': played,
   });
 
+  const gestureGate = showGestureGate ? (
+    <button
+      type='button'
+      onClick={handleGesturePlay}
+      data-testid='autoplay-gesture-gate'
+      aria-label={t.party.btn.click_to_play}
+      className='absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-black/70 cursor-pointer'
+    >
+      <span className='flex items-center justify-center w-16 h-16 rounded-full bg-white/90'>
+        <svg width='28' height='28' viewBox='0 0 24 24' fill='black' aria-hidden>
+          <path d='M8 5v14l11-7z' />
+        </svg>
+      </span>
+      <span className='text-sm text-gray-100'>{t.party.btn.click_to_play}</span>
+    </button>
+  ) : null;
+
   const cinemaPlayer = (
-    <>
+    <div className='relative w-full h-full'>
       {!playable && <div className='w-full h-full bg-black'>{!!playback && <LoadingPanel />}</div>}
       <YoutubePlayer
         key={`video-${videoId}-${playerReady}-${played}-${playback?.endTime}`}
@@ -144,7 +191,8 @@ export default function Video({
         config={config}
         pip={false}
       />
-    </>
+      {gestureGate}
+    </div>
   );
 
   if (cinemaView) {
@@ -263,11 +311,15 @@ export default function Video({
       />
 
       {playable && <VideoControls onTheater={handleTheater} onFull={handleFull} />}
+      {gestureGate}
     </div>
   );
 }
 
 const DEFAULT_H_RATIO = 288 / 512;
+// onReady 후 이 시간 내 onPlay 가 없으면 autoplay 차단으로 간주하고 gesture gate 표시.
+// 네트워크 지연으로 인한 false positive 와 차단 감지 지연의 트레이드오프 — 로컬 브라우저 검증으로 튜닝.
+const AUTOPLAY_DETECT_MS = 1500;
 
 /**
  * @see https://developers.google.com/youtube/player_parameters?playerVersion=HTML5&hl=ko

@@ -20,7 +20,7 @@
 `createCurrentPartyroomStore` 함수는 `CurrentPartyroom.Model`에 정의된 상태와 액션들을 실제로 구현하는 Zustand 스토어를 생성합니다.
 
 - **상태**: `id`, `me`, `playback`, `crews`, `chat`, `alert` 등 모델에 정의된 모든 상태를 가집니다.
-- **액션**: 각 상태를 업데이트하는 함수들 (`updateMe`, `updatePlayback` 등)과 파티룸 입장/퇴장 시 사용되는 `init`, `reset` 함수, 채팅 메시지 추가/수정 함수 (`appendChatMessage`, `updateChatMessage`), 백엔드 퇴장 플래그 설정 함수 (`markExitedOnBackend`) 등을 제공합니다.
+- **액션**: 각 상태를 업데이트하는 함수들 (`updateMe`, `updatePlayback` 등)과 파티룸 입장/퇴장 시 사용되는 `init`, `reset` 함수, 채팅 메시지 추가/수정 함수 (`appendChatMessage`, `updateChatMessage`) 등을 제공합니다.
 
 **사용 예시: 파티룸 입장 및 퇴장 시 스토어 관리**
 

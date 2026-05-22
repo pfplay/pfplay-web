@@ -4,11 +4,11 @@ import Link from 'next/link';
 
 import { PartyroomSummary } from '@/shared/api/http/types/partyrooms';
 import { cn } from '@/shared/lib/functions/cn';
-import { useStores } from '@/shared/lib/store/stores.context';
 import { BackdropBlurContainer } from '@/shared/ui/components/backdrop-blur-container';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFInfoOutline } from '@/shared/ui/icons';
 import Crews from './crews.component';
+import { getPartyroomCardBackdropProps } from './partyroom-card-backdrop';
 
 interface PartyroomCardProps {
   roomId: number;
@@ -17,20 +17,21 @@ interface PartyroomCardProps {
 }
 
 const PartyroomCard = ({ roomId, summary, onClose }: PartyroomCardProps) => {
-  const { useCurrentPartyroom } = useStores();
-  const markExitedOnBackend = useCurrentPartyroom((state) => state.markExitedOnBackend);
-
+  // 룸 A→B 전환은 서버의 tryEnter(B)가 A를 자동 퇴장시키므로,
+  // 클라이언트는 별도의 백엔드 exit을 호출하지 않고 이동만 한다.
   const handleClick = () => {
-    markExitedOnBackend();
     onClose?.();
   };
 
   return (
-    <BackdropBlurContainer>
+    <BackdropBlurContainer
+      src={summary.playback?.thumbnailImage}
+      {...getPartyroomCardBackdropProps(summary.playback?.thumbnailImage)}
+    >
       <Link
         href={`/parties/${roomId}?source=list`}
         onClick={handleClick}
-        className='h-full flexCol justify-between gap-[61px] py-6 px-7 backdrop-blur-xl bg-backdrop-black/80'
+        className='h-full flexCol justify-between gap-[61px] py-6 px-7 backdrop-blur-sm bg-backdrop-black/80'
       >
         <Typography type='title2' className='text-gray-50'>
           {summary.title}

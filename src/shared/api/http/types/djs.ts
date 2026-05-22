@@ -5,6 +5,11 @@ export type RegisterMeToQueuePayload = {
   playlistId: Playlist['id'];
 };
 
+export type ChangeMyPlaylistPayload = {
+  partyroomId: number;
+  playlistId: Playlist['id'];
+};
+
 export type UnregisterMeFromQueuePayload = {
   partyroomId: number;
 };
@@ -30,6 +35,7 @@ export type SkipPlaybackPayload = {
 
 export interface DjsClient {
   registerMeToQueue: (payload: RegisterMeToQueuePayload) => Promise<void>;
+  changeMyPlaylist: (payload: ChangeMyPlaylistPayload) => Promise<void>;
   unregisterMeFromQueue: (payload: UnregisterMeFromQueuePayload) => Promise<void>;
   unregisterDjFromQueue: (payload: UnregisterDjFromQueuePayload) => Promise<void>;
   getPlaybackHistories: (payload: GetPlaybackHistoryPayload) => Promise<PlaybackHistoryItem[]>;

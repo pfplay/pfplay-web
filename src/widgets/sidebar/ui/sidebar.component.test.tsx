@@ -19,8 +19,9 @@ vi.mock('@/shared/ui/icons', () => ({
   PFHeadset: (props: any) => <svg data-testid='headset-icon' {...props} />,
 }));
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { useIsGuest, useSuspenseFetchMe } from '@/entities/me';
+import { useInformSocialType } from '@/features/sign-in/by-social';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
@@ -58,10 +59,20 @@ describe('Sidebar', () => {
     expect(screen.getByTestId('headset-icon')).toBeTruthy();
   });
 
-  test('플레이리스트 버튼 클릭 시 setPlaylistDrawer를 호출한다', () => {
+  test('멤버가 플레이리스트 버튼 클릭 시 setPlaylistDrawer를 호출한다', async () => {
     render(<Sidebar className='test' onClickAvatarSetting={vi.fn()} />);
     fireEvent.click(screen.getByText('Playlist'));
-    expect(mockSetPlaylistDrawer).toHaveBeenCalled();
+    await waitFor(() => expect(mockSetPlaylistDrawer).toHaveBeenCalled());
+  });
+
+  test('게스트가 플레이리스트 버튼 클릭 시 소셜 모달 유도 + drawer 미오픈', async () => {
+    const mockInform = vi.fn();
+    (useInformSocialType as Mock).mockReturnValue(mockInform);
+    (useIsGuest as Mock).mockReturnValue(vi.fn().mockResolvedValue(true));
+    render(<Sidebar className='test' onClickAvatarSetting={vi.fn()} />);
+    fireEvent.click(screen.getByText('Playlist'));
+    await waitFor(() => expect(mockInform).toHaveBeenCalled());
+    expect(mockSetPlaylistDrawer).not.toHaveBeenCalled();
   });
 
   test('extraButtons를 렌더링한다', () => {

@@ -147,10 +147,83 @@ describe('SocketClient', () => {
       expect(sc.subscriptions).toHaveLength(1);
       expect(sc.subscriptions[0].destination).toBe('/sub/test');
     });
+
+    test('미연결 상태에서도 subscriptions에 destination+callback을 동기적으로 기록한다', () => {
+      const sc = new SocketClient();
+      const handler = vi.fn();
+
+      sc.subscribe('/sub/test' as any, handler);
+
+      // connect 전인데도 동기적으로 등록되어 있어야 한다 (단일 진실원천)
+      expect(sc.subscriptions).toHaveLength(1);
+      expect(sc.subscriptions[0].destination).toBe('/sub/test');
+      expect(sc.subscriptions[0].callback).toBe(handler);
+      // 아직 연결 전이므로 실제 STOMP subscribe 는 호출되지 않는다
+      expect(getStompClient(sc).subscribe).not.toHaveBeenCalled();
+    });
+
+    test('이미 연결된 상태 → 동기적으로 client.subscribe 를 즉시 호출하고 기록한다', () => {
+      const sc = new SocketClient();
+      getStompClient(sc).connected = true;
+      const handler = vi.fn();
+
+      sc.subscribe('/sub/now' as any, handler);
+
+      expect(getStompClient(sc).subscribe).toHaveBeenCalledWith('/sub/now', handler);
+      expect(sc.subscriptions).toHaveLength(1);
+      expect(sc.subscriptions[0].destination).toBe('/sub/now');
+      expect(sc.subscriptions[0].callback).toBe(handler);
+    });
+
+    test('onConnectQueue 에 subscribe 콜백을 더 이상 보관하지 않는다', () => {
+      const sc = new SocketClient();
+      const handler = vi.fn();
+
+      sc.subscribe('/sub/test' as any, handler);
+
+      const queue = (sc as any).onConnectQueue;
+      expect(queue).toHaveLength(0);
+    });
+
+    test('(재)연결 시 connect 핸들러가 subscriptions 의 모든 항목을 구독한다', () => {
+      const sc = new SocketClient();
+      const a = vi.fn();
+      const b = vi.fn();
+
+      sc.subscribe('/sub/a' as any, a);
+      sc.subscribe('/sub/b' as any, b);
+
+      triggerConnect(sc);
+
+      const subscribe = getStompClient(sc).subscribe;
+      expect(subscribe).toHaveBeenCalledWith('/sub/a', a);
+      expect(subscribe).toHaveBeenCalledWith('/sub/b', b);
+      expect(sc.subscriptions).toHaveLength(2);
+    });
+
+    test('reconnect 시 STOMP 핸들을 갱신하며 중복 구독하지 않는다', () => {
+      const sc = new SocketClient();
+      const a = vi.fn();
+      sc.subscribe('/sub/a' as any, a);
+
+      triggerConnect(sc);
+      expect(sc.subscriptions).toHaveLength(1);
+
+      // disconnect → 재연결
+      const stomp = getStompClient(sc);
+      stomp.__config.onWebSocketClose();
+      stomp.subscribe.mockClear();
+      triggerConnect(sc);
+
+      // /sub/a 가 정확히 한 번만 재구독되어야 한다 (heartbeat sub 제외)
+      const subscribeCallsForA = stomp.subscribe.mock.calls.filter((c: any[]) => c[0] === '/sub/a');
+      expect(subscribeCallsForA).toHaveLength(1);
+      expect(sc.subscriptions).toHaveLength(1);
+    });
   });
 
   describe('unsubscribe', () => {
-    test('연결 안 됨 → 아무 동작도 하지 않는다', () => {
+    test('연결 안 됨 → 에러 없이 통과한다', () => {
       const sc = new SocketClient();
       sc.unsubscribe('/sub/test' as any);
       // 에러 없이 통과
@@ -163,18 +236,71 @@ describe('SocketClient', () => {
       // 에러 없이 통과
     });
 
-    test('해당 destination이 있으면 해제하고 배열에서 제거한다', () => {
+    test('연결됨 + destination 존재 → STOMP 해제하고 subscriptions 에서 제거한다', () => {
       const sc = new SocketClient();
       sc.subscribe('/sub/room' as any, vi.fn());
       triggerConnect(sc);
 
       expect(sc.subscriptions).toHaveLength(1);
-      const unsubFn = sc.subscriptions[0].unsubscribe;
+      const stomp = getStompClient(sc);
+      const stompSub = stomp.subscribe.mock.results.find(
+        (r: any) => r.value.destination === '/sub/room'
+      )?.value;
 
       sc.unsubscribe('/sub/room' as any);
 
-      expect(unsubFn).toHaveBeenCalled();
+      expect(stompSub.unsubscribe).toHaveBeenCalled();
       expect(sc.subscriptions).toHaveLength(0);
+    });
+
+    test('미연결 상태에서도 subscriptions 에서 무조건 제거한다 (#5/#30 누수 해소)', () => {
+      const sc = new SocketClient();
+      sc.subscribe('/sub/room' as any, vi.fn());
+
+      expect(sc.subscriptions).toHaveLength(1);
+
+      // 아직 연결 전 — 그래도 제거되어야 한다
+      sc.unsubscribe('/sub/room' as any);
+
+      expect(sc.subscriptions).toHaveLength(0);
+    });
+
+    test('미연결 시 unsubscribe 한 destination 은 이후 connect 에서 재구독되지 않는다', () => {
+      const sc = new SocketClient();
+      sc.subscribe('/sub/room' as any, vi.fn());
+      sc.unsubscribe('/sub/room' as any);
+
+      triggerConnect(sc);
+
+      const stomp = getStompClient(sc);
+      const roomCalls = stomp.subscribe.mock.calls.filter((c: any[]) => c[0] === '/sub/room');
+      expect(roomCalls).toHaveLength(0);
+      expect(sc.subscriptions).toHaveLength(0);
+    });
+
+    test('#5 회귀잠금: subscribe A → unsubscribe A → subscribe B → disconnect → connect ⇒ B 만 구독, A 부활 없음', () => {
+      const sc = new SocketClient();
+      const aCb = vi.fn();
+      const bCb = vi.fn();
+
+      sc.subscribe('/sub/roomA' as any, aCb);
+      sc.unsubscribe('/sub/roomA' as any);
+      sc.subscribe('/sub/roomB' as any, bCb);
+
+      const stomp = getStompClient(sc);
+
+      // disconnect
+      stomp.__config.onWebSocketClose();
+      // reconnect
+      stomp.subscribe.mockClear();
+      triggerConnect(sc);
+
+      const aCalls = stomp.subscribe.mock.calls.filter((c: any[]) => c[0] === '/sub/roomA');
+      const bCalls = stomp.subscribe.mock.calls.filter((c: any[]) => c[0] === '/sub/roomB');
+
+      expect(aCalls).toHaveLength(0); // A 는 부활하면 안 된다
+      expect(bCalls).toHaveLength(1); // B 만 재구독
+      expect(sc.subscriptions.map((s) => s.destination)).toEqual(['/sub/roomB']);
     });
   });
 
@@ -186,8 +312,8 @@ describe('SocketClient', () => {
       triggerConnect(sc);
 
       expect(sc.subscriptions).toHaveLength(2);
-      const unsub0 = sc.subscriptions[0].unsubscribe;
-      const unsub1 = sc.subscriptions[1].unsubscribe;
+      const unsub0 = sc.subscriptions[0].stompSubscription?.unsubscribe;
+      const unsub1 = sc.subscriptions[1].stompSubscription?.unsubscribe;
 
       sc.unsubscribeAll();
 

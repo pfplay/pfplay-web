@@ -29,8 +29,8 @@ export function identifyAuthenticatedUser({
   });
 }
 
-export function trackSignedIn(authorityTier: AuthorityTier): void {
-  track('User Signed In', { auth_type: authTypeOf(authorityTier) });
+export function trackSignedIn(authorityTier: AuthorityTier, authTypeOverride?: AuthType): void {
+  track('User Signed In', { auth_type: authTypeOverride ?? authTypeOf(authorityTier) });
 }
 
 export function trackSignedUp(oauthProvider: OAuth2Provider): void {

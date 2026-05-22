@@ -201,7 +201,8 @@
     },
     "btn": {
       "share_twitter": "Share on Twitter",
-      "copy_link": "Copy"
+      "copy_link": "Copy",
+      "click_to_play": "Click to play"
     }
   },
   "dj": {
@@ -227,6 +228,9 @@
       "delete_dj_queue": "Remove from DJ Queue",
       "write_reason": "Please provide a reason (at least 2 characters)",
       "deleted_queue_by_admin": "You have been removed from the queue by the administrator",
+      "playback_stopped_time_limit": "Playback stopped: a track exceeds this room's time limit ({{minutes}} min).",
+      "playback_stopped_no_limit": "Playback stopped: no playable track.",
+      "not_playable_in_room": "Not playable here (exceeds this room's time limit)",
       "locked_queue_by_admin": "The current DJ queue is locked by an admin",
       "skipped_song_by_admin": "According to the admin policy, songs longer than {{count}} minutes will be automatically skipped",
       "dj_in_order": "DJing **one person at a time** \n from the waiting list, in order",
@@ -328,6 +332,27 @@
       "emergency": {
         "label": "Emergency Notice"
       }
+    }
+  },
+  "bug_report": {
+    "btn": {
+      "open": "Report a Bug",
+      "submit": "Submit",
+      "cancel": "Cancel"
+    },
+    "title": {
+      "report_bug": "Report a Bug"
+    },
+    "placeholder": "What bug did you experience? (5–2000 chars)",
+    "help": "Our team will review and respond. We may not be able to reply.",
+    "toast": {
+      "success": "Feedback submitted",
+      "rate_limit": "Please try again in a moment",
+      "error": "Submission failed"
+    },
+    "validation": {
+      "too_short": "Please enter at least 5 characters",
+      "too_long": "Up to 2000 characters allowed"
     }
   }
 }

@@ -26,6 +26,7 @@ vi.mock('@amplitude/analytics-browser', () => {
     init: vi.fn(),
     track: vi.fn(),
     setUserId: vi.fn(),
+    getUserId: vi.fn(),
     identify: vi.fn(),
     reset: vi.fn(),
     Identify,
@@ -179,6 +180,26 @@ describe('analytics module', () => {
     test('calls amplitude.reset', () => {
       resetAnalyticsUser();
       expect(amplitude.reset).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('automated browser (E2E webdriver) opt-out', () => {
+    afterEach(() => {
+      Object.defineProperty(navigator, 'webdriver', { configurable: true, value: false });
+    });
+
+    test('navigator.webdriver=true 면 initAnalytics 가 SDK init 을 호출하지 않는다', () => {
+      Object.defineProperty(navigator, 'webdriver', { configurable: true, value: true });
+      initAnalytics();
+      expect(amplitude.init).not.toHaveBeenCalled();
+    });
+
+    test('navigator.webdriver=true 면 track / identify 가 no-op 이다 (E2E MTU 낭비 방지)', () => {
+      Object.defineProperty(navigator, 'webdriver', { configurable: true, value: true });
+      track('User Signed In', { auth_type: 'guest' });
+      identify({ set: { authority_tier: 'FM' } });
+      expect(amplitude.track).not.toHaveBeenCalled();
+      expect(amplitude.identify).not.toHaveBeenCalled();
     });
   });
 });

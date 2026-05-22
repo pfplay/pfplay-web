@@ -34,7 +34,9 @@ export default function calculateDimensions(
   const faceHeight = targetHeight * FACE_BASE_HEIGHT_RATIO;
   const offsetX = x * faceWidth;
   const offsetY = y * faceHeight;
-  const zoom = scale;
+  // scale 은 배율(1=원본). 0 이하의 비정상 값(미설정 기본 0.0 등)은 face 가
+  // transform: scale(0) 으로 사라져 까맣게 보이므로 1 로 보정한다.
+  const zoom = scale > 0 ? scale : 1;
 
   return {
     width,

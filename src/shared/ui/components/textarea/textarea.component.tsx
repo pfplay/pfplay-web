@@ -34,11 +34,11 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     };
 
     return (
-      <div className={cn('relative flex max-w-full', containerClassName)}>
+      <div className={cn('flex flex-col gap-1 max-w-full', containerClassName)}>
         <textarea
           ref={combinedRef}
           className={cn(
-            'flex-1 min-h-max py-[12px] pl-[12px] pr-[60px] rounded-[4px]',
+            'flex-1 min-h-max p-[12px] rounded-[4px]',
             'bg-gray-700 text-gray-50 placeholder:gray-400 caret-red-300',
             'focus:interaction-outline',
             textareaClassName
@@ -50,7 +50,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 
         {Number.isInteger(maxLength) && (
           <Typography
-            className={cn('absolute top-[12px] right-[12px]', {
+            className={cn('self-end', {
               'text-gray-400': !localValue.length,
               'text-gray-50': !!localValue.length,
             })}

@@ -201,7 +201,8 @@
     },
     "btn": {
       "share_twitter": "트위터로 공유하기",
-      "copy_link": "링크 복사"
+      "copy_link": "링크 복사",
+      "click_to_play": "클릭하여 재생"
     }
   },
   "dj": {
@@ -227,6 +228,9 @@
       "delete_dj_queue": "DJ 대기열에서 삭제합니다",
       "write_reason": "사유를 작성해주세요(최소 2자)",
       "deleted_queue_by_admin": "관리자에 의해 대기열에서 삭제되었습니다",
+      "playback_stopped_time_limit": "재생 시간 제한({{minutes}}분)을 초과하는 곡으로 재생이 중단되었습니다",
+      "playback_stopped_no_limit": "재생 가능한 곡이 없어 재생이 중단되었습니다",
+      "not_playable_in_room": "이 방에선 재생 안 돼요 (재생 시간 제한 초과)",
       "locked_queue_by_admin": "관리자에 의해 현재 DJ 대기열이 잠금 상태예요",
       "skipped_song_by_admin": "어드민 정책에 따라 {{count}}분 이상의 곡은 자동으로 스킵됩니다",
       "dj_in_order": "대기 중인 DJ **한명씩**\n **순서대로** 음악을 디제잉 합니다",
@@ -328,6 +332,27 @@
       "emergency": {
         "label": "긴급 공지"
       }
+    }
+  },
+  "bug_report": {
+    "btn": {
+      "open": "버그 제보",
+      "submit": "제출",
+      "cancel": "취소"
+    },
+    "title": {
+      "report_bug": "버그 제보"
+    },
+    "placeholder": "어떤 버그를 경험하셨나요? (5~2000자)",
+    "help": "운영팀이 확인 후 조치합니다. 답변이 어려울 수 있어요.",
+    "toast": {
+      "success": "피드백이 등록되었습니다",
+      "rate_limit": "잠시 후 다시 시도해주세요",
+      "error": "제출에 실패했어요"
+    },
+    "validation": {
+      "too_short": "최소 5자 이상 입력해주세요",
+      "too_long": "최대 2000자까지 입력할 수 있어요"
     }
   }
 }

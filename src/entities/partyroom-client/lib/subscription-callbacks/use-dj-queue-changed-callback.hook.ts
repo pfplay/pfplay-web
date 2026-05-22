@@ -8,21 +8,34 @@ import { useStores } from '@/shared/lib/store/stores.context';
 export default function useDjQueueChangedCallback() {
   const queryClient = useQueryClient();
   const { useCurrentPartyroom } = useStores();
-  const updateCurrentDj = useCurrentPartyroom((state) => state.updateCurrentDj);
+  const [updateCurrentDj, alert] = useCurrentPartyroom((s) => [s.updateCurrentDj, s.alert]);
 
   return (event: DjQueueChangedEvent) => {
     const queryKey = [QueryKeys.DjingQueue, event.partyroomId];
 
-    // self 가 큐에서 빠졌는지 검출 — 본인이 unregister 하지 않았는데 사라졌다면
-    // admin 강제 해제로 분류. trackDjAdminDeregisterDetected 내부에서 직전
-    // self mutation 의 suppression 윈도우를 확인.
+    // self 가 큐에서 빠졌는지 검출 — changeType별로 분기하여
+    // alert 안내 및 tracking 처리.
     const prev = queryClient.getQueryData<DjingQueue>(queryKey);
     const myCrewId = useCurrentPartyroom.getState().me?.crewId;
     if (prev && myCrewId !== undefined) {
       const wasInQueue = prev.djs.some((d) => d.crewId === myCrewId);
       const stillInQueue = event.djs.some((d) => d.crewId === myCrewId);
       if (wasInQueue && !stillInQueue) {
-        trackDjAdminDeregisterDetected(event.partyroomId);
+        const ct = event.changeType;
+        if (ct === 'DEQUEUE_EXIT') {
+          // 본인 이탈 → silent
+        } else if (ct === 'DEACTIVATE') {
+          alert.notify({
+            type: 'dj-deactivated',
+            playbackTimeLimitMinutes: event.playbackTimeLimitMinutes ?? null,
+          });
+          trackDjAdminDeregisterDetected(event.partyroomId, ct);
+        } else if (ct === 'DEQUEUE_ADMIN') {
+          alert.notify({ type: 'dj-admin-removed' });
+          trackDjAdminDeregisterDetected(event.partyroomId, ct);
+        } else {
+          trackDjAdminDeregisterDetected(event.partyroomId, ct); // 구 메시지 등 → 분류만(안내 없음)
+        }
       }
     }
 

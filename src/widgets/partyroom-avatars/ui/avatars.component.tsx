@@ -1,5 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { Avatar } from '@/entities/avatar';
 import { BASE_SCALE, BASE_X, BASE_Y } from '@/entities/avatar/config/base-size';
 import { useAvatarDance } from '@/entities/avatar/ui/useAvatarDance.hook';
@@ -30,10 +31,41 @@ export default function Avatars() {
     : [];
 
   const { registerAvatar } = useAvatarDance();
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const [stageBounds, setStageBounds] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const element = stageRef.current;
+    if (!element) {
+      return;
+    }
+
+    const updateStageBounds = () => {
+      setStageBounds({
+        width: element.clientWidth,
+        height: element.clientHeight,
+      });
+    };
+
+    updateStageBounds();
+
+    const observer = new ResizeObserver(() => {
+      updateStageBounds();
+    });
+
+    observer.observe(element);
+    window.addEventListener('resize', updateStageBounds);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateStageBounds);
+    };
+  }, []);
 
   const { courtPositions, queuePositions } = useAvatarCluster({
     crews: crews,
     djQueueCrewIds: djQueueCrewIds,
+    stageBounds,
   });
 
   const crewMap = new Map(crews.map((c) => [c.crewId, c]));
@@ -49,7 +81,10 @@ export default function Avatars() {
      * 파티룸 배경과 같은 aspect ratio, bg-cover, bg-left-bottom, overflow-hidden 를 적용하여,
      * 화면 신축에 상관 없이 배경 이미지 상 항상 같은 위치에 아바타가 위치하도록 함
      */
-    <div className='h-screen aspect-partyroom-bg absolute inset-0 z-0 bg-cover bg-left-bottom overflow-hidden'>
+    <div
+      ref={stageRef}
+      className='h-screen aspect-partyroom-bg absolute inset-0 z-0 bg-cover bg-left-bottom overflow-hidden'
+    >
       {!!dj && (
         <div
           data-testid='partyroom-current-dj'
