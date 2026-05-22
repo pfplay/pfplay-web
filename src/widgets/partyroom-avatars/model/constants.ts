@@ -1,7 +1,19 @@
+export const PARTYROOM_BACKGROUND = {
+  WIDTH: 1920,
+  HEIGHT: 1080,
+} as const;
+
 export const AVATAR_GROUP = {
   HEIGHT: 180,
   WIDTH: 135,
   COLLISION_RADIUS: 30, // forceCollide radius 값
+} as const;
+
+export const DJ_AVATAR = {
+  HEIGHT: 380,
+  ANCHOR_X_RATIO: 0.16,
+  ANCHOR_Y_RATIO: 0.98,
+  TRANSLATE: 'translate(-10%, -100%)',
 } as const;
 
 export const D3_OPTIONS_FOR_INITIAL_NODES = {
