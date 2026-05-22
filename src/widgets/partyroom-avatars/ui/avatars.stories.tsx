@@ -114,5 +114,6 @@ export const StageRelativeLayout: Story = {
   args: {
     partyroomId: 1,
     enableQueueFetch: false,
+    djQueueCrewIdsOverride: [2],
   },
 };

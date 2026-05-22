@@ -10,14 +10,19 @@ import { pick } from '@/shared/lib/functions/pick';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { calculateStageImageFrame } from '../lib/calculate-stage-image-frame';
 import { useAvatarCluster } from '../lib/use-avatar-cluster.hook';
-import { AVATAR_GROUP, DJ_AVATAR, PARTYROOM_BACKGROUND } from '../model/constants';
+import { AVATAR_GROUP, AVATAR_QUEUE, DJ_AVATAR, PARTYROOM_BACKGROUND } from '../model/constants';
 
 type Props = {
   partyroomId?: number;
   enableQueueFetch?: boolean;
+  djQueueCrewIdsOverride?: number[];
 };
 
-export default function Avatars({ partyroomId, enableQueueFetch = true }: Props) {
+export default function Avatars({
+  partyroomId,
+  enableQueueFetch = true,
+  djQueueCrewIdsOverride,
+}: Props) {
   const { useCurrentPartyroom } = useStores();
   const { crews, currentDj } = useCurrentPartyroom((state) => pick(state, ['crews', 'currentDj']));
   const params = useParams<{ id: string }>();
@@ -34,11 +39,13 @@ export default function Avatars({ partyroomId, enableQueueFetch = true }: Props)
   const dj = currentDjCrewId
     ? crews.find((crew: Crew.Model) => crew.crewId === currentDjCrewId)
     : undefined;
-  const djQueueCrewIds = djingQueue
-    ? djingQueue.djs
-        .filter((dj) => dj.crewId !== currentDjCrewId && dj.orderNumber > 1)
-        .map((dj) => dj.crewId)
-    : [];
+  const djQueueCrewIds =
+    djQueueCrewIdsOverride ??
+    (djingQueue
+      ? djingQueue.djs
+          .filter((dj) => dj.crewId !== currentDjCrewId && dj.orderNumber > 1)
+          .map((dj) => dj.crewId)
+      : []);
 
   const { registerAvatar } = useAvatarDance();
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -80,6 +87,7 @@ export default function Avatars({ partyroomId, enableQueueFetch = true }: Props)
   const stageScale =
     stageImageFrame.height > 0 ? stageImageFrame.height / PARTYROOM_BACKGROUND.HEIGHT : 0;
   const clusterAvatarHeight = AVATAR_GROUP.HEIGHT * stageScale;
+  const queueAvatarHeight = AVATAR_QUEUE.HEIGHT * stageScale;
   const djAvatarHeight = DJ_AVATAR.HEIGHT * stageScale;
 
   const { courtPositions, queuePositions } = useAvatarCluster({
@@ -144,7 +152,7 @@ export default function Avatars({ partyroomId, enableQueueFetch = true }: Props)
           data-testid='partyroom-dj-queue-item'
         >
           <Avatar
-            height={clusterAvatarHeight}
+            height={queueAvatarHeight}
             bodyUri={crew.avatarBodyUri}
             compositionType={crew.avatarCompositionType}
             faceUri={crew.avatarFaceUri}
