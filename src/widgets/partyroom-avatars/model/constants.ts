@@ -1,7 +1,23 @@
+export const PARTYROOM_BACKGROUND = {
+  WIDTH: 1920,
+  HEIGHT: 1080,
+} as const;
+
 export const AVATAR_GROUP = {
   HEIGHT: 180,
   WIDTH: 135,
   COLLISION_RADIUS: 30, // forceCollide radius 값
+} as const;
+
+export const AVATAR_QUEUE = {
+  HEIGHT: 120,
+} as const;
+
+export const DJ_AVATAR = {
+  HEIGHT: 380,
+  ANCHOR_X_RATIO: 0.13,
+  ANCHOR_Y_RATIO: 0.93,
+  TRANSLATE: 'translate(-20%, -100%)',
 } as const;
 
 export const D3_OPTIONS_FOR_INITIAL_NODES = {
@@ -27,6 +43,8 @@ export type OvalConfig = {
   CENTER_Y_RATIO: number;
   RADIUS_X_RATIO: number;
   RADIUS_Y_RATIO: number;
+  MIN_DISTANCE: number;
+  COLLIDE_RADIUS: number;
   FALLBACK_RADIUS_RATIO: number;
   BOUNDARY_CONSTRAINT: number;
   FORCE_X_STRENGTH: number;
@@ -36,10 +54,12 @@ export type OvalConfig = {
 
 /** 궁중(메인 무대) 클러스터 설정 */
 export const OVAL_CONFIG_COURT: OvalConfig = {
-  CENTER_X_RATIO: 0.55,
-  CENTER_Y_RATIO: 0.8,
-  RADIUS_X_RATIO: 0.25,
-  RADIUS_Y_RATIO: 0.25,
+  CENTER_X_RATIO: 0.53,
+  CENTER_Y_RATIO: 0.82,
+  RADIUS_X_RATIO: 0.18,
+  RADIUS_Y_RATIO: 0.13,
+  MIN_DISTANCE: 52,
+  COLLIDE_RADIUS: 42,
   FALLBACK_RADIUS_RATIO: 0.5,
   BOUNDARY_CONSTRAINT: 0.95,
   FORCE_X_STRENGTH: 0.05,
@@ -50,9 +70,11 @@ export const OVAL_CONFIG_COURT: OvalConfig = {
 /** DJ 대기열 클러스터 설정 */
 export const OVAL_CONFIG_QUEUE: OvalConfig = {
   CENTER_X_RATIO: 0.2,
-  CENTER_Y_RATIO: 0.5,
-  RADIUS_X_RATIO: 0.45,
-  RADIUS_Y_RATIO: 0.2,
+  CENTER_Y_RATIO: 0.56,
+  RADIUS_X_RATIO: 0.13,
+  RADIUS_Y_RATIO: 0.06,
+  MIN_DISTANCE: 34,
+  COLLIDE_RADIUS: 20,
   FALLBACK_RADIUS_RATIO: 0.5,
   BOUNDARY_CONSTRAINT: 0.95,
   FORCE_X_STRENGTH: 0.05,

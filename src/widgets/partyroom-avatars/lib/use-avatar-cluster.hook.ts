@@ -34,6 +34,9 @@ const calculateDistance = (p1: Point, p2: Point): number => {
   return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
 };
 
+const clamp = (value: number, min: number, max: number): number =>
+  Math.min(max, Math.max(min, value));
+
 // 타원 내부에 랜덤 위치 생성
 const generateEllipsePosition = (
   centerX: number,
@@ -46,6 +49,104 @@ const generateEllipsePosition = (
   return {
     x: centerX + radiusRatio * radiusX * Math.cos(angle),
     y: centerY + radiusRatio * radiusY * Math.sin(angle),
+  };
+};
+
+const getEstimatedClusterCapacity = ({
+  radiusX,
+  radiusY,
+  minDistance,
+}: {
+  radiusX: number;
+  radiusY: number;
+  minDistance: number;
+}) => {
+  const ellipseArea = Math.PI * radiusX * radiusY;
+  const footprint = Math.max(minDistance, 1) ** 2 * 0.9;
+  return Math.max(12, Math.round(ellipseArea / footprint));
+};
+
+const sampleRadiusRatioInBand = (minRadiusRatio: number, maxRadiusRatio: number) => {
+  const inner = clamp(minRadiusRatio, 0, 0.98);
+  const outer = clamp(Math.max(maxRadiusRatio, inner + 0.01), inner + 0.01, 0.99);
+  const innerArea = inner ** 2;
+  const outerArea = outer ** 2;
+  return Math.sqrt(innerArea + Math.random() * (outerArea - innerArea));
+};
+
+const getPreferredRadiusBands = ({
+  occupiedCount,
+  estimatedCapacity,
+}: {
+  occupiedCount: number;
+  estimatedCapacity: number;
+}) => {
+  const occupancyRatio = clamp(occupiedCount / Math.max(estimatedCapacity - 1, 1), 0, 1);
+  const targetRadiusRatio = 0.12 + occupancyRatio * 0.74;
+
+  return [
+    [targetRadiusRatio - 0.08, targetRadiusRatio + 0.08],
+    [targetRadiusRatio - 0.18, targetRadiusRatio + 0.16],
+    [targetRadiusRatio - 0.3, targetRadiusRatio + 0.24],
+    [0.04, 0.96],
+  ].map(([min, max]) => ({
+    min: clamp(min, 0.04, 0.96),
+    max: clamp(max, 0.08, 0.98),
+  }));
+};
+
+const FLAT_COMPACT_CLUSTER_SLOT_OFFSETS = [
+  { x: 0, y: 0 },
+  { x: -0.18, y: -0.28 },
+  { x: 0.18, y: 0.24 },
+  { x: -0.24, y: 0.18 },
+  { x: 0.24, y: -0.2 },
+  { x: -0.36, y: -0.04 },
+  { x: 0.36, y: 0.04 },
+  { x: 0, y: -0.42 },
+];
+
+const ROUND_COMPACT_CLUSTER_SLOT_OFFSETS = [
+  { x: 0, y: 0 },
+  { x: -0.12, y: -0.16 },
+  { x: 0.13, y: -0.05 },
+  { x: -0.04, y: 0.13 },
+  { x: 0.15, y: 0.11 },
+  { x: -0.19, y: 0.04 },
+  { x: 0.03, y: -0.23 },
+  { x: 0.22, y: -0.16 },
+];
+
+const getCompactClusterSlotOffsets = (radiusX: number, radiusY: number) =>
+  radiusY / radiusX < 0.6 ? FLAT_COMPACT_CLUSTER_SLOT_OFFSETS : ROUND_COMPACT_CLUSTER_SLOT_OFFSETS;
+
+const getCompactClusterSlotPosition = ({
+  occupiedCount,
+  centerX,
+  centerY,
+  radiusX,
+  radiusY,
+  slotOffsets,
+}: {
+  occupiedCount: number;
+  centerX: number;
+  centerY: number;
+  radiusX: number;
+  radiusY: number;
+  slotOffsets: { x: number; y: number }[];
+}) => {
+  const slot = slotOffsets[occupiedCount];
+  if (!slot) {
+    return null;
+  }
+
+  const jitterScale = occupiedCount === 0 ? 0 : 0.015;
+  const jitterX = (Math.random() - 0.5) * jitterScale;
+  const jitterY = (Math.random() - 0.5) * jitterScale;
+
+  return {
+    x: centerX + (slot.x + jitterX) * radiusX,
+    y: centerY + (slot.y + jitterY) * radiusY,
   };
 };
 
@@ -80,6 +181,82 @@ const constrainToEllipse = (
     const angle = Math.atan2(dy, dx);
     node.x = centerX + Math.cos(angle) * radiusX * constraint;
     node.y = centerY + Math.sin(angle) * radiusY * constraint;
+  }
+};
+
+const enforceNodeSpacing = ({
+  nodes,
+  centerX,
+  centerY,
+  radiusX,
+  radiusY,
+  boundaryConstraint,
+  minDistance,
+  lockedCrewIds,
+}: {
+  nodes: D3Node[];
+  centerX: number;
+  centerY: number;
+  radiusX: number;
+  radiusY: number;
+  boundaryConstraint: number;
+  minDistance: number;
+  lockedCrewIds: Set<number>;
+}) => {
+  for (let pass = 0; pass < 6; pass++) {
+    let moved = false;
+
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i];
+        const b = nodes[j];
+        const ax = a.x ?? centerX;
+        const ay = a.y ?? centerY;
+        const bx = b.x ?? centerX;
+        const by = b.y ?? centerY;
+        const dx = bx - ax;
+        const dy = by - ay;
+        const distance = Math.sqrt(dx ** 2 + dy ** 2);
+        const isALocked = lockedCrewIds.has(a.crewId);
+        const isBLocked = lockedCrewIds.has(b.crewId);
+
+        if (distance >= minDistance || (isALocked && isBLocked)) {
+          continue;
+        }
+
+        moved = true;
+        const safeDistance = distance || 0.001;
+        const overlap = minDistance - safeDistance;
+        const offsetX = (dx / safeDistance) * overlap;
+        const offsetY = (dy / safeDistance) * overlap;
+
+        if (isALocked) {
+          b.x = bx + offsetX;
+          b.y = by + offsetY;
+          constrainToEllipse(b, centerX, centerY, radiusX, radiusY, boundaryConstraint);
+          continue;
+        }
+
+        if (isBLocked) {
+          a.x = ax - offsetX;
+          a.y = ay - offsetY;
+          constrainToEllipse(a, centerX, centerY, radiusX, radiusY, boundaryConstraint);
+          continue;
+        }
+
+        a.x = ax - offsetX / 2;
+        a.y = ay - offsetY / 2;
+        b.x = bx + offsetX / 2;
+        b.y = by + offsetY / 2;
+
+        constrainToEllipse(a, centerX, centerY, radiusX, radiusY, boundaryConstraint);
+        constrainToEllipse(b, centerX, centerY, radiusX, radiusY, boundaryConstraint);
+      }
+    }
+
+    if (!moved) {
+      break;
+    }
   }
 };
 
@@ -124,35 +301,45 @@ function runClusterSimulation({
   const aspectRatio = ovalRadiusX / ovalRadiusY;
   const forceYStrength = ovalConfig.FORCE_Y_STRENGTH * (aspectRatio / 1.2);
 
-  const findAvailablePosition = (existingPositions: Point[]): Point => {
-    const minDistance = d3Options.MIN_DISTANCE;
+  const findAvailablePosition = (
+    existingPositions: Point[]
+  ): { position: Point; lockToPosition: boolean } => {
+    const minDistance = ovalConfig.MIN_DISTANCE;
     const maxAttempts = d3Options.MAX_ATTEMPTS;
+    const compactSlotOffsets = getCompactClusterSlotOffsets(ovalRadiusX, ovalRadiusY);
+    const shouldUseCompactSlots = existingPositions.length < compactSlotOffsets.length;
 
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      const radiusRatio = Math.sqrt(Math.random());
-      const position = generateEllipsePosition(
+    if (shouldUseCompactSlots) {
+      const compactSlot = getCompactClusterSlotPosition({
+        occupiedCount: existingPositions.length,
         centerX,
         centerY,
-        ovalRadiusX,
-        ovalRadiusY,
-        radiusRatio
-      );
+        radiusX: ovalRadiusX,
+        radiusY: ovalRadiusY,
+        slotOffsets: compactSlotOffsets,
+      });
 
-      const isAvailable = existingPositions.every(
-        (pos) => calculateDistance(position, pos) >= minDistance
-      );
-
-      if (isAvailable) {
-        return position;
+      if (
+        compactSlot &&
+        existingPositions.every((pos) => calculateDistance(compactSlot, pos) >= minDistance * 0.9)
+      ) {
+        return { position: compactSlot, lockToPosition: true };
       }
     }
 
-    // 그래도 없으면 최소 거리 줄여가며 재시도
-    const reducedDistances = [minDistance * 0.7, minDistance * 0.5, minDistance * 0.3, 15];
+    const estimatedCapacity = getEstimatedClusterCapacity({
+      radiusX: ovalRadiusX,
+      radiusY: ovalRadiusY,
+      minDistance,
+    });
+    const radiusBands = getPreferredRadiusBands({
+      occupiedCount: existingPositions.length,
+      estimatedCapacity,
+    });
 
-    for (const reducedDistance of reducedDistances) {
-      for (let attempt = 0; attempt < 50; attempt++) {
-        const radiusRatio = Math.sqrt(Math.random());
+    for (const band of radiusBands) {
+      for (let attempt = 0; attempt < maxAttempts / radiusBands.length; attempt++) {
+        const radiusRatio = sampleRadiusRatioInBand(band.min, band.max);
         const position = generateEllipsePosition(
           centerX,
           centerY,
@@ -162,11 +349,36 @@ function runClusterSimulation({
         );
 
         const isAvailable = existingPositions.every(
-          (pos) => calculateDistance(position, pos) >= reducedDistance
+          (pos) => calculateDistance(position, pos) >= minDistance
         );
 
         if (isAvailable) {
-          return position;
+          return { position, lockToPosition: false };
+        }
+      }
+    }
+
+    const reducedDistances = [minDistance * 0.8, minDistance * 0.65, minDistance * 0.5, 20];
+
+    for (const reducedDistance of reducedDistances) {
+      for (const band of radiusBands) {
+        for (let attempt = 0; attempt < 20; attempt++) {
+          const radiusRatio = sampleRadiusRatioInBand(band.min, band.max);
+          const position = generateEllipsePosition(
+            centerX,
+            centerY,
+            ovalRadiusX,
+            ovalRadiusY,
+            radiusRatio
+          );
+
+          const isAvailable = existingPositions.every(
+            (pos) => calculateDistance(position, pos) >= reducedDistance
+          );
+
+          if (isAvailable) {
+            return { position, lockToPosition: false };
+          }
         }
       }
     }
@@ -176,12 +388,13 @@ function runClusterSimulation({
       centerY,
       ovalRadiusX,
       ovalRadiusY,
-      ovalConfig.FALLBACK_RADIUS_RATIO
+      radiusBands[0]?.min ?? ovalConfig.FALLBACK_RADIUS_RATIO
     );
     let maxMinDistance = 0;
 
     for (let attempt = 0; attempt < 30; attempt++) {
-      const radiusRatio = Math.sqrt(Math.random());
+      const band = radiusBands[Math.min(radiusBands.length - 1, attempt % radiusBands.length)];
+      const radiusRatio = sampleRadiusRatioInBand(band.min, band.max);
       const candidate = generateEllipsePosition(
         centerX,
         centerY,
@@ -202,7 +415,7 @@ function runClusterSimulation({
       }
     }
 
-    return bestPosition;
+    return { position: bestPosition, lockToPosition: false };
   };
 
   const normalizeNodeToStage = (node: D3Node): D3Node => {
@@ -256,12 +469,14 @@ function runClusterSimulation({
   const addedNodes: D3Node[] = crews
     .filter((c) => !existingIds.has(c.crewId))
     .map((crew) => {
-      const position = findAvailablePosition(existingPositions);
+      const { position, lockToPosition } = findAvailablePosition(existingPositions);
       existingPositions.push(position);
       return {
         ...crew,
         x: position.x,
         y: position.y,
+        fx: lockToPosition ? position.x : undefined,
+        fy: lockToPosition ? position.y : undefined,
       };
     });
 
@@ -270,6 +485,9 @@ function runClusterSimulation({
     ...addedNodes,
     ...keptNodes.filter((n) => incomingIds.has(n.crewId)),
   ];
+  const lockedCrewIds = new Set(
+    keptNodes.filter((n) => incomingIds.has(n.crewId)).map((n) => n.crewId)
+  );
 
   const ellipseBoundary = () => {
     updatedNodes.forEach((node) => {
@@ -281,7 +499,7 @@ function runClusterSimulation({
     .force('x', forceX(centerX).strength(ovalConfig.FORCE_X_STRENGTH))
     .force('y', forceY(centerY).strength(forceYStrength))
     .force('charge', forceManyBody().strength(d3Options.FORCE_STRENGTH))
-    .force('collision', forceCollide().radius(d3Options.COLLIDE_RADIUS))
+    .force('collision', forceCollide().radius(ovalConfig.COLLIDE_RADIUS))
     .force('ellipse', ellipseBoundary)
     .stop();
 
@@ -305,13 +523,24 @@ function runClusterSimulation({
     }
   });
 
+  enforceNodeSpacing({
+    nodes: updatedNodes,
+    centerX,
+    centerY,
+    radiusX: ovalRadiusX,
+    radiusY: ovalRadiusY,
+    boundaryConstraint,
+    minDistance: ovalConfig.MIN_DISTANCE,
+    lockedCrewIds,
+  });
+
   simulation.stop();
 
   const positionedCrews: PositionedCrew[] = updatedNodes.map((n) => ({
     ...n,
     position: {
-      x: Math.round(n.x ?? centerX),
-      y: Math.round(n.y ?? centerY),
+      x: Math.max(0, Math.min(width, Math.round(n.x ?? centerX))),
+      y: Math.max(0, Math.min(height, Math.round(n.y ?? centerY))),
     },
   }));
 
