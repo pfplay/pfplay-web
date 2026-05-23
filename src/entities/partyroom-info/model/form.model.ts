@@ -14,7 +14,7 @@ export const getSchema = (t: Dictionary) =>
       .string()
       .min(1, { message: t.common.ec.char_field_required })
       .max(30, { message: t.common.ec.char_limit_30 })
-      .refine((value) => /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]*$/.test(value), {
+      .refine((value) => /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 ]*$/.test(value), {
         message: t.common.ec.char_limit_30,
       }),
     introduce: z

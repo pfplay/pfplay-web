@@ -29,6 +29,10 @@ describe('partyroom form schema', () => {
       expect(schema.safeParse({ ...validBase, name }).success).toBe(true);
     });
 
+    it.each(['Test Room', '파티 룸', '한 Test 123'])('유효: 공백 포함 "%s"', (name) => {
+      expect(schema.safeParse({ ...validBase, name }).success).toBe(true);
+    });
+
     test('경계값: 1자', () => {
       expect(schema.safeParse({ ...validBase, name: '가' }).success).toBe(true);
     });
@@ -45,7 +49,7 @@ describe('partyroom form schema', () => {
       expect(schema.safeParse({ ...validBase, name: '가'.repeat(31) }).success).toBe(false);
     });
 
-    it.each(['파티$', 'Test Room', '파티!@#'])('무효: 특수문자/공백 "%s"', (name) => {
+    it.each(['파티$', '파티!@#'])('무효: 특수문자 "%s"', (name) => {
       expect(schema.safeParse({ ...validBase, name }).success).toBe(false);
     });
   });
