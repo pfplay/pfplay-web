@@ -1,5 +1,4 @@
 import type { SVGProps } from 'react';
-
 const PFXBrand = (props: SVGProps<SVGSVGElement>) => (
   <svg
     width={24}
@@ -15,5 +14,4 @@ const PFXBrand = (props: SVGProps<SVGSVGElement>) => (
     />
   </svg>
 );
-
 export default PFXBrand;
