@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { useState } from 'react';
 import { TwitterShareButton } from 'react-share';
 import { PartyroomDetailSummary } from '@/shared/api/http/types/partyrooms';
@@ -7,6 +6,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
+import { PFXBrand } from '@/shared/ui/icons';
 
 /**
  * @param partyroomSummary 파티룸 요약 정보, 서버에서 fetch 해오고 있는 경우 `undefined` 일 수 있습니다. `partyroomSummary`가 `undefined`인 경우 다이얼로그가 열리지 않습니다.
@@ -59,7 +59,7 @@ function Body({ partyroom }: { partyroom: PartyroomDetailSummary }) {
             url={`@pfplay_music #pfplay ${sharedUrl}`}
             className='w-full h-12 flexRowCenter gap-2 bg-gray-700 rounded cursor-pointer'
           >
-            <Image src={'/images/ETC/twitter.png'} alt='twitter' width={24} height={24} />
+            <PFXBrand aria-hidden width={24} height={24} />
             {t.party.btn.share_twitter}
           </TwitterShareButton>
         </div>

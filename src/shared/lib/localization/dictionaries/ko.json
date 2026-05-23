@@ -11,7 +11,7 @@
       "sanction": "제재",
       "block": "차단",
       "next": "다음",
-      "twitter_login": "트위터 로그인",
+      "twitter_login": "X 로그인",
       "google_login": "구글 로그인",
       "share": "공유하기",
       "settings": "설정",
@@ -73,7 +73,7 @@
       "connect_wallet": "지갑 연동하기",
       "connect_social": "소셜 로그인하기",
       "back_to_sign_in": "로그인으로 돌아가기",
-      "connect_twitter": "트위터 연동하기",
+      "connect_twitter": "X 연동하기",
       "connect_google": "구글 연동하기"
     },
     "title": {
@@ -200,7 +200,7 @@
       "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
     },
     "btn": {
-      "share_twitter": "트위터로 공유하기",
+      "share_twitter": "X로 공유하기",
       "copy_link": "링크 복사",
       "click_to_play": "클릭하여 재생"
     }

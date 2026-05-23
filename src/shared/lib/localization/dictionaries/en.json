@@ -11,7 +11,7 @@
       "sanction": "Restriction",
       "block": "Block",
       "next": "Next",
-      "twitter_login": "Twitter Login",
+      "twitter_login": "Sign in with X",
       "google_login": "Google Login",
       "share": "Share",
       "settings": "Settings",
@@ -73,7 +73,7 @@
       "connect_wallet": "Connect wallet",
       "connect_social": "Social Sign-In",
       "back_to_sign_in": "Back to Sign In",
-      "connect_twitter": "Connect with Twitter",
+      "connect_twitter": "Continue with X",
       "connect_google": "Connect with Google"
     },
     "title": {
@@ -200,7 +200,7 @@
       "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
     },
     "btn": {
-      "share_twitter": "Share on Twitter",
+      "share_twitter": "Share on X",
       "copy_link": "Copy",
       "click_to_play": "Click to play"
     }
