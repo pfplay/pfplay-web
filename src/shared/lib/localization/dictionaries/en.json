@@ -99,7 +99,8 @@
       "removed_by_admin": "You have been removed by an admin.",
       "permanent_ban": "You have been permanently removed by an admin and can’t rejoin.",
       "start_chat": "What shall we talk about?",
-      "remove_chat": "'{target}'s chat was removed by '{subject}'."
+      "remove_chat": "'{target}'s chat was removed by '{subject}'.",
+      "chat_banned_hint": "Chat is disabled for 30 seconds because of an admin restriction."
     }
   },
   "onboard": {
@@ -136,7 +137,9 @@
     "para": {
       "what_wear": "What will you wear to play?",
       "nickname_taken": "This nickname is already used.",
-      "empty_records": "You have no items"
+      "empty_records": "You have no items",
+      "avatar_save_requirements": "Select a body first. If the body supports layering, select a face too before saving.",
+      "wallet_face_hint": "Connect your wallet to use NFT face items here."
     }
   },
   "setting": {
@@ -228,15 +231,16 @@
       "delete_dj_queue": "Remove from DJ Queue",
       "write_reason": "Please provide a reason (at least 2 characters)",
       "deleted_queue_by_admin": "You have been removed from the queue by the administrator",
-      "playback_stopped_time_limit": "Playback stopped: a track exceeds this room's time limit ({{minutes}} min).",
-      "playback_stopped_no_limit": "Playback stopped: no playable track.",
-      "not_playable_in_room": "Not playable here (exceeds this room's time limit)",
       "locked_queue_by_admin": "The current DJ queue is locked by an admin",
       "skipped_song_by_admin": "According to the admin policy, songs longer than {{count}} minutes will be automatically skipped",
       "dj_in_order": "DJing **one person at a time** \n from the waiting list, in order",
       "played_sequentially": "Songs from the top of the playlist are \n **played sequentially, one song per person**",
       "display_count": "Once the song ends, we'll display \n a count of the **Like, Grab, and Boo** received during your DJ set.",
-      "empty_dj": "zZz...No DJ currently playing..."
+      "empty_dj": "zZz...No DJ currently playing...",
+      "queue_lock_detail": "Locking prevents new DJ registrations and keeps the current queue as-is.",
+      "playback_stopped_time_limit": "Playback stopped: a track exceeds this room's time limit ({{minutes}} min).",
+      "playback_stopped_no_limit": "Playback stopped: no playable track.",
+      "not_playable_in_room": "Not playable here (exceeds this room's time limit)"
     }
   },
   "db": {

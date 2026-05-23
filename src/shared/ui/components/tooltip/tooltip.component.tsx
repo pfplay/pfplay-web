@@ -50,17 +50,22 @@ const Tooltip: FC<TooltipProps> = ({ children, title, visible, color = 'red', sp
         const childRect = childNode.getBoundingClientRect();
         const tooltipRect = tooltipNode.getBoundingClientRect();
         const centerOffset = childRect.width / 2 - tooltipRect.width / 2;
+        const minLeft = window.scrollX + 12;
+        const maxLeft = window.scrollX + window.innerWidth - tooltipRect.width - 12;
 
         setPosition({
           top: childRect.bottom + window.scrollY + spacing,
-          left: childRect.left + window.scrollX + centerOffset,
+          left: Math.max(
+            minLeft,
+            Math.min(childRect.left + window.scrollX + centerOffset, maxLeft)
+          ),
           ready: true,
         });
       }, 10);
     }
 
     updatePosition();
-  }, [visible]);
+  }, [spacing, visible]);
 
   if (!root) return null;
   return (
@@ -71,7 +76,7 @@ const Tooltip: FC<TooltipProps> = ({ children, title, visible, color = 'red', sp
         <div
           ref={tooltipRef}
           className={cn([
-            'absolute z-tooltip py-[8px] px-[20px] rounded-[4px]',
+            'absolute z-tooltip w-max max-w-[min(280px,calc(100vw-24px))] min-h-[37px] px-[20px] py-[8px] rounded-[4px] whitespace-normal break-words text-center',
             colorsDict[color],
 
             'will-change-[opacity] transition-opacity duration-200',
@@ -83,14 +88,16 @@ const Tooltip: FC<TooltipProps> = ({ children, title, visible, color = 'red', sp
             /* arrow */
             'before:content-[""] before:absolute before:-z-1',
             'before:top-[1px] before:left-1/2 before:-translate-x-1/2 before:-translate-y-full',
-            'before:w-[8px] before:h-[8px] before:polygon-equilateral-triangle',
+            'before:w-[12px] before:h-[12px] before:polygon-equilateral-triangle',
           ])}
           style={{
             top: position.top,
             left: position.left,
           }}
         >
-          <Typography type='caption1'>{title}</Typography>
+          <Typography type='caption1' overflow='break-words' className='whitespace-normal'>
+            {title}
+          </Typography>
         </div>,
         root
       )}
@@ -99,7 +106,7 @@ const Tooltip: FC<TooltipProps> = ({ children, title, visible, color = 'red', sp
 };
 
 const colorsDict: Record<TooltipColor, string> = {
-  red: 'text-gray-50 bg-red-500 before:bg-red-500',
+  red: 'text-gray-50 bg-[#990316] before:bg-[#990316]',
   gray: 'text-gray-50 bg-gray-700 before:bg-gray-700',
 };
 

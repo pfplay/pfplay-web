@@ -112,10 +112,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
                     title={t.createparty.para.noti_djing_limit}
                     visible={!!errors.limit?.message}
                   >
-                    <Typography type='body2'>
-                      {/* TODO: i18n - 문구 줄바꿈 적용 필요*/}
-                      {t.db.title.dj_time_limit}
-                    </Typography>
+                    <Typography type='body2'>{t.db.title.dj_time_limit}</Typography>
                   </Tooltip>
                 }
                 classNames={{

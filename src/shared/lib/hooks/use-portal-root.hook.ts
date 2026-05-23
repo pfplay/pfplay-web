@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { DomId } from '@/shared/config/dom-id';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import useDidMountEffect from '@/shared/lib/hooks/use-did-mount-effect';
@@ -8,7 +7,7 @@ export default function usePortalRoot(id: string) {
   const [root, setRoot] = useState<HTMLElement | null>(null);
 
   useDidMountEffect(() => {
-    const root = document.getElementById(DomId.DrawerRoot);
+    const root = document.getElementById(id);
     if (root) {
       setRoot(root);
     } else {

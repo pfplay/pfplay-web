@@ -99,7 +99,8 @@
       "removed_by_admin": "관리자에 의해 퇴출되셨습니다.",
       "permanent_ban": "관리자에 의해 영구 퇴출되셨으며/n재입장은 불가합니다.",
       "start_chat": "무슨 얘기를 해볼까요?",
-      "remove_chat": "'{subject}'가 '{target}'의 채팅을 삭제했습니다."
+      "remove_chat": "'{subject}'가 '{target}'의 채팅을 삭제했습니다.",
+      "chat_banned_hint": "관리자 제재로 30초 동안 채팅할 수 없어요."
     }
   },
   "onboard": {
@@ -136,7 +137,9 @@
     "para": {
       "what_wear": "뭘 입고 놀아볼까요?",
       "nickname_taken": "이미 사용 중인 닉네임입니다.",
-      "empty_records": "보유한 내역이 없어요"
+      "empty_records": "보유한 내역이 없어요",
+      "avatar_save_requirements": "몸을 먼저 고르고, 조합형 몸이라면 얼굴까지 선택해야 저장할 수 있어요.",
+      "wallet_face_hint": "지갑을 연결하면 보유한 NFT 얼굴 아이템도 여기서 선택할 수 있어요."
     }
   },
   "setting": {
@@ -228,15 +231,16 @@
       "delete_dj_queue": "DJ 대기열에서 삭제합니다",
       "write_reason": "사유를 작성해주세요(최소 2자)",
       "deleted_queue_by_admin": "관리자에 의해 대기열에서 삭제되었습니다",
-      "playback_stopped_time_limit": "재생 시간 제한({{minutes}}분)을 초과하는 곡으로 재생이 중단되었습니다",
-      "playback_stopped_no_limit": "재생 가능한 곡이 없어 재생이 중단되었습니다",
-      "not_playable_in_room": "이 방에선 재생 안 돼요 (재생 시간 제한 초과)",
       "locked_queue_by_admin": "관리자에 의해 현재 DJ 대기열이 잠금 상태예요",
       "skipped_song_by_admin": "어드민 정책에 따라 {{count}}분 이상의 곡은 자동으로 스킵됩니다",
       "dj_in_order": "대기 중인 DJ **한명씩**\n **순서대로** 음악을 디제잉 합니다",
       "played_sequentially": "플레이리스트의 가장 상단에 있는 곡부터 \n **순차적으로 한명당 하나씩 플레이**됩니다",
       "display_count": "노래가 끝나면 디제잉하는 동안 받은 \n **좋아요, 그랩, 싫어요**를 카운팅해 보여드려요.",
-      "empty_dj": "진행 중인 디제잉이 없어요 zZz..."
+      "empty_dj": "진행 중인 디제잉이 없어요 zZz...",
+      "queue_lock_detail": "잠그면 새 DJ 등록이 막히고, 현재 대기열만 유지돼요.",
+      "playback_stopped_time_limit": "재생 시간 제한({{minutes}}분)을 초과하는 곡으로 재생이 중단되었습니다",
+      "playback_stopped_no_limit": "재생 가능한 곡이 없어 재생이 중단되었습니다",
+      "not_playable_in_room": "이 방에선 재생 안 돼요 (재생 시간 제한 초과)"
     }
   },
   "db": {
