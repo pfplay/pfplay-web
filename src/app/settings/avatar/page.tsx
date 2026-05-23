@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { AvatarEditDone, ProfileAvatarEditPanel } from '@/features/edit-profile-avatar';
 import { BackButton } from '@/shared/ui/components/back-button';
 import { Button } from '@/shared/ui/components/button';
+import { TooltipTrigger } from '@/shared/ui/components/tooltip';
 
 export default function AvatarSettingsPage() {
   const router = useRouter();
@@ -17,16 +18,18 @@ export default function AvatarSettingsPage() {
               router.push('/parties');
             }}
           >
-            {({ done, canSubmit, loading }) => (
-              <Button
-                onClick={done}
-                disabled={!canSubmit}
-                loading={loading}
-                className='px-[88.5px]'
-                size='xl'
-              >
-                Let&apos;s get in
-              </Button>
+            {({ done, canSubmit, loading, submitHint }) => (
+              <TooltipTrigger title={submitHint}>
+                <Button
+                  onClick={done}
+                  disabled={!canSubmit}
+                  loading={loading}
+                  className='px-[88.5px]'
+                  size='xl'
+                >
+                  Let&apos;s get in
+                </Button>
+              </TooltipTrigger>
             )}
           </AvatarEditDone>
         }

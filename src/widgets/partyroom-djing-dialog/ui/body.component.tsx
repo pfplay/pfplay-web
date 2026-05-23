@@ -15,6 +15,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { Button, ButtonProps } from '@/shared/ui/components/button';
 import { DjListItem } from '@/shared/ui/components/dj-list-item';
 import { TextButton } from '@/shared/ui/components/text-button';
+import { TooltipTrigger } from '@/shared/ui/components/tooltip';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
 import ChangePlaylistButton from './change-playlist-button.component';
@@ -103,9 +104,11 @@ export default function Body({ onCancel }: Props) {
           {(canLockDjQueue || canUnLockDjQueue) && (
             <div className='mt-4 flex flex-col items-start gap-3'>
               {!isLocked && canLockDjQueue && (
-                <Button {...leftButtonProps} onClick={lockDjQueue}>
-                  {t.common.btn.lock}
-                </Button>
+                <TooltipTrigger title={t.dj.para.queue_lock_detail}>
+                  <Button {...leftButtonProps} onClick={lockDjQueue}>
+                    {t.common.btn.lock}
+                  </Button>
+                </TooltipTrigger>
               )}
               {isLocked && canUnLockDjQueue && (
                 <Button {...leftButtonProps} onClick={unlockDjQueue}>

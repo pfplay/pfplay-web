@@ -21,6 +21,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { DisplayOptionMenuOnHoverListener } from '@/shared/ui/components/display-option-menu-on-hover-listener';
 import { Input } from '@/shared/ui/components/input';
+import { TooltipTrigger } from '@/shared/ui/components/tooltip';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFSend } from '@/shared/ui/icons';
 import ChatItem from './chat-item.component';
@@ -137,30 +138,40 @@ export default function PartyroomChatPanel() {
 
       <SendChatMessage>
         {({ message, setMessage, send, canSend }) => (
-          <Input
-            data-testid='chat-message-input'
-            size='lg'
-            variant='outlined'
-            disabled={banned}
-            placeholder={t.chat.para.start_chat}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onPressEnter={() => {
-              if (canSend) send();
-            }}
-            Suffix={
-              <Button
-                data-testid='chat-message-send-button'
-                color='secondary'
-                variant='fill'
-                Icon={<PFSend width={20} height={20} />}
-                size='sm'
-                className='text-gray-50'
-                onClick={send}
-                disabled={!canSend}
+          <TooltipTrigger title={banned ? t.chat.para.chat_banned_hint : undefined}>
+            <div>
+              <Input
+                data-testid='chat-message-input'
+                size='lg'
+                variant='outlined'
+                disabled={banned}
+                placeholder={t.chat.para.start_chat}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onPressEnter={() => {
+                  if (canSend) send();
+                }}
+                Suffix={
+                  <TooltipTrigger
+                    title={
+                      !canSend ? (banned ? t.chat.para.chat_banned_hint : undefined) : undefined
+                    }
+                  >
+                    <Button
+                      data-testid='chat-message-send-button'
+                      color='secondary'
+                      variant='fill'
+                      Icon={<PFSend width={20} height={20} />}
+                      size='sm'
+                      className='text-gray-50'
+                      onClick={send}
+                      disabled={!canSend}
+                    />
+                  </TooltipTrigger>
+                }
               />
-            }
-          />
+            </div>
+          </TooltipTrigger>
         )}
       </SendChatMessage>
     </div>

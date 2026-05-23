@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
+import { PFXBrand } from '@/shared/ui/icons';
 import useInitiateSignIn from './use-initiate-sign-in';
 
 export default function useInformSocialType() {
@@ -36,7 +37,7 @@ export default function useInformSocialType() {
             typo='detail1'
             color='secondary'
             variant='outline'
-            Icon={<Image src='/images/ETC/twitter.png' alt='twitter' width={32} height={32} />}
+            Icon={<PFXBrand aria-hidden width={32} height={32} />}
             onClick={() => {
               signInByTwitter();
               onClose?.();

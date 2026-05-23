@@ -4,6 +4,7 @@ import { LineBreakProcessor } from '@/shared/lib/localization/renderer';
 import { Trans } from '@/shared/lib/localization/renderer/index.ui';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
+import { TooltipTrigger } from '@/shared/ui/components/tooltip';
 import { Typography } from '@/shared/ui/components/typography';
 
 export default function useOpenEditProfileAvatarDialog() {
@@ -30,17 +31,19 @@ export default function useOpenEditProfileAvatarDialog() {
                 {t.common.btn.cancel}
               </Button>
               <AvatarEditDone onSuccess={onOk}>
-                {({ done, canSubmit, loading }) => (
-                  <Button
-                    size='lg'
-                    onClick={done}
-                    disabled={!canSubmit}
-                    loading={loading}
-                    className='w-[200px] max-w-full'
-                    data-testid='avatar-edit-save-button'
-                  >
-                    {t.common.btn.save}
-                  </Button>
+                {({ done, canSubmit, loading, submitHint }) => (
+                  <TooltipTrigger title={submitHint}>
+                    <Button
+                      size='lg'
+                      onClick={done}
+                      disabled={!canSubmit}
+                      loading={loading}
+                      className='w-[200px] max-w-full'
+                      data-testid='avatar-edit-save-button'
+                    >
+                      {t.common.btn.save}
+                    </Button>
+                  </TooltipTrigger>
                 )}
               </AvatarEditDone>
             </>

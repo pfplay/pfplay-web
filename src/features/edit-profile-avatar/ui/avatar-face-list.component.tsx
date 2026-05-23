@@ -3,6 +3,7 @@ import { useNfts } from '@/entities/wallet';
 import { cn } from '@/shared/lib/functions/cn';
 import { useVerticalStretch } from '@/shared/lib/hooks/use-vertical-stretch.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { TooltipTrigger } from '@/shared/ui/components/tooltip';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFInfoOutline } from '@/shared/ui/icons';
 import AvatarFaceListItem from './avatar-face-list-item.component';
@@ -24,7 +25,11 @@ const AvatarFaceList = () => {
   return (
     <div ref={containerRef} className='flex-1 flexCol gap-4 overflow-hidden'>
       <div className='flexRow justify-end items-center gap-3'>
-        <ConnectWalletButton />
+        <TooltipTrigger title={t.settings.para.wallet_face_hint}>
+          <span className='inline-flex'>
+            <ConnectWalletButton />
+          </span>
+        </TooltipTrigger>
       </div>
       <div
         className={cn(
