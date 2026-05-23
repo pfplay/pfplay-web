@@ -5,6 +5,7 @@ import { QueueStatus } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
+import { TooltipTrigger } from '@/shared/ui/components/tooltip';
 import { useRegisterMeToQueue } from '../api/use-register-me-to-queue.mutation';
 import { useDjingQueue } from '../lib/djing-queue.context';
 import { usePartyroomId } from '../lib/partyroom-id.context';
@@ -38,8 +39,10 @@ export default function RegisterButton() {
   };
 
   return (
-    <Button size='lg' onClick={registerMeToDjQueue} data-testid='register-dj-queue'>
-      {t.dj.btn.register_queue}
-    </Button>
+    <TooltipTrigger title={isLocked ? t.dj.para.queue_lock_detail : undefined}>
+      <Button size='lg' onClick={registerMeToDjQueue} data-testid='register-dj-queue'>
+        {t.dj.btn.register_queue}
+      </Button>
+    </TooltipTrigger>
   );
 }

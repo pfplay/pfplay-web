@@ -8,14 +8,29 @@ import { Crew } from '@/entities/current-partyroom';
 import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { pick } from '@/shared/lib/functions/pick';
 import { useStores } from '@/shared/lib/store/stores.context';
+import { calculateStageImageFrame } from '../lib/calculate-stage-image-frame';
 import { useAvatarCluster } from '../lib/use-avatar-cluster.hook';
-import { AVATAR_GROUP } from '../model/constants';
+import { AVATAR_GROUP, AVATAR_QUEUE, DJ_AVATAR, PARTYROOM_BACKGROUND } from '../model/constants';
 
-export default function Avatars() {
+type Props = {
+  partyroomId?: number;
+  enableQueueFetch?: boolean;
+  djQueueCrewIdsOverride?: number[];
+};
+
+export default function Avatars({
+  partyroomId,
+  enableQueueFetch = true,
+  djQueueCrewIdsOverride,
+}: Props) {
   const { useCurrentPartyroom } = useStores();
   const { crews, currentDj } = useCurrentPartyroom((state) => pick(state, ['crews', 'currentDj']));
   const params = useParams<{ id: string }>();
-  const { data: djingQueue } = useFetchDjingQueue({ partyroomId: Number(params.id) }, true);
+  const resolvedPartyroomId = partyroomId ?? Number(params.id);
+  const { data: djingQueue } = useFetchDjingQueue(
+    { partyroomId: resolvedPartyroomId },
+    enableQueueFetch && Number.isFinite(resolvedPartyroomId)
+  );
 
   const currentDjFromQueue = djingQueue?.djs
     .slice()
@@ -24,11 +39,13 @@ export default function Avatars() {
   const dj = currentDjCrewId
     ? crews.find((crew: Crew.Model) => crew.crewId === currentDjCrewId)
     : undefined;
-  const djQueueCrewIds = djingQueue
-    ? djingQueue.djs
-        .filter((dj) => dj.crewId !== currentDjCrewId && dj.orderNumber > 1)
-        .map((dj) => dj.crewId)
-    : [];
+  const djQueueCrewIds =
+    djQueueCrewIdsOverride ??
+    (djingQueue
+      ? djingQueue.djs
+          .filter((dj) => dj.crewId !== currentDjCrewId && dj.orderNumber > 1)
+          .map((dj) => dj.crewId)
+      : []);
 
   const { registerAvatar } = useAvatarDance();
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -62,10 +79,21 @@ export default function Avatars() {
     };
   }, []);
 
+  const stageImageFrame = calculateStageImageFrame(stageBounds);
+  const avatarStageBounds = {
+    width: stageImageFrame.width,
+    height: stageImageFrame.height,
+  };
+  const stageScale =
+    stageImageFrame.height > 0 ? stageImageFrame.height / PARTYROOM_BACKGROUND.HEIGHT : 0;
+  const clusterAvatarHeight = AVATAR_GROUP.HEIGHT * stageScale;
+  const queueAvatarHeight = AVATAR_QUEUE.HEIGHT * stageScale;
+  const djAvatarHeight = DJ_AVATAR.HEIGHT * stageScale;
+
   const { courtPositions, queuePositions } = useAvatarCluster({
     crews: crews,
     djQueueCrewIds: djQueueCrewIds,
-    stageBounds,
+    stageBounds: avatarStageBounds,
   });
 
   const crewMap = new Map(crews.map((c) => [c.crewId, c]));
@@ -77,29 +105,22 @@ export default function Avatars() {
     .filter((item): item is { crew: Crew.Model; position: typeof item.position } => !!item.crew);
 
   return (
-    /*
-     * 파티룸 배경과 같은 aspect ratio, bg-cover, bg-left-bottom, overflow-hidden 를 적용하여,
-     * 화면 신축에 상관 없이 배경 이미지 상 항상 같은 위치에 아바타가 위치하도록 함
-     */
-    <div
-      ref={stageRef}
-      className='h-screen aspect-partyroom-bg absolute inset-0 z-0 bg-cover bg-left-bottom overflow-hidden'
-    >
+    <div ref={stageRef} className='absolute inset-0 z-0 overflow-hidden'>
       {!!dj && (
         <div
           data-testid='partyroom-current-dj'
           data-crew-id={String(dj.crewId)}
           data-avatar-body-uri={dj.avatarBodyUri}
           data-reaction-type={dj.reactionType ?? ''}
-          className='relative'
+          className='absolute'
           style={{
-            top: '98%',
-            left: '16%',
-            transform: 'translate(-10%, -100%)',
+            top: `${stageImageFrame.offsetY + stageImageFrame.height * DJ_AVATAR.ANCHOR_Y_RATIO}px`,
+            left: `${stageImageFrame.offsetX + stageImageFrame.width * DJ_AVATAR.ANCHOR_X_RATIO}px`,
+            transform: DJ_AVATAR.TRANSLATE,
           }}
         >
           <Avatar
-            height={380}
+            height={djAvatarHeight}
             bodyUri={dj.avatarBodyUri}
             compositionType={dj.avatarCompositionType}
             faceUri={dj.avatarFaceUri}
@@ -124,14 +145,14 @@ export default function Avatars() {
           data-avatar-body-uri={crew.avatarBodyUri}
           data-reaction-type={crew.reactionType ?? ''}
           style={{
-            top: `${position.y}px`,
-            left: `${position.x}px`,
+            top: `${stageImageFrame.offsetY + position.y}px`,
+            left: `${stageImageFrame.offsetX + position.x}px`,
             transform: 'translate(-50%, -100%)',
           }}
           data-testid='partyroom-dj-queue-item'
         >
           <Avatar
-            height={AVATAR_GROUP.HEIGHT}
+            height={queueAvatarHeight}
             bodyUri={crew.avatarBodyUri}
             compositionType={crew.avatarCompositionType}
             faceUri={crew.avatarFaceUri}
@@ -160,13 +181,13 @@ export default function Avatars() {
             data-avatar-body-uri={crew.avatarBodyUri}
             data-reaction-type={crew.reactionType ?? ''}
             style={{
-              top: `${position.y}px`,
-              left: `${position.x}px`,
+              top: `${stageImageFrame.offsetY + position.y}px`,
+              left: `${stageImageFrame.offsetX + position.x}px`,
               transform: 'translate(-100%, -100%)',
             }}
           >
             <Avatar
-              height={AVATAR_GROUP.HEIGHT}
+              height={clusterAvatarHeight}
               bodyUri={crew.avatarBodyUri}
               compositionType={crew.avatarCompositionType}
               faceUri={crew.avatarFaceUri}

@@ -8,7 +8,7 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { Button } from '@/shared/ui/components/button';
 import { TextButton } from '@/shared/ui/components/text-button';
-import { PFClose } from '@/shared/ui/icons';
+import { PFClose, PFXBrand } from '@/shared/ui/icons';
 
 export default function SignInPage() {
   const t = useI18n();
@@ -60,7 +60,7 @@ export default function SignInPage() {
           typo='detail1'
           color='secondary'
           variant='outline'
-          Icon={<Image src='/images/ETC/twitter.png' alt='twitter' width={32} height={32} />}
+          Icon={<PFXBrand aria-hidden width={32} height={32} />}
           onClick={signInByTwitter}
           className='w-[320px] h-[56px] mb-[40px]'
         >

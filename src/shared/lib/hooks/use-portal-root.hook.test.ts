@@ -11,19 +11,19 @@ vi.mock('@/shared/lib/functions/log/with-debugger', () => ({
 }));
 
 describe('usePortalRoot', () => {
-  test('DOM에 DrawerRoot 요소가 있으면 해당 요소를 반환한다', () => {
+  test('요청한 id의 포털 루트 요소가 있으면 해당 요소를 반환한다', () => {
     const root = document.createElement('div');
-    root.id = 'drawer-root';
+    root.id = 'tooltip-root';
     document.body.appendChild(root);
 
-    const { result } = renderHook(() => usePortalRoot('drawer-root'));
+    const { result } = renderHook(() => usePortalRoot('tooltip-root'));
 
     expect(result.current).toBe(root);
 
     document.body.removeChild(root);
   });
 
-  test('DOM에 DrawerRoot 요소가 없으면 null을 반환한다', () => {
+  test('요청한 id의 포털 루트 요소가 없으면 null을 반환한다', () => {
     const { result } = renderHook(() => usePortalRoot('nonexistent'));
     expect(result.current).toBeNull();
   });

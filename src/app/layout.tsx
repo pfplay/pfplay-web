@@ -81,7 +81,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
         </ReactQueryProvider>
 
         <div id={DomId.DrawerRoot} />
-        <div id={DomId.TooltipRoot} />
+        <div id={DomId.TooltipRoot} className='pointer-events-none fixed inset-0 z-tooltip' />
       </body>
     </html>
   );
