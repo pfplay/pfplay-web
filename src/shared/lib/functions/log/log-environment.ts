@@ -5,11 +5,12 @@
  * 에서만 기본 노출된다. 프로덕션(`NEXT_PUBLIC_VERCEL_ENV === 'production'`)에선 침묵하되,
  * 운영 중 긴급 디버깅을 위해 `window.debugLevel` 을 수동 상향하면 escape hatch 로 노출된다.
  *
- * `NEXT_PUBLIC_VERCEL_ENV` 는 Vercel 시스템 환경변수다 (production / preview / development).
- * 로컬·테스트에선 미설정이므로 비프로덕션으로 간주한다.
- * ⚠️ Vercel 프로젝트의 "Automatically expose System Environment Variables"(기본 ON)가
- * 켜져 있어야 클라이언트 번들에 주입된다. 꺼져 있으면 prod 에서도 비프로덕션으로 간주되어
- * 로그가 샌다 — 게이트가 무력화되면 이 변수의 주입 여부부터 확인할 것.
+ * `NEXT_PUBLIC_VERCEL_ENV` 는 next.config.js 에서 빌드 타임 `VERCEL_ENV`
+ * (production / preview / development) 를 인라인한 값이다. 로컬·테스트엔 미설정이므로
+ * 비프로덕션으로 간주한다.
+ * ⚠️ 빌드에 `VERCEL_ENV` 가 주입되려면 Vercel 프로젝트 설정 "Enable access to System
+ * Environment Variables" 토글이 ON 이어야 한다. 꺼지면 prod 에서도 '' → 비프로덕션으로
+ * 간주되어 로그가 샌다 — 게이트가 무력화되면 이 토글부터 확인할 것.
  */
 export function isProdRuntime(): boolean {
   return process.env.NEXT_PUBLIC_VERCEL_ENV === 'production';
