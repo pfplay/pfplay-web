@@ -1,10 +1,14 @@
+import { shouldEmitDiagnosticLog } from '@/shared/lib/functions/log/log-environment';
+
 /**
  * 클라이언트 측 관측 이벤트 스키마 (Observability Phase A5).
  *
- * Phase A 에선 `console.info`/`console.error` 로만 emit 된다 (OSS only 정책 —
- * 사용자 콘솔 dump 를 받아야 우리에게 도달). Phase B 에서 backend forward
- * endpoint 가 도입되면 {@link recordClientEvent} 구현부만 교체하면 되고,
- * 호출 지점은 변경 zero 다 (스키마를 미리 고정하는 것이 이 파일의 목적).
+ * `console.info`/`console.error` 로 emit 되지만, 진단 로그 정책(2026-05-25)에 따라
+ * 비프로덕션(로컬 + Vercel preview=스테이징)에서만 기본 노출된다. 프로덕션에선
+ * 침묵하되 `window.debugLevel` 수동 상향 시 escape hatch 로 노출된다
+ * ({@link shouldEmitDiagnosticLog}). Phase B 에서 backend forward endpoint 가
+ * 도입되면 {@link recordClientEvent} 구현부만 교체하면 되고, 호출 지점은 변경 zero 다
+ * (스키마를 미리 고정하는 것이 이 파일의 목적).
  */
 export type ClientObservabilityEvent =
   | { type: 'WS_CONNECT'; brokerURL: string }
@@ -30,6 +34,8 @@ export type ClientObservabilityEvent =
  * 그 외는 `console.info` 로 — ADR-009(error-monitoring) 의 severity 정책.
  */
 export function recordClientEvent(event: ClientObservabilityEvent): void {
+  if (!shouldEmitDiagnosticLog()) return;
+
   const isError = event.type === 'WS_STOMP_ERROR' || event.type === 'EVENT_RECEIVED_FOREIGN';
   (isError ? console.error : console.info)('[client-obs]', event);
 }
