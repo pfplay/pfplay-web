@@ -5,6 +5,12 @@ on:
     branches: [development]
   workflow_dispatch:
 
+# 동시 run들이 공유 stg.pfplay.xyz 별칭을 레이스하지 않도록 파이프라인 직렬화 (이슈 #348).
+# 연속 머지 시 직전 run 취소 → 최신 development 상태만 deploy+e2e.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     name: deploy preview
