@@ -2,6 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  // 빌드 타임 시스템 변수 VERCEL_ENV 를 클라이언트 번들에 NEXT_PUBLIC_ 으로 직접 인라인한다.
+  // Vercel 의 NEXT_PUBLIC_ 자동 prefix 노출 동작에 의존하지 않기 위함 —
+  // 프로젝트 설정 "Enable access to System Environment Variables" 토글만 ON 이면
+  // (= VERCEL_ENV 가 빌드에 제공되면) 진단 로그 게이트가 결정적으로 동작한다.
+  // 로컬엔 VERCEL_ENV 부재 → '' → 비프로덕션(진단 로그 노출). 참고: shouldEmitDiagnosticLog.
+  env: {
+    NEXT_PUBLIC_VERCEL_ENV: process.env.VERCEL_ENV ?? '',
+  },
   experimental: {
     webpackBuildWorker: true,
     serverComponentsExternalPackages: ['@resvg/resvg-js'],

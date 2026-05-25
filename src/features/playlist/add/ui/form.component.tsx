@@ -1,9 +1,11 @@
 import { useCallback } from 'react';
 import { SubmitHandler } from 'react-hook-form';
+import { useFetchMe } from '@/entities/me';
 import { PlaylistFormValues } from '@/entities/playlist';
 import { PlaylistForm, PlaylistFormProps } from '@/entities/playlist/index.ui';
 import { ConnectWallet } from '@/entities/wallet/index.ui';
 import useOnError from '@/shared/api/http/error/use-on-error.hook';
+import { AuthorityTier } from '@/shared/api/http/types/@enums';
 import { ErrorCode } from '@/shared/api/http/types/@shared';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -32,6 +34,7 @@ const Form = (props: FormProps) => {
   const t = useI18n();
   const { mutate: createPlaylist } = useCreatePlaylist();
   const { openDialog } = useDialog();
+  const { data: me } = useFetchMe();
 
   const openNeedConnectWalletDialog = () => {
     return openDialog((_, onCancel) => ({
@@ -64,8 +67,10 @@ const Form = (props: FormProps) => {
     }));
   };
   const openLimitDialog = () => {
+    // 티어별 한도가 달라(FM=10, AM=1) 문구를 분기한다. FM 외(AM/GT)는 한도 1.
+    const isFullMember = me?.authorityTier === AuthorityTier.FM;
     return openDialog((_, onCancel) => ({
-      title: t.playlist.ec.exceeded_list,
+      title: isFullMember ? t.playlist.ec.exceeded_list : t.playlist.ec.exceeded_list_am,
       Body: (
         <Dialog.ButtonGroup>
           <Dialog.Button onClick={onCancel}>{t.common.btn.confirm}</Dialog.Button>
