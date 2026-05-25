@@ -98,13 +98,25 @@ export default function Video({
     }
   }, [cinemaView, pendingFullscreen, setPendingFullscreen]);
 
+  // 현재 트랙의 라이브 위치로 seek 한다. player 준비(onReady)·트랙 변경 후 새 영상 시작(onStart) 시 호출.
+  const seekToLive = () => {
+    if (!playback) return;
+    playerRef.current?.seekTo(Playback.getInitialSeek(playback as PartyroomPlayback), 'seconds');
+  };
+
   const onPlayerReady = (player: TReactPlayer) => {
     // NOTE: onReady는 미디어가 재생 준비되었을 때 호출되므로, 이 콜백이 실행되었다는건 playback.linkId가 존재한다는 것을 의미함
     playerRef.current = player;
-    const initialSeek = Playback.getInitialSeek(playback as PartyroomPlayback);
-    player.seekTo(initialSeek, 'seconds');
+    seekToLive();
     player.forceUpdate();
     setPlayerReady(true);
+  };
+
+  // 트랙이 바뀌어도 player 를 remount 하지 않고(key 에 videoId/endTime 미포함) react-player 가 같은
+  // 인스턴스에 다음 영상을 load 한다. remount 가 없어야 백그라운드 탭에서도 새 트랙 autoplay 가 차단되지
+  // 않고 재생이 이어진다. 새 영상이 시작되면(onStart) 라이브 위치로 맞춘다.
+  const onStart = () => {
+    seekToLive();
   };
 
   const onPlay = () => {
@@ -189,7 +201,7 @@ export default function Video({
     <div className='relative w-full h-full'>
       {!playable && <div className='w-full h-full bg-black'>{!!playback && <LoadingPanel />}</div>}
       <YoutubePlayer
-        key={`video-${videoId}-${playerReady}-${played}-${playback?.endTime}`}
+        key={`video-${playerReady}-${played}`}
         playing={playerReady}
         volume={muted ? 0 : volume}
         muted={muted}
@@ -198,6 +210,7 @@ export default function Video({
         url={`https://www.youtube.com/watch?v=${videoId}`}
         className={playerClass}
         onReady={onPlayerReady}
+        onStart={onStart}
         onPlay={onPlay}
         onPause={onPause}
         config={config}
@@ -308,7 +321,7 @@ export default function Video({
       )}
 
       <YoutubePlayer
-        key={`video-${videoId}-${playerReady}-${played}-${playback?.endTime}`}
+        key={`video-${playerReady}-${played}`}
         playing={playerReady}
         volume={muted ? 0 : volume}
         muted={muted}
@@ -317,6 +330,7 @@ export default function Video({
         url={`https://www.youtube.com/watch?v=${videoId}`}
         className={playerClass}
         onReady={onPlayerReady}
+        onStart={onStart}
         onPlay={onPlay}
         onPause={onPause}
         config={config}
