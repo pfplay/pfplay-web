@@ -13,6 +13,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { LoadingPanel } from '@/shared/ui/components/loading';
 import CinemaFooter from './cinema-footer.component';
 import CinemaHeader from './cinema-header.component';
+import { useAutoResumeOnPause } from './use-auto-resume-on-pause.hook';
 import VideoControls from './video-controls.component';
 
 const YoutubePlayer = dynamic(() => import('react-player/youtube'), { ssr: false });
@@ -129,6 +130,16 @@ export default function Video({
     setAutoplayBlocked(false);
   };
 
+  // 블루투스 이어폰 제거 등 외부 인터럽트로 자동 일시정지되면 무인터랙션으로 재개를 시도하고(이슈 #334),
+  // 정책상 차단되면(주로 Safari) played 를 풀어 player 를 재마운트하면서 gesture gate 로 폴백한다.
+  const onPause = useAutoResumeOnPause(playerRef, {
+    enabled: playable,
+    onFallback: () => {
+      setPlayed(false);
+      setAutoplayBlocked(true);
+    },
+  });
+
   const handleTheater = () => setCinemaView(true);
 
   const handleFull = () => {
@@ -188,6 +199,7 @@ export default function Video({
         className={playerClass}
         onReady={onPlayerReady}
         onPlay={onPlay}
+        onPause={onPause}
         config={config}
         pip={false}
       />
@@ -306,6 +318,7 @@ export default function Video({
         className={playerClass}
         onReady={onPlayerReady}
         onPlay={onPlay}
+        onPause={onPause}
         config={config}
         pip={false}
       />
