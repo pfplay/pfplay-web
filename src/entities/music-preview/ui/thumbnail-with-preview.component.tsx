@@ -55,6 +55,9 @@ export default function ThumbnailWithPreview({
           height={height}
           className={imageClassName}
           priority
+          // YouTube 가 이미 제공하는 썸네일이라 재최적화 이점이 없고, 검색 결과는 매번
+          // 수십 장이 새로 떠 Vercel 이미지 최적화 쿼터를 폭증(→ 402)시킨다. 원본 CDN 직접 로드.
+          unoptimized
         />
       </div>
     );
@@ -80,6 +83,9 @@ export default function ThumbnailWithPreview({
         height={height}
         className={imageClassName}
         priority
+        // YouTube 가 이미 제공하는 썸네일이라 재최적화 이점이 없고, 검색 결과는 매번
+        // 수십 장이 새로 떠 Vercel 이미지 최적화 쿼터를 폭증(→ 402)시킨다. 원본 CDN 직접 로드.
+        unoptimized
       />
 
       {/* 재생중 상태 표시 (항상 표시) */}
