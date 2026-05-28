@@ -54,12 +54,13 @@ describe('Header', () => {
     expect(screen.queryByAltText('Pfplay Logo')).toBeFalsy();
   });
 
-  test('비게스트 유저면 이메일 앞부분을 표시한다', () => {
+  test('비게스트 유저면 이메일 앞부분을 표시한다 (모바일 좌측 + 데스크탑 우측 두 곳에 렌더, viewport CSS 로 한쪽만 가시)', () => {
     (useFetchMe as Mock).mockReturnValue({
       data: { email: 'test@example.com', authorityTier: AuthorityTier.FM },
     });
     render(<Header />);
-    expect(screen.getByText('test')).toBeTruthy();
+    // ID Menu 는 모바일·데스크탑 viewport 위치 분기를 위해 두 곳에 렌더됨 (responsive hidden 으로 한쪽만 표시).
+    expect(screen.getAllByText('test')).toHaveLength(2);
   });
 
   test('게스트 유저면 메뉴를 표시하지 않는다', () => {
