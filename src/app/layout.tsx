@@ -21,7 +21,6 @@ import { getServerDictionary } from '@/shared/lib/localization/get-server-dictio
 import { I18nProvider } from '@/shared/lib/localization/i18n.context';
 import { LangProvider } from '@/shared/lib/localization/lang.context';
 import { DialogProvider } from '@/shared/ui/components/dialog';
-import { MobileGuard } from '@/shared/ui/components/mobile-guard';
 import { pretendardVariable } from '@/shared/ui/foundation/fonts';
 
 import AnalyticsProvider from './_providers/analytics.provider';
@@ -57,7 +56,6 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
   return (
     <html lang={lang}>
       <body className={pretendardVariable.className}>
-        <MobileGuard />
         <ReactQueryProvider>
           <AnalyticsProvider>
             <LangProvider lang={lang as Language}>
