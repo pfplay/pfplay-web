@@ -56,7 +56,11 @@ const Header: FC<Props> = ({ withLogo }) => {
             <Menu as='section' className={`relative w-fit`}>
               {({ close }) => (
                 <>
-                  <MenuButton type='button'>{me.email?.split('@')[0] ?? 'Guest'}</MenuButton>
+                  <MenuButton type='button'>
+                    <span className='block max-w-[160px] truncate'>
+                      {me.email?.split('@')[0] ?? 'Guest'}
+                    </span>
+                  </MenuButton>
                   <MenuItemPanel
                     menuItemConfig={[
                       {
