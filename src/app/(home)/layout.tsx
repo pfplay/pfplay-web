@@ -5,7 +5,7 @@ import { Footer } from '@/widgets/layouts';
 const HomeLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
-      <Header />
+      <Header withLogo />
       <main className='bg-onboarding px-app flexColCenter gap-[64px] tablet:gap-[92px]'>
         {children}
       </main>
