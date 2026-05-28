@@ -7,8 +7,6 @@ import { GUEST_AUTO_LOGIN_ROUTE_PATTERN } from '@/entities/me/model/constants';
 import { usePartyroomEnterErrorAlerts } from '@/features/partyroom/enter';
 import { useAutoSignInByGuest } from '@/features/sign-in/by-guest';
 import isAuthError from '@/shared/api/http/error/is-auth-error';
-import { SidebarPlayer, ModalPlayer } from '@/widgets/music-preview-player';
-import { MyPlaylist } from '@/widgets/my-playlist';
 import PlaylistActionProvider from './playlist-action.provider';
 import PartyroomConnectionProvider from '../_providers/partyroom-connection.provider';
 
@@ -45,18 +43,12 @@ const ProtectedLayout = ({ children }: PropsWithChildren) => {
     return null;
   }
 
+  // 데스크탑 전용 overlay 3개(MyPlaylist · SidebarPlayer · ModalPlayer) 는
+  // DesktopLobby · DesktopRoom 내부의 DesktopOverlays 로 이동(chunk 1).
+  // 모바일 트리는 본 overlay 를 import 하지 않음 (격리 가치 첫 실현).
   return (
     <PartyroomConnectionProvider>
-      <PlaylistActionProvider>
-        {children}
-        <MyPlaylist />
-
-        {/* ⓐ 사이드바 미리보기 플레이어 (플레이리스트 트랙용) */}
-        <SidebarPlayer />
-
-        {/* ⓑ 모달 미리보기 플레이어 (검색 결과용) - 모달과 분리된 고정 위치 */}
-        <ModalPlayer />
-      </PlaylistActionProvider>
+      <PlaylistActionProvider>{children}</PlaylistActionProvider>
     </PartyroomConnectionProvider>
   );
 };
