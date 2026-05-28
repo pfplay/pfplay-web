@@ -58,4 +58,39 @@ describe('isMobileUA', () => {
   test('빈 문자열은 데스크탑으로 판별한다', () => {
     expect(isMobileUA('')).toBe(false);
   });
+
+  test('KAKAOTALK 임베디드 WebView UA를 모바일로 판별한다', () => {
+    const ua =
+      'Mozilla/5.0 (Linux; Android 13; SM-S908N Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/116.0.0.0 Mobile Safari/537.36 KAKAOTALK 10.4.5';
+    expect(isMobileUA(ua)).toBe(true);
+  });
+
+  test('NAVER 임베디드 WebView UA를 모바일로 판별한다', () => {
+    const ua =
+      'Mozilla/5.0 (Linux; Android 13; SM-S918N Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/116.0.0.0 Mobile Safari/537.36 NAVER(inapp; search; 1340; 12.6.4)';
+    expect(isMobileUA(ua)).toBe(true);
+  });
+
+  test('Facebook 임베디드 WebView UA를 모바일로 판별한다', () => {
+    const ua =
+      'Mozilla/5.0 (Linux; Android 13; SM-S908N Build/TP1A.220624.014) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/116.0.0.0 Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/440.0.0.34.83;]';
+    expect(isMobileUA(ua)).toBe(true);
+  });
+
+  test('Android Tablet UA를 모바일로 판별한다 (Mobile 토큰 없어도 Android 매칭)', () => {
+    const ua =
+      'Mozilla/5.0 (Linux; Android 14; SM-X910) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+    expect(isMobileUA(ua)).toBe(true);
+  });
+
+  test('Googlebot UA를 데스크탑으로 판별한다 (Mobile 토큰 없는 봇)', () => {
+    const ua = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+    expect(isMobileUA(ua)).toBe(false);
+  });
+
+  test('Googlebot Mobile UA를 모바일로 판별한다', () => {
+    const ua =
+      'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+    expect(isMobileUA(ua)).toBe(true);
+  });
 });

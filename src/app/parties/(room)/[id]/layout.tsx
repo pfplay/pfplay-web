@@ -36,5 +36,6 @@ export default function PartyroomLayout({ children }: PropsWithChildren) {
     };
   });
 
-  return <main className='bg-partyRoom bg-left-bottom overflow-hidden'>{children}</main>;
+  // device-neutral wrapper. main bg 이미지 wrapper 는 DesktopRoom shell 이 가짐.
+  return <>{children}</>;
 }
