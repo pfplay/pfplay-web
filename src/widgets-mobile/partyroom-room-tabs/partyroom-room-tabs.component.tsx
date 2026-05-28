@@ -1,6 +1,7 @@
 'use client';
 import { FC } from 'react';
 import { useCurrentPartyroomCrews } from '@/features/partyroom/list-crews';
+import { cn } from '@/shared/lib/functions/cn';
 import { MobilePartyroomChatPanel } from '@/widgets-mobile/partyroom-chat-panel';
 import { MobilePartyroomCrewsPanel } from '@/widgets-mobile/partyroom-crews-panel';
 import useTabHash from './lib/use-tab-hash.hook';
@@ -13,7 +14,10 @@ import TabBar from './ui/parts/tab-bar.component';
  * 레이아웃:
  * - flex-1 (부모 main 의 1차 grow target)
  * - 세 탭 모두 mount 유지하고 `hidden` 토글 (탭 전환 시 채팅 스크롤·input·메시지 누락 회피)
- * - 활성 탭만 visible + flex layout 작동 (hidden 은 display:none → flex 무효)
+ * - 비활성 탭은 utility `hidden` class 로 display:none 강제. HTML `hidden` attribute 만으로는
+ *   `.flex { display: flex }` 와 specificity 동률이라 utility 가 이기지 못해 겹쳐 보이는 회귀가
+ *   있었음 (탭 전환 시 채팅 패널이 다른 탭 위로 비치는 버그). cn = twMerge 가 `flex` ↔ `hidden`
+ *   충돌을 해결하여 `display: none` 가 적용됨. HTML `hidden` 도 함께 유지 (a11y / 보조기술).
  * - 탭바는 nav sibling (sticky bottom 안 함 — 부모가 flex 라 자연스럽게 bottom)
  */
 const MobilePartyroomRoomTabs: FC = () => {
@@ -26,18 +30,22 @@ const MobilePartyroomRoomTabs: FC = () => {
         <div
           data-tab-content='chat'
           hidden={activeTab !== 'chat'}
-          className='absolute inset-0 flex flex-col'
+          className={cn('absolute inset-0 flex flex-col', activeTab !== 'chat' && 'hidden')}
         >
           <MobilePartyroomChatPanel />
         </div>
         <div
           data-tab-content='crew'
           hidden={activeTab !== 'crew'}
-          className='absolute inset-0 overflow-y-auto'
+          className={cn('absolute inset-0 overflow-y-auto', activeTab !== 'crew' && 'hidden')}
         >
           <MobilePartyroomCrewsPanel />
         </div>
-        <div data-tab-content='queue' hidden={activeTab !== 'queue'} className='absolute inset-0'>
+        <div
+          data-tab-content='queue'
+          hidden={activeTab !== 'queue'}
+          className={cn('absolute inset-0', activeTab !== 'queue' && 'hidden')}
+        >
           <QueueTabPlaceholder />
         </div>
       </div>

@@ -46,6 +46,11 @@ describe('MobilePartyroomRoomTabs', () => {
       .closest('[data-tab-content="chat"]') as HTMLElement;
     expect(crewSection.hidden).toBe(false);
     expect(chatSection.hidden).toBe(true);
+    // 회귀 가드: HTML hidden attribute 만으로는 Tailwind `.flex { display:flex }` 와
+    // specificity 동률이라 display:none 강제가 안 됨 → 채팅 패널이 다른 탭 위로 비쳐 보이는 버그.
+    // 비활성 탭은 utility `hidden` class (twMerge) 가 적용되어 display:none 가 적용돼야 함.
+    expect(chatSection.className).toContain('hidden');
+    expect(crewSection.className).not.toContain('hidden');
   });
 
   test('큐 탭 클릭 → placeholder 가시', () => {
