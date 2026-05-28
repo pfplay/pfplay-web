@@ -1,8 +1,13 @@
+import { headers } from 'next/headers';
 import { ProfileEditFormV1 } from '@/features/edit-profile-bio';
 import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
 import { BackButton } from '@/shared/ui/components/back-button';
+import { MobileOnlyDesktopFeatureCard } from '@/shared/ui/components/mobile-only-desktop-feature-card';
 
 const ProfileSettingsPage = async () => {
+  const isMobile = headers().get('x-pf-device') === 'mobile';
+  if (isMobile) return <MobileOnlyDesktopFeatureCard feature='profile-edit' />;
+
   const t = await getServerDictionary();
 
   return (

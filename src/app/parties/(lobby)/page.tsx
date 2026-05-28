@@ -1,11 +1,11 @@
 import { headers } from 'next/headers';
 import { Header } from '@/widgets/layouts';
-import { MobileFallbackCard } from '@/widgets/mobile-fallback-card';
 import { DesktopLobby } from '@/widgets/partyroom-page-desktop';
+import { MobileLobby } from '@/widgets-mobile/partyroom-page-mobile';
 
 const PartyLobbyPage = () => {
   const isMobile = headers().get('x-pf-device') === 'mobile';
-  if (isMobile) return <MobileFallbackCard />;
+  if (isMobile) return <MobileLobby />;
   return (
     <>
       <Header />
