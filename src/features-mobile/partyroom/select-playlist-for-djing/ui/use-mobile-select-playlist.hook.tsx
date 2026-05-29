@@ -1,10 +1,11 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { FC, useCallback } from 'react';
+import { useCallback } from 'react';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { useFullscreenSheet } from '@/widgets-mobile/partyroom-djing-sheet';
+import AddTracksSheet from '@/widgets-mobile/partyroom-djing-sheet/ui/add-tracks-sheet.component';
 import SelectPlaylistSheet from '@/widgets-mobile/partyroom-djing-sheet/ui/select-playlist-sheet.component';
 
 interface Args {
@@ -56,11 +57,10 @@ export default function useMobileSelectPlaylist({
               resolve(undefined);
             }}
             onAddTracksForEmpty={(p) => {
-              // Phase 6 에서 AddTracksSheet 로 교체됨. 본 phase 는 placeholder.
               push({
                 key: 'add-tracks',
                 title: '곡 추가',
-                node: <PendingAddTracksPlaceholder playlistId={p.id} />,
+                node: <AddTracksSheet playlistId={p.id} />,
               });
             }}
           />
@@ -70,8 +70,3 @@ export default function useMobileSelectPlaylist({
     });
   }, [playlists, router, openConfirmDialog, push, pop, t.dj.para.create_playlist_song]);
 }
-
-// Phase 6 의 AddTracksSheet 컴포넌트로 교체 예정 — Phase 4 단계엔 placeholder.
-const PendingAddTracksPlaceholder: FC<{ playlistId: number }> = ({ playlistId }) => (
-  <div data-testid='pending-add-tracks' data-playlist-id={playlistId} />
-);
