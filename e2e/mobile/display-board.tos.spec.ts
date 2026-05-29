@@ -49,6 +49,76 @@ async function newDesktopUserContext(browser: Browser): Promise<BrowserContext> 
   return ctx;
 }
 
+const API_BASE = process.env.NEXT_PUBLIC_API_HOST_NAME ?? 'https://dev-api.pfplay.xyz/api/';
+
+/**
+ * 화면 모달 / JS 에러 추적 강화. 디버그 로그에 4종 source 의 에러를 통합:
+ *
+ * - `page.on('pageerror')`: uncaught JS exception (window.onerror, React error boundary, Next dev overlay 의 빨간 화면)
+ * - `page.on('dialog')`: window.alert / confirm / prompt 모달 — 등장 시 dismiss + 본문 기록
+ * - `page.on('console')`: console.error / console.warn (기존)
+ * - Next.js dev overlay DOM 주기 스캔: `nextjs-portal` / `[data-nextjs-dialog]` selector 의 textContent
+ *
+ * Playwright config 의 trace/video 는 retry 시 자동 캡쳐 (test-results/).
+ * CI workflow 의 artifact path 도 test-results/ 포함으로 확장 필요 (별도 변경).
+ */
+function attachErrorTracing(page: Page, log: (m: string) => void) {
+  page.on('pageerror', (err) => {
+    log(`pageerror: ${err.message}\n${err.stack ?? ''}`);
+  });
+  page.on('dialog', async (dialog) => {
+    log(`dialog ${dialog.type()}: ${dialog.message()}`);
+    await dialog.dismiss().catch(() => null);
+  });
+  page.on('console', (msg) => {
+    const t = msg.type();
+    if (t === 'error' || t === 'warning') {
+      log(`browser console.${t}: ${msg.text()}`);
+    }
+  });
+  // Next.js dev overlay 주기 스캔 (3s 간격) — 빠른 fail 시점에 overlay 잡힘
+  const interval = setInterval(async () => {
+    try {
+      const overlay = page.locator('nextjs-portal, [data-nextjs-dialog]').first();
+      if (await overlay.isVisible({ timeout: 100 }).catch(() => false)) {
+        const text = await overlay.textContent({ timeout: 500 }).catch(() => null);
+        if (text) log(`next-overlay: ${text.replace(/\s+/g, ' ').slice(0, 500)}`);
+      }
+    } catch {
+      // page closed during scan — clear interval
+      clearInterval(interval);
+    }
+  }, 3000);
+  page.on('close', () => clearInterval(interval));
+}
+
+/**
+ * Defensive cleanup — 과거 비정상 종료 (workflow timeout, SIGKILL 등) 로 누적된
+ * mobile test partyrooms 정리. backend '1 user 1 host' 제약 회피.
+ *
+ * 동작:
+ * 1. GET /v1/partyrooms → ACTIVE 전체 list
+ * 2. title prefix 'MTOS' 또는 'MOBILE-TOS-' 인 row 만 필터 (mobile test 명명)
+ * 3. 각각 DELETE 시도 — 권한 없거나 이미 정리됐으면 silently 흡수
+ *
+ * title prefix 가 일반 사용자 명명과 겹칠 가능성 0 (테스트 전용 접두사).
+ */
+async function cleanupMobileTestPartyrooms(ctx: BrowserContext): Promise<void> {
+  try {
+    const response = await ctx.request.get(new URL('v1/partyrooms', API_BASE).toString());
+    if (!response.ok()) return;
+    const list = (await response.json()) as Array<{ partyroomId: number; title: string }>;
+    const stale = list.filter((p) => /^(MTOS|MOBILE-TOS-)/.test(p.title));
+    for (const p of stale) {
+      await ctx.request
+        .delete(new URL(`v1/partyrooms/${p.partyroomId}`, API_BASE).toString())
+        .catch(() => null);
+    }
+  } catch {
+    // cleanup 실패는 test 결과 가리지 않음
+  }
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Group 1: 재생 활성 (Mode A / 토글 / chat scroll — 4 tests, 1 partyroom 공유)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -66,9 +136,11 @@ test.describe('재생 활성 — Mode A/B 토글 + chat scroll', () => {
     const log = (m: string) => console.log(`[Group 1 beforeAll][${Date.now() - t0}ms] ${m}`);
     djContext = await newDesktopUserContext(browser);
     djPage = await djContext.newPage();
-    djPage.on('console', (msg) => {
-      if (msg.type() === 'error') log(`browser console.error: ${msg.text()}`);
-    });
+    attachErrorTracing(djPage, log);
+    // ⚠️ 과거 비정상 종료로 누적된 mobile test partyrooms 정리 — backend '1 user 1 host' 제약 회피
+    log('defensive cleanup');
+    await cleanupMobileTestPartyrooms(djContext);
+    log('cleanup done');
     // createPartyroom 의 'Be a pfplay host' 는 /parties lobby UI 의 버튼. blank page 에서
     // 호출하면 못 찾음 → e2e-a 패턴 (goto /parties 먼저, 그 후 createPlaylistWithTracks +
     // createPartyroom) 그대로 따른다.
@@ -204,9 +276,10 @@ test.describe('재생 없음 — Mode C', () => {
     const log = (m: string) => console.log(`[Mode C beforeAll][${Date.now() - t0}ms] ${m}`);
     setupContext = await newDesktopUserContext(browser);
     setupPage = await setupContext.newPage();
-    setupPage.on('console', (msg) => {
-      if (msg.type() === 'error') log(`browser console.error: ${msg.text()}`);
-    });
+    attachErrorTracing(setupPage, log);
+    log('defensive cleanup');
+    await cleanupMobileTestPartyrooms(setupContext);
+    log('cleanup done');
     log('goto /parties');
     await setupPage.goto('/parties');
     log('createPartyroom');
