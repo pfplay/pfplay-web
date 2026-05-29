@@ -3,7 +3,7 @@
  */
 import { useRef } from 'react';
 import type TReactPlayer from 'react-player';
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import useAutoplayGestureGate, { AUTOPLAY_DETECT_MS } from './use-autoplay-gesture-gate.hook';
 
@@ -27,5 +27,12 @@ describe('useAutoplayGestureGate', () => {
     expect(result.current.autoplayBlocked).toBe(false);
     expect(result.current.played).toBe(false);
     expect(result.current.playerReady).toBe(false);
+  });
+
+  test('onReady 호출 시 playerReady=true 로 전이', () => {
+    const { result } = setupHook();
+    const fakePlayer = {} as TReactPlayer;
+    act(() => result.current.onReady(fakePlayer));
+    expect(result.current.playerReady).toBe(true);
   });
 });
