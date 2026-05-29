@@ -88,5 +88,11 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
       dependencies: ['auth-d'],
     },
+    {
+      name: 'display-board-tos-mobile',
+      testMatch: /mobile\/display-board\.tos\.spec\.ts/,
+      use: { ...devices['iPhone 13'] },
+      dependencies: ['auth-a'],
+    },
   ],
 });
