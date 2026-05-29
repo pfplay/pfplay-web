@@ -94,21 +94,28 @@ function attachErrorTracing(page: Page, log: (m: string) => void) {
 
 /**
  * Defensive cleanup — 과거 비정상 종료 (workflow timeout, SIGKILL 등) 로 누적된
- * mobile test partyrooms 정리. backend '1 user 1 host' 제약 회피.
+ * e2e test partyrooms 정리. backend '1 user 1 host' 제약 회피.
  *
  * 동작:
  * 1. GET /v1/partyrooms → ACTIVE 전체 list
- * 2. title prefix 'MTOS' 또는 'MOBILE-TOS-' 인 row 만 필터 (mobile test 명명)
- * 3. 각각 DELETE 시도 — 권한 없거나 이미 정리됐으면 silently 흡수
+ * 2. title prefix e2e 6종 ('E2EA'/'E2EB'/'E2EC'/'E2ED'/'MTOS'/'MOBILE-TOS-') 필터
+ * 3. 각각 DELETE 시도 — 권한 없거나 정리됐으면 silently 흡수
  *
- * title prefix 가 일반 사용자 명명과 겹칠 가능성 0 (테스트 전용 접두사).
+ * mobile project 가 a-user1 storage state 를 e2e-a 와 공유 — e2e-a/b/c/d 가
+ * afterAll 의 closePartyroom 실패 시 (네트워크 / 권한 / 비정상 종료) 누적되는
+ * 해당 user host stale 도 함께 정리해야 mobile beforeAll 의 createPartyroom 이
+ * 'ALREADY_HOST' 403 으로 fail 안 함.
+ *
+ * title prefix 일반 사용자 명명과 겹칠 가능성 0 (테스트 전용 접두사).
  */
+const E2E_PARTYROOM_TITLE_PATTERN = /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-)/;
+
 async function cleanupMobileTestPartyrooms(ctx: BrowserContext): Promise<void> {
   try {
     const response = await ctx.request.get(new URL('v1/partyrooms', API_BASE).toString());
     if (!response.ok()) return;
     const list = (await response.json()) as Array<{ partyroomId: number; title: string }>;
-    const stale = list.filter((p) => /^(MTOS|MOBILE-TOS-)/.test(p.title));
+    const stale = list.filter((p) => E2E_PARTYROOM_TITLE_PATTERN.test(p.title));
     for (const p of stale) {
       await ctx.request
         .delete(new URL(`v1/partyrooms/${p.partyroomId}`, API_BASE).toString())
