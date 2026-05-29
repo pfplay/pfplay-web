@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-29
 **Chunk:** chunk 4 (5-chunk 시리즈 4번째, chunk 3.1 완료 직후)
-**Status:** Draft v3 (reviewer 2차 3 issues + 5 recs 반영) → spec-document-reviewer (3차) → 사용자 승인 → writing-plans
+**Status:** Draft v4 (reviewer 3차 minor 2 issues + 3 recs sweep) → 사용자 승인 → writing-plans
 **선행:** [`2026-05-22-mobile-responsive-scope-design.md`](./2026-05-22-mobile-responsive-scope-design.md) · [`2026-05-28-mobile-responsive-architecture-design.md`](./2026-05-28-mobile-responsive-architecture-design.md) · [`2026-05-29-mobile-display-board-tos-redesign.md`](./2026-05-29-mobile-display-board-tos-redesign.md)
 
 ## 1. Goal
@@ -38,20 +38,20 @@ architecture spec (`2026-05-28-mobile-responsive-architecture-design.md`) §3.3 
 
 ## 3. 결정 잠금 (brainstorming 산출물, 2026-05-29)
 
-| #   | 결정                                        | 값                                                                                                                                                 |
-| --- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | 큐 탭 ↔ sheet 분리                         | **큐 탭 단일 표면**. djing-dialog 풀스크린 sheet 컴포넌트 자체 제거(=큐 탭 콘텐츠에 흡수). 셀렉터·add-tracks·djing-guide 만 sheet                  |
-| 2   | sheet 패턴 일관성                           | **풀스크린 sheet 통일**. 헤더(× or ←·제목) + body + footer 슬롯. bottom sheet 도입 안 함                                                           |
-| 3   | add-tracks preview-player 위치              | **sheet 내부 bottom mini-player**. chunk 3.1 ToS 보존 패턴 (wrapper 유지·`loadVideoById`) 재사용                                                   |
-| 4   | useDjingGuide 처리                          | **풀스크린 sheet 변형**. 데스크탑 w-[596px] dialog 의 모바일 사본. djingGuideHidden preference 존중                                                |
-| 5   | 게스트 큐 탭 로그인 CTA                     | **단순 `/sign-in` 라우팅**. `next=` 쿼리 패턴 도입은 별건 (chunk 4 OUT scope)                                                                      |
-| 6   | grab 동작                                   | **chunk 2/3.1 에서 이미 wiring** (`widgets-mobile/partyroom-display-board/ui/parts/action-buttons`). chunk 4 에선 sanity 확인만                    |
-| 7   | 격리 패턴                                   | **C3 격리 sibling 사본** (chunk 2/3 동일). store 레이어 (`useMusicPreview`·`useUserPreferenceStore`·queries) 만 공유                               |
-| 8   | mutation api 위치                           | **`features/partyroom/<action>` 으로 승격** (widget 사적 api → feature 공개 api). 데스크탑 widget import path 1줄 변경, 동작 0                     |
-| 9   | alert/confirm dialog                        | **데스크탑 `useDialog` 재사용** (큐 락·등록 해제 confirm·곡 추가 안내). shared 컴포넌트라 cross-import 위배 없음                                   |
-| 10  | 빈 플레이리스트 (`playlists.length===0`)    | confirm dialog → `router.push('/me/playlist')` → middleware 가 데스크탑 전용 라우트 매치 → `MobileOnlyDesktopFeatureCard` 노출 (§architecture 2.4) |
-| 11  | 빈 곡 플레이리스트 (`every musicCount===0`) | SelectPlaylistSheet 노출 + 각 카드에 "곡 추가" CTA → AddTracksSheet 진입 (분기 명시)                                                               |
-| 12  | sheet 스택                                  | `history.pushState` 기반 self-managed stack. hash tab sync (chunk 3) 와 직교. push/pop dedup                                                       |
+| #   | 결정                                        | 값                                                                                                                                                              |
+| --- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 큐 탭 ↔ sheet 분리                         | **큐 탭 단일 표면**. djing-dialog 풀스크린 sheet 컴포넌트 자체 제거(=큐 탭 콘텐츠에 흡수). 셀렉터·add-tracks·djing-guide 만 sheet                               |
+| 2   | sheet 패턴 일관성                           | **풀스크린 sheet 통일**. 헤더(× or ←·제목) + body + footer 슬롯. bottom sheet 도입 안 함                                                                        |
+| 3   | add-tracks preview-player 위치              | **sheet 내부 bottom mini-player**. chunk 3.1 ToS 보존 패턴 (wrapper 유지·`loadVideoById`) 재사용                                                                |
+| 4   | useDjingGuide 처리                          | **풀스크린 sheet 변형**. 데스크탑 w-[596px] dialog 의 모바일 사본. djingGuideHidden preference 존중                                                             |
+| 5   | 게스트 큐 탭 로그인 CTA                     | **단순 `/sign-in` 라우팅**. `next=` 쿼리 패턴 도입은 별건 (chunk 4 OUT scope)                                                                                   |
+| 6   | grab 동작                                   | **chunk 2/3.1 에서 이미 wiring** (`widgets-mobile/partyroom-display-board/ui/parts/action-buttons`). chunk 4 에선 sanity 확인만                                 |
+| 7   | 격리 패턴                                   | **C3 격리 sibling 사본** (chunk 2/3 동일). store 레이어 (`useMusicPreview`·`useUserPreferenceStore`·queries) 만 공유                                            |
+| 8   | mutation api 위치                           | **`features/partyroom/<action>` 으로 승격** (widget 사적 api → feature 공개 api). 데스크탑 widget import path 1줄 변경, 동작 0                                  |
+| 9   | alert/confirm dialog                        | **데스크탑 `useDialog` 재사용** (큐 락·등록 해제 confirm·곡 추가 안내). shared 컴포넌트라 cross-import 위배 없음                                                |
+| 10  | 빈 플레이리스트 (`playlists.length===0`)    | confirm dialog → `router.push('/me/playlist')` → middleware 가 데스크탑 전용 라우트 매치 → `MobileOnlyDesktopFeatureCard` 노출 (§architecture 2.4)              |
+| 11  | 빈 곡 플레이리스트 (`every musicCount===0`) | SelectPlaylistSheet 노출 + 각 카드에 "곡 추가" CTA → AddTracksSheet 진입 (분기 명시)                                                                            |
+| 12  | sheet 스택                                  | `history.pushState` 기반 self-managed stack. hash tab sync (chunk 3) 와 직교. push/pop dedup. ESC 키 = popstate 와 동일 시맨틱 (스택 1개면 close, 다중이면 pop) |
 
 ## 4. Architecture
 
@@ -83,8 +83,7 @@ src/
 │   │   │   ├── add-tracks-sheet.component.tsx
 │   │   │   └── djing-guide-sheet.component.tsx
 │   │   └── lib/
-│   │       ├── use-fullscreen-sheet.hook.tsx   — open/close + history.pushState 스택 + popstate 통합
-│   │       └── djing-sheet.context.tsx         — sheet 들 간 navigation
+│   │       └── use-fullscreen-sheet.hook.tsx   — open/close + history.pushState 스택 + popstate/ESC 통합
 │   │
 │   └── music-preview-mini-player/              ⭐ 신규 (sheet 내부 bottom)
 │       ├── index.ts
@@ -189,6 +188,14 @@ src/
 - `footer?: ReactNode` (sticky bottom slot — 예: select-playlist 의 [취소·완료], add-tracks 의 mini-player)
 
 **렌더**: 전체 화면 fixed inset-0, header sticky-top, body scrollable, footer sticky-bottom. z-index 는 모달 layer (탭바보다 위).
+
+**a11y 가드** (데스크탑 `Dialog` 동일 패턴):
+
+- `role="dialog"` · `aria-modal="true"` · `aria-labelledby={titleId}` (title 있을 때)
+- focus trap (sheet open 시 첫 포커스 = ×/← 버튼 또는 title, sheet close 시 트리거 버튼 복귀)
+- ESC 키 → `onBack ?? onClose` 호출 (sheet 스택의 popstate 와 동일 시맨틱 — 스택 1개면 close, 다중이면 pop)
+- body scroll lock (sheet open 동안 본문 스크롤 차단)
+- `useFullscreenSheet.hook` 의 popstate listener 와 ESC handler 가 같은 pop 함수 호출 (중복 분기 회피)
 
 ### 5.3 useFullscreenSheet hook
 
@@ -396,21 +403,21 @@ push AddTracksSheet (in select sheet): ['select-playlist', 'add-tracks']
 
 ### 8.1 단위 (Vitest + RTL)
 
-| 컴포넌트/hook                     | 핵심 단언                                                                                           |
-| --------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `queue-panel.component`           | 게스트 → GuestCta+큐리스트 / 멤버+빈 → EmptyMember / 멤버+큐 → CurrentDjRow+QueueList+MemberActions |
-| `queue-list-item.component`       | dj.crewId === myCrewId 시 ChangePlaylist 노출, 아닐 때 미노출                                       |
-| `member-actions.component`        | isMeInQueue 토글에 따라 [+ DJ 등록] ↔ [큐에서 나가기]                                              |
-| `guest-cta.component`             | 클릭 → router.push('/sign-in')                                                                      |
-| `fullscreen-sheet.component`      | open=true 마운트, × 클릭 onClose, ← 클릭 onBack, body/footer slot 렌더                              |
-| `mini-player.component`           | currentTrack null 시 미렌더, 있음 시 wrapper + loadVideoById, [추가] → useAddPlaylistTrack          |
-| `use-fullscreen-sheet.hook`       | push/pop 스택, popstate listener, dedup, unmount cleanup                                            |
-| `use-mobile-select-playlist.hook` | playlists=[] → confirm → /me/playlist, 정상 → sheet → Promise resolve, 취소 → resolve(undefined)    |
-| `use-mobile-djing-guide.hook`     | djingGuideHidden=true 미오픈, false 오픈                                                            |
-| `select-playlist-sheet.component` | 카드 클릭 → onSelect, 빈 곡 카드 → AddTracks 진입                                                   |
-| `add-tracks-sheet.component`      | 검색 ▶ → preview.start, 빈 결과 empty state                                                        |
-| `current-dj-row.component`        | playback 메타 표시, Skip 미렌더 (모더레이션 OUT)                                                    |
-| `djing-guide-sheet.component`     | 카드 렌더, "다시 보지 않기" → preference 갱신, [시작] → close                                       |
+| 컴포넌트/hook                     | 핵심 단언                                                                                                                                                      |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `queue-panel.component`           | 게스트 → GuestCta+큐리스트 / 멤버+빈 → EmptyMember / 멤버+큐 → CurrentDjRow+QueueList+MemberActions                                                            |
+| `queue-list-item.component`       | dj.crewId === myCrewId 시 ChangePlaylist 노출, 아닐 때 미노출                                                                                                  |
+| `member-actions.component`        | isMeInQueue 토글에 따라 [+ DJ 등록] ↔ [큐에서 나가기]                                                                                                         |
+| `guest-cta.component`             | 클릭 → router.push('/sign-in')                                                                                                                                 |
+| `fullscreen-sheet.component`      | open=true 마운트, × 클릭 onClose, ← 클릭 onBack, body/footer slot 렌더, ESC 키 → onBack ?? onClose, role/aria-modal/aria-labelledby 단언, focus trap 진입/복귀 |
+| `mini-player.component`           | currentTrack null 시 미렌더, 있음 시 wrapper + loadVideoById, [추가] → useAddPlaylistTrack                                                                     |
+| `use-fullscreen-sheet.hook`       | push/pop 스택, popstate listener, dedup, unmount cleanup                                                                                                       |
+| `use-mobile-select-playlist.hook` | playlists=[] → confirm → /me/playlist, 정상 → sheet → Promise resolve, 취소 → resolve(undefined)                                                               |
+| `use-mobile-djing-guide.hook`     | djingGuideHidden=true 미오픈, false 오픈                                                                                                                       |
+| `select-playlist-sheet.component` | 카드 클릭 → onSelect, 빈 곡 카드 → AddTracks 진입                                                                                                              |
+| `add-tracks-sheet.component`      | 검색 ▶ → preview.start, 빈 결과 empty state                                                                                                                   |
+| `current-dj-row.component`        | playback 메타 표시, Skip 미렌더 (모더레이션 OUT)                                                                                                               |
+| `djing-guide-sheet.component`     | 카드 렌더, "다시 보지 않기" → preference 갱신, [시작] → close                                                                                                  |
 
 ### 8.2 통합 (Vitest + msw + RTL)
 
