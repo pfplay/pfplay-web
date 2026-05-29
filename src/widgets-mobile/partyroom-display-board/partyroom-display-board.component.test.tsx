@@ -168,3 +168,17 @@ describe('MobilePartyroomDisplayBoard · expanded 보존 invariants', () => {
     expect(screen.getByTestId('video-wrapper').className).toContain('w-full');
   });
 });
+
+describe('MobilePartyroomDisplayBoard · component lifecycle', () => {
+  test('#8 룸 unmount → 다시 mount → expanded=true reset (component-local state)', () => {
+    const { unmount } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
+    expect(screen.getByTestId('video-wrapper').className).toContain('w-[80px]');
+
+    unmount();
+
+    render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
+    expect(screen.getByRole('button', { name: '영상 가리기' })).toBeTruthy();
+  });
+});
