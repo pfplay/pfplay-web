@@ -236,3 +236,33 @@ describe('VideoFrame · Mode 전환', () => {
     expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
   });
 });
+
+describe('VideoFrame · ToS 가드 (회귀, spec §5)', () => {
+  test.each(['A', 'B', 'C'] as const)(
+    'Mode %s: wrapper className 에 hidden/opacity-0/w-px/h-px/pointer-events-none 토큰 부재',
+    (mode) => {
+      const videoId = mode === 'C' ? null : 'abc';
+      const expanded = mode === 'A' || mode === 'C';
+      render(
+        <Harness
+          videoId={videoId}
+          expanded={expanded}
+          onToggleExpand={() => {}}
+          gate={makeGate()}
+        />
+      );
+      const wrapper = screen.getByTestId('video-wrapper');
+      expect(wrapper.className).not.toMatch(/\bhidden\b/);
+      expect(wrapper.className).not.toMatch(/\bopacity-0\b/);
+      expect(wrapper.className).not.toMatch(/\bw-px\b/);
+      expect(wrapper.className).not.toMatch(/\bh-px\b/);
+      expect(wrapper.className).not.toMatch(/\bpointer-events-none\b/);
+    }
+  );
+
+  test('video-wrapper testid 에 aria-hidden="true" 직접 부착 안 됨', () => {
+    render(<Harness videoId='abc' expanded={true} onToggleExpand={() => {}} gate={makeGate()} />);
+    const wrapper = screen.getByTestId('video-wrapper');
+    expect(wrapper.getAttribute('aria-hidden')).toBeNull();
+  });
+});
