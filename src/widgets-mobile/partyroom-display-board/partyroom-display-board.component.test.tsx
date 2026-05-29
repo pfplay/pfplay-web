@@ -57,8 +57,6 @@ vi.mock('@/shared/lib/store/stores.context', () => ({
   }),
 }));
 
-// 후속 task 에서 사용
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function setStoreState(patch: Partial<StoreState>) {
   storeState = { ...storeState, ...patch };
 }
@@ -109,5 +107,16 @@ describe('MobilePartyroomDisplayBoard · 토글 라이프사이클', () => {
     const wrapper = screen.getByTestId('video-wrapper');
     expect(wrapper.className).toContain('aspect-video');
     expect(screen.getByRole('button', { name: '영상 가리기' })).toBeTruthy();
+  });
+});
+
+describe('MobilePartyroomDisplayBoard · Mode C 진입', () => {
+  test('#4 playback null → Mode C: BlankPlaceholder + 토글 미렌더 + NowPlayingRow 미렌더', () => {
+    setStoreState({ playbackActivated: false, playback: null });
+    render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /영상/ })).toBeNull();
+    expect(screen.queryByTestId('now-playing-row')).toBeNull();
+    expect(screen.queryByTestId('youtube-player-mock')).toBeNull();
   });
 });
