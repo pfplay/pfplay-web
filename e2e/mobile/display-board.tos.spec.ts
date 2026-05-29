@@ -63,9 +63,13 @@ test.describe('재생 활성 — Mode A/B 토글 + chat scroll', () => {
     test.setTimeout(180_000);
     djContext = await newDesktopUserContext(browser);
     djPage = await djContext.newPage();
+    // createPartyroom 의 'Be a pfplay host' 는 /parties lobby UI 의 버튼. blank page 에서
+    // 호출하면 못 찾음 → e2e-a 패턴 (goto /parties 먼저, 그 후 createPlaylistWithTracks +
+    // createPartyroom) 그대로 따른다.
+    await djPage.goto('/parties');
+    await createPlaylistWithTracks(djPage, mobilePlaylistName());
     partyroomUrl = await createPartyroom(djPage, mobilePartyroomName());
     await enterPartyroomAndWaitUntilReady(djPage, partyroomUrl);
-    await createPlaylistWithTracks(djPage, mobilePlaylistName());
     await registerAsDj(djPage);
     // djContext alive 유지 — DJ session 끊기면 mobile listener 가 Mode A 진입 X.
   });
@@ -179,6 +183,8 @@ test.describe('재생 없음 — Mode C', () => {
     test.setTimeout(120_000);
     setupContext = await newDesktopUserContext(browser);
     setupPage = await setupContext.newPage();
+    // /parties 로 navigate 후 createPartyroom (lobby UI 의 'Be a pfplay host' 버튼 진입).
+    await setupPage.goto('/parties');
     partyroomUrl = await createPartyroom(setupPage, mobilePartyroomName());
     await enterPartyroomAndWaitUntilReady(setupPage, partyroomUrl);
     // DJ 등록 / playlist 모두 skip — playback 없는 상태로 mobile 이 진입 시 Mode C 트리거.
