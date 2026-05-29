@@ -6,7 +6,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
 
 type PlayerContainerProps = {
   /** 플레이어 위치 타입 */
-  position: 'sidebar' | 'modal';
+  position: 'sidebar' | 'modal' | 'mobile-bottom';
   /** 추가 CSS 클래스 */
   className?: string;
   /** 닫기 핸들러 */
