@@ -169,3 +169,70 @@ describe('VideoFrame · Mode C (비재생, videoId=null)', () => {
     expect(youtubePlayerCalls).toHaveLength(0);
   });
 });
+
+describe('VideoFrame · Mode 전환', () => {
+  test('Mode A → B 전환: wrapper DOM element identity 보존 (remount 없음) + class 만 교체', () => {
+    const { rerender } = render(
+      <Harness videoId='abc' expanded={true} onToggleExpand={() => {}} gate={makeGate()} />
+    );
+    const wrapperBefore = screen.getByTestId('video-wrapper');
+    const ytBefore = screen.getByTestId('youtube-player-mock');
+    expect(wrapperBefore.className).toContain('aspect-video');
+
+    rerender(
+      <Harness videoId='abc' expanded={false} onToggleExpand={() => {}} gate={makeGate()} />
+    );
+
+    const wrapperAfter = screen.getByTestId('video-wrapper');
+    const ytAfter = screen.getByTestId('youtube-player-mock');
+    expect(wrapperAfter).toBe(wrapperBefore);
+    expect(ytAfter).toBe(ytBefore);
+    expect(wrapperAfter.className).toContain('w-[80px]');
+    expect(wrapperAfter.className).toContain('h-[45px]');
+    expect(wrapperAfter.className).not.toContain('aspect-video');
+  });
+
+  test('Mode B → C 전환: YoutubePlayer unmount + BlankPlaceholder visible', () => {
+    const { rerender } = render(
+      <Harness videoId='abc' expanded={false} onToggleExpand={() => {}} gate={makeGate()} />
+    );
+    expect(screen.getByTestId('youtube-player-mock')).toBeTruthy();
+    const callsBefore = youtubePlayerCalls.length;
+
+    rerender(
+      <Harness videoId={null} expanded={false} onToggleExpand={() => {}} gate={makeGate()} />
+    );
+
+    expect(screen.queryByTestId('youtube-player-mock')).toBeNull();
+    expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
+    expect(youtubePlayerCalls.length).toBe(callsBefore);
+  });
+
+  test('Mode C → A 전환: BlankPlaceholder unmount + YoutubePlayer mount', () => {
+    const { rerender } = render(
+      <Harness videoId={null} expanded={true} onToggleExpand={() => {}} gate={makeGate()} />
+    );
+    expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
+    expect(youtubePlayerCalls).toHaveLength(0);
+
+    rerender(<Harness videoId='abc' expanded={true} onToggleExpand={() => {}} gate={makeGate()} />);
+
+    expect(screen.queryByTestId('blank-placeholder')).toBeNull();
+    expect(screen.getByTestId('youtube-player-mock')).toBeTruthy();
+    expect(youtubePlayerCalls.length).toBeGreaterThanOrEqual(1);
+  });
+
+  test('Mode A → C 전환: YoutubePlayer unmount + BlankPlaceholder mount (B→C 대칭, spec §7.1 #12)', () => {
+    const { rerender } = render(
+      <Harness videoId='abc' expanded={true} onToggleExpand={() => {}} gate={makeGate()} />
+    );
+    expect(screen.getByTestId('youtube-player-mock')).toBeTruthy();
+
+    rerender(
+      <Harness videoId={null} expanded={true} onToggleExpand={() => {}} gate={makeGate()} />
+    );
+
+    expect(screen.queryByTestId('youtube-player-mock')).toBeNull();
+    expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
+  });
+});
