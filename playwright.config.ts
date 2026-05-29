@@ -89,8 +89,8 @@ export default defineConfig({
       dependencies: ['auth-d'],
     },
     {
-      name: 'display-board-tos-mobile',
-      testMatch: /mobile\/display-board\.tos\.spec\.ts/,
+      name: 'mobile',
+      testMatch: /mobile\/.+\.spec\.ts/,
       // iPhone 13 viewport (390×844) + 모바일 UA 보존, browserName 만 chromium 으로 override.
       // CI workflow 의 `npx playwright install --with-deps chromium` 이 chromium 만 설치하므로
       // 기본 `browserName='webkit'` 가 launch 실패함 (`webkit-2272/pw_run.sh` not found).
