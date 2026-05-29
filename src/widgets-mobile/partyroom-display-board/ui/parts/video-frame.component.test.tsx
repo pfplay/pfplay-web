@@ -146,3 +146,26 @@ describe('VideoFrame · Mode B (재생 + collapsed)', () => {
     expect(screen.queryByTestId('autoplay-gesture-gate')).toBeNull();
   });
 });
+
+describe('VideoFrame · Mode C (비재생, videoId=null)', () => {
+  test('BlankPlaceholder visible + YoutubePlayer 미렌더 + Toggle 미렌더', () => {
+    render(<Harness videoId={null} expanded={true} onToggleExpand={() => {}} gate={makeGate()} />);
+    expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
+    expect(youtubePlayerCalls).toHaveLength(0);
+    expect(screen.queryByRole('button', { name: /영상/ })).toBeNull();
+  });
+
+  test('Props 안전: videoId=null 이면 expanded=true 라도 Mode C 강제', () => {
+    render(<Harness videoId={null} expanded={true} onToggleExpand={() => {}} gate={makeGate()} />);
+    const wrapper = screen.getByTestId('video-wrapper');
+    expect(wrapper.className).toContain('aspect-video');
+    expect(wrapper.className).not.toContain('w-[80px]');
+    expect(screen.queryByTestId('youtube-player-mock')).toBeNull();
+  });
+
+  test('Props 안전: videoId=null + expanded=false 도 Mode C 강제', () => {
+    render(<Harness videoId={null} expanded={false} onToggleExpand={() => {}} gate={makeGate()} />);
+    expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
+    expect(youtubePlayerCalls).toHaveLength(0);
+  });
+});
