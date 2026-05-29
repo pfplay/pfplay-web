@@ -65,7 +65,7 @@ YouTube API 서비스 약관 (developers.google.com/youtube/terms 등) 중 다�
 | 7   | State persistence    | 룸 mount 시 `expanded=true` 1회 init. component-local `useState`. **트랙 변경·Mode C 진입 모두 `expanded` 미수정 (사용자 마지막 선택 보존)**.                           |
 | 8   | autoplay polish      | 데스크탑 `autoplayBlocked` + gesture gate 패턴 모바일 차용 (동봉). hook 입력에 `videoId` 포함 → 트랙 변경 시 차단 detect 재armed.                                       |
 | 9   | 데스크탑 격리        | 데스크탑 `widgets/partyroom-display-board/*` 변경 0                                                                                                                     |
-| 10  | lobby 카드 디테일    | 본 spec OUT — 별도 후속 결정                                                                                                                                            |
+| 10  | lobby 카드 디테일    | 본 spec OUT — **chunk 5 catch-up 의 design backlog**. 현 chunk 2 모바일 카드는 v1 minimal viable, 완성품 아님 (사용자 확정).                                            |
 | 11  | i18n inline 한국어   | 본 chunk 도 chunk 2·3 의 inline 한국어 정책 유지. **chunk 5 catch-up 에서 모바일 i18n 키 일괄 이주 시 함께 처리**.                                                      |
 | 12  | YoutubePlayer 사이징 | **부모 wrapper 가 size 결정, YoutubePlayer 는 `width='100%' height='100%'` 고정** (prop 변경에 의한 remount 위험 회피).                                                 |
 | 13  | YoutubePlayer `key`  | `key={`video-${playerReady}-${played}`}` — 데스크탑과 동일. videoId/endTime/mode 미포함.                                                                                |
@@ -563,7 +563,7 @@ reviewer 1차 #3 + #6 반영. unit/integration 레이어가 잡지 못하는 anc
 - chunk 2 의 `ActionButtons` (리액션) 변경 0
 - chunk 3 의 탭·채팅·크루 변경 0 (단 sticky-top 높이 변화의 영향 가드는 §7.3 에서 검증)
 - DJ 큐 (chunk 4)
-- lobby 카드 디자인 (별도 결정)
+- **lobby 카드 디자인 디테일** — chunk 2 의 현 모바일 카드 (1 컬럼 + 풀폭 썸네일 + 텍스트 메타) 는 **v1 minimal viable, 완성품 아님** (2026-05-29 사용자 framing 확정). 데스크탑 격차 (아바타 아이콘들·backdrop blur·Typography 일관성·PFInfoOutline) 는 **chunk 5 catch-up 의 design backlog** 로 추적. chunk 5 시점에서 별도 brainstorming → spec 분기 필요. 본 chunk 3.1 의 IN 아님.
 - 사용자가 영상 일부분만 hide 하거나 mute toggle 추가 — v1 스코프 아님 (현 결정은 mute=userPreferenceStore 따라감)
 - userPreference 에 expanded 영구 저장 (사용자 결정: session reset)
 - 데스크탑·모바일 autoplay hook 의 단일화 (§9 risk #5, 후속 작업)
