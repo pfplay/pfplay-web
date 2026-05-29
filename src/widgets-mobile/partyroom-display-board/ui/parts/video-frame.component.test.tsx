@@ -80,13 +80,20 @@ void Harness;
 void render;
 void screen;
 void fireEvent;
-void COLLAPSED_VIDEO_WIDTH;
-void COLLAPSED_VIDEO_HEIGHT;
-void wrapperClass;
 void makeGate;
 
-describe('VideoFrame · scaffold sanity', () => {
-  test('scaffold loaded', () => {
-    expect(true).toBe(true);
+describe('VideoFrame · wrapperClass (정적 리터럴 가드, spec §4.5)', () => {
+  test('Mode A 리터럴', () => {
+    expect(wrapperClass('A')).toBe('aspect-video w-full bg-black rounded');
+  });
+  test('Mode B 리터럴: w-[80px] h-[45px] shrink-0 bg-black rounded — Tailwind JIT 정적 scan 안전', () => {
+    expect(wrapperClass('B')).toBe('w-[80px] h-[45px] shrink-0 bg-black rounded');
+  });
+  test('Mode C 리터럴', () => {
+    expect(wrapperClass('C')).toBe('aspect-video w-full bg-black rounded');
+  });
+  test('JS 상수 ↔ wrapperClass(B) 정적 리터럴 sync — 상수만 바뀌면 fail', () => {
+    expect(wrapperClass('B')).toContain(`w-[${COLLAPSED_VIDEO_WIDTH}px]`);
+    expect(wrapperClass('B')).toContain(`h-[${COLLAPSED_VIDEO_HEIGHT}px]`);
   });
 });
