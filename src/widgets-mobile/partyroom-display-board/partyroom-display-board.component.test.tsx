@@ -120,3 +120,51 @@ describe('MobilePartyroomDisplayBoard · Mode C 진입', () => {
     expect(screen.queryByTestId('youtube-player-mock')).toBeNull();
   });
 });
+
+describe('MobilePartyroomDisplayBoard · expanded 보존 invariants', () => {
+  test('#5 토글 B → playback 트랙 변경 → expanded=false 그대로', () => {
+    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
+    expect(screen.getByTestId('video-wrapper').className).toContain('w-[80px]');
+
+    setStoreState({ playback: { name: 'Track 2', duration: '4:00', linkId: 'def' } });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+
+    expect(screen.getByTestId('video-wrapper').className).toContain('w-[80px]');
+    expect(screen.getByTestId('video-wrapper').className).toContain('h-[45px]');
+    expect(screen.getByRole('button', { name: '영상 펼치기' })).toBeTruthy();
+  });
+
+  test('#6 Mode B → playback null → playback 재할당 → 여전히 Mode B (사용자 선택 보존)', () => {
+    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
+
+    setStoreState({ playbackActivated: false, playback: null });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
+
+    setStoreState({
+      playbackActivated: true,
+      playback: { name: 'Track 3', duration: '2:00', linkId: 'ghi' },
+    });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('video-wrapper').className).toContain('w-[80px]');
+  });
+
+  test('#7 Mode A → Mode C → 재할당 → Mode A 복귀 (역대칭)', () => {
+    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
+
+    setStoreState({ playbackActivated: false, playback: null });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
+
+    setStoreState({
+      playbackActivated: true,
+      playback: { name: 'Track 4', duration: '1:30', linkId: 'jkl' },
+    });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
+    expect(screen.getByTestId('video-wrapper').className).toContain('w-full');
+  });
+});
