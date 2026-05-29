@@ -180,6 +180,34 @@ const mode: 'A' | 'B' | 'C' = !isPlaying ? 'C' : expanded ? 'A' : 'B';
 - Mode C → A/B 복귀 시 (videoId 재할당) `expanded` 의 마지막 사용자 선택 그대로 → Mode A 또는 B 직접 진입.
 - **Mode C 진입 시 `expanded` 상태는 사용자에게 surfacing 안 함** (다음 재생 시 자동 복귀, 별도 indicator 없음). screen reader 도 Mode C 의 BlankPlaceholder 만 인식.
 
+**Hook 호출 지점 결정 (reviewer 3차 #1)**:
+
+`useAutoplayGestureGate` 는 **`MobilePartyroomDisplayBoard` 루트에서 1회 호출**. AutoplayGestureGate (VideoFrame 자식) 와 TapToPlayButton (NowPlayingMeta row 의 sibling) 양쪽 모두 동일 state 를 root → props 로 받음. 이 결정으로 §6.5.2 의 single source of truth 보장.
+
+```tsx
+// MobilePartyroomDisplayBoard 본문 (의사 코드)
+const [expanded, setExpanded] = useState(true);
+const playerRef = useRef<TReactPlayer | null>(null);
+const gate = useAutoplayGestureGate({ playerRef, playable: isPlaying, videoId });
+//    gate = { autoplayBlocked, played, playerReady, handleGesturePlay, onReady, onStart, onPlay, onPause }
+
+return (
+  <header />
+  <VideoFrame
+    videoId={videoId}
+    expanded={expanded}
+    onToggleExpand={() => setExpanded((v) => !v)}
+    playerRef={playerRef}
+    gate={gate} // ← autoplay state + handlers down
+  />
+  <NowPlayingRow>
+    <NowPlayingMeta layout={mode === 'A' ? 'column' : 'row'} … />
+    {mode === 'B' && <TapToPlayButton autoplayBlocked={gate.autoplayBlocked && !gate.played} onTap={gate.handleGesturePlay} />}
+  </NowPlayingRow>
+  <ActionButtons />
+);
+```
+
 ### 4.5 YoutubePlayer 사이징 — wrapper 기반 (remount 회피)
 
 reviewer 1차 이슈 #1 + #4 반영. react-player/youtube 의 width/height prop 변경이 IFrame remount 를 유발할 가능성을 차단:
@@ -317,18 +345,31 @@ export const AUTOPLAY_DETECT_MS = 1500;
 
 **책임**: 단일 root — 3 mode 중 하나를 렌더. ExpandToggle·BlankPlaceholder·YoutubePlayer·AutoplayGestureGate orchestration.
 
-**Props** (reviewer 1차 #8 — derive 단일화):
+**Props** (reviewer 1차 #8 + 3차 #1 — derive 단일화 + autoplay state injection):
 
 ```ts
 interface VideoFrameProps {
   videoId: string | null; // null = Mode C 강제
   expanded: boolean;
   onToggleExpand: () => void;
+  playerRef: RefObject<TReactPlayer | null>;
+  gate: {
+    autoplayBlocked: boolean;
+    played: boolean;
+    playerReady: boolean;
+    handleGesturePlay: () => void;
+    onReady: (player: TReactPlayer) => void;
+    onStart: () => void;
+    onPlay: () => void;
+    onPause: () => void;
+  };
 }
 
 // VideoFrame 내부 derive
 const mode: 'A' | 'B' | 'C' = videoId === null ? 'C' : expanded ? 'A' : 'B';
 ```
+
+→ **VideoFrame 은 hook 자체를 호출하지 않음**. Root (`MobilePartyroomDisplayBoard`) 가 `useAutoplayGestureGate` 호출 후 `gate` 객체를 props 로 주입. TapToPlayButton 도 동일 `gate` 를 받아 single source of truth 보장 (§4.4 결정).
 
 **Mode 분기**:
 
@@ -375,6 +416,20 @@ interface NowPlayingMetaProps {
   duration: string;
 }
 ```
+
+**Mode B 의 row 컨테이너 (NowPlayingRow)**:
+
+NowPlayingMeta + TapToPlayButton 을 같은 row 로 감싸는 wrapper. **이 row 컨테이너에 `min-h-[44px]` 가 강제** 되어야 TapToPlayButton 의 iOS HIG 44×44 hit-area 가 실제로 확보됨 (reviewer 3차 #2). NowPlayingMeta 단독 텍스트 line-height ~21px 라 row 가 자동 사이징되면 hit-area 미달.
+
+```tsx
+// MobilePartyroomDisplayBoard 본문 내
+<div className='flex items-center min-h-[44px] px-3 gap-3'>  {/* NowPlayingRow */}
+  <NowPlayingMeta layout={mode === 'A' ? 'column' : 'row'} … />
+  {mode === 'B' && <TapToPlayButton autoplayBlocked={gate.autoplayBlocked && !gate.played} onTap={gate.handleGesturePlay} />}
+</div>
+```
+
+§7.3 Playwright 가 row container 의 boundingBox().height >= 44 단언으로 가드.
 
 ### 6.5 `AutoplayGestureGate` + `TapToPlayButton`
 
@@ -437,6 +492,8 @@ interface TapToPlayButtonProps {
   - autoplayBlocked && Mode B 시 AutoplayGestureGate 미렌더, **TapToPlayButton** 이 NowPlayingMeta row 옆 렌더. 클릭 시 동일 handleGesturePlay 호출.
   - **Mode B + autoplayBlocked → Mode A toggle 시 GestureGate overlay 즉시 visible** (state single source 검증).
   - **wrapperClass()=Mode B 의 정적 리터럴 'w-[80px] h-[45px] ...' 단언** (Tailwind JIT 정적 scan 안전 가드).
+  - **JS 상수 ↔ wrapperClass 정적 리터럴 sync 가드**: `expect(wrapperClass('B')).toContain(\`w-[${COLLAPSED_VIDEO_WIDTH}px]\`)`+`expect(wrapperClass('B')).toContain(\`h-[${COLLAPSED_VIDEO_HEIGHT}px]\`)`. 두 값 중 하나만 변경되면 fail (테스트 내 template literal 은 Tailwind JIT 와 무관).
+  - **Mode A→C 전환: YoutubePlayer mock unmount** (B→C 대칭 가드).
   - **ToS 가드 (회귀)**: 모든 mode 에서 wrapper className 에 `hidden`/`opacity-0`/`w-px`/`h-px`/`pointer-events-none` 토큰 부재.
   - **ToS 가드**: video-wrapper testid 가진 element 에 `aria-hidden='true'` 직접 부착 안 됨.
   - Props 안전: `videoId=null && expanded=true/false` → Mode C 강제 진입 (Mode A/B 진입 안 됨).
@@ -521,7 +578,7 @@ reviewer 1차 #3 + #6 반영. unit/integration 레이어가 잡지 못하는 anc
 | 3   | autoplay gesture gate UX 가 모바일에 처음 도입 → 새로고침·shortlink 진입 사용자 경험 변화                     | 데스크탑 baseline 검증된 패턴 — 모바일도 동일 UX 일관성 확보. Mode B 에서도 tap-to-play 경로 (§6.5) 제공.                                                                                                                                                                                                     |
 | 4   | Mode B 의 80×45 가 작아 YouTube ToS 향후 갱신 시 위반 가능성                                                  | 픽셀 상수 분리 (`COLLAPSED_VIDEO_WIDTH = 80`, `COLLAPSED_VIDEO_HEIGHT = 45`) → 향후 96×54 등으로 조정 용이. Playwright headed test 가 항상 ≥ 80×45 가드.                                                                                                                                                      |
 | 5   | **`useAutoplayGestureGate` (mobile) 와 데스크탑 `video.component.tsx` inline 패턴 의 코드 중복 → 향후 drift** | **본 chunk 에서는 코드 dedup 미실행 (acknowledge + 추적 only)**. (a) `AUTOPLAY_DETECT_MS` 상수 mobile hook 에서 export — 데스크탑이 import 하기 전까지 dormant. (b) chunk 3.1 머지 직후 GH 이슈 신규 등록 — "데스크탑·모바일 autoplay hook 통합 refactor". 본 spec mitigation = 후속 트래킹, drift 해소 아님. |
-| 6   | **sticky-top 높이 변화 (Mode A↔B, ~210px↔80px) 가 chunk 3 탭 컨테이너 scroll anchor 흔들기**                | (a) chunk 3 tabs 컨테이너가 이미 `flex-1 min-h-0` 라 layout shift 흡수. (b) chat scroll 은 `useChatMessagesScrollManager` 의 bottom-pin 으로 자연 복귀. (c) §7.3 Playwright "Toggle 클릭 후 chat scroll offset 변화 ≤ tolerance" 가 회귀 가드.                                                                |
+| 6   | **sticky-top 높이 변화 (Mode A↔B, ~210px↔80px) 가 chunk 3 탭 컨테이너 scroll anchor 흔들기**                | (a) chunk 3 tabs 컨테이너가 이미 `flex-1 min-h-0` 라 layout shift 흡수. (b) chat scroll 은 `useChatMessagesScrollManager` 의 bottom-pin 으로 자연 복귀. (c) §7.3 Playwright "Toggle 클릭 후 chat scroll offset 변화 ≤ `CHAT_SCROLL_TOLERANCE_PX` (§7.3, spec-locked 10px)" 가 회귀 가드.                      |
 | 7   | 데스크탑 `Video.component.tsx` 의 `useAutoResumeOnPause` (블루투스 이어폰 제거 등) 모바일 미적용              | 본 spec OUT — chunk 4 또는 별도. 데스크탑 baseline 우선.                                                                                                                                                                                                                                                      |
 | 8   | maintenance 모드 / system-announcement WS overlay 와의 z-index 충돌                                           | display-board 의 sticky-top z 는 chunk 2 의 `z-20`. maintenance overlay 는 더 높은 z (chunk 1·2 의 `WS overlay` 는 일반적으로 `z-50`). 본 spec 은 z 값 미변경. 헤드드 회귀 가드는 §7.3 외 별도 — 향후 모바일 maintenance scenario 가 정의될 때 verify.                                                        |
 | 9   | Playwright headed test 의 CI 추가 비용·flakiness                                                              | 단일 mobile UA + 1~2 viewport. 별도 vercel-preview-e2e workflow 의 concurrency 잠금 ([[reference_e2e_preview_alias_race]]) 활용. flakiness 발생 시 단독 재실행으로 격리 가능 여부 진단 절차 미리 plan 에 명시.                                                                                                |
@@ -532,11 +589,12 @@ reviewer 1차 #3 + #6 반영. unit/integration 레이어가 잡지 못하는 anc
 2. `feature/mobile-responsive-spec-3.1` 신규 브랜치 (origin/develop 기준 분기, [[feedback_branch_from_origin_develop]]).
 3. chunk 3.1 plan 작성 (`docs/superpowers/plans/2026-XX-XX-mobile-display-board-tos-redesign.md`).
 4. plan-reviewer 통과 후 TDD 실행 (10~12 commits 예상; reviewer 권장 spike 포함).
-5. Playwright headed mandatory test 가 CI 에 추가됐는지 확인.
-6. PR 생성 (한글 [[feedback_korean_issue_commit_pr]]) → CI green → 머지.
-7. release/main 까지 chunk 3 와 묶음 prod ship — **chunk 3.1 가 chunk 3 의 ToS 위반 hotfix 역할이므로 prod ship 직전 필수 게이트**.
-8. **Escalation 규칙**: chunk 3 가 chunk 3.1 머지 전에 `release/` 또는 `main` 에 도달할 경우 **즉시 escalate** — chunk 3 단독 prod 진입은 1px×1px IFrame ToS 위반 그대로 ship. chunk 3 + chunk 3.1 은 단일 release 묶음으로 ship 한다는 release-engineering invariant 잠금.
-9. (post-merge) GH 이슈 신규 등록 — "데스크탑·모바일 autoplay gesture-gate hook 통합 refactor" (§9 risk #5).
+5. Playwright headed mandatory test 가 CI 에 추가됐는지 확인 (`.github/workflows/vercel-preview-e2e.yml`).
+6. **사용자 GitHub UI 작업** (단발, chunk 3.1 PR 머지 전 필수): Settings → Branches → `develop` / `release` 의 required check 에 `display-board.tos` job 추가. 본 단계 누락 시 §3 row 15 의 mandatory gate 가 paper-only 가 됨. PR 본문 체크리스트에 명시 — 사용자가 확인 후 체크.
+7. PR 생성 (한글 [[feedback_korean_issue_commit_pr]]) → CI green → 머지.
+8. release/main 까지 chunk 3 와 묶음 prod ship — **chunk 3.1 가 chunk 3 의 ToS 위반 hotfix 역할이므로 prod ship 직전 필수 게이트**.
+9. **Escalation 규칙**: chunk 3 가 chunk 3.1 머지 전에 `release/` 또는 `main` 에 도달할 경우 **즉시 escalate** — chunk 3 단독 prod 진입은 1px×1px IFrame ToS 위반 그대로 ship. chunk 3 + chunk 3.1 은 단일 release 묶음으로 ship 한다는 release-engineering invariant 잠금.
+10. (post-merge) GH 이슈 신규 등록 — "데스크탑·모바일 autoplay gesture-gate hook 통합 refactor" (§9 risk #5).
 
 ## 11. 관련
 
