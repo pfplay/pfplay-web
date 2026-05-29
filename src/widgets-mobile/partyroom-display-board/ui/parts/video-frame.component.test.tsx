@@ -74,14 +74,6 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-// silence unused-import lint warnings until later tasks add tests
-void VideoFrame;
-void Harness;
-void render;
-void screen;
-void fireEvent;
-void makeGate;
-
 describe('VideoFrame · wrapperClass (정적 리터럴 가드, spec §4.5)', () => {
   test('Mode A 리터럴', () => {
     expect(wrapperClass('A')).toBe('aspect-video w-full bg-black rounded');
@@ -95,5 +87,37 @@ describe('VideoFrame · wrapperClass (정적 리터럴 가드, spec §4.5)', () 
   test('JS 상수 ↔ wrapperClass(B) 정적 리터럴 sync — 상수만 바뀌면 fail', () => {
     expect(wrapperClass('B')).toContain(`w-[${COLLAPSED_VIDEO_WIDTH}px]`);
     expect(wrapperClass('B')).toContain(`h-[${COLLAPSED_VIDEO_HEIGHT}px]`);
+  });
+});
+
+describe('VideoFrame · Mode A (재생 + expanded)', () => {
+  test('YoutubePlayer mount + width=100% / height=100% / url 정상', () => {
+    render(<Harness videoId='abc' expanded={true} onToggleExpand={() => {}} gate={makeGate()} />);
+    expect(youtubePlayerCalls).toHaveLength(1);
+    const props = youtubePlayerCalls[0];
+    expect(props.width).toBe('100%');
+    expect(props.height).toBe('100%');
+    expect(props.url).toBe('https://www.youtube.com/watch?v=abc');
+    expect(screen.getByTestId('youtube-player-mock')).toBeTruthy();
+  });
+
+  test('wrapper 가 wrapperClass("A") 정적 토큰 보유 + ExpandToggle ▾ (expanded=true)', () => {
+    render(<Harness videoId='abc' expanded={true} onToggleExpand={() => {}} gate={makeGate()} />);
+    const wrapper = screen.getByTestId('video-wrapper');
+    expect(wrapper.className).toContain('aspect-video');
+    expect(wrapper.className).toContain('w-full');
+    expect(wrapper.className).toContain('bg-black');
+    expect(wrapper.className).toContain('rounded');
+    expect(screen.getByRole('button', { name: '영상 가리기' })).toBeTruthy();
+    expect(screen.queryByTestId('blank-placeholder')).toBeNull();
+  });
+
+  test('autoplayBlocked && !played 시 AutoplayGestureGate overlay 렌더 + 클릭 시 handleGesturePlay 호출', () => {
+    const handleGesturePlay = vi.fn();
+    const gate = makeGate({ autoplayBlocked: true, played: false, handleGesturePlay });
+    render(<Harness videoId='abc' expanded={true} onToggleExpand={() => {}} gate={gate} />);
+    const overlay = screen.getByTestId('autoplay-gesture-gate');
+    fireEvent.click(overlay);
+    expect(handleGesturePlay).toHaveBeenCalledTimes(1);
   });
 });
