@@ -55,5 +55,10 @@ function getAuthPrefix(testFile: string) {
     return 'd';
   }
 
+  // chunk 3.1 — 모바일 디스플레이 보드 ToS 가드. user A storage state 재사용.
+  if (testFile.includes('mobile/display-board') || testFile.includes('mobile\\display-board')) {
+    return 'a';
+  }
+
   throw new Error(`No auth prefix configured for test file: ${testFile}`);
 }
