@@ -49,6 +49,35 @@ async function newDesktopUserContext(browser: Browser): Promise<BrowserContext> 
   return ctx;
 }
 
+const API_BASE = process.env.NEXT_PUBLIC_API_HOST_NAME ?? 'https://dev-api.pfplay.xyz/api/';
+
+/**
+ * Defensive cleanup — 과거 비정상 종료 (workflow timeout, SIGKILL 등) 로 누적된
+ * mobile test partyrooms 정리. backend '1 user 1 host' 제약 회피.
+ *
+ * 동작:
+ * 1. GET /v1/partyrooms → ACTIVE 전체 list
+ * 2. title prefix 'MTOS' 또는 'MOBILE-TOS-' 인 row 만 필터 (mobile test 명명)
+ * 3. 각각 DELETE 시도 — 권한 없거나 이미 정리됐으면 silently 흡수
+ *
+ * title prefix 가 일반 사용자 명명과 겹칠 가능성 0 (테스트 전용 접두사).
+ */
+async function cleanupMobileTestPartyrooms(ctx: BrowserContext): Promise<void> {
+  try {
+    const response = await ctx.request.get(new URL('v1/partyrooms', API_BASE).toString());
+    if (!response.ok()) return;
+    const list = (await response.json()) as Array<{ partyroomId: number; title: string }>;
+    const stale = list.filter((p) => /^(MTOS|MOBILE-TOS-)/.test(p.title));
+    for (const p of stale) {
+      await ctx.request
+        .delete(new URL(`v1/partyrooms/${p.partyroomId}`, API_BASE).toString())
+        .catch(() => null);
+    }
+  } catch {
+    // cleanup 실패는 test 결과 가리지 않음
+  }
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Group 1: 재생 활성 (Mode A / 토글 / chat scroll — 4 tests, 1 partyroom 공유)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -69,6 +98,10 @@ test.describe('재생 활성 — Mode A/B 토글 + chat scroll', () => {
     djPage.on('console', (msg) => {
       if (msg.type() === 'error') log(`browser console.error: ${msg.text()}`);
     });
+    // ⚠️ 과거 비정상 종료로 누적된 mobile test partyrooms 정리 — backend '1 user 1 host' 제약 회피
+    log('defensive cleanup');
+    await cleanupMobileTestPartyrooms(djContext);
+    log('cleanup done');
     // createPartyroom 의 'Be a pfplay host' 는 /parties lobby UI 의 버튼. blank page 에서
     // 호출하면 못 찾음 → e2e-a 패턴 (goto /parties 먼저, 그 후 createPlaylistWithTracks +
     // createPartyroom) 그대로 따른다.
@@ -207,6 +240,9 @@ test.describe('재생 없음 — Mode C', () => {
     setupPage.on('console', (msg) => {
       if (msg.type() === 'error') log(`browser console.error: ${msg.text()}`);
     });
+    log('defensive cleanup');
+    await cleanupMobileTestPartyrooms(setupContext);
+    log('cleanup done');
     log('goto /parties');
     await setupPage.goto('/parties');
     log('createPartyroom');
