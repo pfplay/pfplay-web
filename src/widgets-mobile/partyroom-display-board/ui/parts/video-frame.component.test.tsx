@@ -121,3 +121,28 @@ describe('VideoFrame · Mode A (재생 + expanded)', () => {
     expect(handleGesturePlay).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('VideoFrame · Mode B (재생 + collapsed)', () => {
+  test('wrapper 가 wrapperClass("B") 정적 토큰 (80×45) + ExpandToggle ◂', () => {
+    render(<Harness videoId='abc' expanded={false} onToggleExpand={() => {}} gate={makeGate()} />);
+    const wrapper = screen.getByTestId('video-wrapper');
+    expect(wrapper.className).toContain('w-[80px]');
+    expect(wrapper.className).toContain('h-[45px]');
+    expect(wrapper.className).toContain('shrink-0');
+    expect(wrapper.className).toContain('bg-black');
+    expect(screen.getByRole('button', { name: '영상 펼치기' })).toBeTruthy();
+  });
+
+  test('YoutubePlayer width=100%/height=100% 그대로 — IFrame remount 회피', () => {
+    render(<Harness videoId='abc' expanded={false} onToggleExpand={() => {}} gate={makeGate()} />);
+    expect(youtubePlayerCalls).toHaveLength(1);
+    expect(youtubePlayerCalls[0].width).toBe('100%');
+    expect(youtubePlayerCalls[0].height).toBe('100%');
+  });
+
+  test('Mode B 에서는 autoplayBlocked 라도 AutoplayGestureGate overlay 미렌더 (Mode A only)', () => {
+    const gate = makeGate({ autoplayBlocked: true, played: false });
+    render(<Harness videoId='abc' expanded={false} onToggleExpand={() => {}} gate={gate} />);
+    expect(screen.queryByTestId('autoplay-gesture-gate')).toBeNull();
+  });
+});
