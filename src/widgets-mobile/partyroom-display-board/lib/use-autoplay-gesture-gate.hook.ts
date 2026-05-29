@@ -29,6 +29,11 @@ export default function useAutoplayGestureGate({
   const [playerReady, setPlayerReady] = useState(false);
 
   useEffect(() => {
+    setPlayed(false);
+    setAutoplayBlocked(false);
+  }, [videoId]);
+
+  useEffect(() => {
     if (!playerReady || played) return;
     const timer = setTimeout(() => setAutoplayBlocked(true), AUTOPLAY_DETECT_MS);
     return () => clearTimeout(timer);

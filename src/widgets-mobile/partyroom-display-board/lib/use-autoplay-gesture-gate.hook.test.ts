@@ -86,4 +86,25 @@ describe('useAutoplayGestureGate', () => {
     expect(playVideo).toHaveBeenCalledTimes(1);
     expect(result.current.gate.autoplayBlocked).toBe(false);
   });
+
+  test('videoId 변경 시 played reset + 새 1500ms 타이머 시작 (트랙 변경 시 차단 재armed)', () => {
+    let id = 'first' as string | null;
+    const { result, rerender } = renderHook(() => {
+      const playerRef = useRef<TReactPlayer | null>(null);
+      return useAutoplayGestureGate({ playerRef, playable: true, videoId: id });
+    });
+
+    act(() => result.current.onReady({} as TReactPlayer));
+    act(() => result.current.onPlay());
+    expect(result.current.played).toBe(true);
+    expect(result.current.autoplayBlocked).toBe(false);
+
+    id = 'second';
+    rerender();
+
+    expect(result.current.played).toBe(false);
+
+    act(() => vi.advanceTimersByTime(AUTOPLAY_DETECT_MS));
+    expect(result.current.autoplayBlocked).toBe(true);
+  });
 });
