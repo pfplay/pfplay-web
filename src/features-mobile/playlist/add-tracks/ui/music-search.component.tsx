@@ -2,6 +2,7 @@
 import { ChangeEvent, FC, useState } from 'react';
 import { useSearchMusics } from '@/features/playlist/add-tracks';
 import { Music } from '@/shared/api/http/types/playlists';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Input } from '@/shared/ui/components/input';
 import { TextButton } from '@/shared/ui/components/text-button';
 import { Typography } from '@/shared/ui/components/typography';
@@ -21,6 +22,7 @@ interface Props {
  * - empty / error(retry) / 결과 리스트 3분기, 각 곡 → SearchListItem
  */
 const MusicSearch: FC<Props> = ({ onPreview, onAdd, addPending }) => {
+  const t = useI18n();
   const [query, setQuery] = useState('');
   const { data, isLoading, error, refetch } = useSearchMusics(query);
   const list: Music[] = data ?? [];
@@ -32,15 +34,15 @@ const MusicSearch: FC<Props> = ({ onPreview, onAdd, addPending }) => {
           data-testid='music-search-input'
           value={query}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
-          placeholder='곡명 또는 아티스트로 검색'
-          aria-label='곡 검색'
+          placeholder={t.partyroom.queue.sheet_search_placeholder}
+          aria-label={t.partyroom.queue.sheet_search_placeholder}
         />
       </div>
       <div className='flex-1 overflow-y-auto'>
         {error && (
           <div className='p-4 text-center'>
             <Typography type='body3' className='text-gray-400'>
-              검색에 실패했어요
+              {t.partyroom.queue.sheet_search_failed}
             </Typography>
             <TextButton data-testid='music-search-retry' onClick={() => refetch?.()}>
               다시 시도
@@ -50,7 +52,7 @@ const MusicSearch: FC<Props> = ({ onPreview, onAdd, addPending }) => {
         {!error && query.length > 0 && !isLoading && list.length === 0 && (
           <div className='p-4 text-center'>
             <Typography type='body3' className='text-gray-400'>
-              다른 키워드로 시도해보세요
+              {t.partyroom.queue.sheet_empty_search}
             </Typography>
           </div>
         )}

@@ -3,6 +3,19 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 import AddTracksSheet from './add-tracks-sheet.component';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        sheet_search_placeholder: '곡명 또는 아티스트로 검색',
+        sheet_empty_search: '다른 키워드로 시도해보세요',
+        sheet_search_failed: '검색에 실패했어요',
+        sheet_add_button: '+ 추가',
+      },
+    },
+  }),
+}));
+
 const useSearchMusicsMock = vi.fn();
 vi.mock('@/features/playlist/add-tracks', () => ({
   useSearchMusics: (q: string) => useSearchMusicsMock(q),

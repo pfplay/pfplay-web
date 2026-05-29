@@ -2,6 +2,7 @@
 import { FC } from 'react';
 import { PREVIEW_PLAYER_SIZES } from '@/entities/music-preview/config/youtube-player.config';
 import { YouTubePreviewPlayer } from '@/entities/music-preview/index.ui';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
 import { TextButton } from '@/shared/ui/components/text-button';
@@ -25,6 +26,7 @@ interface Props {
  *   (playing → stopPreview, else → startPreview(currentTrack)).
  */
 const MiniPlayer: FC<Props> = ({ onAdd, addPending }) => {
+  const t = useI18n();
   const { useMusicPreview } = useStores();
   const { currentTrack, playState, startPreview, stopPreview } = useMusicPreview();
 
@@ -78,7 +80,7 @@ const MiniPlayer: FC<Props> = ({ onAdd, addPending }) => {
             onClick={() => onAdd(currentTrack)}
             disabled={addPending}
           >
-            + 추가
+            {t.partyroom.queue.sheet_add_button}
           </Button>
           <TextButton
             data-testid='mini-player-close'

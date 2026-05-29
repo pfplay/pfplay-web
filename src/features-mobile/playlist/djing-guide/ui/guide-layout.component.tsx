@@ -1,5 +1,6 @@
 'use client';
 import { FC, useState } from 'react';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { Typography } from '@/shared/ui/components/typography';
 
@@ -41,6 +42,7 @@ const RULES: ReadonlyArray<{ emoji: string; title: string; detail: string }> = [
 ];
 
 const GuideLayout: FC<Props> = ({ onClose, onDismissPermanent }) => {
+  const t = useI18n();
   const [dismiss, setDismiss] = useState(false);
 
   const handleStart = () => {
@@ -73,11 +75,11 @@ const GuideLayout: FC<Props> = ({ onClose, onDismissPermanent }) => {
             className='w-5 h-5'
           />
           <Typography type='detail1' className='text-gray-300'>
-            다시 보지 않기
+            {t.common.btn.dont_show_again}
           </Typography>
         </label>
         <Button data-testid='guide-start' onClick={handleStart}>
-          시작
+          {t.partyroom.queue.guide_start}
         </Button>
       </div>
     </div>

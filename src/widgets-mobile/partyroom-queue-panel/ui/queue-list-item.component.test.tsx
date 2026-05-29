@@ -3,6 +3,16 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 import QueueListItem from './queue-list-item.component';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        member_action_change_playlist: '변경',
+      },
+    },
+  }),
+}));
+
 describe('QueueListItem', () => {
   test('순서 + 닉네임 + 플레이리스트명', () => {
     render(

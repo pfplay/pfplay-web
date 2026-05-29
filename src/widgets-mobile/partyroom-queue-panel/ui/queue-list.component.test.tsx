@@ -2,6 +2,17 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, test, vi } from 'vitest';
 import QueueList from './queue-list.component';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        empty: '큐 비어있음',
+        member_action_change_playlist: '변경',
+      },
+    },
+  }),
+}));
+
 const DJS = [
   { crewId: 1, nickname: 'A', playlistName: 'a', orderNumber: 0 },
   { crewId: 2, nickname: 'B', playlistName: 'b', orderNumber: 1 },

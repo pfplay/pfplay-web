@@ -3,6 +3,21 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 import GuideLayout from './guide-layout.component';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    common: {
+      btn: {
+        dont_show_again: '다시 보지 않기',
+      },
+    },
+    partyroom: {
+      queue: {
+        guide_start: '시작',
+      },
+    },
+  }),
+}));
+
 describe('GuideLayout (모바일 stacking)', () => {
   test('규칙 카드 + [다시 보지 않기] + [시작] 버튼 노출', () => {
     render(<GuideLayout onClose={vi.fn()} onDismissPermanent={vi.fn()} />);

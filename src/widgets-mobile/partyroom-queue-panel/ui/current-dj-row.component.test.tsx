@@ -1,6 +1,16 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import CurrentDjRow from './current-dj-row.component';
+
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        current_dj_title: '현재 DJ',
+      },
+    },
+  }),
+}));
 
 describe('CurrentDjRow', () => {
   test('현재 DJ 이름 + playback 트랙명 노출', () => {

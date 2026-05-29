@@ -3,6 +3,16 @@ import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import MiniPlayer from './mini-player.component';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        sheet_add_button: '+ 추가',
+      },
+    },
+  }),
+}));
+
 const stopPreviewMock = vi.fn();
 const useMusicPreviewMock = vi.fn();
 

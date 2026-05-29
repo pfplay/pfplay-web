@@ -3,6 +3,22 @@ import { describe, expect, test, vi } from 'vitest';
 import { AuthorityTier, QueueStatus } from '@/shared/api/http/types/@enums';
 import QueuePanel from './queue-panel.component';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        guest_cta_title: '🎧 음악을 직접 틀어보세요',
+        guest_cta_subtitle: '3초만에 가입 →',
+        member_action_register: '+ DJ 등록',
+        member_action_unregister: '큐에서 나가기',
+        member_action_change_playlist: '변경',
+        current_dj_title: '현재 DJ',
+        empty: '큐 비어있음',
+      },
+    },
+  }),
+}));
+
 const useFetchMeMock = vi.fn();
 vi.mock('@/entities/me', () => ({ useFetchMe: () => useFetchMeMock() }));
 

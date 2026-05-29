@@ -1,6 +1,7 @@
 'use client';
 import { useCallback } from 'react';
 import { useUserPreferenceStore } from '@/entities/preference';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useFullscreenSheet } from '@/widgets-mobile/partyroom-djing-sheet';
 import GuideLayout from './guide-layout.component';
 
@@ -13,6 +14,7 @@ import GuideLayout from './guide-layout.component';
  * - onDismissPermanent → setDjingGuideHidden(true)
  */
 export default function useMobileDjingGuide() {
+  const t = useI18n();
   const djingGuideHidden = useUserPreferenceStore((s) => s.djingGuideHidden);
   const setDjingGuideHidden = useUserPreferenceStore((s) => s.setDjingGuideHidden);
   const { push, pop } = useFullscreenSheet();
@@ -20,10 +22,10 @@ export default function useMobileDjingGuide() {
   const openDjingGuideModal = useCallback(() => {
     push({
       key: 'djing-guide',
-      title: 'DJ 규칙',
+      title: t.partyroom.queue.guide_title,
       node: <GuideLayout onClose={pop} onDismissPermanent={() => setDjingGuideHidden(true)} />,
     });
-  }, [push, pop, setDjingGuideHidden]);
+  }, [push, pop, setDjingGuideHidden, t.partyroom.queue.guide_title]);
 
   return {
     showDjingGuide: !djingGuideHidden,

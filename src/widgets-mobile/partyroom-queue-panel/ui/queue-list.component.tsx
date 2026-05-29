@@ -1,5 +1,6 @@
 'use client';
 import { FC } from 'react';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Typography } from '@/shared/ui/components/typography';
 import QueueListItem from './queue-list-item.component';
 
@@ -17,10 +18,11 @@ interface Props {
 }
 
 const QueueList: FC<Props> = ({ djs, myCrewId, onChangePlaylist }) => {
+  const t = useI18n();
   if (djs.length === 0) {
     return (
       <Typography type='detail2' className='text-gray-400 text-center p-4'>
-        큐 비어있음
+        {t.partyroom.queue.empty}
       </Typography>
     );
   }

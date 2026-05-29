@@ -2,6 +2,7 @@
 import { FC, useState } from 'react';
 import SelectPlaylist from '@/features-mobile/partyroom/select-playlist-for-djing/ui/select-playlist.component';
 import { Playlist } from '@/shared/api/http/types/playlists';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 
 interface Props {
@@ -17,6 +18,7 @@ const SelectPlaylistSheet: FC<Props> = ({
   onCancel,
   onAddTracksForEmpty,
 }) => {
+  const t = useI18n();
   const [selected, setSelected] = useState<Playlist | undefined>(undefined);
 
   return (
@@ -35,7 +37,7 @@ const SelectPlaylistSheet: FC<Props> = ({
           variant='outline'
           onClick={onCancel}
         >
-          취소
+          {t.common.btn.cancel}
         </Button>
         <Button
           data-testid='select-playlist-confirm'

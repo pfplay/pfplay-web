@@ -8,6 +8,17 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: pushMock }),
 }));
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        guest_cta_title: '🎧 음악을 직접 틀어보세요',
+        guest_cta_subtitle: '3초만에 가입 →',
+      },
+    },
+  }),
+}));
+
 describe('GuestCta', () => {
   test('CTA 텍스트 노출', () => {
     render(<GuestCta />);

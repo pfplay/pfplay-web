@@ -22,6 +22,16 @@ vi.mock('@/entities/preference', () => ({
   },
 }));
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        guide_title: 'DJ 규칙',
+      },
+    },
+  }),
+}));
+
 const wrap = ({ children }: { children: ReactNode }) => (
   <FullscreenSheetProvider>{children}</FullscreenSheetProvider>
 );

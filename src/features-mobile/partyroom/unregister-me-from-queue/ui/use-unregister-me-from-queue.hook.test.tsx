@@ -13,7 +13,13 @@ vi.mock('@/features/partyroom/unregister-me-from-queue', () => ({
 }));
 
 vi.mock('@/shared/lib/localization/i18n.context', () => ({
-  useI18n: () => ({}),
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        unregister_confirm: '정말 큐에서 나가시겠어요?',
+      },
+    },
+  }),
 }));
 
 describe('useMobileUnregisterMeFromQueue', () => {

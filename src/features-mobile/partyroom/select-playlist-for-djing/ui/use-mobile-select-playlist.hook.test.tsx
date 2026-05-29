@@ -16,11 +16,17 @@ vi.mock('@/shared/ui/components/dialog', () => ({
   }),
 }));
 
-// useI18n — pass-through mock for the create_playlist_song key
+// useI18n — pass-through mock for the create_playlist_song key + partyroom.queue.* sheet titles
 vi.mock('@/shared/lib/localization/i18n.context', () => ({
   useI18n: () => ({
     dj: {
       para: { create_playlist_song: '곡을 추가해주세요' },
+    },
+    partyroom: {
+      queue: {
+        sheet_select_playlist_title: '플레이리스트 선택',
+        sheet_add_tracks_title: '곡 추가',
+      },
     },
   }),
 }));

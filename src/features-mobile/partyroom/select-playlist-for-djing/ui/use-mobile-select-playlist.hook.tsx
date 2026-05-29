@@ -44,7 +44,7 @@ export default function useMobileSelectPlaylist({
     return new Promise<Playlist | void>((resolve) => {
       push({
         key: 'select-playlist',
-        title: '플레이리스트 선택',
+        title: t.partyroom.queue.sheet_select_playlist_title,
         node: (
           <SelectPlaylistSheet
             playlists={playlists}
@@ -59,7 +59,7 @@ export default function useMobileSelectPlaylist({
             onAddTracksForEmpty={(p) => {
               push({
                 key: 'add-tracks',
-                title: '곡 추가',
+                title: t.partyroom.queue.sheet_add_tracks_title,
                 node: <AddTracksSheet playlistId={p.id} />,
               });
             }}
@@ -68,5 +68,14 @@ export default function useMobileSelectPlaylist({
         onClose: () => resolve(undefined),
       });
     });
-  }, [playlists, router, openConfirmDialog, push, pop, t.dj.para.create_playlist_song]);
+  }, [
+    playlists,
+    router,
+    openConfirmDialog,
+    push,
+    pop,
+    t.dj.para.create_playlist_song,
+    t.partyroom.queue.sheet_select_playlist_title,
+    t.partyroom.queue.sheet_add_tracks_title,
+  ]);
 }

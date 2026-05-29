@@ -3,6 +3,17 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 import MemberActions from './member-actions.component';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        member_action_register: '+ DJ 등록',
+        member_action_unregister: '큐에서 나가기',
+      },
+    },
+  }),
+}));
+
 describe('MemberActions', () => {
   test('isMeInQueue=false → [+ DJ 등록]', () => {
     render(<MemberActions isMeInQueue={false} onRegister={vi.fn()} onUnregister={vi.fn()} />);

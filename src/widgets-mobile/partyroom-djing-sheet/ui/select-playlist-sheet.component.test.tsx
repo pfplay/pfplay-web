@@ -3,6 +3,16 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 import SelectPlaylistSheet from './select-playlist-sheet.component';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    common: {
+      btn: {
+        cancel: '취소',
+      },
+    },
+  }),
+}));
+
 const PL = [{ id: 1, name: 'A', musicCount: 5 }];
 
 describe('SelectPlaylistSheet', () => {
