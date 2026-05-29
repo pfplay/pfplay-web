@@ -1,4 +1,5 @@
-import { expect } from '@playwright/test';
+import path from 'path';
+import { type Browser, type BrowserContext, type Page, devices, expect } from '@playwright/test';
 import {
   CHAT_SCROLL_TOLERANCE_PX,
   COLLAPSED_VIDEO_HEIGHT,
@@ -10,8 +11,8 @@ import {
   mobilePlaylistName,
 } from './display-board.helpers';
 import { test } from '../fixtures/auth.fixtures';
+import { ETHEREUM_MOCK_SCRIPT } from '../fixtures/ethereum-mock';
 import {
-  closePartyroom,
   createPartyroom,
   createPlaylistWithTracks,
   enterPartyroomAndWaitUntilReady,
@@ -22,137 +23,176 @@ import {
  * chunk 3.1 spec §5 — ToS 보존 가드 (Playwright headed, mandatory CI).
  *
  * iPhone 13 (390×844) 단일 매트릭스 — 추가 viewport (SE / Pixel) 는 후속 polish.
- * 세션 cleanup: 각 케이스는 createPartyroom 으로 신규 룸 + 끝에 closePartyroom.
+ *
+ * **setup 책임 분리 (chunk 5 reviewer BLOCKING #1 post-merge fix)**:
+ * - partyroom 생성 / DJ 등록 / playlist UI 는 *desktop* 만 노출 (mobile UX 는 join 중심,
+ *   [[project_mobile_responsive_scope_340]]). createPartyroom helper 의 'Be a pfplay
+ *   host' 버튼이 모바일 lobby 에 부재 → 모바일 viewport 에서 setup fail.
+ * - 본 spec 은 `beforeAll` 에서 **desktop context (user1)** 가 partyroom 을 setup 하고
+ *   DJ session 을 keep-alive. 각 테스트는 **mobile context (user2)** 가 partyroom URL 로
+ *   직접 진입해 ToS 가드만 assertion. setup 1회 공유로 5 cases 총 소요 ~2 min.
  */
 
-test('Mode A 진입: IFrame visible + boundingBox ≥ 80×45 + viewport 안 + 시각 hidden 아님', async ({
-  user1Context,
-}) => {
-  test.setTimeout(120_000);
-  const page = await user1Context.newPage();
+const AUTH_DIR = path.join(__dirname, '../.auth');
 
-  const partyroomUrl = await createPartyroom(page, mobilePartyroomName());
-  await enterPartyroomAndWaitUntilReady(page, partyroomUrl);
-  await createPlaylistWithTracks(page, mobilePlaylistName());
-  await registerAsDj(page);
+async function newDesktopUserContext(browser: Browser): Promise<BrowserContext> {
+  const ctx = await browser.newContext({
+    ...devices['Desktop Chrome'],
+    storageState: path.join(AUTH_DIR, 'a-user1.json'),
+    ignoreHTTPSErrors: true,
+    extraHTTPHeaders: process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+      ? { 'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET }
+      : {},
+  });
+  await ctx.addInitScript(ETHEREUM_MOCK_SCRIPT);
+  return ctx;
+}
 
-  await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
+// ─────────────────────────────────────────────────────────────────────────────
+// Group 1: 재생 활성 (Mode A / 토글 / chat scroll — 4 tests, 1 partyroom 공유)
+// ─────────────────────────────────────────────────────────────────────────────
 
-  await expectIframeToBeOnScreen(page);
-  await expectIframeNotVisuallyHidden(page);
+test.describe('재생 활성 — Mode A/B 토글 + chat scroll', () => {
+  test.describe.configure({ mode: 'serial' });
 
-  await closePartyroom(page);
+  let djContext: BrowserContext;
+  let djPage: Page;
+  let partyroomUrl: string;
+
+  test.beforeAll(async ({ browser }) => {
+    test.setTimeout(180_000);
+    djContext = await newDesktopUserContext(browser);
+    djPage = await djContext.newPage();
+    partyroomUrl = await createPartyroom(djPage, mobilePartyroomName());
+    await enterPartyroomAndWaitUntilReady(djPage, partyroomUrl);
+    await createPlaylistWithTracks(djPage, mobilePlaylistName());
+    await registerAsDj(djPage);
+    // djContext alive 유지 — DJ session 끊기면 mobile listener 가 Mode A 진입 X.
+  });
+
+  test.afterAll(async () => {
+    if (djContext) await djContext.close();
+  });
+
+  test('Mode A 진입: IFrame visible + boundingBox ≥ 80×45 + viewport 안 + 시각 hidden 아님', async ({
+    user2Context,
+  }) => {
+    test.setTimeout(60_000);
+    const page = await user2Context.newPage();
+    await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
+    await expectIframeToBeOnScreen(page);
+    await expectIframeNotVisuallyHidden(page);
+  });
+
+  test('Mode A → Mode B 토글: wrapper 80×45 정확값 + IFrame 여전히 visible + DOM identity 보존', async ({
+    user2Context,
+  }) => {
+    test.setTimeout(60_000);
+    const page = await user2Context.newPage();
+    await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
+
+    const iframeBefore = await page.locator('iframe[src*="youtube.com/embed"]').elementHandle();
+    expect(iframeBefore).not.toBeNull();
+
+    await page.getByRole('button', { name: '영상 가리기' }).click();
+    await expect(page.getByRole('button', { name: '영상 펼치기' })).toBeVisible();
+
+    const wrapper = page.getByTestId('video-wrapper');
+    const wrapperBox = await wrapper.boundingBox();
+    expect(wrapperBox).not.toBeNull();
+    if (!wrapperBox) return;
+    expect(Math.round(wrapperBox.width)).toBe(COLLAPSED_VIDEO_WIDTH);
+    expect(Math.round(wrapperBox.height)).toBe(COLLAPSED_VIDEO_HEIGHT);
+
+    await expectIframeNotVisuallyHidden(page);
+
+    const iframeAfter = await page.locator('iframe[src*="youtube.com/embed"]').elementHandle();
+    expect(iframeAfter).not.toBeNull();
+    const sameElement = await page.evaluate(([a, b]) => a === b, [iframeBefore, iframeAfter]);
+    expect(sameElement).toBe(true);
+  });
+
+  test('Mode B → Mode A 복귀: IFrame 동일 element + 16:9 wrapper 복귀', async ({
+    user2Context,
+  }) => {
+    test.setTimeout(60_000);
+    const page = await user2Context.newPage();
+    await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
+
+    const iframeInitial = await page.locator('iframe[src*="youtube.com/embed"]').elementHandle();
+
+    await page.getByRole('button', { name: '영상 가리기' }).click();
+    await expect(page.getByRole('button', { name: '영상 펼치기' })).toBeVisible();
+    await page.getByRole('button', { name: '영상 펼치기' }).click();
+    await expect(page.getByRole('button', { name: '영상 가리기' })).toBeVisible();
+
+    const wrapper = page.getByTestId('video-wrapper');
+    await expect(wrapper).toHaveClass(/aspect-video/);
+
+    const iframeAfter = await page.locator('iframe[src*="youtube.com/embed"]').elementHandle();
+    const sameElement = await page.evaluate(([a, b]) => a === b, [iframeInitial, iframeAfter]);
+    expect(sameElement).toBe(true);
+  });
+
+  test('sticky-top 높이 변화 시 chat scroll offset ≤ CHAT_SCROLL_TOLERANCE_PX 보존', async ({
+    user2Context,
+  }) => {
+    test.setTimeout(60_000);
+    const page = await user2Context.newPage();
+    await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
+
+    const chatTab = page.getByRole('tab', { name: /채팅/ }).first();
+    if (await chatTab.isVisible().catch(() => false)) {
+      await chatTab.click();
+    }
+
+    const chatContainer = page.locator('[data-tab-content="chat"]').first();
+    await expect(chatContainer).toBeVisible();
+
+    await page.waitForTimeout(500);
+
+    const scrollBefore = await chatContainer.evaluate((el) => el.scrollTop);
+
+    await page.getByRole('button', { name: '영상 가리기' }).click();
+    await expect(page.getByRole('button', { name: '영상 펼치기' })).toBeVisible();
+    await page.waitForTimeout(300);
+
+    const scrollAfter = await chatContainer.evaluate((el) => el.scrollTop);
+
+    const delta = Math.abs(scrollAfter - scrollBefore);
+    expect(delta).toBeLessThanOrEqual(CHAT_SCROLL_TOLERANCE_PX);
+  });
 });
 
-test('Mode A → Mode B 토글: wrapper 80×45 정확값 + IFrame 여전히 visible + DOM identity 보존', async ({
-  user1Context,
-}) => {
-  test.setTimeout(120_000);
-  const page = await user1Context.newPage();
+// ─────────────────────────────────────────────────────────────────────────────
+// Group 2: 재생 없음 (Mode C — 1 test, DJ 등록 X 의 별도 partyroom)
+// ─────────────────────────────────────────────────────────────────────────────
 
-  const partyroomUrl = await createPartyroom(page, mobilePartyroomName());
-  await enterPartyroomAndWaitUntilReady(page, partyroomUrl);
-  await createPlaylistWithTracks(page, mobilePlaylistName());
-  await registerAsDj(page);
-  await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
+test.describe('재생 없음 — Mode C', () => {
+  test.describe.configure({ mode: 'serial' });
 
-  const iframeBefore = await page.locator('iframe[src*="youtube.com/embed"]').elementHandle();
-  expect(iframeBefore).not.toBeNull();
+  let setupContext: BrowserContext;
+  let setupPage: Page;
+  let partyroomUrl: string;
 
-  await page.getByRole('button', { name: '영상 가리기' }).click();
-  await expect(page.getByRole('button', { name: '영상 펼치기' })).toBeVisible();
+  test.beforeAll(async ({ browser }) => {
+    test.setTimeout(120_000);
+    setupContext = await newDesktopUserContext(browser);
+    setupPage = await setupContext.newPage();
+    partyroomUrl = await createPartyroom(setupPage, mobilePartyroomName());
+    await enterPartyroomAndWaitUntilReady(setupPage, partyroomUrl);
+    // DJ 등록 / playlist 모두 skip — playback 없는 상태로 mobile 이 진입 시 Mode C 트리거.
+  });
 
-  const wrapper = page.getByTestId('video-wrapper');
-  const wrapperBox = await wrapper.boundingBox();
-  expect(wrapperBox).not.toBeNull();
-  if (!wrapperBox) return;
-  expect(Math.round(wrapperBox.width)).toBe(COLLAPSED_VIDEO_WIDTH);
-  expect(Math.round(wrapperBox.height)).toBe(COLLAPSED_VIDEO_HEIGHT);
+  test.afterAll(async () => {
+    if (setupContext) await setupContext.close();
+  });
 
-  await expectIframeNotVisuallyHidden(page);
-
-  const iframeAfter = await page.locator('iframe[src*="youtube.com/embed"]').elementHandle();
-  expect(iframeAfter).not.toBeNull();
-  const sameElement = await page.evaluate(([a, b]) => a === b, [iframeBefore, iframeAfter]);
-  expect(sameElement).toBe(true);
-
-  await closePartyroom(page);
-});
-
-test('Mode B → Mode A 복귀: IFrame 동일 element + 16:9 wrapper 복귀', async ({ user1Context }) => {
-  test.setTimeout(120_000);
-  const page = await user1Context.newPage();
-
-  const partyroomUrl = await createPartyroom(page, mobilePartyroomName());
-  await enterPartyroomAndWaitUntilReady(page, partyroomUrl);
-  await createPlaylistWithTracks(page, mobilePlaylistName());
-  await registerAsDj(page);
-  await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
-
-  const iframeInitial = await page.locator('iframe[src*="youtube.com/embed"]').elementHandle();
-
-  await page.getByRole('button', { name: '영상 가리기' }).click();
-  await expect(page.getByRole('button', { name: '영상 펼치기' })).toBeVisible();
-  await page.getByRole('button', { name: '영상 펼치기' }).click();
-  await expect(page.getByRole('button', { name: '영상 가리기' })).toBeVisible();
-
-  const wrapper = page.getByTestId('video-wrapper');
-  await expect(wrapper).toHaveClass(/aspect-video/);
-
-  const iframeAfter = await page.locator('iframe[src*="youtube.com/embed"]').elementHandle();
-  const sameElement = await page.evaluate(([a, b]) => a === b, [iframeInitial, iframeAfter]);
-  expect(sameElement).toBe(true);
-
-  await closePartyroom(page);
-});
-
-test('Mode C (재생 없음): BlankPlaceholder visible + IFrame 미존재', async ({ user1Context }) => {
-  test.setTimeout(120_000);
-  const page = await user1Context.newPage();
-
-  const partyroomUrl = await createPartyroom(page, mobilePartyroomName());
-  await enterPartyroomAndWaitUntilReady(page, partyroomUrl);
-
-  await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
-
-  await expect(page.getByTestId('blank-placeholder')).toBeVisible();
-  await expect(page.locator('iframe[src*="youtube.com/embed"]')).toHaveCount(0);
-
-  await closePartyroom(page);
-});
-
-test('sticky-top 높이 변화 시 chat scroll offset ≤ CHAT_SCROLL_TOLERANCE_PX 보존', async ({
-  user1Context,
-}) => {
-  test.setTimeout(120_000);
-  const page = await user1Context.newPage();
-
-  const partyroomUrl = await createPartyroom(page, mobilePartyroomName());
-  await enterPartyroomAndWaitUntilReady(page, partyroomUrl);
-  await createPlaylistWithTracks(page, mobilePlaylistName());
-  await registerAsDj(page);
-  await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
-
-  const chatTab = page.getByRole('tab', { name: /채팅/ }).first();
-  if (await chatTab.isVisible().catch(() => false)) {
-    await chatTab.click();
-  }
-
-  const chatContainer = page.locator('[data-tab-content="chat"]').first();
-  await expect(chatContainer).toBeVisible();
-
-  await page.waitForTimeout(500);
-
-  const scrollBefore = await chatContainer.evaluate((el) => el.scrollTop);
-
-  await page.getByRole('button', { name: '영상 가리기' }).click();
-  await expect(page.getByRole('button', { name: '영상 펼치기' })).toBeVisible();
-  await page.waitForTimeout(300);
-
-  const scrollAfter = await chatContainer.evaluate((el) => el.scrollTop);
-
-  const delta = Math.abs(scrollAfter - scrollBefore);
-  expect(delta).toBeLessThanOrEqual(CHAT_SCROLL_TOLERANCE_PX);
-
-  await closePartyroom(page);
+  test('Mode C: BlankPlaceholder visible + IFrame 미존재', async ({ user2Context }) => {
+    test.setTimeout(60_000);
+    const page = await user2Context.newPage();
+    await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
+    await expect(page.getByTestId('blank-placeholder')).toBeVisible();
+    await expect(page.locator('iframe[src*="youtube.com/embed"]')).toHaveCount(0);
+  });
 });
