@@ -4,7 +4,7 @@
 import { useRef } from 'react';
 import type TReactPlayer from 'react-player';
 import { act, renderHook } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import useAutoplayGestureGate, { AUTOPLAY_DETECT_MS } from './use-autoplay-gesture-gate.hook';
 
 function setupHook({
@@ -16,6 +16,13 @@ function setupHook({
     return useAutoplayGestureGate({ playerRef, playable, videoId });
   });
 }
+
+beforeEach(() => {
+  vi.useFakeTimers();
+});
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe('useAutoplayGestureGate', () => {
   test('AUTOPLAY_DETECT_MS = 1500 (spec §4.6, ms)', () => {
@@ -34,5 +41,14 @@ describe('useAutoplayGestureGate', () => {
     const fakePlayer = {} as TReactPlayer;
     act(() => result.current.onReady(fakePlayer));
     expect(result.current.playerReady).toBe(true);
+  });
+
+  test('onReady 후 1500ms 내 onPlay 없으면 autoplayBlocked=true', () => {
+    const { result } = setupHook();
+    act(() => result.current.onReady({} as TReactPlayer));
+    act(() => {
+      vi.advanceTimersByTime(AUTOPLAY_DETECT_MS);
+    });
+    expect(result.current.autoplayBlocked).toBe(true);
   });
 });

@@ -1,4 +1,4 @@
-import { useState, type RefObject } from 'react';
+import { useEffect, useState, type RefObject } from 'react';
 import type TReactPlayer from 'react-player';
 
 export const AUTOPLAY_DETECT_MS = 1500;
@@ -22,10 +22,17 @@ export interface AutoplayGestureGate {
 
 export default function useAutoplayGestureGate({
   playerRef,
+  videoId,
 }: UseAutoplayGestureGateArgs): AutoplayGestureGate {
   const [autoplayBlocked, setAutoplayBlocked] = useState(false);
   const [played, setPlayed] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
+
+  useEffect(() => {
+    if (!playerReady || played) return;
+    const timer = setTimeout(() => setAutoplayBlocked(true), AUTOPLAY_DETECT_MS);
+    return () => clearTimeout(timer);
+  }, [playerReady, played, videoId]);
 
   const handleGesturePlay = () => {
     const internal = playerRef.current?.getInternalPlayer() as
