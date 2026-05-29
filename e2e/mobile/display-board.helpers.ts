@@ -4,8 +4,11 @@ export const CHAT_SCROLL_TOLERANCE_PX = 10;
 export const COLLAPSED_VIDEO_WIDTH = 80;
 export const COLLAPSED_VIDEO_HEIGHT = 45;
 
-export const mobilePartyroomName = () => `MOBILE-TOS-${Date.now()}`;
-export const mobilePlaylistName = () => `mobile-tos-pl-${Date.now()}`;
+/** 케이스마다 고유한 partyroom / playlist 이름. e2e-a 패턴 (Date.now().toString(36)) 으로
+ *  base36 짧은 문자열 사용 — UI 의 긴 이름 truncation/ellipsis 시 `new RegExp(name)`
+ *  매칭 실패 회피 (run #5 의 Group 1 Mode A beforeAll fail 원인). */
+export const mobilePartyroomName = () => `MTOS${Date.now().toString(36)}`;
+export const mobilePlaylistName = () => `MTOSpl${Date.now().toString(36)}`;
 
 export async function gotoMobileRoomAndWaitForVideo(page: Page, partyroomUrl: string) {
   await page.goto(partyroomUrl);
