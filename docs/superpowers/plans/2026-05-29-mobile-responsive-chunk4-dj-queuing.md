@@ -220,8 +220,8 @@ chunk 4 가 신규 도입할 i18n 키 (spec §7 잠금, `t.partyroom.queue.*` �
 //   testMatch → /mobile\/.+\.spec\.ts/
 //   (다른 옵션 유지)
 //
-// e2e/helpers/partyroom.helpers.ts:101 의 stale title pattern
-//   /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-)/
+// e2e/mobile/display-board.tos.spec.ts:111 의 spec-local stale title pattern (실제 위치, Phase 0 정찰 결과)
+//   const E2E_PARTYROOM_TITLE_PATTERN = /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-)/;
 //   → /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-|MDJ|MAT)/
 //   (Phase 12 갱신 대상)
 ```
@@ -341,7 +341,7 @@ src/features/partyroom/                                   ⭐ mutation 승격 (w
 - `src/widgets/music-preview-player/ui/player-container.component.tsx` — position prop union 에 `'mobile-bottom'` 추가
 - `src/shared/lib/localization/dictionaries/ko.json` + `en.json` + `i18n.xlsx` — Phase 11 의 21개 신규 키
 - `playwright.config.ts` — `display-board-tos-mobile` project → `mobile`, testMatch 확장 (Phase 12)
-- `e2e/helpers/partyroom.helpers.ts` — stale title pattern 에 `MDJ|MAT` 추가 (Phase 12)
+- `e2e/mobile/display-board.tos.spec.ts:111` — `E2E_PARTYROOM_TITLE_PATTERN` 확장 `MDJ|MAT` (실제 위치, Phase 0 정찰 결과)
 
 ### 삭제 (Phase 2)
 
@@ -4380,24 +4380,33 @@ testMatch 를 모든 e2e/mobile/*.spec.ts 매칭으로 확장. chunk 4 신규 sp
 chunk 3.1 의 display-board.tos.spec.ts 가 새 이름의 project 에서도 동작."
 ```
 
-### Task 12.2: e2e/helpers/partyroom.helpers.ts cleanup pattern 갱신
+### Task 12.2: stale title pattern 갱신 (실제 위치 정정 — Phase 0 정찰 결과)
+
+**Phase 0 정찰 결과**: stale pattern 은 `e2e/helpers/partyroom.helpers.ts` 가 아니라 **`e2e/mobile/display-board.tos.spec.ts:111` 의 spec-local 상수 `E2E_PARTYROOM_TITLE_PATTERN`** 에 있음. mobile-only prefix helpers (`mobilePartyroomName`·`mobilePlaylistName`) 는 `e2e/mobile/display-board.helpers.ts` 에 있음.
+
+**채택 옵션 (b) — spec-local 패턴 확장**: dj-register.spec.ts 와 add-tracks.spec.ts 가 신규 spec 이므로 각자 own cleanup 블록을 가질 수 있으나, 우선 `display-board.tos.spec.ts:111` 의 단일 source-of-truth 패턴 확장으로 일관성 유지.
 
 **Files:**
 
-- Modify: `e2e/helpers/partyroom.helpers.ts`
+- Modify: `e2e/mobile/display-board.tos.spec.ts:111`
 
-- [ ] **Step 1: stale title pattern 에 MDJ · MAT 추가**
+- [ ] **Step 1: spec-local pattern 확장**
 
 ```ts
-// 기존: /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-)/
-// 변경: /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-|MDJ|MAT)/
+// e2e/mobile/display-board.tos.spec.ts:111
+// 기존: const E2E_PARTYROOM_TITLE_PATTERN = /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-)/;
+// 변경: const E2E_PARTYROOM_TITLE_PATTERN = /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-|MDJ|MAT)/;
 ```
+
+(dj-register.spec.ts · add-tracks.spec.ts 의 afterAll cleanup 은 자체 closePartyroom 호출만으로 충분 — 누적 stale 정리는 display-board.tos.spec.ts 가 cron 처럼 일괄 처리)
 
 - [ ] **Step 2: commit**
 
 ```bash
-git add e2e/helpers/partyroom.helpers.ts
-git commit -m "ci(e2e/helpers): cleanup pattern 확장 MDJ · MAT prefix 추가 (chunk 4)"
+git add e2e/mobile/display-board.tos.spec.ts
+git commit -m "ci(e2e/mobile): display-board.tos stale title pattern 확장 (MDJ · MAT)
+
+chunk 4 신규 spec (dj-register · add-tracks) 의 prefix 추가. 단일 cleanup 패턴 유지."
 ```
 
 ### Task 12.3: `e2e/mobile/dj-register.spec.ts` 신규
