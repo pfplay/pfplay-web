@@ -1,3 +1,4 @@
+import { useRegisterMeToQueue } from '@/features/partyroom/register-me-to-queue';
 import { useSelectPlaylistForDjing } from '@/features/partyroom/select-playlist-for-djing';
 import useDjingGuide from '@/features/playlist/djing-guide/ui/use-djing-guide.hook';
 import { useFetchPlaylists } from '@/features/playlist/list';
@@ -6,7 +7,6 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { TooltipTrigger } from '@/shared/ui/components/tooltip';
-import { useRegisterMeToQueue } from '../api/use-register-me-to-queue.mutation';
 import { useDjingQueue } from '../lib/djing-queue.context';
 import { usePartyroomId } from '../lib/partyroom-id.context';
 
