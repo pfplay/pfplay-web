@@ -1,7 +1,7 @@
+import { useUnregisterMeFromQueue } from '@/features/partyroom/unregister-me-from-queue';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
-import { useUnregisterMeFromQueue } from '../api/use-unregister-me-from-queue.mutation';
 import { usePartyroomId } from '../lib/partyroom-id.context';
 
 export default function UnregisterButton() {
