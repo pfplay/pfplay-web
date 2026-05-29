@@ -231,3 +231,45 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
     expect(screen.queryByTestId('autoplay-gesture-gate')).toBeTruthy();
   });
 });
+
+describe('MobilePartyroomDisplayBoard · cross-component single source', () => {
+  test('#11 Mode B + autoplay 차단: NowPlayingRow 안에 TapToPlayButton 렌더, overlay 미렌더', () => {
+    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
+
+    const yt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
+    act(() => {
+      (yt.onReady as (p: unknown) => void)({} as unknown);
+    });
+    act(() => {
+      vi.advanceTimersByTime(1500);
+    });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+
+    const row = screen.getByTestId('now-playing-row');
+    const tapButton = screen.getByRole('button', { name: '재생' });
+    expect(row.contains(tapButton)).toBe(true);
+    expect(screen.queryByTestId('autoplay-gesture-gate')).toBeNull();
+  });
+
+  test('#12 Mode B + autoplay 차단 → Mode A 토글 → overlay 즉시 visible (single source)', () => {
+    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
+
+    const yt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
+    act(() => {
+      (yt.onReady as (p: unknown) => void)({} as unknown);
+    });
+    act(() => {
+      vi.advanceTimersByTime(1500);
+    });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+
+    expect(screen.getByRole('button', { name: '재생' })).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('button', { name: '영상 펼치기' }));
+
+    expect(screen.getByTestId('autoplay-gesture-gate')).toBeTruthy();
+    expect(screen.queryByRole('button', { name: '재생' })).toBeNull();
+  });
+});
