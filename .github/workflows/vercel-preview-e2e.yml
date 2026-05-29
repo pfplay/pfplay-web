@@ -95,6 +95,11 @@ jobs:
       - run: yarn test:e2e
         env:
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+          # e2e helper 의 closePartyroom 등이 직접 backend API 호출하는데, env 명시
+          # 안 하면 fallback 'dev-api.pfplay.xyz' 사용. stg-api 가 아닌 dev backend
+          # 로 DELETE → stg partyroom 의 id 못 찾음 → silent 흡수 → stale 누적.
+          # stg frontend 가 호출하는 stg-api 와 일치시킴.
+          NEXT_PUBLIC_API_HOST_NAME: https://stg-api.pfplay.xyz/api/
 
       - uses: actions/upload-artifact@v4
         if: always()
