@@ -51,4 +51,16 @@ describe('useAutoplayGestureGate', () => {
     });
     expect(result.current.autoplayBlocked).toBe(true);
   });
+
+  test('onPlay 호출 시 played=true + autoplayBlocked=false', () => {
+    const { result } = setupHook();
+    act(() => result.current.onReady({} as TReactPlayer));
+    act(() => {
+      vi.advanceTimersByTime(AUTOPLAY_DETECT_MS);
+    });
+    expect(result.current.autoplayBlocked).toBe(true);
+    act(() => result.current.onPlay());
+    expect(result.current.played).toBe(true);
+    expect(result.current.autoplayBlocked).toBe(false);
+  });
 });
