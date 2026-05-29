@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 const youtubePlayerCalls: Array<Record<string, unknown>> = [];
@@ -180,5 +180,54 @@ describe('MobilePartyroomDisplayBoard · component lifecycle', () => {
     render(<MobilePartyroomDisplayBoard partyroomId={1} />);
     expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
     expect(screen.getByRole('button', { name: '영상 가리기' })).toBeTruthy();
+  });
+});
+
+describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
+  test('#9 트랙 변경 시 autoplay 차단 재armed: 새 videoId + 1500ms 후 차단 → release control 렌더', () => {
+    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+
+    const firstYt = youtubePlayerCalls[0];
+    act(() => {
+      (firstYt.onReady as (p: unknown) => void)({} as unknown);
+      (firstYt.onPlay as () => void)();
+    });
+
+    setStoreState({ playback: { name: 'Track 2', duration: '4:00', linkId: 'def' } });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+
+    const newYt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
+    act(() => {
+      (newYt.onReady as (p: unknown) => void)({} as unknown);
+    });
+    act(() => {
+      vi.advanceTimersByTime(1500);
+    });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+
+    expect(screen.queryByTestId('autoplay-gesture-gate')).toBeTruthy();
+  });
+
+  test('#10 Mode C → 재할당 → onReady 후 1500ms 내 onPlay 없으면 차단 + release control 렌더', () => {
+    setStoreState({ playbackActivated: false, playback: null });
+    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
+
+    setStoreState({
+      playbackActivated: true,
+      playback: { name: 'Track 5', duration: '3:00', linkId: 'mno' },
+    });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+
+    const yt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
+    act(() => {
+      (yt.onReady as (p: unknown) => void)({} as unknown);
+    });
+    act(() => {
+      vi.advanceTimersByTime(1500);
+    });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
+
+    expect(screen.queryByTestId('autoplay-gesture-gate')).toBeTruthy();
   });
 });
