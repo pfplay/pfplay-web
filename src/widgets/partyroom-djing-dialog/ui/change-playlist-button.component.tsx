@@ -1,8 +1,8 @@
+import { useChangeMyPlaylist } from '@/features/partyroom/change-my-playlist';
 import { useSelectPlaylistForDjing } from '@/features/partyroom/select-playlist-for-djing';
 import { useFetchPlaylists } from '@/features/playlist/list';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
-import { useChangeMyPlaylist } from '../api/use-change-my-playlist.mutation';
 import { usePartyroomId } from '../lib/partyroom-id.context';
 
 export default function ChangePlaylistButton() {
