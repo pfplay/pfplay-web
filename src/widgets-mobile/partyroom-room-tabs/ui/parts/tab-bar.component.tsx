@@ -6,19 +6,20 @@ import { TabKey } from '../../lib/use-tab-hash.hook';
 interface Props {
   activeTab: TabKey;
   crewCount: number;
+  queueCount: number;
   onTabClick: (tab: TabKey) => void;
 }
 
 /**
  * 모바일 룸 탭바 (§4.2 ASCII 디자인 56px 높이).
  *
- * - 3 버튼: 💬 채팅 · 👥 N · 🎧 큐 (chunk 4 에서 큐 카운트 추가, 본 chunk 는 라벨만)
+ * - 3 버튼: 💬 채팅 · 👥 N · 🎧 N (chunk 4 에서 큐 카운트 활성화)
  * - 활성 탭 = bg-gray-900 + text-white, 비활성 = text-gray-400
  * - 터치 타겟 min-h-[44px] (iOS HIG, spec §4.1)
  * - safe-area-inset-bottom 은 본 탭바 자체 padding 으로 흡수
  * - 라벨은 inline 한글 (chunk 2 의 "{N}명 청취 중" 과 동일 정책, v1 다국어화 OUT)
  */
-const TabBar: FC<Props> = ({ activeTab, crewCount, onTabClick }) => {
+const TabBar: FC<Props> = ({ activeTab, crewCount, queueCount, onTabClick }) => {
   return (
     <nav
       className={cn(
@@ -43,7 +44,7 @@ const TabBar: FC<Props> = ({ activeTab, crewCount, onTabClick }) => {
       <TabButton
         testId='mobile-tab-queue'
         active={activeTab === 'queue'}
-        label='🎧 큐'
+        label={`🎧 ${queueCount}`}
         onClick={() => onTabClick('queue')}
       />
     </nav>

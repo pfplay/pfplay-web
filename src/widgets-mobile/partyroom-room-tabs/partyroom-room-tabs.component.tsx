@@ -1,12 +1,17 @@
 'use client';
 import { FC } from 'react';
 import { useCurrentPartyroomCrews } from '@/features/partyroom/list-crews';
+import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { cn } from '@/shared/lib/functions/cn';
 import { MobilePartyroomChatPanel } from '@/widgets-mobile/partyroom-chat-panel';
 import { MobilePartyroomCrewsPanel } from '@/widgets-mobile/partyroom-crews-panel';
+import { MobilePartyroomQueuePanel } from '@/widgets-mobile/partyroom-queue-panel';
 import useTabHash from './lib/use-tab-hash.hook';
-import QueueTabPlaceholder from './ui/parts/queue-tab-placeholder.component';
 import TabBar from './ui/parts/tab-bar.component';
+
+interface Props {
+  partyroomId: number;
+}
 
 /**
  * 모바일 룸 탭 컨테이너 (§4.2 채팅/크루/큐).
@@ -19,10 +24,16 @@ import TabBar from './ui/parts/tab-bar.component';
  *   있었음 (탭 전환 시 채팅 패널이 다른 탭 위로 비치는 버그). cn = twMerge 가 `flex` ↔ `hidden`
  *   충돌을 해결하여 `display: none` 가 적용됨. HTML `hidden` 도 함께 유지 (a11y / 보조기술).
  * - 탭바는 nav sibling (sticky bottom 안 함 — 부모가 flex 라 자연스럽게 bottom)
+ *
+ * chunk 4:
+ * - 큐 탭 placeholder → MobilePartyroomQueuePanel 교체
+ * - 탭바 🎧 N 카운트 활성화 (useFetchDjingQueue.djs.length)
  */
-const MobilePartyroomRoomTabs: FC = () => {
+const MobilePartyroomRoomTabs: FC<Props> = ({ partyroomId }) => {
   const { activeTab, setActiveTab } = useTabHash();
   const crews = useCurrentPartyroomCrews();
+  const { data: djingQueue } = useFetchDjingQueue({ partyroomId });
+  const queueCount = djingQueue?.djs?.length ?? 0;
 
   return (
     <div className='flex-1 flex flex-col min-h-0'>
@@ -46,10 +57,15 @@ const MobilePartyroomRoomTabs: FC = () => {
           hidden={activeTab !== 'queue'}
           className={cn('absolute inset-0', activeTab !== 'queue' && 'hidden')}
         >
-          <QueueTabPlaceholder />
+          <MobilePartyroomQueuePanel partyroomId={partyroomId} />
         </div>
       </div>
-      <TabBar activeTab={activeTab} crewCount={crews.length} onTabClick={setActiveTab} />
+      <TabBar
+        activeTab={activeTab}
+        crewCount={crews.length}
+        queueCount={queueCount}
+        onTabClick={setActiveTab}
+      />
     </div>
   );
 };
