@@ -100,5 +100,10 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: playwright-report/
+          # playwright-report: HTML 리포트. test-results: trace.zip / video.webm / screenshot
+          # (config 의 trace='on-first-retry' / video='on-first-retry' 가 retry 시 자동 캡쳐).
+          # 화면 모달 / DOM 스냅샷 / 액션 history 디버그 → `npx playwright show-trace` 로 재생.
+          path: |
+            playwright-report/
+            test-results/
           retention-days: 7

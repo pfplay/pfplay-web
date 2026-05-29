@@ -52,6 +52,47 @@ async function newDesktopUserContext(browser: Browser): Promise<BrowserContext> 
 const API_BASE = process.env.NEXT_PUBLIC_API_HOST_NAME ?? 'https://dev-api.pfplay.xyz/api/';
 
 /**
+ * 화면 모달 / JS 에러 추적 강화. 디버그 로그에 4종 source 의 에러를 통합:
+ *
+ * - `page.on('pageerror')`: uncaught JS exception (window.onerror, React error boundary, Next dev overlay 의 빨간 화면)
+ * - `page.on('dialog')`: window.alert / confirm / prompt 모달 — 등장 시 dismiss + 본문 기록
+ * - `page.on('console')`: console.error / console.warn (기존)
+ * - Next.js dev overlay DOM 주기 스캔: `nextjs-portal` / `[data-nextjs-dialog]` selector 의 textContent
+ *
+ * Playwright config 의 trace/video 는 retry 시 자동 캡쳐 (test-results/).
+ * CI workflow 의 artifact path 도 test-results/ 포함으로 확장 필요 (별도 변경).
+ */
+function attachErrorTracing(page: Page, log: (m: string) => void) {
+  page.on('pageerror', (err) => {
+    log(`pageerror: ${err.message}\n${err.stack ?? ''}`);
+  });
+  page.on('dialog', async (dialog) => {
+    log(`dialog ${dialog.type()}: ${dialog.message()}`);
+    await dialog.dismiss().catch(() => null);
+  });
+  page.on('console', (msg) => {
+    const t = msg.type();
+    if (t === 'error' || t === 'warning') {
+      log(`browser console.${t}: ${msg.text()}`);
+    }
+  });
+  // Next.js dev overlay 주기 스캔 (3s 간격) — 빠른 fail 시점에 overlay 잡힘
+  const interval = setInterval(async () => {
+    try {
+      const overlay = page.locator('nextjs-portal, [data-nextjs-dialog]').first();
+      if (await overlay.isVisible({ timeout: 100 }).catch(() => false)) {
+        const text = await overlay.textContent({ timeout: 500 }).catch(() => null);
+        if (text) log(`next-overlay: ${text.replace(/\s+/g, ' ').slice(0, 500)}`);
+      }
+    } catch {
+      // page closed during scan — clear interval
+      clearInterval(interval);
+    }
+  }, 3000);
+  page.on('close', () => clearInterval(interval));
+}
+
+/**
  * Defensive cleanup — 과거 비정상 종료 (workflow timeout, SIGKILL 등) 로 누적된
  * mobile test partyrooms 정리. backend '1 user 1 host' 제약 회피.
  *
@@ -95,9 +136,7 @@ test.describe('재생 활성 — Mode A/B 토글 + chat scroll', () => {
     const log = (m: string) => console.log(`[Group 1 beforeAll][${Date.now() - t0}ms] ${m}`);
     djContext = await newDesktopUserContext(browser);
     djPage = await djContext.newPage();
-    djPage.on('console', (msg) => {
-      if (msg.type() === 'error') log(`browser console.error: ${msg.text()}`);
-    });
+    attachErrorTracing(djPage, log);
     // ⚠️ 과거 비정상 종료로 누적된 mobile test partyrooms 정리 — backend '1 user 1 host' 제약 회피
     log('defensive cleanup');
     await cleanupMobileTestPartyrooms(djContext);
@@ -237,9 +276,7 @@ test.describe('재생 없음 — Mode C', () => {
     const log = (m: string) => console.log(`[Mode C beforeAll][${Date.now() - t0}ms] ${m}`);
     setupContext = await newDesktopUserContext(browser);
     setupPage = await setupContext.newPage();
-    setupPage.on('console', (msg) => {
-      if (msg.type() === 'error') log(`browser console.error: ${msg.text()}`);
-    });
+    attachErrorTracing(setupPage, log);
     log('defensive cleanup');
     await cleanupMobileTestPartyrooms(setupContext);
     log('cleanup done');
