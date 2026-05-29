@@ -41,7 +41,10 @@ jobs:
     needs: deploy
     if: ${{ needs.deploy.result == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # chunk 3.1 mobile project (5 cases × ~90s setup + assertions) 추가로 총 16 tests
+    # 순차 실행 (workers:1) 시 budget 부족 → 30 min 으로 상향.
+    # 이전 baseline: ~10 min (PR #357 chunk 3 머지 시). chunk 3.1 의 5 mobile setup overhead 누적.
+    timeout-minutes: 30
     environment: Preview – pfplay-web
     env:
       E2E_BASE_URL: https://stg.pfplay.xyz
