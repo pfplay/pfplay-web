@@ -22,11 +22,20 @@ export interface AutoplayGestureGate {
 
 export default function useAutoplayGestureGate({
   playerRef,
+  playable,
   videoId,
 }: UseAutoplayGestureGateArgs): AutoplayGestureGate {
   const [autoplayBlocked, setAutoplayBlocked] = useState(false);
   const [played, setPlayed] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
+
+  useEffect(() => {
+    if (!playable) {
+      setPlayerReady(false);
+      setPlayed(false);
+      setAutoplayBlocked(false);
+    }
+  }, [playable]);
 
   useEffect(() => {
     setPlayed(false);

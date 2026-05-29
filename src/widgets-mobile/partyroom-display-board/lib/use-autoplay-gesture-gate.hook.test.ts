@@ -107,4 +107,24 @@ describe('useAutoplayGestureGate', () => {
     act(() => vi.advanceTimersByTime(AUTOPLAY_DETECT_MS));
     expect(result.current.autoplayBlocked).toBe(true);
   });
+
+  test('playable=false 진입 시 모든 state reset (Mode C 진입 시 cleanup)', () => {
+    let playable = true;
+    const { result, rerender } = renderHook(() => {
+      const playerRef = useRef<TReactPlayer | null>(null);
+      return useAutoplayGestureGate({ playerRef, playable, videoId: 'abc' });
+    });
+
+    act(() => result.current.onReady({} as TReactPlayer));
+    act(() => result.current.onPlay());
+    expect(result.current.playerReady).toBe(true);
+    expect(result.current.played).toBe(true);
+
+    playable = false;
+    rerender();
+
+    expect(result.current.playerReady).toBe(false);
+    expect(result.current.played).toBe(false);
+    expect(result.current.autoplayBlocked).toBe(false);
+  });
 });
