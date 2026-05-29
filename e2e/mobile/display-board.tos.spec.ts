@@ -13,6 +13,7 @@ import {
 import { test } from '../fixtures/auth.fixtures';
 import { ETHEREUM_MOCK_SCRIPT } from '../fixtures/ethereum-mock';
 import {
+  closePartyroom,
   createPartyroom,
   createPlaylistWithTracks,
   enterPartyroomAndWaitUntilReady,
@@ -86,6 +87,12 @@ test.describe('재생 활성 — Mode A/B 토글 + chat scroll', () => {
   });
 
   test.afterAll(async () => {
+    // backend partyroom termination 필수 — backend 가 'user 1 host' 제약을 가진다.
+    // afterAll 에서 partyroom 정리 안 하면 user1 이 host 로 락된 채 다음 describe 의
+    // beforeAll 의 createPartyroom 이 403 으로 fail (Mode C beforeAll lock-out).
+    if (djPage && !djPage.isClosed() && partyroomUrl) {
+      await closePartyroom(djPage, partyroomUrl).catch(() => null);
+    }
     if (djContext) await djContext.close();
   });
 
@@ -211,6 +218,9 @@ test.describe('재생 없음 — Mode C', () => {
   });
 
   test.afterAll(async () => {
+    if (setupPage && !setupPage.isClosed() && partyroomUrl) {
+      await closePartyroom(setupPage, partyroomUrl).catch(() => null);
+    }
     if (setupContext) await setupContext.close();
   });
 
