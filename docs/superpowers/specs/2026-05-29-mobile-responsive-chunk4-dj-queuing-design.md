@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-29
 **Chunk:** chunk 4 (5-chunk 시리즈 4번째, chunk 3.1 완료 직후)
-**Status:** Draft v2 (reviewer 1차 5 issues + 4 recs 반영) → spec-document-reviewer (2차) → 사용자 승인 → writing-plans
+**Status:** Draft v3 (reviewer 2차 3 issues + 5 recs 반영) → spec-document-reviewer (3차) → 사용자 승인 → writing-plans
 **선행:** [`2026-05-22-mobile-responsive-scope-design.md`](./2026-05-22-mobile-responsive-scope-design.md) · [`2026-05-28-mobile-responsive-architecture-design.md`](./2026-05-28-mobile-responsive-architecture-design.md) · [`2026-05-29-mobile-display-board-tos-redesign.md`](./2026-05-29-mobile-display-board-tos-redesign.md)
 
 ## 1. Goal
@@ -139,21 +139,23 @@ src/
 
 ### 4.2 외부 의존 (재사용·공유)
 
-| 의존                                               | 종류                                     | 재사용 형태                                                                      |
-| -------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------- |
-| `useFetchDjingQueue`                               | features/partyroom/list-djing-queue      | ✅ 그대로 (큐 데이터 단일 소스)                                                  |
-| `useFetchPlaylists`                                | features/playlist/list                   | ✅ 그대로                                                                        |
-| `useSearchMusics`                                  | features/playlist/add-tracks/api         | ✅ 그대로                                                                        |
-| `useAddPlaylistTrack`                              | features/playlist/add-tracks/api         | ✅ 그대로                                                                        |
-| `useGrabCurrentPlayback`                           | features/partyroom/grab-current-playback | ✅ chunk 2/3.1 wiring 유지                                                       |
-| `useMusicPreview` store                            | shared/lib/store                         | ✅ 공유 (preview SoT)                                                            |
-| `useUserPreferenceStore` (djingGuideHidden)        | entities/preference                      | ✅ 공유                                                                          |
-| `useIsGuest`                                       | entities/me                              | ✅ 공유                                                                          |
-| `useDialog` (alert/confirm)                        | shared/ui/components/dialog              | ✅ 공유 (alert 1줄 메시지에 풀스크린 부적합)                                     |
-| `useStores().useCurrentPartyroom(s=>s.me?.crewId)` | shared/lib/store                         | ✅ 공유                                                                          |
-| `PlaylistActionBypassProvider`·`usePlaylistAction` | entities/playlist                        | ✅ 공유                                                                          |
-| `Tooltip`                                          | shared/ui/components/tooltip             | ❌ aria-label 로 대체 (chunk 3 정책)                                             |
-| `Dialog`                                           | shared/ui/components/dialog              | ❌ 모바일 FullscreenSheet 자체 컴포넌트 (alert/confirm 한정 useDialog 만 재사용) |
+| 의존                                               | 종류                                     | 재사용 형태                                                                                                                                                                                                                      |
+| -------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `useFetchDjingQueue`                               | features/partyroom/list-djing-queue      | ✅ 그대로 (큐 데이터 단일 소스)                                                                                                                                                                                                  |
+| `useFetchPlaylists`                                | features/playlist/list                   | ✅ 그대로                                                                                                                                                                                                                        |
+| `useSearchMusics`                                  | features/playlist/add-tracks/api         | ✅ 그대로                                                                                                                                                                                                                        |
+| `useAddPlaylistTrack`                              | features/playlist/add-tracks/api         | ✅ 그대로                                                                                                                                                                                                                        |
+| `useGrabCurrentPlayback`                           | features/partyroom/grab-current-playback | ✅ chunk 2/3.1 wiring 유지                                                                                                                                                                                                       |
+| `useMusicPreview` store                            | shared/lib/store                         | ✅ 공유 (preview SoT)                                                                                                                                                                                                            |
+| `useUserPreferenceStore` (djingGuideHidden)        | entities/preference                      | ✅ 공유                                                                                                                                                                                                                          |
+| `useIsGuest`                                       | entities/me                              | ✅ 공유                                                                                                                                                                                                                          |
+| `useDialog` (alert/confirm)                        | shared/ui/components/dialog              | ✅ 공유 (alert 1줄 메시지에 풀스크린 부적합). useDialog 가 내부에서 mount 하는 데스크탑 Dialog 컴포넌트가 모바일 viewport 에서 그대로 노출됨 (centered, max-w 자연 fit). 모바일 별도 visual 디자인 0 — §10 #4 acceptance 로 검증 |
+| `useStores().useCurrentPartyroom(s=>s.me?.crewId)` | shared/lib/store                         | ✅ 공유                                                                                                                                                                                                                          |
+| `PlaylistActionBypassProvider`·`usePlaylistAction` | entities/playlist                        | ✅ 공유                                                                                                                                                                                                                          |
+| `Tooltip`                                          | shared/ui/components/tooltip             | ❌ aria-label 로 대체 (chunk 3 정책)                                                                                                                                                                                             |
+| `Dialog`                                           | shared/ui/components/dialog              | ❌ 모바일 FullscreenSheet 자체 컴포넌트 (alert/confirm 한정 useDialog 만 재사용)                                                                                                                                                 |
+
+**FSD 컨벤션 노트** — `features-mobile/partyroom/{register-me-to-queue,change-my-playlist,unregister-me-from-queue}/ui/use-*.hook.tsx` 는 hook-only segment (컴포넌트 0). FSD 의 `ui/` segment 컨벤션 약한 위반 (보통 컴포넌트가 들어가는 자리에 hook 만). **수용 사유**: 데스크탑 `widgets/partyroom-djing-dialog/ui/<action>-button.component.tsx` 가 컴포넌트 + 조합 로직 (`useMobileSelectPlaylist` × mutation × djingGuide) 을 일체화한 패턴을 모바일에서 _컴포넌트 (`member-actions` · `queue-list-item`) ↔ 합성 hook_ 으로 분해. 합성 hook 위치는 features-mobile 하위 자연 — 데스크탑 패턴 1:1 매칭 유지. React 생태계에서 `use-*` 가 ui 부수 기능으로 다뤄지는 관행 정합.
 
 ### 4.3 RSC ↔ Client 경계
 
@@ -227,12 +229,13 @@ if (!selected) return; // canceled
 
 **데스크탑 hook 의존 중 모바일에서 제거되는 항목** (drawer 의존 0):
 
-| 데스크탑 의존                                             | 모바일 처리                                                 |
-| --------------------------------------------------------- | ----------------------------------------------------------- |
-| `setPlaylistDrawer({ open, zIndex })` (라이브러리 drawer) | router.push('/me/playlist') — drawer 없음                   |
-| `playlistDrawerWithSelectPlaylist` (drawer 갱신·미리보기) | SelectPlaylistSheet 가 미리보기 없이 카드만 노출 (drawer 0) |
-| `closePlaylistDrawer` (cancel/confirm 정리)               | sheet close 만 (drawer 정리 불필요)                         |
-| `useDidMountEffect(closePlaylistDrawer)`                  | 제거 (이전 drawer 상태 자체 없음)                           |
+| 데스크탑 의존                                             | 모바일 처리                                                                                                                                                                                                                                                                                                             |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `setPlaylistDrawer({ open, zIndex })` (라이브러리 drawer) | router.push('/me/playlist') — drawer 없음                                                                                                                                                                                                                                                                               |
+| `playlistDrawerWithSelectPlaylist` (drawer 갱신·미리보기) | SelectPlaylistSheet 가 미리보기 없이 카드만 노출 (drawer 0)                                                                                                                                                                                                                                                             |
+| `closePlaylistDrawer` (cancel/confirm 정리)               | sheet close 만 (drawer 정리 불필요)                                                                                                                                                                                                                                                                                     |
+| `useDidMountEffect(closePlaylistDrawer)`                  | 제거 (이전 drawer 상태 자체 없음)                                                                                                                                                                                                                                                                                       |
+| `guidePrepareSelect` (빈/곡없음 단일 confirm 분기)        | **두 분기 분리** — `playlists=[]` = confirm → `/me/playlist`, `every musicCount===0` = SelectPlaylistSheet + 빈 곡 카드 CTA. 모바일은 PlaylistDrawer 가 없어 데스크탑의 "곡 추가 안내 → drawer open" 단일 분기로 묶기 부적합 (drawer 진입 후 자유로운 라이브러리 조작이 가능한 데스크탑과 달리 모바일은 라이브러리 OUT) |
 
 → 모바일 hook 의 의존은 `useDialog().openConfirmDialog` + `useFullscreenSheet().push(SelectPlaylistSheet)` + `useRouter()` 셋만. UIState 의 `playlistDrawer` 는 모바일 트리에서 접근하지 않음.
 
@@ -278,7 +281,9 @@ function MiniPlayer() {
 | (B) hidden 유지 + 별도 visible badge      | YouTube 로고/링크 noticeable 영역 추가 (audio-only badge). ToS 준수 마진 약함, **권장 안 함**. plan 검토에서만 채택 가능 (예: YouTube 정책 갱신 확인 후)       |
 | (C) 미리듣기 자체 inline 펼침으로 회피    | search-list-item 의 inline expand 로 전환 (Q3 옵션 B 재고). mini-player 폐기, sheet 내 IFrame 1개로 일원화. 큰 재설계라 plan 단계 즉시 결정 시점 (구현 비용 ↑) |
 
-→ **default = (A)**. plan 단계 spike 가 (A) 의 구현 위험 (frame 노출 시 audio quality·UX 영향) 발견 시에만 (C) 로 점프. (B) 는 reviewer 추후 승인 게이트 필요.
+→ **default = (A)**. plan 단계 spike 가 (A) 의 구현 위험 (frame 노출 시 audio quality·UX 영향) 발견 시에만 (C) 로 점프. (B) 는 **사용자 명시 승인 + 결정 이력 추가** 필수 — plan-time 자의 채택 금지.
+
+**SIZE constant 위치** — `mini-player.component.tsx` 내부 local const (`const SIZE = { w: 64, h: 36 }`). spike outcome 확정 시 plan 단계 정의.
 
 ### 5.6 SelectPlaylistSheet
 
@@ -424,7 +429,17 @@ push AddTracksSheet (in select sheet): ['select-playlist', 'add-tracks']
 
 ### 8.3 E2E (Playwright, mandatory CI)
 
-chunk 3.1 mobile project 위에 시나리오 2개 추가 (auth 공유 패턴, `e2e/mobile/` 디렉토리 — chunk 3.1 의 `display-board.tos.spec.ts` 와 같은 위치):
+chunk 3.1 mobile project 위에 시나리오 2개 추가 (auth 공유 패턴, `e2e/mobile/` 디렉토리 — chunk 3.1 의 `display-board.tos.spec.ts` 와 같은 위치).
+
+**⚠ playwright.config.ts project glob 갱신 필수** (chunk 4 chunk 의 silent CI fail 회피, [[reference_e2e_silent_env_fallback_pattern]] 패턴 적용):
+
+현재 chunk 3.1 의 `display-board-tos-mobile` project 는 `testMatch: /mobile\/display-board\.tos\.spec\.ts/` 로 단일 파일만 매칭. chunk 4 의 신규 spec 2개는 매칭 안 됨 → mandatory CI gate silent miss.
+
+**잠금 처리** (chunk 4 시점):
+
+- project 이름 `display-board-tos-mobile` → `mobile` 로 rename
+- testMatch → `/mobile\/.+\.spec\.ts/` 로 확장 (모든 모바일 spec 자동 매칭)
+- mandatory CI gate (branch protection Required check) 의 project 이름도 동기 갱신 — `Playwright E2E` workflow 가 잡는 게 project 가 아니라 entire suite 이라 영향 0 일 가능성 높으나, plan 단계에서 workflow yml 확인 잠금
 
 | spec                             | 요지                                                                                                                 |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -461,21 +476,24 @@ chunk 3.1 iPhone 13 chromium baseline 그대로 (PR #359). SE/Pixel 7 매트릭�
 
 ## 10. 위험 + 트레이드오프
 
-| #   | 위험                                                                                  | 완화                                                                                                                                                                                                                                                                                                  |
-| --- | ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | sheet history stack × hash tab sync × Next.js router 의 상호작용                      | plan 단계 spike + 통합 테스트 명시 (§8.2 스택 단언)                                                                                                                                                                                                                                                   |
-| 2   | mini-player IFrame 의 ToS 보존 vs 80px 공간 압박                                      | §5.5 spike 분기 잠금 (A/B/C). default = (A) visible frame + 높이 80→112px. plan 단계 spike 가 (A) 의 위험 발견 시 (C) inline expand 로 재설계                                                                                                                                                         |
-| 3   | mutation 승격 시 데스크탑 import path 변경의 grep 누락                                | 데스크탑 widget 트리에서 다음 grep — `from '../api/use-register-me-to-queue'` · `from '../api/use-change-my-playlist'` · `from '../api/use-unregister-me-from-queue'` (각각 일괄 교체). CI typecheck + 데스크탑 통합 테스트 (`dj-queue.integration.test.ts`) 회귀 확인                                |
-| 4   | `useDialog` 데스크탑 컴포넌트의 모바일 호환                                           | shared 컴포넌트라 모바일 viewport 자연 적응 (chunk 3 의 ban toast 와 동일). **검증 acceptance**: (a) 단위 테스트 (alert·confirm dialog 렌더), (b) 모바일 viewport 헤드드 1회 (iPhone 13 chromium, dialog content 가 화면 폭 안에 fit), (c) chunk 3 통합 테스트의 dialog 회귀 0. 셋 모두 GREEN 시 통과 |
-| 5   | 룸 메인 재생 vs preview mini-player 의 동시 audio 출력                                | **잠금 default: v1 = 둘 다 자연 출력**. 사용자 의도 = 미리듣기 짧음 + 어차피 모바일 단일 스피커. plan 단계 spike 결과 사용자 거슬림 발견 시 follow-up — preview start 시 룸 메인 mute (`useCurrentPartyroom.updatePlaybackVolume(0)`) → preview stop 시 복원. v1 동작은 잠금                          |
-| 6   | SelectPlaylistSheet → AddTracksSheet → 곡 추가 → SelectPlaylistSheet 복귀 시 리프레시 | playlists 의 musicCount 캐시 무효화 (`useFetchPlaylists` invalidate) 가 필요. AddPlaylistTrack mutation 의 onSuccess 에 이미 있어야 함 — 데스크탑 동작 검증 후 같은 invalidation 키 사용                                                                                                              |
-| 7   | DjingGuide 가 등록 직후 sheet stack 위에 push 될 때 SelectPlaylistSheet 와 중첩       | 등록 mutation onSuccess 시점에 SelectPlaylistSheet 는 이미 close. push 순서는 select close → register mutation → guide push. plan 단계에서 순서 명시                                                                                                                                                  |
+| #   | 위험                                                                                  | 완화                                                                                                                                                                                                                                                                                                                                                                                           |
+| --- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | sheet history stack × hash tab sync × Next.js router 의 상호작용                      | plan 단계 spike + 통합 테스트 명시 (§8.2 스택 단언)                                                                                                                                                                                                                                                                                                                                            |
+| 2   | mini-player IFrame 의 ToS 보존 vs 80px 공간 압박                                      | §5.5 spike 분기 잠금 (A/B/C). default = (A) visible frame + 높이 80→112px. plan 단계 spike 가 (A) 의 위험 발견 시 (C) inline expand 로 재설계                                                                                                                                                                                                                                                  |
+| 3   | mutation 승격 시 데스크탑 import path 변경의 grep 누락                                | 데스크탑 widget 트리에서 다음 grep — `from '../api/use-register-me-to-queue'` · `from '../api/use-change-my-playlist'` · `from '../api/use-unregister-me-from-queue'` (각각 일괄 교체). CI typecheck + 데스크탑 통합 테스트 (`dj-queue.integration.test.ts`) 회귀 확인                                                                                                                         |
+| 4   | `useDialog` 데스크탑 컴포넌트의 모바일 호환                                           | shared 컴포넌트라 모바일 viewport 자연 적응 (chunk 3 의 ban toast 와 동일). **검증 acceptance**: (a) 단위 테스트 (alert·confirm dialog 렌더), (b) 모바일 viewport 헤드드 1회 (iPhone 13 chromium, dialog content 가 화면 폭 안에 fit), (c) chunk 3 통합 테스트의 dialog 회귀 0. 셋 모두 GREEN 시 통과                                                                                          |
+| 5   | 룸 메인 재생 vs preview mini-player 의 동시 audio 출력                                | **잠금 default: v1 = 둘 다 자연 출력**. 사용자 의도 = 미리듣기 짧음 + 어차피 모바일 단일 스피커. plan 단계 spike 결과 사용자 거슬림 발견 시 follow-up — preview start 시 룸 메인 mute (`useCurrentPartyroom.updatePlaybackVolume(0)`) → preview stop 시 복원. v1 동작은 잠금. **iOS silent switch / AudioContext interrupt 는 v1 미관여** (단말 OS 정책 그대로 수용, 사용자 실측 후 follow-up) |
+| 6   | SelectPlaylistSheet → AddTracksSheet → 곡 추가 → SelectPlaylistSheet 복귀 시 리프레시 | playlists 의 musicCount 캐시 무효화 (`useFetchPlaylists` invalidate) 가 필요. AddPlaylistTrack mutation 의 onSuccess 에 이미 있어야 함 — 데스크탑 동작 검증 후 같은 invalidation 키 사용                                                                                                                                                                                                       |
+| 7   | DjingGuide 가 등록 직후 sheet stack 위에 push 될 때 SelectPlaylistSheet 와 중첩       | 등록 mutation onSuccess 시점에 SelectPlaylistSheet 는 이미 close. push 순서는 select close → register mutation → guide push. plan 단계에서 순서 명시                                                                                                                                                                                                                                           |
 
 ## 11. 마이그레이션 시나리오
 
 1. mutation 3개 (`register-me-to-queue`·`change-my-playlist`·`unregister-me-from-queue`) 를 `widgets/partyroom-djing-dialog/api/*` 에서 `features/partyroom/<action>/api/*` 로 이동
 2. 데스크탑 widget 3개 컴포넌트의 import path 변경
-3. 데스크탑 통합 테스트 (`widgets/partyroom-djing-dialog/api/dj-queue.integration.test.ts`) 는 mutation 3개 함께 검증하므로 그대로 동작 + import path 만 갱신 (`@/features/partyroom/<action>` 사용). 별도 분할 안 함. 데스크탑 widget 의 다른 ui 통합 테스트는 widget 사적 컴포넌트 (RegisterButton 등) 검증이라 그대로 위치 유지
+3. 데스크탑 통합 테스트 (`widgets/partyroom-djing-dialog/api/dj-queue.integration.test.ts`) 는 mutation 3개 함께 검증하므로 그대로 동작 + import path 만 갱신 (`@/features/partyroom/<action>` 사용). 별도 분할 안 함. 데스크탑 widget 의 다른 ui 통합 테스트는 widget 사적 컴포넌트 (RegisterButton 등) 검증이라 그대로 위치 유지.
+
+   **사유** (위치-대상 분리 어색함 수용): 데스크탑 `widgets/partyroom-djing-dialog` 자체는 chunk 4 이후에도 유지 (데스크탑 dialog UI 는 그대로). widget 폐기 계획 없음 + FSD 의 약한 위반 (api 디렉토리에 외부 feature 를 테스트하는 파일 잔존) 을 수용 — mutation 3개 통합 검증을 분할하면 widget 자체 회귀 가시성 ↓. plan-time 재논의 회피용 잠금
+
 4. CI typecheck + 데스크탑 회귀 (chunk 1~3.1 모두 GREEN 유지)
 5. chunk 4 의 모바일 컴포넌트 추가 (PR 의 별도 commit 들)
 6. `MobilePartyroomRoomTabs` 큐 탭 placeholder → `MobilePartyroomQueuePanel` 교체 (1줄 변경)
