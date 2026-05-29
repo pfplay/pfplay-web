@@ -61,16 +61,27 @@ test.describe('재생 활성 — Mode A/B 토글 + chat scroll', () => {
 
   test.beforeAll(async ({ browser }) => {
     test.setTimeout(180_000);
+    const t0 = Date.now();
+    const log = (m: string) => console.log(`[Group 1 beforeAll][${Date.now() - t0}ms] ${m}`);
     djContext = await newDesktopUserContext(browser);
     djPage = await djContext.newPage();
+    djPage.on('console', (msg) => {
+      if (msg.type() === 'error') log(`browser console.error: ${msg.text()}`);
+    });
     // createPartyroom 의 'Be a pfplay host' 는 /parties lobby UI 의 버튼. blank page 에서
     // 호출하면 못 찾음 → e2e-a 패턴 (goto /parties 먼저, 그 후 createPlaylistWithTracks +
     // createPartyroom) 그대로 따른다.
+    log('goto /parties');
     await djPage.goto('/parties');
+    log('createPlaylistWithTracks');
     await createPlaylistWithTracks(djPage, mobilePlaylistName());
+    log('createPartyroom');
     partyroomUrl = await createPartyroom(djPage, mobilePartyroomName());
+    log(`partyroom created: ${partyroomUrl}`);
     await enterPartyroomAndWaitUntilReady(djPage, partyroomUrl);
+    log('ready');
     await registerAsDj(djPage);
+    log('DJ registered');
     // djContext alive 유지 — DJ session 끊기면 mobile listener 가 Mode A 진입 X.
   });
 
@@ -180,13 +191,22 @@ test.describe('재생 없음 — Mode C', () => {
   let partyroomUrl: string;
 
   test.beforeAll(async ({ browser }) => {
-    test.setTimeout(120_000);
+    // Group 1 (180s) 와 통일 — cold-start 여파로 120s 가 부족했음 (run #5).
+    test.setTimeout(180_000);
+    const t0 = Date.now();
+    const log = (m: string) => console.log(`[Mode C beforeAll][${Date.now() - t0}ms] ${m}`);
     setupContext = await newDesktopUserContext(browser);
     setupPage = await setupContext.newPage();
-    // /parties 로 navigate 후 createPartyroom (lobby UI 의 'Be a pfplay host' 버튼 진입).
+    setupPage.on('console', (msg) => {
+      if (msg.type() === 'error') log(`browser console.error: ${msg.text()}`);
+    });
+    log('goto /parties');
     await setupPage.goto('/parties');
+    log('createPartyroom');
     partyroomUrl = await createPartyroom(setupPage, mobilePartyroomName());
+    log(`partyroom created: ${partyroomUrl}`);
     await enterPartyroomAndWaitUntilReady(setupPage, partyroomUrl);
+    log('ready');
     // DJ 등록 / playlist 모두 skip — playback 없는 상태로 mobile 이 진입 시 Mode C 트리거.
   });
 
