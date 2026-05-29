@@ -63,4 +63,27 @@ describe('useAutoplayGestureGate', () => {
     expect(result.current.played).toBe(true);
     expect(result.current.autoplayBlocked).toBe(false);
   });
+
+  test('handleGesturePlay 가 internal playVideo() 호출 + autoplayBlocked=false 즉시 전환', () => {
+    const playVideo = vi.fn();
+    const fakePlayer = {
+      getInternalPlayer: () => ({ playVideo }),
+    } as unknown as TReactPlayer;
+
+    const { result } = renderHook(() => {
+      const playerRef = useRef<TReactPlayer | null>(fakePlayer);
+      return {
+        gate: useAutoplayGestureGate({ playerRef, playable: true, videoId: 'abc' }),
+        playerRef,
+      };
+    });
+
+    act(() => result.current.gate.onReady(fakePlayer));
+    act(() => vi.advanceTimersByTime(AUTOPLAY_DETECT_MS));
+    expect(result.current.gate.autoplayBlocked).toBe(true);
+
+    act(() => result.current.gate.handleGesturePlay());
+    expect(playVideo).toHaveBeenCalledTimes(1);
+    expect(result.current.gate.autoplayBlocked).toBe(false);
+  });
 });
