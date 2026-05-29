@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { FC, RefObject } from 'react';
+import { FC, MutableRefObject } from 'react';
 import type TReactPlayer from 'react-player';
 import { YouTubeConfig } from 'react-player/youtube';
 import { useUserPreferenceStore } from '@/entities/preference';
@@ -29,7 +29,9 @@ interface Props {
   videoId: string | null;
   expanded: boolean;
   onToggleExpand: () => void;
-  playerRef: RefObject<TReactPlayer | null>;
+  // VideoFrame 본문이 onReady 에서 playerRef.current 에 react-player 인스턴스를 할당하므로
+  // MutableRefObject 가 필요. 부모는 useRef<TReactPlayer | null>(null) 로 그대로 생성.
+  playerRef: MutableRefObject<TReactPlayer | null>;
   gate: AutoplayGestureGate;
 }
 
