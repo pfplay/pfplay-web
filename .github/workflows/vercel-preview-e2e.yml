@@ -86,6 +86,9 @@ jobs:
           done
           exit 0
 
+      # chunk 3.1: display-board-tos-mobile project (iPhone 13) 가 mandatory.
+      # branch protection 의 required status checks 에 "Playwright E2E" job 등록 필수
+      # (사용자 GitHub UI 작업, PR 본문 체크리스트). job 자체는 yarn test:e2e 안에 포함됨.
       - run: yarn test:e2e
         env:
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}

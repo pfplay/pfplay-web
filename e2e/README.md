@@ -201,3 +201,25 @@ E2E selector는 "UI 구현 세부사항에 덜 묶이고, 로케일/동적 데�
 - C, D에서 추가한 selector는 당장 제거하지 않는다.
 - 다만 새 selector를 더 추가할 때는 먼저 role/text로 가능한지 확인한다.
 - `src/shared` 공용 컴포넌트에 테스트 전용 prop을 더 퍼뜨리기 전에, feature 레벨 wrapper나 container로 해결 가능한지 먼저 본다.
+
+## chunk 3.1 — `e2e/mobile/` project
+
+모바일 viewport (iPhone 13) 전용 spec 들. `display-board-tos-mobile` project 가 `playwright.config.ts` 에 등록되어 `yarn test:e2e` 의 mandatory job 으로 실행.
+
+### `display-board.tos.spec.ts`
+
+YouTube IFrame Player API ToS 가드 (chunk 3.1 핵심):
+
+- Mode A IFrame visible + boundingBox ≥ 80×45 + viewport 안 + 시각 hidden 아님
+- Mode A↔B 토글 시 wrapper 80×45 정확값 + IFrame DOM identity 보존 (remount 회피)
+- Mode B→A 복귀 시 동일 IFrame element
+- Mode C 시 BlankPlaceholder visible + IFrame 미존재
+- sticky-top 높이 변화 시 chat scroll offset ≤ 10px 보존
+
+### Branch protection 등록 (사용자 단발 GitHub UI 작업)
+
+PR `feature/mobile-responsive-spec-3.1` 머지 **전** 다음 작업 필수 (chunk 3.1 spec §3 row 15, §10 step 6):
+
+1. GitHub repo Settings → Branches → `develop` 의 Branch protection rule 편집
+2. "Require status checks to pass before merging" 에 **`Playwright E2E`** job 추가 (이미 등록되어 있다면 OK)
+3. 동일 작업을 `release` 브랜치에도 적용
