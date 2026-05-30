@@ -83,6 +83,7 @@ const MobilePartyroomDisplayBoard: FC<Props> = ({ partyroomId }) => {
           onToggleExpand={() => setExpanded((v) => !v)}
           playerRef={playerRef}
           gate={gate}
+          playback={playback}
         />
       </div>
 

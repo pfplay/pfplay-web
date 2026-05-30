@@ -3,7 +3,9 @@ import dynamic from 'next/dynamic';
 import { FC, MutableRefObject } from 'react';
 import type TReactPlayer from 'react-player';
 import { YouTubeConfig } from 'react-player/youtube';
+import * as Playback from '@/entities/current-partyroom/model/playback.model';
 import { useUserPreferenceStore } from '@/entities/preference';
+import { PartyroomPlayback } from '@/shared/api/http/types/partyrooms';
 import { cn } from '@/shared/lib/functions/cn';
 import BlankPlaceholder from './blank-placeholder.component';
 import ExpandToggle from './expand-toggle.component';
@@ -33,12 +35,32 @@ interface Props {
   // MutableRefObject 가 필요. 부모는 useRef<TReactPlayer | null>(null) 로 그대로 생성.
   playerRef: MutableRefObject<TReactPlayer | null>;
   gate: AutoplayGestureGate;
+  /**
+   * playback.endTime/duration 기반 라이브 위치 seek 에 사용.
+   * 데스크탑 widgets/partyroom-display-board/ui/parts/video.component.tsx 의 seekToLive 와 동일 정책.
+   * null/undefined 면 seek 안 함 (모드 C 거나 데이터 미도착).
+   */
+  playback?: PartyroomPlayback | null;
 }
 
-const VideoFrame: FC<Props> = ({ videoId, expanded, onToggleExpand, playerRef, gate }) => {
+const VideoFrame: FC<Props> = ({
+  videoId,
+  expanded,
+  onToggleExpand,
+  playerRef,
+  gate,
+  playback,
+}) => {
   const mode: 'A' | 'B' | 'C' = videoId === null ? 'C' : expanded ? 'A' : 'B';
   const volume = useUserPreferenceStore((s) => s.volume);
   const muted = useUserPreferenceStore((s) => s.muted);
+
+  // 현재 트랙의 라이브 위치로 seek. player onReady · 트랙 변경 onStart 양쪽에서 호출.
+  // 데스크탑 PartyroomDisplayBoard 의 seekToLive 와 정확히 동일 패턴.
+  const seekToLive = () => {
+    if (!playback) return;
+    playerRef.current?.seekTo(Playback.getInitialSeek(playback), 'seconds');
+  };
 
   const showOverlayGate = mode === 'A' && gate.autoplayBlocked && !gate.played;
   const showToggle = mode === 'A' || mode === 'B';
@@ -60,9 +82,13 @@ const VideoFrame: FC<Props> = ({ videoId, expanded, onToggleExpand, playerRef, g
             className='bg-black rounded'
             onReady={(player: TReactPlayer) => {
               playerRef.current = player;
+              seekToLive();
               gate.onReady(player);
             }}
-            onStart={gate.onStart}
+            onStart={() => {
+              seekToLive();
+              gate.onStart();
+            }}
             onPlay={gate.onPlay}
             onPause={gate.onPause}
             config={config}
