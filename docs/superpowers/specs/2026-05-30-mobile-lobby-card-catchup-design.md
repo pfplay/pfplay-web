@@ -59,7 +59,8 @@ chunk 5 의 **1차 목적은 전환 깔때기 강화**다. 모바일 반응형 �
 ### 3.2 Main 라벨 a 선택 — trade-off 정리
 
 - ✅ BackdropBlur 통일 디자인 + 작은 라벨 chip 으로 공식 룸 신호
-- ✅ 신규 컴포넌트 불필요 (`MobilePartyroomCard` 의 `isMain` prop 분기로 처리)
+- ✅ 1컬럼 리듬 유지
+- ⚠️ **의식적 trade-off**: 데스크탑 `MainPartyroomCard` 는 큰 hero (`detail1` 보조 카피 `welcome_party` 까지) 로 일반 카드보다 풍부하지만, 모바일은 `caption2` chip 1줄만 → **Main 카드의 데스크탑↔모바일 격차가 일반 카드 격차보다 오히려 커진다**. 1컬럼 폼팩터에서 hero 가 약하다는 chunk 2 의 framing 을 일관되게 적용한 결과 (Q3 b 거절 근거와 동일). 후속 chunk 에서 Main 전용 모바일 hero 가 재논의될 가능성 열어둠.
 - ❌ 대안 b (별도 hero) — 1컬럼 리듬 깨짐 + 신규 컴포넌트
 - ❌ 대안 c (라벨 없이 유지) — Main 정체성 손실
 
@@ -121,16 +122,30 @@ interface Props {
 }
 
 /**
+ * Main 라벨 sub-컴포넌트.
+ *
+ * isMain=true 분기에서만 마운트 → `useI18n` 호출이 라벨 케이스에 한정.
+ * 일반 카드 (isMain=false) 는 이 컴포넌트를 마운트하지 않으므로 i18n provider 의존 X.
+ * (기존 v1 카드 단위 test 들이 i18n mock 없이 통과하는 invariant 보존.)
+ */
+const MainStageLabel: FC = () => {
+  const t = useI18n();
+  return (
+    <Typography type='caption2' className='text-gray-300 uppercase tracking-wide'>
+      {t.lobby.para.pfplay_main_stage}
+    </Typography>
+  );
+};
+
+/**
  * 모바일 로비 1컬럼 카드 (chunk 5 = 데스크탑 baseline catch-up).
  *
  * - 데스크탑 PartyroomCard 와 동일한 BackdropBlur 단일 카드 패턴, 모바일 폼팩터로 축소.
  * - shared 컴포넌트 (BackdropBlurContainer, Typography, Crews) 차용.
  * - PFInfoOutline 은 모바일에서 의도적으로 제외 (정보 기능 없는 정적 아이콘).
- * - isMain=true 일 때 title2 위 caption2 chip 으로 "PFPlay Main Stage" 라벨.
+ * - isMain=true 일 때 title2 위 caption2 chip 으로 "PFPlay Main Stage" 라벨 (MainStageLabel sub-컴포넌트로 분리).
  */
 const MobilePartyroomCard: FC<Props> = ({ roomId, summary, onClose, isMain }) => {
-  const t = useI18n();
-
   return (
     <BackdropBlurContainer
       src={summary.playback?.thumbnailImage}
@@ -142,11 +157,7 @@ const MobilePartyroomCard: FC<Props> = ({ roomId, summary, onClose, isMain }) =>
         className='h-full flexCol justify-between gap-10 py-5 px-5 backdrop-blur-sm bg-backdrop-black/80'
       >
         <div className='flexCol gap-1.5'>
-          {isMain && (
-            <Typography type='caption2' className='text-gray-300 uppercase tracking-wide'>
-              {t.lobby.para.pfplay_main_stage}
-            </Typography>
-          )}
+          {isMain && <MainStageLabel />}
           <Typography type='title2' className='text-gray-50'>
             {summary.title}
           </Typography>
@@ -204,26 +215,7 @@ export default MobilePartyroomCard;
 
 ### 4.4 컴포넌트 명세 — `MobilePartyroomList` (Main 카드 isMain 전달)
 
-```tsx
-// 변경 핵심:
-const rooms = [...(mainRoom ? [mainRoom] : []), ...(generalRooms ?? [])];
-
-return (
-  <ul className='flexCol gap-4 w-full'>
-    {rooms.map((summary, idx) => (
-      <li key={summary.partyroomId}>
-        <MobilePartyroomCard
-          roomId={summary.partyroomId}
-          summary={summary}
-          isMain={idx === 0 && !!mainRoom}
-        />
-      </li>
-    ))}
-  </ul>
-);
-```
-
-또는 더 명시적으로 Main 을 별도 prepend (현재 v1 구조 유지):
+Main 카드와 일반 카드를 **명시적으로 분리해서 prepend**. `isMain` 판정 로직이 컴포넌트가 아닌 데이터 소스 (mainRoom vs generalRooms) 에 직접 매핑됨.
 
 ```tsx
 return (
@@ -242,7 +234,7 @@ return (
 );
 ```
 
-**선택: 후자 (명시적 prepend)** — `isMain` 판정 로직이 컴포넌트가 아닌 데이터 소스 (mainRoom vs generalRooms) 에 명확히 매핑됨. idx 기반은 generalRooms 정렬 변경에 fragile.
+**거절된 대안 (idx 기반)**: ❌ `rooms.map((s, idx) => <Card isMain={idx === 0 && !!mainRoom} />)` 형태. generalRooms 정렬 변경에 fragile + isMain 판정이 list 위치에 결합됨. 채택하지 않음.
 
 ### 4.5 Crews 컴포넌트 cross-import 결정
 
@@ -251,6 +243,7 @@ return (
 - `Crews` 는 stateless presentation 컴포넌트, hooks/store 의존 없음
 - shared 로 hoist 하려면 데스크탑 코드도 함께 수정해야 함 — chunk 5 스코프 초과
 - 후속 chunk 에서 다른 모바일 화면이 `Crews` 를 쓰게 되면 그 시점에 hoist 재검토 (YAGNI)
+- **lint enforcement 확인**: `eslint.config.js` 에 `features-mobile → features` import 차단 룰 없음 (no `boundaries` / `no-restricted-paths` 설정). lint red 우려 없음
 
 대안: 로컬에 동일 컴포넌트를 복제 — 코드 중복, 사용자 메모리 `feedback_elegant_no_code_dirtying` (코드 더럽힘 회피) 위반.
 
@@ -262,13 +255,13 @@ return (
 
 ### 4.7 Error Handling
 
-| 케이스                         | 처리                                                                                                                            | 비고                                                                                                                                                          |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `playbackActivated=false`      | now-playing 블록 전체 미렌더 (`{summary.playback && ...}`)                                                                      | 현재 v1 의 "재생 중인 곡이 없어요" placeholder 는 **삭제** — BackdropBlur 카드는 빈 슬롯 보이지 않는 게 더 깔끔. BackdropBlur 자체는 fallback 이미지로 채워짐 |
-| `playback.thumbnailImage` 부재 | `BackdropBlurContainer` 가 `getPartyroomCardBackdropProps` fallback (`/images/Background/Partyroom.png`) 처리 — 데스크탑과 동일 | shared 컴포넌트 자체 처리                                                                                                                                     |
-| `primaryIcons` 빈 배열         | `Crews` 가 `icons.slice(0, 3)` 으로 안전 처리, count 만 표시                                                                    | `PartyroomSummary` 주석 "최소한 호스트 1명에 대한 정보는 있음" — 빈 배열 실제 발생 X                                                                          |
-| `crewCount=0`                  | `Crews` 가 `count ? count : 0` 처리                                                                                             | 기존 동일                                                                                                                                                     |
-| 긴 제목                        | `Typography type='title2'` 가 자동 truncate (titleTypes)                                                                        | 데스크탑과 동일                                                                                                                                               |
+| 케이스                         | 처리                                                                                                                                                                                     | 비고                                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `playbackActivated=false`      | now-playing 블록 전체 미렌더 (`{summary.playback && ...}`)                                                                                                                               | 현재 v1 의 "재생 중인 곡이 없어요" placeholder 는 **삭제** (사용자 가시 동작 변화 — PR body 명시 필요). BackdropBlur 자체는 fallback 이미지 `/images/Background/Partyroom.png` 로 채워지므로 빈 카드 X. 데스크탑 카드 동일 동작이라 분위기 손상 우려 검증됨. 깔때기 lens 통과: "재생 중 곡 없음" 표시 사라짐 = inactive 신호 약화 ≠ active 신호 약화 → 전환 깔때기에는 중립 |
+| `playback.thumbnailImage` 부재 | `BackdropBlurContainer` 가 `getPartyroomCardBackdropProps` fallback 처리 — fallbackSrc=`/images/Background/Partyroom.png`, imageClassName=`object-[24%_60%] scale-110` (데스크탑과 동일) | shared 컴포넌트 자체 처리                                                                                                                                                                                                                                                                                                                                                   |
+| `primaryIcons` 빈 배열         | `Crews` 가 `icons.slice(0, 3)` 으로 안전 처리, count 만 표시                                                                                                                             | `PartyroomSummary` 주석 "최소한 호스트 1명에 대한 정보는 있음" — 빈 배열 실제 발생 X                                                                                                                                                                                                                                                                                        |
+| `crewCount=0`                  | `Crews` 가 `count ? count : 0` 처리                                                                                                                                                      | 기존 동일                                                                                                                                                                                                                                                                                                                                                                   |
+| 긴 제목                        | `Typography type='title2'` 가 자동 truncate (titleTypes)                                                                                                                                 | 데스크탑과 동일                                                                                                                                                                                                                                                                                                                                                             |
 
 ### 4.8 Testing
 
@@ -276,12 +269,19 @@ return (
 
 기존 3 케이스 유지 + 다음 수정/추가:
 
-1. **제목·인원·now-playing 표시** (기존) — 통과 예상 (raw text → Typography 변경은 텍스트 매칭 무영향)
-2. **카드 전체가 `/parties/{id}?source=list` 로 이동** (기존) — 그대로 통과
-3. **`playbackActivated=false` 케이스** — 수정: "재생 중인 곡이 없어요" placeholder 단언 제거, now-playing 영역이 **렌더되지 않음** 단언으로 변경 (썸네일 영역 부재)
-4. **신규: 아바타가 `primaryIcons` 개수만큼 렌더** — `screen.getAllByAltText('party crew').length === 1` (mock primaryIcons 1개 기준)
-5. **신규: `isMain=true` 일 때 "PFPlay Main Stage" 라벨 표시** — i18n provider mock 필요, `screen.getByText(/PFPlay Main Stage/i)` (또는 i18n 키의 ko 값) 단언
-6. **신규: `isMain` 이 falsy 일 때 라벨 미표시** — `screen.queryByText(...)` 단언
+1. **제목·인원·now-playing 표시** (기존) — 통과 예상 (raw text → Typography 변경은 텍스트 매칭 무영향, `isMain` 미지정 → `MainStageLabel` 미마운트 → i18n provider mock 불필요)
+2. **카드 전체가 `/parties/{id}?source=list` 로 이동** (기존) — 그대로 통과 (i18n mock 불필요)
+3. **`playbackActivated=false` 케이스** — 수정: "재생 중인 곡이 없어요" placeholder 단언 제거, now-playing 영역이 **렌더되지 않음** 단언으로 변경 (예: `screen.queryByAltText('playback thumbnail')` 가 null). i18n mock 불필요
+4. **신규: 아바타가 `primaryIcons` 개수만큼 렌더** — `screen.getAllByAltText('party crew').length === 1` (mock primaryIcons 1개 기준). i18n mock 불필요
+5. **신규: `isMain=true` 일 때 "PFPlay Main Stage" 라벨 표시** — **i18n mock 필요** (`vi.mock('@/shared/lib/localization/i18n.context', () => ({ useI18n: () => ({ lobby: { para: { pfplay_main_stage: 'PFPlay Main Stage' } } }) }))` 패턴, 참조: `src/widgets-mobile/partyroom-queue-panel/ui/guest-cta.component.test.tsx`). `screen.getByText('PFPlay Main Stage')` 단언
+6. **신규: `isMain` 이 falsy 일 때 라벨 미표시** — `screen.queryByText('PFPlay Main Stage')` 가 null. 동일 i18n mock 적용된 상태에서 prop 차이만 검증
+
+**Mock 정리**:
+
+- `next/image` — 기존 mock 유지 (Crews 안 `<Image priority />` 까지 커버)
+- `next/link` — 기존 mock 유지
+- `@/shared/lib/localization/i18n.context` — **케이스 5·6 전용**. 파일 상단 `vi.mock(...)` 하나로 전역 stub. 케이스 1·2·3·4 는 `<MainStageLabel />` 미마운트라 mock 미사용. 케이스 1·2·3·4 가 mock 영향받지 않는지 (의도치 않은 dependency leak) 확인하는 게 본 spec 의 invariant
+- `@/shared/ui/icons` (PFPersonFilled, Crews 안에서 import) — Vitest 가 svg/icon 컴포넌트를 그대로 처리 가능하면 mock 불필요. 처음 test 실행 시 unresolved import 발생하면 `vi.mock` 추가. plan 단계에서 dry-run 으로 확인 (mock 추가 여부는 implementation 가 결정)
 
 #### 통합 / E2E
 
@@ -297,23 +297,24 @@ return (
 - [ ] `yarn lint` clean
 - [ ] 로컬 `npx next dev` (http+webpack, 메모리 `reference_pfplay_web_local_dev_http_webpack` 준수) 실측 — 데스크탑 viewport `~/parties` 무영향, 모바일 viewport BackdropBlur·Crews·Main 라벨 렌더 확인
 - [ ] e2e suite (모바일 lobby 관련) 영향 점검 + 회귀 확인
-- [ ] PR 본문 한국어, closes #(issue)
+- [ ] PR 본문 한국어, closes #(issue). **PR body 에 사용자 가시 동작 변화 1건 명시: "playbackActivated=false 일 때 '재생 중인 곡이 없어요' placeholder 텍스트 제거 (BackdropBlur fallback 이미지로 대체)"**
 
 ## 6. 위험·완화
 
-| 위험                                                                   | 영향            | 완화                                                                                     |
-| ---------------------------------------------------------------------- | --------------- | ---------------------------------------------------------------------------------------- |
-| 어두운 썸네일 + 밝은 BackdropBlur 텍스트 가독성 저하                   | 사용성 ↓        | 데스크탑 검증된 `bg-backdrop-black/80` 80% 불투명 오버레이 그대로 차용                   |
-| `Crews` cross-import (`features-mobile` → `features`) 로 layering 오염 | 아키텍처 일관성 | stateless presentation 한정 + 후속 chunk 에서 다른 모바일 사용처 발생 시 shared 로 hoist |
-| 모바일 e2e spec 의 텍스트 단언 실패                                    | CI red          | spec 작성 시 사전 grep, 영향 spec 의 단언 텍스트 재확인                                  |
-| Main 라벨 i18n 키 미렌더 (provider mock 부재)                          | test red        | 단위 test 에 `I18nProvider` mock 추가 (데스크탑 `MainPartyroomCard` test 패턴 참조)      |
+| 위험                                                                                     | 영향                     | 완화                                                                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 어두운 썸네일 + 밝은 BackdropBlur 텍스트 가독성 저하                                     | 사용성 ↓                 | 데스크탑 검증된 `bg-backdrop-black/80` 80% 불투명 오버레이 그대로 차용                                                                                                                                                                                                    |
+| `Crews` cross-import (`features-mobile` → `features`) 로 layering 오염                   | 아키텍처 일관성          | stateless presentation 한정 + 후속 chunk 에서 다른 모바일 사용처 발생 시 shared 로 hoist                                                                                                                                                                                  |
+| 모바일 e2e spec 의 텍스트 단언 실패                                                      | CI red                   | spec 작성 시 사전 grep, 영향 spec 의 단언 텍스트 재확인                                                                                                                                                                                                                   |
+| Main 라벨 i18n 키 미렌더 (provider mock 부재)                                            | test red                 | 케이스 5·6 에 한정해 `vi.mock('@/shared/lib/localization/i18n.context', () => ({ useI18n: () => ({ ... }) }))` 패턴 적용. 참조: `src/widgets-mobile/partyroom-queue-panel/ui/guest-cta.component.test.tsx`. (데스크탑 카드 ui/ 하위에는 test 파일 자체 없음 — 0건 확인됨) |
+| `MainStageLabel` sub-컴포넌트 분리 안 했을 때 기존 케이스 1~4 가 i18n provider mock 강제 | test red (4 케이스 일괄) | `MainStageLabel` 분리로 useI18n 호출이 라벨 케이스에만 한정 — §4.2 코드 명세로 lock                                                                                                                                                                                       |
 
 ## 7. 변경 요약
 
-| 파일                                                                   | 변경                                                                          |
-| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `src/features-mobile/partyroom/list/partyroom-card.component.tsx`      | rewrite (BackdropBlur 단일 패턴, Typography 토큰, Crews 차용, Main 라벨 분기) |
-| `src/features-mobile/partyroom/list/partyroom-card.component.test.tsx` | 케이스 6개 (기존 3 유지 + placeholder 케이스 수정 + 신규 3)                   |
-| `src/features-mobile/partyroom/list/partyroom-list.component.tsx`      | Main 카드 prepend 시 `isMain` prop 전달                                       |
+| 파일                                                                   | 변경                                                                                                              |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `src/features-mobile/partyroom/list/partyroom-card.component.tsx`      | rewrite (BackdropBlur 단일 패턴, Typography 토큰, Crews 차용, `MainStageLabel` sub-컴포넌트 분리, Main 라벨 분기) |
+| `src/features-mobile/partyroom/list/partyroom-card.component.test.tsx` | 케이스 6개 (기존 3 유지/수정 + 신규 3 — 5·6 에 한해 i18n mock)                                                    |
+| `src/features-mobile/partyroom/list/partyroom-list.component.tsx`      | Main 카드 prepend 시 `isMain` prop 전달                                                                           |
 
-영향 파일 = **3개**, 신규 컴포넌트 = **0**, 신규 i18n 키 = **0**, 백엔드 API 변경 = **0**.
+영향 파일 = **3개**, 신규 file-level 컴포넌트 = **0** (sub-컴포넌트 `MainStageLabel` 은 카드 파일 내부에 colocate), 신규 i18n 키 = **0**, 백엔드 API 변경 = **0**.
