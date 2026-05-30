@@ -59,17 +59,22 @@
 
 ### 4.1 모듈 레이아웃
 
+`src/shared/config/` 디렉토리는 **이미 존재** (`dom-id.ts`, `max-message-amount.ts`, `time.ts` 3 파일). env schema 모듈은 sibling 추가 + 신규 `index.ts` barrel 도입:
+
 ```
 src/shared/config/
-  ├── client-env.ts   # NEXT_PUBLIC_* (browser+server 양쪽 import 가능, build 시 inline)
-  ├── server-env.ts   # 서버 전용 — 첫 줄 import 'server-only'
-  └── index.ts        # public barrel: export { clientEnv } / re-export NodeEnv union
+  ├── dom-id.ts              # 기존
+  ├── max-message-amount.ts  # 기존
+  ├── time.ts                # 기존
+  ├── client-env.ts          # 신규 — NEXT_PUBLIC_* (browser+server 양쪽 import 가능, build 시 inline)
+  ├── server-env.ts          # 신규 — 서버 전용, 첫 줄 import 'server-only'
+  └── index.ts               # 신규 barrel — export { clientEnv } + 기존 sibling re-export (있으면 merge)
 
 e2e/config/
-  └── env.ts          # E2E_BASE_URL, E2E_API_BASE, VERCEL_AUTOMATION_BYPASS_SECRET, CI
+  └── env.ts                 # 신규 — E2E_BASE_URL, E2E_API_BASE, VERCEL_AUTOMATION_BYPASS_SECRET, CI
 ```
 
-`server-env.ts` 의 `import 'server-only'` 는 Next.js 공식 패키지로, 실수로 client component 에서 import 시 빌드 단계에서 차단된다.
+`server-env.ts` 의 `import 'server-only'` 는 Next.js 공식 패키지로, 실수로 client component 에서 import 시 빌드 단계에서 차단된다. **기존 sibling (dom-id 등) 에 barrel 이 없다면 본 PR 의 신규 `index.ts` 는 env 만 export — 기존 sibling 의 import path 변경 0**.
 
 ### 4.2 NEXT*PUBLIC* 인라인 가정
 
@@ -103,7 +108,11 @@ const ClientEnvSchema = z.object({
   NEXT_PUBLIC_HTTP_TIMEOUT_MS: z.coerce.number().int().positive().default(4000),
   NEXT_PUBLIC_USE_MOCK: z.enum(['true', 'false']).optional(),
   NEXT_PUBLIC_ENABLE_DEV_LOGIN: z.enum(['true', 'false']).optional(),
-  NEXT_PUBLIC_VERCEL_ENV: z.enum(['production', 'preview', 'development', '']).default(''),
+  // Vercel 의 미래 enum 확장 (예: 'staging') 에 대해 graceful — schema 위반 대신 빈 문자열로 폴백
+  NEXT_PUBLIC_VERCEL_ENV: z
+    .enum(['production', 'preview', 'development', ''])
+    .catch('')
+    .default(''),
 });
 
 export type ClientEnv = z.infer<typeof ClientEnvSchema>;
@@ -141,17 +150,17 @@ export const clientEnv = parseClientEnv({
 
 ### 5.1 client-env.ts
 
-| Key                                  | 유형                                                            | 필수 | 비고                              |
-| ------------------------------------ | --------------------------------------------------------------- | ---- | --------------------------------- |
-| `NEXT_PUBLIC_API_HOST_NAME`          | `z.string().url()`                                              | ✅   | trailing `/` 정규화는 호출처      |
-| `NEXT_PUBLIC_API_WS_HOST_NAME`       | `z.string().regex(/^wss?:\/\//)`                                | ✅   | ws/wss                            |
-| `NEXT_PUBLIC_WAGMI_PROJECT_ID`       | `z.string().min(1)`                                             | ✅   | `as string` 캐스팅 제거           |
-| `NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY` | `z.string().min(1)`                                             | ✅   | NFT/wallet 필수                   |
-| `NEXT_PUBLIC_AMPLITUDE_API_KEY`      | `z.string().optional()`                                         | –    | 분석 옵트인                       |
-| `NEXT_PUBLIC_HTTP_TIMEOUT_MS`        | `z.coerce.number().int().positive().default(4000)`              | –    | `Number(...) \|\| 4000` 패턴 대체 |
-| `NEXT_PUBLIC_USE_MOCK`               | `z.enum(['true','false']).optional()`                           | –    | 기존 동작 보존                    |
-| `NEXT_PUBLIC_ENABLE_DEV_LOGIN`       | `z.enum(['true','false']).optional()`                           | –    | dev 전용                          |
-| `NEXT_PUBLIC_VERCEL_ENV`             | `z.enum(['production','preview','development','']).default('')` | –    | next.config 가 빈문자열 보장      |
+| Key                                  | 유형                                                                      | 필수 | 비고                                                   |
+| ------------------------------------ | ------------------------------------------------------------------------- | ---- | ------------------------------------------------------ |
+| `NEXT_PUBLIC_API_HOST_NAME`          | `z.string().url()`                                                        | ✅   | trailing `/` 정규화는 호출처                           |
+| `NEXT_PUBLIC_API_WS_HOST_NAME`       | `z.string().regex(/^wss?:\/\//)`                                          | ✅   | ws/wss                                                 |
+| `NEXT_PUBLIC_WAGMI_PROJECT_ID`       | `z.string().min(1)`                                                       | ✅   | `as string` 캐스팅 제거                                |
+| `NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY` | `z.string().min(1)`                                                       | ✅   | NFT/wallet 필수                                        |
+| `NEXT_PUBLIC_AMPLITUDE_API_KEY`      | `z.string().optional()`                                                   | –    | 분석 옵트인                                            |
+| `NEXT_PUBLIC_HTTP_TIMEOUT_MS`        | `z.coerce.number().int().positive().default(4000)`                        | –    | `Number(...) \|\| 4000` 패턴 대체                      |
+| `NEXT_PUBLIC_USE_MOCK`               | `z.enum(['true','false']).optional()`                                     | –    | 기존 동작 보존                                         |
+| `NEXT_PUBLIC_ENABLE_DEV_LOGIN`       | `z.enum(['true','false']).optional()`                                     | –    | dev 전용                                               |
+| `NEXT_PUBLIC_VERCEL_ENV`             | `z.enum(['production','preview','development','']).catch('').default('')` | –    | next.config 가 빈문자열 보장 + 미래 enum 확장 graceful |
 
 ### 5.2 server-env.ts
 
@@ -187,31 +196,32 @@ export const clientEnv = parseClientEnv({
 - `NODE_ENV` 직접 비교 (`=== 'development'`): 그대로 유지 (Node 내장, dev-build replace 이점 유지)
 - vitest test 의 `process.env.X = ...` mutation: 그대로 (ESLint 예외)
 
-| #     | 파일                                                                     | 변경                                                                            |
-| ----- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
-| 1     | `src/app/_providers/wallet.provider.tsx`                                 | `as string` 제거, `clientEnv.NEXT_PUBLIC_WAGMI_PROJECT_ID`                      |
-| 2     | `src/app/_providers/react-query.provider.tsx`                            | NODE_ENV 유지                                                                   |
-| 3     | `src/app/error.tsx`                                                      | NODE_ENV 유지                                                                   |
-| 4     | `src/app/api/og/route.tsx`                                               | `clientEnv.NEXT_PUBLIC_API_HOST_NAME` (RSC route handler)                       |
-| 5     | `src/app/link/[linkDomain]/layout.tsx`                                   | 동                                                                              |
-| 6     | `src/entities/wallet/api/use-fetch-nfts.query.ts`                        | `clientEnv.NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY`                                  |
-| 7     | `src/features/sign-in/by-social/ui/sign-in-button-for-dev.component.tsx` | NODE_ENV 유지 + `clientEnv.NEXT_PUBLIC_ENABLE_DEV_LOGIN === 'true'`             |
-| 8     | `src/shared/api/system-status/get-system-status.ts`                      | **silent `?? ''` 제거** → `clientEnv.NEXT_PUBLIC_API_HOST_NAME`                 |
-| 9     | `src/shared/api/system-status/get-edge-config-maintenance.ts`            | `serverEnv.VERCEL_ENV`, `serverEnv.EDGE_CONFIG`                                 |
-| 10    | `src/shared/api/websocket/client.ts`                                     | `clientEnv.NEXT_PUBLIC_API_WS_HOST_NAME`                                        |
-| 11    | `src/shared/api/http/client/client.ts`                                   | `clientEnv.NEXT_PUBLIC_HTTP_TIMEOUT_MS` + `clientEnv.NEXT_PUBLIC_API_HOST_NAME` |
-| 12    | `src/shared/lib/decorators/mock/mock-return.decorator.ts`                | NODE_ENV 유지, `NEXT_PUBLIC_USE_MOCK` → `clientEnv.NEXT_PUBLIC_USE_MOCK`        |
-| 13    | `src/shared/lib/decorators/mock/mock-resolve.decorator.ts`               | 동                                                                              |
-| 14    | `src/shared/lib/analytics/index.ts`                                      | `clientEnv.NEXT_PUBLIC_AMPLITUDE_API_KEY`                                       |
-| 15    | `src/shared/lib/functions/log/log-environment.ts`                        | `clientEnv.NEXT_PUBLIC_VERCEL_ENV === 'production'`                             |
-| 16    | `playwright.config.ts`                                                   | `e2eEnv.CI`, `e2eEnv.E2E_BASE_URL`, `e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET`    |
-| 17    | `e2e/auth/shared.ts`                                                     | `e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET`                                        |
-| 18    | `e2e/helpers/partyroom.helpers.ts`                                       | **silent fallback 제거** → `e2eEnv.E2E_API_BASE`                                |
-| 19    | `e2e/mobile/chunk4.helpers.ts`                                           | 동                                                                              |
-| 20    | `e2e/mobile/display-board.tos.spec.ts`                                   | **silent fallback 제거** → `e2eEnv.E2E_API_BASE`                                |
-| 21    | `e2e/e2e-b.dj-state-machine.spec.ts`                                     | `e2eEnv.E2E_BASE_URL`                                                           |
-| 22    | `src/features/partyroom/exit/api/use-exit-partyroom.integration.test.ts` | vitest mutation 유지                                                            |
-| 23-24 | `src/shared/lib/decorators/mock/mock-*.test.ts` (3건)                    | vitest mutation 유지                                                            |
+| #   | 파일                                                                     | 변경                                                                            |
+| --- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| 1   | `src/app/_providers/wallet.provider.tsx`                                 | `as string` 제거, `clientEnv.NEXT_PUBLIC_WAGMI_PROJECT_ID`                      |
+| 2   | `src/app/_providers/react-query.provider.tsx`                            | NODE_ENV 유지                                                                   |
+| 3   | `src/app/error.tsx`                                                      | NODE_ENV 유지                                                                   |
+| 4   | `src/app/api/og/route.tsx`                                               | `clientEnv.NEXT_PUBLIC_API_HOST_NAME` (RSC route handler)                       |
+| 5   | `src/app/link/[linkDomain]/layout.tsx`                                   | 동                                                                              |
+| 6   | `src/entities/wallet/api/use-fetch-nfts.query.ts`                        | `clientEnv.NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY`                                  |
+| 7   | `src/features/sign-in/by-social/ui/sign-in-button-for-dev.component.tsx` | NODE_ENV 유지 + `clientEnv.NEXT_PUBLIC_ENABLE_DEV_LOGIN === 'true'`             |
+| 8   | `src/shared/api/system-status/get-system-status.ts`                      | **silent `?? ''` 제거** → `clientEnv.NEXT_PUBLIC_API_HOST_NAME`                 |
+| 9   | `src/shared/api/system-status/get-edge-config-maintenance.ts`            | `serverEnv.VERCEL_ENV`, `serverEnv.EDGE_CONFIG`                                 |
+| 10  | `src/shared/api/websocket/client.ts`                                     | `clientEnv.NEXT_PUBLIC_API_WS_HOST_NAME`                                        |
+| 11  | `src/shared/api/http/client/client.ts`                                   | `clientEnv.NEXT_PUBLIC_HTTP_TIMEOUT_MS` + `clientEnv.NEXT_PUBLIC_API_HOST_NAME` |
+| 12  | `src/shared/lib/decorators/mock/mock-return.decorator.ts`                | NODE_ENV 유지, `NEXT_PUBLIC_USE_MOCK` → `clientEnv.NEXT_PUBLIC_USE_MOCK`        |
+| 13  | `src/shared/lib/decorators/mock/mock-resolve.decorator.ts`               | 동                                                                              |
+| 14  | `src/shared/lib/analytics/index.ts`                                      | `clientEnv.NEXT_PUBLIC_AMPLITUDE_API_KEY`                                       |
+| 15  | `src/shared/lib/functions/log/log-environment.ts`                        | `clientEnv.NEXT_PUBLIC_VERCEL_ENV === 'production'`                             |
+| 16  | `playwright.config.ts`                                                   | `e2eEnv.CI`, `e2eEnv.E2E_BASE_URL`, `e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET`    |
+| 17  | `e2e/auth/shared.ts`                                                     | `e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET`                                        |
+| 18  | `e2e/helpers/partyroom.helpers.ts`                                       | **silent fallback 제거** → `e2eEnv.E2E_API_BASE`                                |
+| 19  | `e2e/mobile/chunk4.helpers.ts`                                           | 동                                                                              |
+| 20  | `e2e/mobile/display-board.tos.spec.ts`                                   | **silent fallback 제거** → `e2eEnv.E2E_API_BASE`                                |
+| 21  | `e2e/e2e-b.dj-state-machine.spec.ts`                                     | `e2eEnv.E2E_BASE_URL`                                                           |
+| 22  | `src/features/partyroom/exit/api/use-exit-partyroom.integration.test.ts` | vitest mutation 유지                                                            |
+| 23  | `src/shared/lib/decorators/mock/mock-return.decorator.test.ts`           | vitest mutation 유지                                                            |
+| 24  | `src/shared/lib/decorators/mock/mock-resolve.decorator.test.ts`          | vitest mutation 유지                                                            |
 
 ## 7. ESLint 가드
 
@@ -251,10 +261,22 @@ export const clientEnv = parseClientEnv({
 
 ### 8.2 Integration
 
-- `use-exit-partyroom.integration.test.ts`: `clientEnv` import 가 module top-level parse 라 vitest setup 시점에 schema 통과 필요
-- **vitest.setup.ts 검토**: 누락된 필수 key 있으면 dummy URL 주입
-  - 이미 `.env.local` 로딩 시 vitest 가 자동 흡수하면 무처리
-  - 그렇지 않으면 `vi.stubEnv('NEXT_PUBLIC_API_HOST_NAME', 'http://localhost:8080/api/')` 등 추가
+`clientEnv` import 가 module top-level parse 라 vitest 가 첫 import 하는 시점에 schema 통과해야 한다. **현재 `vitest.setup.ts` 는 env stub 0** (testing-library/jest-dom + cleanup 만). Vite 가 자동 로딩하는 `.env` 우선순위 (`.env.test.local` → `.env.local` → `.env.test` → `.env`) 에서 NEXT*PUBLIC*\* 가 잡힐 수도 있지만, 보장이 약하다.
+
+**결정 — 명시적 stub 도입**: `vitest.setup.ts` 에 필수 key 전체 `vi.stubEnv(...)` 추가하여 의존성 끊기. 로컬 `.env.local` 변경이나 CI 환경 변경에 robust.
+
+```ts
+// vitest.setup.ts (신규 추가)
+import { vi } from 'vitest';
+vi.stubEnv('NEXT_PUBLIC_API_HOST_NAME', 'http://localhost:8080/api/');
+vi.stubEnv('NEXT_PUBLIC_API_WS_HOST_NAME', 'ws://localhost:8080/ws');
+vi.stubEnv('NEXT_PUBLIC_WAGMI_PROJECT_ID', 'test-project-id');
+vi.stubEnv('NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY', 'test-alchemy-key');
+// ... (필수 key 전체)
+```
+
+- `use-exit-partyroom.integration.test.ts` 의 기존 `process.env.NEXT_PUBLIC_API_HOST_NAME` 동적 읽기는 그대로 둠 (vitest mutation 의도 보존).
+- `parseClientEnv` 단위 테스트는 위 stub 영향 0 (입력 객체로 호출).
 
 ### 8.3 E2E
 
@@ -276,7 +298,7 @@ export const clientEnv = parseClientEnv({
 2. `feat(e2e): introduce e2e/config/env.ts with E2E_API_BASE`
 3. `refactor(env): sweep src/ to clientEnv/serverEnv (15 files)`
 4. `refactor(e2e): sweep e2e helpers/specs to e2eEnv (8 files)`
-5. `chore(env): add E2E_API_BASE to .env.local and CI workflow`
+5. `chore(env): add E2E_API_BASE to CI workflow + .env.example doc` (`.env.local` 은 gitignored 라 commit 대상 아님 — 로컬 가이드는 본 spec + `.env.example` 에 명시)
 6. `chore(eslint): no-restricted-syntax guard for process.env`
 7. `test(config): client/server env parse tests`
 8. `docs: link reference_e2e_silent_env_fallback_pattern in env.ts JSDoc`
@@ -285,6 +307,8 @@ export const clientEnv = parseClientEnv({
 
 ### 9.3 검증 게이트 (모두 GREEN 후 push)
 
+- 사전: 호출처 sweep 전 destructured pattern (`const { X } = process.env`) audit — `rg 'const\s*\{[^}]*\}\s*=\s*process\.env'`
+- 사전: Vercel preflight — `vercel env pull .env.vercel.local` 으로 dev/stg 에 schema 필수 key 모두 있는지 확인 (실제 push 전 빌드 fail 회피)
 - `yarn test:type` — 0 errors
 - `yarn test` — 모든 unit/integration GREEN
 - `yarn lint` — 신규 guard 위반 0
