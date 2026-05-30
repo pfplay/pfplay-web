@@ -34,7 +34,7 @@ git branch --show-current
 Expected:
 
 - branch = `feature/mobile-responsive-chunk5`
-- HEAD log 에 `docs(mobile/chunk-5)` commit 4건 (101a3ca / 96d8ca2 / 7cdcedf / 12ef856)
+- HEAD log 에 `docs(mobile/chunk-5)` commit ≥ 5건 (101a3ca spec 초안 / 96d8ca2 spec iter1 / 7cdcedf spec iter2 / 12ef856 issue 링크 / 380549f plan; 본 plan 자체 commit 포함). 실측 시 commit 누락이 아니라 추가만 있으면 OK
 - working tree clean
 
 - [ ] **Step 0.2: PFPersonFilled import 가능성 사전 확인 (dry-run)**
