@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import { PropsWithChildren } from 'react';
+import { clientEnv } from '@/shared/config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_HOST_NAME?.replace(/\/+$/, '');
+const API_BASE = clientEnv.NEXT_PUBLIC_API_HOST_NAME.replace(/\/+$/, '');
 
 type PartyroomOG = {
   title: string;

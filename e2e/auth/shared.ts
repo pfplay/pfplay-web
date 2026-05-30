@@ -1,5 +1,6 @@
 import path from 'path';
 import { Browser, Page, expect } from '@playwright/test';
+import { e2eEnv } from '../config/env';
 import { ETHEREUM_MOCK_SCRIPT } from '../fixtures/ethereum-mock';
 
 export const AUTH_DIR = path.join(__dirname, '../.auth');
@@ -37,8 +38,8 @@ export async function authenticateUser(browser: Browser, outputPath: string, bas
 
   const context = await browser.newContext({
     ignoreHTTPSErrors: true,
-    extraHTTPHeaders: process.env.VERCEL_AUTOMATION_BYPASS_SECRET
-      ? { 'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET }
+    extraHTTPHeaders: e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET
+      ? { 'x-vercel-protection-bypass': e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET }
       : {},
   });
   const page = await context.newPage();

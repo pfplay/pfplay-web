@@ -1,5 +1,6 @@
 import path from 'path';
 import { type Browser, type BrowserContext, type Page, devices, expect } from '@playwright/test';
+import { e2eEnv } from '../config/env';
 import { ETHEREUM_MOCK_SCRIPT } from '../fixtures/ethereum-mock';
 
 /**
@@ -18,15 +19,7 @@ import { ETHEREUM_MOCK_SCRIPT } from '../fixtures/ethereum-mock';
 
 const AUTH_DIR = path.join(__dirname, '../.auth');
 
-// 로컬 (E2E_BASE_URL=http://localhost:3000) 에서는 backend 가 :8080 로 떠있고
-// `.env.local` 은 playwright 프로세스에 자동 로딩 안 됨. E2E_BASE_URL 의 host 가
-// localhost 면 :8080 로 폴백 — display-board.tos.spec.ts 가 CI 에서만 정상 동작하는
-// 동일 footgun 을 해소. (process.env.NEXT_PUBLIC_API_HOST_NAME 명시 시 우선.)
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_HOST_NAME ??
-  (process.env.E2E_BASE_URL?.includes('localhost')
-    ? 'http://localhost:8080/api/'
-    : 'https://dev-api.pfplay.xyz/api/');
+const API_BASE = e2eEnv.E2E_API_BASE;
 
 /** title prefix 6 종 (E2EA/B/C/D / MTOS / MOBILE-TOS- / MDJ / MAT) 정리.
  *  display-board.tos.spec.ts 의 동명 패턴과 1:1 일치. */
@@ -47,8 +40,8 @@ export async function newDesktopUserContext(
     ...devices['Desktop Chrome'],
     storageState: path.join(AUTH_DIR, authFile),
     ignoreHTTPSErrors: true,
-    extraHTTPHeaders: process.env.VERCEL_AUTOMATION_BYPASS_SECRET
-      ? { 'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET }
+    extraHTTPHeaders: e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET
+      ? { 'x-vercel-protection-bypass': e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET }
       : {},
   });
   await ctx.addInitScript(ETHEREUM_MOCK_SCRIPT);

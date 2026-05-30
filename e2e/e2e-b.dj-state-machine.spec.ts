@@ -1,5 +1,6 @@
 import path from 'path';
 import type { Page } from '@playwright/test';
+import { e2eEnv } from './config/env';
 import { expect, test } from './fixtures/auth.fixtures';
 import { ETHEREUM_MOCK_SCRIPT } from './fixtures/ethereum-mock';
 import {
@@ -43,7 +44,7 @@ import {
  */
 
 const AUTH_DIR = path.join(__dirname, '.auth');
-const BASE_URL = process.env.E2E_BASE_URL ?? 'https://localhost:3000';
+const BASE_URL = e2eEnv.E2E_BASE_URL;
 const USER1_STORAGE = path.join(AUTH_DIR, 'b-user1.json');
 
 test.describe('E2E-B: DJ 상태 머신 + 다중 클라이언트 동기화', () => {

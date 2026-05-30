@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { clientEnv } from '@/shared/config';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import useSignInForDev from '../lib/use-sign-in-for-dev.hook';
@@ -9,7 +10,7 @@ export default function SignInButtonForDev() {
   const signInForDev = useSignInForDev();
 
   const isDevLoginEnabled =
-    process.env.NODE_ENV === 'development' || process.env.NEXT_PUBLIC_ENABLE_DEV_LOGIN === 'true';
+    process.env.NODE_ENV === 'development' || clientEnv.NEXT_PUBLIC_ENABLE_DEV_LOGIN === 'true';
 
   if (!isDevLoginEnabled) {
     return null;

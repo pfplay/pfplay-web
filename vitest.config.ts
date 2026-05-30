@@ -8,6 +8,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      // issue #372: `server-only` 패키지는 default export 가 throw, react-server condition 에만
+      // empty.js 노출. vitest 는 react-server condition 을 적용하지 않으므로 server-env 모듈
+      // import 시 throw. test 환경에서 empty noop 으로 매핑하여 server-env 단위 테스트 가능.
+      // package exports 가 './empty' subpath 를 노출하지 않아 절대 경로 매핑.
+      'server-only': path.resolve(__dirname, 'node_modules/server-only/empty.js'),
     },
   },
   test: {

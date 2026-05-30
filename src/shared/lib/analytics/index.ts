@@ -1,3 +1,4 @@
+import { clientEnv } from '@/shared/config';
 import type { EventName, EventPropertyMap, UserPropertyOps } from './events';
 
 type AmplitudeModule = typeof import('@amplitude/analytics-browser');
@@ -19,7 +20,7 @@ function isValidAmplitudeUserId(userId: string | null | undefined): boolean {
 }
 
 function getApiKey(): string | undefined {
-  return process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
+  return clientEnv.NEXT_PUBLIC_AMPLITUDE_API_KEY;
 }
 
 function isClient(): boolean {

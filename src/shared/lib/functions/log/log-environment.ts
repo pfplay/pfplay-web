@@ -1,3 +1,5 @@
+import { clientEnv } from '@/shared/config';
+
 /**
  * 버그 추적/관측용 콘솔 로그를 현재 런타임에서 emit 해도 되는지 판정한다.
  *
@@ -13,7 +15,7 @@
  * 간주되어 로그가 샌다 — 게이트가 무력화되면 이 토글부터 확인할 것.
  */
 export function isProdRuntime(): boolean {
-  return process.env.NEXT_PUBLIC_VERCEL_ENV === 'production';
+  return clientEnv.NEXT_PUBLIC_VERCEL_ENV === 'production';
 }
 
 /**

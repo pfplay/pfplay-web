@@ -99,7 +99,10 @@ jobs:
           # 안 하면 fallback 'dev-api.pfplay.xyz' 사용. stg-api 가 아닌 dev backend
           # 로 DELETE → stg partyroom 의 id 못 찾음 → silent 흡수 → stale 누적.
           # stg frontend 가 호출하는 stg-api 와 일치시킴.
+          # 기존 ↓ 유지 (schema 호환 alias, 다음 series 에서 제거 예정)
           NEXT_PUBLIC_API_HOST_NAME: https://stg-api.pfplay.xyz/api/
+          # issue #372: e2e helper 의 silent fallback 휴리스틱 제거. 명시적 E2E_API_BASE 사용.
+          E2E_API_BASE: https://stg-api.pfplay.xyz/api/
 
       - uses: actions/upload-artifact@v4
         if: always()
