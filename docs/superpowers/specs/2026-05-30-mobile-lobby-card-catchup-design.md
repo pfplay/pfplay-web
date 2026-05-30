@@ -1,6 +1,6 @@
 # 모바일 lobby 카드 데스크탑 catch-up (chunk 5) — Design
 
-- **Issue**: TBD (spec 승인 후 등록)
+- **Issue**: #377
 - **Date**: 2026-05-30
 - **Branch**: `feature/mobile-responsive-chunk5`
 - **시리즈**: 모바일 반응형 chunk 1~4 + #372 (env zod) 완료, chunk 5 진입
