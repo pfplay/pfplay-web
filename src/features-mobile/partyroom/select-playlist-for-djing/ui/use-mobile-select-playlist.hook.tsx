@@ -48,13 +48,17 @@ export default function useMobileSelectPlaylist({
         node: (
           <SelectPlaylistSheet
             playlists={playlists}
+            // ⚠️ resolve 가 반드시 pop() 보다 먼저. useFullscreenSheet.pop() 의 setState
+            // updater 가 동기적으로 top.onClose?.() 를 호출 → onClose=()=>resolve(undefined)
+            // 가 winning. 본 hook 의 calling 순서에 따라 final resolve 값이 결정된다.
+            // (Promise resolve 는 idempotent — 첫 resolve 가 win, 그 후는 no-op.)
             onConfirm={(p) => {
-              pop();
               resolve(p);
+              pop();
             }}
             onCancel={() => {
-              pop();
               resolve(undefined);
+              pop();
             }}
             onAddTracksForEmpty={(p) => {
               push({

@@ -35,7 +35,14 @@ const AddTracksSheet: FC<Props> = ({ playlistId }) => {
     // Music(videoId/videoTitle/thumbnailUrl/runningTime) 의 어휘 차이는 chunk 4 범위 밖.
     // MiniPlayer 의 defensive aliasing(name ?? title) 패턴과 동일하게 모든 식별 필드를
     // spread 로 같이 흘려보내고 source 는 spec 그대로 'preview-search' 마커를 부여한다.
-    startPreview({ ...music, source: 'preview-search' } as unknown as PreviewTrack);
+    // ⚠️ title 은 MiniPlayer 가 직접 읽으므로 명시적으로 videoTitle → title 매핑.
+    //   (spread 만으로는 title 키가 비어 displayName='' → mini-player-name DOM 가
+    //   zero-content 로 Playwright hidden 판정.)
+    startPreview({
+      ...music,
+      title: music.videoTitle,
+      source: 'preview-search',
+    } as unknown as PreviewTrack);
   };
 
   const handleAdd = (music: Music | (PreviewTrack & Partial<Music>)) => {

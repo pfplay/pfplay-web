@@ -106,9 +106,19 @@ test.describe('mobile DJ register flow', () => {
     await expect(confirmBtn).toBeEnabled({ timeout: 10_000 });
     await confirmBtn.click();
 
-    log('expect Me row');
-    // Me 표기 — QueueListItem 이 `nickname (Me)` 형태로 라벨링.
-    await expect(page.getByText(/\(Me\)/).first()).toBeVisible({ timeout: 20_000 });
+    // 첫 디제잉 가이드 모달 (showDjingGuide=true 기본값) 이 register 직후 자동 push 됨.
+    // 본 spec 의 본질은 register/unregister UI flow 검증이므로, guide 는 dismiss 후 진행.
+    log('dismiss djing-guide modal');
+    const guideStart = page.getByTestId('guide-start');
+    await expect(guideStart).toBeVisible({ timeout: 15_000 });
+    await guideStart.click();
+
+    log('expect in-queue signal');
+    // user2 가 유일 DJ 면 CurrentDjRow 분기 (no '(Me)' 접미사). queue-list-item 의 `(Me)`
+    // 표기는 큐 대기자(orderNumber>0)에만 적용 — unit test 가 별도 커버.
+    // e2e 의 본질은 '백엔드 등록 후 UI 가 isMeInQueue=true 로 전이' 확인 → member-action 의
+    // unregister 전환을 단언.
+    await expect(page.getByTestId('member-action-unregister')).toBeVisible({ timeout: 20_000 });
 
     log('unregister');
     await page.getByTestId('member-action-unregister').click();
