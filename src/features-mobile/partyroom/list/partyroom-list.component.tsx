@@ -21,9 +21,7 @@ const MobilePartyroomList: FC = () => {
   const { data: mainRoom } = useSuspenseFetchMainPartyroom();
   const { data: generalRooms } = useFetchGeneralPartyrooms();
 
-  const rooms = [...(mainRoom ? [mainRoom] : []), ...(generalRooms ?? [])];
-
-  if (rooms.length === 0) {
+  if (!mainRoom && (!generalRooms || generalRooms.length === 0)) {
     return (
       <div className='w-full py-12 text-center text-sm text-gray-500'>
         지금 열려 있는 파티가 없어요.
@@ -33,7 +31,12 @@ const MobilePartyroomList: FC = () => {
 
   return (
     <ul className='flexCol gap-4 w-full'>
-      {rooms.map((summary) => (
+      {mainRoom && (
+        <li key={mainRoom.partyroomId}>
+          <MobilePartyroomCard roomId={mainRoom.partyroomId} summary={mainRoom} isMain />
+        </li>
+      )}
+      {generalRooms?.map((summary) => (
         <li key={summary.partyroomId}>
           <MobilePartyroomCard roomId={summary.partyroomId} summary={summary} />
         </li>
