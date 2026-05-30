@@ -55,8 +55,8 @@ function getAuthPrefix(testFile: string) {
     return 'd';
   }
 
-  // chunk 3.1 — 모바일 디스플레이 보드 ToS 가드. user A storage state 재사용.
-  if (testFile.includes('mobile/display-board') || testFile.includes('mobile\\display-board')) {
+  // chunk 3.1 + chunk 4 — 모든 mobile/ 경로 spec 은 user A storage state 재사용.
+  if (testFile.includes('mobile/') || testFile.includes('mobile\\')) {
     return 'a';
   }
 
