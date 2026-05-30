@@ -16,6 +16,14 @@ jobs:
       - name: Build
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # issue #372: zod schema (src/shared/config/client-env.ts) 가
+          # NEXT_PUBLIC_WAGMI_PROJECT_ID / NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY 를 required 로 강제.
+          # 본 step 은 GHA runner 에서 직접 `vercel build` 라 Vercel dashboard env 가 안 들어옴
+          # ("WARN! Build not running on Vercel" 메시지). 실 prod 빌드는 vercel-production.yml 의
+          # `vercel deploy --prod` 가 Vercel 서버에서 dashboard env 적용으로 빌드 — 본 placeholder
+          # 와 무관. 본 step 의 목적은 build sanity (compile/type/page collection) check.
+          NEXT_PUBLIC_WAGMI_PROJECT_ID: ci-build-check-placeholder
+          NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY: ci-build-check-placeholder
         # vercel@53.3.0 이 broken transitive dep (@vercel/cli-config 404) 으로
         # publish 됨. 안전한 직전 stable 로 pin — vercel 측 fix 후 풀거나 신규 stable 로 bump.
         run: npx vercel@48.4.1 build --yes
