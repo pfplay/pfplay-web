@@ -83,10 +83,14 @@ const MobilePartyroomCard: FC<Props> = ({ roomId, summary, onClose, isMain }) =>
             </div>
           )}
           <div className='bg-gray-600 h-[1px]' />
-          <Crews
-            count={summary.crewCount}
-            icons={summary.primaryIcons.map((a) => a.avatarIconUri)}
-          />
+          {/* Crews 의 outer wrapper 가 flexRowCenter (= justify-center) 라 부모 flexCol 의 stretch 와 결합 시 카드 가운데로 모인다.
+              self-start 로 fit-content + 좌측 정렬 강제 — 데스크탑 카드는 부모 justify-between 으로 다른 경로로 좌측 고정되므로 무영향. */}
+          <div className='self-start'>
+            <Crews
+              count={summary.crewCount}
+              icons={summary.primaryIcons.map((a) => a.avatarIconUri)}
+            />
+          </div>
         </div>
       </Link>
     </BackdropBlurContainer>
