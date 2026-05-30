@@ -10,6 +10,7 @@ import {
   mobilePartyroomName,
   mobilePlaylistName,
 } from './display-board.helpers';
+import { e2eEnv } from '../config/env';
 import { test } from '../fixtures/auth.fixtures';
 import { ETHEREUM_MOCK_SCRIPT } from '../fixtures/ethereum-mock';
 import {
@@ -41,15 +42,15 @@ async function newDesktopUserContext(browser: Browser): Promise<BrowserContext> 
     ...devices['Desktop Chrome'],
     storageState: path.join(AUTH_DIR, 'a-user1.json'),
     ignoreHTTPSErrors: true,
-    extraHTTPHeaders: process.env.VERCEL_AUTOMATION_BYPASS_SECRET
-      ? { 'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET }
+    extraHTTPHeaders: e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET
+      ? { 'x-vercel-protection-bypass': e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET }
       : {},
   });
   await ctx.addInitScript(ETHEREUM_MOCK_SCRIPT);
   return ctx;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_HOST_NAME ?? 'https://dev-api.pfplay.xyz/api/';
+const API_BASE = e2eEnv.E2E_API_BASE;
 
 /**
  * 화면 모달 / JS 에러 추적 강화. 디버그 로그에 4종 source 의 에러를 통합:
