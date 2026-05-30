@@ -90,6 +90,13 @@ module.exports = tseslint.config(
           selector: "LogicalExpression[right.type='AssignmentExpression']",
           message: 'right-hand assign is not allowed',
         },
+        {
+          // NODE_ENV 는 Node 내장 + dev-build replace 이점 유지를 위해 :not 으로 예외
+          selector:
+            "MemberExpression[object.object.name='process'][object.property.name='env']:not([property.name='NODE_ENV'])",
+          message:
+            'process.env 직접 접근 금지. clientEnv / serverEnv (src/shared/config) 또는 e2eEnv (e2e/config) 를 사용하세요. issue #372 참조.',
+        },
       ],
       'promise/param-names': 0,
       'promise/catch-or-return': 0,
@@ -135,6 +142,20 @@ module.exports = tseslint.config(
     files: ['**/*.test.*'],
     rules: {
       'i18next/no-literal-string': 0,
+    },
+  },
+  {
+    files: [
+      'src/shared/config/**/*.ts',
+      'src/shared/lib/decorators/mock/**/*.ts',
+      'e2e/config/**/*.ts',
+      'next.config.js',
+      '**/*.test.{ts,tsx}',
+      '**/*.integration.test.ts',
+      'vitest.setup.ts',
+    ],
+    rules: {
+      'no-restricted-syntax': 'off',
     },
   }
 );
