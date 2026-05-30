@@ -308,6 +308,29 @@
       "shut_down": "The party room no longer exists.",
       "data_load": "Failed to load data.\nWould you like to try entering again?",
       "profile_required": "Complete your profile setup to join a partyroom."
+    },
+    "queue": {
+      "guest_cta_title": "🎧 Play music yourself",
+      "guest_cta_subtitle": "Sign up in 3 seconds →",
+      "member_action_register": "+ Register as DJ",
+      "member_action_unregister": "Leave queue",
+      "member_action_change_playlist": "Change",
+      "current_dj_title": "Current DJ",
+      "empty": "Queue empty",
+      "unregister_confirm": "Leave the queue?",
+      "sheet_select_playlist_title": "Select playlist",
+      "sheet_add_tracks_title": "Add tracks",
+      "sheet_search_placeholder": "Search by song or artist",
+      "sheet_empty_search": "Try another keyword",
+      "sheet_search_failed": "Search failed",
+      "sheet_preview_unavailable": "Cannot play",
+      "sheet_add_button": "+ Add",
+      "add_success": "Added to playlist",
+      "add_already_exists": "Already in playlist",
+      "add_limit_exceeded": "Playlist is full",
+      "guest_action_blocked": "Sign-in required",
+      "guide_start": "Start",
+      "guide_title": "DJ rules"
     }
   },
   "crews": {

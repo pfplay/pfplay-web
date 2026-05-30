@@ -1,12 +1,12 @@
 import { waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
+import { useRegisterMeToQueue } from '@/features/partyroom/register-me-to-queue';
+import { useUnregisterMeFromQueue } from '@/features/partyroom/unregister-me-from-queue';
 import { server } from '@/shared/api/__test__/msw-server';
 import { renderWithClient } from '@/shared/api/__test__/test-utils';
 import errorEmitter from '@/shared/api/http/error/error-emitter';
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import { ErrorCode } from '@/shared/api/http/types/@shared';
-import { useRegisterMeToQueue } from './use-register-me-to-queue.mutation';
-import { useUnregisterMeFromQueue } from './use-unregister-me-from-queue.mutation';
 
 describe('DJ queue integration (hook → service → MSW)', () => {
   describe('useRegisterMeToQueue', () => {

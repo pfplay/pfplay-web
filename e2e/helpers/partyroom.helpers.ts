@@ -5,7 +5,15 @@ import { ETHEREUM_MOCK_SCRIPT } from '../fixtures/ethereum-mock';
 
 const AUTH_DIR = path.join(__dirname, '../.auth');
 const BASE_URL = process.env.E2E_BASE_URL ?? 'https://localhost:3000';
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_HOST_NAME ?? 'https://dev-api.pfplay.xyz/api/';
+// 로컬 (E2E_BASE_URL=http://localhost:3000) 에서는 backend 가 :8080. playwright 프로세스가
+// .env.local 을 자동 로딩 안 함 → process.env.NEXT_PUBLIC_API_HOST_NAME 미설정 → 폴백이
+// dev-api.pfplay.xyz 로 가서 closePartyroom DELETE 가 잘못된 호스트로 향함. localhost 가드.
+// (chunk4.helpers.ts 의 동명 폴백과 1:1 동일 — 다음 spec 의 user1 host 락 회피.)
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_HOST_NAME ??
+  (process.env.E2E_BASE_URL?.includes('localhost')
+    ? 'http://localhost:8080/api/'
+    : 'https://dev-api.pfplay.xyz/api/');
 const USER_PREFERENCES_STORAGE_KEY = 'user-preferences';
 const DJING_DIALOG_CLOSE_SELECTOR = '[data-testid="djing-dialog-close"]';
 const DJING_DIALOG_CLOSE_SELECTOR_EMPTY = '[id^="headlessui-dialog-panel-"] > header > button'; // empty dj 모달일 때 data-testid 미연결 되어있기 때문에 임시 조치

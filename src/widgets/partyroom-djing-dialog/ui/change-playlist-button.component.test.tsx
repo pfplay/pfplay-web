@@ -7,16 +7,16 @@ vi.mock('@/features/playlist/list', () => ({
 vi.mock('../lib/partyroom-id.context', () => ({
   usePartyroomId: vi.fn(() => 1),
 }));
-vi.mock('../api/use-change-my-playlist.mutation', () => ({
+vi.mock('@/features/partyroom/change-my-playlist', () => ({
   useChangeMyPlaylist: vi.fn(),
 }));
 vi.mock('@/shared/lib/localization/i18n.context');
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { useChangeMyPlaylist } from '@/features/partyroom/change-my-playlist';
 import { useSelectPlaylistForDjing } from '@/features/partyroom/select-playlist-for-djing';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import ChangePlaylistButton from './change-playlist-button.component';
-import { useChangeMyPlaylist } from '../api/use-change-my-playlist.mutation';
 
 const mockMutate = vi.fn();
 

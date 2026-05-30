@@ -108,7 +108,7 @@ function attachErrorTracing(page: Page, log: (m: string) => void) {
  *
  * title prefix 일반 사용자 명명과 겹칠 가능성 0 (테스트 전용 접두사).
  */
-const E2E_PARTYROOM_TITLE_PATTERN = /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-)/;
+const E2E_PARTYROOM_TITLE_PATTERN = /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-|MDJ|MAT)/;
 
 async function cleanupMobileTestPartyrooms(ctx: BrowserContext): Promise<void> {
   try {
