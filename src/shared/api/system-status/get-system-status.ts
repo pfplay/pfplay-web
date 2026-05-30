@@ -1,6 +1,7 @@
+import { clientEnv } from '@/shared/config';
 import { SystemStatusResponse, SystemStatusResult } from './types';
 
-const API_HOST = process.env.NEXT_PUBLIC_API_HOST_NAME ?? '';
+const API_HOST = clientEnv.NEXT_PUBLIC_API_HOST_NAME;
 
 /**
  * Edge Config 가 unreachable 한 경우의 1차 fallback.
