@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { FC, MutableRefObject } from 'react';
+import { FC, MutableRefObject, useEffect } from 'react';
 import type TReactPlayer from 'react-player';
 import { YouTubeConfig } from 'react-player/youtube';
 import * as Playback from '@/entities/current-partyroom/model/playback.model';
@@ -61,6 +61,26 @@ const VideoFrame: FC<Props> = ({
     if (!playback) return;
     playerRef.current?.seekTo(Playback.getInitialSeek(playback), 'seconds');
   };
+
+  // playback.id 변경 (트랙 변경 OR 같은 곡 회전) 감지 → 명시적 IFrame reload (#384).
+  // react-player 는 url prop 이 동일하면 (같은 linkId 회전 케이스) IFrame 에 reload 명령을 안 보낸다.
+  // 결과: 곡 ended state 그대로 유지 → DJ 1명+곡 1개 시나리오에서 재생 정지.
+  // 데스크탑 widgets/partyroom-display-board/.../video.component 와 정확히 동일 패턴.
+  const playbackId = playback?.id;
+  useEffect(() => {
+    if (!playbackId || !videoId || !playerRef.current) return;
+    const internal = playerRef.current.getInternalPlayer() as
+      | { loadVideoById?: (id: string, start?: number) => void; playVideo?: () => void }
+      | undefined;
+    const startSeconds = playback ? Playback.getInitialSeek(playback) : 0;
+    if (internal?.loadVideoById) {
+      internal.loadVideoById(videoId, startSeconds);
+    } else {
+      playerRef.current.seekTo(startSeconds, 'seconds');
+      internal?.playVideo?.();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playbackId]);
 
   const showOverlayGate = mode === 'A' && gate.autoplayBlocked && !gate.played;
   const showToggle = mode === 'A' || mode === 'B';
