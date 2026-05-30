@@ -21,10 +21,13 @@ interface Props {
 const QueuePanelContent: FC<Props> = ({ partyroomId }) => {
   const { data: me } = useFetchMe();
   const isGuest = me?.authorityTier === AuthorityTier.GT;
+  // 게스트(GT)는 playlists 사용처(register/change DJ slot)에 도달하지 않으므로 호출 자체를 skip.
+  // me 가 아직 fetch 안 된 시점도 enabled=false 로 안전 — 데스크탑 playlist-action.provider 와 동일 패턴.
+  const isMember = !!me && me.authorityTier !== AuthorityTier.GT;
   const { data: djingQueue } = useFetchDjingQueue({ partyroomId });
   const { useCurrentPartyroom } = useStores();
   const myCrewId = useCurrentPartyroom((s) => s.me?.crewId);
-  const { data: playlists = [] } = useFetchPlaylists();
+  const { data: playlists = [] } = useFetchPlaylists({ enabled: isMember });
 
   const djs = djingQueue?.djs ?? [];
   const playback = djingQueue?.playback;
