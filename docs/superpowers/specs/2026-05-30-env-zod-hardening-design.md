@@ -196,51 +196,63 @@ export const clientEnv = parseClientEnv({
 - `NODE_ENV` 직접 비교 (`=== 'development'`): 그대로 유지 (Node 내장, dev-build replace 이점 유지)
 - vitest test 의 `process.env.X = ...` mutation: 그대로 (ESLint 예외)
 
-| #   | 파일                                                                     | 변경                                                                            |
-| --- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
-| 1   | `src/app/_providers/wallet.provider.tsx`                                 | `as string` 제거, `clientEnv.NEXT_PUBLIC_WAGMI_PROJECT_ID`                      |
-| 2   | `src/app/_providers/react-query.provider.tsx`                            | NODE_ENV 유지                                                                   |
-| 3   | `src/app/error.tsx`                                                      | NODE_ENV 유지                                                                   |
-| 4   | `src/app/api/og/route.tsx`                                               | `clientEnv.NEXT_PUBLIC_API_HOST_NAME` (RSC route handler)                       |
-| 5   | `src/app/link/[linkDomain]/layout.tsx`                                   | 동                                                                              |
-| 6   | `src/entities/wallet/api/use-fetch-nfts.query.ts`                        | `clientEnv.NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY`                                  |
-| 7   | `src/features/sign-in/by-social/ui/sign-in-button-for-dev.component.tsx` | NODE_ENV 유지 + `clientEnv.NEXT_PUBLIC_ENABLE_DEV_LOGIN === 'true'`             |
-| 8   | `src/shared/api/system-status/get-system-status.ts`                      | **silent `?? ''` 제거** → `clientEnv.NEXT_PUBLIC_API_HOST_NAME`                 |
-| 9   | `src/shared/api/system-status/get-edge-config-maintenance.ts`            | `serverEnv.VERCEL_ENV`, `serverEnv.EDGE_CONFIG`                                 |
-| 10  | `src/shared/api/websocket/client.ts`                                     | `clientEnv.NEXT_PUBLIC_API_WS_HOST_NAME`                                        |
-| 11  | `src/shared/api/http/client/client.ts`                                   | `clientEnv.NEXT_PUBLIC_HTTP_TIMEOUT_MS` + `clientEnv.NEXT_PUBLIC_API_HOST_NAME` |
-| 12  | `src/shared/lib/decorators/mock/mock-return.decorator.ts`                | NODE_ENV 유지, `NEXT_PUBLIC_USE_MOCK` → `clientEnv.NEXT_PUBLIC_USE_MOCK`        |
-| 13  | `src/shared/lib/decorators/mock/mock-resolve.decorator.ts`               | 동                                                                              |
-| 14  | `src/shared/lib/analytics/index.ts`                                      | `clientEnv.NEXT_PUBLIC_AMPLITUDE_API_KEY`                                       |
-| 15  | `src/shared/lib/functions/log/log-environment.ts`                        | `clientEnv.NEXT_PUBLIC_VERCEL_ENV === 'production'`                             |
-| 16  | `playwright.config.ts`                                                   | `e2eEnv.CI`, `e2eEnv.E2E_BASE_URL`, `e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET`    |
-| 17  | `e2e/auth/shared.ts`                                                     | `e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET`                                        |
-| 18  | `e2e/helpers/partyroom.helpers.ts`                                       | **silent fallback 제거** → `e2eEnv.E2E_API_BASE`                                |
-| 19  | `e2e/mobile/chunk4.helpers.ts`                                           | 동                                                                              |
-| 20  | `e2e/mobile/display-board.tos.spec.ts`                                   | **silent fallback 제거** → `e2eEnv.E2E_API_BASE`                                |
-| 21  | `e2e/e2e-b.dj-state-machine.spec.ts`                                     | `e2eEnv.E2E_BASE_URL`                                                           |
-| 22  | `src/features/partyroom/exit/api/use-exit-partyroom.integration.test.ts` | vitest mutation 유지                                                            |
-| 23  | `src/shared/lib/decorators/mock/mock-return.decorator.test.ts`           | vitest mutation 유지                                                            |
-| 24  | `src/shared/lib/decorators/mock/mock-resolve.decorator.test.ts`          | vitest mutation 유지                                                            |
+| #   | 파일                                                                     | 변경                                                                                                                          |
+| --- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `src/app/_providers/wallet.provider.tsx`                                 | `as string` 제거, `clientEnv.NEXT_PUBLIC_WAGMI_PROJECT_ID`                                                                    |
+| 2   | `src/app/_providers/react-query.provider.tsx`                            | NODE_ENV 유지                                                                                                                 |
+| 3   | `src/app/error.tsx`                                                      | NODE_ENV 유지                                                                                                                 |
+| 4   | `src/app/api/og/route.tsx`                                               | `clientEnv.NEXT_PUBLIC_API_HOST_NAME` (RSC route handler)                                                                     |
+| 5   | `src/app/link/[linkDomain]/layout.tsx`                                   | 동                                                                                                                            |
+| 6   | `src/entities/wallet/api/use-fetch-nfts.query.ts`                        | `clientEnv.NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY`                                                                                |
+| 7   | `src/features/sign-in/by-social/ui/sign-in-button-for-dev.component.tsx` | NODE_ENV 유지 + `clientEnv.NEXT_PUBLIC_ENABLE_DEV_LOGIN === 'true'`                                                           |
+| 8   | `src/shared/api/system-status/get-system-status.ts`                      | **silent `?? ''` 제거** → `clientEnv.NEXT_PUBLIC_API_HOST_NAME`                                                               |
+| 9   | `src/shared/api/system-status/get-edge-config-maintenance.ts`            | `serverEnv.VERCEL_ENV`, `serverEnv.EDGE_CONFIG`                                                                               |
+| 10  | `src/shared/api/websocket/client.ts`                                     | `clientEnv.NEXT_PUBLIC_API_WS_HOST_NAME`                                                                                      |
+| 11  | `src/shared/api/http/client/client.ts`                                   | `clientEnv.NEXT_PUBLIC_HTTP_TIMEOUT_MS` + `clientEnv.NEXT_PUBLIC_API_HOST_NAME`                                               |
+| 12  | `src/shared/lib/decorators/mock/mock-return.decorator.ts`                | **유지** (decorator 가 invocation time runtime read 의도, test 가 mutation 후 class 정의 패턴 사용 — ESLint override 로 예외) |
+| 13  | `src/shared/lib/decorators/mock/mock-resolve.decorator.ts`               | 동                                                                                                                            |
+| 14  | `src/shared/lib/analytics/index.ts`                                      | `clientEnv.NEXT_PUBLIC_AMPLITUDE_API_KEY`                                                                                     |
+| 15  | `src/shared/lib/functions/log/log-environment.ts`                        | `clientEnv.NEXT_PUBLIC_VERCEL_ENV === 'production'`                                                                           |
+| 16  | `playwright.config.ts`                                                   | `e2eEnv.CI`, `e2eEnv.E2E_BASE_URL`, `e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET`                                                  |
+| 17  | `e2e/auth/shared.ts`                                                     | `e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET`                                                                                      |
+| 18  | `e2e/helpers/partyroom.helpers.ts`                                       | **silent fallback 제거** → `e2eEnv.E2E_API_BASE`                                                                              |
+| 19  | `e2e/mobile/chunk4.helpers.ts`                                           | 동                                                                                                                            |
+| 20  | `e2e/mobile/display-board.tos.spec.ts`                                   | **silent fallback 제거** → `e2eEnv.E2E_API_BASE`                                                                              |
+| 21  | `e2e/e2e-b.dj-state-machine.spec.ts`                                     | `e2eEnv.E2E_BASE_URL`                                                                                                         |
+| 22  | `src/features/partyroom/exit/api/use-exit-partyroom.integration.test.ts` | vitest mutation 유지                                                                                                          |
+| 23  | `src/shared/lib/decorators/mock/mock-return.decorator.test.ts`           | vitest mutation 유지                                                                                                          |
+| 24  | `src/shared/lib/decorators/mock/mock-resolve.decorator.test.ts`          | vitest mutation 유지                                                                                                          |
 
 ## 7. ESLint 가드
 
-`eslint.config.js` 에 `no-restricted-syntax` 추가:
+`eslint.config.js` 에 **이미 `no-restricted-syntax` 규칙이 존재** (LogicalExpression right-hand assign 금지). 신규 selector 를 **기존 array 에 머지** (덮어쓰기 금지):
 
 ```js
-{
-  selector: "MemberExpression[object.object.name='process'][object.property.name='env']",
-  message: "process.env 직접 접근 금지. clientEnv / serverEnv (src/shared/config) 또는 e2eEnv (e2e/config) 를 사용하세요. issue #372 참조."
-}
+'no-restricted-syntax': [
+  2,
+  {
+    selector: "LogicalExpression[right.type='AssignmentExpression']",
+    message: 'right-hand assign is not allowed',
+  },
+  {
+    // process.env.NODE_ENV 는 Node 내장이라 dev-build replace 이점 유지를 위해 예외
+    selector:
+      "MemberExpression[object.object.name='process'][object.property.name='env']:not([property.name='NODE_ENV'])",
+    message:
+      'process.env 직접 접근 금지. clientEnv / serverEnv (src/shared/config) 또는 e2eEnv (e2e/config) 를 사용하세요. issue #372 참조.',
+  },
+],
 ```
 
 예외 (override 룰 적용):
 
 - `src/shared/config/**/*.ts` (schema 자체)
+- `src/shared/lib/decorators/mock/**/*.ts` (mock decorator 의 의도된 invocation-time runtime read)
 - `e2e/config/**/*.ts` (e2e schema 자체)
 - `next.config.js` (Next.js 빌드 시점)
 - `**/*.test.{ts,tsx}` (vitest test 의 의도된 mutation)
 - `**/*.integration.test.ts` (동)
+- `vitest.setup.ts` (stubEnv)
 
 ## 8. 테스트
 
