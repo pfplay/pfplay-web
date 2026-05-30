@@ -201,17 +201,17 @@ export default MobilePartyroomCard;
 
 ### 4.3 데스크탑과의 spacing 차이 (의도된 모바일 폼팩터 조정)
 
-| 항목                  | 데스크탑                                      | 모바일                                               | 근거                                                             |
-| --------------------- | --------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------- |
-| 좌우 패딩             | `px-7` (28px)                                 | `px-5` (20px)                                        | 모바일 폭 좁음                                                   |
-| 상하 패딩             | `py-6` (24px)                                 | `py-5` (20px)                                        | 카드 세로 컴팩트                                                 |
-| 상하단 블록 gap       | `gap-[61px]`                                  | `gap-10` (40px)                                      | 카드 세로 축소                                                   |
-| now-playing 썸네일    | 80×44                                         | 64×36                                                | 모바일 폭 좁음                                                   |
-| now-playing inner gap | `gap-[12px]`                                  | `gap-3` (12px)                                       | 동일                                                             |
-| 하단 블록 inner gap   | `gap-4`                                       | `gap-3` (12px)                                       | 컴팩트                                                           |
-| 하단 영역 alignment   | `justify-between` (Crews 좌·PFInfoOutline 우) | (justify-between 제거)                               | PFInfoOutline 제외로 Crews 단독 좌정렬                           |
-| Typography 토큰       | title2 / caption1 / body3                     | **동일**                                             | 모바일 1컬럼 카드 폭이 데스크탑 카드와 유사 → 사이즈 다운 불필요 |
-| **Main 라벨**         | (별도 `MainPartyroomCard` 가 처리)            | `caption2` chip (gray-300, uppercase, tracking-wide) | 일반 카드 디자인 위 라벨 추가만으로 정체성                       |
+| 항목                  | 데스크탑                                                                     | 모바일                                                                                                           | 근거                                                             |
+| --------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| 좌우 패딩             | `px-7` (28px)                                                                | `px-5` (20px)                                                                                                    | 모바일 폭 좁음                                                   |
+| 상하 패딩             | `py-6` (24px)                                                                | `py-5` (20px)                                                                                                    | 카드 세로 컴팩트                                                 |
+| 상하단 블록 gap       | `gap-[61px]`                                                                 | `gap-10` (40px)                                                                                                  | 카드 세로 축소                                                   |
+| now-playing 썸네일    | 80×44                                                                        | 64×36                                                                                                            | 모바일 폭 좁음                                                   |
+| now-playing inner gap | `gap-[12px]`                                                                 | `gap-3` (12px)                                                                                                   | 동일                                                             |
+| 하단 블록 inner gap   | `gap-4`                                                                      | `gap-3` (12px)                                                                                                   | 컴팩트                                                           |
+| 하단 영역 alignment   | `justify-between` (Crews 좌·PFInfoOutline 우)                                | (justify-between 제거)                                                                                           | PFInfoOutline 제외로 Crews 단독 좌정렬                           |
+| Typography 토큰       | title2 (제목) / caption1 (now-playing 곡명) / body3 (Crews count, inherited) | **동일** (모바일이 직접 사용: title2 + caption1 + caption2 (Main 라벨). body3 는 Crews 내부 hardcoded inherited) | 모바일 1컬럼 카드 폭이 데스크탑 카드와 유사 → 사이즈 다운 불필요 |
+| **Main 라벨**         | (별도 `MainPartyroomCard` 가 처리)                                           | `caption2` chip (gray-300, uppercase, tracking-wide)                                                             | 일반 카드 디자인 위 라벨 추가만으로 정체성                       |
 
 ### 4.4 컴포넌트 명세 — `MobilePartyroomList` (Main 카드 isMain 전달)
 
