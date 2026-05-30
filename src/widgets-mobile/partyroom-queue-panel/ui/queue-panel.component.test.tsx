@@ -3,6 +3,12 @@ import { describe, expect, test, vi } from 'vitest';
 import { AuthorityTier, QueueStatus } from '@/shared/api/http/types/@enums';
 import QueuePanel from './queue-panel.component';
 
+// GuestCta 가 useInformSocialType 호출 (회귀 fix #383 으로 dialog 패턴 적용).
+// 이 hook 이 react-query QueryClient 의존이라 test 환경에서 throw → 게스트 분기 케이스 보호.
+vi.mock('@/features/sign-in/by-social', () => ({
+  useInformSocialType: () => vi.fn(),
+}));
+
 vi.mock('@/shared/lib/localization/i18n.context', () => ({
   useI18n: () => ({
     partyroom: {

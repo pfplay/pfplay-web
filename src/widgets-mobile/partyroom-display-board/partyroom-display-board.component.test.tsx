@@ -39,17 +39,35 @@ vi.mock('./ui/parts/action-buttons.component', () => ({
 
 type StoreState = {
   playbackActivated: boolean;
-  playback: { name: string; duration: string; linkId: string } | null;
+  // PartyroomPlayback 형식 정합: id/thumbnailImage 는 모바일 widget 이 사용 안 하지만,
+  // endTime 은 seekToLive 가 getInitialSeek(endTime - now) 으로 사용하므로 필수.
+  playback: {
+    name: string;
+    duration: string;
+    linkId: string;
+    endTime: number;
+    id?: number;
+    thumbnailImage?: string;
+  } | null;
   currentDj: { crewId: number } | null;
   crews: Array<{ crewId: number; nickname: string }>;
 };
 
+// 미래 시각 → getInitialSeek 가 양수 elapsed 반환하지만 mock seekTo 는 호출만 추적.
+const FUTURE_END_TIME = Date.now() + 60_000;
+
 let storeState: StoreState = {
   playbackActivated: true,
-  playback: { name: 'Track 1', duration: '3:30', linkId: 'abc' },
+  playback: { name: 'Track 1', duration: '3:30', linkId: 'abc', endTime: FUTURE_END_TIME },
   currentDj: { crewId: 1 },
   crews: [{ crewId: 1, nickname: 'DJ A' }],
 };
+
+// react-player onReady 콜백에 넘기는 mock player.
+// seekToLive 가 playerRef.current?.seekTo 를 호출하므로 vi.fn 으로 stub 필요 (회귀 fix #382 invariant).
+function makeMockPlayer() {
+  return { seekTo: vi.fn() } as unknown;
+}
 
 vi.mock('@/shared/lib/store/stores.context', () => ({
   useStores: () => ({
@@ -63,7 +81,7 @@ function setStoreState(patch: Partial<StoreState>) {
 function resetStoreState() {
   storeState = {
     playbackActivated: true,
-    playback: { name: 'Track 1', duration: '3:30', linkId: 'abc' },
+    playback: { name: 'Track 1', duration: '3:30', linkId: 'abc', endTime: FUTURE_END_TIME },
     currentDj: { crewId: 1 },
     crews: [{ crewId: 1, nickname: 'DJ A' }],
   };
@@ -189,7 +207,7 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
 
     const firstYt = youtubePlayerCalls[0];
     act(() => {
-      (firstYt.onReady as (p: unknown) => void)({} as unknown);
+      (firstYt.onReady as (p: unknown) => void)(makeMockPlayer());
       (firstYt.onPlay as () => void)();
     });
 
@@ -198,7 +216,7 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
 
     const newYt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
     act(() => {
-      (newYt.onReady as (p: unknown) => void)({} as unknown);
+      (newYt.onReady as (p: unknown) => void)(makeMockPlayer());
     });
     act(() => {
       vi.advanceTimersByTime(1500);
@@ -221,7 +239,7 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
 
     const yt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
     act(() => {
-      (yt.onReady as (p: unknown) => void)({} as unknown);
+      (yt.onReady as (p: unknown) => void)(makeMockPlayer());
     });
     act(() => {
       vi.advanceTimersByTime(1500);
@@ -239,7 +257,7 @@ describe('MobilePartyroomDisplayBoard · cross-component single source', () => {
 
     const yt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
     act(() => {
-      (yt.onReady as (p: unknown) => void)({} as unknown);
+      (yt.onReady as (p: unknown) => void)(makeMockPlayer());
     });
     act(() => {
       vi.advanceTimersByTime(1500);
@@ -258,7 +276,7 @@ describe('MobilePartyroomDisplayBoard · cross-component single source', () => {
 
     const yt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
     act(() => {
-      (yt.onReady as (p: unknown) => void)({} as unknown);
+      (yt.onReady as (p: unknown) => void)(makeMockPlayer());
     });
     act(() => {
       vi.advanceTimersByTime(1500);
