@@ -95,6 +95,16 @@ describe('middleware', () => {
       expect(setCookieHeader).toContain('Secure');
     });
 
+    test(`${LANGUAGE_COOKIE_KEY} 쿠키 없음 + 브라우저 언어 ko → ${Language.Ko} 로 설정`, async () => {
+      const req = buildReq('http://localhost/parties', {
+        'accept-language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+      });
+      const res = await middleware(req);
+
+      const setCookieHeader = res?.headers.get('set-cookie') ?? '';
+      expect(setCookieHeader).toContain(`${LANGUAGE_COOKIE_KEY}=${Language.Ko}`);
+    });
+
     test(`${LANGUAGE_COOKIE_KEY} 쿠키 있음 → 변경 안 함`, async () => {
       const req = buildReq('http://localhost/parties', {
         cookie: `${LANGUAGE_COOKIE_KEY}=${Language.Ko}`,
