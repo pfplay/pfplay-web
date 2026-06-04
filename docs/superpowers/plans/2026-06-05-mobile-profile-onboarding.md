@@ -376,6 +376,7 @@ import { MobileProfileEditForm } from '@/features-mobile/profile';
 import { ProfileEditFormV1 } from '@/features/edit-profile-bio';
 import { getServerDictionary } from '@/shared/lib/localization/get-server-dictionary';
 import { BackButton } from '@/shared/ui/components/back-button';
+import { Typography } from '@/shared/ui/components/typography';
 
 const ProfileSettingsPage = async () => {
   const isMobile = headers().get('x-pf-device') === 'mobile';
@@ -383,8 +384,10 @@ const ProfileSettingsPage = async () => {
 
   if (isMobile) {
     return (
-      <div className='flexCol w-full pt-app-header'>
-        <h1 className='px-app text-h2 text-white'>{t.settings.title.who_r_u}</h1>
+      <div className='flexCol w-full min-h-screen pt-[var(--header-height)]'>
+        <Typography type='title2' as='h1' className='text-white px-app pt-6'>
+          {t.settings.title.who_r_u}
+        </Typography>
         <MobileProfileEditForm />
       </div>
     );
@@ -401,7 +404,7 @@ const ProfileSettingsPage = async () => {
 export default ProfileSettingsPage;
 ```
 
-> 주의: `pt-app-header`/`text-h2` 등 유틸 클래스가 실제 tailwind config 에 존재하는지 확인, 없으면 기존 모바일 페이지(`MobileLobby` 등)에서 쓰는 헤더 오프셋/타이포 클래스로 맞출 것. `MobileOnlyDesktopFeatureCard` import 는 제거.
+> 실측 검증 완료(2026-06-05): `Typography`(`type='title2'`)·`px-app`·CSS 변수 `--header-height`(글로벌 `Header` 가 `h-[var(--header-height)]` 로 사용) 모두 실존. **`pt-app-header`/`text-h2` 는 미존재 클래스라 사용 금지**(리뷰어 지적, silent no-op). 수평 패딩은 폼(`MobileProfileEditForm`)이 자체 `px-app` 으로 처리하므로 페이지 컨테이너엔 중복 부여 금지(제목만 `px-app`). `settings/layout.tsx` 가 글로벌 `<Header/>`(fixed)+`<main>` 으로 감싸므로 본 분기는 추가 `<main>` 없이 헤더 오프셋만. `MobileOnlyDesktopFeatureCard` import 는 제거.
 
 - [ ] **Step 3: `'profile-edit'` variant 제거** — `mobile-only-desktop-feature-card.component.tsx` 의 `MobileOnlyDesktopFeature` 유니온에서 `| 'profile-edit'` 제거, `featureLabel` 맵에서 `'profile-edit': '프로필 편집',` 라인 제거. `'avatar-edit'`, `'withdraw'` 유지.
 
@@ -597,14 +600,47 @@ git commit -m "refactor(settings): 프로필 layout RSC 전환 — x-pf-device �
 
 - Create: `e2e/mobile/profile-onboarding.spec.ts`
 
-- [ ] **Step 1: spec 작성** — 기존 `e2e/mobile/*.spec.ts`(host-cta·playlist-management) 의 셋업/픽스처/로그인 헬퍼를 참조해 동일 패턴으로 작성. 시나리오:
+- [ ] **Step 1: spec 작성**
 
-  1. profileUpdated=false 인 신규 AM 상태로 진입(기존 e2e 의 신규 가입/시드 헬퍼 재사용; 없으면 가장 가까운 로그인 헬퍼 + 백엔드 시드).
-  2. `/settings/profile` 로 강제 이동돼 **모바일 폼(닉네임 input + `mobile-profile-submit`)이 노출**되는지(폴백 카드 "데스크탑에서 사용 가능"이 **아님**) 확인.
-  3. 닉네임 입력 → 제출.
-  4. **`/parties` 로 착지**(아바타 desktop-only 카드를 거치지 않음) 확인 = 데드엔드 2겹 해소 실증.
+  ⚠️ **캐시 auth 픽스처 사용 금지**(리뷰어 지적): `e2e/fixtures/auth.fixtures.ts` 의 `user1Context` 등은 **FM + profileUpdated=true** storageState 라, 신규 guard 가 FM→/parties 로 **즉시 리다이렉트**해 폼이 렌더되지 않는다. 본 테스트는 **fresh 컨텍스트 + associate(AM) dev 로그인**으로 `profileUpdated=false` AM 을 만들어야 한다.
 
-  로케일 독립 `data-testid` 셀렉터 사용([[reference_pfplay_web_local_e2e_run]]). 로케일 텍스트 단언 회피.
+  로그인 동선(실측): sign-in 페이지 → `[data-testid="dev-sign-in-button"]` 클릭 → 다이얼로그 `[data-testid="dialog-panel"]` → `[data-testid="dev-sign-in-associate"]` 클릭(= `temporary_SignInAssociateCrew()` = AM 생성). 이후 `Me.serviceEntry`(profileUpdated=false) 가 `/settings/profile` 로 push. (`e2e/auth/shared.ts` 의 full 버전 패턴을 associate testid 로 차용.)
+
+  spec 골격:
+
+  ```ts
+  import { test, expect } from '@playwright/test';
+
+  // 캐시 storageState 무시 — fresh 컨텍스트로 신규 AM 로그인
+  test.use({ storageState: { cookies: [], origins: [] } });
+
+  test('모바일 신규 AM: 강제 프로필 온보딩 → /parties (데드엔드 2겹 해소)', async ({ page }) => {
+    await page.goto('/sign-in');
+    await page.locator('[data-testid="dev-sign-in-button"]').click({ force: true });
+    const dialog = page
+      .locator('[data-testid="dialog-panel"]')
+      .filter({ has: page.locator('[data-testid="dev-sign-in-associate"]') })
+      .first();
+    await expect(dialog).toBeVisible();
+    await dialog.locator('[data-testid="dev-sign-in-associate"]').click({ force: true });
+
+    // 데드엔드 #1 해소: /settings/profile 모바일 폼 노출 (폴백 카드 아님)
+    await expect(page).toHaveURL(/\/settings\/profile/);
+    await expect(page.locator('[data-testid="mobile-profile-form"]')).toBeVisible();
+
+    // 닉네임 입력 → 제출
+    const unique = `am${Date.now() % 100000}`;
+    await page.locator('[data-testid="mobile-profile-form"] input').first().fill(unique);
+    await page.locator('[data-testid="mobile-profile-submit"]').click();
+
+    // 데드엔드 #2 해소: 아바타 desktop-only 카드 거치지 않고 /parties 착지
+    await expect(page).toHaveURL(/\/parties/);
+  });
+  ```
+
+  로케일 독립 `data-testid` 셀렉터만 사용([[reference_pfplay_web_local_e2e_run]]). 로케일 텍스트 단언 회피.
+
+  ⚠️ **실행 시 확인할 백엔드 동작**: `temporary_SignInAssociateCrew()` 가 호출마다 **fresh `profileUpdated=false` AM** 을 주는지(아니면 재사용 계정이라 이미 profileUpdated=true 일 수 있음). 후자면 즉시 리다이렉트로 실패하므로, 로컬 backend 의 associate dev-signin 시드 동작을 먼저 확인하고 필요 시 DB cleanup 으로 보정. STEP_TIMEOUT(cold-start) 고려해 `--project=mobile` warm 재실행 허용.
 
 - [ ] **Step 2: 로컬 풀스택 e2e 실행** ([[reference_pfplay_web_local_e2e_run]], [[reference_pfplay_web_local_dev_http_webpack]])
 
