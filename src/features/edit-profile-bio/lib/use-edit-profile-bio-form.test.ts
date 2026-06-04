@@ -30,7 +30,7 @@ describe('useEditProfileBioForm', () => {
     expect(updateBioMock.mock.calls[0][0]).toEqual({ nickname: 'olddata', introduction: 'hi' });
   });
 
-  test('409 응답 시 nickname 에러 셋팅', async () => {
+  test('onError(409) 와이어링 — nickname 에러 셋팅', async () => {
     const { result } = renderHook(() => useEditProfileBioForm());
     await act(async () => {
       await result.current.onSubmit({ preventDefault: () => {} } as any);
