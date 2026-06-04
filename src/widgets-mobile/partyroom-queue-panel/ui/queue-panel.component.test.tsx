@@ -18,6 +18,7 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
         member_action_register: '+ DJ 등록',
         member_action_unregister: '큐에서 나가기',
         member_action_change_playlist: '변경',
+        member_action_manage_playlists: '내 플레이리스트 관리',
         current_dj_title: '현재 DJ',
         empty: '큐 비어있음',
       },
@@ -59,6 +60,9 @@ vi.mock('@/features-mobile/partyroom/change-my-playlist', () => ({
 vi.mock('@/features-mobile/partyroom/unregister-me-from-queue', () => ({
   useMobileUnregisterMeFromQueue: () => vi.fn(),
 }));
+vi.mock('@/features-mobile/playlist/manage', () => ({
+  useOpenPlaylistsManagement: () => vi.fn(),
+}));
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn() }),
@@ -77,6 +81,8 @@ describe('MobilePartyroomQueuePanel (분기 매트릭스)', () => {
     useCurrentPartyroomMock.mockReturnValue(undefined);
     render(<QueuePanel partyroomId={1} />);
     expect(screen.getByTestId('guest-cta')).toBeInTheDocument();
+    // 게스트는 MemberActions(= 플리 관리 진입점) 자체가 안 보임
+    expect(screen.queryByTestId('member-action-manage-playlists')).not.toBeInTheDocument();
   });
 
   test('멤버 + 빈 큐 → 등록 버튼만', () => {
@@ -87,6 +93,8 @@ describe('MobilePartyroomQueuePanel (분기 매트릭스)', () => {
     useCurrentPartyroomMock.mockReturnValue(99);
     render(<QueuePanel partyroomId={1} />);
     expect(screen.getByTestId('member-action-register')).toBeInTheDocument();
+    // 멤버는 플리 관리 진입점 노출
+    expect(screen.getByTestId('member-action-manage-playlists')).toBeInTheDocument();
   });
 
   test('멤버 + 큐 있음 → CurrentDjRow + QueueList + MemberActions(register)', () => {

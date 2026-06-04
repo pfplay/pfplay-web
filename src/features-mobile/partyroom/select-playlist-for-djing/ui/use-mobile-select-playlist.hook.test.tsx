@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { describe, expect, test, vi, beforeEach } from 'vitest';
 import { FullscreenSheetProvider } from '@/widgets-mobile/partyroom-djing-sheet';
 import useMobileSelectPlaylist from './use-mobile-select-playlist.hook';
@@ -9,19 +9,14 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: pushMock }),
 }));
 
-const confirmMock = vi.fn();
-vi.mock('@/shared/ui/components/dialog', () => ({
-  useDialog: () => ({
-    openConfirmDialog: (...args: unknown[]) => confirmMock(...args),
-  }),
+const openManageMock = vi.fn();
+vi.mock('@/features-mobile/playlist/manage', () => ({
+  useOpenPlaylistsManagement: () => openManageMock,
 }));
 
-// useI18n — pass-through mock for the create_playlist_song key + partyroom.queue.* sheet titles
+// useI18n — pass-through mock for the partyroom.queue.* sheet titles
 vi.mock('@/shared/lib/localization/i18n.context', () => ({
   useI18n: () => ({
-    dj: {
-      para: { create_playlist_song: '곡을 추가해주세요' },
-    },
     partyroom: {
       queue: {
         sheet_select_playlist_title: '플레이리스트 선택',
@@ -40,31 +35,20 @@ const wrap = ({ children }: { children: ReactNode }) => (
 describe('useMobileSelectPlaylist', () => {
   beforeEach(() => {
     pushMock.mockReset();
-    confirmMock.mockReset();
+    openManageMock.mockReset();
   });
 
-  test('playlists=[] → confirm dialog → confirm 시 /me/playlist push + resolve(undefined)', async () => {
-    confirmMock.mockResolvedValue(true);
-    const { result } = renderHook(() => useMobileSelectPlaylist({ playlists: [] }), {
-      wrapper: wrap,
-    });
-    const promise = result.current();
-    await waitFor(() => expect(confirmMock).toHaveBeenCalled());
-    await expect(promise).resolves.toBeUndefined();
-    expect(pushMock).toHaveBeenCalledWith('/me/playlist');
-  });
-
-  test('playlists=[] + confirm 취소 시 push 없음 + resolve(undefined)', async () => {
-    confirmMock.mockResolvedValue(false);
+  test('playlists=[] → 관리 sheet(openManage) push + router.push 안 함 + resolve(undefined)', async () => {
     const { result } = renderHook(() => useMobileSelectPlaylist({ playlists: [] }), {
       wrapper: wrap,
     });
     const promise = result.current();
     await expect(promise).resolves.toBeUndefined();
-    expect(pushMock).not.toHaveBeenCalled();
+    expect(openManageMock).toHaveBeenCalledTimes(1);
+    expect(pushMock).not.toHaveBeenCalled(); // /me/playlist 로 안 튕김 (회귀 보정)
   });
 
-  test('every musicCount === 0 → SelectPlaylistSheet push (confirm dialog 안 띄움)', async () => {
+  test('every musicCount === 0 → SelectPlaylistSheet push (openManage 안 부름)', async () => {
     const { result } = renderHook(
       () => useMobileSelectPlaylist({ playlists: PL_ALL_EMPTY as never }),
       {
@@ -75,7 +59,7 @@ describe('useMobileSelectPlaylist', () => {
       void result.current();
       await new Promise((r) => setTimeout(r, 0));
     });
-    expect(confirmMock).not.toHaveBeenCalled();
+    expect(openManageMock).not.toHaveBeenCalled();
   });
 
   test.todo(

@@ -9,6 +9,7 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
       queue: {
         member_action_register: '+ DJ 등록',
         member_action_unregister: '큐에서 나가기',
+        member_action_manage_playlists: '내 플레이리스트 관리',
       },
     },
   }),
@@ -16,26 +17,68 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
 
 describe('MemberActions', () => {
   test('isMeInQueue=false → [+ DJ 등록]', () => {
-    render(<MemberActions isMeInQueue={false} onRegister={vi.fn()} onUnregister={vi.fn()} />);
+    render(
+      <MemberActions
+        isMeInQueue={false}
+        onRegister={vi.fn()}
+        onUnregister={vi.fn()}
+        onManagePlaylists={vi.fn()}
+      />
+    );
     expect(screen.getByTestId('member-action-register')).toHaveTextContent(/DJ 등록/);
   });
 
   test('isMeInQueue=true → [큐에서 나가기]', () => {
-    render(<MemberActions isMeInQueue={true} onRegister={vi.fn()} onUnregister={vi.fn()} />);
+    render(
+      <MemberActions
+        isMeInQueue={true}
+        onRegister={vi.fn()}
+        onUnregister={vi.fn()}
+        onManagePlaylists={vi.fn()}
+      />
+    );
     expect(screen.getByTestId('member-action-unregister')).toHaveTextContent(/큐에서 나가기/);
   });
 
   test('[+ DJ 등록] 클릭 → onRegister', async () => {
     const onRegister = vi.fn();
-    render(<MemberActions isMeInQueue={false} onRegister={onRegister} onUnregister={vi.fn()} />);
+    render(
+      <MemberActions
+        isMeInQueue={false}
+        onRegister={onRegister}
+        onUnregister={vi.fn()}
+        onManagePlaylists={vi.fn()}
+      />
+    );
     await userEvent.click(screen.getByTestId('member-action-register'));
     expect(onRegister).toHaveBeenCalledTimes(1);
   });
 
   test('[큐에서 나가기] 클릭 → onUnregister', async () => {
     const onUnregister = vi.fn();
-    render(<MemberActions isMeInQueue={true} onRegister={vi.fn()} onUnregister={onUnregister} />);
+    render(
+      <MemberActions
+        isMeInQueue={true}
+        onRegister={vi.fn()}
+        onUnregister={onUnregister}
+        onManagePlaylists={vi.fn()}
+      />
+    );
     await userEvent.click(screen.getByTestId('member-action-unregister'));
     expect(onUnregister).toHaveBeenCalledTimes(1);
+  });
+
+  test('secondary "내 플레이리스트 관리" 렌더 + 클릭 → onManagePlaylists', async () => {
+    const onManage = vi.fn();
+    render(
+      <MemberActions
+        isMeInQueue={false}
+        onRegister={vi.fn()}
+        onUnregister={vi.fn()}
+        onManagePlaylists={onManage}
+      />
+    );
+    await userEvent.click(screen.getByTestId('member-action-manage-playlists'));
+    expect(onManage).toHaveBeenCalledTimes(1);
   });
 });

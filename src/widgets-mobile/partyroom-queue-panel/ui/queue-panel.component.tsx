@@ -6,6 +6,7 @@ import { useFetchPlaylists } from '@/features/playlist/list';
 import { useMobileChangeMyPlaylist } from '@/features-mobile/partyroom/change-my-playlist';
 import { useMobileRegisterMeToQueue } from '@/features-mobile/partyroom/register-me-to-queue';
 import { useMobileUnregisterMeFromQueue } from '@/features-mobile/partyroom/unregister-me-from-queue';
+import { useOpenPlaylistsManagement } from '@/features-mobile/playlist/manage';
 import { AuthorityTier, QueueStatus } from '@/shared/api/http/types/@enums';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { FullscreenSheetProvider, SheetHost } from '@/widgets-mobile/partyroom-djing-sheet';
@@ -39,6 +40,7 @@ const QueuePanelContent: FC<Props> = ({ partyroomId }) => {
   const register = useMobileRegisterMeToQueue({ partyroomId, queueStatus, playlists });
   const change = useMobileChangeMyPlaylist({ partyroomId, playlists });
   const unregister = useMobileUnregisterMeFromQueue({ partyroomId });
+  const openManage = useOpenPlaylistsManagement();
 
   if (isGuest) {
     return (
@@ -62,7 +64,12 @@ const QueuePanelContent: FC<Props> = ({ partyroomId }) => {
         )}
         <QueueList djs={djs} myCrewId={myCrewId} onChangePlaylist={change} />
       </div>
-      <MemberActions isMeInQueue={isMeInQueue} onRegister={register} onUnregister={unregister} />
+      <MemberActions
+        isMeInQueue={isMeInQueue}
+        onRegister={register}
+        onUnregister={unregister}
+        onManagePlaylists={openManage}
+      />
     </div>
   );
 };

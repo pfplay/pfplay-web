@@ -23,10 +23,11 @@ const API_BASE = e2eEnv.E2E_API_BASE;
 
 /** title prefix 6 종 (E2EA/B/C/D / MTOS / MOBILE-TOS- / MDJ / MAT) 정리.
  *  display-board.tos.spec.ts 의 동명 패턴과 1:1 일치. */
-export const E2E_PARTYROOM_TITLE_PATTERN = /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-|MDJ|MAT)/;
+export const E2E_PARTYROOM_TITLE_PATTERN = /^(E2EA|E2EB|E2EC|E2ED|MTOS|MOBILE-TOS-|MDJ|MAT|MPM)/;
 
-/** chunk 4 spec 의 unique partyroom title (Date.now base36). */
-export const chunk4PartyroomName = (prefix: 'MDJ' | 'MAT') => `${prefix}${Date.now().toString(36)}`;
+/** chunk 4 spec 의 unique partyroom title (Date.now base36). MPM = chunk6 플리 관리. */
+export const chunk4PartyroomName = (prefix: 'MDJ' | 'MAT' | 'MPM') =>
+  `${prefix}${Date.now().toString(36)}`;
 
 /** chunk 4 spec 의 unique playlist title. */
 export const chunk4PlaylistName = (prefix: 'MDJpl' | 'MATpl') =>
