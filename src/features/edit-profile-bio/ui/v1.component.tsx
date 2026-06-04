@@ -1,54 +1,20 @@
 'use client';
 
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useSuspenseFetchMe } from '@/entities/me';
+import { Controller } from 'react-hook-form';
 import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { FormItem } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
 import { TextArea } from '@/shared/ui/components/textarea';
-import { useUpdateMyBio } from '../api/use-update-my-bio.mutation';
-import * as Form from '../model/form.model';
+import { useEditProfileBioForm } from '../lib/use-edit-profile-bio-form';
 
 const ProfileEditFormV1 = () => {
   const t = useI18n();
-  const { data: me } = useSuspenseFetchMe();
-  const { mutate: updateBio, isPending } = useUpdateMyBio();
-
-  const {
-    handleSubmit,
-    control,
-    setError,
-    formState: { errors, isValid },
-  } = useForm<Form.Model>({
-    mode: 'all',
-    resolver: zodResolver(Form.getSchema(t)),
-    defaultValues: {
-      nickname: me.nickname,
-      introduction: me.introduction,
-    },
-  });
-  const btnDisabled = Object.keys(errors).length > 0 || !isValid;
-
-  const handleFormSubmit: SubmitHandler<Form.Model> = (values) => {
-    updateBio(values, {
-      // onSuccess 시 어디로 이동할지는, 사용부에서 me 변경따른 effect로 처리
-      onError: (err) => {
-        // FIXME: 다른 브랜치에서 작업한 server response 를 제네릭으로 변경
-        if (err.response?.data.code === 409) {
-          setError('nickname', { message: t.settings.para.nickname_taken });
-        }
-      },
-    });
-  };
+  const { control, onSubmit, errors, btnDisabled, isPending } = useEditProfileBioForm();
 
   return (
-    <form
-      onSubmit={handleSubmit(handleFormSubmit)}
-      className='items-center justify-between py-24 flexCol'
-    >
+    <form onSubmit={onSubmit} className='items-center justify-between py-24 flexCol'>
       <div className='items-end gap-12 flexCol'>
         <Controller
           control={control}
