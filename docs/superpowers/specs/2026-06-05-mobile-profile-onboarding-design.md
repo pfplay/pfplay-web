@@ -18,6 +18,8 @@
 
 `parties/layout.tsx` 는 `profileUpdated` 가 true 가 될 때까지 `null` 을 렌더하므로, 모바일 신규 회원은 **프로필 설정도 못 하고 어떤 파티에도 진입하지 못한다.** 게스트(GT)는 `profileUpdated=true`/좀비 안전망으로 면제되어 맛보기 깔때기는 작동하지만, 갓 가입한 소셜 회원은 벽에 부딪힌다.
 
+> **데드엔드 #2 의 발화 시점 주의**: `settings/profile/layout.tsx` 의 AM→avatar 리다이렉트는 `me.profileUpdated` 에 게이트돼 있다. 신규 가입자는 진입 시 `profileUpdated=false` 라 리다이렉트가 **즉시 발화하지 않고** 폼이 노출된다. 데드엔드 #2 는 데드엔드 #1 을 고쳐 프로필 제출 → `profileUpdated=true` 로 전이된 **직후**에 비로소 발화한다(§6 데이터 흐름 순서대로). 즉 #1 만 고치면 #2 가 드러나는 구조 — 둘을 한 번에 고쳐야 하는 이유.
+
 근거(실측, 2026-06-05):
 
 - `src/app/parties/layout.tsx:35` — `if (me && !me.profileUpdated) router.replace('/settings/profile')`, `:42` — `!me.profileUpdated` 면 `null` 렌더
@@ -74,6 +76,7 @@ device-aware 리다이렉트 fix는 클라이언트 layout 이 `x-pf-device`(서
   - `useEditProfileBioForm()` 소비.
   - 레이아웃: 세로 스택. `FormItem`(닉네임, 필수, `Input maxLength=16`) + `FormItem`(소개, `TextArea maxLength=50 rows=3`) **full-width**(`w-full`, 모바일 `px-app` 패딩). 하단 full-width "Let's get in" `Button`(`btnDisabled`/`isPending` 바인딩). 데스크탑의 absolute 배치 대신 일반 흐름 하단 고정.
   - 재사용 공통 컴포넌트: `FormItem`, `Input`, `TextArea`, `Button` (`@/shared/ui/components/*`).
+  - ⚠️ **닉네임 `maxLength={16}` 은 데스크탑 V1 그대로 미러링한다(의도된 비대칭).** zod 스키마는 `nickname.max(12)`, placeholder 는 `char_limit_12` 지만 input maxLength 는 16 — 데스크탑 상속 동작이다. "고치지" 말 것(데스크탑 drift 유발). 검증은 zod 가, 하드 컷은 16 으로 동일하게 둔다.
 - **신규** `src/features-mobile/profile/index.ts` — barrel export.
 
 ### 5.3 페이지 와이어링
