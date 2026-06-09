@@ -250,6 +250,18 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
   });
 });
 
+describe('MobilePartyroomDisplayBoard · 헤더', () => {
+  test('헤더: 뒤로 버튼 클릭 시 /parties 라우팅 + PF 아이콘 렌더', () => {
+    render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    const back = screen.getByRole('button', { name: '뒤로' });
+    expect(back.querySelector('svg')).toBeTruthy(); // PFArrowLeft
+    fireEvent.click(back);
+    expect(mockPush).toHaveBeenCalledWith('/parties');
+    const menu = screen.getByRole('button', { name: '메뉴' });
+    expect(menu.querySelector('svg')).toBeTruthy(); // PFMoreVert
+  });
+});
+
 describe('MobilePartyroomDisplayBoard · cross-component single source', () => {
   test('#11 Mode B + autoplay 차단: NowPlayingRow 안에 TapToPlayButton 렌더, overlay 미렌더', () => {
     const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
