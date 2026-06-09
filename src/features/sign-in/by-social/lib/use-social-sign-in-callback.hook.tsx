@@ -12,6 +12,7 @@ import {
   trackSignedIn,
   trackSignedUp,
 } from '@/shared/lib/analytics/auth-tracking';
+import { getStoredCodeVerifier } from '@/shared/lib/functions/pkce';
 import useCallbackLogin from '../api/use-callback-login';
 
 export default function useOAuth2Callback() {
@@ -22,6 +23,14 @@ export default function useOAuth2Callback() {
 
   return useCallback(
     async (oauth2Provider: OAuth2Provider) => {
+      // #347: 콜백 URL 재진입(뒤로가기/새로고침) 방어. PKCE codeVerifier 는 최초 교환 성공 시
+      // 삭제되므로, 부재 = 이미 교환됨(재진입) 또는 무효 접근. 재교환은 1회용이라 throw →
+      // 전역 MutationCache.onError 가 "Code verifier not found" 모달을 띄운다. 교환을 시도하지
+      // 않고 조용히 sign-in 으로 보낸다(인증된 사용자면 sign-in 이 다시 /parties 로 바운스).
+      if (!getStoredCodeVerifier()) {
+        router.replace('/sign-in');
+        return;
+      }
       try {
         const tokenResponse = await callbackLogin(oauth2Provider);
 
@@ -55,9 +64,11 @@ export default function useOAuth2Callback() {
         }
 
         // 옵션2(#7): 신규 가입자는 좀비 me 와 무관하게 프로필 설정 강제.
-        router.push(Me.serviceEntry(me, tokenResponse.isNewUser));
+        // #347: redirect-only 콜백 페이지라 replace — push 면 콜백 URL 이 히스토리에 남아
+        // 뒤로가기로 재진입 → 1회용 PKCE 재교환 throw → 에러 모달.
+        router.replace(Me.serviceEntry(me, tokenResponse.isNewUser));
       } catch {
-        router.push('/sign-in');
+        router.replace('/sign-in');
       }
     },
     [callbackLogin, fetchMeAsync, queryClient, router]
