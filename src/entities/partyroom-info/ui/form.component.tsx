@@ -53,10 +53,13 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
   return (
     <form
       onSubmit={handleSubmit(() => onSubmit(form.getValues(), form))}
-      className={cn('flexCol items-center justify-between mx-auto pl-[26px] pr-[40px]', {
-        'child-form-labels:w-[100px]': lang === Language.Ko,
-        'child-form-labels:w-[128px]': lang === Language.En,
-      })}
+      className={cn(
+        'flexCol items-center justify-between mx-auto pl-5 pr-5 tablet:pl-[26px] tablet:pr-[40px]',
+        {
+          'child-form-labels:w-[100px]': lang === Language.Ko,
+          'child-form-labels:w-[128px]': lang === Language.En,
+        }
+      )}
     >
       <div className='w-full items-end gap-12 flexCol'>
         <FormItem
@@ -86,7 +89,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
           />
         </FormItem>
 
-        <div className='w-full flexRow items-center justify-between gap-8'>
+        <div className='w-full flexCol gap-8 tablet:flexRow tablet:items-center tablet:justify-between'>
           <FormItem
             label={
               <Typography as='span' type='body2' className='text-left'>
@@ -97,7 +100,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
               </Typography>
             }
             error={errors.domain?.message}
-            classNames={{ label: 'text-gray-200', container: 'flex-1' }}
+            classNames={{ label: 'text-gray-200', container: 'w-full tablet:flex-1' }}
           >
             <Input {...register('domain')} placeholder={t.onboard.para.domain_format} />
           </FormItem>
@@ -137,7 +140,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
             type='submit'
             variant='fill'
             size='lg'
-            className='px-[74px]'
+            className='px-8 tablet:px-[74px]'
             disabled={btnDisabled}
           >
             {submitText}

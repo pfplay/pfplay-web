@@ -29,10 +29,10 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
   return (
     <label
       className={cn([
-        'grid gap-x-[16px] gap-y-[8px] items-center grid-rows-max auto-rows-max',
+        'grid grid-cols-1 gap-x-[16px] gap-y-[8px] items-center grid-rows-max auto-rows-max',
         layout === 'horizontal' && {
-          'grid-cols-[max-content_1fr]': !fit,
-          'grid-cols-[max-content_max-content]': fit,
+          'tablet:grid-cols-[max-content_1fr]': !fit,
+          'tablet:grid-cols-[max-content_max-content]': fit,
         },
         classNames?.container,
       ])}
@@ -80,7 +80,7 @@ const FormItem: FC<PropsWithChildren<FormItemProps>> = ({
           <div
             className={cn({
               hidden: layout === 'vertical',
-              block: layout === 'horizontal',
+              'hidden tablet:block': layout === 'horizontal',
             })}
           />
 
@@ -108,7 +108,7 @@ const labelTextStyle = (layout: Axis, required?: boolean) => {
     'relative pr-[12px]',
     {
       'text-start text-gray-300': layout === 'vertical',
-      'text-right': layout === 'horizontal',
+      'text-start tablet:text-right': layout === 'horizontal',
     },
     required &&
       'after:content-["*"] after:absolute after:-right-[0.33em] after:top-[0.8em] after:transform after:-translate-x-1/2 after:-translate-y-1/2 after:text-red-300',
