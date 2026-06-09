@@ -10,14 +10,12 @@
 - `Dialog` 패널은 `w-[440px] max-w-full`로 **패널 자체는 이미 뷰포트에 클램프**됨(`max-w-full`). 즉 패널이 아니라 **내부 콘텐츠 오버플로우**가 주범.
 - 이 패턴은 공용 `FormItem`을 쓰는 모든 폼(생성·도메인 등 — 모바일/데스크탑 공유)에서 재발 가능.
 
-## 전제 (하드 의존성)
+## 전제 / 의존성 (2026-06-09 정정)
 
-- **#394(모바일 프로필 온보딩) 먼저 dev 머지 후** 그 위에서 진행. #394가 공용 프리미티브에 `min-w-0`을 깔아둔다:
-  - `FormItem` children wrapper `min-w-0`
-  - `Input` 내부 input `min-w-0`
-  - `use-be-a-host` 다이얼로그 `max-w-[calc(100vw-32px)]`, 생성폼 `w-full`+`flex-wrap`, `mobile-profile-edit-form layout='vertical'`
-- 본 작업 브랜치는 #394 머지 반영된 development 위로 rebase 후 구현/검증한다. (스펙·플랜 문서는 선작성 가능)
-- **플랜의 각 구현 Task 헤더에 "#394 머지+rebase 완료 전제"를 명시** — #394 미머지 상태로 FormItem을 손대면 #394의 `min-w-0` 변경과 충돌하는 diff가 생긴다.
+- **#394·#395 dev 머지 완료. 본 작업은 #394와 독립** — 머지된 #394(`346ff20`)의 실제 변경은 모바일 프로필 온보딩 관련뿐(`mobile-profile-edit-form`·profile redirect guard·`edit-profile-bio/v1`·docs·e2e). **`form-item`/`input`/`use-be-a-host`/`partyroom-info`/`dialog`은 안 건드림** → 공유 파일 0, 충돌 없음.
+- ⚠️ **정정**: 초기 스펙은 "#394가 공용 프리미티브에 `min-w-0`을 깐다"를 전제했으나 **사실이 아님**(현 development에 `form-item`/`input` `min-w-0` 부재 확인). 그 1차 수정들(min-w-0·use-be-a-host max-w·partyroom-info flex-wrap)은 최종 #394에 들어가지 않았다.
+- **함의**: 주 수정(반응형 FormItem → 모바일 단일칼럼)은 단일칼럼에서 입력이 전체폭이라 `min-w-0` 없이도 오버플로우 해소(min-w-0는 desktop 가로용이고 desktop은 넓어 불필요 → YAGNI, 증거 없으면 추가 안 함). #394 유무와 무관하게 본 작업만으로 완결.
+- 본 브랜치는 머지된 development(`7fdbf90`) 위로 rebase 완료. 바로 구현 가능.
 - dev 머지·prod 배포는 사용자 게이트.
 
 ## 목표 / 성공 기준
@@ -57,13 +55,12 @@
 - **패널 자체가 뷰포트를 초과하는 케이스가 남는 경우에만** 그 표면(또는 공용 `Dialog` 베이스)에 `max-w-[calc(100vw-2rem)]` 보강. 무분별한 전역 추가 금지.
 - 데스크탑 ProfileEditForm V1(`w-[550px]` 하드코딩 입력)이 모바일에서 도달 불가하면 범위 제외(확인 후 결정).
 
-### ③ #394 중복 핵 정리 (표면별 검증 게이트)
+### ③ 중복 핵 정리 (대폭 축소 — 2026-06-09 정정)
 
-①·#394로 불필요해진 per-form 핵을 정리(코드 더럽힘 회피):
+당초 #394가 깔았다고 가정한 per-form 핵(use-be-a-host `max-w` / 생성폼 `flex-wrap`)은 **현 development에 존재하지 않음**(#394에 안 들어감) → 정리할 게 없음.
 
-- 후보: `use-be-a-host` 다이얼로그 `max-w` / 생성폼 `flex-wrap` / `mobile-profile-edit-form layout='vertical'`.
-- **각 핵은 "그 표면을 공용 수정이 덮는다"를 모바일 스크린샷으로 확인한 뒤에만 제거.** 못 덮는 게 있으면 남기고 사유 기록.
-- (#394 머지 후 development 위에서 작업하므로 #394 코드 수정은 안전.)
+- 유일한 잔존 후보: `mobile-profile-edit-form`의 `layout='vertical'`. 반응형 FormItem이 모바일에서 자동 세로이므로 명시 prop은 **이론상 중복**이나, 이 컴포넌트는 **모바일 전용 렌더**라 항상 세로로 무해 → **그대로 둔다**(제거 이득 없음, 회귀 리스크만). 코드 더럽힘 아님.
+- 결론: 별도 정리 Task 불필요. 본 항목은 사실상 소멸하고 최종 검증으로 흡수.
 
 ## 검증
 
@@ -77,5 +74,5 @@
 ## 리스크 / 완화
 
 - **공용 컴포넌트(FormItem) 변경 → 회귀 범위 넓음**: 브레이크포인트 게이트로 데스크탑(≥tablet) 불변 보장 + 데스크탑 스크린샷으로 검증. FormItem을 쓰는 모든 폼을 모바일/데스크탑 양쪽 캡처로 확인.
-- **tablet 브레이크포인트 토큰 확인 필요**: `px-app`이 모바일 `px-20` / `tablet:px-40`을 쓰므로 tablet이 모바일↔데스크탑 경계. 플랜에서 정확한 토큰 재확인.
-- **#394 미머지 상태로 구현 착수 위험**: 구현은 #394 머지+rebase 후. 스펙/플랜만 선행.
+- **tablet 브레이크포인트 토큰 확인 필요**: `px-app`이 모바일 `px-20` / `tablet:px-40`을 쓰므로 tablet이 모바일↔데스크탑 경계. `theme.screens.tablet=768px` 확인됨.
+- ~~#394 미머지 착수 위험~~ → 해소: #394·#395 머지 완료, 본 작업 #394와 파일 겹침 0, development(`7fdbf90`) 위 rebase 완료. 바로 착수 가능.
