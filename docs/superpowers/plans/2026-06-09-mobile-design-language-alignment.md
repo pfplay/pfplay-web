@@ -371,21 +371,21 @@ git commit -m "feat(ui): MobileSheetHeader 공용 컴포넌트 + fullscreen-shee
 
 `partyroom-display-board.component.test.tsx`에 추가(또는 기존 헤더 단언 갱신). 뒤로 버튼은 `aria-label='뒤로'` 유지, 메뉴는 `aria-label='메뉴'` 유지. PF 아이콘 SVG 존재 단언:
 
+⚠️ 이 테스트 파일은 이미 모듈 레벨 `mockPush`를 가짐(`vi.mock('next/navigation', () => ({ useRouter: () => ({ push: mockPush }) }))`, `beforeEach`에서 clear). **로컬 `const push = vi.fn()` 만들지 말 것** — 라우터에 안 엮여 단언 실패. 기존 `mockPush`를 그대로 단언:
+
 ```tsx
 test('헤더: 뒤로 버튼 클릭 시 /parties 라우팅 + PF 아이콘 렌더', () => {
-  const push = vi.fn();
-  // 기존 next/navigation useRouter mock 의 push 를 캡처 (기존 패턴 따름)
-  // ... render(<MobilePartyroomDisplayBoard partyroomId={1} />)
+  render(<MobilePartyroomDisplayBoard partyroomId={1} />);
   const back = screen.getByRole('button', { name: '뒤로' });
   expect(back.querySelector('svg')).toBeTruthy(); // PFArrowLeft
   fireEvent.click(back);
-  expect(push).toHaveBeenCalledWith('/parties');
+  expect(mockPush).toHaveBeenCalledWith('/parties');
   const menu = screen.getByRole('button', { name: '메뉴' });
   expect(menu.querySelector('svg')).toBeTruthy(); // PFMoreVert
 });
 ```
 
-> 기존 테스트 파일의 mock 셋업(react-player, next/navigation, stores)을 그대로 재사용. push mock 캡처 방식은 파일 상단 기존 패턴을 따른다.
+> 기존 테스트 파일의 mock 셋업(react-player, next/navigation `mockPush`, stores)을 그대로 재사용. render 전 `detailSummary` 타이틀이 필요하면 기존 파일의 stores/summary mock 패턴을 따른다.
 
 - [ ] **Step 2: 실패 확인**
 
@@ -448,9 +448,11 @@ git commit -m "feat(모바일): 룸 헤더 MobileSheetHeader + PF 아이콘(←/
 
 - [ ] **Step 1: 테스트 갱신 (red)**
 
-상단에 marquee 모킹 추가(TrackTitle 내부 Marquee 때문):
+상단에 marquee 모킹 추가(TrackTitle 내부 Marquee 때문). ⚠️ 이 테스트 파일은 React를 import하지 않으므로 mock에서 `React.ReactNode`를 쓰면 `yarn test:type`이 `Cannot find name 'React'`로 실패 → **파일 최상단에 `import React from 'react';` 추가**(또는 타입을 `import('react').ReactNode`로):
 
 ```tsx
+import React from 'react'; // ← 파일 상단 import 블록에 추가 (mock 타입 참조용)
+
 vi.mock('react-fast-marquee', () => ({
   __esModule: true,
   default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
@@ -699,7 +701,7 @@ git commit -m "style(모바일): 채팅 패널 여백 리듬 정합(px-5)"
 - Test: 동일 디렉터리 기존 `*.test.tsx`
 
 - [ ] **Step 1: 현재 카드 구조/여백 확인** — partyroom-card는 이미 Typography·BackdropBlurContainer 사용(보존). 갭/패딩을 기준값으로 정합.
-- [ ] **Step 2: 여백 리듬 정합** — 리스트 `gap`/카드 내부 패딩을 기준값(`px-5`/`gap-3`)으로 통일. 썸네일 비율은 스크린샷 보며 데스크탑 비례에 맞춤(예: 64×36→80×44, 화면 확인 후 확정).
+- [ ] **Step 2: 여백 리듬 정합** — 리스트 `gap`/카드 내부 패딩을 기준값(`px-5`/`gap-3`)으로 통일. 썸네일 비율은 스크린샷 보며 데스크탑 비례에 맞춤(예: 64×36→80×44, 화면 확인 후 확정). ⚠️ 썸네일 변경 시 **래퍼 클래스(`w-[64px] h-[36px]`)와 `next/image`의 `width`/`height` props를 동반 수정**(불일치 시 왜곡/경고). 둘 다 같은 값으로.
 - [ ] **Step 3: 회귀 확인** — `yarn test src/features-mobile/partyroom` Expected: PASS.
 - [ ] **Step 4: 커밋**
 
@@ -721,12 +723,13 @@ fullscreen-sheet는 Task 2에서 `MobileSheetHeader` 채택 완료. 시트 본�
 
 - [ ] **Step 1: 현재 리스트 여백 확인** — `px-4 py-4`/`divide-gray-800` 등 확인.
 - [ ] **Step 2: 여백 정합** — 리스트 행 패딩을 기준값(`px-5 py-3`)으로 통일. divide/색 불변.
-- [ ] **Step 3: 회귀 확인** — `yarn test src/widgets-mobile/partyroom-djing-sheet` Expected: PASS.
-- [ ] **Step 4: 커밋**
+- [ ] **Step 3: 잔여 ASCII 글리프 처리 (A1)** — `playlist-detail-sheet.component.tsx`의 곡 제거 버튼 raw `×`(약 59행)를 `PFClose`로 교체(import `{ PFClose } from '@/shared/ui/icons'`, `<PFClose width={20} height={20} />`). 기존 onClick·aria-label·testid 유지. 해당 버튼 테스트가 텍스트 `×`를 단언하면 svg 존재로 갱신(red→green).
+- [ ] **Step 4: 회귀 확인** — `yarn test src/widgets-mobile/partyroom-djing-sheet` Expected: PASS.
+- [ ] **Step 5: 커밋**
 
 ```bash
 git add src/widgets-mobile/partyroom-djing-sheet
-git commit -m "style(모바일): DJ/플레이리스트 시트 리스트 여백 리듬 정합"
+git commit -m "style(모바일): DJ/플레이리스트 시트 여백 리듬 정합 + 곡 제거 × → PFClose"
 ```
 
 ---
@@ -755,7 +758,26 @@ test('미리듣기/추가 버튼에 PF 아이콘 렌더', () => {
 ```
 
 - [ ] **Step 2: 실패 확인** — `yarn test src/features-mobile/playlist/add-tracks/ui/search-list-item.component.test.tsx` Expected: FAIL(svg 없음).
-- [ ] **Step 3: 구현** — import `{ PFPlayCircleFilled, PFAdd } from '@/shared/ui/icons'`. `TextButton` children `▶`→`<PFPlayCircleFilled width={20} height={20} />`, `+`→`<PFAdd width={20} height={20} />`. aria-label·testid·disabled 유지. 행 패딩 `px-5`로.
+- [ ] **Step 3: 구현** — import `{ PFPlayCircleFilled, PFAdd } from '@/shared/ui/icons'`. ⚠️ `TextButton`은 `children?: string`(내부에서 Typography로 래핑)이라 **React 엘리먼트를 children으로 넘기면 tsc 실패** — 아이콘은 반드시 `Icon` prop으로(children 제거). 아이콘은 직접 렌더됨(Typography 래핑 안 함):
+
+```tsx
+<TextButton
+  data-testid={`search-item-preview-${music.videoId}`}
+  onClick={() => onPreview(music)}
+  aria-label={`${music.videoTitle} 미리듣기`}
+  Icon={<PFPlayCircleFilled width={20} height={20} />}
+/>
+<TextButton
+  data-testid={`search-item-add-${music.videoId}`}
+  onClick={() => onAdd(music)}
+  disabled={addPending}
+  aria-label={`${music.videoTitle} 추가`}
+  Icon={<PFAdd width={20} height={20} />}
+/>
+```
+
+aria-label·testid·disabled 유지. 행 패딩 `px-5`로.
+
 - [ ] **Step 4: 통과 확인** — Expected: PASS.
 - [ ] **Step 5: 커밋**
 
