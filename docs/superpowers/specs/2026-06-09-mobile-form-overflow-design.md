@@ -14,7 +14,8 @@
 
 - **#394·#395 dev 머지 완료. 본 작업은 #394와 독립** — 머지된 #394(`346ff20`)의 실제 변경은 모바일 프로필 온보딩 관련뿐(`mobile-profile-edit-form`·profile redirect guard·`edit-profile-bio/v1`·docs·e2e). **`form-item`/`input`/`use-be-a-host`/`partyroom-info`/`dialog`은 안 건드림** → 공유 파일 0, 충돌 없음.
 - ⚠️ **정정**: 초기 스펙은 "#394가 공용 프리미티브에 `min-w-0`을 깐다"를 전제했으나 **사실이 아님**(현 development에 `form-item`/`input` `min-w-0` 부재 확인). 그 1차 수정들(min-w-0·use-be-a-host max-w·partyroom-info flex-wrap)은 최종 #394에 들어가지 않았다.
-- **함의**: 주 수정(반응형 FormItem → 모바일 단일칼럼)은 단일칼럼에서 입력이 전체폭이라 `min-w-0` 없이도 오버플로우 해소(min-w-0는 desktop 가로용이고 desktop은 넓어 불필요 → YAGNI, 증거 없으면 추가 안 함). #394 유무와 무관하게 본 작업만으로 완결.
+- **함의**: 주 수정(반응형 FormItem → 모바일 단일칼럼)이 폼 레이아웃 오버플로우를 해소. #394 유무와 무관하게 본 작업만으로 완결.
+- **min-w-0 (Chunk2에서 추가됨)**: 단일칼럼 폼 자체엔 불필요하나, **`Input` 내부(`flex-1` input + 글자수 카운터 flex)에서 긴 placeholder가 input을 안 줄여 카운터(00/30)가 세로로 깨지는 케이스**가 360px 실측에서 발견됨 → `Input`의 input에 `min-w-0` 추가(원래 #394가 깔았어야 했던 그 수정). 데스크탑은 넓어 무영향.
 - 본 브랜치는 머지된 development(`7fdbf90`) 위로 rebase 완료. 바로 구현 가능.
 - dev 머지·prod 배포는 사용자 게이트.
 
