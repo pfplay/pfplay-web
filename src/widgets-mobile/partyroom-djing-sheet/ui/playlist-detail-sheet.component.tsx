@@ -6,6 +6,7 @@ import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { Typography } from '@/shared/ui/components/typography';
+import { PFClose } from '@/shared/ui/icons';
 import { useFullscreenSheet } from '@/widgets-mobile/partyroom-djing-sheet';
 import AddTracksSheet from './add-tracks-sheet.component';
 
@@ -31,7 +32,7 @@ const PlaylistDetailSheet: FC<Props> = ({ playlist }) => {
     <div className='flex flex-col h-full'>
       <div className='flex-1 overflow-y-auto'>
         {tracks.length === 0 ? (
-          <div className='flex h-full items-center justify-center px-4'>
+          <div className='flex h-full items-center justify-center px-5'>
             <Typography type='body3' className='text-gray-400'>
               {t.partyroom.queue.playlist_tracks_empty}
             </Typography>
@@ -39,7 +40,7 @@ const PlaylistDetailSheet: FC<Props> = ({ playlist }) => {
         ) : (
           <ul className='flex flex-col divide-y divide-gray-800'>
             {tracks.map((track) => (
-              <li key={track.trackId} className='flex items-center gap-3 px-4 py-3'>
+              <li key={track.trackId} className='flex items-center gap-3 px-5 py-3'>
                 <img
                   src={track.thumbnailImage ?? '/images/ETC/PlaylistThumbnail.png'}
                   alt={track.name}
@@ -55,7 +56,7 @@ const PlaylistDetailSheet: FC<Props> = ({ playlist }) => {
                   className='shrink-0 px-2 py-1 text-gray-400'
                   aria-label={t.partyroom.queue.remove_track_label}
                 >
-                  ×
+                  <PFClose width={20} height={20} aria-hidden='true' />
                 </button>
               </li>
             ))}

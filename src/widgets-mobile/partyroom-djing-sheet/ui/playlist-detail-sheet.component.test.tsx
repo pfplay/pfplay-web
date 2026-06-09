@@ -75,4 +75,10 @@ describe('PlaylistDetailSheet', () => {
     expect(screen.getByText('아직 곡이 없어요')).toBeInTheDocument();
     expect(screen.getByTestId('detail-add-tracks')).toBeInTheDocument();
   });
+
+  test('곡 제거 버튼은 PFClose 아이콘(svg) 렌더', () => {
+    useFetchPlaylistTracksMock.mockReturnValue({ data: { content: [TRACK] } });
+    render(<PlaylistDetailSheet playlist={PL as never} />);
+    expect(screen.getByTestId('detail-track-remove-11').querySelector('svg')).toBeTruthy();
+  });
 });
