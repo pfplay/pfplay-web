@@ -1,8 +1,18 @@
 /**
  * @vitest-environment jsdom
  */
+import type { ReactNode } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+
+// NowPlayingMeta → TrackTitle 이 react-fast-marquee + galmuriFont(next/font/local) 를
+// transitive import 한다. next/font/local 은 vitest SSR 에서 함수가 아니라 모듈 로드 시
+// throw → 본 스위트가 0 test 로 죽는다. video-title/now-playing-meta 테스트와 동일 패턴으로 mock.
+vi.mock('react-fast-marquee', () => ({
+  __esModule: true,
+  default: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+}));
+vi.mock('@/shared/ui/foundation/fonts', () => ({ galmuriFont: { className: 'font-galmuri' } }));
 
 const youtubePlayerCalls: Array<Record<string, unknown>> = [];
 vi.mock('react-player/youtube', () => ({
