@@ -113,7 +113,7 @@ Expected: FAIL — 현재 horizontal은 `grid-cols-[max-content_1fr]`(접두사 
 
 ```tsx
 className={cn([
-  'grid gap-x-[16px] gap-y-[8px] items-center grid-rows-max auto-rows-max',
+  'grid grid-cols-1 gap-x-[16px] gap-y-[8px] items-center grid-rows-max auto-rows-max',
   layout === 'horizontal' && {
     'tablet:grid-cols-[max-content_1fr]': !fit,
     'tablet:grid-cols-[max-content_max-content]': fit,
@@ -122,7 +122,7 @@ className={cn([
 ])}
 ```
 
-(모바일: grid-cols 미지정 → 단일칼럼 stack. tablet+: 현행 2칼럼. vertical: 변화 없음 — 원래 grid-cols 미지정.)
+(모바일: 명시적 `grid-cols-1` → 단일칼럼 stack. tablet+: `tablet:grid-cols-[...]`가 현행 2칼럼으로 오버라이드(twMerge 별도 버킷). vertical: `grid-cols-1` 단일칼럼 — 기존 동작과 동일.)
 
 - [ ] **Step 4: 구현 — 라벨 정렬 반응형**
 
