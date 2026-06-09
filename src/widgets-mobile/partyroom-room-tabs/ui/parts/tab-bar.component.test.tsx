@@ -11,16 +11,20 @@ describe('mobile TabBar', () => {
     expect(screen.getByTestId('mobile-tab-queue')).toBeTruthy();
   });
 
-  test('크루 라벨에 인원 카운트 표시', () => {
-    render(<TabBar activeTab='chat' crewCount={12} queueCount={0} onTabClick={vi.fn()} />);
-    expect(screen.getByTestId('mobile-tab-crew').textContent).toContain('12');
+  test('각 탭 PF 아이콘 + 카운트 렌더', () => {
+    render(<TabBar activeTab='chat' crewCount={12} queueCount={4} onTabClick={vi.fn()} />);
+    expect(screen.getByTestId('mobile-tab-chat').querySelector('svg')).toBeTruthy();
+    const crew = screen.getByTestId('mobile-tab-crew');
+    expect(crew.querySelector('svg')).toBeTruthy();
+    expect(crew.textContent).toContain('12');
+    const queue = screen.getByTestId('mobile-tab-queue');
+    expect(queue.querySelector('svg')).toBeTruthy();
+    expect(queue.textContent).toContain('4');
   });
 
-  test('큐 라벨에 DJ 큐 카운트 표시 (chunk 4 wiring)', () => {
-    render(<TabBar activeTab='chat' crewCount={5} queueCount={4} onTabClick={vi.fn()} />);
-    const queueBtn = screen.getByTestId('mobile-tab-queue');
-    expect(queueBtn.textContent).toMatch(/🎧/);
-    expect(queueBtn.textContent).toContain('4');
+  test('활성 탭은 레드 강조 클래스', () => {
+    render(<TabBar activeTab='crew' crewCount={5} queueCount={0} onTabClick={vi.fn()} />);
+    expect(screen.getByTestId('mobile-tab-crew').className).toMatch(/text-red-/);
   });
 
   test('활성 탭은 aria-selected=true', () => {
@@ -34,5 +38,15 @@ describe('mobile TabBar', () => {
     render(<TabBar activeTab='chat' crewCount={5} queueCount={0} onTabClick={onTabClick} />);
     fireEvent.click(screen.getByTestId('mobile-tab-crew'));
     expect(onTabClick).toHaveBeenCalledWith('crew');
+  });
+
+  test('카운트만 보이는 탭(크루·큐)은 aria-label 로 의미 전달 + 아이콘은 aria-hidden', () => {
+    render(<TabBar activeTab='chat' crewCount={12} queueCount={4} onTabClick={vi.fn()} />);
+    const crew = screen.getByTestId('mobile-tab-crew');
+    const queue = screen.getByTestId('mobile-tab-queue');
+    expect(crew.getAttribute('aria-label')).toBe('크루 12');
+    expect(queue.getAttribute('aria-label')).toBe('DJ 큐 4');
+    expect(crew.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+    expect(queue.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
   });
 });
