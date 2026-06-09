@@ -17,6 +17,7 @@
   - `Input` 내부 input `min-w-0`
   - `use-be-a-host` 다이얼로그 `max-w-[calc(100vw-32px)]`, 생성폼 `w-full`+`flex-wrap`, `mobile-profile-edit-form layout='vertical'`
 - 본 작업 브랜치는 #394 머지 반영된 development 위로 rebase 후 구현/검증한다. (스펙·플랜 문서는 선작성 가능)
+- **플랜의 각 구현 Task 헤더에 "#394 머지+rebase 완료 전제"를 명시** — #394 미머지 상태로 FormItem을 손대면 #394의 `min-w-0` 변경과 충돌하는 diff가 생긴다.
 - dev 머지·prod 배포는 사용자 게이트.
 
 ## 목표 / 성공 기준
@@ -43,6 +44,7 @@
   - 컨테이너 grid: `grid-cols-1 tablet:grid-cols-[max-content_1fr]` (fit 분기 유지).
   - 라벨 정렬: `text-start tablet:text-right`.
   - `vertical`/`horizontal` 분기에서 가로만 반응형화. `layout='vertical'`을 명시한 호출자는 항상 세로(불변).
+  - **에러 행 스페이서 처리**: 현재 `horizontal`+에러 시 빈 `<div>` 그리드 스페이서를 렌더(form-item 81~87행)한다. 단일 칼럼(모바일)에선 이 빈 div가 빈 행으로 보이므로 `hidden tablet:block`으로 모바일에서 숨긴다. 단위테스트 단언도 갱신.
 - **라벨 타이포(`type`) 분기는 변경하지 않음** — `type`은 React prop이라 CSS 브레이크포인트로 못 바꿈. 모바일에서도 가로폼의 `body2` 유지(세로 배치에서 자연스러움, 차이 미미). 스크린샷에서 다른 모바일 폼(`detail2`)과 시각적으로 명확히 어긋나면, 그때만 라벨에 반응형 폰트사이즈 className 보정.
 - 효과: 공용 FormItem 사용 폼 전체가 모바일에서 자동 세로 → 오버플로우 소멸 + 깔끔한 모바일 레이아웃.
 
@@ -51,7 +53,7 @@
 대상 표면을 **360px에서 실제 재현 → 근본 원인 확인 → 수정 → 재검**:
 
 - 대상: 생성 다이얼로그(Create Party), 버그신고 다이얼로그, 프로필(모바일 폼 + 데스크탑 ProfileEditForm V1의 모바일 도달 여부 확인), 사인인, 도메인 선택, 플레이리스트 폼(이미 `vertical`).
-- ①(반응형 FormItem) + #394(`min-w-0`)로 해소되면 해당 표면은 추가 작업 없음.
+- ①(반응형 FormItem) + #394(`min-w-0`)로 해소되면 해당 표면은 추가 작업 없음. (예: 사인인 페이지는 이미 `tablet:` 반응형 클래스를 일부 쓰므로 ①로 자동 커버될 가능성 높음 — 스윕 시 확인.)
 - **패널 자체가 뷰포트를 초과하는 케이스가 남는 경우에만** 그 표면(또는 공용 `Dialog` 베이스)에 `max-w-[calc(100vw-2rem)]` 보강. 무분별한 전역 추가 금지.
 - 데스크탑 ProfileEditForm V1(`w-[550px]` 하드코딩 입력)이 모바일에서 도달 불가하면 범위 제외(확인 후 결정).
 
