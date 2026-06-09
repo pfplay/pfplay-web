@@ -63,13 +63,13 @@ const MobilePartyroomCard: FC<Props> = ({ roomId, summary, onClose, isMain }) =>
         <div className='gap-3 flexCol max-w-full'>
           {summary.playback && (
             <div className='flex-1 max-w-full min-w-0 flexRowCenter gap-3 rounded'>
-              <div className='w-[64px] h-[36px] bg-gray-700 shrink-0'>
+              <div className='w-[80px] h-[44px] bg-gray-700 shrink-0'>
                 <Image
                   priority
                   src={summary.playback.thumbnailImage}
                   alt='playback thumbnail'
-                  width={64}
-                  height={36}
+                  width={80}
+                  height={44}
                   className='w-full h-full object-contain select-none'
                 />
               </div>
