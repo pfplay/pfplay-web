@@ -121,9 +121,15 @@ describe('MiniPlayer (mobile-bottom)', () => {
     expect(screen.getByTestId('mini-player-artist')).toHaveTextContent('Artist Name');
   });
 
-  test('[+ 추가] 클릭 시 onAdd(currentTrack) 호출', async () => {
+  test('[+ 추가] 클릭 시 onAdd() 호출 (인자 없음 — 추가 대상은 시트가 결정)', async () => {
     const onAdd = vi.fn();
-    const track = { name: 'A', artist: 'B', source: 'preview-search' as const };
+    const track = {
+      id: 'v1',
+      title: 'A',
+      thumbnailUrl: '',
+      videoUrl: '',
+      source: 'search-result' as const,
+    };
     useMusicPreviewMock.mockReturnValue({
       currentTrack: track,
       playState: 'playing',
@@ -132,7 +138,9 @@ describe('MiniPlayer (mobile-bottom)', () => {
     });
     render(<MiniPlayer onAdd={onAdd} addPending={false} />);
     await userEvent.click(screen.getByTestId('mini-player-add'));
-    expect(onAdd).toHaveBeenCalledWith(track);
+    // mini-player 의 currentTrack 은 lossy(duration 없음)라 추가 대상이 될 수 없다.
+    // 시트가 미리듣은 원본 Music 으로 추가하므로 onAdd 는 인자 없는 시그널.
+    expect(onAdd).toHaveBeenCalledWith();
   });
 
   test('addPending=true 시 [+ 추가] disabled', () => {

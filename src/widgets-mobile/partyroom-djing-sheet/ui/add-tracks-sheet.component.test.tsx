@@ -53,9 +53,9 @@ describe('AddTracksSheet', () => {
     expect(screen.getByTestId('music-search-input')).toBeInTheDocument();
   });
 
-  test('검색 결과 ▶ 클릭 → startPreview(music + source preview-search) 호출', async () => {
+  test('검색 결과 ▶ 클릭 → startPreview(정식 PreviewTrack: id/videoUrl/source=search-result)', async () => {
     useSearchMusicsMock.mockReturnValue({
-      data: [{ videoId: 'v1', videoTitle: 'A', thumbnailUrl: '', runningTime: '3:00' }],
+      data: [{ videoId: 'v1', videoTitle: 'A', thumbnailUrl: 'https://t', runningTime: '3:00' }],
       isLoading: false,
       error: null,
     });
@@ -63,9 +63,16 @@ describe('AddTracksSheet', () => {
     await userEvent.type(screen.getByTestId('music-search-input'), 'x');
     await waitFor(() => screen.getByTestId('search-item-preview-v1'));
     await userEvent.click(screen.getByTestId('search-item-preview-v1'));
-    expect(startPreviewMock).toHaveBeenCalledWith(
-      expect.objectContaining({ videoId: 'v1', source: 'preview-search' })
-    );
+    // 캐스트 우회(`{...music, source:'preview-search'} as unknown`) 제거: preview player 가
+    // 요구하는 id/videoUrl 이 채워진 정식 PreviewTrack 으로 매핑(convertSearchMusicToPreview).
+    // 이전엔 id/videoUrl 미설정 → youtube-preview-player 가 placeholder 만 띄우고 미재생.
+    expect(startPreviewMock).toHaveBeenCalledWith({
+      id: 'v1',
+      title: 'A',
+      thumbnailUrl: 'https://t',
+      videoUrl: 'https://www.youtube.com/watch?v=v1',
+      source: 'search-result',
+    });
   });
 
   test('currentTrack 있음 시 MiniPlayer (footer) 노출', () => {
@@ -80,24 +87,36 @@ describe('AddTracksSheet', () => {
     expect(screen.getByTestId('mini-player-name')).toBeInTheDocument();
   });
 
-  test('MiniPlayer [+ 추가] → useAddPlaylistTrack.mutate({ listId, linkId, name, duration, thumbnailImage })', async () => {
-    useSearchMusicsMock.mockReturnValue({ data: [], isLoading: false, error: null });
+  test('MiniPlayer [+ 추가] → 미리듣은 Music 의 duration(runningTime) 보존하여 mutate', async () => {
+    // PreviewTrack 은 duration 을 안 들고 다닌다(재생 관심사). add 는 duration(필수)이 필요하므로
+    // 시트가 미리듣은 원본 Music 을 추적해 그걸로 add → mini-player 의 lossy currentTrack 에 의존 안 함.
+    useSearchMusicsMock.mockReturnValue({
+      data: [
+        { videoId: 'v1', videoTitle: 'A', thumbnailUrl: 'https://thumb', runningTime: '3:00' },
+      ],
+      isLoading: false,
+      error: null,
+    });
     useMusicPreviewMock.mockReturnValue({
+      // 정식 PreviewTrack(= mini-player 렌더 트리거). duration 없음 — 일부러.
       currentTrack: {
-        videoId: 'v1',
-        videoTitle: 'A',
+        id: 'v1',
+        title: 'A',
         thumbnailUrl: 'https://thumb',
-        runningTime: '3:00',
-        source: 'preview-search',
+        videoUrl: 'https://www.youtube.com/watch?v=v1',
+        source: 'search-result',
       },
       playState: 'playing',
       startPreview: startPreviewMock,
       stopPreview: stopPreviewMock,
     });
     render(<AddTracksSheet playlistId={42} />);
+    // 미리듣기 클릭 → 시트가 원본 Music(runningTime 포함) 추적
+    await userEvent.type(screen.getByTestId('music-search-input'), 'x');
+    await waitFor(() => screen.getByTestId('search-item-preview-v1'));
+    await userEvent.click(screen.getByTestId('search-item-preview-v1'));
+    // mini-player [+ 추가] → 추적된 Music 의 runningTime 이 duration 으로 보존
     await userEvent.click(screen.getByTestId('mini-player-add'));
-    // 실제 mutation 시그니처: { listId, linkId, name, duration, thumbnailImage }
-    // playlistId(props) → listId, Music{videoId,videoTitle,thumbnailUrl,runningTime} → {linkId,name,thumbnailImage,duration}
     expect(addMutateMock).toHaveBeenCalledWith(
       expect.objectContaining({
         listId: 42,
