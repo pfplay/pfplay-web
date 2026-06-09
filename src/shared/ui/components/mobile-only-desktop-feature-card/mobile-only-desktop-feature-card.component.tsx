@@ -5,7 +5,6 @@ import { FC } from 'react';
 
 export type MobileOnlyDesktopFeature =
   | 'avatar-edit'
-  | 'profile-edit'
   | 'room-create'
   | 'moderation'
   | 'bug-report'
@@ -13,7 +12,6 @@ export type MobileOnlyDesktopFeature =
 
 const featureLabel: Record<MobileOnlyDesktopFeature, string> = {
   'avatar-edit': '아바타 편집',
-  'profile-edit': '프로필 편집',
   'room-create': '룸 생성',
   moderation: '모더레이션',
   'bug-report': '버그 리포트',

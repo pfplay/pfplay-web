@@ -1,21 +1,29 @@
 'use client';
 
 import { Controller } from 'react-hook-form';
-import { cn } from '@/shared/lib/functions/cn';
+import { useEditProfileBioForm } from '@/features/edit-profile-bio';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { FormItem } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
 import { TextArea } from '@/shared/ui/components/textarea';
-import { useEditProfileBioForm } from '../lib/use-edit-profile-bio-form';
 
-const ProfileEditFormV1 = () => {
+/**
+ * 모바일 강제 프로필 온보딩 폼. 데스크탑 `ProfileEditFormV1` 과 동일한
+ * `useEditProfileBioForm` 로직을 공유하고, 레이아웃만 모바일 폼팩터
+ * (full-width 필드 + 하단 full-width CTA)로 다르다.
+ */
+const MobileProfileEditForm = () => {
   const t = useI18n();
   const { control, onSubmit, errors, btnDisabled, isPending } = useEditProfileBioForm();
 
   return (
-    <form onSubmit={onSubmit} className='items-center justify-between py-24 flexCol'>
-      <div className='items-end gap-12 flexCol'>
+    <form
+      data-testid='mobile-profile-form'
+      onSubmit={onSubmit}
+      className='flexCol gap-10 w-full px-app pt-6 pb-10'
+    >
+      <div className='flexCol gap-8 w-full'>
         <Controller
           control={control}
           name='nickname'
@@ -26,14 +34,11 @@ const ProfileEditFormV1 = () => {
               required
               classNames={{ label: 'text-gray-200' }}
             >
-              {/* 한글 8자, 영문 16자 제한/띄어쓰기, 특수문자 사용 불가' */}
               <Input
                 {...field}
                 maxLength={16}
                 placeholder={t.common.ec.char_limit_12}
-                classNames={{
-                  container: 'w-[550px]',
-                }}
+                classNames={{ container: 'w-full' }}
               />
             </FormItem>
           )}
@@ -52,9 +57,7 @@ const ProfileEditFormV1 = () => {
                 maxLength={50}
                 rows={3}
                 placeholder={t.common.ec.char_limit_50}
-                classNames={{
-                  container: 'w-[550px]',
-                }}
+                classNames={{ container: 'w-full' }}
               />
             </FormItem>
           )}
@@ -63,9 +66,10 @@ const ProfileEditFormV1 = () => {
 
       <Button
         type='submit'
-        variant={btnDisabled ? 'outline' : 'fill'} // FIXME: true/false에 따라 variant가 바뀌어야 하는 것인지 디자이너와 협의 필요
+        data-testid='mobile-profile-submit'
+        variant={btnDisabled ? 'outline' : 'fill'}
         size='xl'
-        className={cn('absolute bottom-10 right-[60px] px-[88px]')}
+        className='w-full'
         disabled={btnDisabled}
         loading={isPending}
       >
@@ -75,4 +79,4 @@ const ProfileEditFormV1 = () => {
   );
 };
 
-export default ProfileEditFormV1;
+export default MobileProfileEditForm;
