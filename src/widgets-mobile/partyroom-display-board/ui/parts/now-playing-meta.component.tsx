@@ -1,5 +1,8 @@
 import { FC } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
+import { TrackTitle } from '@/shared/ui/components/track-title';
+import { Typography } from '@/shared/ui/components/typography';
+import { PFHeadset } from '@/shared/ui/icons';
 
 interface Props {
   layout: 'column' | 'row';
@@ -26,9 +29,21 @@ const NowPlayingMeta: FC<Props> = ({ layout, trackName, djNickname, duration }) 
         layout === 'column' ? 'flex-col space-y-1' : 'flex-row items-center gap-2'
       )}
     >
-      <p className='text-base font-semibold text-white truncate'>{trackName}</p>
-      {djNickname && <p className='text-xs text-gray-500 truncate'>🎧 {djNickname}</p>}
-      <p className='text-xs text-gray-600 shrink-0'>{duration}</p>
+      <TrackTitle name={trackName} emptyText='' />
+      {djNickname && (
+        <span
+          data-testid='now-playing-dj'
+          className='flex items-center gap-1 text-gray-500 min-w-0'
+        >
+          <PFHeadset width={14} height={14} aria-hidden='true' />
+          <Typography type='caption2' overflow='ellipsis' className='text-gray-500'>
+            {djNickname}
+          </Typography>
+        </span>
+      )}
+      <Typography type='caption2' className='text-gray-600 shrink-0'>
+        {duration}
+      </Typography>
     </div>
   );
 };
