@@ -38,8 +38,8 @@ pfplay-web의 모바일 웹 뷰(`src/widgets-mobile/`, `src/features-mobile/`)�
 
 실측(2026-06-09) 기준:
 
-1. **탭바** `widgets-mobile/partyroom-room-tabs/ui/parts/tab-bar.component.tsx` — 이모지(💬 📥 🎧) + raw 텍스트 라벨, PF 아이콘 없음
-2. **now-playing** `widgets-mobile/partyroom-display-board/ui/parts/now-playing-meta.component.tsx` — 트랙명 raw `<p>`(text-base font-semibold), DJ는 🎧 이모지 + xs 텍스트. 데스크탑은 Galmuri 세리프 + 마퀴
+1. **탭바** `widgets-mobile/partyroom-room-tabs/ui/parts/tab-bar.component.tsx` — 3버튼 `💬 채팅` / `👥 {crewCount}` / `🎧 {queueCount}`, 이모지 프리픽스 + raw 텍스트 라벨, PF 아이콘 없음
+2. **now-playing** `widgets-mobile/partyroom-display-board/ui/parts/now-playing-meta.component.tsx` — **prop 구동**(`trackName`/`djNickname`/`duration` props, parent 책임). 트랙명 raw `<p>`(text-base font-semibold), DJ는 🎧 이모지 + xs 텍스트. 데스크탑 `VideoTitle`은 Galmuri + 마퀴(스토어 직독)
 3. **룸 헤더** `widgets-mobile/partyroom-display-board/partyroom-display-board.component.tsx:60-77` — ASCII ←/⋮ raw 텍스트, `<h1>` raw
 4. **검색 리스트** `features-mobile/playlist/add-tracks/ui/search-list-item.component.tsx` — ASCII ▶ / [+] TextButton, 아이콘 없음
 5. **시트 헤더** `widgets-mobile/partyroom-djing-sheet/ui/fullscreen-sheet.component.tsx` — **이미 `PFArrowLeft`/`PFClose` 사용**(모바일 유일 PF 적용처). 타이틀은 raw `<h2>`. → 이 패턴을 표준 컴포넌트로 승격
@@ -57,9 +57,10 @@ pfplay-web의 모바일 웹 뷰(`src/widgets-mobile/`, `src/features-mobile/`)�
 ### A1 — 아이콘 일괄 교체 (이모지/ASCII → PF)
 
 - 탭바·헤더·시트·검색의 이모지/raw 글리프를 기존 PF 컴포넌트로 교체.
-- 매핑: 💬→`PFChatFilled`/`PFChatOutline`, 📥→`PFPlaylistAdd`, 🎧→`PFHeadset`,
-  ←→`PFArrowLeft`, ⋮→`PFMoreVert`, ▶→`PFPlayCircleFilled`, [+]→`PFAdd`, ✕→`PFClose`.
-- 전부 `src/shared/ui/icons/`에 존재 확인됨. 신규 제작 0.
+- 매핑: 💬(탭 채팅)→`PFChatFilled`/`PFChatOutline`, 👥(탭 크루)→`PFPersonFilled`/`PFPersonOutline`,
+  🎧(탭 큐)→`PFHeadset`, ←→`PFArrowLeft`, ⋮→`PFMoreVert`, ▶(검색 재생)→`PFPlayCircleFilled`,
+  [+](검색 추가)→`PFAdd`, ✕→`PFClose`. (🎧 now-playing DJ 프리픽스도 `PFHeadset`)
+- 전부 `src/shared/ui/icons/`에 존재 확인됨. 신규 제작 0. (📥/`PFPlaylistAdd`는 현재 탭바에 없음 — 매핑 제외)
 
 ### A2 — `TrackTitle` 공용 컴포넌트 (Galmuri + 마퀴)
 
@@ -67,11 +68,14 @@ pfplay-web의 모바일 웹 뷰(`src/widgets-mobile/`, `src/features-mobile/`)�
   **프레젠테이션**(`Marquee delay=4 speed=20 gradientWidth=0` + `Typography type='body3'`
   - `cn(galmuriFont.className, 'text-white leading-none')`, empty 시 `caption1`)을
     `src/shared/ui/components/track-title/`로 추출한다.
-- **데스크탑 렌더 불변 보장 방식**: `TrackTitle`은 순수 프레젠테이션(props: `name?: string`, `emptyText: string`,
-  `data-testid` 등). 데스크탑 `VideoTitle`은 **스토어 와이어링과 i18n을 그대로 유지**한 채
-  `TrackTitle`에 위임 → DOM/클래스 바이트 동일. 기존 `video-title` 테스트가 회귀 가드.
-- 모바일 `now-playing-meta`도 동일 스토어(`useCurrentPartyroom().playback`)를 쓰므로
-  `TrackTitle`을 동일하게 붙인다.
+- **데스크탑 렌더 불변 보장 방식**: `TrackTitle`은 순수 프레젠테이션(props: `name?: string`, `emptyText: string`).
+  데스크탑 `VideoTitle`은 **스토어 와이어링과 i18n을 그대로 유지**한 채 `TrackTitle`에 위임 → DOM/클래스 바이트 동일.
+  기존 `video-title` 테스트가 회귀 가드.
+- **양 분기 모두 보존 필수**: filled = `Marquee className='z-0'` 안 `Typography type='body3'` + `data-testid='video-title'`,
+  empty = `Typography type='caption1'` + `data-testid='video-title-empty'`. 두 `data-testid`가 다르므로
+  `TrackTitle`이 분기별 testid를 그대로 출력해야 기존 데스크탑 테스트가 무수정 통과.
+- 모바일 `now-playing-meta`는 **prop 구동**(스토어 직독 아님)이므로 `TrackTitle name={trackName}`로
+  연결한다(데스크탑처럼 스토어로 재배선하지 않음 — prop 형태 유지). 결과 비주얼은 동일.
 
 ### A3 — `MobileSheetHeader` / 룸 헤더 표준화
 
