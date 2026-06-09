@@ -3,9 +3,14 @@ import { QueryKeys } from '@/shared/api/http/query-keys';
 import { AuthorityTier } from '@/shared/api/http/types/@enums';
 import useOAuth2Callback from './use-social-sign-in-callback.hook';
 
-const push = vi.fn();
+const replace = vi.fn();
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push }),
+  useRouter: () => ({ replace }),
+}));
+
+const getStoredCodeVerifier = vi.fn();
+vi.mock('@/shared/lib/functions/pkce', () => ({
+  getStoredCodeVerifier: () => getStoredCodeVerifier(),
 }));
 
 const callbackLogin = vi.fn();
@@ -41,6 +46,8 @@ function meModel(overrides: Record<string, unknown> = {}) {
 describe('useOAuth2Callback (D/#7+#9 Phase1)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // 기본: 정상 콜백 진입(codeVerifier 존재). 재진입 테스트만 부재로 override.
+    getStoredCodeVerifier.mockReturnValue('verifier-present');
   });
 
   test('옵션2: isNewUser=true 면 profileUpdated=true(좀비 me) 여도 /settings/profile 강제', async () => {
@@ -50,7 +57,7 @@ describe('useOAuth2Callback (D/#7+#9 Phase1)', () => {
     const { result } = renderWithClient(() => useOAuth2Callback());
     await result.current('google');
 
-    expect(push).toHaveBeenCalledWith('/settings/profile');
+    expect(replace).toHaveBeenCalledWith('/settings/profile');
   });
 
   test('isNewUser=false + profileUpdated=true → /parties (기존 회귀)', async () => {
@@ -60,7 +67,7 @@ describe('useOAuth2Callback (D/#7+#9 Phase1)', () => {
     const { result } = renderWithClient(() => useOAuth2Callback());
     await result.current('google');
 
-    expect(push).toHaveBeenCalledWith('/parties');
+    expect(replace).toHaveBeenCalledWith('/parties');
   });
 
   test('옵션1: callback 후 [Me] 캐시 cancel+remove 를 fetchMeAsync 이전에 수행', async () => {
@@ -136,6 +143,19 @@ describe('useOAuth2Callback (D/#7+#9 Phase1)', () => {
     const { result } = renderWithClient(() => useOAuth2Callback());
     await result.current('google');
 
-    expect(push).toHaveBeenCalledWith('/sign-in');
+    expect(replace).toHaveBeenCalledWith('/sign-in');
+  });
+
+  test('#347 재진입(codeVerifier 부재): callbackLogin 미호출 + replace(/sign-in)', async () => {
+    // 콜백 URL 재진입(뒤로가기/새로고침)은 이미 1회용 PKCE 교환이 끝나 codeVerifier 가
+    // 삭제된 상태. 재교환을 시도하면 throw → 전역 MutationCache.onError 가 모달을 띄운다.
+    // 교환 전 codeVerifier 부재를 감지해 조용히 sign-in 으로 보낸다(모달 없음).
+    getStoredCodeVerifier.mockReturnValue(undefined);
+
+    const { result } = renderWithClient(() => useOAuth2Callback());
+    await result.current('google');
+
+    expect(callbackLogin).not.toHaveBeenCalled();
+    expect(replace).toHaveBeenCalledWith('/sign-in');
   });
 });
