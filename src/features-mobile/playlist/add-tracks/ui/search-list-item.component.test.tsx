@@ -61,4 +61,17 @@ describe('SearchListItem', () => {
     );
     expect(screen.getByTestId('search-item-add-abc123')).toBeDisabled();
   });
+
+  test('미리듣기/추가 버튼에 PF 아이콘 렌더', () => {
+    render(
+      <SearchListItem
+        music={TRACK as never}
+        onPreview={vi.fn()}
+        onAdd={vi.fn()}
+        addPending={false}
+      />
+    );
+    expect(screen.getByTestId('search-item-preview-abc123').querySelector('svg')).toBeTruthy();
+    expect(screen.getByTestId('search-item-add-abc123').querySelector('svg')).toBeTruthy();
+  });
 });
