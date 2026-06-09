@@ -10,7 +10,8 @@ import { Typography } from '@/shared/ui/components/typography';
 import { PFClose, PFPauseCircleFilled, PFPlayCircleFilled } from '@/shared/ui/icons';
 
 interface Props {
-  onAdd: (track: any) => void;
+  /** 추가 시그널. 대상 트랙은 시트가 결정한다(mini-player 의 currentTrack 은 duration 없는 lossy PreviewTrack). */
+  onAdd: () => void;
   addPending: boolean;
 }
 
@@ -77,7 +78,7 @@ const MiniPlayer: FC<Props> = ({ onAdd, addPending }) => {
           <Button
             size='sm'
             data-testid='mini-player-add'
-            onClick={() => onAdd(currentTrack)}
+            onClick={() => onAdd()}
             disabled={addPending}
           >
             {t.partyroom.queue.sheet_add_button}

@@ -59,13 +59,11 @@ describe('SheetHost', () => {
     const cap = captureApi();
     render(<Trigger onMount={cap.onMount} />, { wrapper: wrap });
     act(() => {
-      cap
-        .get()
-        .push({
-          key: 'select-playlist',
-          title: '플레이리스트',
-          node: <div data-testid='a'>A</div>,
-        });
+      cap.get().push({
+        key: 'select-playlist',
+        title: '플레이리스트',
+        node: <div data-testid='a'>A</div>,
+      });
       cap.get().push({ key: 'add-tracks', title: '곡 추가', node: <div data-testid='b'>B</div> });
     });
     expect(screen.getByTestId('b')).toBeInTheDocument();
@@ -74,13 +72,13 @@ describe('SheetHost', () => {
     expect(screen.queryByTestId('fullscreen-sheet-close')).not.toBeInTheDocument();
   });
 
-  test('ESC 통합 시나리오 — 스택 1개 시 entry.onClose 1번만 발화 (double pop 없음)', () => {
+  test('ESC 통합 시나리오 — 스택 1개 시 entry.onDismiss 1번만 발화 (double pop 없음)', () => {
     const cap = captureApi();
-    const onClose = vi.fn();
+    const onDismiss = vi.fn();
     const backSpy = vi.spyOn(window.history, 'back');
     render(<Trigger onMount={cap.onMount} />, { wrapper: wrap });
     act(() => {
-      cap.get().push({ key: 'select-playlist', node: <div />, onClose });
+      cap.get().push({ key: 'select-playlist', node: <div />, onDismiss });
     });
     act(() => {
       fireEvent.keyDown(window, { key: 'Escape' });
@@ -89,7 +87,7 @@ describe('SheetHost', () => {
     act(() => {
       fireEvent.popState(window);
     });
-    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(onDismiss).toHaveBeenCalledTimes(1);
     backSpy.mockRestore();
   });
 });

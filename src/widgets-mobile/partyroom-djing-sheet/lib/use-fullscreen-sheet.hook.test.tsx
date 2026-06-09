@@ -41,47 +41,47 @@ describe('useFullscreenSheet', () => {
     expect(result.current.stack).toHaveLength(1);
   });
 
-  test('pop 호출 시 onClose 콜백 실행 + 스택에서 제거', () => {
-    const onClose = vi.fn();
+  test('pop 호출 시 onDismiss 콜백 실행 + 스택에서 제거', () => {
+    const onDismiss = vi.fn();
     const { result } = renderHook(() => useFullscreenSheet(), { wrapper: wrap });
     act(() => {
-      result.current.push({ key: 'select-playlist', node: <div />, onClose });
+      result.current.push({ key: 'select-playlist', node: <div />, onDismiss });
     });
     act(() => {
       result.current.pop();
     });
     expect(result.current.stack).toHaveLength(0);
-    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(onDismiss).toHaveBeenCalledTimes(1);
   });
 
   test('popstate 이벤트 시 스택 pop (1개일 때 close)', () => {
-    const onClose = vi.fn();
+    const onDismiss = vi.fn();
     const { result } = renderHook(() => useFullscreenSheet(), { wrapper: wrap });
     act(() => {
-      result.current.push({ key: 'select-playlist', node: <div />, onClose });
+      result.current.push({ key: 'select-playlist', node: <div />, onDismiss });
     });
     act(() => {
       window.dispatchEvent(new PopStateEvent('popstate'));
     });
     expect(result.current.stack).toHaveLength(0);
-    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(onDismiss).toHaveBeenCalledTimes(1);
   });
 
   test('popstate 이벤트 시 다중 스택은 pop 만 (상위만 제거)', () => {
-    const onCloseA = vi.fn();
-    const onCloseB = vi.fn();
+    const onDismissA = vi.fn();
+    const onDismissB = vi.fn();
     const { result } = renderHook(() => useFullscreenSheet(), { wrapper: wrap });
     act(() => {
-      result.current.push({ key: 'select-playlist', node: <div />, onClose: onCloseA });
-      result.current.push({ key: 'add-tracks', node: <div />, onClose: onCloseB });
+      result.current.push({ key: 'select-playlist', node: <div />, onDismiss: onDismissA });
+      result.current.push({ key: 'add-tracks', node: <div />, onDismiss: onDismissB });
     });
     act(() => {
       window.dispatchEvent(new PopStateEvent('popstate'));
     });
     expect(result.current.stack).toHaveLength(1);
     expect(result.current.stack[0].key).toBe('select-playlist');
-    expect(onCloseB).toHaveBeenCalledTimes(1);
-    expect(onCloseA).not.toHaveBeenCalled();
+    expect(onDismissB).toHaveBeenCalledTimes(1);
+    expect(onDismissA).not.toHaveBeenCalled();
   });
 
   test('ESC 키 입력 시 popstate 동일 동작 (history.back 호출)', () => {
@@ -97,23 +97,45 @@ describe('useFullscreenSheet', () => {
     backSpy.mockRestore();
   });
 
-  test('closeAll 호출 시 모든 onClose 콜백 + history.go(-N)', () => {
+  test('closeAll 호출 시 모든 onDismiss 콜백 + history.go(-N)', () => {
     const goSpy = vi.spyOn(window.history, 'go');
-    const onCloseA = vi.fn();
-    const onCloseB = vi.fn();
+    const onDismissA = vi.fn();
+    const onDismissB = vi.fn();
     const { result } = renderHook(() => useFullscreenSheet(), { wrapper: wrap });
     act(() => {
-      result.current.push({ key: 'select-playlist', node: <div />, onClose: onCloseA });
-      result.current.push({ key: 'add-tracks', node: <div />, onClose: onCloseB });
+      result.current.push({ key: 'select-playlist', node: <div />, onDismiss: onDismissA });
+      result.current.push({ key: 'add-tracks', node: <div />, onDismiss: onDismissB });
     });
     act(() => {
       result.current.closeAll();
     });
     expect(result.current.stack).toHaveLength(0);
-    expect(onCloseA).toHaveBeenCalledTimes(1);
-    expect(onCloseB).toHaveBeenCalledTimes(1);
+    expect(onDismissA).toHaveBeenCalledTimes(1);
+    expect(onDismissB).toHaveBeenCalledTimes(1);
     expect(goSpy).toHaveBeenCalledWith(-2);
     goSpy.mockRestore();
+  });
+
+  test('pop() 는 onDismiss 발화(user-driven), pop({ programmatic: true }) 는 미발화', () => {
+    const onDismiss = vi.fn();
+    const { result } = renderHook(() => useFullscreenSheet(), { wrapper: wrap });
+    // 1) programmatic close — 소비자가 자체 결과를 처리한 뒤 제거 → dismiss 콜백 미발화
+    act(() => {
+      result.current.push({ key: 'select-playlist', node: <div />, onDismiss });
+    });
+    act(() => {
+      result.current.pop({ programmatic: true });
+    });
+    expect(result.current.stack).toHaveLength(0);
+    expect(onDismiss).not.toHaveBeenCalled();
+    // 2) user-driven close(뒤로가기/×/Esc 경유 pop) → dismiss 콜백 발화
+    act(() => {
+      result.current.push({ key: 'select-playlist', node: <div />, onDismiss });
+    });
+    act(() => {
+      result.current.pop();
+    });
+    expect(onDismiss).toHaveBeenCalledTimes(1);
   });
 
   test('unmount 시 popstate/keydown listener cleanup', () => {

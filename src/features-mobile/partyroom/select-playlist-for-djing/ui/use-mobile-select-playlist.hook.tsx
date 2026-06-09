@@ -46,17 +46,16 @@ export default function useMobileSelectPlaylist({
         node: (
           <SelectPlaylistSheet
             playlists={playlists}
-            // ⚠️ resolve 가 반드시 pop() 보다 먼저. useFullscreenSheet.pop() 의 setState
-            // updater 가 동기적으로 top.onClose?.() 를 호출 → onClose=()=>resolve(undefined)
-            // 가 winning. 본 hook 의 calling 순서에 따라 final resolve 값이 결정된다.
-            // (Promise resolve 는 idempotent — 첫 resolve 가 win, 그 후는 no-op.)
+            // confirm/cancel 은 자체 결과를 먼저 확정하고 programmatic 으로 닫는다.
+            // pop({ programmatic: true }) 가 onDismiss(=취소 resolve)를 skip 하므로
+            // resolve↔pop 호출 순서에 의존하지 않는다(과거 footgun 제거).
             onConfirm={(p) => {
               resolve(p);
-              pop();
+              pop({ programmatic: true });
             }}
             onCancel={() => {
               resolve(undefined);
-              pop();
+              pop({ programmatic: true });
             }}
             onAddTracksForEmpty={(p) => {
               push({
@@ -67,7 +66,8 @@ export default function useMobileSelectPlaylist({
             }}
           />
         ),
-        onClose: () => resolve(undefined),
+        // 사용자가 뒤로가기/×/Esc 로 닫으면 선택 취소(undefined).
+        onDismiss: () => resolve(undefined),
       });
     });
   }, [

@@ -18,6 +18,12 @@ export async function gotoMobileRoomAndWaitForVideo(page: Page, partyroomUrl: st
 export async function expectIframeToBeOnScreen(page: Page) {
   const iframe = page.locator('iframe[src*="youtube.com/embed"]');
   await expect(iframe).toBeVisible();
+  // toBeVisible() 는 element 존재 + display!=none 만 본다. boundingBox 는 layout 완료가
+  // 필요해 lazy 로드(react-player dynamic import) 직후엔 transient null/0 을 반환 → flake.
+  // layout 이 확정될 때까지(width>0) 폴링한 뒤 단언한다.
+  await expect
+    .poll(async () => (await iframe.boundingBox())?.width ?? 0, { timeout: 5_000 })
+    .toBeGreaterThan(0);
   const box = await iframe.boundingBox();
   expect(box).not.toBeNull();
   if (!box) return;
