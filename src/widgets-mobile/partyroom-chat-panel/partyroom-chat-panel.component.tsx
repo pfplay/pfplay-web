@@ -41,7 +41,7 @@ export default function MobilePartyroomChatPanel() {
     <div className='flexCol h-full'>
       <div
         ref={scrollContainerRef}
-        className='flex-[1_0_0] flexCol gap-4 overflow-y-auto py-4 px-3'
+        className='flex-[1_0_0] flexCol gap-4 overflow-y-auto py-4 px-5'
       >
         {chatMessages.map((message, i) => {
           if (message.from === 'system') {
@@ -69,7 +69,7 @@ export default function MobilePartyroomChatPanel() {
         })}
       </div>
 
-      <div className='shrink-0 px-3 pb-3 pt-2 bg-black border-t border-gray-900'>
+      <div className='shrink-0 px-5 pb-3 pt-2 bg-black border-t border-gray-900'>
         <SendChatMessage>
           {({ message, setMessage, send, canSend }) => (
             <Input

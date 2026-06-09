@@ -1,6 +1,7 @@
 'use client';
 import { FC, ReactNode, useEffect, useId, useRef } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
+import { MobileSheetHeader } from '@/shared/ui/components/mobile-sheet-header';
 import { PFArrowLeft, PFClose } from '@/shared/ui/icons';
 
 interface Props {
@@ -59,37 +60,35 @@ const FullscreenSheet: FC<Props> = ({ open, title, onClose, onBack, children, fo
       )}
     >
       {/* header sticky-top */}
-      <header className='shrink-0 flex items-center gap-3 px-3 h-[56px] border-b border-gray-800'>
-        {onBack ? (
-          <button
-            ref={backRef}
-            type='button'
-            onClick={onBack}
-            data-testid='fullscreen-sheet-back'
-            aria-label='뒤로'
-            className='p-2 -ml-2'
-          >
-            <PFArrowLeft width={24} height={24} />
-          </button>
-        ) : (
-          <button
-            ref={closeRef}
-            type='button'
-            onClick={onClose}
-            data-testid='fullscreen-sheet-close'
-            aria-label='닫기'
-            className='p-2 -ml-2'
-          >
-            <PFClose width={24} height={24} />
-          </button>
-        )}
-        {title && (
-          <h2 id={titleId} className='flex-1 text-center text-base font-medium m-0'>
-            {title}
-          </h2>
-        )}
-        <div className='w-[40px]' aria-hidden='true' />
-      </header>
+      <MobileSheetHeader
+        titleId={title ? titleId : undefined}
+        title={title}
+        leading={
+          onBack ? (
+            <button
+              ref={backRef}
+              type='button'
+              onClick={onBack}
+              data-testid='fullscreen-sheet-back'
+              aria-label='뒤로'
+              className='p-2 -ml-2'
+            >
+              <PFArrowLeft width={24} height={24} />
+            </button>
+          ) : (
+            <button
+              ref={closeRef}
+              type='button'
+              onClick={onClose}
+              data-testid='fullscreen-sheet-close'
+              aria-label='닫기'
+              className='p-2 -ml-2'
+            >
+              <PFClose width={24} height={24} />
+            </button>
+          )
+        }
+      />
 
       {/* body scrollable */}
       <div className='flex-1 overflow-y-auto'>{children}</div>

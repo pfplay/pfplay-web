@@ -1,8 +1,18 @@
 /**
  * @vitest-environment jsdom
  */
+import type { ReactNode } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+
+// NowPlayingMeta → TrackTitle 이 react-fast-marquee + galmuriFont(next/font/local) 를
+// transitive import 한다. next/font/local 은 vitest SSR 에서 함수가 아니라 모듈 로드 시
+// throw → 본 스위트가 0 test 로 죽는다. video-title/now-playing-meta 테스트와 동일 패턴으로 mock.
+vi.mock('react-fast-marquee', () => ({
+  __esModule: true,
+  default: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+}));
+vi.mock('@/shared/ui/foundation/fonts', () => ({ galmuriFont: { className: 'font-galmuri' } }));
 
 const youtubePlayerCalls: Array<Record<string, unknown>> = [];
 vi.mock('react-player/youtube', () => ({
@@ -247,6 +257,18 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
     rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
 
     expect(screen.queryByTestId('autoplay-gesture-gate')).toBeTruthy();
+  });
+});
+
+describe('MobilePartyroomDisplayBoard · 헤더', () => {
+  test('헤더: 뒤로 버튼 클릭 시 /parties 라우팅 + PF 아이콘 렌더', () => {
+    render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    const back = screen.getByRole('button', { name: '뒤로' });
+    expect(back.querySelector('svg')).toBeTruthy(); // PFArrowLeft
+    fireEvent.click(back);
+    expect(mockPush).toHaveBeenCalledWith('/parties');
+    const menu = screen.getByRole('button', { name: '메뉴' });
+    expect(menu.querySelector('svg')).toBeTruthy(); // PFMoreVert
   });
 });
 

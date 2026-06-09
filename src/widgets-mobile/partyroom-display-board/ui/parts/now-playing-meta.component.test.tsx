@@ -1,9 +1,16 @@
 /**
  * @vitest-environment jsdom
  */
+import React from 'react'; // mock 타입 참조용
 import { render, screen } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import NowPlayingMeta from './now-playing-meta.component';
+
+vi.mock('react-fast-marquee', () => ({
+  __esModule: true,
+  default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+}));
+vi.mock('@/shared/ui/foundation/fonts', () => ({ galmuriFont: { className: 'font-galmuri' } }));
 
 describe('NowPlayingMeta', () => {
   test('layout="column": 트랙명·DJ·duration 3 라인 렌더', () => {
@@ -29,13 +36,17 @@ describe('NowPlayingMeta', () => {
     expect(screen.getByText('2:10')).toBeTruthy();
   });
 
-  test('djNickname=null 시 DJ 라인 미렌더', () => {
-    render(
-      <NowPlayingMeta layout='column' trackName='Solo Track' djNickname={null} duration='1:00' />
+  test('djNickname 있으면 헤드셋 아이콘 + 닉네임', () => {
+    const { container } = render(
+      <NowPlayingMeta layout='column' trackName='T' djNickname='DJ Alpha' duration='3:45' />
     );
-    expect(screen.getByText('Solo Track')).toBeTruthy();
-    expect(screen.queryByText(/🎧/)).toBeNull();
-    expect(screen.getByText('1:00')).toBeTruthy();
+    expect(screen.getByText(/DJ Alpha/)).toBeTruthy();
+    expect(container.querySelector('[data-testid="now-playing-dj"] svg')).toBeTruthy();
+  });
+
+  test('djNickname=null 시 DJ 라인(헤드셋 포함) 미렌더', () => {
+    render(<NowPlayingMeta layout='column' trackName='T' djNickname={null} duration='1:00' />);
+    expect(screen.queryByTestId('now-playing-dj')).toBeNull();
   });
 
   test('layout 분기 root class — column 은 flex-col, row 는 flex-row', () => {

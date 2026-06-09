@@ -6,6 +6,8 @@ import type TReactPlayer from 'react-player';
 import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
 import { cn } from '@/shared/lib/functions/cn';
 import { useStores } from '@/shared/lib/store/stores.context';
+import { MobileSheetHeader } from '@/shared/ui/components/mobile-sheet-header';
+import { PFArrowLeft, PFMoreVert } from '@/shared/ui/icons';
 import useAutoplayGestureGate from './lib/use-autoplay-gesture-gate.hook';
 import ActionButtons from './ui/parts/action-buttons.component';
 import NowPlayingMeta from './ui/parts/now-playing-meta.component';
@@ -57,24 +59,28 @@ const MobilePartyroomDisplayBoard: FC<Props> = ({ partyroomId }) => {
 
   return (
     <div className={cn('sticky top-0 z-20 w-full bg-black border-b border-gray-800')}>
-      <header className='flex items-center justify-between px-4 h-12'>
-        <button
-          aria-label='뒤로'
-          className='w-11 h-11 flex items-center justify-center text-gray-300'
-          onClick={() => router.push('/parties')}
-        >
-          ←
-        </button>
-        <h1 className='flex-1 text-center text-base font-semibold text-white truncate px-2'>
-          {partyroomTitle}
-        </h1>
-        <button
-          aria-label='메뉴'
-          className='w-11 h-11 flex items-center justify-center text-gray-300'
-        >
-          ⋮
-        </button>
-      </header>
+      <MobileSheetHeader
+        title={partyroomTitle}
+        leading={
+          <button
+            type='button'
+            aria-label='뒤로'
+            className='w-10 h-10 flex items-center justify-center text-gray-300'
+            onClick={() => router.push('/parties')}
+          >
+            <PFArrowLeft width={24} height={24} />
+          </button>
+        }
+        trailing={
+          <button
+            type='button'
+            aria-label='메뉴'
+            className='w-10 h-10 flex items-center justify-center text-gray-300'
+          >
+            <PFMoreVert width={24} height={24} />
+          </button>
+        }
+      />
 
       <div className='px-4 pt-3'>
         <VideoFrame

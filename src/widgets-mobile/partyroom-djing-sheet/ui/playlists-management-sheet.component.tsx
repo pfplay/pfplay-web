@@ -54,7 +54,7 @@ const PlaylistsManagementSheet: FC = () => {
     <div className='flex flex-col h-full'>
       <div className='flex-1 overflow-y-auto'>
         {playlists.length === 0 ? (
-          <div className='flex h-full items-center justify-center px-4'>
+          <div className='flex h-full items-center justify-center px-5'>
             <Typography type='body3' className='text-gray-400'>
               {t.partyroom.queue.playlists_empty}
             </Typography>
@@ -64,7 +64,7 @@ const PlaylistsManagementSheet: FC = () => {
             {playlists.map((p) => {
               const isGrab = p.type === PlaylistType.GRABLIST;
               return (
-                <li key={p.id} className='flex items-center justify-between gap-3 px-4 py-4'>
+                <li key={p.id} className='flex items-center justify-between gap-3 px-5 py-3'>
                   <button
                     type='button'
                     data-testid={`manage-playlist-card-${p.id}`}

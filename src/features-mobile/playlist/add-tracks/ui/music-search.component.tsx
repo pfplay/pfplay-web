@@ -29,7 +29,7 @@ const MusicSearch: FC<Props> = ({ onPreview, onAdd, addPending }) => {
 
   return (
     <div className='flex flex-col h-full'>
-      <div className='shrink-0 px-4 py-3 border-b border-gray-800'>
+      <div className='shrink-0 px-5 py-3 border-b border-gray-800'>
         <Input
           data-testid='music-search-input'
           value={query}
