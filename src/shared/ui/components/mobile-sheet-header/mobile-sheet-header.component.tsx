@@ -31,7 +31,7 @@ const MobileSheetHeader: FC<Props> = ({ leading, title, trailing, titleId, class
     >
       <div className='w-10 flex items-center justify-start'>{leading}</div>
       {title && (
-        <Typography id={id} type='body3' overflow='ellipsis' className='flex-1 text-center'>
+        <Typography id={id} as='h2' type='body3' overflow='ellipsis' className='flex-1 text-center'>
           {title}
         </Typography>
       )}

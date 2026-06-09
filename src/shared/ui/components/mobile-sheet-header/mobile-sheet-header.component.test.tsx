@@ -21,4 +21,22 @@ describe('MobileSheetHeader', () => {
     expect(container.querySelector('header')).toBeTruthy();
     expect(screen.getByText('T')).toBeTruthy();
   });
+
+  test('대칭 스페이서: header 직계 자식에 w-10 div가 정확히 2개', () => {
+    const { container } = render(
+      <MobileSheetHeader leading={<button>L</button>} title='제목' trailing={<button>R</button>} />
+    );
+    expect(container.querySelectorAll('header > div.w-10').length).toBe(2);
+  });
+
+  test('titleId prop이 title 엘리먼트 id에 연결된다', () => {
+    render(<MobileSheetHeader title='T' titleId='x' />);
+    expect(screen.getByText('T').id).toBe('x');
+  });
+
+  test('title은 h2 헤딩 엘리먼트로 렌더된다', () => {
+    render(<MobileSheetHeader title='제목' />);
+    expect(screen.getByRole('heading', { level: 2, name: '제목' })).toBeTruthy();
+    expect(screen.getByText('제목').tagName).toBe('H2');
+  });
 });
