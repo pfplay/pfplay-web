@@ -339,7 +339,10 @@
       "add_limit_exceeded": "플레이리스트가 가득 찼어요",
       "guest_action_blocked": "로그인이 필요해요",
       "guide_start": "시작",
-      "guide_title": "DJ 규칙"
+      "guide_title": "DJ 규칙",
+      "song_count": "{{count}}곡",
+      "sheet_select_confirm": "선택 완료",
+      "no_track": "지금 재생 중인 곡이 없어요"
     }
   },
   "crews": {

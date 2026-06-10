@@ -10,6 +10,14 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
         cancel: '취소',
       },
     },
+    // 자식 SelectPlaylist 도 동일 provider 사용 → song_count·add_tracks_cta 포함.
+    partyroom: {
+      queue: {
+        song_count: '{{count}}곡',
+        add_tracks_cta: '+ 곡 추가',
+        sheet_select_confirm: '선택 완료',
+      },
+    },
   }),
 }));
 

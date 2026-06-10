@@ -13,6 +13,10 @@ vi.mock('react-fast-marquee', () => ({
   default: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
 vi.mock('@/shared/ui/foundation/fonts', () => ({ galmuriFont: { className: 'font-galmuri' } }));
+// Mode C 의 BlankPlaceholder 가 useI18n 사용 → provider 없는 단위 렌더용 mock.
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({ partyroom: { queue: { no_track: '지금 재생 중인 곡이 없어요' } } }),
+}));
 
 const youtubePlayerCalls: Array<Record<string, unknown>> = [];
 vi.mock('react-player/youtube', () => ({

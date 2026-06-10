@@ -2,6 +2,8 @@
 import { FC } from 'react';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { processI18nString } from '@/shared/lib/localization/renderer/processors/variable-processor-util';
 import { TextButton } from '@/shared/ui/components/text-button';
 import { Typography } from '@/shared/ui/components/typography';
 
@@ -12,6 +14,7 @@ interface Props {
 }
 
 const SelectPlaylist: FC<Props> = ({ playlists, onSelect, onAddTracksForEmpty }) => {
+  const t = useI18n();
   return (
     <ul className='flex flex-col divide-y divide-gray-800'>
       {playlists.map((p) => {
@@ -29,7 +32,7 @@ const SelectPlaylist: FC<Props> = ({ playlists, onSelect, onAddTracksForEmpty })
                 {p.name}
               </Typography>
               <Typography type='detail2' className='text-gray-400'>
-                {p.musicCount}곡
+                {processI18nString(t.partyroom.queue.song_count, { count: String(p.musicCount) })}
               </Typography>
             </button>
             {empty && (
@@ -39,7 +42,7 @@ const SelectPlaylist: FC<Props> = ({ playlists, onSelect, onAddTracksForEmpty })
                 className='text-primary-300 px-2 py-1'
                 typographyType='caption1'
               >
-                + 곡 추가
+                {t.partyroom.queue.add_tracks_cta}
               </TextButton>
             )}
           </li>
