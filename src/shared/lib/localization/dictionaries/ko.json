@@ -118,7 +118,7 @@
       "moment": "잠깐만요!"
     },
     "para": {
-      "domain_format": "웹 페이지 주소는 pfplay.xyz/도메인으로 시작",
+      "domain_format": "예: pfplay.xyz/link/my-room",
       "guest_limit": "비로그인 입장 시 접근 가능한 기능이 제한됩니다. 소셜 계정을 연동하면 온전한 서비스를 즐길 수 있어요"
     }
   },

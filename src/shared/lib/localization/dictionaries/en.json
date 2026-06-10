@@ -118,7 +118,7 @@
       "moment": "Hold on!"
     },
     "para": {
-      "domain_format": "Web address starts with pfplay.xyz/domain",
+      "domain_format": "e.g. pfplay.xyz/link/my-room",
       "guest_limit": "Access is limited as a guest. Connect your social account to enjoy full services."
     }
   },
