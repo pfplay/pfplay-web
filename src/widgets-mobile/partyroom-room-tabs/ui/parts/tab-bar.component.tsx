@@ -1,6 +1,7 @@
 'use client';
 import { FC, ReactNode } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Typography } from '@/shared/ui/components/typography';
 import {
   PFChatFilled,
@@ -26,53 +27,56 @@ interface Props {
  * - 터치 타겟 min-h-[44px] (iOS HIG, spec §4.1)
  * - safe-area-inset-bottom 은 본 탭바 자체 padding 으로 흡수
  */
-const TabBar: FC<Props> = ({ activeTab, crewCount, queueCount, onTabClick }) => (
-  <nav
-    className={cn(
-      'shrink-0 grid grid-cols-3 bg-black border-t border-gray-800',
-      'pb-[env(safe-area-inset-bottom)]'
-    )}
-    role='tablist'
-    aria-label='파티룸 탭'
-  >
-    <TabButton
-      testId='mobile-tab-chat'
-      active={activeTab === 'chat'}
-      ariaLabel='채팅'
-      icon={
-        activeTab === 'chat' ? (
-          <PFChatFilled width={20} height={20} aria-hidden='true' />
-        ) : (
-          <PFChatOutline width={20} height={20} aria-hidden='true' />
-        )
-      }
-      text='채팅'
-      onClick={() => onTabClick('chat')}
-    />
-    <TabButton
-      testId='mobile-tab-crew'
-      active={activeTab === 'crew'}
-      ariaLabel={`크루 ${crewCount}`}
-      icon={
-        activeTab === 'crew' ? (
-          <PFPersonFilled width={20} height={20} aria-hidden='true' />
-        ) : (
-          <PFPersonOutline width={20} height={20} aria-hidden='true' />
-        )
-      }
-      count={crewCount}
-      onClick={() => onTabClick('crew')}
-    />
-    <TabButton
-      testId='mobile-tab-queue'
-      active={activeTab === 'queue'}
-      ariaLabel={`DJ 큐 ${queueCount}`}
-      icon={<PFHeadset width={20} height={20} aria-hidden='true' />}
-      count={queueCount}
-      onClick={() => onTabClick('queue')}
-    />
-  </nav>
-);
+const TabBar: FC<Props> = ({ activeTab, crewCount, queueCount, onTabClick }) => {
+  const t = useI18n();
+  return (
+    <nav
+      className={cn(
+        'shrink-0 grid grid-cols-3 bg-black border-t border-gray-800',
+        'pb-[env(safe-area-inset-bottom)]'
+      )}
+      role='tablist'
+      aria-label='파티룸 탭'
+    >
+      <TabButton
+        testId='mobile-tab-chat'
+        active={activeTab === 'chat'}
+        ariaLabel={t.partyroom.queue.tab_chat}
+        icon={
+          activeTab === 'chat' ? (
+            <PFChatFilled width={20} height={20} aria-hidden='true' />
+          ) : (
+            <PFChatOutline width={20} height={20} aria-hidden='true' />
+          )
+        }
+        text={t.partyroom.queue.tab_chat}
+        onClick={() => onTabClick('chat')}
+      />
+      <TabButton
+        testId='mobile-tab-crew'
+        active={activeTab === 'crew'}
+        ariaLabel={`크루 ${crewCount}`}
+        icon={
+          activeTab === 'crew' ? (
+            <PFPersonFilled width={20} height={20} aria-hidden='true' />
+          ) : (
+            <PFPersonOutline width={20} height={20} aria-hidden='true' />
+          )
+        }
+        count={crewCount}
+        onClick={() => onTabClick('crew')}
+      />
+      <TabButton
+        testId='mobile-tab-queue'
+        active={activeTab === 'queue'}
+        ariaLabel={`DJ 큐 ${queueCount}`}
+        icon={<PFHeadset width={20} height={20} aria-hidden='true' />}
+        count={queueCount}
+        onClick={() => onTabClick('queue')}
+      />
+    </nav>
+  );
+};
 
 interface TabButtonProps {
   testId: string;

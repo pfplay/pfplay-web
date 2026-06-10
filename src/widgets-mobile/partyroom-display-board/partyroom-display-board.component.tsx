@@ -112,7 +112,7 @@ const MobilePartyroomDisplayBoard: FC<Props> = ({ partyroomId }) => {
         </div>
       )}
 
-      <div className='flex gap-2 px-4 py-3'>
+      <div className='flex justify-center gap-3 px-4 py-3'>
         <ActionButtons />
       </div>
     </div>

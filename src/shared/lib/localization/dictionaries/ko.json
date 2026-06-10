@@ -342,7 +342,8 @@
       "guide_title": "DJ 규칙",
       "song_count": "{{count}}곡",
       "sheet_select_confirm": "선택 완료",
-      "no_track": "지금 재생 중인 곡이 없어요"
+      "no_track": "지금 재생 중인 곡이 없어요",
+      "tab_chat": "채팅"
     }
   },
   "crews": {

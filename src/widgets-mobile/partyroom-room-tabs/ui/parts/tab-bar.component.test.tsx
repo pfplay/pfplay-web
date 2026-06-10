@@ -3,6 +3,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, test, vi } from 'vitest';
 import TabBar from './tab-bar.component';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({ partyroom: { queue: { tab_chat: '채팅' } } }),
+}));
+
 describe('mobile TabBar', () => {
   test('3 버튼 (채팅·크루·큐) 렌더', () => {
     render(<TabBar activeTab='chat' crewCount={5} queueCount={0} onTabClick={vi.fn()} />);

@@ -342,7 +342,8 @@
       "guide_title": "DJ rules",
       "song_count": "{{count}} songs",
       "sheet_select_confirm": "Done",
-      "no_track": "No song playing right now"
+      "no_track": "No song playing right now",
+      "tab_chat": "Chat"
     }
   },
   "crews": {

@@ -29,7 +29,7 @@ export default function ActionButton({
       onClick={onClick}
       data-testid={testId}
       className={cn(
-        'appearance-none w-[48px] h-[44px] flexColCenter text-center gap-[4px] rounded bg-gray-800 text-gray-200',
+        'appearance-none w-[56px] h-[48px] flexColCenter text-center gap-[4px] rounded bg-gray-800 text-gray-200',
         {
           'cursor-pointer': !active,
         }

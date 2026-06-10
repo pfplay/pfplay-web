@@ -8,6 +8,9 @@ import { describe, expect, test, vi, beforeEach } from 'vitest';
 let mockCrews: any[] = [];
 let mockDjs: any[] = [];
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({ partyroom: { queue: { tab_chat: '채팅' } } }),
+}));
 vi.mock('@/widgets-mobile/partyroom-chat-panel', () => ({
   MobilePartyroomChatPanel: () => <div data-testid='chat-panel-stub' />,
 }));
