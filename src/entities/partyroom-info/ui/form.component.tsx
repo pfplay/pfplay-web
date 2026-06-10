@@ -56,8 +56,10 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
       className={cn(
         'flexCol items-center justify-between mx-auto pl-5 pr-5 tablet:pl-[26px] tablet:pr-[40px]',
         {
-          'child-form-labels:w-[100px]': lang === Language.Ko,
-          'child-form-labels:w-[128px]': lang === Language.En,
+          // 고정폭 라벨은 데스크탑(tablet+) 가로 레이아웃 전용. 모바일(grid-cols-1)은 풀폭이라
+          // 게이트 없이 적용하면 영문 라벨이 좁은 박스에 갇혀 줄바꿈됨(#399).
+          'tablet:child-form-labels:w-[100px]': lang === Language.Ko,
+          'tablet:child-form-labels:w-[128px]': lang === Language.En,
         }
       )}
     >
@@ -120,8 +122,9 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
                 }
                 classNames={{
                   label: cn('text-gray-200', {
-                    '!w-[75px]': lang === Language.Ko,
-                    '!w-[100px]': lang === Language.En,
+                    // 데스크탑 가로 레이아웃에서만 라벨폭 고정(#399). 모바일은 풀폭 세로.
+                    'tablet:!w-[75px]': lang === Language.Ko,
+                    'tablet:!w-[100px]': lang === Language.En,
                   }),
                 }}
               >
