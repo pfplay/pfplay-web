@@ -21,6 +21,11 @@ interface Props {
 const SearchListItem: FC<Props> = ({ music, onPreview, onAdd, addPending }) => {
   return (
     <li className='flex items-center gap-3 px-5 py-3 border-b border-gray-800'>
+      <img
+        src={music.thumbnailUrl || '/images/ETC/PlaylistThumbnail.png'}
+        alt={music.videoTitle}
+        className='w-[64px] h-[36px] shrink-0 rounded object-cover bg-gray-700'
+      />
       <div className='flex-1 min-w-0'>
         <Typography type='body3' className='truncate'>
           {safeDecodeURI(music.videoTitle)}
