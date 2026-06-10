@@ -73,7 +73,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
           <Input
             {...register('name')}
             maxLength={Form.MAX_LENGTH.NAME}
-            placeholder={t.common.ec.char_limit_12}
+            placeholder={t.common.ec.char_limit_12_short}
           />
         </FormItem>
 
@@ -87,7 +87,7 @@ export default function PartyroomMutationForm({ defaultValues, onSubmit, submitT
             {...register('introduce')}
             maxLength={Form.MAX_LENGTH.INTRODUCE}
             rows={3}
-            placeholder={t.common.ec.char_limit_50}
+            placeholder={t.common.ec.char_limit_50_short}
           />
         </FormItem>
 

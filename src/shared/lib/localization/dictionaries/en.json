@@ -47,6 +47,8 @@
     "ec": {
       "char_limit_12": "Limit of 12 characters / No spaces and special characters",
       "char_limit_50": "Limit of 50 characters including spaces",
+      "char_limit_12_short": "Max 12 chars, no spaces",
+      "char_limit_50_short": "Max 50 characters",
       "char_limit_20": "Limit of 20 characters including spaces",
       "char_up_to_50": "You can register up to 50 characters",
       "char_limit_60_dash": "Limit of 3 to 60 characters, including letters, numbers, and hyphens (-)",
