@@ -21,6 +21,8 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
         member_action_manage_playlists: '내 플레이리스트 관리',
         current_dj_title: '현재 DJ',
         empty: '큐 비어있음',
+        my_position: '내 순서 {{position}}번째 · 총 {{total}}명',
+        my_turn_now: '지금 내 차례예요',
       },
     },
   }),
@@ -115,9 +117,11 @@ describe('MobilePartyroomQueuePanel (분기 매트릭스)', () => {
     expect(screen.getByText(/X/)).toBeInTheDocument();
     expect(screen.getByText(/B/)).toBeInTheDocument();
     expect(screen.getByTestId('member-action-register')).toBeInTheDocument();
+    // 큐에 없는 멤버 → 내 순서 요약 미표시
+    expect(screen.queryByTestId('queue-position-summary')).not.toBeInTheDocument();
   });
 
-  test('멤버 + 본인 큐 있음 → MemberActions = [큐에서 나가기]', () => {
+  test('멤버 + 본인 큐 있음 → MemberActions = [큐에서 나가기] + 내 순서 요약', () => {
     setIsGuest(false);
     useFetchDjingQueueMock.mockReturnValue({
       data: {
@@ -132,5 +136,26 @@ describe('MobilePartyroomQueuePanel (분기 매트릭스)', () => {
     useCurrentPartyroomMock.mockReturnValue(99);
     render(<QueuePanel partyroomId={1} />);
     expect(screen.getByTestId('member-action-unregister')).toBeInTheDocument();
+    // 정렬 순번 2번째 / 총 2명 (현재 DJ 아님)
+    expect(screen.getByTestId('queue-position-summary')).toHaveTextContent(
+      '내 순서 2번째 · 총 2명'
+    );
+  });
+
+  test('멤버 + 본인이 현재 DJ → 요약 = "지금 내 차례"', () => {
+    setIsGuest(false);
+    useFetchDjingQueueMock.mockReturnValue({
+      data: {
+        djs: [
+          { crewId: 99, nickname: 'Me', playlistName: 'mine', orderNumber: 0 },
+          { crewId: 1, nickname: 'A', playlistName: 'p1', orderNumber: 1 },
+        ],
+        playback: { name: 'X', duration: '3:00' },
+        queueStatus: QueueStatus.OPEN,
+      },
+    });
+    useCurrentPartyroomMock.mockReturnValue(99);
+    render(<QueuePanel partyroomId={1} />);
+    expect(screen.getByTestId('queue-position-summary')).toHaveTextContent('지금 내 차례예요');
   });
 });

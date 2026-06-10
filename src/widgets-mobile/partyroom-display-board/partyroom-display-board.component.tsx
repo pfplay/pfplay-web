@@ -16,6 +16,12 @@ import VideoFrame from './ui/parts/video-frame.component';
 
 interface Props {
   partyroomId: number;
+  /**
+   * compact = 관리 탭(크루/큐) 표시 모드. 영상을 강제로 축소(Mode B)하고 리액션 버튼을 숨겨
+   * 아래 탭 목록(크루/DJ 큐)에 세로 공간을 양보한다. 채팅 탭은 false(확장 영상 + 리액션).
+   * @default false
+   */
+  compact?: boolean;
 }
 
 /**
@@ -30,7 +36,7 @@ interface Props {
  *
  * 데스크탑 widgets/partyroom-display-board 는 0 수정 (§3 row 9).
  */
-const MobilePartyroomDisplayBoard: FC<Props> = ({ partyroomId }) => {
+const MobilePartyroomDisplayBoard: FC<Props> = ({ partyroomId, compact = false }) => {
   const router = useRouter();
   const { useCurrentPartyroom } = useStores();
   const playbackActivated = useCurrentPartyroom((state) => state.playbackActivated);
@@ -48,9 +54,12 @@ const MobilePartyroomDisplayBoard: FC<Props> = ({ partyroomId }) => {
   const [expanded, setExpanded] = useState(true);
   const playerRef = useRef<TReactPlayer | null>(null);
 
+  // compact(크루/큐 탭)에서는 사용자의 expanded 선호를 보존하되 강제로 축소 표시.
+  // 채팅 탭으로 돌아오면 expanded 가 그대로 복원된다.
+  const effectiveExpanded = compact ? false : expanded;
   const videoId = playbackActivated ? (playback?.linkId ?? null) : null;
   const isPlaying = videoId !== null;
-  const mode: 'A' | 'B' | 'C' = !isPlaying ? 'C' : expanded ? 'A' : 'B';
+  const mode: 'A' | 'B' | 'C' = !isPlaying ? 'C' : effectiveExpanded ? 'A' : 'B';
 
   const gate = useAutoplayGestureGate({ playerRef, playable: isPlaying, videoId });
 
@@ -85,7 +94,8 @@ const MobilePartyroomDisplayBoard: FC<Props> = ({ partyroomId }) => {
       <div className='px-4 pt-3'>
         <VideoFrame
           videoId={videoId}
-          expanded={expanded}
+          expanded={effectiveExpanded}
+          canToggle={!compact}
           onToggleExpand={() => setExpanded((v) => !v)}
           playerRef={playerRef}
           gate={gate}
@@ -112,9 +122,12 @@ const MobilePartyroomDisplayBoard: FC<Props> = ({ partyroomId }) => {
         </div>
       )}
 
-      <div className='flex justify-center gap-3 px-4 py-3'>
-        <ActionButtons />
-      </div>
+      {/* 리액션은 채팅 맥락 전용 — 크루/큐(관리) 탭에서는 숨겨 세로 공간을 양보. */}
+      {!compact && (
+        <div className='flex justify-center gap-3 px-4 py-3'>
+          <ActionButtons />
+        </div>
+      )}
     </div>
   );
 };

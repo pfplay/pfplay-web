@@ -31,6 +31,12 @@ interface Props {
   videoId: string | null;
   expanded: boolean;
   onToggleExpand: () => void;
+  /**
+   * 확장/축소 토글 노출 여부. compact(크루/큐 탭)에서는 영상이 축소로 고정되므로
+   * 동작하지 않는 토글을 숨긴다.
+   * @default true
+   */
+  canToggle?: boolean;
   // VideoFrame 본문이 onReady 에서 playerRef.current 에 react-player 인스턴스를 할당하므로
   // MutableRefObject 가 필요. 부모는 useRef<TReactPlayer | null>(null) 로 그대로 생성.
   playerRef: MutableRefObject<TReactPlayer | null>;
@@ -47,6 +53,7 @@ const VideoFrame: FC<Props> = ({
   videoId,
   expanded,
   onToggleExpand,
+  canToggle = true,
   playerRef,
   gate,
   playback,
@@ -83,7 +90,7 @@ const VideoFrame: FC<Props> = ({
   }, [playbackId]);
 
   const showOverlayGate = mode === 'A' && gate.autoplayBlocked && !gate.played;
-  const showToggle = mode === 'A' || mode === 'B';
+  const showToggle = canToggle && (mode === 'A' || mode === 'B');
 
   return (
     <div className='relative'>
