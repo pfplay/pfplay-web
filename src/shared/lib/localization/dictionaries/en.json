@@ -346,8 +346,7 @@
       "sheet_select_confirm": "Done",
       "no_track": "No song playing right now",
       "tab_chat": "Chat",
-      "my_position": "You're #{{position}} of {{total}}",
-      "my_turn_now": "It's your turn now"
+      "my_position": "You're #{{position}} of {{total}}"
     }
   },
   "crews": {

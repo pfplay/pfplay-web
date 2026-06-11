@@ -22,7 +22,6 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
         current_dj_title: '현재 DJ',
         empty: '큐 비어있음',
         my_position: '내 순서 {{position}}번째 · 총 {{total}}명',
-        my_turn_now: '지금 내 차례예요',
       },
     },
   }),
@@ -142,7 +141,7 @@ describe('MobilePartyroomQueuePanel (분기 매트릭스)', () => {
     );
   });
 
-  test('멤버 + 본인이 현재 DJ → 요약 = "지금 내 차례"', () => {
+  test('멤버 + 본인이 현재 DJ → 순서 요약 바 미노출 (CurrentDjRow 가 이미 보여줘 중복)', () => {
     setIsGuest(false);
     useFetchDjingQueueMock.mockReturnValue({
       data: {
@@ -156,6 +155,6 @@ describe('MobilePartyroomQueuePanel (분기 매트릭스)', () => {
     });
     useCurrentPartyroomMock.mockReturnValue(99);
     render(<QueuePanel partyroomId={1} />);
-    expect(screen.getByTestId('queue-position-summary')).toHaveTextContent('지금 내 차례예요');
+    expect(screen.queryByTestId('queue-position-summary')).not.toBeInTheDocument();
   });
 });

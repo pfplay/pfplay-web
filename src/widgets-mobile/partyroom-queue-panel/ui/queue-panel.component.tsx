@@ -67,13 +67,8 @@ const QueuePanelContent: FC<Props> = ({ partyroomId }) => {
         )}
         <QueueList djs={djs} myCrewId={myCrewId} onChangePlaylist={change} />
       </div>
-      {myIndex >= 0 && (
-        <QueuePositionSummary
-          position={myIndex + 1}
-          total={sorted.length}
-          isCurrent={myIndex === 0}
-        />
-      )}
+      {/* 내가 현재 DJ(1번)면 CurrentDjRow 가 이미 보여주므로 대기 중일 때만 노출. */}
+      {myIndex > 0 && <QueuePositionSummary position={myIndex + 1} total={sorted.length} />}
       <MemberActions
         isMeInQueue={isMeInQueue}
         onRegister={register}

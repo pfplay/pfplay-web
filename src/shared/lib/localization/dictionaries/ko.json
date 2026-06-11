@@ -346,8 +346,7 @@
       "sheet_select_confirm": "선택 완료",
       "no_track": "지금 재생 중인 곡이 없어요",
       "tab_chat": "채팅",
-      "my_position": "내 순서 {{position}}번째 · 총 {{total}}명",
-      "my_turn_now": "지금 내 차례예요"
+      "my_position": "내 순서 {{position}}번째 · 총 {{total}}명"
     }
   },
   "crews": {

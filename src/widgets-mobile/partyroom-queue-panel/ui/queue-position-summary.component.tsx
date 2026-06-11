@@ -5,26 +5,23 @@ import { processI18nString } from '@/shared/lib/localization/renderer/processors
 import { Typography } from '@/shared/ui/components/typography';
 
 interface Props {
-  /** 정렬된 큐에서 내 1-based 순번 (1 = 현재 DJ). */
+  /** 정렬된 큐에서 내 1-based 순번 (2 이상 — 현재 DJ(1번)는 부모가 렌더하지 않음). */
   position: number;
   /** 큐 전체 DJ 수 (현재 DJ 포함). */
   total: number;
-  /** 내가 현재 재생 중인 DJ 인지 (position === 1). */
-  isCurrent: boolean;
 }
 
 /**
  * 좁은 모바일 큐 영역에서 목록을 스크롤·스캔하지 않고도 "내 차례"를 한눈에 알리는 요약 바.
- * 큐에 등록된 멤버에게만(footer 액션 위) 표시. 데스크탑은 전체 큐가 보이므로 불필요.
+ * 큐에서 대기 중인 멤버에게만(footer 액션 위) 표시 — 내가 현재 DJ 면 CurrentDjRow 가
+ * 이미 그 사실을 보여주므로 부모(queue-panel)가 렌더하지 않는다. 데스크탑은 전체 큐가 보이므로 불필요.
  */
-const QueuePositionSummary: FC<Props> = ({ position, total, isCurrent }) => {
+const QueuePositionSummary: FC<Props> = ({ position, total }) => {
   const t = useI18n();
-  const label = isCurrent
-    ? t.partyroom.queue.my_turn_now
-    : processI18nString(t.partyroom.queue.my_position, {
-        position: String(position),
-        total: String(total),
-      });
+  const label = processI18nString(t.partyroom.queue.my_position, {
+    position: String(position),
+    total: String(total),
+  });
 
   return (
     <div
