@@ -28,6 +28,19 @@ describe('CollapseList', () => {
     expect(screen.getByText('펼쳐진 내용')).toBeTruthy();
   });
 
+  test('defaultOpen=true일 때 내용이 처음부터 표시되고 다시 접을 수 있다', () => {
+    render(
+      <CollapseList title='목록' defaultOpen>
+        기본 표시 내용
+      </CollapseList>
+    );
+
+    expect(screen.getByText('기본 표시 내용')).toBeTruthy();
+
+    fireEvent.click(screen.getByText('목록'));
+    expect(screen.queryByText('기본 표시 내용')).toBeNull();
+  });
+
   test('infoText가 렌더링된다', () => {
     render(
       <CollapseList title='목록' infoText='3개'>

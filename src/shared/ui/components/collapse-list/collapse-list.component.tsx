@@ -11,6 +11,7 @@ type CollapseListProps = {
   title: string;
   infoText?: string;
   displaySuffix?: boolean;
+  defaultOpen?: boolean;
   buttonTestId?: string;
   classNames?: {
     button?: string;
@@ -25,11 +26,16 @@ const CollapseList = ({
   variant = 'default',
   children,
   displaySuffix = true,
+  defaultOpen = false,
   buttonTestId,
   classNames,
 }: PropsWithChildren<CollapseListProps>) => {
   return (
-    <Disclosure as='div' className='mx-auto w-full max-w-md bg-transparent'>
+    <Disclosure
+      as='div'
+      className='mx-auto w-full max-w-md bg-transparent'
+      defaultOpen={defaultOpen}
+    >
       {({ open }) => (
         <>
           <DisclosureButton

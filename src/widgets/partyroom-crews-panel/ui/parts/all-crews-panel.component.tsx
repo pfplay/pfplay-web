@@ -2,7 +2,7 @@ import { useAdjustGrade, useCanAdjustGrade } from '@/features/partyroom/adjust-g
 import { useBlockCrew } from '@/features/partyroom/block-crew';
 import { useCanImposePenalty, useImposePenalty } from '@/features/partyroom/impose-penalty';
 import { Crews, useCurrentPartyroomCrews } from '@/features/partyroom/list-crews';
-import { PenaltyType } from '@/shared/api/http/types/@enums';
+import { GradeType, PenaltyType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { CollapseList } from '@/shared/ui/components/collapse-list';
@@ -25,6 +25,7 @@ export default function AllCrewsPanel() {
           key={'AllCrewsPanel' + category}
           title={category}
           displaySuffix={false}
+          defaultOpen={category === GradeType.HOST || category === GradeType.LISTENER}
           buttonTestId={`all-crews-category-${category}`}
         >
           {crews.map((crew) => {
