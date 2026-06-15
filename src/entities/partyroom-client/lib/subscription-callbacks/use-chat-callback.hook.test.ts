@@ -64,6 +64,22 @@ describe('useChatCallback', () => {
     }
   });
 
+  test('채팅 시 발신 crew 에 lastChatAt 을 세팅한다 (#410 말풍선)', () => {
+    const crew = createCrew({ crewId: 5, nickname: '채팅유저' });
+    store.getState().updateCrews(() => [crew]);
+    const before = Date.now();
+
+    const { result } = renderHook(() => useChatCallback());
+    result.current({
+      eventType: PartyroomEventType.CHAT_MESSAGE_SENT,
+      crew: { crewId: 5 },
+      message: { messageId: 'msg-1', content: '안녕하세요' },
+    });
+
+    const updated = store.getState().crews.find((c) => c.crewId === 5);
+    expect(updated?.lastChatAt).toBeGreaterThanOrEqual(before);
+  });
+
   test('크루를 찾지 못하면 warn 로그 + 메시지 append하지 않음', () => {
     store.getState().updateCrews(() => [createCrew({ crewId: 1 })]);
 
