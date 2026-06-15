@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { FC } from 'react';
 import { useCurrentPartyroomCrews } from '@/features/partyroom/list-crews';
+import { useOpenCrewProfile } from '@/features/view-crew-profile';
 import { cn } from '@/shared/lib/functions/cn';
 import { useStores } from '@/shared/lib/store/stores.context';
 
@@ -16,6 +17,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
  */
 const MobilePartyroomCrewsPanel: FC = () => {
   const crews = useCurrentPartyroomCrews();
+  const openCrewProfile = useOpenCrewProfile();
   const { useCurrentPartyroom } = useStores();
   const currentDj = useCurrentPartyroom((state) => state.currentDj);
 
@@ -34,12 +36,21 @@ const MobilePartyroomCrewsPanel: FC = () => {
           const isDj = currentDj?.crewId === crew.crewId;
           return (
             <li key={crew.crewId} className='flex items-center gap-3 px-4 py-3 min-h-[44px]'>
-              <div className='relative w-8 h-8 rounded-full overflow-hidden bg-gray-800 shrink-0'>
-                {crew.avatarIconUri && (
-                  <Image src={crew.avatarIconUri} alt='' fill className='object-cover' />
-                )}
-              </div>
-              <span className='text-sm text-white truncate flex-1'>{crew.nickname}</span>
+              <button
+                type='button'
+                onClick={() => openCrewProfile(crew.crewId)}
+                aria-label={`${crew.nickname} 프로필 보기`}
+                className='flex min-w-0 flex-1 items-center gap-3'
+              >
+                <div className='relative w-8 h-8 rounded-full overflow-hidden bg-gray-800 shrink-0'>
+                  {crew.avatarIconUri && (
+                    <Image src={crew.avatarIconUri} alt='' fill className='object-cover' />
+                  )}
+                </div>
+                <span className='text-sm text-white truncate flex-1 text-left'>
+                  {crew.nickname}
+                </span>
+              </button>
               {isDj && <span className='text-[10px] text-red-400 font-bold shrink-0'>DJ</span>}
             </li>
           );

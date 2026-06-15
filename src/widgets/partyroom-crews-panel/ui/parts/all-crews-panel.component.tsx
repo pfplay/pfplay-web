@@ -2,6 +2,7 @@ import { useAdjustGrade, useCanAdjustGrade } from '@/features/partyroom/adjust-g
 import { useBlockCrew } from '@/features/partyroom/block-crew';
 import { useCanImposePenalty, useImposePenalty } from '@/features/partyroom/impose-penalty';
 import { Crews, useCurrentPartyroomCrews } from '@/features/partyroom/list-crews';
+import { useOpenCrewProfile } from '@/features/view-crew-profile';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -16,6 +17,7 @@ export default function AllCrewsPanel() {
   const canImposePenalty = useCanImposePenalty();
   const imposePenalty = useImposePenalty();
   const blockCrew = useBlockCrew();
+  const openCrewProfile = useOpenCrewProfile();
   const [me, currentDj] = useStores().useCurrentPartyroom((state) => [state.me, state.currentDj]);
 
   return (
@@ -52,6 +54,11 @@ export default function AllCrewsPanel() {
                 key={crew.crewId}
                 userListItemConfig={crew}
                 menuItemList={[
+                  {
+                    label: '프로필 보기',
+                    onClickItem: () => openCrewProfile(crew.crewId),
+                    visible: true,
+                  },
                   {
                     label: t.common.btn.authority,
                     onClickItem: () => adjustGrade(crew),
