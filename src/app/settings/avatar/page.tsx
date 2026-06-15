@@ -1,39 +1,11 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import { AvatarEditDone, ProfileAvatarEditPanel } from '@/features/edit-profile-avatar';
-import { BackButton } from '@/shared/ui/components/back-button';
-import { Button } from '@/shared/ui/components/button';
-import { TooltipTrigger } from '@/shared/ui/components/tooltip';
+import { headers } from 'next/headers';
+import { MobileOnlyDesktopFeatureCard } from '@/shared/ui/components/mobile-only-desktop-feature-card';
+import { AvatarSettingsPageDesktop } from '@/widgets/avatar-settings-page-desktop';
 
-export default function AvatarSettingsPage() {
-  const router = useRouter();
+const AvatarSettingsPage = () => {
+  const isMobile = headers().get('x-pf-device') === 'mobile';
+  if (isMobile) return <MobileOnlyDesktopFeatureCard feature='avatar-edit' />;
+  return <AvatarSettingsPageDesktop />;
+};
 
-  return (
-    <div className='absolute-user-form-section'>
-      <ProfileAvatarEditPanel
-        titleRender={(text) => <BackButton text={text} />}
-        actions={
-          <AvatarEditDone
-            onSuccess={() => {
-              router.push('/parties');
-            }}
-          >
-            {({ done, canSubmit, loading, submitHint }) => (
-              <TooltipTrigger title={submitHint}>
-                <Button
-                  onClick={done}
-                  disabled={!canSubmit}
-                  loading={loading}
-                  className='px-[88.5px]'
-                  size='xl'
-                >
-                  Let&apos;s get in
-                </Button>
-              </TooltipTrigger>
-            )}
-          </AvatarEditDone>
-        }
-      />
-    </div>
-  );
-}
+export default AvatarSettingsPage;

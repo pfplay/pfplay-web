@@ -41,7 +41,10 @@ jobs:
     needs: deploy
     if: ${{ needs.deploy.result == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # chunk 3.1 mobile project (5 cases × ~90s setup + assertions) 추가로 총 16 tests
+    # 순차 실행 (workers:1) 시 budget 부족 → 30 min 으로 상향.
+    # 이전 baseline: ~10 min (PR #357 chunk 3 머지 시). chunk 3.1 의 5 mobile setup overhead 누적.
+    timeout-minutes: 30
     environment: Preview – pfplay-web
     env:
       E2E_BASE_URL: https://stg.pfplay.xyz
@@ -86,13 +89,29 @@ jobs:
           done
           exit 0
 
+      # chunk 3.1: display-board-tos-mobile project (iPhone 13) 가 mandatory.
+      # branch protection 의 required status checks 에 "Playwright E2E" job 등록 필수
+      # (사용자 GitHub UI 작업, PR 본문 체크리스트). job 자체는 yarn test:e2e 안에 포함됨.
       - run: yarn test:e2e
         env:
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+          # e2e helper 의 closePartyroom 등이 직접 backend API 호출하는데, env 명시
+          # 안 하면 fallback 'dev-api.pfplay.xyz' 사용. stg-api 가 아닌 dev backend
+          # 로 DELETE → stg partyroom 의 id 못 찾음 → silent 흡수 → stale 누적.
+          # stg frontend 가 호출하는 stg-api 와 일치시킴.
+          # 기존 ↓ 유지 (schema 호환 alias, 다음 series 에서 제거 예정)
+          NEXT_PUBLIC_API_HOST_NAME: https://stg-api.pfplay.xyz/api/
+          # issue #372: e2e helper 의 silent fallback 휴리스틱 제거. 명시적 E2E_API_BASE 사용.
+          E2E_API_BASE: https://stg-api.pfplay.xyz/api/
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
-          path: playwright-report/
+          # playwright-report: HTML 리포트. test-results: trace.zip / video.webm / screenshot
+          # (config 의 trace='on-first-retry' / video='on-first-retry' 가 retry 시 자동 캡쳐).
+          # 화면 모달 / DOM 스냅샷 / 액션 history 디버그 → `npx playwright show-trace` 로 재생.
+          path: |
+            playwright-report/
+            test-results/
           retention-days: 7

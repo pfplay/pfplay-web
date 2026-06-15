@@ -47,6 +47,8 @@
     "ec": {
       "char_limit_12": "한/영 포함 12자 제한 / 띄어쓰기, 특수문자 사용 불가",
       "char_limit_50": "한/영 구분 없이 띄어쓰기 포함 50자 제한",
+      "char_limit_12_short": "최대 12자, 공백·특수문자 불가",
+      "char_limit_50_short": "최대 50자",
       "char_limit_20": "한/영 구분없이 띄어쓰기 포함 20자 제한",
       "char_up_to_50": "최대 50자까지 등록 가능",
       "char_limit_60_dash": "영문/숫자/하이픈(-) 포함 3자 이상 60자 제한",
@@ -116,7 +118,7 @@
       "moment": "잠깐만요!"
     },
     "para": {
-      "domain_format": "웹 페이지 주소는 pfplay.xyz/도메인으로 시작",
+      "domain_format": "예: pfplay.xyz/link/my-room",
       "guest_limit": "비로그인 입장 시 접근 가능한 기능이 제한됩니다. 소셜 계정을 연동하면 온전한 서비스를 즐길 수 있어요"
     }
   },
@@ -308,6 +310,43 @@
       "shut_down": "더 이상 존재하지 않는 파티룸이에요",
       "data_load": "데이터를 불러오는데 실패했습니다.\n다시 입장하시겠어요?",
       "profile_required": "프로필 등록을 완료해야 파티룸에 참여할 수 있어요"
+    },
+    "queue": {
+      "guest_cta_title": "🎧 음악을 직접 틀어보세요",
+      "guest_cta_subtitle": "3초만에 가입 →",
+      "member_action_register": "+ DJ 등록",
+      "member_action_unregister": "큐에서 나가기",
+      "member_action_change_playlist": "변경",
+      "member_action_manage_playlists": "내 플레이리스트 관리",
+      "current_dj_title": "현재 DJ",
+      "empty": "큐 비어있음",
+      "unregister_confirm": "정말 큐에서 나가시겠어요?",
+      "sheet_select_playlist_title": "플레이리스트 선택",
+      "sheet_add_tracks_title": "곡 추가",
+      "sheet_playlists_management_title": "내 플레이리스트",
+      "playlists_empty": "아직 플레이리스트가 없어요",
+      "playlist_tracks_empty": "아직 곡이 없어요",
+      "create_playlist_cta": "+ 새 플레이리스트",
+      "create_playlist_placeholder": "플레이리스트 이름",
+      "create_playlist_submit": "추가",
+      "remove_track_label": "삭제",
+      "add_tracks_cta": "+ 곡 추가",
+      "sheet_search_placeholder": "곡명 또는 아티스트로 검색",
+      "sheet_empty_search": "다른 키워드로 시도해보세요",
+      "sheet_search_failed": "검색에 실패했어요",
+      "sheet_preview_unavailable": "재생할 수 없어요",
+      "sheet_add_button": "+ 추가",
+      "add_success": "플레이리스트에 추가했어요",
+      "add_already_exists": "이미 플레이리스트에 있어요",
+      "add_limit_exceeded": "플레이리스트가 가득 찼어요",
+      "guest_action_blocked": "로그인이 필요해요",
+      "guide_start": "시작",
+      "guide_title": "DJ 규칙",
+      "song_count": "{{count}}곡",
+      "sheet_select_confirm": "선택 완료",
+      "no_track": "지금 재생 중인 곡이 없어요",
+      "tab_chat": "채팅",
+      "my_position": "내 순서 {{position}}번째 · 총 {{total}}명"
     }
   },
   "crews": {

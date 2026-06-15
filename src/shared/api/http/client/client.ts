@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { clientEnv } from '@/shared/config';
 import { flow } from '@/shared/lib/functions/flow';
 import { logRequest } from './interceptors/request';
 import {
@@ -11,11 +12,11 @@ import {
 } from './interceptors/response';
 
 // Preview/CI 콜드 스타트(러너→Vercel→백엔드 cross-region) 대응을 위해 환경변수로 override 가능.
-// 미설정 시 production 디폴트 4s 유지.
-const HTTP_TIMEOUT_MS = Number(process.env.NEXT_PUBLIC_HTTP_TIMEOUT_MS) || 4000;
+// 미설정 시 production 디폴트 4s 유지 (zod coerce.number().default(4000)).
+const HTTP_TIMEOUT_MS = clientEnv.NEXT_PUBLIC_HTTP_TIMEOUT_MS;
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_HOST_NAME,
+  baseURL: clientEnv.NEXT_PUBLIC_API_HOST_NAME,
   timeout: HTTP_TIMEOUT_MS,
   validateStatus: (status) => status >= 200 && status < 400,
   withCredentials: true,

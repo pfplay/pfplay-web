@@ -119,6 +119,28 @@ export default function Video({
     seekToLive();
   };
 
+  // playback.id 변경 (트랙 변경 OR 같은 곡 회전) 감지 → 명시적 IFrame reload (#384).
+  // react-player 는 url prop 이 동일하면 (같은 linkId 회전 케이스) IFrame 에 reload 명령을 안 보낸다.
+  // 결과: 곡 ended state 그대로 유지 → DJ 1명+곡 1개 시나리오에서 재생 정지.
+  // playback.id 는 backend 가 회전마다 갱신하므로 신뢰 가능한 reload 트리거.
+  // YouTube IFrame API 의 loadVideoById(videoId, startSeconds) 가 같은 영상도 정상 reload.
+  const playbackId = playback?.id;
+  useEffect(() => {
+    if (!playbackId || !videoId || !playerRef.current) return;
+    const internal = playerRef.current.getInternalPlayer() as
+      | { loadVideoById?: (id: string, start?: number) => void; playVideo?: () => void }
+      | undefined;
+    const startSeconds = Playback.getInitialSeek(playback as PartyroomPlayback);
+    if (internal?.loadVideoById) {
+      internal.loadVideoById(videoId, startSeconds);
+    } else {
+      // loadVideoById 없는 환경 (비 YouTube 임베드 등) 폴백.
+      playerRef.current.seekTo(startSeconds, 'seconds');
+      internal?.playVideo?.();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playbackId]);
+
   const onPlay = () => {
     setPlayed(true);
     setAutoplayBlocked(false);

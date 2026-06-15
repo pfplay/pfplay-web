@@ -4,13 +4,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import type { ReactNode } from 'react';
 import { Resvg } from '@resvg/resvg-js';
 import satori from 'satori';
+import { clientEnv } from '@/shared/config';
 
 export const dynamic = 'force-dynamic';
 
 const WIDTH = 1200;
 const HEIGHT = 630;
 
-const API_BASE = process.env.NEXT_PUBLIC_API_HOST_NAME?.replace(/\/+$/, '');
+const API_BASE = clientEnv.NEXT_PUBLIC_API_HOST_NAME.replace(/\/+$/, '');
 
 type PartyroomOG = {
   partyroomId: number;

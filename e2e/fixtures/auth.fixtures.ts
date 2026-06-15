@@ -55,5 +55,10 @@ function getAuthPrefix(testFile: string) {
     return 'd';
   }
 
+  // chunk 3.1 + chunk 4 — 모든 mobile/ 경로 spec 은 user A storage state 재사용.
+  if (testFile.includes('mobile/') || testFile.includes('mobile\\')) {
+    return 'a';
+  }
+
   throw new Error(`No auth prefix configured for test file: ${testFile}`);
 }

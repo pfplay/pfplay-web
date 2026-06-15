@@ -5,6 +5,7 @@ import { RainbowKitProviderProps } from '@rainbow-me/rainbowkit/dist/components/
 import { WagmiProvider, http } from 'wagmi';
 import { polygon, optimism, arbitrum } from 'wagmi/chains';
 import { useGlobalWalletSync } from '@/entities/wallet';
+import { clientEnv } from '@/shared/config';
 
 export const WalletProvider = ({ children }: PropsWithChildren) => {
   const [mounted, setMounted] = useState(false);
@@ -28,7 +29,7 @@ const appInfo: RainbowKitProviderProps['appInfo'] = {
 
 const wagmiConfig = getDefaultConfig({
   appName: APP_NAME,
-  projectId: process.env.NEXT_PUBLIC_WAGMI_PROJECT_ID as string,
+  projectId: clientEnv.NEXT_PUBLIC_WAGMI_PROJECT_ID,
   chains: [
     /*
      * chain을 mainnet으로 설정 시 아래 이슈에 명시된 것과 같은 에러 발생하여 임시 주석 처리

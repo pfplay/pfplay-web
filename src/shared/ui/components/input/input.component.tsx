@@ -91,7 +91,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={combinedRef}
           type='text'
           className={cn(
-            'flex-1 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none',
+            'flex-1 min-w-0 bg-transparent placeholder:gray-400 text-gray-50 caret-red-300 focus:outline-none',
             inputClassName
           )}
           value={value}

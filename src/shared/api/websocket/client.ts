@@ -1,6 +1,7 @@
 import { Client, IFrame } from '@stomp/stompjs';
 import { StompSubscription } from '@stomp/stompjs/src/stomp-subscription';
 import { messageCallbackType } from '@stomp/stompjs/src/types';
+import { clientEnv } from '@/shared/config';
 import { specificLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { recordClientEvent } from '@/shared/lib/observability/client-events';
@@ -84,7 +85,7 @@ export default class SocketClient {
     };
 
     this.client = new Client({
-      brokerURL: process.env.NEXT_PUBLIC_API_WS_HOST_NAME as string,
+      brokerURL: clientEnv.NEXT_PUBLIC_API_WS_HOST_NAME,
       reconnectDelay: 5000,
       // STOMP 내장 heartbeat — 양측 옵트인 시에만 동작 (미옵트인 시 협상이 0,0 폴백).
       // backend WebSocketConfig.setHeartbeatValue([10000, 5000]) 와 매칭.

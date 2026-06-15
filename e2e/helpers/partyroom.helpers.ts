@@ -1,11 +1,12 @@
 import path from 'path';
 import { Browser, Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import { e2eEnv } from '../config/env';
 import { ETHEREUM_MOCK_SCRIPT } from '../fixtures/ethereum-mock';
 
 const AUTH_DIR = path.join(__dirname, '../.auth');
-const BASE_URL = process.env.E2E_BASE_URL ?? 'https://localhost:3000';
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_HOST_NAME ?? 'https://dev-api.pfplay.xyz/api/';
+const BASE_URL = e2eEnv.E2E_BASE_URL;
+const API_BASE_URL = e2eEnv.E2E_API_BASE;
 const USER_PREFERENCES_STORAGE_KEY = 'user-preferences';
 const DJING_DIALOG_CLOSE_SELECTOR = '[data-testid="djing-dialog-close"]';
 const DJING_DIALOG_CLOSE_SELECTOR_EMPTY = '[id^="headlessui-dialog-panel-"] > header > button'; // empty dj 모달일 때 data-testid 미연결 되어있기 때문에 임시 조치

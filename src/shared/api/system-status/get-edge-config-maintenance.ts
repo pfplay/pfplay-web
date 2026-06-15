@@ -1,5 +1,6 @@
 import { get } from '@vercel/edge-config';
 import { MaintenanceState } from '@/features/system-announcement/model/system-announcement.types';
+import { serverEnv } from '@/shared/config/server-env';
 
 /**
  * 점검 모드 인지의 1차 source. **server-only** — middleware.ts 또는
@@ -17,13 +18,13 @@ import { MaintenanceState } from '@/features/system-announcement/model/system-an
  *   undefined (로컬 next dev) → EDGE_CONFIG 부재로 위에서 이미 null 반환
  */
 function resolveMaintenanceKey(): string {
-  // 빈 문자열도 미설정으로 간주 (`??` 대신 `||`)
-  const env = process.env.VERCEL_ENV || 'development';
+  // serverEnv.VERCEL_ENV 는 optional — 미설정이면 'development' 로 폴백
+  const env = serverEnv.VERCEL_ENV ?? 'development';
   return env === 'production' ? 'maintenance' : `maintenance_${env}`;
 }
 
 export async function getEdgeConfigMaintenance(): Promise<MaintenanceState | null> {
-  if (!process.env.EDGE_CONFIG) return null;
+  if (!serverEnv.EDGE_CONFIG) return null;
   try {
     const value = await get<MaintenanceState | null>(resolveMaintenanceKey());
     return value ?? null;

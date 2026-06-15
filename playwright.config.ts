@@ -1,5 +1,6 @@
 import path from 'path';
 import { defineConfig, devices } from '@playwright/test';
+import { e2eEnv } from './e2e/config/env';
 
 // 로그인 세션 저장해두고 테스트에서 재사용하려고 쓰는 경로
 export const AUTH_STATE_DIR = path.join(__dirname, 'e2e/.auth');
@@ -18,10 +19,10 @@ export default defineConfig({
   fullyParallel: false,
 
   // 디버깅 용으로 test.only 남아있다면 바로 실패 처리
-  forbidOnly: !!process.env.CI,
+  forbidOnly: !!e2eEnv.CI,
 
   // 재시도 횟수 (예상 못한 flaky 방지용)
-  retries: process.env.CI ? 1 : 0,
+  retries: e2eEnv.CI ? 1 : 0,
 
   // 테스트 작업 나눠서 돌릴 워커 수
   // CI 의 cross-region + cold-start 환경에서 2 workers 가 동일 백엔드/Vercel 을
@@ -30,16 +31,16 @@ export default defineConfig({
   workers: 1,
 
   // 테스트 결과 출력할 형식
-  reporter: process.env.CI ? 'github' : 'list',
+  reporter: e2eEnv.CI ? 'github' : 'list',
 
   use: {
-    baseURL: process.env.E2E_BASE_URL ?? 'https://localhost:3000',
+    baseURL: e2eEnv.E2E_BASE_URL,
     // 실패해서 재시도할 때만 trace/video  남김
     trace: 'on-first-retry',
     video: 'on-first-retry',
     ignoreHTTPSErrors: true,
-    extraHTTPHeaders: process.env.VERCEL_AUTOMATION_BYPASS_SECRET
-      ? { 'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET }
+    extraHTTPHeaders: e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET
+      ? { 'x-vercel-protection-bypass': e2eEnv.VERCEL_AUTOMATION_BYPASS_SECRET }
       : {},
   },
 
@@ -87,6 +88,16 @@ export default defineConfig({
       testMatch: /e2e-d\..*\.spec\.ts/,
       use: { ...devices['Desktop Chrome'] },
       dependencies: ['auth-d'],
+    },
+    {
+      name: 'mobile',
+      testMatch: /mobile\/.+\.spec\.ts/,
+      // iPhone 13 viewport (390×844) + 모바일 UA 보존, browserName 만 chromium 으로 override.
+      // CI workflow 의 `npx playwright install --with-deps chromium` 이 chromium 만 설치하므로
+      // 기본 `browserName='webkit'` 가 launch 실패함 (`webkit-2272/pw_run.sh` not found).
+      // ToS 가드의 본질은 viewport/IFrame DOM 단언이라 engine 영향 미미 — 다른 e2e-a~d project 와 동일 browser 사용.
+      use: { ...devices['iPhone 13'], browserName: 'chromium' },
+      dependencies: ['auth-a'],
     },
   ],
 });

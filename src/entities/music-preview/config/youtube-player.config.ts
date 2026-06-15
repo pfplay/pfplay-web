@@ -39,4 +39,8 @@ export const PREVIEW_PLAYER_SIZES = {
     width: 280,
     height: 157,
   },
+  'mobile-bottom': {
+    width: 64,
+    height: 36,
+  },
 } as const;

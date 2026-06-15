@@ -90,3 +90,68 @@ describe('FormItemError', () => {
     expect(screen.getByText('오류가 발생했습니다')).toBeTruthy();
   });
 });
+
+describe('FormItem 반응형 레이아웃', () => {
+  test('horizontal(기본): 모바일 단일칼럼 + tablet:부터 2칼럼 그리드', () => {
+    const { container } = render(
+      <FormItem label='이름'>
+        <input />
+      </FormItem>
+    );
+    const label = container.querySelector('label');
+    expect(label).not.toBeNull();
+    expect(label?.className).toContain('tablet:grid-cols-[max-content_1fr]');
+    expect(label?.className).not.toMatch(/(^|\s)grid-cols-\[max-content_1fr\]/);
+  });
+
+  test('horizontal: 라벨 정렬이 모바일 text-start / tablet:text-right', () => {
+    const { container } = render(
+      <FormItem label='이름'>
+        <input />
+      </FormItem>
+    );
+    const labelText = container.querySelector('[data-custom-role="form-item-title"]');
+    expect(labelText).not.toBeNull();
+    expect(labelText?.className).toContain('text-start');
+    expect(labelText?.className).toContain('tablet:text-right');
+  });
+
+  test('vertical: 항상 세로(2칼럼 그리드 없음) + text-start, tablet:text-right 없음(불변)', () => {
+    const { container } = render(
+      <FormItem label='이름' layout='vertical'>
+        <input />
+      </FormItem>
+    );
+    const label = container.querySelector('label');
+    expect(label).not.toBeNull();
+    expect(label?.className).not.toContain('grid-cols-[max-content');
+    const labelText = container.querySelector('[data-custom-role="form-item-title"]');
+    expect(labelText).not.toBeNull();
+    expect(labelText?.className).toContain('text-start');
+    expect(labelText?.className).not.toContain('tablet:text-right');
+  });
+
+  test('fit=true horizontal: tablet:부터 max-content 2칼럼 (모바일 단일칼럼)', () => {
+    const { container } = render(
+      <FormItem label='이름' fit>
+        <input />
+      </FormItem>
+    );
+    const label = container.querySelector('label');
+    expect(label).not.toBeNull();
+    expect(label?.className).toContain('tablet:grid-cols-[max-content_max-content]');
+    expect(label?.className).not.toMatch(/(^|\s)grid-cols-\[max-content_max-content\]/);
+  });
+
+  test('horizontal + error: 스페이서 div가 hidden tablet:block (모바일 빈 행 방지)', () => {
+    const { container } = render(
+      <FormItem label='이름' error='필수 항목입니다'>
+        <input />
+      </FormItem>
+    );
+    const spacer = Array.from(container.querySelectorAll('div')).find((d) =>
+      d.className.includes('tablet:block')
+    );
+    expect(spacer).toBeTruthy();
+  });
+});
