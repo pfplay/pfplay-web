@@ -111,6 +111,28 @@ describe('useAvatarCluster', () => {
     expect(result.current.queuePositions[0].crewId).toBe(2);
   });
 
+  test('DJ 대기열은 crews 배열 순서가 아니라 djQueueCrewIds 순서를 유지한다', () => {
+    const crews = [makeCrew(1), makeCrew(2), makeCrew(3), makeCrew(4)];
+
+    const { result, rerender } = renderHook(
+      ({ djQueueCrewIds }) =>
+        useAvatarCluster({
+          crews,
+          djQueueCrewIds,
+          stageBounds: { width: 1920, height: 1080 },
+        }),
+      {
+        initialProps: { djQueueCrewIds: [4, 2, 3] },
+      }
+    );
+
+    expect(result.current.queuePositions.map((position) => position.crewId)).toEqual([4, 2, 3]);
+
+    rerender({ djQueueCrewIds: [2, 4, 3] });
+
+    expect(result.current.queuePositions.map((position) => position.crewId)).toEqual([2, 4, 3]);
+  });
+
   test('모든 position이 유한한 숫자이다', () => {
     const crews = Array.from({ length: 10 }, (_, i) => makeCrew(i + 1));
 

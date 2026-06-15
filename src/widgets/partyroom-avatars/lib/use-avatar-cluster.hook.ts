@@ -575,7 +575,7 @@ export function useAvatarCluster({
     }
 
     const currentCrewIdsKey = JSON.stringify(crews.map((c) => c.crewId).sort());
-    const currentQueueIdsKey = JSON.stringify([...djQueueCrewIds].sort());
+    const currentQueueIdsKey = JSON.stringify(djQueueCrewIds);
     const stageBoundsChanged =
       prevCourtStageBoundsRef.current?.width !== stageBounds.width ||
       prevCourtStageBoundsRef.current?.height !== stageBounds.height;
@@ -591,10 +591,13 @@ export function useAvatarCluster({
     prevCrewIdsRef.current = currentCrewIdsKey;
     prevQueueIdsRef.current = currentQueueIdsKey;
 
+    const crewMap = new Map(crews.map((crew) => [crew.crewId, crew]));
     const djQueueIdSet = new Set(djQueueCrewIds);
 
     const courtCrews = crews.filter((c) => !djQueueIdSet.has(c.crewId));
-    const queueCrews = crews.filter((c) => djQueueIdSet.has(c.crewId));
+    const queueCrews = djQueueCrewIds
+      .map((crewId) => crewMap.get(crewId))
+      .filter((crew): crew is Crew.Model => !!crew);
 
     const courtResult = runClusterSimulation({
       crews: courtCrews,
@@ -614,9 +617,18 @@ export function useAvatarCluster({
       stageBounds,
       prevStageBounds: prevQueueStageBoundsRef.current,
     });
+    const queueOrderMap = new Map(djQueueCrewIds.map((crewId, index) => [crewId, index]));
+    const sortByQueueOrder = <T extends { crewId: number }>(items: T[]) =>
+      items
+        .slice()
+        .sort(
+          (a, b) =>
+            (queueOrderMap.get(a.crewId) ?? Number.MAX_SAFE_INTEGER) -
+            (queueOrderMap.get(b.crewId) ?? Number.MAX_SAFE_INTEGER)
+        );
 
-    queueNodesRef.current = queueResult.updatedNodes;
-    setQueueClustered(queueResult.positionedCrews);
+    queueNodesRef.current = sortByQueueOrder(queueResult.updatedNodes);
+    setQueueClustered(sortByQueueOrder(queueResult.positionedCrews));
     prevQueueStageBoundsRef.current = stageBounds;
   }, [crews, djQueueCrewIds, stageBounds]);
 

@@ -42,13 +42,16 @@ export default function Avatars({
   const dj = currentDjCrewId
     ? crews.find((crew: Crew.Model) => crew.crewId === currentDjCrewId)
     : undefined;
-  const djQueueCrewIds =
+  const djQueueCrewIds = (
     djQueueCrewIdsOverride ??
     (djingQueue
       ? djingQueue.djs
+          .slice()
+          .sort((a, b) => a.orderNumber - b.orderNumber)
           .filter((dj) => dj.crewId !== currentDjCrewId && dj.orderNumber > 1)
           .map((dj) => dj.crewId)
-      : []);
+      : [])
+  ).slice(0, 5);
 
   const { registerAvatar } = useAvatarDance();
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -141,9 +144,9 @@ export default function Avatars({
       )}
 
       {/* DJ Queue Avatars  */}
-      {djQueueCrews.map(({ crew, position }, index) => (
+      {djQueueCrews.map(({ crew, position }) => (
         <div
-          key={'partyroom-dj-queue-' + crew.crewId + index}
+          key={'partyroom-dj-queue-' + crew.crewId}
           className='absolute'
           data-crew-id={String(crew.crewId)}
           data-avatar-body-uri={crew.avatarBodyUri}
