@@ -5,10 +5,18 @@ import { useStores } from '@/shared/lib/store/stores.context';
 
 export default function useCrewEnteredCallback() {
   const { useCurrentPartyroom } = useStores();
-  const updateCrews = useCurrentPartyroom((state) => state.updateCrews);
+  const [updateCrews, appendChatMessage] = useCurrentPartyroom((state) => [
+    state.updateCrews,
+    state.appendChatMessage,
+  ]);
 
   return (event: CrewEnteredEvent) => {
     const crew = flattenCrewFromEvent(event.crew);
+    // #412: 입장 공지는 '새 입장'만 — 재입장/spurious ENTER(이미 crews 에 있는 경우)와
+    // 본인 입장은 제외한다. 판정은 updateCrews 전 현재 스토어 상태로 한다.
+    const { crews, me } = useCurrentPartyroom.getState();
+    const isNewEntry = !crews.some((prevCrew) => prevCrew.crewId === crew.crewId);
+
     updateCrews((prev) => {
       const existingCrew = prev.find((prevCrew) => prevCrew.crewId === crew.crewId);
 
@@ -22,6 +30,14 @@ export default function useCrewEnteredCallback() {
           : prevCrew
       );
     });
+
+    if (isNewEntry && me?.crewId !== crew.crewId) {
+      appendChatMessage({
+        from: 'system',
+        content: `${crew.nickname}님이 입장했습니다`,
+        receivedAt: Date.now(),
+      });
+    }
   };
 }
 
