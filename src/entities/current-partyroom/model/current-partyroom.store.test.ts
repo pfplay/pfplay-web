@@ -278,6 +278,50 @@ describe('current-partyroom store', () => {
     });
   });
 
+  describe('chatSignals', () => {
+    test('초기 상태는 빈 객체다', () => {
+      const store = createCurrentPartyroomStore();
+
+      expect(store.getState().chatSignals).toEqual({});
+    });
+
+    test('crewId별 chat signal을 갱신한다', () => {
+      const store = createCurrentPartyroomStore();
+
+      store.getState().updateChatSignal(5, 1000);
+      store.getState().updateChatSignal(7, 2000);
+
+      expect(store.getState().chatSignals).toEqual({
+        5: 1000,
+        7: 2000,
+      });
+    });
+
+    test('reset 후 chat signal이 초기화된다', () => {
+      const store = createCurrentPartyroomStore();
+
+      store.getState().updateChatSignal(5, 1000);
+      store.getState().reset();
+
+      expect(store.getState().chatSignals).toEqual({});
+    });
+
+    test('init 후 chat signal이 초기화된다', () => {
+      const store = createCurrentPartyroomStore();
+
+      store.getState().updateChatSignal(5, 1000);
+      store.getState().init({
+        id: 1,
+        me: { crewId: 1, gradeType: GradeType.CLUBBER },
+        playbackActivated: false,
+        crews: [],
+        notice: '',
+      });
+
+      expect(store.getState().chatSignals).toEqual({});
+    });
+  });
+
   describe('init', () => {
     test('초기 상태를 리셋하고 전달된 값으로 병합한다', () => {
       const store = createCurrentPartyroomStore();

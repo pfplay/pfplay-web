@@ -126,6 +126,15 @@ export const createCurrentPartyroomStore = () => {
         return state;
       });
     },
+    chatSignals: {},
+    updateChatSignal: (crewId, sequence) => {
+      return set((state) => ({
+        chatSignals: {
+          ...state.chatSignals,
+          [crewId]: sequence,
+        },
+      }));
+    },
 
     alert: new Observer<AlertMessage.Model>(),
 

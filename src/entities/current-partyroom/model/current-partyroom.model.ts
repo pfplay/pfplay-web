@@ -82,6 +82,12 @@ export type Model = {
   ) => void;
 
   /**
+   * 크루별 최신 chat signal sequence
+   */
+  chatSignals: Record<number, number>;
+  updateChatSignal: (crewId: number, sequence: number) => void;
+
+  /**
    * 알리미 모듈
    * 킥, 꿀, 밴, grade 조정 등의 이벤트 발생 시 대상자에게 알림을 보내기 위한 모듈입니다.
    * 대개 이벤트 콜백에서 알림을 호출하며, 뷰 레이어에서 이를 구독하여 처리합니다.

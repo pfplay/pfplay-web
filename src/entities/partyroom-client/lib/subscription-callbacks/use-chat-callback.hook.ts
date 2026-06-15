@@ -7,6 +7,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
 export default function useChatCallback() {
   const { useCurrentPartyroom } = useStores();
   const appendChatMessage = useCurrentPartyroom((state) => state.appendChatMessage);
+  const updateChatSignal = useCurrentPartyroom((state) => state.updateChatSignal);
 
   return (event: ChatMessageSentEvent) => {
     const { crews } = useCurrentPartyroom.getState();
@@ -17,12 +18,16 @@ export default function useChatCallback() {
       return;
     }
 
+    const receivedAt = Date.now();
+
     appendChatMessage({
       from: 'user',
       crew,
       message: event.message,
-      receivedAt: Date.now(),
+      receivedAt,
     });
+
+    updateChatSignal(crew.crewId, receivedAt);
   };
 }
 

@@ -25,6 +25,10 @@ beforeEach(() => {
   (useStores as Mock).mockReturnValue({ useCurrentPartyroom: store });
 });
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({
   crewId: 1,
   nickname: '테스트유저',
@@ -64,6 +68,26 @@ describe('useChatCallback', () => {
     }
   });
 
+  test('크루를 찾아서 user 채팅 메시지를 append하고 chat signal을 갱신한다', () => {
+    vi.spyOn(Date, 'now').mockReturnValue(123456);
+    const crew = createCrew({ crewId: 5, nickname: '채팅유저' });
+    store.getState().updateCrews(() => [crew]);
+
+    const { result } = renderHook(() => useChatCallback());
+
+    result.current({
+      eventType: PartyroomEventType.CHAT_MESSAGE_SENT,
+      crew: { crewId: 5 },
+      message: { messageId: 'msg-signal', content: '안녕하세요' },
+    });
+
+    const messages = store.getState().chat.getMessages();
+    expect(messages).toHaveLength(1);
+    expect(messages[0].from).toBe('user');
+    expect(messages[0].receivedAt).toBe(store.getState().chatSignals[5]);
+    expect(store.getState().chatSignals[5]).toBe(123456);
+  });
+
   test('크루를 찾지 못하면 warn 로그 + 메시지 append하지 않음', () => {
     store.getState().updateCrews(() => [createCrew({ crewId: 1 })]);
 
@@ -78,5 +102,20 @@ describe('useChatCallback', () => {
 
     expect(warnLog).toHaveBeenCalled();
     expect(store.getState().chat.getMessages()).toHaveLength(0);
+  });
+
+  test('크루를 찾지 못하면 chat signal도 갱신하지 않는다', () => {
+    vi.spyOn(Date, 'now').mockReturnValue(123456);
+    store.getState().updateCrews(() => [createCrew({ crewId: 1 })]);
+
+    const { result } = renderHook(() => useChatCallback());
+
+    result.current({
+      eventType: PartyroomEventType.CHAT_MESSAGE_SENT,
+      crew: { crewId: 999 },
+      message: { messageId: 'msg-missing', content: '메시지' },
+    });
+
+    expect(store.getState().chatSignals).toEqual({});
   });
 });

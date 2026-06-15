@@ -58,12 +58,51 @@ const theme = {
   },
   animation: {
     loading: 'loading 2s infinite',
+    'mail-bounce': 'mail-bounce 1100ms cubic-bezier(0.22, 1, 0.36, 1) forwards',
+    'mail-bounce-reduced': 'mail-bounce-reduced 500ms ease-out forwards',
   },
   keyframes: {
     loading: {
       '0%': { transform: 'rotateZ(0deg)' },
       '50%': { transform: 'rotateZ(480deg)' },
       '100%': { transform: 'rotateZ(1080deg)' },
+    },
+    'mail-bounce': {
+      '0%': {
+        opacity: '0',
+        transform: 'translate3d(0, 8px, 0) scale(0.92)',
+      },
+      '15%': {
+        opacity: '1',
+        transform: 'translate3d(0, 0, 0) scale(1)',
+      },
+      '35%': {
+        opacity: '1',
+        transform: 'translate3d(0, -8px, 0) scale(1.04)',
+      },
+      '50%': {
+        opacity: '1',
+        transform: 'translate3d(0, -3px, 0) scale(0.98)',
+      },
+      '65%': {
+        opacity: '1',
+        transform: 'translate3d(0, -12px, 0) scale(1.02)',
+      },
+      '100%': {
+        opacity: '0',
+        transform: 'translate3d(0, -28px, 0) scale(0.96)',
+      },
+    },
+    'mail-bounce-reduced': {
+      '0%': {
+        opacity: '0',
+      },
+      '20%': {
+        opacity: '1',
+      },
+      '100%': {
+        opacity: '0',
+      },
     },
   },
   aspectRatio: {

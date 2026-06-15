@@ -8,6 +8,7 @@ import { Crew } from '@/entities/current-partyroom';
 import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { pick } from '@/shared/lib/functions/pick';
 import { useStores } from '@/shared/lib/store/stores.context';
+import MailBounceSignal from './mail-bounce-signal.component';
 import { calculateStageImageFrame } from '../lib/calculate-stage-image-frame';
 import { useAvatarCluster } from '../lib/use-avatar-cluster.hook';
 import { AVATAR_GROUP, AVATAR_QUEUE, DJ_AVATAR, PARTYROOM_BACKGROUND } from '../model/constants';
@@ -24,7 +25,9 @@ export default function Avatars({
   djQueueCrewIdsOverride,
 }: Props) {
   const { useCurrentPartyroom } = useStores();
-  const { crews, currentDj } = useCurrentPartyroom((state) => pick(state, ['crews', 'currentDj']));
+  const { crews, currentDj, chatSignals } = useCurrentPartyroom((state) =>
+    pick(state, ['crews', 'currentDj', 'chatSignals'])
+  );
   const params = useParams<{ id: string }>();
   const resolvedPartyroomId = partyroomId ?? Number(params.id);
   const { data: djingQueue } = useFetchDjingQueue(
@@ -119,6 +122,7 @@ export default function Avatars({
             transform: DJ_AVATAR.TRANSLATE,
           }}
         >
+          <MailBounceSignal signalKey={chatSignals[dj.crewId]} />
           <Avatar
             height={djAvatarHeight}
             bodyUri={dj.avatarBodyUri}
@@ -151,6 +155,7 @@ export default function Avatars({
           }}
           data-testid='partyroom-dj-queue-item'
         >
+          <MailBounceSignal signalKey={chatSignals[crew.crewId]} />
           <Avatar
             height={queueAvatarHeight}
             bodyUri={crew.avatarBodyUri}
@@ -169,12 +174,12 @@ export default function Avatars({
       ))}
 
       {/* Cluster Avatars */}
-      {positionedCrews.map(({ crew, position }, index) => {
+      {positionedCrews.map(({ crew, position }) => {
         if (dj?.crewId === crew.crewId) return null;
 
         return (
           <div
-            key={'partyroom-crew-' + crew.crewId + index}
+            key={'partyroom-crew-' + crew.crewId}
             className='absolute'
             data-testid='partyroom-crew-item'
             data-crew-id={String(crew.crewId)}
@@ -186,6 +191,7 @@ export default function Avatars({
               transform: 'translate(-100%, -100%)',
             }}
           >
+            <MailBounceSignal signalKey={chatSignals[crew.crewId]} />
             <Avatar
               height={clusterAvatarHeight}
               bodyUri={crew.avatarBodyUri}
