@@ -15,7 +15,8 @@ import { Typography } from '@/shared/ui/components/typography';
  */
 const MobilePartyroomCreateCard: FC = () => {
   const t = useI18n();
-  const handleClickBeAHostBtn = useBeAHost();
+  // 모바일은 풀스크린 시트로 — 데스크탑 중앙 모달의 좁은 인풋/잘린 placeholder 회피.
+  const handleClickBeAHostBtn = useBeAHost({ fullScreen: true });
 
   return (
     <button

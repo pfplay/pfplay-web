@@ -42,6 +42,12 @@ export type DialogProps = {
    * @default false
    */
   hideDim?: boolean;
+  /**
+   * 모바일 풀스크린 시트 모드 — 센터링/p-4 여백·고정폭·rounded·border 제거 후 화면을 꽉 채운다.
+   * (데스크탑 중앙 모달을 모바일에서 그대로 쓰면 회색 박스+삼중 여백으로 인풋이 좁아지는 문제 해소)
+   * @default false
+   */
+  fullScreen?: boolean;
   classNames?: {
     container?: string;
   };
@@ -60,6 +66,7 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
   titleAlign = 'center',
   showCloseIcon = false,
   hideDim = false,
+  fullScreen = false,
   classNames,
   zIndex = theme.zIndex.dialog,
 }) => {
@@ -125,7 +132,11 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
       )}
 
       <div data-testid='dialog-overlay-container' className='fixed inset-0 overflow-y-auto'>
-        <div className='flex min-h-full items-center justify-center p-4 text-center'>
+        <div
+          className={cn('flex min-h-full', {
+            'items-center justify-center p-4 text-center': !fullScreen,
+          })}
+        >
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -138,7 +149,10 @@ const Dialog: FC<DialogProps> & DialogComposition = ({
             <HUDialog.Panel
               data-testid='dialog-panel'
               className={cn(
-                'relative pt-[52px] px-[32px] pb-[32px] w-[440px] max-w-full transform rounded-[6px] bg-gray-800 border border-gray-700 transition-all',
+                'relative transform bg-gray-800 transition-all',
+                fullScreen
+                  ? 'w-full min-h-[100dvh] pt-[52px] px-5 pb-8'
+                  : 'pt-[52px] px-[32px] pb-[32px] w-[440px] max-w-full rounded-[6px] border border-gray-700',
                 classNames?.container
               )}
               style={{

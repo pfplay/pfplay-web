@@ -44,7 +44,7 @@ const SelectPlaylistSheet: FC<Props> = ({
           disabled={!selected}
           onClick={() => selected && onConfirm(selected)}
         >
-          선택 완료
+          {t.partyroom.queue.sheet_select_confirm}
         </Button>
       </div>
     </div>

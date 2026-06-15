@@ -14,6 +14,7 @@ import CurrentDjRow from './current-dj-row.component';
 import GuestCta from './guest-cta.component';
 import MemberActions from './member-actions.component';
 import QueueList from './queue-list.component';
+import QueuePositionSummary from './queue-position-summary.component';
 
 interface Props {
   partyroomId: number;
@@ -36,6 +37,8 @@ const QueuePanelContent: FC<Props> = ({ partyroomId }) => {
   const isMeInQueue = djs.some((dj) => dj.crewId === myCrewId);
   const sorted = [...djs].sort((a, b) => a.orderNumber - b.orderNumber);
   const currentDj = sorted[0];
+  // 좁은 모바일 큐에서 "내 차례"를 한눈에. myIndex>=0 == isMeInQueue.
+  const myIndex = sorted.findIndex((dj) => dj.crewId === myCrewId);
 
   const register = useMobileRegisterMeToQueue({ partyroomId, queueStatus, playlists });
   const change = useMobileChangeMyPlaylist({ partyroomId, playlists });
@@ -64,6 +67,8 @@ const QueuePanelContent: FC<Props> = ({ partyroomId }) => {
         )}
         <QueueList djs={djs} myCrewId={myCrewId} onChangePlaylist={change} />
       </div>
+      {/* 내가 현재 DJ(1번)면 CurrentDjRow 가 이미 보여주므로 대기 중일 때만 노출. */}
+      {myIndex > 0 && <QueuePositionSummary position={myIndex + 1} total={sorted.length} />}
       <MemberActions
         isMeInQueue={isMeInQueue}
         onRegister={register}

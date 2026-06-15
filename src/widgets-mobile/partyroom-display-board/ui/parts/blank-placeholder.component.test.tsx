@@ -2,8 +2,12 @@
  * @vitest-environment jsdom
  */
 import { render, screen } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import BlankPlaceholder from './blank-placeholder.component';
+
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({ partyroom: { queue: { no_track: '지금 재생 중인 곡이 없어요' } } }),
+}));
 
 describe('BlankPlaceholder', () => {
   test('inline 한국어 안내 텍스트 렌더 (spec §6.3, §3 row 11)', () => {

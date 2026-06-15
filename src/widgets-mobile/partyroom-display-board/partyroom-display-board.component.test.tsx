@@ -13,6 +13,10 @@ vi.mock('react-fast-marquee', () => ({
   default: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
 vi.mock('@/shared/ui/foundation/fonts', () => ({ galmuriFont: { className: 'font-galmuri' } }));
+// Mode C 의 BlankPlaceholder 가 useI18n 사용 → provider 없는 단위 렌더용 mock.
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({ partyroom: { queue: { no_track: '지금 재생 중인 곡이 없어요' } } }),
+}));
 
 const youtubePlayerCalls: Array<Record<string, unknown>> = [];
 vi.mock('react-player/youtube', () => ({
@@ -257,6 +261,25 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
     rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
 
     expect(screen.queryByTestId('autoplay-gesture-gate')).toBeTruthy();
+  });
+});
+
+describe('MobilePartyroomDisplayBoard · compact (크루/큐 탭)', () => {
+  test('#13 compact=true → 영상 강제 Mode B + 토글 숨김 + 리액션 숨김', () => {
+    render(<MobilePartyroomDisplayBoard partyroomId={1} compact />);
+    const wrapper = screen.getByTestId('video-wrapper');
+    expect(wrapper.className).toContain('w-[80px]');
+    expect(wrapper.className).toContain('h-[45px]');
+    // 동작하지 않는 토글은 숨긴다 (canToggle=false)
+    expect(screen.queryByRole('button', { name: /영상/ })).toBeNull();
+    // 리액션(채팅 맥락 전용)은 관리 탭에서 숨김
+    expect(screen.queryByTestId('action-buttons-mock')).toBeNull();
+  });
+
+  test('#14 compact=false(기본) → 리액션 노출 + Mode A', () => {
+    render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('action-buttons-mock')).toBeTruthy();
+    expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
   });
 });
 

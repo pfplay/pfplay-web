@@ -47,6 +47,8 @@
     "ec": {
       "char_limit_12": "Limit of 12 characters / No spaces and special characters",
       "char_limit_50": "Limit of 50 characters including spaces",
+      "char_limit_12_short": "Max 12 chars, no spaces",
+      "char_limit_50_short": "Max 50 characters",
       "char_limit_20": "Limit of 20 characters including spaces",
       "char_up_to_50": "You can register up to 50 characters",
       "char_limit_60_dash": "Limit of 3 to 60 characters, including letters, numbers, and hyphens (-)",
@@ -116,7 +118,7 @@
       "moment": "Hold on!"
     },
     "para": {
-      "domain_format": "Web address starts with pfplay.xyz/domain",
+      "domain_format": "e.g. pfplay.xyz/link/my-room",
       "guest_limit": "Access is limited as a guest. Connect your social account to enjoy full services."
     }
   },
@@ -339,7 +341,12 @@
       "add_limit_exceeded": "Playlist is full",
       "guest_action_blocked": "Sign-in required",
       "guide_start": "Start",
-      "guide_title": "DJ rules"
+      "guide_title": "DJ rules",
+      "song_count": "{{count}} songs",
+      "sheet_select_confirm": "Done",
+      "no_track": "No song playing right now",
+      "tab_chat": "Chat",
+      "my_position": "You're #{{position}} of {{total}}"
     }
   },
   "crews": {

@@ -3,6 +3,13 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 import SelectPlaylist from './select-playlist.component';
 
+// processI18nString 은 실제 util 을 태워 '{{count}}곡' → '12곡' 보간 검증.
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({
+    partyroom: { queue: { song_count: '{{count}}곡', add_tracks_cta: '+ 곡 추가' } },
+  }),
+}));
+
 const PLAYLISTS = [
   { id: 1, name: '토요일밤', musicCount: 12 },
   { id: 2, name: 'Chill', musicCount: 8 },

@@ -6,11 +6,14 @@ import { cn } from '@/shared/lib/functions/cn';
 import { MobilePartyroomChatPanel } from '@/widgets-mobile/partyroom-chat-panel';
 import { MobilePartyroomCrewsPanel } from '@/widgets-mobile/partyroom-crews-panel';
 import { MobilePartyroomQueuePanel } from '@/widgets-mobile/partyroom-queue-panel';
-import useTabHash from './lib/use-tab-hash.hook';
+import { TabKey } from './lib/use-tab-hash.hook';
 import TabBar from './ui/parts/tab-bar.component';
 
 interface Props {
   partyroomId: number;
+  /** 탭 상태는 셸(room.component)이 useTabHash 로 소유하고 내려준다 (single source). */
+  activeTab: TabKey;
+  setActiveTab: (tab: TabKey) => void;
 }
 
 /**
@@ -29,8 +32,7 @@ interface Props {
  * - 큐 탭 placeholder → MobilePartyroomQueuePanel 교체
  * - 탭바 🎧 N 카운트 활성화 (useFetchDjingQueue.djs.length)
  */
-const MobilePartyroomRoomTabs: FC<Props> = ({ partyroomId }) => {
-  const { activeTab, setActiveTab } = useTabHash();
+const MobilePartyroomRoomTabs: FC<Props> = ({ partyroomId, activeTab, setActiveTab }) => {
   const crews = useCurrentPartyroomCrews();
   const { data: djingQueue } = useFetchDjingQueue({ partyroomId });
   const queueCount = djingQueue?.djs?.length ?? 0;

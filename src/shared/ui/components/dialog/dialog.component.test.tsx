@@ -76,6 +76,22 @@ describe('Dialog', () => {
     expect(screen.getByText('커스텀 제목')).toBeTruthy();
   });
 
+  test('fullScreen=true 면 패널이 풀스크린(w-full·min-h-[100dvh]·rounded/p-4 제거)', () => {
+    const { rerender } = render(<Dialog {...defaultProps} fullScreen />);
+    const panel = screen.getByTestId('dialog-panel');
+    expect(panel.className).toMatch(/\bw-full\b/);
+    expect(panel.className).toMatch(/min-h-\[100dvh\]/);
+    expect(panel.className).not.toMatch(/rounded-\[6px\]/);
+    // 풀스크린은 센터링 래퍼의 p-4 여백을 제거해 edge-to-edge
+    expect(panel.parentElement?.className).not.toMatch(/\bp-4\b/);
+
+    // 기본(비-풀스크린)은 기존 중앙 모달 보존 (회귀 가드)
+    rerender(<Dialog {...defaultProps} />);
+    const modalPanel = screen.getByTestId('dialog-panel');
+    expect(modalPanel.className).toMatch(/rounded-\[6px\]/);
+    expect(modalPanel.parentElement?.className).toMatch(/\bp-4\b/);
+  });
+
   test('Body가 FC일 때 렌더링된다', () => {
     const BodyComponent = () => <div>함수형 바디</div>;
     render(<Dialog {...defaultProps} Body={BodyComponent} />);

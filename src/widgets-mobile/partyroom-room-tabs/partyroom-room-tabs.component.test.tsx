@@ -8,6 +8,9 @@ import { describe, expect, test, vi, beforeEach } from 'vitest';
 let mockCrews: any[] = [];
 let mockDjs: any[] = [];
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({ partyroom: { queue: { tab_chat: '채팅' } } }),
+}));
 vi.mock('@/widgets-mobile/partyroom-chat-panel', () => ({
   MobilePartyroomChatPanel: () => <div data-testid='chat-panel-stub' />,
 }));
@@ -26,7 +29,21 @@ vi.mock('@/features/partyroom/list-djing-queue', () => ({
   useFetchDjingQueue: () => ({ data: { djs: mockDjs } }),
 }));
 
+import useTabHash from './lib/use-tab-hash.hook';
 import MobilePartyroomRoomTabs from './partyroom-room-tabs.component';
+
+// room-tabs 는 이제 controlled (activeTab/setActiveTab props). 실제 셸(room.component)의
+// 배선을 그대로 재현하는 Harness 로 감싸 hash↔탭 통합 커버리지를 보존한다.
+function Harness({ partyroomId }: { partyroomId: number }) {
+  const { activeTab, setActiveTab } = useTabHash();
+  return (
+    <MobilePartyroomRoomTabs
+      partyroomId={partyroomId}
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+    />
+  );
+}
 
 beforeEach(() => {
   mockCrews = [
@@ -39,12 +56,12 @@ beforeEach(() => {
 
 describe('MobilePartyroomRoomTabs', () => {
   test('초기 진입 시 채팅 탭이 활성', () => {
-    render(<MobilePartyroomRoomTabs partyroomId={1} />);
+    render(<Harness partyroomId={1} />);
     expect(screen.getByTestId('mobile-tab-chat').getAttribute('aria-selected')).toBe('true');
   });
 
   test('크루 탭 클릭 → aria-selected + crews-panel 가시 (mount 유지, hidden 토글)', () => {
-    render(<MobilePartyroomRoomTabs partyroomId={1} />);
+    render(<Harness partyroomId={1} />);
     fireEvent.click(screen.getByTestId('mobile-tab-crew'));
     expect(screen.getByTestId('mobile-tab-crew').getAttribute('aria-selected')).toBe('true');
     // .hidden boolean property 로 단언 (jsdom attribute 직렬화 edge 회피)
@@ -64,7 +81,7 @@ describe('MobilePartyroomRoomTabs', () => {
   });
 
   test('큐 탭 클릭 → MobilePartyroomQueuePanel 가시 (partyroomId prop 전달)', () => {
-    render(<MobilePartyroomRoomTabs partyroomId={42} />);
+    render(<Harness partyroomId={42} />);
     fireEvent.click(screen.getByTestId('mobile-tab-queue'));
     const queueStub = screen.getByTestId('queue-panel-stub');
     expect(queueStub).toBeTruthy();
@@ -77,7 +94,7 @@ describe('MobilePartyroomRoomTabs', () => {
       { crewId: 2, nickname: 'B' },
       { crewId: 3, nickname: 'C' },
     ];
-    render(<MobilePartyroomRoomTabs partyroomId={1} />);
+    render(<Harness partyroomId={1} />);
     expect(screen.getByTestId('mobile-tab-crew').textContent).toContain('3');
   });
 
@@ -86,13 +103,13 @@ describe('MobilePartyroomRoomTabs', () => {
       { crewId: 1, orderNumber: 1 },
       { crewId: 2, orderNumber: 2 },
     ];
-    render(<MobilePartyroomRoomTabs partyroomId={1} />);
+    render(<Harness partyroomId={1} />);
     expect(screen.getByTestId('mobile-tab-queue').textContent).toContain('2');
   });
 
   test('mount 시 hash=#queue → 큐 탭 활성', async () => {
     window.history.replaceState(null, '', '/parties/1#queue');
-    render(<MobilePartyroomRoomTabs partyroomId={1} />);
+    render(<Harness partyroomId={1} />);
     // useEffect mount 후 hash 읽어 정정
     await Promise.resolve();
     expect(screen.getByTestId('mobile-tab-queue').getAttribute('aria-selected')).toBe('true');
