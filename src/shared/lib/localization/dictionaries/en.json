@@ -100,7 +100,8 @@
       "permanent_ban": "You have been permanently removed by an admin and can’t rejoin.",
       "start_chat": "What shall we talk about?",
       "remove_chat": "'{target}'s chat was removed by '{subject}'.",
-      "chat_banned_hint": "Chat is disabled for 30 seconds because of an admin restriction."
+      "chat_banned_hint": "Chat is disabled for 30 seconds because of an admin restriction.",
+      "crew_entered": "{{nickname}} joined"
     }
   },
   "onboard": {
@@ -291,10 +292,10 @@
     "ec": {
       "exceeded_list_connect_wallet": "You have already exceeded the number of lists that can be created. ",
       "exceeded_list": "Oh no! You have exceeded the number of lists that can be created. You can only create up to 10.",
-      "exceeded_list_am": "Oh no! Associate members can create only 1 playlist.\nConnect your wallet to create up to 10.",
       "up_to_100_songs": "You can add a maximum of 100 songs to each playlist",
       "duplicate_track_move": "This song already exists in the selected playlist",
-      "exceeded_track_limit_move": "The selected playlist has reached its song limit (15 songs)"
+      "exceeded_track_limit_move": "The selected playlist has reached its song limit (15 songs)",
+      "exceeded_list_am": "Oh no! Associate members can create only 1 playlist.\nConnect your wallet to create up to 10."
     }
   },
   "partyroom": {

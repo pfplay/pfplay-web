@@ -5,14 +5,16 @@ import { describe, expect, test, vi, beforeEach } from 'vitest';
 let mockChatMessages: any[] = [];
 let mockIsBlockedCrew: (crewId: number) => boolean = () => false;
 let mockSend = vi.fn();
+const mockScrollContainerRef = vi.fn();
+const mockLastItemRef = vi.fn();
 
 vi.mock('@/entities/current-partyroom', () => ({
   useCurrentPartyroomChat: () => mockChatMessages,
 }));
 vi.mock('@/features/partyroom/list-chat-messages', () => ({
   useChatMessagesScrollManager: () => ({
-    scrollContainerRef: vi.fn(),
-    lastItemRef: vi.fn(),
+    scrollContainerRef: mockScrollContainerRef,
+    lastItemRef: mockLastItemRef,
   }),
 }));
 vi.mock('@/features/partyroom/list-my-blocked-crews', () => ({
@@ -37,17 +39,18 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
       para: {
         start_chat: '무슨 얘기를 해볼까요?',
         chat_banned_hint: '관리자 제재로 30초 동안 채팅할 수 없어요.',
+        crew_entered: '{{nickname}} joined the room.',
       },
     },
   }),
 }));
 vi.mock('./ui/parts/chat-item.component', () => ({
   __esModule: true,
-  default: ({ message }: any) => (
-    <div data-testid='chat-item' data-crew-id={message.crew.crewId}>
+  default: React.forwardRef<HTMLDivElement, any>(({ message }, ref) => (
+    <div ref={ref} data-testid='chat-item' data-crew-id={message.crew.crewId}>
       {message.message.content}
     </div>
-  ),
+  )),
 }));
 
 import MobilePartyroomChatPanel from './partyroom-chat-panel.component';
@@ -56,6 +59,8 @@ beforeEach(() => {
   mockChatMessages = [];
   mockIsBlockedCrew = () => false;
   mockSend = vi.fn();
+  mockScrollContainerRef.mockReset();
+  mockLastItemRef.mockReset();
 });
 
 describe('MobilePartyroomChatPanel', () => {
@@ -79,6 +84,44 @@ describe('MobilePartyroomChatPanel', () => {
     render(<MobilePartyroomChatPanel />);
     expect(screen.getByText(/30초간 채팅이 금지/)).toBeTruthy();
     expect(screen.queryByTestId('chat-item')).toBeNull();
+  });
+
+  test('presence system 메시지는 i18n 텍스트로 렌더링한다', () => {
+    mockChatMessages = [
+      {
+        from: 'system',
+        variant: 'presence',
+        i18nKey: 'chat.para.crew_entered',
+        values: { nickname: 'Alex' },
+        receivedAt: 3,
+      },
+    ];
+    render(<MobilePartyroomChatPanel />);
+    expect(screen.getByText('Alex joined the room.')).toBeTruthy();
+    expect(screen.queryByText('{{nickname}} joined the room.')).toBeNull();
+    expect(screen.queryByTestId('chat-item')).toBeNull();
+  });
+
+  test('presence system 메시지가 마지막이면 scroll manager의 lastItemRef를 연결한다', () => {
+    mockChatMessages = [
+      {
+        from: 'user',
+        crew: { crewId: 1, nickname: 'Sam' },
+        message: { content: 'hello', messageId: 'm1' },
+        receivedAt: 1,
+      },
+      {
+        from: 'system',
+        variant: 'presence',
+        i18nKey: 'chat.para.crew_entered',
+        values: { nickname: 'Guest' },
+        receivedAt: 2,
+      },
+    ];
+
+    render(<MobilePartyroomChatPanel />);
+
+    expect(mockLastItemRef).toHaveBeenCalledWith(screen.getByText('Guest joined the room.'));
   });
 
   test('블록된 crew 메시지는 숨긴다', () => {

@@ -2,6 +2,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
+import { renderSystemChatMessage } from '@/entities/current-partyroom/lib/render-system-chat-message';
 import { useAdjustGrade, useCanAdjustGrade } from '@/features/partyroom/adjust-grade';
 import { useBlockCrew } from '@/features/partyroom/block-crew';
 import {
@@ -15,6 +16,7 @@ import { useIsBlockedCrew } from '@/features/partyroom/list-my-blocked-crews';
 import { SendChatMessage } from '@/features/partyroom/send-chat-message';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { ONE_MINUTE } from '@/shared/config/time';
+import { cn } from '@/shared/lib/functions/cn';
 import { useVerticalStretch } from '@/shared/lib/hooks/use-vertical-stretch.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
@@ -47,19 +49,34 @@ export default function PartyroomChatPanel() {
   });
 
   const banned = useTempChatBanTimer();
+  const lastRenderableMessageIndex = chatMessages.reduce((lastIndex, message, index) => {
+    if (message.from === 'system') {
+      return index;
+    }
+
+    return isBlockedCrew(message.crew.crewId) ? lastIndex : index;
+  }, -1);
 
   return (
     <div ref={containerRef} className='flexCol gap-1'>
       <div ref={scrollContainerRef} className='flex-[1_0_0] flexCol gap-4 overflow-y-auto py-4'>
         {chatMessages.map((message, i) => {
+          const isLast = i === lastRenderableMessageIndex;
+
           if (message.from === 'system') {
             return (
               <Typography
                 key={'system' + message.receivedAt}
+                ref={isLast ? lastItemRef : undefined}
                 type='caption1'
-                className='text-red-200 p-2 pl-[58px]'
+                className={cn(
+                  'p-2',
+                  message.variant === 'presence'
+                    ? 'text-gray-500 text-center text-xs'
+                    : 'text-red-200 pl-[58px]'
+                )}
               >
-                {message.content}
+                {renderSystemChatMessage(message, { crewEntered: t.chat.para.crew_entered })}
               </Typography>
             );
           }
@@ -68,7 +85,6 @@ export default function PartyroomChatPanel() {
             return null;
           }
 
-          const isLast = i === chatMessages.length - 1;
           const isMe = message.crew.crewId === me?.crewId;
 
           const _canImposePenalty = canImposePenalty(message.crew.gradeType);

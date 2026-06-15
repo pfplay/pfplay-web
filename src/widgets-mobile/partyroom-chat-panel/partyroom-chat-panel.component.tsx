@@ -2,6 +2,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
+import { renderSystemChatMessage } from '@/entities/current-partyroom/lib/render-system-chat-message';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
 import { useIsBlockedCrew } from '@/features/partyroom/list-my-blocked-crews';
 import { SendChatMessage } from '@/features/partyroom/send-chat-message';
@@ -36,6 +37,13 @@ export default function MobilePartyroomChatPanel() {
     itemsGap: 16,
   });
   const banned = useTempChatBanTimer();
+  const lastRenderableMessageIndex = chatMessages.reduce((lastIndex, message, index) => {
+    if (message.from === 'system') {
+      return index;
+    }
+
+    return isBlockedCrew(message.crew.crewId) ? lastIndex : index;
+  }, -1);
 
   return (
     <div className='flexCol h-full'>
@@ -44,21 +52,23 @@ export default function MobilePartyroomChatPanel() {
         className='flex-[1_0_0] flexCol gap-4 overflow-y-auto py-4 px-5'
       >
         {chatMessages.map((message, i) => {
+          const isLast = i === lastRenderableMessageIndex;
+
           if (message.from === 'system') {
             return (
               <Typography
                 key={'system' + message.receivedAt}
+                ref={isLast ? lastItemRef : undefined}
                 type='caption1'
                 className='text-red-200 p-2 pl-[58px]'
               >
-                {message.content}
+                {renderSystemChatMessage(message, { crewEntered: t.chat.para.crew_entered })}
               </Typography>
             );
           }
           if (isBlockedCrew(message.crew.crewId)) {
             return null;
           }
-          const isLast = i === chatMessages.length - 1;
           return (
             <ChatItem
               key={message.message.messageId}

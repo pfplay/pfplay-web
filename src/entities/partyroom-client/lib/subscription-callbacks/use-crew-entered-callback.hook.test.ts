@@ -1,6 +1,6 @@
 vi.mock('@/shared/lib/store/stores.context');
 
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import type * as Crew from '@/entities/current-partyroom/model/crew.model';
 import { createCurrentPartyroomStore } from '@/entities/current-partyroom/model/current-partyroom.store';
 import { AvatarCompositionType, GradeType, MotionType } from '@/shared/api/http/types/@enums';
@@ -15,6 +15,10 @@ beforeEach(() => {
   vi.clearAllMocks();
   store = createCurrentPartyroomStore();
   (useStores as Mock).mockReturnValue({ useCurrentPartyroom: store });
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
 });
 
 const createCrew = (overrides: Partial<Crew.Model> = {}): Crew.Model => ({
@@ -61,7 +65,9 @@ describe('useCrewEnteredCallback', () => {
   test('새로 입장한 크루를 추가한다', () => {
     const { result } = renderHook(() => useCrewEnteredCallback());
 
-    result.current(createCrewEnteredEvent(1));
+    act(() => {
+      result.current(createCrewEnteredEvent(1));
+    });
 
     const crews = store.getState().crews;
     expect(crews).toHaveLength(1);
@@ -70,6 +76,25 @@ describe('useCrewEnteredCallback', () => {
       nickname: '새유저',
       avatarFaceUri: '',
       motionType: MotionType.NONE,
+    });
+  });
+
+  test('새로 입장한 크루는 presence system chat을 추가한다', () => {
+    vi.spyOn(Date, 'now').mockReturnValue(777);
+    const { result } = renderHook(() => useCrewEnteredCallback());
+
+    act(() => {
+      result.current(createCrewEnteredEvent(9, '새유저'));
+    });
+
+    const messages = store.getState().chat.getMessages();
+    expect(messages).toHaveLength(1);
+    expect(messages[0]).toEqual({
+      from: 'system',
+      variant: 'presence',
+      i18nKey: 'chat.para.crew_entered',
+      values: { nickname: '새유저' },
+      receivedAt: 777,
     });
   });
 
@@ -83,7 +108,9 @@ describe('useCrewEnteredCallback', () => {
     ]);
     const { result } = renderHook(() => useCrewEnteredCallback());
 
-    result.current(createCrewEnteredEvent(1));
+    act(() => {
+      result.current(createCrewEnteredEvent(1));
+    });
 
     const crews = store.getState().crews;
     expect(crews).toHaveLength(1);
@@ -94,5 +121,16 @@ describe('useCrewEnteredCallback', () => {
       avatarFaceUri: '',
       motionType: MotionType.DANCE_TYPE_1,
     });
+  });
+
+  test('이미 존재하는 crewId의 입장 이벤트는 presence system chat을 추가하지 않는다', () => {
+    store.getState().updateCrews(() => [createCrew({ crewId: 1, nickname: '기존유저' })]);
+    const { result } = renderHook(() => useCrewEnteredCallback());
+
+    act(() => {
+      result.current(createCrewEnteredEvent(1, '갱신유저'));
+    });
+
+    expect(store.getState().chat.getMessages()).toHaveLength(0);
   });
 });

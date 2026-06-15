@@ -5,10 +5,16 @@ import { useStores } from '@/shared/lib/store/stores.context';
 
 export default function useCrewEnteredCallback() {
   const { useCurrentPartyroom } = useStores();
-  const updateCrews = useCurrentPartyroom((state) => state.updateCrews);
+  const [updateCrews, appendChatMessage] = useCurrentPartyroom((state) => [
+    state.updateCrews,
+    state.appendChatMessage,
+  ]);
 
   return (event: CrewEnteredEvent) => {
     const crew = flattenCrewFromEvent(event.crew);
+    const { crews } = useCurrentPartyroom.getState();
+    const isNewCrew = !crews.some((prevCrew) => prevCrew.crewId === crew.crewId);
+
     updateCrews((prev) => {
       const existingCrew = prev.find((prevCrew) => prevCrew.crewId === crew.crewId);
 
@@ -22,6 +28,16 @@ export default function useCrewEnteredCallback() {
           : prevCrew
       );
     });
+
+    if (isNewCrew) {
+      appendChatMessage({
+        from: 'system',
+        variant: 'presence',
+        i18nKey: 'chat.para.crew_entered',
+        values: { nickname: crew.nickname },
+        receivedAt: Date.now(),
+      });
+    }
   };
 }
 

@@ -100,7 +100,8 @@
       "permanent_ban": "관리자에 의해 영구 퇴출되셨으며/n재입장은 불가합니다.",
       "start_chat": "무슨 얘기를 해볼까요?",
       "remove_chat": "'{subject}'가 '{target}'의 채팅을 삭제했습니다.",
-      "chat_banned_hint": "관리자 제재로 30초 동안 채팅할 수 없어요."
+      "chat_banned_hint": "관리자 제재로 30초 동안 채팅할 수 없어요.",
+      "crew_entered": "{{nickname}}님이 들어왔습니다"
     }
   },
   "onboard": {
@@ -291,10 +292,10 @@
     "ec": {
       "exceeded_list_connect_wallet": "이미 생성 가능한 리스트 수를 초과했어요.\n",
       "exceeded_list": "이런! 생성 가능한 리스트 수를 초과했어요\n최대 10개 까지만 생성이 가능해요",
-      "exceeded_list_am": "이런! 준회원은 플레이리스트를 1개까지만 만들 수 있어요\n지갑을 연동하면 최대 10개까지 생성할 수 있어요",
       "up_to_100_songs": "곡은 1개 플레이리스트당 최대 100개 까지만 추가 가능해요",
       "duplicate_track_move": "선택한 플레이리스트에 이미 존재하는 곡이에요",
-      "exceeded_track_limit_move": "선택한 플레이리스트의 트랙 한도(15개)를 초과했어요"
+      "exceeded_track_limit_move": "선택한 플레이리스트의 트랙 한도(15개)를 초과했어요",
+      "exceeded_list_am": "이런! 준회원은 플레이리스트를 1개까지만 만들 수 있어요\n지갑을 연동하면 최대 10개까지 생성할 수 있어요"
     }
   },
   "partyroom": {
