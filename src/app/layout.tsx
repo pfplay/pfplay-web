@@ -13,7 +13,7 @@ import {
 } from '@/features/system-announcement/model/system-announcement.types';
 import HydrateAnnouncementsFromStatus from '@/features/system-announcement/ui/hydrate-announcements-from-status';
 import SystemAnnouncementDisplay from '@/features/system-announcement/ui/system-announcement-display';
-import { getSystemStatus } from '@/shared/api/system-status';
+import { getEdgeConfigMaintenance, getSystemStatus } from '@/shared/api/system-status';
 import { DomId } from '@/shared/config/dom-id';
 import { Language } from '@/shared/lib/localization/constants';
 import { LANGUAGE_COOKIE_KEY } from '@/shared/lib/localization/constants';
@@ -37,8 +37,22 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = async ({ children }: PropsWithChildren) => {
-  const dictionary = await getServerDictionary();
   const lang = cookies().get(LANGUAGE_COOKIE_KEY)?.value || Language.En;
+
+  // #406: 점검 ACTIVE 면 앱-부팅 기계(me-fetch · WS 구독 · 전역 에러 모달)를 마운트하지 않고
+  // 점검 화면(middleware rewrite 로 주입된 children)만 inert 하게 렌더한다. 신뢰 소스는
+  // Edge Config — middleware 와 동일하며, 점검 중 백엔드는 down 이라 getSystemStatus 로는 점검을
+  // 알 수 없다(throw → null). EDGE_CONFIG 부재(로컬/test)면 null → 평소 트리로 통과.
+  const maintenance = await getEdgeConfigMaintenance();
+  if (maintenance?.phase === 'ACTIVE') {
+    return (
+      <html lang={lang}>
+        <body className={pretendardVariable.className}>{children}</body>
+      </html>
+    );
+  }
+
+  const dictionary = await getServerDictionary();
 
   // Edge Config 가 unreachable 한 경우의 1차 fallback —
   // /v1/system/status 결과로 active announcements + maintenance 를 hydrate.
