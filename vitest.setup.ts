@@ -10,6 +10,10 @@ vi.stubEnv('NEXT_PUBLIC_API_HOST_NAME', 'http://localhost:8080/api/');
 vi.stubEnv('NEXT_PUBLIC_API_WS_HOST_NAME', 'ws://localhost:8080/ws');
 vi.stubEnv('NEXT_PUBLIC_WAGMI_PROJECT_ID', 'test-wagmi-project-id');
 vi.stubEnv('NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY', 'test-alchemy-key');
+vi.stubEnv(
+  'NEXT_PUBLIC_VAPID_PUBLIC_KEY',
+  'BLAyCpsv4MZvlSCfzg0rTuIRb3Iz2hTklZ5ZBADoZQAnFdQzZSf-zbTpi-6gMR-Xkmgw30OKFTo6kW5UZLolrys'
+);
 
 // issue #372: clientEnv / serverEnv 는 production 코드에서 module top-level parse 라
 // import 시점 fail-fast 보장. 그러나 vitest 안에서는 기존 test 가 vi.stubEnv 로 runtime mutate
