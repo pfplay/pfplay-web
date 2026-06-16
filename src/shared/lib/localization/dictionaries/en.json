@@ -39,6 +39,10 @@
       "kick": "Kick",
       "ban": "Ban"
     },
+    "menu": {
+      "title": "Menu",
+      "notification_settings": "Notification settings"
+    },
     "para": {
       "reason": "Reason:",
       "points_to_unlock\t": "Get {{points}} points to unlock!",
