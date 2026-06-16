@@ -142,6 +142,13 @@
       "empty_records": "You have no items",
       "avatar_save_requirements": "Select a body first. If the body supports layering, select a face too before saving.",
       "wallet_face_hint": "Connect your wallet to use NFT face items here."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "toggle_label": "Receive announcement push notifications",
+      "description": "Get operational announcements and event news as push notifications.",
+      "needs_install_hint": "Add the app to your home screen first, then you can turn on notifications.",
+      "denied_hint": "Please unblock notifications in your browser settings."
     }
   },
   "setting": {

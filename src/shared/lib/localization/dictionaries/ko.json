@@ -142,6 +142,13 @@
       "empty_records": "보유한 내역이 없어요",
       "avatar_save_requirements": "몸을 먼저 고르고, 조합형 몸이라면 얼굴까지 선택해야 저장할 수 있어요.",
       "wallet_face_hint": "지갑을 연결하면 보유한 NFT 얼굴 아이템도 여기서 선택할 수 있어요."
+    },
+    "notifications": {
+      "title": "알림",
+      "toggle_label": "공지 푸시 알림 받기",
+      "description": "운영 공지와 이벤트 소식을 푸시 알림으로 받아볼 수 있어요.",
+      "needs_install_hint": "홈 화면에 앱을 추가한 뒤 알림을 켤 수 있어요.",
+      "denied_hint": "브라우저 설정에서 알림 차단을 해제해 주세요."
     }
   },
   "setting": {
