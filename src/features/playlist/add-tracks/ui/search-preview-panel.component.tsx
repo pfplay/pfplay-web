@@ -15,6 +15,9 @@ const SIZE = PREVIEW_PLAYER_SIZES.modal;
  *
  * 검색결과 미리듣기 전용 — 플레이리스트 트랙(source='playlist-track')은 데스크탑 SidebarPlayer 책임.
  * idle 시에는 placeholder 로 자리를 유지해 재생 시작 시 레이아웃 시프트가 없다.
+ *
+ * `max-w-full` — 좁은 폭에서 모달(max-w-full)이 축소되며 세로 스택될 때 패널이 모달 밖으로
+ * 삐져나가지 않도록 캡. laptop 이상(우측 컬럼)에서는 부모가 넓어 480px 그대로 유지.
  */
 export default function SearchPreviewPanel() {
   const { useMusicPreview } = useStores();
@@ -24,7 +27,7 @@ export default function SearchPreviewPanel() {
   const showPlayer = !!currentTrack && isPlaying && currentTrack.source === 'search-result';
 
   return (
-    <div className='shrink-0' style={{ width: SIZE.width }}>
+    <div className='max-w-full shrink-0' style={{ width: SIZE.width }}>
       {showPlayer ? (
         <YouTubePreviewPlayer width={SIZE.width} height={SIZE.height} onClose={stopPreview} />
       ) : (

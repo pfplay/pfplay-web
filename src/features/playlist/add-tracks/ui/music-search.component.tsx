@@ -55,9 +55,10 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
         {extraAction}
       </div>
 
-      {/* 좌: 검색 결과 리스트 / 우: 미리듣기 임베드(≥200×200, issue #420). 비차단 — 리스트 클릭 시
-          우측 미리듣기가 연속 전환된다. */}
-      <div className='flex gap-6'>
+      {/* 미리듣기 임베드(≥200×200, issue #420). 비차단 — 리스트 클릭 시 미리듣기가 연속 전환된다.
+          좁은 폭(<laptop)에서는 세로 스택(미리듣기 위 / 리스트 아래) — 모달은 max-w-full 로 축소되는데
+          480px 미리듣기가 옆에 고정되면 리스트가 쪼그라들기 때문. laptop(≥1024) 이상에서 우측 컬럼. */}
+      <div className='flex flex-col gap-6 laptop:flex-row'>
         <div className='h-[340px] flex-1 min-w-0 overflow-y-scroll pr-[8px]'>
           {isFetching && <LoadingPanel />}
           {!isFetching &&
