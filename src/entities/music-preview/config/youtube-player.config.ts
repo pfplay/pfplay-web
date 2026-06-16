@@ -28,13 +28,13 @@ export const previewPlayerConfig: YouTubeConfig = {
 };
 
 /**
- * 미리보기 플레이어 기본 크기.
+ * 데스크탑 미리듣기 플레이어 크기.
  *
  * ⚠️ YouTube ToS(Required Minimum Functionality): 임베드 플레이어 viewport ≥200×200 (issue #420).
  * 16:9 에서 높이 200px 는 너비 356px 를 요구하므로 데스크탑 미리듣기는 최소 권장 480×270 사용.
  *
- * `mobile-bottom` 은 PR3 에서 전체너비 16:9 카드로 재설계 예정(112px 바엔 ≥200 불가). 그 전까지
- * 임시로 남겨두며, 컴플라이언스 가드(config.test)는 데스크탑 키만 검사한다.
+ * 모바일 미리듣기는 고정 px 가 아니라 전체너비(100%) × 202px 카드로 렌더하므로 본 config 를
+ * 쓰지 않는다(MiniPlayer 참조). 과거 `mobile-bottom`(64×36)은 ToS 위반이라 제거됨.
  */
 export const PREVIEW_PLAYER_SIZES = {
   sidebar: {
@@ -44,9 +44,5 @@ export const PREVIEW_PLAYER_SIZES = {
   modal: {
     width: 480,
     height: 270,
-  },
-  'mobile-bottom': {
-    width: 64,
-    height: 36,
   },
 } as const;

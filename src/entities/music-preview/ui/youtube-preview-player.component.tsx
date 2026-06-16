@@ -15,9 +15,9 @@ import { previewPlayerAPI } from '../lib/react-player.api';
 const YoutubePlayer = dynamic(() => import('react-player/youtube'), { ssr: false });
 
 type YouTubePreviewPlayerProps = {
-  /** 플레이어 크기 */
-  width: number;
-  height: number;
+  /** 플레이어 크기. number(px) 또는 CSS 문자열('100%' 등 — 모바일 전체너비 카드용, issue #420). */
+  width: number | string;
+  height: number | string;
   /** 추가 CSS 클래스 */
   className?: string;
   /** 닫기 버튼 표시 여부 */
