@@ -11,6 +11,7 @@ self.addEventListener('activate', (event) => {
 });
 
 // no-op: 응답을 가로채지 않음 → 캐싱/셸 서빙 없음, 점검모드 게이팅과 무충돌.
+// (빈 핸들러여도 일부 브라우저는 설치 프롬프트에 fetch 리스너 존재를 요구 — 지우지 말 것.)
 self.addEventListener('fetch', () => {});
 
 self.addEventListener('push', (event) => {
@@ -18,7 +19,7 @@ self.addEventListener('push', (event) => {
   let payload;
   try {
     payload = event.data.json();
-  } catch (e) {
+  } catch {
     payload = { title: 'PFPlay', body: event.data.text() };
   }
   const title = payload.title || 'PFPlay';
@@ -34,13 +35,17 @@ self.addEventListener('push', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const targetUrl = (event.notification.data && event.notification.data.url) || '/';
+  const targetUrl = new URL(
+    (event.notification.data && event.notification.data.url) || '/',
+    self.location.origin
+  ).href;
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
       for (const client of clientList) {
-        if ('focus' in client) {
-          client.navigate(targetUrl);
-          return client.focus();
+        // 이미 같은 URL이면 재네비게이트 금지 — realtime 앱 reload로 WS/룸 상태 유실 방지.
+        if (client.url === targetUrl) return client.focus();
+        if ('navigate' in client) {
+          return client.navigate(targetUrl).then((c) => (c || client).focus());
         }
       }
       if (self.clients.openWindow) return self.clients.openWindow(targetUrl);
