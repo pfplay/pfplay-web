@@ -43,8 +43,9 @@ const ProtectedLayout = ({ children }: PropsWithChildren) => {
     return null;
   }
 
-  // 데스크탑 전용 overlay 3개(MyPlaylist · SidebarPlayer · ModalPlayer) 는
+  // 데스크탑 전용 overlay(MyPlaylist · SidebarPlayer) 는
   // DesktopLobby · DesktopRoom 내부의 DesktopOverlays 로 이동(chunk 1).
+  // (검색 결과 미리듣기는 검색 모달 내부 SearchPreviewPanel 로 임베드 — issue #420)
   // 모바일 트리는 본 overlay 를 import 하지 않음 (격리 가치 첫 실현).
   return (
     <PartyroomConnectionProvider>

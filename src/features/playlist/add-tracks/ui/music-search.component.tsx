@@ -12,6 +12,7 @@ import { Typography } from '@/shared/ui/components/typography';
 import { PFAddCircle, PFAddPlaylist } from '@/shared/ui/icons';
 import SearchInput from './search-input.component';
 import SearchListItem from './search-list-item.component';
+import SearchPreviewPanel from './search-preview-panel.component';
 import { useSearchMusics } from '../api/use-search-musics.query';
 
 type MusicSearchProps = {
@@ -54,44 +55,49 @@ export default function MusicSearch({ extraAction }: MusicSearchProps) {
         {extraAction}
       </div>
 
-      <div className='h-[340px] overflow-y-scroll pr-[8px]'>
-        {isFetching && <LoadingPanel />}
-        {!isFetching &&
-          !!search &&
-          musics?.map((music) => (
-            <div key={music.videoId} className='py-3'>
-              <SearchListItem
-                music={music}
-                Suffix={
-                  selectedPlaylist ? (
-                    // 선택된 플레이리스트가 있을 경우 해당 플레이리스트에 바로 음악 추가
-                    <TextButton
-                      Icon={<PFAddPlaylist />}
-                      onClick={() => addTrackToPlaylist(selectedPlaylist.id, music)}
-                      data-testid='track-add-button'
-                    />
-                  ) : (
-                    // 선택된 플레이리스트가 없을 경우 플레이리스트 선택 메뉴 표시
-                    <IconMenu
-                      MenuButtonIcon={<PFAddPlaylist />}
-                      menuItemPanel={{ className: 'm-w-[300px] border border-gray-500' }}
-                      menuItemConfig={[
-                        ...playlists.map(({ name: label, id }) => ({
-                          label,
-                          onClickItem: () => addTrackToPlaylist(id, music),
-                        })),
-                        {
-                          label: t.playlist.btn.add_playlist,
-                          Icon: <PFAddCircle />,
-                          onClickItem: playlistAction.add,
-                        },
-                      ]}
-                    />
-                  )
-                }
-              />
-            </div>
-          ))}
+      {/* 좌: 검색 결과 리스트 / 우: 미리듣기 임베드(≥200×200, issue #420). 비차단 — 리스트 클릭 시
+          우측 미리듣기가 연속 전환된다. */}
+      <div className='flex gap-6'>
+        <div className='h-[340px] flex-1 min-w-0 overflow-y-scroll pr-[8px]'>
+          {isFetching && <LoadingPanel />}
+          {!isFetching &&
+            !!search &&
+            musics?.map((music) => (
+              <div key={music.videoId} className='py-3'>
+                <SearchListItem
+                  music={music}
+                  Suffix={
+                    selectedPlaylist ? (
+                      // 선택된 플레이리스트가 있을 경우 해당 플레이리스트에 바로 음악 추가
+                      <TextButton
+                        Icon={<PFAddPlaylist />}
+                        onClick={() => addTrackToPlaylist(selectedPlaylist.id, music)}
+                        data-testid='track-add-button'
+                      />
+                    ) : (
+                      // 선택된 플레이리스트가 없을 경우 플레이리스트 선택 메뉴 표시
+                      <IconMenu
+                        MenuButtonIcon={<PFAddPlaylist />}
+                        menuItemPanel={{ className: 'm-w-[300px] border border-gray-500' }}
+                        menuItemConfig={[
+                          ...playlists.map(({ name: label, id }) => ({
+                            label,
+                            onClickItem: () => addTrackToPlaylist(id, music),
+                          })),
+                          {
+                            label: t.playlist.btn.add_playlist,
+                            Icon: <PFAddCircle />,
+                            onClickItem: playlistAction.add,
+                          },
+                        ]}
+                      />
+                    )
+                  }
+                />
+              </div>
+            ))}
+        </div>
+        <SearchPreviewPanel />
       </div>
     </div>
   );
