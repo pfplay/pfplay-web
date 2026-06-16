@@ -75,7 +75,8 @@ export default function usePushSubscription() {
     try {
       const permission = await Notification.requestPermission();
       if (permission !== 'granted') {
-        setStatus('denied');
+        // 'denied'=영구 차단(설정에서 해제 안내). 'default'=프롬프트 닫음 → 다시 켤 수 있게 'off'.
+        setStatus(permission === 'denied' ? 'denied' : 'off');
         return;
       }
 
@@ -86,10 +87,14 @@ export default function usePushSubscription() {
       });
 
       const { keys } = sub.toJSON();
+      if (!keys?.p256dh || !keys?.auth) {
+        // 정상 브라우저는 항상 키를 준다. 없으면 빈 구독을 서버에 박지 말고 실패 처리.
+        throw new Error('push subscription keys missing');
+      }
       await pushService.subscribe({
         endpoint: sub.endpoint,
-        p256dh: keys?.p256dh ?? '',
-        auth: keys?.auth ?? '',
+        p256dh: keys.p256dh,
+        auth: keys.auth,
         lang: normalizeLang(lang),
       });
 
