@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 
 import '@rainbow-me/rainbowkit/styles.css';
 import '@/shared/ui/foundation/globals.css';
+import '@/shared/ui/foundation/touch-reset.css';
 
 import { PropsWithChildren } from 'react';
 
