@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect } from 'react';
 import { useFetchMe } from '@/entities/me';
+import { markMemberSession } from '@/entities/me/lib/member-session';
 import { GUEST_AUTO_LOGIN_ROUTE_PATTERN } from '@/entities/me/model/constants';
 import { usePartyroomEnterErrorAlerts } from '@/features/partyroom/enter';
 import { useAutoSignInByGuest } from '@/features/sign-in/by-guest';
@@ -29,6 +30,11 @@ const ProtectedLayout = ({ children }: PropsWithChildren) => {
   }, [error, isPartyroomRoute]);
 
   useEffect(() => {
+    // 비게스트(FM/AM) 세션 이력 기록 → 이후 토큰 만료(401) 시 만료-회원 vs 방문자 구별 (#428).
+    if (me) {
+      markMemberSession(me.authorityTier);
+    }
+
     /**
      * 로그인은 했지만 프로필을 아직 생성하지 않은 경우
      */
