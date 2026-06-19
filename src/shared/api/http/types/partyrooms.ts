@@ -195,6 +195,8 @@ export type GetPartyroomDetailSummaryPayload = {
 export type EnterResponse = {
   crewId: number;
   gradeType: GradeType;
+  /** WS 재연결 resync 신호: 멤버십이 inactive→active 로 재활성됐는지 (web#402). */
+  reactivated: boolean;
 };
 
 export type ExitPayload = {
