@@ -9,8 +9,15 @@ import { useFetchDjingQueue } from '@/features/partyroom/list-djing-queue';
 import { pick } from '@/shared/lib/functions/pick';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { calculateStageImageFrame } from '../lib/calculate-stage-image-frame';
+import { selectDjQueueClusterCrewIds } from '../lib/select-dj-queue-cluster';
 import { useAvatarCluster } from '../lib/use-avatar-cluster.hook';
-import { AVATAR_GROUP, AVATAR_QUEUE, DJ_AVATAR, PARTYROOM_BACKGROUND } from '../model/constants';
+import {
+  AVATAR_GROUP,
+  AVATAR_QUEUE,
+  DJ_AVATAR,
+  DJ_QUEUE_CLUSTER_MAX_DISPLAY,
+  PARTYROOM_BACKGROUND,
+} from '../model/constants';
 
 type Props = {
   partyroomId?: number;
@@ -39,13 +46,18 @@ export default function Avatars({
   const dj = currentDjCrewId
     ? crews.find((crew: Crew.Model) => crew.crewId === currentDjCrewId)
     : undefined;
-  const djQueueCrewIds =
+  // 입력 소스(override / 실 대기열)와 무관하게 클러스터 표시는 최대 인원으로 cap.
+  // 초과분은 djQueueCrewIds에서 빠져 court(플로어)로 떨어진다.
+  const djQueueCrewIds = (
     djQueueCrewIdsOverride ??
     (djingQueue
-      ? djingQueue.djs
-          .filter((dj) => dj.crewId !== currentDjCrewId && dj.orderNumber > 1)
-          .map((dj) => dj.crewId)
-      : []);
+      ? selectDjQueueClusterCrewIds({
+          djs: djingQueue.djs,
+          currentDjCrewId,
+          max: DJ_QUEUE_CLUSTER_MAX_DISPLAY,
+        })
+      : [])
+  ).slice(0, DJ_QUEUE_CLUSTER_MAX_DISPLAY);
 
   const { registerAvatar } = useAvatarDance();
   const stageRef = useRef<HTMLDivElement | null>(null);
