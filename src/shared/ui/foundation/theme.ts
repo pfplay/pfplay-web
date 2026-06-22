@@ -49,6 +49,9 @@ const theme = {
      * zIndex는 덧셈 연산 등을 위해 number로 선언 후 나중에 string으로 컨버팅 하도록 함
      */
     drawer: 30,
+    // cinema(Theater/Full) 전체 화면 오버레이. drawer 와 dialog 사이에 위치한다.
+    // playlist 패널에서 연 dialog 가 이 오버레이 위로 올라가야 가려지지 않는다(#435/#436).
+    cinema: 100,
     dialog: 1000,
     tooltip: 1001,
   },

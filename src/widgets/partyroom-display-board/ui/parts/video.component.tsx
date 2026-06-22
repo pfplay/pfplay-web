@@ -246,7 +246,7 @@ export default function Video({
     // Full-screen mode: video fills entire viewport, header/footer appear only on hover over their zones
     if (isFullscreen) {
       return (
-        <div ref={cinemaContainerRef} className='fixed inset-0 z-[100] bg-black'>
+        <div ref={cinemaContainerRef} className='fixed inset-0 z-cinema bg-black'>
           {/* Video fills everything */}
           <div className='absolute inset-0'>{cinemaPlayer}</div>
 
@@ -294,7 +294,7 @@ export default function Video({
 
     // Cinema mode (not fullscreen): left column shrinks when chat panel opens on right
     return (
-      <div ref={cinemaContainerRef} className='fixed inset-0 z-[100] bg-black flex flex-row'>
+      <div ref={cinemaContainerRef} className='fixed inset-0 z-cinema bg-black flex flex-row'>
         <div className='flex-1 min-w-0 flex flex-col'>
           {/* Header */}
           <div className='shrink-0 bg-black border-b border-gray-800'>

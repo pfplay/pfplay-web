@@ -2,17 +2,16 @@ import { useCallback } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { PlaylistFormValues } from '@/entities/playlist';
 import { PlaylistForm, PlaylistFormProps } from '@/entities/playlist/index.ui';
+import { usePlaylistLayerZIndex } from '@/entities/ui-state';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { useStores } from '@/shared/lib/store/stores.context';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { useUpdatePlaylist } from '../api/use-update-playlist.mutation';
 
 export default function useEditPlaylistDialog(playlists: Playlist[]) {
   const t = useI18n();
   const { openDialog } = useDialog();
-  const { useUIState } = useStores();
-  const playlistDrawer = useUIState((state) => state.playlistDrawer);
+  const layerZIndex = usePlaylistLayerZIndex();
 
   return useCallback(
     (listId: Playlist['id']) => {
@@ -20,12 +19,12 @@ export default function useEditPlaylistDialog(playlists: Playlist[]) {
       if (!target) return;
 
       openDialog((_, onCancel) => ({
-        zIndex: playlistDrawer.zIndex + 1,
+        zIndex: layerZIndex + 1,
         title: t.playlist.para.enter_playlist_name,
         Body: <Form target={target} onCancel={onCancel} />,
       }));
     },
-    [playlistDrawer.zIndex, playlists, t]
+    [layerZIndex, playlists, t]
   );
 }
 
