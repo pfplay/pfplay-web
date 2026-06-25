@@ -13,6 +13,7 @@ type Props = {
   cinemaChatOpen: boolean;
   onDefault: () => void;
   onFull: () => void;
+  onTheater?: () => void;
   onToggleChat: () => void;
 };
 
@@ -22,6 +23,7 @@ export default function CinemaFooter({
   cinemaChatOpen,
   onDefault,
   onFull,
+  onTheater,
   onToggleChat,
 }: Props) {
   return (
@@ -74,7 +76,7 @@ export default function CinemaFooter({
           </button>
           {isFullscreen ? (
             <button
-              onClick={() => document.exitFullscreen()}
+              onClick={onTheater}
               className='flex flex-col items-center gap-1 w-11 cursor-pointer hover:opacity-80 transition-opacity'
               title='Theater'
             >

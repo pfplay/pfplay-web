@@ -16,6 +16,7 @@ interface IconMenuProps {
   menuButtonTestId?: string;
   onMenuClose?: () => void;
   onMenuIconClick?: () => void;
+  menuZIndex?: number;
 }
 
 const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
@@ -27,6 +28,7 @@ const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
       menuContainerClassName,
       onMenuClose,
       onMenuIconClick,
+      menuZIndex,
       menuItemPanel: { HeaderIcon, PrefixIcon, className, size = 'lg' } = {},
     },
     ref
@@ -54,6 +56,7 @@ const IconMenu = forwardRef<HTMLDivElement, IconMenuProps>(
                 MenuItemPrefixIcon={PrefixIcon}
                 menuItemPanelStyle={className}
                 size={size}
+                zIndex={menuZIndex}
                 onMenuClose={() => handleMenuClose(close)}
               />
             </>

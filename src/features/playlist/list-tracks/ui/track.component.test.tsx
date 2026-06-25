@@ -1,4 +1,5 @@
 vi.mock('@/shared/lib/localization/i18n.context');
+vi.mock('@/shared/lib/store/stores.context');
 vi.mock('@dnd-kit/sortable', () => ({
   useSortable: () => ({
     attributes: { 'data-dnd': 'attr' },
@@ -22,6 +23,7 @@ import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import Track from './track.component';
 
 const NOT_PLAYABLE = 'Not playable here (exceeds this room limit)';
@@ -38,6 +40,13 @@ beforeEach(() => {
   vi.clearAllMocks();
   (useI18n as Mock).mockReturnValue({
     dj: { para: { not_playable_in_room: NOT_PLAYABLE } },
+  });
+  (useStores as Mock).mockReturnValue({
+    useUIState: (selector: (...args: any[]) => any) =>
+      selector({
+        cinemaView: false,
+        playlistDrawer: { zIndex: 10 },
+      }),
   });
 });
 

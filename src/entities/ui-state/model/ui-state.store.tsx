@@ -46,8 +46,6 @@ export const createUIStateStore = () => {
     setCinemaView: (v) => set({ cinemaView: v }),
     cinemaChatOpen: false,
     setCinemaChatOpen: (v) => set({ cinemaChatOpen: v }),
-    pendingFullscreen: false,
-    setPendingFullscreen: (v) => set({ pendingFullscreen: v }),
     cinemaSidePanel: 'none',
     setCinemaSidePanel: (v) => set({ cinemaSidePanel: v }),
   }));

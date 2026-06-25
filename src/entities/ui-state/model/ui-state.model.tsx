@@ -15,8 +15,6 @@ export type Model = {
   setCinemaView: (v: boolean) => void;
   cinemaChatOpen: boolean;
   setCinemaChatOpen: (v: boolean) => void;
-  pendingFullscreen: boolean;
-  setPendingFullscreen: (v: boolean) => void;
   cinemaSidePanel: 'none' | 'detail' | 'playlist';
   setCinemaSidePanel: (v: 'none' | 'detail' | 'playlist') => void;
 };
