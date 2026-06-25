@@ -3,9 +3,11 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { convertPlaylistTrackToPreview } from '@/entities/music-preview';
 import { ThumbnailWithPreview } from '@/entities/music-preview/index.ui';
+import { usePlaylistLayerZIndex } from '@/entities/ui-state';
 import { PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
@@ -19,6 +21,9 @@ type TrackProps = {
 
 const Track = ({ track, menuItems, isOverRoomLimit = false }: TrackProps) => {
   const t = useI18n();
+  const cinemaView = useStores().useUIState((s) => s.cinemaView);
+  const layerZIndex = usePlaylistLayerZIndex();
+  const menuZIndex = cinemaView ? layerZIndex + 1 : undefined;
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: track.linkId,
   });
@@ -75,7 +80,11 @@ const Track = ({ track, menuItems, isOverRoomLimit = false }: TrackProps) => {
       </div>
 
       <div className='shrink-0'>
-        <IconMenu MenuButtonIcon={<PFMoreVert />} menuItemConfig={menuItems} />
+        <IconMenu
+          MenuButtonIcon={<PFMoreVert />}
+          menuItemConfig={menuItems}
+          menuZIndex={menuZIndex}
+        />
       </div>
     </div>
   );

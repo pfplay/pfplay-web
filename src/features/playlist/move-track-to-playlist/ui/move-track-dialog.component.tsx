@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
+import { usePlaylistLayerZIndex } from '@/entities/ui-state';
 import useOnError from '@/shared/api/http/error/use-on-error.hook';
 import { ErrorCode } from '@/shared/api/http/types/@shared';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog, useDialog } from '@/shared/ui/components/dialog';
 import { RadioSelectList } from '@/shared/ui/components/radio-select-list';
 import { Typography } from '@/shared/ui/components/typography';
@@ -12,15 +12,14 @@ import { useMovePlaylistTrack } from '../api/use-move-playlist-track.mutation';
 export default function useMoveTrackToPlaylistDialog(list: Playlist[]) {
   const t = useI18n();
   const { openDialog } = useDialog();
-  const { useUIState } = useStores();
-  const playlistDrawer = useUIState((state) => state.playlistDrawer);
+  const layerZIndex = usePlaylistLayerZIndex();
 
   return useCallback(
     (sourcePlaylistId: number, trackId: number) => {
       const movableList = list.filter((p) => p.id !== sourcePlaylistId);
 
       openDialog((_, onCancel) => ({
-        zIndex: playlistDrawer.zIndex + 1,
+        zIndex: layerZIndex + 1,
         title: t.playlist.title.select,
         Sub: (
           <Typography type='body3' className='text-gray-400'>
@@ -37,7 +36,7 @@ export default function useMoveTrackToPlaylistDialog(list: Playlist[]) {
         ),
       }));
     },
-    [list, playlistDrawer.zIndex, t]
+    [list, layerZIndex, t]
   );
 }
 

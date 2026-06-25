@@ -204,6 +204,7 @@ export const DesktopRoom = ({ partyroomId }: Props) => {
       >
         <PartyroomDisplayBoard
           width={boardWidth}
+          cinemaView={cinemaView}
           headerActions={headerActions}
           sidebarActions={sidebarActions}
           sidePanelContent={sidePanelContent}

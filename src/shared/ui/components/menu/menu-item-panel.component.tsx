@@ -24,6 +24,7 @@ interface MenuItemPanelProps {
   menuItemPanelStyle?: string;
   size?: MenuItemPanelSize;
   onMenuClose: () => void;
+  zIndex?: number;
 }
 
 const MenuItemPanel = ({
@@ -33,6 +34,7 @@ const MenuItemPanel = ({
   menuItemPanelStyle,
   size = 'lg',
   onMenuClose,
+  zIndex,
 }: MenuItemPanelProps) => {
   const handleMenuItemClick = (config: MenuItem) => {
     config.onClickItem();
@@ -56,8 +58,10 @@ const MenuItemPanel = ({
         // 열릴 때 scroll-lock(scrollbar 보상)을 걸어, 세로 스크롤이 있는 화면에서 드롭다운을
         // 열면 scrollbar 가 사라지며 헤더가 좌우로 흔들린다. modal=false 로 비활성화.
         modal={false}
+        style={zIndex === undefined ? undefined : { zIndex }}
         className={cn(
-          'absolute right-0 mt-2 py-2 origin-top-right rounded-[4px] bg-gray-800 shadow-lg z-50',
+          'absolute right-0 mt-2 py-2 origin-top-right rounded-[4px] bg-gray-800 shadow-lg',
+          zIndex === undefined && 'z-50',
           menuItemPanelStyle,
           MenuItemBoxSize[size]
         )}
