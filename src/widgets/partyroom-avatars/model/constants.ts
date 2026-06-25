@@ -13,10 +13,6 @@ export const AVATAR_QUEUE = {
   HEIGHT: 150,
 } as const;
 
-/**
- * DJ 대기열 클러스터에 동시에 표시할 최대 인원.
- * 초과 인원은 플로어(court)에 남아 전원 신청 시에도 플로어가 비지 않는다.
- */
 export const DJ_QUEUE_CLUSTER_MAX_DISPLAY = 5;
 
 export const DJ_AVATAR = {

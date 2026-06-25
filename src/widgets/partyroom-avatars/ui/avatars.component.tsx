@@ -46,8 +46,6 @@ export default function Avatars({
   const dj = currentDjCrewId
     ? crews.find((crew: Crew.Model) => crew.crewId === currentDjCrewId)
     : undefined;
-  // 입력 소스(override / 실 대기열)와 무관하게 클러스터 표시는 최대 인원으로 cap.
-  // 초과분은 djQueueCrewIds에서 빠져 court(플로어)로 떨어진다.
   const djQueueCrewIds = (
     djQueueCrewIdsOverride ??
     (djingQueue
