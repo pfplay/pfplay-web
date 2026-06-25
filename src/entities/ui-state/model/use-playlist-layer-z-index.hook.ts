@@ -2,11 +2,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import { resolvePlaylistLayerZIndex } from './resolve-playlist-layer-z-index';
 
 /**
- * playlist dialog/preview 가 cinema(Theater/Full) 오버레이에 가려지지 않도록(#435/#436)
- * 기준 z-index 를 반환한다. 일반 모드에서는 drawer zIndex 그대로, cinema 모드에서는
- * 오버레이 위로 올린 값을 돌려준다.
- *
- * 사용처는 기존 `playlistDrawer.zIndex` 자리에 이 값을 넣고 동일한 offset(+1/+2)을 유지하면 된다.
+ * playlist 관련 팝업/메뉴/프리뷰가 현재 화면 모드에서 가려지지 않도록 사용할 base z-index를 UI store 상태 기준으로 계산
  */
 export function usePlaylistLayerZIndex(): number {
   const { useUIState } = useStores();

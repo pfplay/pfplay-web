@@ -281,8 +281,6 @@ export default function Video({
             </div>
           </div>
 
-          {/* 사이드 패널 / 채팅 — full 모드에서도 playlist·chat 버튼이 동작하도록 오른쪽 오버레이로 렌더.
-              video(z-auto)·hover chrome(z-10) 위(z-20), 단 portal 다이얼로그(z>100) 아래. */}
           {sidePanelContent && (
             <div
               className={cn(

@@ -24,8 +24,6 @@ export default function SidebarPlayer() {
     return null;
   }
 
-  // 일반 모드: 사이드바(drawer) 바로 아래. cinema 모드: 패널이 cinema 오버레이(z-cinema=100) 안에 있어
-  // body 레벨인 이 플레이어는 오버레이 위로 올려야 가려지지 않는다(#435/#436). dim 은 그 바로 아래.
   const dimZIndex = cinemaView ? layerZIndex + 1 : undefined;
   const playerZIndex = cinemaView ? layerZIndex + 2 : playlistDrawer.zIndex - 1;
 

@@ -10,8 +10,6 @@ describe('resolvePlaylistLayerZIndex', () => {
   });
 
   it('cinema 모드에서 기본 drawer zIndex 는 cinema 오버레이 위로 올린다', () => {
-    // drawer(30) 기준 dialog 는 31 → cinema 오버레이(100) 뒤로 가려짐.
-    // cinema 모드에서는 최소 cinema 레이어까지 올려 dialog(+1) 가 오버레이 위로 오게 한다.
     const base = resolvePlaylistLayerZIndex({
       cinemaView: true,
       drawerZIndex: theme.zIndex.drawer,
