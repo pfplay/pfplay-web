@@ -95,4 +95,44 @@ describe('useCrewEnteredCallback', () => {
       motionType: MotionType.DANCE_TYPE_1,
     });
   });
+
+  test('새 입장 시 입장 공지 시스템 채팅 메시지를 추가한다 (#412)', () => {
+    const { result } = renderHook(() => useCrewEnteredCallback());
+
+    result.current(createCrewEnteredEvent(1, '새유저'));
+
+    const systemMsg = store
+      .getState()
+      .chat.getMessages()
+      .find((m) => m.from === 'system');
+    expect(systemMsg).toBeDefined();
+    expect((systemMsg as { content: string }).content).toContain('새유저');
+    expect((systemMsg as { content: string }).content).toContain('입장');
+  });
+
+  test('이미 존재하는 crew의 재입장(spurious ENTER)은 공지를 추가하지 않는다 (#412)', () => {
+    store.getState().updateCrews(() => [createCrew({ crewId: 1, nickname: '기존유저' })]);
+    const { result } = renderHook(() => useCrewEnteredCallback());
+
+    result.current(createCrewEnteredEvent(1));
+
+    const systemMsgs = store
+      .getState()
+      .chat.getMessages()
+      .filter((m) => m.from === 'system');
+    expect(systemMsgs).toHaveLength(0);
+  });
+
+  test('본인 입장은 공지를 추가하지 않는다 (#412)', () => {
+    store.getState().updateMe({ crewId: 1 });
+    const { result } = renderHook(() => useCrewEnteredCallback());
+
+    result.current(createCrewEnteredEvent(1));
+
+    const systemMsgs = store
+      .getState()
+      .chat.getMessages()
+      .filter((m) => m.from === 'system');
+    expect(systemMsgs).toHaveLength(0);
+  });
 });
