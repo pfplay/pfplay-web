@@ -200,7 +200,10 @@ describe('MobilePartyroomDisplayBoard · compact (크루/큐 탭)', () => {
 });
 
 describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
-  test('#7 트랙 변경 시 autoplay 차단 재armed: 새 videoId + 1500ms 후 차단 → overlay 렌더', () => {
+  // #426: 재생 중 곡이 바뀌어도 재-gate 하면 안 된다. 곡 전환은 backend PlaybackStartedEvent 만
+  // (DEACTIVATE 없음) → playable 연속 true, played 유지 → player key 불변 → remount 없음 →
+  // iOS WebKit user-activation 유지 → 끊김 없이 이어짐. (이전엔 played 리셋→remount→매 곡 재-gate 버그.)
+  test('#9 재생 중 트랙 변경 시 재-gate 안 함 (player remount 방지 #426)', () => {
     const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
 
     const firstYt = youtubePlayerCalls[0];
@@ -209,21 +212,19 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
       (firstYt.onPlay as () => void)();
     });
 
+    // 트랙 변경 (재생 중 상태에서 새 곡으로 전환)
     setStoreState({
       playback: { name: 'Track 2', duration: '4:00', linkId: 'def', endTime: FUTURE_END_TIME },
     });
     rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
 
-    const newYt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
-    act(() => {
-      (newYt.onReady as (p: unknown) => void)(makeMockPlayer());
-    });
     act(() => {
       vi.advanceTimersByTime(1500);
     });
     rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
 
-    expect(screen.queryByTestId('autoplay-gesture-gate')).toBeTruthy();
+    // played 유지 → 차단 재감지 안 됨 → gesture gate 미표시 (자동재생 끊김 없음)
+    expect(screen.queryByTestId('autoplay-gesture-gate')).toBeNull();
   });
 
   test('#8 Mode C → 재할당 → onReady 후 1500ms 내 onPlay 없으면 차단 + overlay 렌더', () => {
