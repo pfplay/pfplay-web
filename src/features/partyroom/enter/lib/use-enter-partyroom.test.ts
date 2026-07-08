@@ -9,6 +9,9 @@ vi.mock('@tanstack/react-query', async (importOriginal) => {
     useQueryClient: vi.fn(),
   };
 });
+vi.mock('@/shared/api/http/services', () => ({
+  partyroomsService: { getSetupInfo: vi.fn(), getNotice: vi.fn() },
+}));
 
 import { useQueryClient } from '@tanstack/react-query';
 import { renderHook, act } from '@testing-library/react';
@@ -16,6 +19,8 @@ import {
   usePartyroomClient,
   useHandlePartyroomSubscriptionEvent,
 } from '@/entities/partyroom-client';
+import { QueryKeys } from '@/shared/api/http/query-keys';
+import { partyroomsService } from '@/shared/api/http/services';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { useEnterPartyroom } from './use-enter-partyroom';
@@ -108,5 +113,63 @@ describe('useEnterPartyroom', () => {
       expect.objectContaining({ partyroomId: 7 }),
       expect.objectContaining({ onSuccess: expect.any(Function), onError: expect.any(Function) })
     );
+  });
+});
+
+describe('useEnterPartyroom resync (#402)', () => {
+  // calls[0] = once enter, calls[1] = resync(non-once)
+  const registerAndGetResync = (partyroomId: number) => {
+    const { result } = renderHook(() => useEnterPartyroom(partyroomId));
+    act(() => result.current());
+    return mockOnConnect.mock.calls[1][0] as () => void;
+  };
+
+  test('resync 핸들러를 비-once 로 등록한다 (2번째 onConnect, options 없음)', () => {
+    const { result } = renderHook(() => useEnterPartyroom(1));
+    act(() => result.current());
+    expect(mockOnConnect).toHaveBeenNthCalledWith(2, expect.any(Function));
+  });
+
+  test('첫 연결은 skip — mutate 미호출', () => {
+    const resync = registerAndGetResync(7);
+    resync(); // 첫 발화 = firstConnect skip
+    expect(mockMutate).not.toHaveBeenCalled();
+  });
+
+  test('재연결 시 enter(tryEnter) 호출', () => {
+    const resync = registerAndGetResync(7);
+    resync(); // skip
+    resync(); // 재연결
+    expect(mockMutate).toHaveBeenCalledWith(
+      expect.objectContaining({ partyroomId: 7 }),
+      expect.objectContaining({ onSuccess: expect.any(Function), onError: expect.any(Function) })
+    );
+  });
+
+  test('reactivated=false → setup 미호출, DJ큐 invalidate', () => {
+    const resync = registerAndGetResync(7);
+    resync();
+    resync();
+    mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER', reactivated: false });
+    expect(partyroomsService.getSetupInfo).not.toHaveBeenCalled();
+    expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: [QueryKeys.DjingQueue, 7] });
+  });
+
+  test('reactivated=true → setup(재수화) 호출', () => {
+    (partyroomsService.getSetupInfo as Mock).mockReturnValue(new Promise(() => {}));
+    (partyroomsService.getNotice as Mock).mockReturnValue(new Promise(() => {}));
+    const resync = registerAndGetResync(7);
+    resync();
+    resync();
+    mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER', reactivated: true });
+    expect(partyroomsService.getSetupInfo).toHaveBeenCalled();
+  });
+
+  test('enter onError → 로비', () => {
+    const resync = registerAndGetResync(7);
+    resync();
+    resync();
+    mockMutate.mock.calls[0][1].onError();
+    expect(mockPush).toHaveBeenCalledWith('/parties');
   });
 });

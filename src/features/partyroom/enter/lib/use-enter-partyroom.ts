@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   useHandlePartyroomSubscriptionEvent,
@@ -28,6 +29,8 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
   const router = useAppRouter();
 
   const entrySource: EntrySource = options.entrySource ?? 'direct';
+  // 재연결 resync 의 첫 연결 skip 가드 (연결 간 보존). 첫 연결은 아래 once enter 가 담당. (#402)
+  const firstConnect = useRef(true);
 
   const setup = async (enterResponse: EnterResponse) => {
     const [setUpInfo, notice] = await Promise.all([
@@ -96,6 +99,34 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
       },
       { once: true }
     );
+
+    // 재연결 resync (비-once). 첫 연결은 firstConnect ref 로 skip(이중 tryEnter 방지). (#402)
+    client.onConnect(() => {
+      if (firstConnect.current) {
+        firstConnect.current = false;
+        return;
+      }
+      enter(
+        { partyroomId },
+        {
+          onSuccess: (enterResponse) => {
+            const invalidateDjQueue = () =>
+              queryClient.invalidateQueries({ queryKey: [QueryKeys.DjingQueue, partyroomId] });
+            if (enterResponse.reactivated) {
+              // 멤버십 상실 → 풀 재수화(검정 해소). 룸 재구독은 추가하지 않음(handleConnect 가 이미 reconcile).
+              silent(setup(enterResponse), {
+                onSuccess: invalidateDjQueue,
+                onError: () => router.push('/parties'),
+              });
+            } else {
+              // 멤버십 유지 → 경량(플레이어/구독 무영향)
+              invalidateDjQueue();
+            }
+          },
+          onError: () => router.push('/parties'),
+        }
+      );
+    });
   };
 }
 
