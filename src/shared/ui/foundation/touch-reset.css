@@ -1,0 +1,41 @@
+/**
+ * 모바일 네이티브 터치 질감 리셋 (#414)
+ *
+ * ⚠️ 데스크톱 영향 0 — 모든 리셋은 "순수 터치 디바이스"에만 적용한다.
+ *   `(hover: none) and (pointer: coarse)` = 호버 불가 + 주포인터 거침(터치) →
+ *   데스크톱(hover: hover / pointer: fine)·터치 가능 노트북(hover 있음)은 자동 제외.
+ *   `any-pointer` 는 터치 노트북까지 매칭하므로 사용 금지.
+ */
+@media (hover: none) and (pointer: coarse) {
+  /* 탭 시 파란/회색 플래시 제거 */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* 더블탭 줌·탭 지연(300ms) 제거 */
+  html {
+    touch-action: manipulation;
+  }
+
+  /* 길게 누름 콜아웃 메뉴·텍스트 선택 차단 — UI 크롬(인터랙티브)만.
+     ⚠️ 콘텐츠/텍스트는 선택 가능하게 유지(user-select 전역 금지). */
+  button,
+  a,
+  [role='button'],
+  label {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* 터치 탭 focus 링 제거 — 키보드(:focus-visible)는 링 유지(a11y 보존).
+     게다가 본 미디어 안이라 데스크톱과는 무관. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* 스크롤 바운스·스크롤 체이닝 억제(앱 같은 질감). contain = 당겨서새로고침은 유지. */
+  body {
+    overscroll-behavior: contain;
+  }
+}
