@@ -6,7 +6,10 @@ import { useStores } from '@/shared/lib/store/stores.context';
 
 export default function useChatCallback() {
   const { useCurrentPartyroom } = useStores();
-  const appendChatMessage = useCurrentPartyroom((state) => state.appendChatMessage);
+  const [appendChatMessage, updateCrews] = useCurrentPartyroom((state) => [
+    state.appendChatMessage,
+    state.updateCrews,
+  ]);
 
   return (event: ChatMessageSentEvent) => {
     const { crews } = useCurrentPartyroom.getState();
@@ -23,6 +26,14 @@ export default function useChatCallback() {
       message: event.message,
       receivedAt: Date.now(),
     });
+
+    // #410: 발신 crew 아바타 위에 말풍선을 띄우기 위한 트리거. lastChatAt 갱신 시
+    // Avatar 가 transient 로 말풍선을 노출한다(연속 채팅이면 값이 갱신돼 시간 연장).
+    updateCrews((prev) =>
+      prev.map((prevCrew) =>
+        prevCrew.crewId === crew.crewId ? { ...prevCrew, lastChatAt: Date.now() } : prevCrew
+      )
+    );
   };
 }
 

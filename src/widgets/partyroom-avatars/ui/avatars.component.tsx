@@ -137,6 +137,7 @@ export default function Avatars({
             facePosX={dj.combinePositionX}
             facePosY={dj.combinePositionY}
             reaction={dj.reactionType}
+            lastChatAt={dj.lastChatAt}
             motionType={dj.motionType}
             offsetX={dj.offsetX || BASE_X}
             offsetY={dj.offsetY || BASE_Y}
@@ -169,6 +170,7 @@ export default function Avatars({
             facePosX={crew.combinePositionX}
             facePosY={crew.combinePositionY}
             reaction={crew.reactionType}
+            lastChatAt={crew.lastChatAt}
             offsetX={crew.offsetX || BASE_X}
             offsetY={crew.offsetY || BASE_Y}
             scale={crew.scale || BASE_SCALE}
@@ -204,6 +206,7 @@ export default function Avatars({
               facePosX={crew.combinePositionX}
               facePosY={crew.combinePositionY}
               reaction={crew.reactionType}
+              lastChatAt={crew.lastChatAt}
               offsetX={crew.offsetX || BASE_X}
               offsetY={crew.offsetY || BASE_Y}
               scale={crew.scale || BASE_SCALE}
