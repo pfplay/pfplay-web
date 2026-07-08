@@ -8,35 +8,20 @@ import { useUserPreferenceStore } from '@/entities/preference';
 import { PartyroomPlayback } from '@/shared/api/http/types/partyrooms';
 import { cn } from '@/shared/lib/functions/cn';
 import BlankPlaceholder from './blank-placeholder.component';
-import ExpandToggle from './expand-toggle.component';
 import type { AutoplayGestureGate } from '../../lib/use-autoplay-gesture-gate.hook';
 
 const YoutubePlayer = dynamic(() => import('react-player/youtube'), { ssr: false });
 
-export const COLLAPSED_VIDEO_WIDTH = 80;
-export const COLLAPSED_VIDEO_HEIGHT = 45;
-
-export function wrapperClass(mode: 'A' | 'B' | 'C'): string {
-  switch (mode) {
-    case 'A':
-      return 'aspect-video w-full bg-black rounded';
-    case 'B':
-      return 'w-[80px] h-[45px] shrink-0 bg-black rounded';
-    case 'C':
-      return 'aspect-video w-full bg-black rounded';
-  }
-}
+/**
+ * ToS 최소 크기 (issue #420): YouTube 임베드 플레이어는 viewport ≥200×200 이어야 한다
+ * (Required Minimum Functionality). 16:9 에서 높이 200px 는 너비 356px 를 요구하므로
+ * 모바일에서는 **전체너비 16:9 가 사실상 유일한 컴플라이언트 크기** — 썸네일 축소(과거 80×45
+ * "Mode B") 는 어떤 크기로도 위반이라 컨셉째 제거했다. 재생 중 영상은 항상 전체너비로 표시.
+ */
+export const VIDEO_WRAPPER_CLASS = 'aspect-video w-full bg-black rounded';
 
 interface Props {
   videoId: string | null;
-  expanded: boolean;
-  onToggleExpand: () => void;
-  /**
-   * 확장/축소 토글 노출 여부. compact(크루/큐 탭)에서는 영상이 축소로 고정되므로
-   * 동작하지 않는 토글을 숨긴다.
-   * @default true
-   */
-  canToggle?: boolean;
   // VideoFrame 본문이 onReady 에서 playerRef.current 에 react-player 인스턴스를 할당하므로
   // MutableRefObject 가 필요. 부모는 useRef<TReactPlayer | null>(null) 로 그대로 생성.
   playerRef: MutableRefObject<TReactPlayer | null>;
@@ -44,21 +29,13 @@ interface Props {
   /**
    * playback.endTime/duration 기반 라이브 위치 seek 에 사용.
    * 데스크탑 widgets/partyroom-display-board/ui/parts/video.component.tsx 의 seekToLive 와 동일 정책.
-   * null/undefined 면 seek 안 함 (모드 C 거나 데이터 미도착).
+   * null/undefined 면 seek 안 함 (비재생이거나 데이터 미도착).
    */
   playback?: PartyroomPlayback | null;
 }
 
-const VideoFrame: FC<Props> = ({
-  videoId,
-  expanded,
-  onToggleExpand,
-  canToggle = true,
-  playerRef,
-  gate,
-  playback,
-}) => {
-  const mode: 'A' | 'B' | 'C' = videoId === null ? 'C' : expanded ? 'A' : 'B';
+const VideoFrame: FC<Props> = ({ videoId, playerRef, gate, playback }) => {
+  const isPlaying = videoId !== null;
   const volume = useUserPreferenceStore((s) => s.volume);
   const muted = useUserPreferenceStore((s) => s.muted);
 
@@ -89,13 +66,12 @@ const VideoFrame: FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playbackId]);
 
-  const showOverlayGate = mode === 'A' && gate.autoplayBlocked && !gate.played;
-  const showToggle = canToggle && (mode === 'A' || mode === 'B');
+  const showOverlayGate = isPlaying && gate.autoplayBlocked && !gate.played;
 
   return (
     <div className='relative'>
-      <div data-testid='video-wrapper' className={cn('relative', wrapperClass(mode))}>
-        {mode === 'C' ? (
+      <div data-testid='video-wrapper' className={cn('relative', VIDEO_WRAPPER_CLASS)}>
+        {!isPlaying ? (
           <BlankPlaceholder />
         ) : (
           <YoutubePlayer
@@ -122,8 +98,6 @@ const VideoFrame: FC<Props> = ({
           />
         )}
         {showOverlayGate && (
-          // z-20: autoplay 차단 시 overlay 가 ExpandToggle 을 의도적으로 가린다.
-          // 사용자가 토글 접근 전에 먼저 gesture release 를 해야 함 (UX 잠금).
           <button
             type='button'
             data-testid='autoplay-gesture-gate'
@@ -138,11 +112,6 @@ const VideoFrame: FC<Props> = ({
             </span>
             <span className='text-sm text-gray-100'>클릭하여 재생</span>
           </button>
-        )}
-        {showToggle && (
-          <div className='absolute top-1 right-1 bg-black/40 rounded-full p-1'>
-            <ExpandToggle expanded={expanded} onToggle={onToggleExpand} />
-          </div>
         )}
       </div>
     </div>

@@ -1,11 +1,9 @@
 import { FC } from 'react';
-import { cn } from '@/shared/lib/functions/cn';
 import { TrackTitle } from '@/shared/ui/components/track-title';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFHeadset } from '@/shared/ui/icons';
 
 interface Props {
-  layout: 'column' | 'row';
   trackName: string;
   djNickname: string | null;
   /** `M:SS` 또는 `MM:SS` 사전 포맷 문자열. parent 가 책임. */
@@ -13,22 +11,16 @@ interface Props {
 }
 
 /**
- * 트랙메타 — Mode A = column, Mode B = row (spec §4.4 / §6.4 prop 정의).
+ * 트랙메타 — 트랙명 / DJ / duration 세 줄 vertical stack.
  *
- * `layout` prop 의미: 본 컴포넌트 *내부* 의 배치만 결정.
- * - column = 트랙명 / DJ / duration 세 줄 vertical stack
- * - row = 트랙명 · DJ · duration 한 줄 horizontal inline
+ * 과거 Mode B(80×45 축소) 전용 `row` layout 이 있었으나 ToS 최소 크기(issue #420)로
+ * 축소 모드가 제거되며 column 단일 layout 만 남았다.
  *
  * **외부 배치는 NowPlayingRow (root) 책임**. `flex-1` / `min-w-0` 등 부모 토큰 미보유.
  */
-const NowPlayingMeta: FC<Props> = ({ layout, trackName, djNickname, duration }) => {
+const NowPlayingMeta: FC<Props> = ({ trackName, djNickname, duration }) => {
   return (
-    <div
-      className={cn(
-        'flex',
-        layout === 'column' ? 'flex-col space-y-1' : 'flex-row items-center gap-2'
-      )}
-    >
+    <div className='flex flex-col space-y-1'>
       <TrackTitle name={trackName} emptyText='' />
       {djNickname && (
         <span

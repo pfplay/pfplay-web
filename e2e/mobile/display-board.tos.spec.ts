@@ -1,11 +1,8 @@
 import path from 'path';
 import { type Browser, type BrowserContext, type Page, devices, expect } from '@playwright/test';
 import {
-  CHAT_SCROLL_TOLERANCE_PX,
-  COLLAPSED_VIDEO_HEIGHT,
-  COLLAPSED_VIDEO_WIDTH,
+  expectIframeMeetsMinSize,
   expectIframeNotVisuallyHidden,
-  expectIframeToBeOnScreen,
   gotoMobileRoomAndWaitForVideo,
   mobilePartyroomName,
   mobilePlaylistName,
@@ -128,10 +125,11 @@ async function cleanupMobileTestPartyrooms(ctx: BrowserContext): Promise<void> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Group 1: 재생 활성 (Mode A / 토글 / chat scroll — 4 tests, 1 partyroom 공유)
+// Group 1: 재생 활성 — 임베드 플레이어 ToS 최소 크기(≥200×200) 가드 (issue #420)
+//   과거 80×45 "Mode B" 축소·접기 토글은 정책 위반이라 제거. 영상은 모든 탭에서 전체너비 유지.
 // ─────────────────────────────────────────────────────────────────────────────
 
-test.describe('재생 활성 — Mode A/B 토글 + chat scroll', () => {
+test.describe('재생 활성 — ToS 최소 크기(≥200×200) 가드', () => {
   test.describe.configure({ mode: 'serial' });
 
   let djContext: BrowserContext;
@@ -176,88 +174,41 @@ test.describe('재생 활성 — Mode A/B 토글 + chat scroll', () => {
     if (djContext) await djContext.close();
   });
 
-  test('Mode A 진입: IFrame visible + boundingBox ≥ 80×45 + viewport 안 + 시각 hidden 아님', async ({
+  test('채팅 탭(기본): IFrame viewport ≥200×200 + 화면 안 + 시각 hidden 아님', async ({
     user2Context,
   }) => {
     test.setTimeout(60_000);
     const page = await user2Context.newPage();
     await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
-    await expectIframeToBeOnScreen(page);
+    await expectIframeMeetsMinSize(page);
     await expectIframeNotVisuallyHidden(page);
   });
 
-  test('Mode A → Mode B 토글: wrapper 80×45 정확값 + IFrame 여전히 visible', async ({
-    user2Context,
-  }) => {
-    test.setTimeout(60_000);
-    const page = await user2Context.newPage();
-    await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
-
-    await page.getByRole('button', { name: '영상 가리기' }).click();
-    await expect(page.getByRole('button', { name: '영상 펼치기' })).toBeVisible();
-
-    const wrapper = page.getByTestId('video-wrapper');
-    const wrapperBox = await wrapper.boundingBox();
-    expect(wrapperBox).not.toBeNull();
-    if (!wrapperBox) return;
-    expect(Math.round(wrapperBox.width)).toBe(COLLAPSED_VIDEO_WIDTH);
-    expect(Math.round(wrapperBox.height)).toBe(COLLAPSED_VIDEO_HEIGHT);
-
-    // ToS 가드 본질: IFrame 가 사용자에게 시각적으로 visible. element identity 는 dev-only
-    // fragile assertion 이라 검증 안 함 (production react-player 의 dynamic import + wrapper
-    // resize 가 IFrame 재생성 가능. design intent 인 'wrapper-based sizing 으로 width prop
-    // 변경 회피' 는 unit/integration test 가 검증 — width/height='100%' 단언, key 규칙 단언).
-    await expectIframeNotVisuallyHidden(page);
-    const iframeAfter = await page.locator('iframe[src*="youtube.com/embed"]').elementHandle();
-    expect(iframeAfter).not.toBeNull();
-  });
-
-  test('Mode B → Mode A 복귀: 16:9 wrapper 복귀 + IFrame visible', async ({ user2Context }) => {
-    test.setTimeout(60_000);
-    const page = await user2Context.newPage();
-    await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
-
-    await page.getByRole('button', { name: '영상 가리기' }).click();
-    await expect(page.getByRole('button', { name: '영상 펼치기' })).toBeVisible();
-    await page.getByRole('button', { name: '영상 펼치기' }).click();
-    await expect(page.getByRole('button', { name: '영상 가리기' })).toBeVisible();
-
-    const wrapper = page.getByTestId('video-wrapper');
-    await expect(wrapper).toHaveClass(/aspect-video/);
-
-    // ToS 가드: IFrame 가 복귀 후에도 시각적 visible. element identity 검증 X (위 동일).
-    await expectIframeNotVisuallyHidden(page);
-    const iframeAfter = await page.locator('iframe[src*="youtube.com/embed"]').elementHandle();
-    expect(iframeAfter).not.toBeNull();
-  });
-
-  test('sticky-top 높이 변화 시 chat scroll offset ≤ CHAT_SCROLL_TOLERANCE_PX 보존', async ({
+  test('크루 탭 전환: 관리 탭에서도 IFrame viewport ≥200×200 유지 (축소 회귀 가드, issue #420)', async ({
     user2Context,
   }) => {
     test.setTimeout(60_000);
     const page = await user2Context.newPage();
     await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
 
-    const chatTab = page.getByRole('tab', { name: /채팅/ }).first();
-    if (await chatTab.isVisible().catch(() => false)) {
-      await chatTab.click();
-    }
+    // 사용자 보고 회귀: 크루 목록 탭에서 전광판이 80×45 로 축소되던 정책 위반. 이제 전체너비 유지.
+    await page.getByTestId('mobile-tab-crew').click();
+    await expect(page.getByTestId('mobile-tab-crew')).toHaveAttribute('aria-selected', 'true');
 
-    const chatContainer = page.locator('[data-tab-content="chat"]').first();
-    await expect(chatContainer).toBeVisible();
+    await expectIframeMeetsMinSize(page);
+    await expectIframeNotVisuallyHidden(page);
+  });
 
-    await page.waitForTimeout(500);
+  test('DJ 큐 탭 전환: 관리 탭에서도 IFrame viewport ≥200×200 유지', async ({ user2Context }) => {
+    test.setTimeout(60_000);
+    const page = await user2Context.newPage();
+    await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
 
-    const scrollBefore = await chatContainer.evaluate((el) => el.scrollTop);
+    await page.getByTestId('mobile-tab-queue').click();
+    await expect(page.getByTestId('mobile-tab-queue')).toHaveAttribute('aria-selected', 'true');
 
-    await page.getByRole('button', { name: '영상 가리기' }).click();
-    await expect(page.getByRole('button', { name: '영상 펼치기' })).toBeVisible();
-    await page.waitForTimeout(300);
-
-    const scrollAfter = await chatContainer.evaluate((el) => el.scrollTop);
-
-    const delta = Math.abs(scrollAfter - scrollBefore);
-    expect(delta).toBeLessThanOrEqual(CHAT_SCROLL_TOLERANCE_PX);
+    await expectIframeMeetsMinSize(page);
+    await expectIframeNotVisuallyHidden(page);
   });
 });
 

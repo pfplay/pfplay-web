@@ -1,8 +1,10 @@
 import { expect, type Page } from '@playwright/test';
 
-export const CHAT_SCROLL_TOLERANCE_PX = 10;
-export const COLLAPSED_VIDEO_WIDTH = 80;
-export const COLLAPSED_VIDEO_HEIGHT = 45;
+/**
+ * YouTube ToS — Required Minimum Functionality: 임베드 플레이어 viewport ≥200×200 (issue #420).
+ * 과거 80×45 "Mode B" 축소는 정책 위반이라 제거됨. 모바일 전체너비 16:9 가 유일한 컴플라이언트 크기.
+ */
+export const MIN_PLAYER_VIEWPORT_PX = 200;
 
 /** 케이스마다 고유한 partyroom / playlist 이름. e2e-a 패턴 (Date.now().toString(36)) 으로
  *  base36 짧은 문자열 사용 — UI 의 긴 이름 truncation/ellipsis 시 `new RegExp(name)`
@@ -15,7 +17,7 @@ export async function gotoMobileRoomAndWaitForVideo(page: Page, partyroomUrl: st
   await expect(page.getByTestId('video-wrapper')).toBeVisible({ timeout: 30_000 });
 }
 
-export async function expectIframeToBeOnScreen(page: Page) {
+export async function expectIframeMeetsMinSize(page: Page) {
   const iframe = page.locator('iframe[src*="youtube.com/embed"]');
   await expect(iframe).toBeVisible();
   // toBeVisible() 는 element 존재 + display!=none 만 본다. boundingBox 는 layout 완료가
@@ -27,11 +29,13 @@ export async function expectIframeToBeOnScreen(page: Page) {
   const box = await iframe.boundingBox();
   expect(box).not.toBeNull();
   if (!box) return;
-  expect(box.width).toBeGreaterThanOrEqual(COLLAPSED_VIDEO_WIDTH);
-  expect(box.height).toBeGreaterThanOrEqual(COLLAPSED_VIDEO_HEIGHT);
+  // ToS 핵심 가드: viewport 양 축 모두 ≥200px.
+  expect(box.width).toBeGreaterThanOrEqual(MIN_PLAYER_VIEWPORT_PX);
+  expect(box.height).toBeGreaterThanOrEqual(MIN_PLAYER_VIEWPORT_PX);
   const viewport = page.viewportSize();
   expect(viewport).not.toBeNull();
   if (!viewport) return;
+  // 화면 안에 위치 (off-screen 으로 숨기지 않음).
   expect(box.x).toBeGreaterThan(-box.width);
   expect(box.y).toBeGreaterThan(-box.height);
   expect(box.x).toBeLessThan(viewport.width);

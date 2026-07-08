@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { FC, useRef, useState } from 'react';
+import { FC, useRef } from 'react';
 import type TReactPlayer from 'react-player';
 import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
 import { cn } from '@/shared/lib/functions/cn';
@@ -11,28 +11,29 @@ import { PFArrowLeft, PFMoreVert } from '@/shared/ui/icons';
 import useAutoplayGestureGate from './lib/use-autoplay-gesture-gate.hook';
 import ActionButtons from './ui/parts/action-buttons.component';
 import NowPlayingMeta from './ui/parts/now-playing-meta.component';
-import TapToPlayButton from './ui/parts/tap-to-play-button.component';
 import VideoFrame from './ui/parts/video-frame.component';
 
 interface Props {
   partyroomId: number;
   /**
-   * compact = 관리 탭(크루/큐) 표시 모드. 영상을 강제로 축소(Mode B)하고 리액션 버튼을 숨겨
-   * 아래 탭 목록(크루/DJ 큐)에 세로 공간을 양보한다. 채팅 탭은 false(확장 영상 + 리액션).
+   * compact = 관리 탭(크루/큐) 표시 모드. 리액션 버튼을 숨겨 아래 탭 목록(크루/DJ 큐)에
+   * 세로 공간을 양보한다. 채팅 탭은 false(리액션 노출).
+   *
+   * ⚠️ 영상은 compact 여부와 무관하게 **항상 전체너비 16:9** 로 표시한다. YouTube ToS
+   * (viewport ≥200×200, issue #420) 상 모바일에서 컴플라이언트한 유일한 크기이며, 과거
+   * compact 가 영상을 80×45 로 축소하던 동작은 정책 위반이라 제거됨.
    * @default false
    */
   compact?: boolean;
 }
 
 /**
- * 모바일 전광판 — chunk 3.1 재설계 (spec §4.2 / §6.*).
+ * 모바일 전광판 — chunk 3.1 재설계 (spec §4.2 / §6.*), issue #420 ToS 최소 크기 준수.
  *
  * 본 컴포넌트 책임:
- * 1. expanded state owner (룸 mount 시 true, 토글 클릭만 변경).
- * 2. useAutoplayGestureGate 호출 — VideoFrame overlay 와 NowPlayingRow TapToPlayButton
- *    양쪽에 동일 gate state 주입 (§4.4 / §6.5.2 single source of truth).
- * 3. NowPlayingRow (min-h-[44px]) 로 NowPlayingMeta + TapToPlayButton 같은 row wrap
- *    → TapToPlayButton 의 iOS HIG 44x44 hit-area 확보 (§6.4 reviewer 3차 #2).
+ * 1. useAutoplayGestureGate 호출 — VideoFrame overlay 에 gate state 주입
+ *    (§4.4 / §6.5.2 single source of truth).
+ * 2. NowPlayingRow (min-h-[44px]) 로 NowPlayingMeta 표시.
  *
  * 데스크탑 widgets/partyroom-display-board 는 0 수정 (§3 row 9).
  */
@@ -51,20 +52,12 @@ const MobilePartyroomDisplayBoard: FC<Props> = ({ partyroomId, compact = false }
     ? (crews.find((c) => c.crewId === currentDj.crewId)?.nickname ?? null)
     : null;
 
-  const [expanded, setExpanded] = useState(true);
   const playerRef = useRef<TReactPlayer | null>(null);
 
-  // compact(크루/큐 탭)에서는 사용자의 expanded 선호를 보존하되 강제로 축소 표시.
-  // 채팅 탭으로 돌아오면 expanded 가 그대로 복원된다.
-  const effectiveExpanded = compact ? false : expanded;
   const videoId = playbackActivated ? (playback?.linkId ?? null) : null;
   const isPlaying = videoId !== null;
-  const mode: 'A' | 'B' | 'C' = !isPlaying ? 'C' : effectiveExpanded ? 'A' : 'B';
 
   const gate = useAutoplayGestureGate({ playerRef, playable: isPlaying, videoId });
-
-  // TapToPlayButton 합성 prop: AutoplayGestureGate visible 조건과 동일 (single source).
-  const tapToPlayVisible = gate.autoplayBlocked && !gate.played;
 
   return (
     <div className={cn('sticky top-0 z-20 w-full bg-black border-b border-gray-800')}>
@@ -92,33 +85,21 @@ const MobilePartyroomDisplayBoard: FC<Props> = ({ partyroomId, compact = false }
       />
 
       <div className='px-4 pt-3'>
-        <VideoFrame
-          videoId={videoId}
-          expanded={effectiveExpanded}
-          canToggle={!compact}
-          onToggleExpand={() => setExpanded((v) => !v)}
-          playerRef={playerRef}
-          gate={gate}
-          playback={playback}
-        />
+        <VideoFrame videoId={videoId} playerRef={playerRef} gate={gate} playback={playback} />
       </div>
 
-      {mode !== 'C' && playback && (
+      {isPlaying && playback && (
         <div
           data-testid='now-playing-row'
           className='flex items-center min-h-[44px] px-4 pt-3 gap-3'
         >
-          <div className={mode === 'A' ? 'w-full' : 'flex-1 min-w-0'}>
+          <div className='w-full'>
             <NowPlayingMeta
-              layout={mode === 'A' ? 'column' : 'row'}
               trackName={playback.name}
               djNickname={currentDjNickname}
               duration={playback.duration}
             />
           </div>
-          {mode === 'B' && (
-            <TapToPlayButton autoplayBlocked={tapToPlayVisible} onTap={gate.handleGesturePlay} />
-          )}
         </div>
       )}
 
