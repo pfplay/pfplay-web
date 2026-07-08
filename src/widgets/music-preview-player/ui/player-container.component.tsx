@@ -5,8 +5,8 @@ import { YouTubePreviewPlayer } from '@/entities/music-preview/index.ui';
 import { useStores } from '@/shared/lib/store/stores.context';
 
 type PlayerContainerProps = {
-  /** 플레이어 위치 타입 */
-  position: 'sidebar' | 'modal' | 'mobile-bottom';
+  /** 플레이어 위치 타입 (모바일은 별도 전체너비 카드 — MiniPlayer) */
+  position: 'sidebar' | 'modal';
   /** 추가 CSS 클래스 */
   className?: string;
   /** 닫기 핸들러 */
