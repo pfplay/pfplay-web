@@ -3,6 +3,9 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, test, vi } from 'vitest';
 import { GradeType } from '@/shared/api/http/types/@enums';
 
+vi.mock('@/features/view-crew-profile', () => ({
+  useOpenCrewProfile: () => vi.fn(),
+}));
 vi.mock('@/shared/ui/components/profile/profile.component', () => ({
   __esModule: true,
   default: ({ src, size }: any) => <div data-testid='profile' data-src={src} data-size={size} />,

@@ -13,6 +13,7 @@ import {
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
 import { useIsBlockedCrew } from '@/features/partyroom/list-my-blocked-crews';
 import { SendChatMessage } from '@/features/partyroom/send-chat-message';
+import { useOpenCrewProfile } from '@/features/view-crew-profile';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { ONE_MINUTE } from '@/shared/config/time';
 import { useVerticalStretch } from '@/shared/lib/hooks/use-vertical-stretch.hook';
@@ -35,6 +36,7 @@ export default function PartyroomChatPanel() {
   const removeChatMessage = useRemoveChatMessage();
   const imposePenalty = useImposePenalty();
   const blockCrew = useBlockCrew();
+  const openCrewProfile = useOpenCrewProfile();
   const isBlockedCrew = useIsBlockedCrew();
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
@@ -88,6 +90,11 @@ export default function PartyroomChatPanel() {
               menuPositionClassName='top-[8px] right-[12px]'
               menuItemPanelSize='sm'
               menuConfig={[
+                {
+                  label: '프로필 보기',
+                  onClickItem: () => openCrewProfile(message.crew.crewId),
+                  visible: true,
+                },
                 {
                   label: t.common.btn.authority,
                   onClickItem: () => adjustGrade(message.crew),

@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import { ChatMessage, Crew } from '@/entities/current-partyroom';
 import { GRADE_TYPE_LABEL } from '@/entities/partyroom-client';
+import { useOpenCrewProfile } from '@/features/view-crew-profile';
 import { GradeType } from '@/shared/api/http/types/@enums';
 import { cn } from '@/shared/lib/functions/cn';
 import Profile from '@/shared/ui/components/profile/profile.component';
@@ -14,6 +15,7 @@ type ChatItemProps = {
 
 const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) => {
   const crew = message.crew;
+  const openCrewProfile = useOpenCrewProfile();
   const myGradeComparator = Crew.GradeComparator.of(crew.gradeType);
   const showGradeLabel = myGradeComparator.isHigherThanOrEqualTo(GradeType.CLUBBER);
   const emphasisGradeLabel = myGradeComparator.isHigherThanOrEqualTo(GradeType.MODERATOR);
@@ -25,10 +27,15 @@ const ChatItem = forwardRef<HTMLDivElement, ChatItemProps>(({ message }, ref) =>
       data-testid='chat-message-item'
     >
       <div className='flexCol items-center gap-2 px-[5px] pt-[2px]'>
-        <div className='relative'>
+        <button
+          type='button'
+          onClick={() => openCrewProfile(crew.crewId)}
+          aria-label={`${crew.nickname} 프로필 보기`}
+          className='relative'
+        >
           <Profile src={crew.avatarIconUri} size={32} />
           <AuthorityHeadset grade={crew.gradeType} />
-        </div>
+        </button>
 
         {showGradeLabel && (
           <Typography
