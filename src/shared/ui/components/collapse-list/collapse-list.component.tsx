@@ -11,6 +11,8 @@ type CollapseListProps = {
   title: string;
   infoText?: string;
   displaySuffix?: boolean;
+  /** 초기 펼침 상태 (기본 false). Headless UI Disclosure 의 defaultOpen 으로 전달. */
+  defaultOpen?: boolean;
   buttonTestId?: string;
   classNames?: {
     button?: string;
@@ -25,11 +27,16 @@ const CollapseList = ({
   variant = 'default',
   children,
   displaySuffix = true,
+  defaultOpen = false,
   buttonTestId,
   classNames,
 }: PropsWithChildren<CollapseListProps>) => {
   return (
-    <Disclosure as='div' className='mx-auto w-full max-w-md bg-transparent'>
+    <Disclosure
+      as='div'
+      defaultOpen={defaultOpen}
+      className='mx-auto w-full max-w-md bg-transparent'
+    >
       {({ open }) => (
         <>
           <DisclosureButton

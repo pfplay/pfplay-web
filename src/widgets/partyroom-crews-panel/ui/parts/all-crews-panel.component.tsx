@@ -25,6 +25,7 @@ export default function AllCrewsPanel() {
           key={'AllCrewsPanel' + category}
           title={category}
           displaySuffix={false}
+          defaultOpen
           buttonTestId={`all-crews-category-${category}`}
         >
           {crews.map((crew) => {
