@@ -26,6 +26,9 @@ vi.mock('@/features/partyroom/send-chat-message', () => ({
       send: mockSend,
       canSend: true,
     }),
+  ChatEmojiPicker: (props: { disabled?: boolean }) => (
+    <button data-testid='chat-emoji-trigger' disabled={props.disabled} />
+  ),
 }));
 vi.mock('@/entities/current-partyroom/lib/alerts/use-alert.hook', () => ({
   __esModule: true,
