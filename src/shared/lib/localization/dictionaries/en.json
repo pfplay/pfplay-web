@@ -107,6 +107,12 @@
       "start_chat": "What shall we talk about?",
       "remove_chat": "'{target}'s chat was removed by '{subject}'.",
       "chat_banned_hint": "Chat is disabled for 30 seconds because of an admin restriction."
+    },
+    "btn": {
+      "choose_emoji": "Choose emoji"
+    },
+    "title": {
+      "recently_used": "Recently used"
     }
   },
   "onboard": {
