@@ -107,6 +107,12 @@
       "start_chat": "무슨 얘기를 해볼까요?",
       "remove_chat": "'{subject}'가 '{target}'의 채팅을 삭제했습니다.",
       "chat_banned_hint": "관리자 제재로 30초 동안 채팅할 수 없어요."
+    },
+    "btn": {
+      "choose_emoji": "이모지 선택"
+    },
+    "title": {
+      "recently_used": "최근 사용"
     }
   },
   "onboard": {
