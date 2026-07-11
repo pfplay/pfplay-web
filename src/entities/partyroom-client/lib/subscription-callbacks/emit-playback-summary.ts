@@ -7,5 +7,13 @@ export function appendSummaryToChat(
   appendChatMessage: (message: ChatMessage.Model) => void
 ): void {
   if (!summary) return;
-  appendChatMessage({ from: 'playback-summary', ...summary, receivedAt: Date.now() });
+  // 명시적 필드 매핑 — PlaybackSummary에 미래 필드가 추가돼도 채팅 모델로 조용히 새지 않게
+  appendChatMessage({
+    from: 'playback-summary',
+    trackName: summary.trackName,
+    djNickname: summary.djNickname,
+    counts: summary.counts,
+    skipped: summary.skipped,
+    receivedAt: Date.now(),
+  });
 }

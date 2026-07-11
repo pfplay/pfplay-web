@@ -220,8 +220,9 @@ describe('플레이백 요약 추적기 배선 (#444)', () => {
           thumbnailImage: 't.jpg',
           endTime: 1_234_567,
         },
-        // NOTE: motion 미포함 — crewIdToMotionTypeMap의 reduce 초기값이 {} as Map(선재)이라
-        // motion 배열이 존재하면 mock 경로에서 .set/.get 크래시. 시드② 매핑 검증엔 불필요.
+        // NOTE: motion 미포함 — crewIdToMotionTypeMap의 reduce 초기값이 {} as Map(Map 아님)이라
+        // motion 배열이 존재하면 mock 경로에서 .set/.get 크래시. 선재 버그, #445로 추적.
+        // 시드② 매핑 검증엔 불필요.
         reaction: {
           history: { isLiked: false, isDisliked: false, isGrabbed: false },
           aggregation: { likeCount: 1, dislikeCount: 2, grabCount: 3 },
