@@ -313,7 +313,14 @@ async function expandAllCrewCategories(page: Page) {
   const count = await categoryButtons.count();
 
   for (let i = 0; i < count; i++) {
-    await categoryButtons.nth(i).click();
+    const button = categoryButtons.nth(i);
+    // #411 이후 계급 그룹이 defaultOpen(기본 펼침)이다 — 버튼은 Disclosure 토글이라
+    // 무조건 클릭하면 오히려 접혀서 크루 행이 사라진다(#440). aria-expanded 로
+    // 상태를 확인해 접힌 그룹만 펼친다(기본 접힘/펼침 양쪽 UI와 호환).
+    if ((await button.getAttribute('aria-expanded')) !== 'true') {
+      await button.click();
+      await expect(button).toHaveAttribute('aria-expanded', 'true', { timeout: 5_000 });
+    }
   }
 }
 
