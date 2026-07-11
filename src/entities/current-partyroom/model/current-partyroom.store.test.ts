@@ -362,5 +362,22 @@ describe('current-partyroom store', () => {
       // chat.clear()가 호출되어 메시지가 비워짐
       expect(chatRef.getMessages()).toHaveLength(0);
     });
+
+    test('reset 후 요약 추적기 스냅샷도 비워진다 (L1/L2 배선의 심층방어)', () => {
+      const store = createCurrentPartyroomStore();
+      const tracker = store.getState().playbackSummaryTracker;
+      tracker.seedFromStart({
+        eventId: 'e1',
+        trackName: '곡',
+        trackIdentity: 'yt-1',
+        djNickname: null,
+        durationText: '03:00',
+        now: Date.now(),
+      });
+
+      store.getState().reset();
+
+      expect(tracker.flushBoundary(Date.now())).toBeNull();
+    });
   });
 });

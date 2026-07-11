@@ -57,7 +57,7 @@ export function createPlaybackSummaryTracker() {
       snapshot = {
         trackName: input.trackName,
         djNickname: input.djNickname,
-        counts: ZERO,
+        counts: { ...ZERO }, // 방어 복사 — 방출된 summary.counts 변조가 모듈 상수를 오염하지 않도록
         expectedEndAtLocal: seconds === null ? null : input.now + seconds * 1_000,
         trackIdentity: input.trackIdentity,
       };
@@ -86,7 +86,7 @@ export function createPlaybackSummaryTracker() {
       snapshot = {
         trackName: input.playback.name,
         djNickname: input.djNickname,
-        counts: input.counts ?? ZERO,
+        counts: input.counts ?? { ...ZERO }, // 방어 복사(위 시드①과 동일)
         expectedEndAtLocal: input.playback.endTime, // 시드②만 서버 epoch(5s 여유로 skew 흡수)
         trackIdentity: input.playback.linkId,
       };

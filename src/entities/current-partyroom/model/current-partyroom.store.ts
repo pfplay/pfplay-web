@@ -143,6 +143,7 @@ export const createCurrentPartyroomStore = () => {
     reset: () => {
       return set((state) => {
         state.chat.clear();
+        state.playbackSummaryTracker.clear(); // L1/L2 배선의 심층방어 — 방 퇴장 시 스냅샷 잔존 방지
 
         return api.getInitialState(); // chat의 레퍼런스는 변경되지 않을 것으로 기대 중. TODO: 테스트 필요
       }, true);

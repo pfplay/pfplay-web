@@ -1,5 +1,6 @@
 import { PartyroomCrew } from '@/shared/api/http/types/partyrooms';
 import { ChatMessageSentEvent } from '@/shared/api/websocket/types/partyroom';
+import type { SummaryCounts } from './playback-summary-tracker';
 
 export type SystemChat = {
   from: 'system';
@@ -18,7 +19,7 @@ export type PlaybackSummaryChat = {
   from: 'playback-summary';
   trackName: string;
   djNickname: string | null;
-  counts: { like: number; dislike: number; grab: number };
+  counts: SummaryCounts;
   skipped: boolean;
   receivedAt: number;
 };

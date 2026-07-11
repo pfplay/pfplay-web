@@ -1,19 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import { SKIP_TOLERANCE_MS, createPlaybackSummaryTracker } from './playback-summary-tracker';
 
+const NOW = 1_000_000;
+const DURATION_MS = 180_000; // '3:00'
+const EXPECTED_END = NOW + DURATION_MS;
+
 const start = (o = {}) => ({
   eventId: 'e1',
   trackName: 'Butter',
   trackIdentity: 'link-1',
   djNickname: '크릴린',
   durationText: '3:00',
-  now: 1_000_000,
+  now: NOW,
   ...o,
 });
-
-const NOW = 1_000_000;
-const DURATION_MS = 180_000; // '3:00'
-const EXPECTED_END = NOW + DURATION_MS;
 
 describe('PlaybackSummaryTracker', () => {
   it('시드① — expectedEnd = now + duration(로컬)', () => {
@@ -34,14 +34,21 @@ describe('PlaybackSummaryTracker', () => {
     const t = createPlaybackSummaryTracker();
     t.seedFromStart(start());
     t.updateCounts({ like: 3, dislike: 0, grab: 1 });
-    const s = t.seedFromStart(
-      start({ eventId: 'e2', trackIdentity: 'link-2', now: 1_000_000 + 180_000 })
-    );
+    const s = t.seedFromStart(start({ eventId: 'e2', trackIdentity: 'link-2', now: EXPECTED_END }));
     expect(s).toMatchObject({
       trackName: 'Butter',
       counts: { like: 3, dislike: 0, grab: 1 },
       skipped: false,
     });
+  });
+
+  it('방출(seedFromStart 경로) — threshold−1ms 조기 다음 시작은 skipped=true', () => {
+    const t = createPlaybackSummaryTracker();
+    t.seedFromStart(start());
+    const s = t.seedFromStart(
+      start({ eventId: 'e2', trackIdentity: 'link-2', now: EXPECTED_END - SKIP_TOLERANCE_MS - 1 })
+    );
+    expect(s?.skipped).toBe(true);
   });
 
   it('첫 시드는 방출 없음(null)', () => {
