@@ -14,4 +14,13 @@ export type UserChat = {
   receivedAt: number;
 };
 
-export type Model = SystemChat | UserChat;
+export type PlaybackSummaryChat = {
+  from: 'playback-summary';
+  trackName: string;
+  djNickname: string | null;
+  counts: { like: number; dislike: number; grab: number };
+  skipped: boolean;
+  receivedAt: number;
+};
+
+export type Model = SystemChat | UserChat | PlaybackSummaryChat;

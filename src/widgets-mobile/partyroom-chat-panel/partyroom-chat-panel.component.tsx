@@ -56,6 +56,10 @@ export default function MobilePartyroomChatPanel() {
               </Typography>
             );
           }
+          // TODO(#444): Task 4에서 실렌더(PlaybackSummaryDivider)로 교체
+          if (message.from === 'playback-summary') {
+            return null;
+          }
           if (isBlockedCrew(message.crew.crewId)) {
             return null;
           }
