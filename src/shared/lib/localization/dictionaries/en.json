@@ -106,7 +106,9 @@
       "permanent_ban": "You have been permanently removed by an admin and can’t rejoin.",
       "start_chat": "What shall we talk about?",
       "remove_chat": "'{target}'s chat was removed by '{subject}'.",
-      "chat_banned_hint": "Chat is disabled for 30 seconds because of an admin restriction."
+      "chat_banned_hint": "Chat is disabled for 30 seconds because of an admin restriction.",
+      "playback_summary_skipped": "skipped",
+      "playback_summary_dj_fallback": "DJ"
     },
     "btn": {
       "choose_emoji": "Choose emoji"

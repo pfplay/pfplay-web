@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useRef, useState } from 'react';
-import { useCurrentPartyroomChat } from '@/entities/current-partyroom';
+import { PlaybackSummaryDivider, useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
 import { useAdjustGrade, useCanAdjustGrade } from '@/features/partyroom/adjust-grade';
 import { useBlockCrew } from '@/features/partyroom/block-crew';
@@ -67,9 +67,13 @@ export default function PartyroomChatPanel() {
             );
           }
 
-          // TODO(#444): Task 4에서 실렌더(PlaybackSummaryDivider)로 교체
           if (message.from === 'playback-summary') {
-            return null;
+            return (
+              <PlaybackSummaryDivider
+                key={'playback-summary' + message.receivedAt}
+                message={message}
+              />
+            );
           }
 
           if (isBlockedCrew(message.crew.crewId)) {
