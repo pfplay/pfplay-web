@@ -20,11 +20,11 @@ import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary
 import { Playlist, PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
+import { parseDurationToSeconds } from '@/shared/lib/functions/parse-duration';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { PFAddPlaylist, PFDelete } from '@/shared/ui/icons';
 import Track from './track.component';
 import { useFetchPlaylistTracks } from '../api/use-fetch-playlist-tracks.query';
-import { parseDurationToSeconds } from '../lib/parse-duration';
 
 const logger = withDebugger(0);
 const errorLogger = logger(errorLog);
