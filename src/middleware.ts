@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getEdgeConfigMaintenance } from '@/shared/api/system-status';
-import { TEN_YEARS } from '@/shared/config/time';
 import { isMobileUA } from '@/shared/lib/functions/is-mobile-ua';
 import { LANGUAGE_COOKIE_KEY, Language } from './shared/lib/localization/constants';
 
@@ -25,12 +24,14 @@ export const middleware = async (req: NextRequest) => {
   const reqHeaders = new Headers(req.headers);
   reqHeaders.set(DEVICE_HEADER, isMobile ? 'mobile' : 'desktop');
 
-  // 3) 언어 쿠키 default. NextResponse.next 호출 한 번으로 합쳐서 처리.
-  //    기존 setCookieToRequestHeader helper 는 본 패턴에 흡수되어 불필요.
+  // 3) 언어 쿠키 default. Accept-Language 기반 추정값은 사용자의 명시적 선택이
+  //    아니므로 브라우저에 영구 저장하지 않는다(#447) — 매 요청마다 다시 평가되어야
+  //    Accept-Language 가 나중에 바뀌어도(예: Edge 언어 목록 정정) 반영된다.
+  //    명시적 선택은 useChangeLanguage 훅이 별도로 브라우저에 저장한다.
   const needsLanguageCookie = !req.cookies.get(LANGUAGE_COOKIE_KEY)?.value;
-  const language = getPreferredLanguage(req.headers.get('accept-language'));
   if (needsLanguageCookie) {
-    // SSR 일관성: 현재 요청부터 새 쿠키를 본다 — req Cookie 헤더에도 합성
+    const language = getPreferredLanguage(req.headers.get('accept-language'));
+    // SSR 일관성: 현재 요청부터 새 값을 본다 — req Cookie 헤더에만 합성, 응답에는 set-cookie 하지 않음
     const existingCookie = reqHeaders.get('cookie') ?? '';
     reqHeaders.set(
       'cookie',
@@ -40,15 +41,7 @@ export const middleware = async (req: NextRequest) => {
     );
   }
 
-  const response = NextResponse.next({ request: { headers: reqHeaders } });
-  if (needsLanguageCookie) {
-    response.cookies.set(LANGUAGE_COOKIE_KEY, language, {
-      path: '/',
-      maxAge: TEN_YEARS,
-      secure: true,
-    });
-  }
-  return response;
+  return NextResponse.next({ request: { headers: reqHeaders } });
 };
 
 export const config = {
