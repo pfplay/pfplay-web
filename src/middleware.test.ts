@@ -95,7 +95,7 @@ describe('middleware', () => {
       expect(res?.headers.get('set-cookie')).toBeNull();
     });
 
-    test(`${LANGUAGE_COOKIE_KEY} 쿠키 없음 → 다운스트림 요청에는 Accept-Language 기반 언어가 반영된다 (SSR 일관성)`, async () => {
+    test(`${LANGUAGE_COOKIE_KEY} 쿠키 없음 -> 다운스트림 요청에는 Accept-Language 기반 언어가 반영된다 (SSR 일관성)`, async () => {
       const req = buildReq('http://localhost/parties', {
         'accept-language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
       });
