@@ -6,6 +6,7 @@ import type { Next } from '@/shared/lib/functions/update';
 import * as AlertMessage from './alert-message.model';
 import * as ChatMessage from './chat-message.model';
 import * as Crew from './crew.model';
+import type { PlaybackSummaryTracker } from './playback-summary-tracker';
 
 type MyPartyroomInfo = {
   crewId: number;
@@ -80,6 +81,14 @@ export type Model = {
     predicate: (message: ChatMessage.Model) => boolean,
     updater: (message: ChatMessage.Model) => ChatMessage.Model
   ) => void;
+
+  /**
+   * 플레이백 종료 요약 구획용 hold-and-clear 스냅샷 추적기
+   *
+   * NOTE: chat과 마찬가지로 zustand 상태가 아닌 인스턴스 필드입니다(init/reset에도 레퍼런스 유지).
+   * 라이프사이클 정리는 배선 측(L1: 방 enter 시 clear, L2: 재연결 시 clear)이 담당합니다.
+   */
+  playbackSummaryTracker: PlaybackSummaryTracker;
 
   /**
    * 알리미 모듈

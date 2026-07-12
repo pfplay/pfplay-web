@@ -1,10 +1,10 @@
 'use client';
 import { FC } from 'react';
 import { useFetchPlaylistTracks } from '@/features/playlist/list-tracks/api/use-fetch-playlist-tracks.query';
-import { resolveNextTrackId } from '@/features/playlist/list-tracks/lib/resolve-next-track';
 import { useRemovePlaylistTrack } from '@/features/playlist/remove-track/api/use-remove-playlist-track.mutation';
 import { Playlist } from '@/shared/api/http/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
+import { resolveNextTrackId } from '@/shared/lib/functions/resolve-next-track';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';

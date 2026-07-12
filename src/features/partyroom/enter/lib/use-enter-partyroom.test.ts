@@ -12,6 +12,9 @@ vi.mock('@tanstack/react-query', async (importOriginal) => {
 vi.mock('@/shared/api/http/services', () => ({
   partyroomsService: { getSetupInfo: vi.fn(), getNotice: vi.fn() },
 }));
+vi.mock('@/shared/lib/analytics/room-tracking', () => ({
+  trackPartyroomEntered: vi.fn(),
+}));
 
 import { useQueryClient } from '@tanstack/react-query';
 import { renderHook, act } from '@testing-library/react';
@@ -31,6 +34,8 @@ const mockMutate = vi.fn();
 const mockInit = vi.fn();
 const mockPush = vi.fn();
 const mockInvalidateQueries = vi.fn();
+const mockTrackerClear = vi.fn();
+const mockSeedFromSetup = vi.fn();
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -39,8 +44,14 @@ beforeEach(() => {
     subscribe: vi.fn(),
   });
   (useHandlePartyroomSubscriptionEvent as Mock).mockReturnValue(vi.fn());
+  const state = {
+    init: mockInit,
+    playbackSummaryTracker: { clear: mockTrackerClear, seedFromSetup: mockSeedFromSetup },
+  };
   (useStores as Mock).mockReturnValue({
-    useCurrentPartyroom: (selector: (...args: any[]) => any) => selector({ init: mockInit }),
+    useCurrentPartyroom: Object.assign((selector: (...args: any[]) => any) => selector(state), {
+      getState: () => state,
+    }),
   });
   (useEnterPartyroomMutation as Mock).mockReturnValue({ mutate: mockMutate });
   (useAppRouter as Mock).mockReturnValue({ push: mockPush });
@@ -171,5 +182,99 @@ describe('useEnterPartyroom resync (#402)', () => {
     resync();
     mockMutate.mock.calls[0][1].onError();
     expect(mockPush).toHaveBeenCalledWith('/parties');
+  });
+});
+
+describe('플레이백 요약 추적기 배선 (#444)', () => {
+  const enterViaOnce = (
+    partyroomId: number,
+    enterResponse = { crewId: 1, gradeType: 'LISTENER' }
+  ) => {
+    const { result } = renderHook(() => useEnterPartyroom(partyroomId));
+    act(() => result.current());
+    mockOnConnect.mock.calls[0][0]();
+    mockMutate.mock.calls[0][1].onSuccess(enterResponse);
+  };
+
+  test('L1: setup 시작 시 추적기를 즉시 clear한다 (await 이전)', () => {
+    (partyroomsService.getSetupInfo as Mock).mockReturnValue(new Promise(() => {}));
+    (partyroomsService.getNotice as Mock).mockReturnValue(new Promise(() => {}));
+
+    enterViaOnce(7);
+
+    expect(mockTrackerClear).toHaveBeenCalled();
+    expect(mockSeedFromSetup).not.toHaveBeenCalled(); // setup 미완료 — 시드는 아직
+  });
+
+  test('시드②: initPartyroom 직후 setup 데이터를 매핑해 seedFromSetup 호출', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockResolvedValue({
+      stageType: 'GENERAL',
+      crews: [{ crewId: 7, nickname: '디제이', gradeType: 'CLUBBER' }],
+      display: {
+        playbackActivated: true,
+        playback: {
+          id: 1,
+          name: '곡',
+          linkId: 'yt-1',
+          duration: '03:00',
+          thumbnailImage: 't.jpg',
+          endTime: 1_234_567,
+        },
+        // NOTE: motion 미포함 — crewIdToMotionTypeMap의 reduce 초기값이 {} as Map(Map 아님)이라
+        // motion 배열이 존재하면 mock 경로에서 .set/.get 크래시. 선재 버그, #445로 추적.
+        // 시드② 매핑 검증엔 불필요.
+        reaction: {
+          history: { isLiked: false, isDisliked: false, isGrabbed: false },
+          aggregation: { likeCount: 1, dislikeCount: 2, grabCount: 3 },
+        },
+        currentDj: { crewId: 7 },
+      },
+    });
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: '공지' });
+
+    enterViaOnce(7);
+
+    await vi.waitFor(() => expect(mockSeedFromSetup).toHaveBeenCalled());
+    expect(mockSeedFromSetup).toHaveBeenCalledWith({
+      playback: { name: '곡', linkId: 'yt-1', endTime: 1_234_567 },
+      counts: { like: 1, dislike: 2, grab: 3 },
+      djNickname: '디제이',
+      now: expect.any(Number),
+    });
+    // 순서: initPartyroom → seedFromSetup
+    expect(mockInit.mock.invocationCallOrder[0]).toBeLessThan(
+      mockSeedFromSetup.mock.invocationCallOrder[0]
+    );
+  });
+
+  test('시드②: playback 없는 방 — playback/counts undefined, djNickname null 매핑', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockResolvedValue({
+      stageType: 'GENERAL',
+      crews: [],
+      display: { playbackActivated: false },
+    });
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    enterViaOnce(7);
+
+    await vi.waitFor(() => expect(mockSeedFromSetup).toHaveBeenCalled());
+    expect(mockSeedFromSetup).toHaveBeenCalledWith({
+      playback: undefined,
+      counts: undefined,
+      djNickname: null,
+      now: expect.any(Number),
+    });
+  });
+
+  test('L2: 재연결(비-once onConnect) 시 clear — 첫 연결 skip에서는 clear하지 않음', () => {
+    const { result } = renderHook(() => useEnterPartyroom(7));
+    act(() => result.current());
+    const resync = mockOnConnect.mock.calls[1][0] as () => void;
+
+    resync(); // 첫 연결 skip
+    expect(mockTrackerClear).not.toHaveBeenCalled();
+
+    resync(); // 재연결
+    expect(mockTrackerClear).toHaveBeenCalledTimes(1);
   });
 });

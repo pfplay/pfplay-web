@@ -17,9 +17,16 @@ const mockGetState = vi.fn();
 const alertNotify = vi.fn();
 const alert = { notify: alertNotify };
 
+// DEACTIVATE 경계의 구획 방출 배선용 최소 상태 (행위 검증은 playback-summary-wiring.test.ts)
+const createState = (me?: { crewId: number }) => ({
+  me,
+  playbackSummaryTracker: { flushBoundary: vi.fn(() => null) },
+  appendChatMessage: vi.fn(),
+});
+
 beforeEach(() => {
   vi.clearAllMocks();
-  mockGetState.mockReturnValue({ me: undefined });
+  mockGetState.mockReturnValue(createState());
   (useStores as Mock).mockReturnValue({
     useCurrentPartyroom: Object.assign(
       (selector: (...args: any[]) => any) => selector({ id: undefined, updateCurrentDj, alert }),
@@ -80,7 +87,7 @@ describe('useDjQueueChangedCallback', () => {
 
   describe('self admin deregister detection (Med3)', () => {
     test('내가 큐에 있다가 사라지면 trackDjAdminDeregisterDetected 호출 (changeType 없음 → undefined)', () => {
-      mockGetState.mockReturnValue({ me: { crewId: 1 } });
+      mockGetState.mockReturnValue(createState({ crewId: 1 }));
       const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
       queryClient.setQueryData(
         [QueryKeys.DjingQueue, 123],
@@ -95,7 +102,7 @@ describe('useDjQueueChangedCallback', () => {
     });
 
     test('내가 여전히 큐에 있으면 호출 안 함', () => {
-      mockGetState.mockReturnValue({ me: { crewId: 1 } });
+      mockGetState.mockReturnValue(createState({ crewId: 1 }));
       const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
       queryClient.setQueryData(
         [QueryKeys.DjingQueue, 123],
@@ -109,7 +116,7 @@ describe('useDjQueueChangedCallback', () => {
     });
 
     test('내가 처음부터 큐에 없었으면 호출 안 함', () => {
-      mockGetState.mockReturnValue({ me: { crewId: 99 } });
+      mockGetState.mockReturnValue(createState({ crewId: 99 }));
       const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
       queryClient.setQueryData(
         [QueryKeys.DjingQueue, 123],
@@ -123,7 +130,7 @@ describe('useDjQueueChangedCallback', () => {
     });
 
     test('me.crewId 미설정 시 호출 안 함 (입장 직후 race)', () => {
-      mockGetState.mockReturnValue({ me: undefined });
+      mockGetState.mockReturnValue(createState());
       const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
       queryClient.setQueryData([QueryKeys.DjingQueue, 123], createQueue([createDj(1, 1)]));
 
@@ -134,7 +141,7 @@ describe('useDjQueueChangedCallback', () => {
     });
 
     test('이전 캐시가 없으면 (첫 이벤트) 호출 안 함', () => {
-      mockGetState.mockReturnValue({ me: { crewId: 1 } });
+      mockGetState.mockReturnValue(createState({ crewId: 1 }));
       const { result } = renderWithClient(() => useDjQueueChangedCallback());
 
       result.current(createEvent([createDj(2, 1)]));
@@ -145,7 +152,7 @@ describe('useDjQueueChangedCallback', () => {
 
     describe('changeType별 분기', () => {
       test('DEACTIVATE → alert.notify(dj-deactivated) + track(DEACTIVATE)', () => {
-        mockGetState.mockReturnValue({ me: { crewId: 1 } });
+        mockGetState.mockReturnValue(createState({ crewId: 1 }));
         const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
         queryClient.setQueryData(
           [QueryKeys.DjingQueue, 123],
@@ -162,7 +169,7 @@ describe('useDjQueueChangedCallback', () => {
       });
 
       test('DEACTIVATE + playbackTimeLimitMinutes=0 → playbackTimeLimitMinutes=0 전달', () => {
-        mockGetState.mockReturnValue({ me: { crewId: 1 } });
+        mockGetState.mockReturnValue(createState({ crewId: 1 }));
         const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
         queryClient.setQueryData(
           [QueryKeys.DjingQueue, 123],
@@ -179,7 +186,7 @@ describe('useDjQueueChangedCallback', () => {
       });
 
       test('DEACTIVATE + playbackTimeLimitMinutes=null → playbackTimeLimitMinutes=null 전달', () => {
-        mockGetState.mockReturnValue({ me: { crewId: 1 } });
+        mockGetState.mockReturnValue(createState({ crewId: 1 }));
         const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
         queryClient.setQueryData(
           [QueryKeys.DjingQueue, 123],
@@ -196,7 +203,7 @@ describe('useDjQueueChangedCallback', () => {
       });
 
       test('DEACTIVATE + playbackTimeLimitMinutes 미제공 → playbackTimeLimitMinutes=null 전달 (?? null)', () => {
-        mockGetState.mockReturnValue({ me: { crewId: 1 } });
+        mockGetState.mockReturnValue(createState({ crewId: 1 }));
         const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
         queryClient.setQueryData(
           [QueryKeys.DjingQueue, 123],
@@ -214,7 +221,7 @@ describe('useDjQueueChangedCallback', () => {
       });
 
       test('DEQUEUE_ADMIN → alert.notify(dj-admin-removed) + track(DEQUEUE_ADMIN)', () => {
-        mockGetState.mockReturnValue({ me: { crewId: 1 } });
+        mockGetState.mockReturnValue(createState({ crewId: 1 }));
         const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
         queryClient.setQueryData(
           [QueryKeys.DjingQueue, 123],
@@ -228,7 +235,7 @@ describe('useDjQueueChangedCallback', () => {
       });
 
       test('DEQUEUE_EXIT → silent: alert.notify 미호출, track 미호출', () => {
-        mockGetState.mockReturnValue({ me: { crewId: 1 } });
+        mockGetState.mockReturnValue(createState({ crewId: 1 }));
         const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
         queryClient.setQueryData(
           [QueryKeys.DjingQueue, 123],
@@ -242,7 +249,7 @@ describe('useDjQueueChangedCallback', () => {
       });
 
       test('changeType 없음(undefined) → alert.notify 미호출; track(123, undefined) 호출', () => {
-        mockGetState.mockReturnValue({ me: { crewId: 1 } });
+        mockGetState.mockReturnValue(createState({ crewId: 1 }));
         const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
         queryClient.setQueryData(
           [QueryKeys.DjingQueue, 123],

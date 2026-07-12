@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useRef, useState } from 'react';
-import { useCurrentPartyroomChat } from '@/entities/current-partyroom';
+import { PlaybackSummaryDivider, useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
 import { useIsBlockedCrew } from '@/features/partyroom/list-my-blocked-crews';
@@ -54,6 +54,16 @@ export default function MobilePartyroomChatPanel() {
               >
                 {message.content}
               </Typography>
+            );
+          }
+          if (message.from === 'playback-summary') {
+            const isLastDivider = i === chatMessages.length - 1;
+            return (
+              <PlaybackSummaryDivider
+                key={'playback-summary' + message.receivedAt}
+                message={message}
+                ref={isLastDivider ? lastItemRef : undefined}
+              />
             );
           }
           if (isBlockedCrew(message.crew.crewId)) {

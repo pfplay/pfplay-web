@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useRef, useState } from 'react';
-import { useCurrentPartyroomChat } from '@/entities/current-partyroom';
+import { PlaybackSummaryDivider, useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
 import { useAdjustGrade, useCanAdjustGrade } from '@/features/partyroom/adjust-grade';
 import { useBlockCrew } from '@/features/partyroom/block-crew';
@@ -64,6 +64,17 @@ export default function PartyroomChatPanel() {
               >
                 {message.content}
               </Typography>
+            );
+          }
+
+          if (message.from === 'playback-summary') {
+            const isLastDivider = i === chatMessages.length - 1;
+            return (
+              <PlaybackSummaryDivider
+                key={'playback-summary' + message.receivedAt}
+                message={message}
+                ref={isLastDivider ? lastItemRef : undefined}
+              />
             );
           }
 

@@ -1,4 +1,4 @@
-/** "[H:]M:SS" 표시 문자열 → 총 초. 토큰이 비숫자/빈값이거나 형식 불명이면 null(배지 미표시 fail-safe). */
+/** "[H:]M:SS" 표시 문자열 → 총 초. 토큰이 비숫자/빈값이거나 형식 불명이면 null — fail-safe 처리는 소비자 책임. */
 export function parseDurationToSeconds(duration: string): number | null {
   if (typeof duration !== 'string') return null;
   const parts = duration.trim().split(':');

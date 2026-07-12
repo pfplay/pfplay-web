@@ -106,7 +106,9 @@
       "permanent_ban": "관리자에 의해 영구 퇴출되셨으며/n재입장은 불가합니다.",
       "start_chat": "무슨 얘기를 해볼까요?",
       "remove_chat": "'{subject}'가 '{target}'의 채팅을 삭제했습니다.",
-      "chat_banned_hint": "관리자 제재로 30초 동안 채팅할 수 없어요."
+      "chat_banned_hint": "관리자 제재로 30초 동안 채팅할 수 없어요.",
+      "playback_summary_skipped": "스킵",
+      "playback_summary_dj_fallback": "DJ"
     },
     "btn": {
       "choose_emoji": "이모지 선택"
