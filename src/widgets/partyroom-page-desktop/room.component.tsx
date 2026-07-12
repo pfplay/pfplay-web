@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ChatTabPanel from '@/app/parties/(room)/[id]/_panels/chat-tab-panel.component';
 import CinemaDetailPanel from '@/app/parties/(room)/[id]/_panels/cinema-detail-panel.component';
 import CinemaPlaylistPanel from '@/app/parties/(room)/[id]/_panels/cinema-playlist-panel.component';
@@ -12,6 +12,7 @@ import { useSharePartyroom } from '@/features/partyroom/share-link';
 import { useInformSocialType } from '@/features/sign-in/by-social';
 import { cn } from '@/shared/lib/functions/cn';
 import { useDisclosure } from '@/shared/lib/hooks/use-disclosure.hook';
+import { useIsomorphicLayoutEffect } from '@/shared/lib/hooks/use-isomorphic-layout-effect.hook';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
@@ -73,7 +74,7 @@ export const DesktopRoom = ({ partyroomId }: Props) => {
   const [boardWidth, setBoardWidth] = useState(DEFAULT_BOARD_WIDTH);
   const [boardRightOffset, setBoardRightOffset] = useState(RIGHT_PANEL_WIDTH);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const computeLayout = () => {
       if (cinemaView) {
         setBoardWidth(window.innerWidth - 400 - 80);
