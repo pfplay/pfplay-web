@@ -1,12 +1,18 @@
+const { invalidateQueries } = vi.hoisted(() => ({ invalidateQueries: vi.fn() }));
+
 vi.mock('@/shared/lib/store/stores.context');
 vi.mock('@/shared/lib/analytics', () => ({
   track: vi.fn(),
   identify: vi.fn(),
 }));
+vi.mock('@tanstack/react-query', () => ({
+  useQueryClient: () => ({ invalidateQueries }),
+}));
 
 import { renderHook } from '@testing-library/react';
 import type * as Crew from '@/entities/current-partyroom/model/crew.model';
 import { createCurrentPartyroomStore } from '@/entities/current-partyroom/model/current-partyroom.store';
+import { QueryKeys } from '@/shared/api/http/query-keys';
 import { GradeType, MotionType } from '@/shared/api/http/types/@enums';
 import { PartyroomEventType } from '@/shared/api/websocket/types/partyroom';
 import { identify, track } from '@/shared/lib/analytics';
@@ -136,6 +142,8 @@ describe('usePlaybackStartCallback', () => {
       );
       expect(djTurnCalls).toHaveLength(0);
       expect(identify).not.toHaveBeenCalled();
+      // 내 턴이 아니면 커서 미전진 → 트랙쿼리 invalidate 안 함
+      expect(invalidateQueries).not.toHaveBeenCalled();
     });
 
     test('event.crewId === my.crewId 일 때 DJ Turn Started + total_dj_sessions add+1', () => {
@@ -149,6 +157,8 @@ describe('usePlaybackStartCallback', () => {
         track_id: 'yt-abc123',
       });
       expect(identify).toHaveBeenCalledWith({ add: { total_dj_sessions: 1 } });
+      // 내 턴 시작 → 커서 전진 반영 위해 내 트랙쿼리 invalidate (NOW/NEXT 갱신)
+      expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: [QueryKeys.PlaylistTracks] });
     });
   });
 });

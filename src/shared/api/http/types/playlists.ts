@@ -30,6 +30,15 @@ export interface PlaylistTrack {
   thumbnailImage: string;
 }
 
+/**
+ * 트랙 목록 조회 응답. 페이지네이션 봉투 + 재생 커서.
+ * - lastPlayedTrackId: 재생 커서. CurrentDJ에겐 NOW(지금 재생 중) 트랙. 커서 미설정 시 null.
+ *   NEXT(다음 재생 곡)는 이 커서 + 현재 트랙 순서로부터 클라이언트가 파생한다.
+ */
+export interface TracksOfPlaylistResponse extends PaginationResponse<PlaylistTrack> {
+  lastPlayedTrackId: number | null;
+}
+
 export interface SearchMusicsRequest {
   q: string;
   platform: 'youtube'; // 현재 플랫폼 하나만 있음
@@ -105,7 +114,7 @@ export interface PlaylistsClient {
   getTracksOfPlaylist: (
     playlistId: Playlist['id'],
     params?: GetTracksOfPlaylistParameters
-  ) => Promise<PaginationResponse<PlaylistTrack>>;
+  ) => Promise<TracksOfPlaylistResponse>;
   addTrackToPlaylist: (
     playlistId: Playlist['id'],
     params: AddTrackToPlaylistRequestBody
