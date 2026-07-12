@@ -26,6 +26,11 @@ import { DjingDialog } from '@/widgets/partyroom-djing-dialog';
 import { useOpenEditProfileAvatarDialog } from '@/widgets/partyroom-edit-profile-avatar-dialog';
 import { PartyRoomListTrigger } from '@/widgets/partyroom-party-list';
 import { Sidebar } from '@/widgets/sidebar';
+import {
+  computeDisplayBoardLayout,
+  DEFAULT_BOARD_WIDTH,
+  RIGHT_PANEL_WIDTH,
+} from './compute-display-board-layout';
 import { DesktopOverlays } from './desktop-overlays.component';
 
 type Props = {
@@ -65,19 +70,22 @@ export const DesktopRoom = ({ partyroomId }: Props) => {
   const cinemaSidePanel = useUIState((state) => state.cinemaSidePanel);
   const setCinemaSidePanel = useUIState((state) => state.setCinemaSidePanel);
 
-  const [boardWidth, setBoardWidth] = useState(512);
+  const [boardWidth, setBoardWidth] = useState(DEFAULT_BOARD_WIDTH);
+  const [boardRightOffset, setBoardRightOffset] = useState(RIGHT_PANEL_WIDTH);
 
   useEffect(() => {
-    if (!cinemaView) {
-      setBoardWidth(512);
-      return;
-    }
-    const computeWidth = () => {
-      setBoardWidth(window.innerWidth - 400 - 80);
+    const computeLayout = () => {
+      if (cinemaView) {
+        setBoardWidth(window.innerWidth - 400 - 80);
+        return;
+      }
+      const layout = computeDisplayBoardLayout(window.innerWidth);
+      setBoardWidth(layout.boardWidth);
+      setBoardRightOffset(layout.rightOffset);
     };
-    computeWidth();
-    window.addEventListener('resize', computeWidth);
-    return () => window.removeEventListener('resize', computeWidth);
+    computeLayout();
+    window.addEventListener('resize', computeLayout);
+    return () => window.removeEventListener('resize', computeLayout);
   }, [cinemaView]);
 
   useCurrentPartyroomAlerts();
@@ -199,8 +207,9 @@ export const DesktopRoom = ({ partyroomId }: Props) => {
         className={
           cinemaView
             ? 'absolute top-[44px] left-0 right-[400px] px-[40px]'
-            : 'absolute top-[44px] left-1/2 transform -translate-x-1/2 max-w-full w-[calc(512px+(40px*2))] px-[40px]'
+            : 'absolute top-[44px] px-[40px]'
         }
+        style={cinemaView ? undefined : { right: boardRightOffset }}
       >
         <PartyroomDisplayBoard
           width={boardWidth}
