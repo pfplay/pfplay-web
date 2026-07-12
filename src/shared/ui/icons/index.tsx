@@ -43,7 +43,7 @@ export { default as PFLanguage } from './action/PFLanguage';
 export { default as PFEdit } from './action/PFEdit';
 export { default as PFDragAndDrop } from './action/PFDragAndDrop';
 export { default as PFDelete } from './action/PFDelete';
-export { default as PFCheckMark } from './action/PFCheckMark';
 export { default as PFCheckboxOutline } from './action/PFCheckboxOutline';
+export { default as PFCheckMark } from './action/PFCheckMark';
 export { default as PFAddCircle } from './action/PFAddCircle';
 export { default as PFAdd } from './action/PFAdd';

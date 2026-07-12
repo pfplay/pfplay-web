@@ -85,33 +85,40 @@ describe('middleware', () => {
   });
 
   describe('언어 쿠키 default 보존', () => {
-    test(`${LANGUAGE_COOKIE_KEY} 쿠키 없음 → response.cookies 에 set + 다운스트림 Cookie 헤더에 합성`, async () => {
+    // #447: Accept-Language 기반 자동 추정값은 사용자의 명시적 선택이 아니므로
+    // 브라우저에 영구 쿠키로 고착시키지 않는다 — 매 요청마다 다시 평가되어야
+    // Edge 처럼 Accept-Language 가 나중에 바뀌는 경우에도 반영된다.
+    test(`${LANGUAGE_COOKIE_KEY} 쿠키 없음 → response 에 set-cookie 를 남기지 않는다 (고착 방지)`, async () => {
       const req = buildReq('http://localhost/parties');
       const res = await middleware(req);
 
-      const setCookieHeader = res?.headers.get('set-cookie') ?? '';
-      expect(setCookieHeader).toContain(`${LANGUAGE_COOKIE_KEY}=${Language.En}`);
-      expect(setCookieHeader).toContain('Max-Age='); // TEN_YEARS
-      expect(setCookieHeader).toContain('Secure');
+      expect(res?.headers.get('set-cookie')).toBeNull();
     });
 
-    test(`${LANGUAGE_COOKIE_KEY} 쿠키 없음 + 브라우저 언어 ko → ${Language.Ko} 로 설정`, async () => {
+    test(`${LANGUAGE_COOKIE_KEY} 쿠키 없음 -> 다운스트림 요청에는 Accept-Language 기반 언어가 반영된다 (SSR 일관성)`, async () => {
       const req = buildReq('http://localhost/parties', {
         'accept-language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
       });
       const res = await middleware(req);
 
-      const setCookieHeader = res?.headers.get('set-cookie') ?? '';
-      expect(setCookieHeader).toContain(`${LANGUAGE_COOKIE_KEY}=${Language.Ko}`);
+      expect(res?.headers.get('x-middleware-request-cookie')).toContain(
+        `${LANGUAGE_COOKIE_KEY}=${Language.Ko}`
+      );
+      // 자동 추정값이므로 브라우저에는 여전히 영구 저장하지 않는다.
+      expect(res?.headers.get('set-cookie')).toBeNull();
     });
 
-    test(`${LANGUAGE_COOKIE_KEY} 쿠키 있음 → 변경 안 함`, async () => {
+    test(`${LANGUAGE_COOKIE_KEY} 쿠키 있음 → 변경 안 함 (Accept-Language 가 달라져도 기존 쿠키 유지)`, async () => {
       const req = buildReq('http://localhost/parties', {
-        cookie: `${LANGUAGE_COOKIE_KEY}=${Language.Ko}`,
+        cookie: `${LANGUAGE_COOKIE_KEY}=${Language.En}`,
+        'accept-language': 'ko-KR,ko;q=0.9',
       });
       const res = await middleware(req);
       const setCookieHeader = res?.headers.get('set-cookie') ?? '';
       expect(setCookieHeader).not.toContain(`${LANGUAGE_COOKIE_KEY}=`);
+      expect(res?.headers.get('x-middleware-request-cookie')).toContain(
+        `${LANGUAGE_COOKIE_KEY}=${Language.En}`
+      );
     });
   });
 });
