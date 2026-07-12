@@ -21,7 +21,9 @@ import { Playlist, PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { errorLog } from '@/shared/lib/functions/log/logger';
 import withDebugger from '@/shared/lib/functions/log/with-debugger';
 import { parseDurationToSeconds } from '@/shared/lib/functions/parse-duration';
+import { resolveNextTrackId } from '@/shared/lib/functions/resolve-next-track';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { PFAddPlaylist, PFDelete } from '@/shared/ui/icons';
 import Track from './track.component';
 import { useFetchPlaylistTracks } from '../api/use-fetch-playlist-tracks.query';
@@ -41,8 +43,19 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
   const limitMin = summary?.playbackTimeLimit ?? 0;
   const { data } = useFetchPlaylistTracks(playlist.id);
   const playlistAction = usePlaylistAction();
+  const [me, currentDj] = useStores().useCurrentPartyroom((state) => [state.me, state.currentDj]);
 
   const [items, setItems] = useState<PlaylistTrack[]>([]);
+
+  // 재생 커서(NOW 앵커). NEXT는 커서 + 현재(낙관적 재정렬 반영) 순서로부터 파생 → refetch 불필요.
+  const cursor = data?.lastPlayedTrackId ?? null;
+  const isMeCurrentDj = me?.crewId != null && me.crewId === currentDj?.crewId;
+  const nextTrackId = resolveNextTrackId(
+    items.map((track) => track.trackId),
+    cursor
+  );
+  // NOW는 내가 CurrentDJ일 때(방 안)만. 방 밖에선 currentDj가 없어 자연히 비활성.
+  const nowTrackId = isMeCurrentDj ? cursor : null;
 
   useEffect(() => {
     if (data?.content) {
@@ -98,11 +111,16 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
           {items.map((track) => {
             const sec = parseDurationToSeconds(track.duration);
             const isOverRoomLimit = limitMin > 0 && sec !== null && sec > limitMin * 60;
+            const isNow = nowTrackId !== null && track.trackId === nowTrackId;
+            // NOW==NEXT(1곡) 겹침 시 NOW만 표시 → isNext는 isNow가 아닐 때만.
+            const isNext = !isNow && nextTrackId !== null && track.trackId === nextTrackId;
             return (
               <Track
                 key={track.linkId}
                 track={track}
                 isOverRoomLimit={isOverRoomLimit}
+                isNow={isNow}
+                isNext={isNext}
                 menuItems={[
                   {
                     onClickItem: () => playlistAction.removeTrack(playlist.id, track.trackId),

@@ -18,12 +18,33 @@ vi.mock('../api/use-fetch-playlist-tracks.query', () => ({
   useFetchPlaylistTracks: vi.fn(),
 }));
 
-let lastTrackProps: Array<{ duration: string; isOverRoomLimit?: boolean }> = [];
+let storeState: { me?: { crewId: number }; currentDj?: { crewId: number } } = {};
+vi.mock('@/shared/lib/store/stores.context', () => ({
+  useStores: () => ({
+    useCurrentPartyroom: (selector: (s: typeof storeState) => unknown) => selector(storeState),
+  }),
+}));
+
+let lastTrackProps: Array<{
+  trackId: number;
+  duration: string;
+  isOverRoomLimit?: boolean;
+  isNow?: boolean;
+  isNext?: boolean;
+}> = [];
 vi.mock('./track.component', () => ({
-  default: (props: { track: { duration: string }; isOverRoomLimit?: boolean }) => {
+  default: (props: {
+    track: { duration: string; trackId: number };
+    isOverRoomLimit?: boolean;
+    isNow?: boolean;
+    isNext?: boolean;
+  }) => {
     lastTrackProps.push({
+      trackId: props.track.trackId,
       duration: props.track.duration,
       isOverRoomLimit: props.isOverRoomLimit,
+      isNow: props.isNow,
+      isNext: props.isNext,
     });
     return <div data-testid='track' />;
   },
@@ -49,8 +70,14 @@ function makeTrack(linkId: string, duration: string): PlaylistTrack {
   } as unknown as PlaylistTrack;
 }
 
-function setTracks(tracks: PlaylistTrack[]) {
-  (useFetchPlaylistTracks as Mock).mockReturnValue({ data: { content: tracks } });
+function setTracks(tracks: PlaylistTrack[], lastPlayedTrackId: number | null = null) {
+  (useFetchPlaylistTracks as Mock).mockReturnValue({
+    data: { content: tracks, lastPlayedTrackId },
+  });
+}
+
+function setStore(next: typeof storeState) {
+  storeState = next;
 }
 
 function setSummary(summary: unknown) {
@@ -64,6 +91,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   lastTrackProps = [];
   paramsValue = { id: '7' };
+  storeState = {};
   (useI18n as Mock).mockReturnValue({
     playlist: { btn: { delete_playlist: 'd', move_playlist: 'm' } },
   });
@@ -136,5 +164,64 @@ describe('TracksInPlaylist over-limit 계산', () => {
     const [partyroomId, enabled] = (useFetchPartyroomDetailSummary as Mock).mock.calls[0];
     expect(partyroomId).toBe(7);
     expect(enabled).toBe(true);
+  });
+});
+
+describe('TracksInPlaylist NOW/NEXT 배지', () => {
+  const t10 = () => makeTrack('t10', '1:00'); // trackId 10
+  const t20 = () => makeTrack('t20', '1:00'); // trackId 20
+  const t30 = () => makeTrack('t30', '1:00'); // trackId 30
+
+  const byId = (id: number) => {
+    const found = lastTrackProps.find((p) => p.trackId === id);
+    if (!found) throw new Error(`track ${id} not rendered`);
+    return found;
+  };
+
+  test('커서 null: NEXT는 첫 트랙, NOW 없음(비-DJ)', () => {
+    setTracks([t10(), t20(), t30()], null);
+    render(<TracksInPlaylist playlist={playlist} />);
+
+    expect(byId(10).isNext).toBe(true);
+    expect(byId(20).isNext).toBe(false);
+    expect(lastTrackProps.every((p) => !p.isNow)).toBe(true);
+  });
+
+  test('내가 CurrentDJ + 커서=20: NOW=20, NEXT=30', () => {
+    setStore({ me: { crewId: 5 }, currentDj: { crewId: 5 } });
+    setTracks([t10(), t20(), t30()], 20);
+    render(<TracksInPlaylist playlist={playlist} />);
+
+    expect(byId(20).isNow).toBe(true);
+    expect(byId(20).isNext).toBe(false);
+    expect(byId(30).isNext).toBe(true);
+    expect(byId(10).isNow).toBe(false);
+  });
+
+  test('내가 CurrentDJ 아님 + 커서=20: NOW 없음, NEXT=30만', () => {
+    setStore({ me: { crewId: 5 }, currentDj: { crewId: 9 } });
+    setTracks([t10(), t20(), t30()], 20);
+    render(<TracksInPlaylist playlist={playlist} />);
+
+    expect(lastTrackProps.every((p) => !p.isNow)).toBe(true);
+    expect(byId(30).isNext).toBe(true);
+  });
+
+  test('커서=마지막(30): NEXT는 wrap 하여 첫 트랙(10)', () => {
+    setStore({ me: { crewId: 5 }, currentDj: { crewId: 5 } });
+    setTracks([t10(), t20(), t30()], 30);
+    render(<TracksInPlaylist playlist={playlist} />);
+
+    expect(byId(30).isNow).toBe(true);
+    expect(byId(10).isNext).toBe(true);
+  });
+
+  test('단일 트랙 + CurrentDJ 겹침(NOW==NEXT): NOW만, isNext=false', () => {
+    setStore({ me: { crewId: 5 }, currentDj: { crewId: 5 } });
+    setTracks([t10()], 10);
+    render(<TracksInPlaylist playlist={playlist} />);
+
+    expect(byId(10).isNow).toBe(true);
+    expect(byId(10).isNext).toBe(false);
   });
 });

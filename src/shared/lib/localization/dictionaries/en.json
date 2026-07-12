@@ -307,7 +307,9 @@
       "search_url": "Search for music and URL",
       "up_to_10_if_connect_wallet": "If you connect your wallet, you can create up to 10!",
       "no_other_playlist": "There are no other playlists to move this song to",
-      "select_for_move": "Please select the playlist to move the selected song to"
+      "select_for_move": "Please select the playlist to move the selected song to",
+      "now_playing": "Now",
+      "next_up": "Next"
     },
     "ec": {
       "exceeded_list_connect_wallet": "You have already exceeded the number of lists that can be created. ",

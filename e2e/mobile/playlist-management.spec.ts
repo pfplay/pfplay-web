@@ -114,6 +114,10 @@ test.describe('mobile playlist management (chunk 6)', () => {
     const removeBtn = page.getByTestId(/^detail-track-remove-/).first();
     await expect(removeBtn).toBeVisible({ timeout: 15_000 });
 
+    // #453: 갓 생성한 플리(커서 null) → 추가한 곡에 NEXT 배지. 비-DJ라 NOW 없음.
+    await expect(page.getByTestId('track-badge-next')).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByTestId('track-badge-now')).toHaveCount(0);
+
     // 곡 삭제 → 다시 빈 상태 (트랙 0)
     log('remove track');
     await removeBtn.click();

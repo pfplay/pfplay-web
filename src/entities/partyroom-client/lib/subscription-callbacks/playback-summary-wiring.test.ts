@@ -105,7 +105,7 @@ const summaries = () =>
 describe('플레이백 요약 구획 배선', () => {
   test('시작A→반응 갱신→완주 후 시작B — A 구획 1개(counts 반영·skipped=false·DJ 닉네임)', () => {
     store.getState().updateCrews(() => [createCrew({ crewId: 10, nickname: 'DJ철수' })]);
-    const start = renderHook(() => usePlaybackStartCallback()).result.current;
+    const start = renderWithClient(() => usePlaybackStartCallback()).result.current;
     const aggregate = renderHook(() => useReactionAggregationCallback()).result.current;
 
     start(startEvent('uuid-1', { name: '곡A', linkId: 'yt-a', duration: '03:00' }));
@@ -126,7 +126,7 @@ describe('플레이백 요약 구획 배선', () => {
   });
 
   test('조기 다음 시작(스킵) — skipped=true', () => {
-    const start = renderHook(() => usePlaybackStartCallback()).result.current;
+    const start = renderWithClient(() => usePlaybackStartCallback()).result.current;
 
     start(startEvent('uuid-1', { duration: '03:00' }));
     vi.setSystemTime(BASE + 10_000);
@@ -137,7 +137,7 @@ describe('플레이백 요약 구획 배선', () => {
   });
 
   test('PLAYBACK_DEACTIVATED — 구획 방출 + 기존 클리어 로직 무변경 동작', () => {
-    const start = renderHook(() => usePlaybackStartCallback()).result.current;
+    const start = renderWithClient(() => usePlaybackStartCallback()).result.current;
     const deactivate = renderHook(() => usePlaybackDeactivatedCallback()).result.current;
 
     start(startEvent('uuid-1', { duration: '03:00' }));
@@ -154,7 +154,7 @@ describe('플레이백 요약 구획 배선', () => {
   });
 
   test('이중 경계 — PLAYBACK_DEACTIVATED + DJ_QUEUE_CHANGED(DEACTIVATE)에도 구획은 정확히 1개', () => {
-    const start = renderHook(() => usePlaybackStartCallback()).result.current;
+    const start = renderWithClient(() => usePlaybackStartCallback()).result.current;
     const deactivate = renderHook(() => usePlaybackDeactivatedCallback()).result.current;
     const djQueueChanged = renderWithClient(() => useDjQueueChangedCallback()).result.current;
 
@@ -167,7 +167,7 @@ describe('플레이백 요약 구획 배선', () => {
   });
 
   test('DJ_QUEUE_CHANGED(DEACTIVATE) 단독 — 경계로 동작해 구획 방출', () => {
-    const start = renderHook(() => usePlaybackStartCallback()).result.current;
+    const start = renderWithClient(() => usePlaybackStartCallback()).result.current;
     const djQueueChanged = renderWithClient(() => useDjQueueChangedCallback()).result.current;
 
     start(startEvent('uuid-1'));
@@ -179,7 +179,7 @@ describe('플레이백 요약 구획 배선', () => {
   });
 
   test('DJ_QUEUE_CHANGED 비-DEACTIVATE(ROTATE) — 방출 없음', () => {
-    const start = renderHook(() => usePlaybackStartCallback()).result.current;
+    const start = renderWithClient(() => usePlaybackStartCallback()).result.current;
     const djQueueChanged = renderWithClient(() => useDjQueueChangedCallback()).result.current;
 
     start(startEvent('uuid-1'));
@@ -195,7 +195,7 @@ describe('플레이백 요약 구획 배선', () => {
       djNickname: '디제이',
       now: BASE,
     });
-    const start = renderHook(() => usePlaybackStartCallback()).result.current;
+    const start = renderWithClient(() => usePlaybackStartCallback()).result.current;
 
     vi.setSystemTime(BASE + 120_000);
     start(startEvent('uuid-1', { name: '곡B', linkId: 'yt-b' }));
@@ -210,7 +210,7 @@ describe('플레이백 요약 구획 배선', () => {
   });
 
   test('L5 — 동일 event.id 재전달은 구획을 만들지 않고 스냅샷도 보존한다', () => {
-    const start = renderHook(() => usePlaybackStartCallback()).result.current;
+    const start = renderWithClient(() => usePlaybackStartCallback()).result.current;
     const aggregate = renderHook(() => useReactionAggregationCallback()).result.current;
 
     start(startEvent('uuid-1'));
@@ -230,7 +230,7 @@ describe('플레이백 요약 구획 배선', () => {
   });
 
   test('crews에 없는 crewId — djNickname null로 시드(폴백은 렌더 책임, L6)', () => {
-    const start = renderHook(() => usePlaybackStartCallback()).result.current;
+    const start = renderWithClient(() => usePlaybackStartCallback()).result.current;
     const deactivate = renderHook(() => usePlaybackDeactivatedCallback()).result.current;
 
     start(startEvent('uuid-1', { crewId: 999 }));
