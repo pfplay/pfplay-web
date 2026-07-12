@@ -27,6 +27,8 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import Track from './track.component';
 
 const NOT_PLAYABLE = 'Not playable here (exceeds this room limit)';
+const NOW_LABEL = 'Now';
+const NEXT_LABEL = 'Next';
 
 const track = {
   linkId: 'l1',
@@ -40,6 +42,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   (useI18n as Mock).mockReturnValue({
     dj: { para: { not_playable_in_room: NOT_PLAYABLE } },
+    playlist: { para: { now_playing: NOW_LABEL, next_up: NEXT_LABEL } },
   });
   (useStores as Mock).mockReturnValue({
     useUIState: (selector: (...args: any[]) => any) =>
@@ -72,5 +75,25 @@ describe('Track over-limit 배지', () => {
     expect(screen.getByText('My Song')).toBeInTheDocument();
     expect(screen.getByText('6:00')).toBeInTheDocument();
     expect(container.querySelector('[data-dnd="attr"]')).not.toBeNull();
+  });
+});
+
+describe('Track NOW/NEXT 배지', () => {
+  test('isNow=true 면 NOW 배지 렌더', () => {
+    render(<Track track={track} menuItems={[]} isNow />);
+    expect(screen.getByTestId('track-badge-now')).toHaveTextContent(NOW_LABEL);
+    expect(screen.queryByTestId('track-badge-next')).not.toBeInTheDocument();
+  });
+
+  test('isNext=true 면 NEXT 배지 렌더', () => {
+    render(<Track track={track} menuItems={[]} isNext />);
+    expect(screen.getByTestId('track-badge-next')).toHaveTextContent(NEXT_LABEL);
+    expect(screen.queryByTestId('track-badge-now')).not.toBeInTheDocument();
+  });
+
+  test('배지 미지정 시 NOW/NEXT 모두 없음', () => {
+    render(<Track track={track} menuItems={[]} />);
+    expect(screen.queryByTestId('track-badge-now')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('track-badge-next')).not.toBeInTheDocument();
   });
 });

@@ -13,6 +13,14 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
         sheet_add_tracks_title: '곡 추가',
       },
     },
+    playlist: { para: { now_playing: '재생 중', next_up: '다음 곡' } },
+  }),
+}));
+
+let storeState: { me?: { crewId: number }; currentDj?: { crewId: number } } = {};
+vi.mock('@/shared/lib/store/stores.context', () => ({
+  useStores: () => ({
+    useCurrentPartyroom: (selector: (s: typeof storeState) => unknown) => selector(storeState),
   }),
 }));
 
@@ -45,6 +53,7 @@ describe('PlaylistDetailSheet', () => {
   beforeEach(() => {
     removeTrackMock.mockReset();
     pushMock.mockReset();
+    storeState = {};
   });
 
   test('곡 목록 렌더', () => {
@@ -80,5 +89,24 @@ describe('PlaylistDetailSheet', () => {
     useFetchPlaylistTracksMock.mockReturnValue({ data: { content: [TRACK] } });
     render(<PlaylistDetailSheet playlist={PL as never} />);
     expect(screen.getByTestId('detail-track-remove-11').querySelector('svg')).toBeTruthy();
+  });
+
+  test('커서=11 + 내가 CurrentDJ → NOW 배지', () => {
+    storeState = { me: { crewId: 5 }, currentDj: { crewId: 5 } };
+    useFetchPlaylistTracksMock.mockReturnValue({
+      data: { content: [TRACK], lastPlayedTrackId: 11 },
+    });
+    render(<PlaylistDetailSheet playlist={PL as never} />);
+    expect(screen.getByTestId('track-badge-now')).toHaveTextContent('재생 중');
+  });
+
+  test('커서=11 + 내가 CurrentDJ 아님 → NOW 없음, NEXT(wrap=11)만', () => {
+    storeState = { me: { crewId: 5 }, currentDj: { crewId: 9 } };
+    useFetchPlaylistTracksMock.mockReturnValue({
+      data: { content: [TRACK], lastPlayedTrackId: 11 },
+    });
+    render(<PlaylistDetailSheet playlist={PL as never} />);
+    expect(screen.queryByTestId('track-badge-now')).not.toBeInTheDocument();
+    expect(screen.getByTestId('track-badge-next')).toHaveTextContent('다음 곡');
   });
 });
