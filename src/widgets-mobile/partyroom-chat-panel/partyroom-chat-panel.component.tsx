@@ -57,10 +57,12 @@ export default function MobilePartyroomChatPanel() {
             );
           }
           if (message.from === 'playback-summary') {
+            const isLastDivider = i === chatMessages.length - 1;
             return (
               <PlaybackSummaryDivider
                 key={'playback-summary' + message.receivedAt}
                 message={message}
+                ref={isLastDivider ? lastItemRef : undefined}
               />
             );
           }
