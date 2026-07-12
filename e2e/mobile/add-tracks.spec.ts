@@ -96,6 +96,16 @@ test.describe('mobile add-tracks flow', () => {
     log('search');
     const searchInput = page.getByTestId('music-search-input');
     await expect(searchInput).toBeVisible({ timeout: 10_000 });
+
+    // #451: 노이즈(list/index) 붙은 URL도 canonical watch?v= 로 정규화되어
+    // 해당 영상이 검색된다. videoId 접미 testid 로 "정확히 그 영상" 을 단언.
+    log('normalize noisy youtube URL');
+    await searchInput.fill('https://youtu.be/dQw4w9WgXcQ?list=LL&index=3');
+    await expect(page.getByTestId('search-item-preview-dQw4w9WgXcQ')).toBeVisible({
+      timeout: 20_000,
+    });
+    await searchInput.fill('');
+
     await searchInput.fill('test song');
 
     log('preview');

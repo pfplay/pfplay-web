@@ -53,6 +53,11 @@ describe('preview-helpers', () => {
       ['https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'dQw4w9WgXcQ'],
       ['https://youtu.be/dQw4w9WgXcQ', 'dQw4w9WgXcQ'],
       ['https://www.youtube.com/watch?v=abc123&t=10', 'abc123'],
+      ['https://youtu.be/7uqoJ1_spiQ?list=LL', '7uqoJ1_spiQ'],
+      ['https://www.youtube.com/watch?v=7uqoJ1_spiQ&list=LL&index=17', '7uqoJ1_spiQ'],
+      ['https://www.youtube.com/shorts/7uqoJ1_spiQ', '7uqoJ1_spiQ'],
+      ['https://m.youtube.com/watch?v=7uqoJ1_spiQ', '7uqoJ1_spiQ'],
+      ['https://music.youtube.com/watch?v=7uqoJ1_spiQ', '7uqoJ1_spiQ'],
     ])('"%s" → "%s"', (url, expected) => {
       expect(extractVideoIdFromUrl(url)).toBe(expected);
     });
