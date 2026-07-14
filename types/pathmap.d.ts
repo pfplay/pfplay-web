@@ -8,6 +8,7 @@ declare module 'pathmap' {
     '/parties/[id]': { path: { id: string | number } };
     '/mobile-notice': { path: undefined };
     '/settings/avatar': { path: undefined };
+    '/settings/notifications': { path: undefined };
     '/settings/profile': { path: undefined };
   };
 }

@@ -18,6 +18,7 @@ export { default as PFTheater } from './display/PFTheater';
 export { default as PFFull } from './display/PFFull';
 export { default as PFDefault } from './display/PFDefault';
 export { default as PFSend } from './chat/PFSend';
+export { default as PFEmoji } from './chat/PFEmoji';
 export { default as PFChatOutlineOff } from './chat/PFChatOutlineOff';
 export { default as PFChatOutline } from './chat/PFChatOutline';
 export { default as PFChatFilled } from './chat/PFChatFilled';

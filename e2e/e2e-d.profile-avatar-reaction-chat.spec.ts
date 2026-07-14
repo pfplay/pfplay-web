@@ -144,6 +144,34 @@ test('User1은 avatar 변경 후 like 리액션과 채팅 송신을 확인할 �
     log('waiting for chat message');
     await waitForChatMessage(page1, chatMessage);
     log('chat message rendered');
+
+    // ─── User1: 이모지 피커로 채팅 전송 (#439) ──────────────────────────
+    log('opening emoji picker');
+    await page1.getByTestId('chat-emoji-trigger').click();
+    const emojiPanel = page1.getByTestId('chat-emoji-panel');
+    await expect(emojiPanel).toBeVisible();
+
+    // 연속 두 개 선택 — 패널이 유지되는지까지 함께 검증됨
+    await emojiPanel.getByRole('button', { name: '🔥' }).last().click();
+    await emojiPanel.getByRole('button', { name: '🎉' }).last().click();
+    await expect(emojiPanel).toBeVisible();
+
+    // ESC로 닫으면 입력창 포커스 복귀 → 바로 Enter 전송
+    await page1.keyboard.press('Escape');
+    await expect(emojiPanel).toHaveCount(0);
+    await expect(page1.getByTestId('chat-message-input')).toBeFocused();
+    await page1.keyboard.press('Enter');
+
+    log('waiting for emoji chat message');
+    await waitForChatMessage(page1, '🔥🎉');
+    log('emoji chat message rendered');
+
+    // 재열기 → 최근 사용 줄 반영 (가장 최근 선택이 맨 앞)
+    await page1.getByTestId('chat-emoji-trigger').click();
+    const emojiRecents = page1.getByTestId('chat-emoji-recents');
+    await expect(emojiRecents).toBeVisible();
+    await expect(emojiRecents.locator('button').first()).toHaveText('🎉');
+    await page1.keyboard.press('Escape');
   } finally {
     log('starting cleanup');
     log(`cleanup: ${partyroomUrl ? 'closePartyroom(page1)' : 'leavePartyroom(page1)'}`);

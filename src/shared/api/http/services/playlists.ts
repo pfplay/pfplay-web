@@ -1,12 +1,11 @@
 import { getErrorCode } from '@/shared/api/http/error/get-error-code';
-import { ErrorCode, PaginationResponse } from '@/shared/api/http/types/@shared';
+import { ErrorCode } from '@/shared/api/http/types/@shared';
 import { Singleton } from '@/shared/lib/decorators/singleton';
 import { SkipGlobalErrorHandling } from '@/shared/lib/decorators/skip-global-error-handling';
 import HTTPClient from '../client/client';
 import type {
   GetPlaylistsResponse,
   GetTracksOfPlaylistParameters,
-  PlaylistTrack,
   SearchMusicsRequest,
   SearchMusicsResponse,
   CreatePlaylistRequestBody,
@@ -19,6 +18,7 @@ import type {
   PlaylistsClient,
   ChangeTrackOrderRequest,
   MoveTrackToPlaylistRequest,
+  TracksOfPlaylistResponse,
 } from '../types/playlists';
 
 @Singleton
@@ -54,7 +54,7 @@ export default class PlaylistsService extends HTTPClient implements PlaylistsCli
   }
 
   public getTracksOfPlaylist(playlistId: Playlist['id'], params?: GetTracksOfPlaylistParameters) {
-    return this.get<PaginationResponse<PlaylistTrack>>(`${this.ROUTE_V1}/${playlistId}/tracks`, {
+    return this.get<TracksOfPlaylistResponse>(`${this.ROUTE_V1}/${playlistId}/tracks`, {
       params,
     });
   }

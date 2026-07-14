@@ -21,6 +21,15 @@ describe('CollapseList', () => {
     expect(screen.queryByText('숨겨진 내용')).toBeNull();
   });
 
+  test('defaultOpen=true 이면 초기 상태에서 내용이 표시된다 (#411)', () => {
+    render(
+      <CollapseList title='목록' defaultOpen>
+        펼쳐진 내용
+      </CollapseList>
+    );
+    expect(screen.getByText('펼쳐진 내용')).toBeTruthy();
+  });
+
   test('버튼 클릭 시 내용이 표시된다', () => {
     render(<CollapseList title='목록'>펼쳐진 내용</CollapseList>);
 

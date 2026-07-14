@@ -16,6 +16,8 @@ const ClientEnvSchema = z.object({
   NEXT_PUBLIC_WAGMI_PROJECT_ID: z.string().min(1),
   NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY: z.string().min(1),
   NEXT_PUBLIC_AMPLITUDE_API_KEY: z.string().optional(),
+  // optional — 미설정 시 Web Push 토글이 런타임에서 비활성(unsupported) 처리.
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY: z.string().optional(),
   NEXT_PUBLIC_HTTP_TIMEOUT_MS: z.coerce.number().int().positive().default(4000),
   NEXT_PUBLIC_USE_MOCK: z.enum(['true', 'false']).optional(),
   NEXT_PUBLIC_ENABLE_DEV_LOGIN: z.enum(['true', 'false']).optional(),
@@ -51,6 +53,7 @@ export const clientEnv = parseClientEnv({
   NEXT_PUBLIC_WAGMI_PROJECT_ID: process.env.NEXT_PUBLIC_WAGMI_PROJECT_ID,
   NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_ALCHEMY_PUBLIC_API_KEY,
   NEXT_PUBLIC_AMPLITUDE_API_KEY: process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY,
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
   NEXT_PUBLIC_HTTP_TIMEOUT_MS: process.env.NEXT_PUBLIC_HTTP_TIMEOUT_MS,
   NEXT_PUBLIC_USE_MOCK: process.env.NEXT_PUBLIC_USE_MOCK,
   NEXT_PUBLIC_ENABLE_DEV_LOGIN: process.env.NEXT_PUBLIC_ENABLE_DEV_LOGIN,

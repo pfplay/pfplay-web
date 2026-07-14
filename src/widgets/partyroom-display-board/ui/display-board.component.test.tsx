@@ -42,4 +42,13 @@ describe('DisplayBoard', () => {
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper.style.width).toBe('750px');
   });
+
+  test('cinemaView=true면 일반 chrome(반응버튼/공지/제목/곡추가)을 중복 렌더하지 않는다', () => {
+    render(<DisplayBoard width={800} cinemaView />);
+    expect(screen.getByTestId('video')).toBeTruthy();
+    expect(screen.queryByTestId('action-buttons')).toBeNull();
+    expect(screen.queryByTestId('notice')).toBeNull();
+    expect(screen.queryByTestId('video-title')).toBeNull();
+    expect(screen.queryByTestId('add-tracks-button')).toBeNull();
+  });
 });

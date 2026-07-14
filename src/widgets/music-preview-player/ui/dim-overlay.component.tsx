@@ -1,6 +1,7 @@
 type DimOverlayProps = {
   onClick: () => void;
   className?: string;
+  zIndex?: number;
 };
 
 /**
@@ -8,10 +9,13 @@ type DimOverlayProps = {
  * 클릭 시 플레이어 종료
  * className으로 특정 영역 제외 가능
  */
-export default function DimOverlay({ onClick, className }: DimOverlayProps) {
+export default function DimOverlay({ onClick, className, zIndex }: DimOverlayProps) {
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-30 z-20 cursor-pointer ${className || ''}`}
+      className={`fixed inset-0 bg-black bg-opacity-30 cursor-pointer ${
+        zIndex === undefined ? 'z-20' : ''
+      } ${className || ''}`}
+      style={zIndex === undefined ? undefined : { zIndex }}
       onClick={onClick}
     />
   );

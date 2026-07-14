@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 const ReactionLottie = dynamic(
   () => import('@/entities/avatar/ui/reaction-lottie').then((mod) => mod.ReactionLottie),
@@ -8,6 +8,7 @@ const ReactionLottie = dynamic(
 import { AvatarCompositionType, MotionType, ReactionType } from '@/shared/api/http/types/@enums';
 import { AvatarFacePos } from '@/shared/api/http/types/users';
 import { cn } from '@/shared/lib/functions/cn';
+import ChatBubble from './chat-bubble.component';
 import calculateDimensions from '../lib/calculate-dimensions';
 import { Model } from '../model/avatar.model';
 
@@ -16,10 +17,18 @@ const MoveableFace = dynamic(
   { ssr: false }
 );
 
+/** 말풍선(#410) 노출 시간 (ms). */
+const CHAT_BUBBLE_DURATION = 2500;
+
 type Props = Model & {
   height: number;
   reaction?: ReactionType;
   motionType?: MotionType;
+  /**
+   * 이 crew 가 마지막으로 채팅한 시각(ms). 값이 바뀌면 머리 위 말풍선(#410)을
+   * CHAT_BUBBLE_DURATION 동안 노출한다. (#410)
+   */
+  lastChatAt?: number;
   /**
    * 함수가 있으면 얼굴 위치 조정 가능, 없으면 얼굴 위치 조정 불가능
    */
@@ -45,6 +54,7 @@ const Avatar = memo(
     facePosY,
     reaction,
     motionType,
+    lastChatAt,
     offsetX,
     offsetY,
     scale,
@@ -55,6 +65,16 @@ const Avatar = memo(
     const faceImgRef = useRef<HTMLImageElement>(null);
 
     const ref = useRef<HTMLDivElement>(null);
+
+    // #410: lastChatAt 가 갱신되면 말풍선을 잠시 노출. 연속 채팅이면 effect 가 재실행돼
+    // 이전 타이머를 정리하고 노출 시간이 자연히 연장된다.
+    const [showChatBubble, setShowChatBubble] = useState(false);
+    useEffect(() => {
+      if (!lastChatAt) return;
+      setShowChatBubble(true);
+      const timer = setTimeout(() => setShowChatBubble(false), CHAT_BUBBLE_DURATION);
+      return () => clearTimeout(timer);
+    }, [lastChatAt]);
 
     useEffect(() => {
       avatarRef?.(ref.current, motionType ?? MotionType.NONE);
@@ -86,6 +106,12 @@ const Avatar = memo(
             className='absolute left-1/2 -top-6 transform -translate-x-1/2 -z-1'
           >
             <ReactionLottie reaction={reaction} />
+          </div>
+        )}
+
+        {showChatBubble && (
+          <div className='absolute left-1/2 -top-8 z-10 -translate-x-1/2 transform'>
+            <ChatBubble />
           </div>
         )}
 

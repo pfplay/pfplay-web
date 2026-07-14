@@ -8,6 +8,7 @@ import { update } from '@/shared/lib/functions/update';
 import * as AlertMessage from './alert-message.model';
 import * as ChatMessage from './chat-message.model';
 import * as CurrentPartyroom from './current-partyroom.model';
+import { createPlaybackSummaryTracker } from './playback-summary-tracker';
 
 export const createCurrentPartyroomStore = () => {
   return create<CurrentPartyroom.Model>((set, _, api) => ({
@@ -65,15 +66,12 @@ export const createCurrentPartyroomStore = () => {
       });
     },
     resetReaction: () => {
-      return set((state) => {
-        const updated = state.crews.map((crew) => ({
-          ...crew,
-          motionType: MotionType.NONE,
-        }));
-
-        return {
-          crews: updated,
-        };
+      return set({
+        reaction: {
+          history: { isLiked: false, isDisliked: false, isGrabbed: false },
+          aggregation: { likeCount: 0, dislikeCount: 0, grabCount: 0 },
+          motion: [],
+        },
       });
     },
     crews: [],
@@ -127,6 +125,9 @@ export const createCurrentPartyroomStore = () => {
       });
     },
 
+    // chat과 동일한 인스턴스 필드 — init/reset에도 레퍼런스 유지, 정리는 L1/L2 배선이 담당
+    playbackSummaryTracker: createPlaybackSummaryTracker(),
+
     alert: new Observer<AlertMessage.Model>(),
 
     init: (next) => {
@@ -142,6 +143,7 @@ export const createCurrentPartyroomStore = () => {
     reset: () => {
       return set((state) => {
         state.chat.clear();
+        state.playbackSummaryTracker.clear(); // L1/L2 배선의 심층방어 — 방 퇴장 시 스냅샷 잔존 방지
 
         return api.getInitialState(); // chat의 레퍼런스는 변경되지 않을 것으로 기대 중. TODO: 테스트 필요
       }, true);

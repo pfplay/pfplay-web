@@ -165,6 +165,32 @@ describe('current-partyroom store', () => {
     });
   });
 
+  describe('resetReaction', () => {
+    test('reaction(history·aggregation·motion)을 초기화하고 crews는 건드리지 않는다', () => {
+      const store = createCurrentPartyroomStore();
+      const crews = [
+        createCrew({ crewId: 1, motionType: MotionType.DANCE_TYPE_1 }),
+        createCrew({ crewId: 2, motionType: MotionType.DANCE_TYPE_2 }),
+      ];
+      store.getState().updateCrews(() => crews);
+      store.getState().updateReaction({
+        history: { isLiked: true, isDisliked: false, isGrabbed: true },
+        aggregation: { likeCount: 5, dislikeCount: 2, grabCount: 1 },
+        motion: [{ motionType: MotionType.DANCE_TYPE_1, crewIds: [1] }],
+      });
+
+      store.getState().resetReaction();
+
+      expect(store.getState().reaction).toEqual({
+        history: { isLiked: false, isDisliked: false, isGrabbed: false },
+        aggregation: { likeCount: 0, dislikeCount: 0, grabCount: 0 },
+        motion: [],
+      });
+      // crews motion 리셋은 resetCrewsMotion의 책임 — resetReaction은 crews를 건드리지 않는다
+      expect(store.getState().crews).toEqual(crews);
+    });
+  });
+
   describe('updateCrews', () => {
     test('crews 배열을 설정한다', () => {
       const store = createCurrentPartyroomStore();
@@ -335,6 +361,23 @@ describe('current-partyroom store', () => {
 
       // chat.clear()가 호출되어 메시지가 비워짐
       expect(chatRef.getMessages()).toHaveLength(0);
+    });
+
+    test('reset 후 요약 추적기 스냅샷도 비워진다 (L1/L2 배선의 심층방어)', () => {
+      const store = createCurrentPartyroomStore();
+      const tracker = store.getState().playbackSummaryTracker;
+      tracker.seedFromStart({
+        eventId: 'e1',
+        trackName: '곡',
+        trackIdentity: 'yt-1',
+        djNickname: null,
+        durationText: '03:00',
+        now: Date.now(),
+      });
+
+      store.getState().reset();
+
+      expect(tracker.flushBoundary(Date.now())).toBeNull();
     });
   });
 });

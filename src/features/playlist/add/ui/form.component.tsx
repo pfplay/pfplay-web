@@ -3,12 +3,12 @@ import { SubmitHandler } from 'react-hook-form';
 import { useFetchMe } from '@/entities/me';
 import { PlaylistFormValues } from '@/entities/playlist';
 import { PlaylistForm, PlaylistFormProps } from '@/entities/playlist/index.ui';
+import { usePlaylistLayerZIndex } from '@/entities/ui-state';
 import { ConnectWallet } from '@/entities/wallet/index.ui';
 import useOnError from '@/shared/api/http/error/use-on-error.hook';
 import { AuthorityTier } from '@/shared/api/http/types/@enums';
 import { ErrorCode } from '@/shared/api/http/types/@shared';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { useStores } from '@/shared/lib/store/stores.context';
 import { Dialog } from '@/shared/ui/components/dialog';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { Typography } from '@/shared/ui/components/typography';
@@ -17,16 +17,15 @@ import { useCreatePlaylist } from '../api/use-create-playlist.mutation';
 export default function useAddPlaylistDialog() {
   const t = useI18n();
   const { openDialog } = useDialog();
-  const { useUIState } = useStores();
-  const playlistDrawer = useUIState((state) => state.playlistDrawer);
+  const layerZIndex = usePlaylistLayerZIndex();
 
   return useCallback(() => {
     openDialog((_, onCancel) => ({
-      zIndex: playlistDrawer.zIndex + 1,
+      zIndex: layerZIndex + 1,
       title: t.playlist.para.enter_playlist_name,
       Body: <Form onCancel={onCancel} />,
     }));
-  }, [playlistDrawer.zIndex, t]);
+  }, [layerZIndex, t]);
 }
 
 type FormProps = Pick<PlaylistFormProps, 'onCancel'>;

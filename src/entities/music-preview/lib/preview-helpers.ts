@@ -25,10 +25,14 @@ export const convertSearchMusicToPreview = (music: Music): PreviewTrack => ({
 });
 
 /**
- * YouTube 비디오 ID를 URL에서 추출
+ * YouTube 비디오 ID를 URL에서 추출.
+ * watch?v= / youtu.be/ / shorts/ / embed/ / live/ 및 m.·music. 서브도메인을 지원한다.
+ * ID 문자([A-Za-z0-9_-])만 캡처하므로 뒤따르는 &list=, ?index=, &t= 등 노이즈는 자동 절단된다.
  */
 export const extractVideoIdFromUrl = (url: string): string | null => {
-  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+  const match = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]+)/
+  );
   return match?.[1] || null;
 };
 

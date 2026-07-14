@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { QueryKeys } from '@/shared/api/http/query-keys';
 import { playlistsService } from '@/shared/api/http/services';
-import { APIError, PaginationResponse } from '@/shared/api/http/types/@shared';
-import { type PlaylistTrack } from '@/shared/api/http/types/playlists';
+import { APIError } from '@/shared/api/http/types/@shared';
+import { type TracksOfPlaylistResponse } from '@/shared/api/http/types/playlists';
 import { FIVE_MINUTES } from '@/shared/config/time';
 
 export const useFetchPlaylistTracks = (listId: number) => {
-  return useQuery<PaginationResponse<PlaylistTrack>, AxiosError<APIError>>({
+  return useQuery<TracksOfPlaylistResponse, AxiosError<APIError>>({
     queryKey: [QueryKeys.PlaylistTracks, listId],
     queryFn: () =>
       /**

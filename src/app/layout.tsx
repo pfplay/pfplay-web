@@ -1,8 +1,9 @@
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
 
 import '@rainbow-me/rainbowkit/styles.css';
 import '@/shared/ui/foundation/globals.css';
+import '@/shared/ui/foundation/touch-reset.css';
 
 import { PropsWithChildren } from 'react';
 
@@ -23,6 +24,7 @@ import { LangProvider } from '@/shared/lib/localization/lang.context';
 import { DialogProvider } from '@/shared/ui/components/dialog';
 import { pretendardVariable } from '@/shared/ui/foundation/fonts';
 
+import ServiceWorkerRegister from './_components/sw-register';
 import AnalyticsProvider from './_providers/analytics.provider';
 import ReactQueryProvider from './_providers/react-query.provider';
 import StoresProvider from './_providers/stores.provider';
@@ -31,9 +33,23 @@ import { WalletProvider } from './_providers/wallet.provider';
 export const metadata: Metadata = {
   title: 'PFPlay',
   description: 'PFP Playground for music',
+  manifest: '/manifest.webmanifest',
   icons: {
     icon: '/favicon.ico',
+    apple: '/icons/apple-touch-icon.png',
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'PFPlay',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#000000',
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 };
 
 const RootLayout = async ({ children }: PropsWithChildren) => {
@@ -92,6 +108,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
           </AnalyticsProvider>
         </ReactQueryProvider>
 
+        <ServiceWorkerRegister />
         <div id={DomId.DrawerRoot} />
         <div id={DomId.TooltipRoot} className='pointer-events-none fixed inset-0 z-tooltip' />
       </body>

@@ -28,8 +28,12 @@ vi.mock('@/shared/lib/store/stores.context', () => ({
 }));
 
 vi.mock('@/entities/music-preview/index.ui', () => ({
-  YouTubePreviewPlayer: (props: { width: number; height: number }) => (
-    <div data-testid='yt-player' data-width={props.width} data-height={props.height} />
+  YouTubePreviewPlayer: (props: { width: number | string; height: number | string }) => (
+    <div
+      data-testid='yt-player'
+      data-width={String(props.width)}
+      data-height={String(props.height)}
+    />
   ),
 }));
 
@@ -73,7 +77,7 @@ describe('MiniPlayer (mobile-bottom)', () => {
     expect(startPreview).toHaveBeenCalledWith(track);
   });
 
-  test('currentTrack 있음 + playState=playing 시 YouTubePreviewPlayer 렌더 (64×36)', () => {
+  test('currentTrack 있음 + playState=playing 시 전체너비 16:9 카드로 렌더 (ToS ≥200×200, issue #420)', () => {
     useMusicPreviewMock.mockReturnValue({
       currentTrack: { name: 'Song A', artist: 'Artist X', source: 'preview-search' },
       playState: 'playing',
@@ -82,8 +86,9 @@ describe('MiniPlayer (mobile-bottom)', () => {
     });
     render(<MiniPlayer onAdd={vi.fn()} addPending={false} />);
     const yt = screen.getByTestId('yt-player');
-    expect(yt.getAttribute('data-width')).toBe('64');
-    expect(yt.getAttribute('data-height')).toBe('36');
+    // 64×36 썸네일은 ToS 위반 → 전체너비(100%) + 높이 ≥200 카드로 교체.
+    expect(yt.getAttribute('data-width')).toBe('100%');
+    expect(Number(yt.getAttribute('data-height'))).toBeGreaterThanOrEqual(200);
   });
 
   test('source 무관 렌더 (playlist-track source 도 정상) — spec §B.4', () => {

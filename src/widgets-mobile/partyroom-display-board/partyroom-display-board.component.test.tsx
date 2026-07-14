@@ -114,76 +114,39 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe('MobilePartyroomDisplayBoard · 토글 라이프사이클', () => {
-  test('#1 룸 mount 시 expanded=true default → Mode A 진입', () => {
+describe('MobilePartyroomDisplayBoard · 재생 표시 (ToS 최소 크기, issue #420)', () => {
+  test('#1 재생 중 → 전체너비 16:9 영상 + NowPlayingRow + 접기 토글 부재', () => {
     render(<MobilePartyroomDisplayBoard partyroomId={1} />);
     const wrapper = screen.getByTestId('video-wrapper');
     expect(wrapper.className).toContain('aspect-video');
     expect(wrapper.className).toContain('w-full');
-    expect(screen.getByRole('button', { name: '영상 가리기' })).toBeTruthy();
+    // 축소 썸네일(80×45)·접기 토글 제거 — viewport ≥200×200 유지.
+    expect(wrapper.className).not.toContain('w-[80px]');
+    expect(screen.queryByRole('button', { name: /영상/ })).toBeNull();
+    expect(screen.getByTestId('now-playing-row')).toBeTruthy();
   });
 
-  test('#2 토글 클릭 → Mode B (80×45)', () => {
+  test('#2 트랙명·DJ 닉네임이 NowPlayingRow 에 표시', () => {
     render(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
-    const wrapper = screen.getByTestId('video-wrapper');
-    expect(wrapper.className).toContain('w-[80px]');
-    expect(wrapper.className).toContain('h-[45px]');
-    expect(screen.getByRole('button', { name: '영상 펼치기' })).toBeTruthy();
-  });
-
-  test('#3 두 번째 토글 → Mode A 복귀', () => {
-    render(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
-    fireEvent.click(screen.getByRole('button', { name: '영상 펼치기' }));
-    const wrapper = screen.getByTestId('video-wrapper');
-    expect(wrapper.className).toContain('aspect-video');
-    expect(screen.getByRole('button', { name: '영상 가리기' })).toBeTruthy();
+    const row = screen.getByTestId('now-playing-row');
+    expect(row.textContent).toContain('Track 1');
+    expect(screen.getByTestId('now-playing-dj').textContent).toContain('DJ A');
   });
 });
 
-describe('MobilePartyroomDisplayBoard · Mode C 진입', () => {
-  test('#4 playback null → Mode C: BlankPlaceholder + 토글 미렌더 + NowPlayingRow 미렌더', () => {
+describe('MobilePartyroomDisplayBoard · 비재생 (Mode C)', () => {
+  test('#3 playback null → BlankPlaceholder + 토글 미렌더 + NowPlayingRow 미렌더 + 영상 미렌더', () => {
     setStoreState({ playbackActivated: false, playback: null });
     render(<MobilePartyroomDisplayBoard partyroomId={1} />);
     expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
     expect(screen.queryByRole('button', { name: /영상/ })).toBeNull();
     expect(screen.queryByTestId('now-playing-row')).toBeNull();
     expect(screen.queryByTestId('youtube-player-mock')).toBeNull();
-  });
-});
-
-describe('MobilePartyroomDisplayBoard · expanded 보존 invariants', () => {
-  test('#5 토글 B → playback 트랙 변경 → expanded=false 그대로', () => {
-    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
-    expect(screen.getByTestId('video-wrapper').className).toContain('w-[80px]');
-
-    setStoreState({ playback: { name: 'Track 2', duration: '4:00', linkId: 'def' } });
-    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
-
-    expect(screen.getByTestId('video-wrapper').className).toContain('w-[80px]');
-    expect(screen.getByTestId('video-wrapper').className).toContain('h-[45px]');
-    expect(screen.getByRole('button', { name: '영상 펼치기' })).toBeTruthy();
+    // 비재생에도 전체너비 16:9 유지 (축소 금지).
+    expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
   });
 
-  test('#6 Mode B → playback null → playback 재할당 → 여전히 Mode B (사용자 선택 보존)', () => {
-    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
-
-    setStoreState({ playbackActivated: false, playback: null });
-    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
-
-    setStoreState({
-      playbackActivated: true,
-      playback: { name: 'Track 3', duration: '2:00', linkId: 'ghi' },
-    });
-    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    expect(screen.getByTestId('video-wrapper').className).toContain('w-[80px]');
-  });
-
-  test('#7 Mode A → Mode C → 재할당 → Mode A 복귀 (역대칭)', () => {
+  test('#4 비재생 → 재할당 → 전체너비 영상 복귀', () => {
     const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
     expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
 
@@ -193,7 +156,7 @@ describe('MobilePartyroomDisplayBoard · expanded 보존 invariants', () => {
 
     setStoreState({
       playbackActivated: true,
-      playback: { name: 'Track 4', duration: '1:30', linkId: 'jkl' },
+      playback: { name: 'Track 4', duration: '1:30', linkId: 'jkl', endTime: FUTURE_END_TIME },
     });
     rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
     expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
@@ -201,22 +164,46 @@ describe('MobilePartyroomDisplayBoard · expanded 보존 invariants', () => {
   });
 });
 
-describe('MobilePartyroomDisplayBoard · component lifecycle', () => {
-  test('#8 룸 unmount → 다시 mount → expanded=true reset (component-local state)', () => {
-    const { unmount } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
-    expect(screen.getByTestId('video-wrapper').className).toContain('w-[80px]');
+describe('MobilePartyroomDisplayBoard · compact (크루/큐 탭)', () => {
+  test('#5 compact=true → 리액션 숨김 + 영상은 전체너비 유지 (ToS: 축소 안 함)', () => {
+    render(<MobilePartyroomDisplayBoard partyroomId={1} compact />);
+    const wrapper = screen.getByTestId('video-wrapper');
+    // 관리 탭이라도 영상은 ≥200×200 컴플라이언트 전체너비 — 80×45 축소 금지.
+    expect(wrapper.className).toContain('aspect-video');
+    expect(wrapper.className).toContain('w-full');
+    expect(wrapper.className).not.toContain('w-[80px]');
+    // 리액션(채팅 맥락 전용)은 관리 탭에서 숨김.
+    expect(screen.queryByTestId('action-buttons-mock')).toBeNull();
+  });
 
-    unmount();
-
+  test('#6 compact=false(기본) → 리액션 노출 + 전체너비 영상', () => {
     render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('action-buttons-mock')).toBeTruthy();
     expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
-    expect(screen.getByRole('button', { name: '영상 가리기' })).toBeTruthy();
+  });
+
+  test('#6-1 compact + autoplay 차단 → 영상 위 overlay 단일 게이트만 (별도 TapToPlayButton 중복 없음)', () => {
+    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} compact />);
+    const yt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
+    act(() => {
+      (yt.onReady as (p: unknown) => void)(makeMockPlayer());
+    });
+    act(() => {
+      vi.advanceTimersByTime(1500);
+    });
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} compact />);
+
+    // 게이트는 영상 위 overlay 하나로 통일 — 과거 Mode B 전용 '재생' TapToPlayButton 은 제거.
+    expect(screen.getByTestId('autoplay-gesture-gate')).toBeTruthy();
+    expect(screen.queryByRole('button', { name: '재생' })).toBeNull();
   });
 });
 
 describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
-  test('#9 트랙 변경 시 autoplay 차단 재armed: 새 videoId + 1500ms 후 차단 → release control 렌더', () => {
+  // #426: 재생 중 곡이 바뀌어도 재-gate 하면 안 된다. 곡 전환은 backend PlaybackStartedEvent 만
+  // (DEACTIVATE 없음) → playable 연속 true, played 유지 → player key 불변 → remount 없음 →
+  // iOS WebKit user-activation 유지 → 끊김 없이 이어짐. (이전엔 played 리셋→remount→매 곡 재-gate 버그.)
+  test('#9 재생 중 트랙 변경 시 재-gate 안 함 (player remount 방지 #426)', () => {
     const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
 
     const firstYt = youtubePlayerCalls[0];
@@ -225,29 +212,29 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
       (firstYt.onPlay as () => void)();
     });
 
-    setStoreState({ playback: { name: 'Track 2', duration: '4:00', linkId: 'def' } });
+    // 트랙 변경 (재생 중 상태에서 새 곡으로 전환)
+    setStoreState({
+      playback: { name: 'Track 2', duration: '4:00', linkId: 'def', endTime: FUTURE_END_TIME },
+    });
     rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
 
-    const newYt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
-    act(() => {
-      (newYt.onReady as (p: unknown) => void)(makeMockPlayer());
-    });
     act(() => {
       vi.advanceTimersByTime(1500);
     });
     rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
 
-    expect(screen.queryByTestId('autoplay-gesture-gate')).toBeTruthy();
+    // played 유지 → 차단 재감지 안 됨 → gesture gate 미표시 (자동재생 끊김 없음)
+    expect(screen.queryByTestId('autoplay-gesture-gate')).toBeNull();
   });
 
-  test('#10 Mode C → 재할당 → onReady 후 1500ms 내 onPlay 없으면 차단 + release control 렌더', () => {
+  test('#8 Mode C → 재할당 → onReady 후 1500ms 내 onPlay 없으면 차단 + overlay 렌더', () => {
     setStoreState({ playbackActivated: false, playback: null });
     const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
     expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
 
     setStoreState({
       playbackActivated: true,
-      playback: { name: 'Track 5', duration: '3:00', linkId: 'mno' },
+      playback: { name: 'Track 5', duration: '3:00', linkId: 'mno', endTime: FUTURE_END_TIME },
     });
     rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
 
@@ -264,27 +251,8 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
   });
 });
 
-describe('MobilePartyroomDisplayBoard · compact (크루/큐 탭)', () => {
-  test('#13 compact=true → 영상 강제 Mode B + 토글 숨김 + 리액션 숨김', () => {
-    render(<MobilePartyroomDisplayBoard partyroomId={1} compact />);
-    const wrapper = screen.getByTestId('video-wrapper');
-    expect(wrapper.className).toContain('w-[80px]');
-    expect(wrapper.className).toContain('h-[45px]');
-    // 동작하지 않는 토글은 숨긴다 (canToggle=false)
-    expect(screen.queryByRole('button', { name: /영상/ })).toBeNull();
-    // 리액션(채팅 맥락 전용)은 관리 탭에서 숨김
-    expect(screen.queryByTestId('action-buttons-mock')).toBeNull();
-  });
-
-  test('#14 compact=false(기본) → 리액션 노출 + Mode A', () => {
-    render(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    expect(screen.getByTestId('action-buttons-mock')).toBeTruthy();
-    expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
-  });
-});
-
 describe('MobilePartyroomDisplayBoard · 헤더', () => {
-  test('헤더: 뒤로 버튼 클릭 시 /parties 라우팅 + PF 아이콘 렌더', () => {
+  test('#9 뒤로 버튼 클릭 시 /parties 라우팅 + PF 아이콘 렌더', () => {
     render(<MobilePartyroomDisplayBoard partyroomId={1} />);
     const back = screen.getByRole('button', { name: '뒤로' });
     expect(back.querySelector('svg')).toBeTruthy(); // PFArrowLeft
@@ -292,47 +260,5 @@ describe('MobilePartyroomDisplayBoard · 헤더', () => {
     expect(mockPush).toHaveBeenCalledWith('/parties');
     const menu = screen.getByRole('button', { name: '메뉴' });
     expect(menu.querySelector('svg')).toBeTruthy(); // PFMoreVert
-  });
-});
-
-describe('MobilePartyroomDisplayBoard · cross-component single source', () => {
-  test('#11 Mode B + autoplay 차단: NowPlayingRow 안에 TapToPlayButton 렌더, overlay 미렌더', () => {
-    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
-
-    const yt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
-    act(() => {
-      (yt.onReady as (p: unknown) => void)(makeMockPlayer());
-    });
-    act(() => {
-      vi.advanceTimersByTime(1500);
-    });
-    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
-
-    const row = screen.getByTestId('now-playing-row');
-    const tapButton = screen.getByRole('button', { name: '재생' });
-    expect(row.contains(tapButton)).toBe(true);
-    expect(screen.queryByTestId('autoplay-gesture-gate')).toBeNull();
-  });
-
-  test('#12 Mode B + autoplay 차단 → Mode A 토글 → overlay 즉시 visible (single source)', () => {
-    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    fireEvent.click(screen.getByRole('button', { name: '영상 가리기' }));
-
-    const yt = youtubePlayerCalls[youtubePlayerCalls.length - 1];
-    act(() => {
-      (yt.onReady as (p: unknown) => void)(makeMockPlayer());
-    });
-    act(() => {
-      vi.advanceTimersByTime(1500);
-    });
-    rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
-
-    expect(screen.getByRole('button', { name: '재생' })).toBeTruthy();
-
-    fireEvent.click(screen.getByRole('button', { name: '영상 펼치기' }));
-
-    expect(screen.getByTestId('autoplay-gesture-gate')).toBeTruthy();
-    expect(screen.queryByRole('button', { name: '재생' })).toBeNull();
   });
 });

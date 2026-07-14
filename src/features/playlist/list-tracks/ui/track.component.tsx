@@ -3,9 +3,11 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { convertPlaylistTrackToPreview } from '@/entities/music-preview';
 import { ThumbnailWithPreview } from '@/entities/music-preview/index.ui';
+import { usePlaylistLayerZIndex } from '@/entities/ui-state';
 import { PlaylistTrack } from '@/shared/api/http/types/playlists';
 import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useStores } from '@/shared/lib/store/stores.context';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
 import { Typography } from '@/shared/ui/components/typography';
@@ -15,10 +17,23 @@ type TrackProps = {
   track: PlaylistTrack;
   menuItems: MenuItem[];
   isOverRoomLimit?: boolean;
+  /** 지금 재생 중(CurrentDJ 본인 한정, 방 안). NOW 배지. */
+  isNow?: boolean;
+  /** 내가 다음에 디제잉하면 시작될 곡. NEXT 배지. */
+  isNext?: boolean;
 };
 
-const Track = ({ track, menuItems, isOverRoomLimit = false }: TrackProps) => {
+const Track = ({
+  track,
+  menuItems,
+  isOverRoomLimit = false,
+  isNow = false,
+  isNext = false,
+}: TrackProps) => {
   const t = useI18n();
+  const cinemaView = useStores().useUIState((s) => s.cinemaView);
+  const layerZIndex = usePlaylistLayerZIndex();
+  const menuZIndex = cinemaView ? layerZIndex + 1 : undefined;
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: track.linkId,
   });
@@ -60,6 +75,17 @@ const Track = ({ track, menuItems, isOverRoomLimit = false }: TrackProps) => {
         </div>
 
         <div className='flex-1 min-w-0 select-none flexCol overflow-hidden pointer-events-none'>
+          {(isNow || isNext) && (
+            <span
+              data-testid={isNow ? 'track-badge-now' : 'track-badge-next'}
+              className={cn(
+                'mb-0.5 inline-flex w-fit items-center rounded-[3px] px-1.5 py-[1px] text-[10px] font-bold leading-[14px]',
+                isNow ? 'bg-red-300 text-white' : 'bg-gray-600 text-gray-100'
+              )}
+            >
+              {isNow ? t.playlist.para.now_playing : t.playlist.para.next_up}
+            </span>
+          )}
           <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
             {track.name}
           </Typography>
@@ -75,7 +101,11 @@ const Track = ({ track, menuItems, isOverRoomLimit = false }: TrackProps) => {
       </div>
 
       <div className='shrink-0'>
-        <IconMenu MenuButtonIcon={<PFMoreVert />} menuItemConfig={menuItems} />
+        <IconMenu
+          MenuButtonIcon={<PFMoreVert />}
+          menuItemConfig={menuItems}
+          menuZIndex={menuZIndex}
+        />
       </div>
     </div>
   );

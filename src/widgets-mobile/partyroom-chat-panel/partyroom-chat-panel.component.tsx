@@ -1,10 +1,10 @@
 'use client';
 import { useCallback, useRef, useState } from 'react';
-import { useCurrentPartyroomChat } from '@/entities/current-partyroom';
+import { PlaybackSummaryDivider, useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
 import { useIsBlockedCrew } from '@/features/partyroom/list-my-blocked-crews';
-import { SendChatMessage } from '@/features/partyroom/send-chat-message';
+import { SendChatMessage, ChatEmojiPicker } from '@/features/partyroom/send-chat-message';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { ONE_MINUTE } from '@/shared/config/time';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -36,6 +36,7 @@ export default function MobilePartyroomChatPanel() {
     itemsGap: 16,
   });
   const banned = useTempChatBanTimer();
+  const chatInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className='flexCol h-full'>
@@ -53,6 +54,16 @@ export default function MobilePartyroomChatPanel() {
               >
                 {message.content}
               </Typography>
+            );
+          }
+          if (message.from === 'playback-summary') {
+            const isLastDivider = i === chatMessages.length - 1;
+            return (
+              <PlaybackSummaryDivider
+                key={'playback-summary' + message.receivedAt}
+                message={message}
+                ref={isLastDivider ? lastItemRef : undefined}
+              />
             );
           }
           if (isBlockedCrew(message.crew.crewId)) {
@@ -73,6 +84,7 @@ export default function MobilePartyroomChatPanel() {
         <SendChatMessage>
           {({ message, setMessage, send, canSend }) => (
             <Input
+              ref={chatInputRef}
               data-testid='chat-message-input'
               size='lg'
               variant='outlined'
@@ -85,16 +97,24 @@ export default function MobilePartyroomChatPanel() {
                 if (canSend) send();
               }}
               Suffix={
-                <Button
-                  data-testid='chat-message-send-button'
-                  color='secondary'
-                  variant='fill'
-                  Icon={<PFSend width={20} height={20} />}
-                  size='sm'
-                  className='text-gray-50'
-                  onClick={send}
-                  disabled={!canSend || banned}
-                />
+                <div className='flex items-center gap-[4px]'>
+                  <ChatEmojiPicker
+                    disabled={banned}
+                    onSelect={(emoji) => setMessage(message + emoji)}
+                    // Headless UI가 닫힘 시 트리거로 포커스를 되돌리는 것과의 순서 레이스 예방 — 한 프레임 늦게 입력창으로
+                    onClosed={() => requestAnimationFrame(() => chatInputRef.current?.focus())}
+                  />
+                  <Button
+                    data-testid='chat-message-send-button'
+                    color='secondary'
+                    variant='fill'
+                    Icon={<PFSend width={20} height={20} />}
+                    size='sm'
+                    className='text-gray-50'
+                    onClick={send}
+                    disabled={!canSend || banned}
+                  />
+                </div>
               }
             />
           )}

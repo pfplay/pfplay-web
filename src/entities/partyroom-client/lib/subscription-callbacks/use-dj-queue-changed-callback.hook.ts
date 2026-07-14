@@ -4,6 +4,7 @@ import { DjingQueue } from '@/shared/api/http/types/partyrooms';
 import { DjQueueChangedEvent } from '@/shared/api/websocket/types/partyroom';
 import { trackDjAdminDeregisterDetected } from '@/shared/lib/analytics/room-tracking';
 import { useStores } from '@/shared/lib/store/stores.context';
+import { appendSummaryToChat } from './emit-playback-summary';
 
 export default function useDjQueueChangedCallback() {
   const queryClient = useQueryClient();
@@ -11,6 +12,13 @@ export default function useDjQueueChangedCallback() {
   const [updateCurrentDj, alert] = useCurrentPartyroom((s) => [s.updateCurrentDj, s.alert]);
 
   return (event: DjQueueChangedEvent) => {
+    // DEACTIVATE = 재생 경계 — 구획 방출 (추적기가 hold-and-clear라
+    // 같은 비활성화의 PLAYBACK_DEACTIVATED와 둘 다 도착해도 구획은 1회)
+    if (event.changeType === 'DEACTIVATE') {
+      const { playbackSummaryTracker, appendChatMessage } = useCurrentPartyroom.getState();
+      appendSummaryToChat(playbackSummaryTracker.flushBoundary(Date.now()), appendChatMessage);
+    }
+
     const queryKey = [QueryKeys.DjingQueue, event.partyroomId];
 
     // self 가 큐에서 빠졌는지 검출 — changeType별로 분기하여

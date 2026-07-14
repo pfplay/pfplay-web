@@ -87,7 +87,12 @@ describe('useAutoplayGestureGate', () => {
     expect(result.current.gate.autoplayBlocked).toBe(false);
   });
 
-  test('videoId 변경 시 played reset + 새 1500ms 타이머 시작 (트랙 변경 시 차단 재armed)', () => {
+  // #426: 이전엔 videoId 변경 시 played=false 로 리셋했고, video-frame 의 key 가 played 를
+  // 포함해 곡 전환마다 IFrame 이 remount → iOS WebKit 에서 user-activation 소실 → 매 곡 재-gate.
+  // 곡 전환은 백엔드가 PlaybackStartedEvent 만 보내(DEACTIVATE 없음) playable 이 연속 true 이므로,
+  // played 를 유지해야 key 가 불변 → remount 없음 → 첫 탭 이후 곡 전환이 끊김 없이 이어진다.
+  // (데스크톱 video.component 와 동일한 안정-인스턴스 정책.)
+  test('videoId 변경 시 played 유지 — 재생 중이면 재-gate 안 함 (트랙 전환 remount 방지 #426)', () => {
     let id = 'first' as string | null;
     const { result, rerender } = renderHook(() => {
       const playerRef = useRef<TReactPlayer | null>(null);
@@ -102,8 +107,29 @@ describe('useAutoplayGestureGate', () => {
     id = 'second';
     rerender();
 
+    // 재생 중이던 player 는 곡 전환에 played 유지 → key 불변 → remount 없음
+    expect(result.current.played).toBe(true);
+
+    // 이미 재생 중이므로 차단 재감지(재-gate) 하지 않는다
+    act(() => vi.advanceTimersByTime(AUTOPLAY_DETECT_MS));
+    expect(result.current.autoplayBlocked).toBe(false);
+  });
+
+  test('첫 곡이 아직 재생 전(played=false)일 때 videoId 변경되면 차단 감지는 계속 동작', () => {
+    // 첫 곡을 한 번도 재생 못 한 상태에서 트랙이 바뀌면 여전히 gate 로 탭 유도해야 한다.
+    let id = 'first' as string | null;
+    const { result, rerender } = renderHook(() => {
+      const playerRef = useRef<TReactPlayer | null>(null);
+      return useAutoplayGestureGate({ playerRef, playable: true, videoId: id });
+    });
+
+    act(() => result.current.onReady({} as TReactPlayer));
     expect(result.current.played).toBe(false);
 
+    id = 'second';
+    rerender();
+
+    expect(result.current.played).toBe(false);
     act(() => vi.advanceTimersByTime(AUTOPLAY_DETECT_MS));
     expect(result.current.autoplayBlocked).toBe(true);
   });

@@ -67,8 +67,6 @@ export default function Video({
   const setCinemaView = useUIState((s) => s.setCinemaView);
   const cinemaChatOpen = useUIState((s) => s.cinemaChatOpen);
   const setCinemaChatOpen = useUIState((s) => s.setCinemaChatOpen);
-  const pendingFullscreen = useUIState((s) => s.pendingFullscreen);
-  const setPendingFullscreen = useUIState((s) => s.setPendingFullscreen);
 
   const [played, setPlayed] = useState(false);
   const [isFullscreenOverlayVisible, setIsFullscreenOverlayVisible] = useState(false);
@@ -81,22 +79,16 @@ export default function Video({
   const playable = !!videoId && playerReady;
   const showGestureGate = playable && !played && autoplayBlocked;
 
-  const cinemaContainerRef = useRef<HTMLDivElement>(null);
-  const defaultContainerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
-    const handler = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener('fullscreenchange', handler);
-    return () => document.removeEventListener('fullscreenchange', handler);
-  }, []);
-
-  useEffect(() => {
-    if (cinemaView && pendingFullscreen) {
-      setPendingFullscreen(false);
-      cinemaContainerRef.current?.requestFullscreen();
-    }
-  }, [cinemaView, pendingFullscreen, setPendingFullscreen]);
+    if (!isFullscreen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsFullscreen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isFullscreen]);
 
   // 현재 트랙의 라이브 위치로 seek 한다. player 준비(onReady)·트랙 변경 후 새 영상 시작(onStart) 시 호출.
   const seekToLive = () => {
@@ -174,19 +166,18 @@ export default function Video({
     },
   });
 
-  const handleTheater = () => setCinemaView(true);
+  const handleTheater = () => {
+    setCinemaView(true);
+    setIsFullscreen(false);
+  };
 
   const handleFull = () => {
-    if (cinemaView) {
-      cinemaContainerRef.current?.requestFullscreen();
-    } else {
-      setPendingFullscreen(true);
-      setCinemaView(true);
-    }
+    setCinemaView(true);
+    setIsFullscreen(true);
   };
 
   const handleDefault = () => {
-    if (isFullscreen) document.exitFullscreen();
+    setIsFullscreen(false);
     setCinemaView(false);
     setCinemaChatOpen(false);
   };
@@ -246,7 +237,7 @@ export default function Video({
     // Full-screen mode: video fills entire viewport, header/footer appear only on hover over their zones
     if (isFullscreen) {
       return (
-        <div ref={cinemaContainerRef} className='fixed inset-0 z-[100] bg-black'>
+        <div className='fixed inset-0 z-cinema bg-black'>
           {/* Video fills everything */}
           <div className='absolute inset-0'>{cinemaPlayer}</div>
 
@@ -284,17 +275,34 @@ export default function Video({
                 cinemaChatOpen={cinemaChatOpen}
                 onDefault={handleDefault}
                 onFull={handleFull}
+                onTheater={() => setIsFullscreen(false)}
                 onToggleChat={handleToggleChat}
               />
             </div>
           </div>
+
+          {sidePanelContent && (
+            <div
+              className={cn(
+                'absolute top-0 bottom-0 w-[360px] z-20 bg-black border-l border-gray-800 overflow-y-auto',
+                chatPanelContent ? 'right-[400px]' : 'right-0'
+              )}
+            >
+              {sidePanelContent}
+            </div>
+          )}
+          {chatPanelContent && (
+            <div className='absolute top-0 right-0 bottom-0 w-[400px] z-20 bg-black border-l border-gray-800 flex flex-col'>
+              {chatPanelContent}
+            </div>
+          )}
         </div>
       );
     }
 
     // Cinema mode (not fullscreen): left column shrinks when chat panel opens on right
     return (
-      <div ref={cinemaContainerRef} className='fixed inset-0 z-[100] bg-black flex flex-row'>
+      <div className='fixed inset-0 z-cinema bg-black flex flex-row'>
         <div className='flex-1 min-w-0 flex flex-col'>
           {/* Header */}
           <div className='shrink-0 bg-black border-b border-gray-800'>
@@ -335,7 +343,7 @@ export default function Video({
   }
 
   return (
-    <div ref={defaultContainerRef} className='group relative bg-black' style={{ width, height }}>
+    <div className='group relative bg-black' style={{ width, height }}>
       {!playable && (
         <div style={{ width, height }} className='bg-black'>
           {!!playback && <LoadingPanel />}

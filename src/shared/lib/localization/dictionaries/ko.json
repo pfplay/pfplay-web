@@ -39,6 +39,10 @@
       "kick": "킥",
       "ban": "밴"
     },
+    "menu": {
+      "title": "메뉴",
+      "notification_settings": "알림 설정"
+    },
     "para": {
       "reason": "사유:",
       "points_to_unlock\t": "{{points}} 포인트가 필요해요",
@@ -102,7 +106,15 @@
       "permanent_ban": "관리자에 의해 영구 퇴출되셨으며/n재입장은 불가합니다.",
       "start_chat": "무슨 얘기를 해볼까요?",
       "remove_chat": "'{subject}'가 '{target}'의 채팅을 삭제했습니다.",
-      "chat_banned_hint": "관리자 제재로 30초 동안 채팅할 수 없어요."
+      "chat_banned_hint": "관리자 제재로 30초 동안 채팅할 수 없어요.",
+      "playback_summary_skipped": "스킵",
+      "playback_summary_dj_fallback": "DJ"
+    },
+    "btn": {
+      "choose_emoji": "이모지 선택"
+    },
+    "title": {
+      "recently_used": "최근 사용"
     }
   },
   "onboard": {
@@ -142,6 +154,13 @@
       "empty_records": "보유한 내역이 없어요",
       "avatar_save_requirements": "몸을 먼저 고르고, 조합형 몸이라면 얼굴까지 선택해야 저장할 수 있어요.",
       "wallet_face_hint": "지갑을 연결하면 보유한 NFT 얼굴 아이템도 여기서 선택할 수 있어요."
+    },
+    "notifications": {
+      "title": "알림",
+      "toggle_label": "공지 푸시 알림 받기",
+      "description": "운영 공지와 이벤트 소식을 푸시 알림으로 받아볼 수 있어요.",
+      "needs_install_hint": "홈 화면에 앱을 추가한 뒤 알림을 켤 수 있어요.",
+      "denied_hint": "브라우저 설정에서 알림 차단을 해제해 주세요."
     }
   },
   "setting": {
@@ -288,7 +307,9 @@
       "search_url": "URL 혹은 음악을 검색할 수 있어요",
       "up_to_10_if_connect_wallet": "지갑을 연동하시면 10개까지 생성할 수 있어요!",
       "no_other_playlist": "이동할 수 있는 다른 플레이리스트가 없어요",
-      "select_for_move": "선택한 곡을 이동할 재생목록을 선택해 주세요"
+      "select_for_move": "선택한 곡을 이동할 재생목록을 선택해 주세요",
+      "now_playing": "재생 중",
+      "next_up": "다음 곡"
     },
     "ec": {
       "exceeded_list_connect_wallet": "이미 생성 가능한 리스트 수를 초과했어요.\n",

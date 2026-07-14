@@ -1,6 +1,6 @@
 'use client';
 
-import { SidebarPlayer, ModalPlayer } from '@/widgets/music-preview-player';
+import { SidebarPlayer } from '@/widgets/music-preview-player';
 import { MyPlaylist } from '@/widgets/my-playlist';
 
 /**
@@ -18,8 +18,8 @@ export const DesktopOverlays = () => {
       <MyPlaylist />
       {/* ⓐ 사이드바 미리보기 플레이어 (플레이리스트 트랙용) */}
       <SidebarPlayer />
-      {/* ⓑ 모달 미리보기 플레이어 (검색 결과용) - 모달과 분리된 고정 위치 */}
-      <ModalPlayer />
+      {/* 검색 결과 미리듣기는 검색 모달 내부 우측 컬럼으로 임베드됨(SearchPreviewPanel, issue #420) —
+          별도 floating ModalPlayer 제거. */}
     </>
   );
 };

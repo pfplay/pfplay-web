@@ -45,6 +45,7 @@ const defaultProps = {
   cinemaChatOpen: false,
   onDefault: vi.fn(),
   onFull: vi.fn(),
+  onTheater: vi.fn(),
   onToggleChat: vi.fn(),
 };
 
@@ -108,16 +109,10 @@ describe('콜백', () => {
     expect(defaultProps.onToggleChat).toHaveBeenCalledTimes(1);
   });
 
-  test('Theater 버튼 클릭 시 document.exitFullscreen이 호출된다', () => {
-    const exitFullscreen = vi.fn().mockResolvedValue(undefined);
-    Object.defineProperty(document, 'exitFullscreen', {
-      value: exitFullscreen,
-      configurable: true,
-    });
-
+  test('Theater 버튼 클릭 시 onTheater가 호출된다', () => {
     render(<CinemaFooter {...defaultProps} isFullscreen={true} />);
     fireEvent.click(screen.getByTitle('Theater'));
-    expect(exitFullscreen).toHaveBeenCalledTimes(1);
+    expect(defaultProps.onTheater).toHaveBeenCalledTimes(1);
   });
 });
 

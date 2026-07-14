@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useRef, useState } from 'react';
-import { useCurrentPartyroomChat } from '@/entities/current-partyroom';
+import { PlaybackSummaryDivider, useCurrentPartyroomChat } from '@/entities/current-partyroom';
 import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
 import { useAdjustGrade, useCanAdjustGrade } from '@/features/partyroom/adjust-grade';
 import { useBlockCrew } from '@/features/partyroom/block-crew';
@@ -12,7 +12,8 @@ import {
 } from '@/features/partyroom/impose-penalty';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
 import { useIsBlockedCrew } from '@/features/partyroom/list-my-blocked-crews';
-import { SendChatMessage } from '@/features/partyroom/send-chat-message';
+import { SendChatMessage, ChatEmojiPicker } from '@/features/partyroom/send-chat-message';
+import { useOpenCrewProfile } from '@/features/view-crew-profile';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { ONE_MINUTE } from '@/shared/config/time';
 import { useVerticalStretch } from '@/shared/lib/hooks/use-vertical-stretch.hook';
@@ -35,6 +36,7 @@ export default function PartyroomChatPanel() {
   const removeChatMessage = useRemoveChatMessage();
   const imposePenalty = useImposePenalty();
   const blockCrew = useBlockCrew();
+  const openCrewProfile = useOpenCrewProfile();
   const isBlockedCrew = useIsBlockedCrew();
   const containerRef = useVerticalStretch<HTMLDivElement>();
   const chatMessages = useCurrentPartyroomChat();
@@ -47,6 +49,7 @@ export default function PartyroomChatPanel() {
   });
 
   const banned = useTempChatBanTimer();
+  const chatInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div ref={containerRef} className='flexCol gap-1'>
@@ -61,6 +64,17 @@ export default function PartyroomChatPanel() {
               >
                 {message.content}
               </Typography>
+            );
+          }
+
+          if (message.from === 'playback-summary') {
+            const isLastDivider = i === chatMessages.length - 1;
+            return (
+              <PlaybackSummaryDivider
+                key={'playback-summary' + message.receivedAt}
+                message={message}
+                ref={isLastDivider ? lastItemRef : undefined}
+              />
             );
           }
 
@@ -88,6 +102,11 @@ export default function PartyroomChatPanel() {
               menuPositionClassName='top-[8px] right-[12px]'
               menuItemPanelSize='sm'
               menuConfig={[
+                {
+                  label: '프로필 보기',
+                  onClickItem: () => openCrewProfile(message.crew.crewId),
+                  visible: true,
+                },
                 {
                   label: t.common.btn.authority,
                   onClickItem: () => adjustGrade(message.crew),
@@ -141,6 +160,7 @@ export default function PartyroomChatPanel() {
           <TooltipTrigger title={banned ? t.chat.para.chat_banned_hint : undefined}>
             <div>
               <Input
+                ref={chatInputRef}
                 data-testid='chat-message-input'
                 size='lg'
                 variant='outlined'
@@ -152,22 +172,30 @@ export default function PartyroomChatPanel() {
                   if (canSend) send();
                 }}
                 Suffix={
-                  <TooltipTrigger
-                    title={
-                      !canSend ? (banned ? t.chat.para.chat_banned_hint : undefined) : undefined
-                    }
-                  >
-                    <Button
-                      data-testid='chat-message-send-button'
-                      color='secondary'
-                      variant='fill'
-                      Icon={<PFSend width={20} height={20} />}
-                      size='sm'
-                      className='text-gray-50'
-                      onClick={send}
-                      disabled={!canSend}
+                  <div className='flex items-center gap-[4px]'>
+                    <ChatEmojiPicker
+                      disabled={banned}
+                      onSelect={(emoji) => setMessage(message + emoji)}
+                      // Headless UI가 닫힘 시 트리거로 포커스를 되돌리는 것과의 순서 레이스 예방 — 한 프레임 늦게 입력창으로
+                      onClosed={() => requestAnimationFrame(() => chatInputRef.current?.focus())}
                     />
-                  </TooltipTrigger>
+                    <TooltipTrigger
+                      title={
+                        !canSend ? (banned ? t.chat.para.chat_banned_hint : undefined) : undefined
+                      }
+                    >
+                      <Button
+                        data-testid='chat-message-send-button'
+                        color='secondary'
+                        variant='fill'
+                        Icon={<PFSend width={20} height={20} />}
+                        size='sm'
+                        className='text-gray-50'
+                        onClick={send}
+                        disabled={!canSend}
+                      />
+                    </TooltipTrigger>
+                  </div>
                 }
               />
             </div>

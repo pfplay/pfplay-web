@@ -10,6 +10,11 @@ export type Model = PartyroomCrew & {
    * setup 시점엔 동기화 하지 않음, 웹소켓 이벤트 수신때마다 변경됨
    */
   reactionType?: ReactionType;
+  /**
+   * 이 crew 가 마지막으로 채팅한 시각(ms). 채팅 시 갱신되며, 아바타 위 말풍선(#410)을
+   * 일정 시간 노출하는 트리거로 쓰인다. (Avatar 가 값 변경 시 transient 표시)
+   */
+  lastChatAt?: number;
 };
 
 /**

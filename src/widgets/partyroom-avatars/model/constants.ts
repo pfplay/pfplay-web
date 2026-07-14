@@ -10,8 +10,10 @@ export const AVATAR_GROUP = {
 } as const;
 
 export const AVATAR_QUEUE = {
-  HEIGHT: 120,
+  HEIGHT: 150,
 } as const;
+
+export const DJ_QUEUE_CLUSTER_MAX_DISPLAY = 5;
 
 export const DJ_AVATAR = {
   HEIGHT: 380,

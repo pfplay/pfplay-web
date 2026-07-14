@@ -39,6 +39,10 @@
       "kick": "Kick",
       "ban": "Ban"
     },
+    "menu": {
+      "title": "Menu",
+      "notification_settings": "Notification settings"
+    },
     "para": {
       "reason": "Reason:",
       "points_to_unlock\t": "Get {{points}} points to unlock!",
@@ -102,7 +106,15 @@
       "permanent_ban": "You have been permanently removed by an admin and can’t rejoin.",
       "start_chat": "What shall we talk about?",
       "remove_chat": "'{target}'s chat was removed by '{subject}'.",
-      "chat_banned_hint": "Chat is disabled for 30 seconds because of an admin restriction."
+      "chat_banned_hint": "Chat is disabled for 30 seconds because of an admin restriction.",
+      "playback_summary_skipped": "skipped",
+      "playback_summary_dj_fallback": "DJ"
+    },
+    "btn": {
+      "choose_emoji": "Choose emoji"
+    },
+    "title": {
+      "recently_used": "Recently used"
     }
   },
   "onboard": {
@@ -142,6 +154,13 @@
       "empty_records": "You have no items",
       "avatar_save_requirements": "Select a body first. If the body supports layering, select a face too before saving.",
       "wallet_face_hint": "Connect your wallet to use NFT face items here."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "toggle_label": "Receive announcement push notifications",
+      "description": "Get operational announcements and event news as push notifications.",
+      "needs_install_hint": "Add the app to your home screen first, then you can turn on notifications.",
+      "denied_hint": "Please unblock notifications in your browser settings."
     }
   },
   "setting": {
@@ -288,7 +307,9 @@
       "search_url": "Search for music and URL",
       "up_to_10_if_connect_wallet": "If you connect your wallet, you can create up to 10!",
       "no_other_playlist": "There are no other playlists to move this song to",
-      "select_for_move": "Please select the playlist to move the selected song to"
+      "select_for_move": "Please select the playlist to move the selected song to",
+      "now_playing": "Now",
+      "next_up": "Next"
     },
     "ec": {
       "exceeded_list_connect_wallet": "You have already exceeded the number of lists that can be created. ",

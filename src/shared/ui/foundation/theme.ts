@@ -49,6 +49,7 @@ const theme = {
      * zIndex는 덧셈 연산 등을 위해 number로 선언 후 나중에 string으로 컨버팅 하도록 함
      */
     drawer: 30,
+    cinema: 100,
     dialog: 1000,
     tooltip: 1001,
   },
