@@ -1,6 +1,7 @@
 'use client';
 
 import { FC, useState } from 'react';
+import { useInstallGuide } from '@/features/pwa-install';
 import { useSignOut } from '@/features/sign-out';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
@@ -19,6 +20,7 @@ const LobbyMenu: FC = () => {
   const t = useI18n();
   const router = useAppRouter();
   const signOut = useSignOut();
+  const { canInstall, openInstallGuide } = useInstallGuide();
   const [isOpen, setIsOpen] = useState(false);
 
   const open = () => setIsOpen(true);
@@ -27,6 +29,11 @@ const LobbyMenu: FC = () => {
   const goNotificationSettings = () => {
     close();
     router.push('/settings/notifications');
+  };
+
+  const handleInstall = () => {
+    close();
+    openInstallGuide();
   };
 
   const handleSignOut = () => {
@@ -45,6 +52,16 @@ const LobbyMenu: FC = () => {
       </button>
       <Drawer title={t.common.menu.title} isOpen={isOpen} close={close}>
         <nav className='flexCol'>
+          {canInstall && (
+            <button
+              type='button'
+              onClick={handleInstall}
+              data-testid='lobby-menu-install-app'
+              className='h-12 flex items-center text-left text-white active:bg-gray-900 -mx-7 px-7'
+            >
+              {t.pwa.menu_label}
+            </button>
+          )}
           <button
             type='button'
             onClick={goNotificationSettings}

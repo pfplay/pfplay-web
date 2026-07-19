@@ -419,5 +419,19 @@
       "too_short": "Please enter at least 5 characters",
       "too_long": "Up to 2000 characters allowed"
     }
+  },
+  "pwa": {
+    "menu_label": "Install app",
+    "title": "Install PFPlay",
+    "description": "Add it to your home screen to open it like an app and get notifications.",
+    "install_now": "Install",
+    "ios_guide_title": "Add to home screen in Safari",
+    "ios_step_1": "Tap the <b>Share</b> button below the address bar.",
+    "ios_step_2": "Choose <b>Add to Home Screen</b> from the list.",
+    "ios_step_3": "Tap <b>Add</b> in the top right. That's it.",
+    "in_app_title": "You can't install from here",
+    "in_app_description": "You're in an in-app browser, which can't add to the home screen. Copy the link and open it in Safari or Chrome.",
+    "copy_link": "Copy link",
+    "copied": "Copied"
   }
 }
