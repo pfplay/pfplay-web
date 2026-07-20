@@ -153,16 +153,15 @@ Expected: PASS — 4 tests
 
 `src/features/playlist/list-tracks/ui/track.component.tsx` — 78-88행의 `<span>` 블록을 아래로 교체:
 
+<!-- prettier-ignore -->
 ```tsx
-{
-  (isNow || isNext) && (
-    <CursorBadge
-      variant={isNow ? 'now' : 'next'}
-      label={isNow ? t.playlist.para.now_playing : t.playlist.para.next_up}
-      className='mb-0.5 w-fit'
-    />
-  );
-}
+          {(isNow || isNext) && (
+            <CursorBadge
+              variant={isNow ? 'now' : 'next'}
+              label={isNow ? t.playlist.para.now_playing : t.playlist.para.next_up}
+              className='mb-0.5 w-fit'
+            />
+          )}
 ```
 
 import 추가 (기존 `Typography` import 아래):
@@ -173,16 +172,15 @@ import { CursorBadge } from '@/shared/ui/components/track-cursor';
 
 `src/widgets-mobile/partyroom-djing-sheet/ui/playlist-detail-sheet.component.tsx` — 66-76행의 `<span>` 블록을 아래로 교체:
 
+<!-- prettier-ignore -->
 ```tsx
-{
-  (isNow || isNext) && (
-    <CursorBadge
-      variant={isNow ? 'now' : 'next'}
-      label={isNow ? t.playlist.para.now_playing : t.playlist.para.next_up}
-      className='mb-0.5 w-fit'
-    />
-  );
-}
+                    {(isNow || isNext) && (
+                      <CursorBadge
+                        variant={isNow ? 'now' : 'next'}
+                        label={isNow ? t.playlist.para.now_playing : t.playlist.para.next_up}
+                        className='mb-0.5 w-fit'
+                      />
+                    )}
 ```
 
 import 추가:
