@@ -13,7 +13,7 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
         sheet_add_tracks_title: '곡 추가',
       },
     },
-    playlist: { para: { now_playing: '재생 중', next_up: '다음 곡' } },
+    playlist: { para: { now_playing: 'NOW', next_up: 'NEXT' } },
   }),
 }));
 
@@ -97,7 +97,7 @@ describe('PlaylistDetailSheet', () => {
       data: { content: [TRACK], lastPlayedTrackId: 11 },
     });
     render(<PlaylistDetailSheet playlist={PL as never} />);
-    expect(screen.getByTestId('track-badge-now')).toHaveTextContent('재생 중');
+    expect(screen.getByTestId('track-badge-now')).toHaveTextContent('NOW');
   });
 
   test('커서=11 + 내가 CurrentDJ 아님 → NOW 없음, NEXT(wrap=11)만', () => {
@@ -107,6 +107,6 @@ describe('PlaylistDetailSheet', () => {
     });
     render(<PlaylistDetailSheet playlist={PL as never} />);
     expect(screen.queryByTestId('track-badge-now')).not.toBeInTheDocument();
-    expect(screen.getByTestId('track-badge-next')).toHaveTextContent('다음 곡');
+    expect(screen.getByTestId('track-badge-next')).toHaveTextContent('NEXT');
   });
 });

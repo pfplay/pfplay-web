@@ -27,8 +27,8 @@ import { useStores } from '@/shared/lib/store/stores.context';
 import Track from './track.component';
 
 const NOT_PLAYABLE = 'Not playable here (exceeds this room limit)';
-const NOW_LABEL = 'Now';
-const NEXT_LABEL = 'Next';
+const NOW_LABEL = 'NOW';
+const NEXT_LABEL = 'NEXT';
 
 const track = {
   linkId: 'l1',

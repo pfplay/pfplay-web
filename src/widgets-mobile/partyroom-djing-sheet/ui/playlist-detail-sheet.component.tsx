@@ -3,11 +3,11 @@ import { FC } from 'react';
 import { useFetchPlaylistTracks } from '@/features/playlist/list-tracks/api/use-fetch-playlist-tracks.query';
 import { useRemovePlaylistTrack } from '@/features/playlist/remove-track/api/use-remove-playlist-track.mutation';
 import { Playlist } from '@/shared/api/http/types/playlists';
-import { cn } from '@/shared/lib/functions/cn';
 import { resolveNextTrackId } from '@/shared/lib/functions/resolve-next-track';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
+import { CursorBadge } from '@/shared/ui/components/track-cursor';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
 import { useFullscreenSheet } from '@/widgets-mobile/partyroom-djing-sheet';
@@ -64,15 +64,11 @@ const PlaylistDetailSheet: FC<Props> = ({ playlist }) => {
                   />
                   <div className='flex-1 min-w-0 flex flex-col'>
                     {(isNow || isNext) && (
-                      <span
-                        data-testid={isNow ? 'track-badge-now' : 'track-badge-next'}
-                        className={cn(
-                          'mb-0.5 inline-flex w-fit items-center rounded-[3px] px-1.5 py-[1px] text-[10px] font-bold leading-[14px]',
-                          isNow ? 'bg-red-300 text-white' : 'bg-gray-600 text-gray-100'
-                        )}
-                      >
-                        {isNow ? t.playlist.para.now_playing : t.playlist.para.next_up}
-                      </span>
+                      <CursorBadge
+                        variant={isNow ? 'now' : 'next'}
+                        label={isNow ? t.playlist.para.now_playing : t.playlist.para.next_up}
+                        className='mb-0.5 w-fit'
+                      />
                     )}
                     <Typography type='caption1' className='min-w-0 truncate text-gray-50'>
                       {track.name}
