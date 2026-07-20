@@ -38,6 +38,11 @@ vi.mock('@/widgets-mobile/partyroom-djing-sheet', () => ({
 }));
 // AddTracksSheet 는 push node 로만 쓰이므로 stub
 vi.mock('./add-tracks-sheet.component', () => ({ default: () => null }));
+vi.mock('react-fast-marquee', () => ({
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid='marquee'>{children}</div>
+  ),
+}));
 
 const PL = { id: 7, name: 'A', musicCount: 2, type: PlaylistType.PLAYLIST, orderNumber: 1 };
 const TRACK = {
@@ -108,5 +113,45 @@ describe('PlaylistDetailSheet', () => {
     render(<PlaylistDetailSheet playlist={PL as never} />);
     expect(screen.queryByTestId('track-badge-now')).not.toBeInTheDocument();
     expect(screen.getByTestId('track-badge-next')).toHaveTextContent('NEXT');
+  });
+});
+
+describe('모바일 시트 커서 배치 (#462)', () => {
+  beforeEach(() => {
+    storeState = {};
+  });
+
+  test('NOW 곡도 삭제 버튼을 유지한다 — 배지가 ✕ 를 밀어내지 않는다', () => {
+    storeState = { me: { crewId: 5 }, currentDj: { crewId: 5 } };
+    useFetchPlaylistTracksMock.mockReturnValue({
+      data: { content: [TRACK], lastPlayedTrackId: 11 },
+    });
+    render(<PlaylistDetailSheet playlist={PL as never} />);
+
+    expect(screen.getByTestId('track-badge-now')).toBeInTheDocument();
+    expect(screen.getByTestId('detail-track-remove-11')).toBeInTheDocument();
+  });
+
+  test('NOW 곡에 마퀴와 이퀄라이저가 붙는다', () => {
+    storeState = { me: { crewId: 5 }, currentDj: { crewId: 5 } };
+    useFetchPlaylistTracksMock.mockReturnValue({
+      data: { content: [TRACK], lastPlayedTrackId: 11 },
+    });
+    render(<PlaylistDetailSheet playlist={PL as never} />);
+
+    expect(screen.getByTestId('marquee')).toBeInTheDocument();
+    expect(screen.getByTestId('playing-bars')).toBeInTheDocument();
+  });
+
+  test('NEXT 곡에는 모션이 없다', () => {
+    storeState = { me: { crewId: 5 }, currentDj: { crewId: 9 } };
+    useFetchPlaylistTracksMock.mockReturnValue({
+      data: { content: [TRACK], lastPlayedTrackId: 11 },
+    });
+    render(<PlaylistDetailSheet playlist={PL as never} />);
+
+    expect(screen.getByTestId('track-badge-next')).toBeInTheDocument();
+    expect(screen.queryByTestId('playing-bars')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('marquee')).not.toBeInTheDocument();
   });
 });
