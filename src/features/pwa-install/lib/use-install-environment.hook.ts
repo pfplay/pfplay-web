@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useSyncExternalStore } from 'react';
+import { useEffect, useState } from 'react';
 import { isStandalone } from '@/shared/lib/browser/browser-environment';
 import { installEnvironment, InstallEnvironment } from './install-environment';
 import { hasInstallPrompt, subscribeInstallPrompt } from './install-prompt';
@@ -13,22 +13,21 @@ import { hasInstallPrompt, subscribeInstallPrompt } from './install-prompt';
  * 늦게 나타나는 편이 낫다.
  */
 export default function useInstallEnvironment(): InstallEnvironment {
-  const promptAvailable = useSyncExternalStore(
-    subscribeInstallPrompt,
-    hasInstallPrompt,
-    () => false
-  );
   const [environment, setEnvironment] = useState<InstallEnvironment>('unsupported');
 
   useEffect(() => {
-    setEnvironment(
-      installEnvironment({
-        userAgent: navigator.userAgent,
-        standalone: isStandalone(),
-        hasInstallPrompt: promptAvailable,
-      })
-    );
-  }, [promptAvailable]);
+    const update = () =>
+      setEnvironment(
+        installEnvironment({
+          userAgent: navigator.userAgent,
+          standalone: isStandalone(),
+          hasInstallPrompt: hasInstallPrompt(),
+        })
+      );
+
+    update();
+    return subscribeInstallPrompt(update);
+  }, []);
 
   return environment;
 }
