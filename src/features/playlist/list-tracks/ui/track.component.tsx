@@ -1,5 +1,4 @@
 'use client';
-import Marquee from 'react-fast-marquee';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { convertPlaylistTrackToPreview } from '@/entities/music-preview';
@@ -11,7 +10,7 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
-import { CursorBadge, PlayingBars } from '@/shared/ui/components/track-cursor';
+import { CursorBadge, CursorTitle, PlayingBars } from '@/shared/ui/components/track-cursor';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFDragAndDrop, PFMoreVert } from '@/shared/ui/icons';
 
@@ -81,25 +80,7 @@ const Track = ({
         </div>
 
         <div className='flex-1 min-w-0 select-none flexCol overflow-hidden pointer-events-none'>
-          {/* 배지가 우측에 떠 있어 흐르는 제목이 그 아래로 지나간다 → 우측 페이드로 가린다. */}
-          <div
-            className={cn(
-              'min-w-0',
-              hasCursor && '[mask-image:linear-gradient(to_right,black_70%,transparent)]'
-            )}
-          >
-            {isNow ? (
-              <Marquee delay={2} speed={20} gradientWidth={0}>
-                <Typography type='caption1' className='text-gray-50 pr-8'>
-                  {track.name}
-                </Typography>
-              </Marquee>
-            ) : (
-              <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
-                {track.name}
-              </Typography>
-            )}
-          </div>
+          <CursorTitle name={track.name} scrolling={isNow} faded={hasCursor} />
           <Typography type='caption1' className='text-gray-400'>
             {track.duration}
           </Typography>

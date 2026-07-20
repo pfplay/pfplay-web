@@ -1,15 +1,13 @@
 'use client';
 import { FC } from 'react';
-import Marquee from 'react-fast-marquee';
 import { useFetchPlaylistTracks } from '@/features/playlist/list-tracks/api/use-fetch-playlist-tracks.query';
 import { useRemovePlaylistTrack } from '@/features/playlist/remove-track/api/use-remove-playlist-track.mutation';
 import { Playlist } from '@/shared/api/http/types/playlists';
-import { cn } from '@/shared/lib/functions/cn';
 import { resolveNextTrackId } from '@/shared/lib/functions/resolve-next-track';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { Button } from '@/shared/ui/components/button';
-import { CursorBadge, PlayingBars } from '@/shared/ui/components/track-cursor';
+import { CursorBadge, CursorTitle, PlayingBars } from '@/shared/ui/components/track-cursor';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFClose } from '@/shared/ui/icons';
 import { useFullscreenSheet } from '@/widgets-mobile/partyroom-djing-sheet';
@@ -68,25 +66,7 @@ const PlaylistDetailSheet: FC<Props> = ({ playlist }) => {
                     {isNow && <PlayingBars className='absolute inset-0 rounded' />}
                   </div>
                   <div className='flex-1 min-w-0 flex flex-col'>
-                    {/* 흐르는 제목이 우측 배지 아래로 지나가므로 페이드로 가린다. */}
-                    <div
-                      className={cn(
-                        'min-w-0',
-                        isNow && '[mask-image:linear-gradient(to_right,black_70%,transparent)]'
-                      )}
-                    >
-                      {isNow ? (
-                        <Marquee delay={2} speed={20} gradientWidth={0}>
-                          <Typography type='caption1' className='text-gray-50 pr-8'>
-                            {track.name}
-                          </Typography>
-                        </Marquee>
-                      ) : (
-                        <Typography type='caption1' className='min-w-0 truncate text-gray-50'>
-                          {track.name}
-                        </Typography>
-                      )}
-                    </div>
+                    <CursorTitle name={track.name} scrolling={isNow} faded={isNow || isNext} />
                   </div>
                   {(isNow || isNext) && (
                     <CursorBadge
