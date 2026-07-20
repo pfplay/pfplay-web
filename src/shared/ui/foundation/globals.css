@@ -93,3 +93,10 @@
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   }
 }
+
+/* 모션 최소화 설정에서는 마퀴를 멈춘다. react-fast-marquee 내부 클래스 대상. */
+@media (prefers-reduced-motion: reduce) {
+  .rfm-marquee {
+    animation: none !important;
+  }
+}
