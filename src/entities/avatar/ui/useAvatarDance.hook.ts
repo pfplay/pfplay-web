@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { MotionType } from '@/shared/api/http/types/@enums';
-import breathingRhythm, { BreathingRhythm } from '../lib/breathing-rhythm';
+import breathingRhythmOf, { BreathingRhythm } from '../lib/breathing-rhythm';
 
 const SIN_LUT = new Float32Array(360);
 for (let i = 0; i < 360; i++) {
@@ -10,19 +10,17 @@ for (let i = 0; i < 360; i++) {
 const normalizeAngle = (angle: number) => ((angle % 360) + 360) % 360;
 const fastSin = (angle: number) => SIN_LUT[normalizeAngle(Math.floor(angle))];
 
+/** 아바타마다 다르게 주면 서로 크기가 달라 보이므로 공통값으로 둔다. */
+const BREATH_DEPTH = 0.04;
+
 type AvatarEntry = {
   el: HTMLElement;
   motionType: MotionType;
   breathing: BreathingRhythm;
 };
 
-/**
- * 호흡 리듬의 기준값. 아바타를 감싸는 요소의 `data-crew-id` 를 쓴다 —
- * 사람마다 고유하고 세션 내내 안 바뀌므로 "같은 사람은 같은 리듬" 이 유지된다.
- * 배열 index 는 입퇴장 때마다 밀려서 못 쓴다.
- */
-const crewIdOf = (el: HTMLElement, fallback: number): number =>
-  Number(el.closest('[data-crew-id]')?.getAttribute('data-crew-id')) || fallback;
+const crewIdOf = (el: HTMLElement, fallbackId: number): number =>
+  Number(el.closest('[data-crew-id]')?.getAttribute('data-crew-id')) || fallbackId;
 
 export function useAvatarDance() {
   const avatarEntries = useRef<AvatarEntry[]>([]);
@@ -39,8 +37,7 @@ export function useAvatarDance() {
       avatarEntries.current.push({
         el,
         motionType,
-        // 프레임 루프에서 매번 계산하지 않도록 등록 시 1회만 구한다.
-        breathing: breathingRhythm(crewIdOf(el, avatarEntries.current.length)),
+        breathing: breathingRhythmOf(crewIdOf(el, avatarEntries.current.length)),
       });
     }
   };
@@ -91,12 +88,10 @@ export function useAvatarDance() {
 
           transform = `translateY(${-y}px) scale(${s})`;
         } else if (motionType === MotionType.NONE) {
-          // 숨쉬는 듯한 모션. 주기·시작 위상은 아바타마다 다르다 (#463).
-          const { period, phase } = breathing;
-          const breathPhase = ((t + phase) % period) / period;
-          const breathWave = (fastSin(breathPhase * 360) + 1) / 2;
-          const scaleChange = 0.04; // 크기 변화량 — 사람마다 같아야 크기가 달라 보이지 않는다
-          const scale = 1 + scaleChange * breathWave;
+          const { periodSeconds, startOffsetSeconds } = breathing;
+          const breathProgress = ((t + startOffsetSeconds) % periodSeconds) / periodSeconds;
+          const breathWave = (fastSin(breathProgress * 360) + 1) / 2;
+          const scale = 1 + BREATH_DEPTH * breathWave;
           transform = `scale(${scale})`;
         }
 
