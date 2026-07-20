@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { MotionType } from '@/shared/api/http/types/@enums';
+import breathingRhythmOf, { BreathingRhythm } from '../lib/breathing-rhythm';
 
 const SIN_LUT = new Float32Array(360);
 for (let i = 0; i < 360; i++) {
@@ -9,10 +10,17 @@ for (let i = 0; i < 360; i++) {
 const normalizeAngle = (angle: number) => ((angle % 360) + 360) % 360;
 const fastSin = (angle: number) => SIN_LUT[normalizeAngle(Math.floor(angle))];
 
+/** 아바타마다 다르게 주면 서로 크기가 달라 보이므로 공통값으로 둔다. */
+const BREATH_DEPTH = 0.04;
+
 type AvatarEntry = {
   el: HTMLElement;
   motionType: MotionType;
+  breathing: BreathingRhythm;
 };
+
+const crewIdOf = (el: HTMLElement, fallbackId: number): number =>
+  Number(el.closest('[data-crew-id]')?.getAttribute('data-crew-id')) || fallbackId;
 
 export function useAvatarDance() {
   const avatarEntries = useRef<AvatarEntry[]>([]);
@@ -29,6 +37,7 @@ export function useAvatarDance() {
       avatarEntries.current.push({
         el,
         motionType,
+        breathing: breathingRhythmOf(crewIdOf(el, avatarEntries.current.length)),
       });
     }
   };
@@ -42,7 +51,7 @@ export function useAvatarDance() {
       const t = ((time - startTimeRef.current) / 1000) * speed;
 
       avatarEntries.current.forEach((entry, index) => {
-        const { el, motionType } = entry;
+        const { el, motionType, breathing } = entry;
         const offset = index * 36;
         const angle = t * 360 + offset;
 
@@ -79,12 +88,10 @@ export function useAvatarDance() {
 
           transform = `translateY(${-y}px) scale(${s})`;
         } else if (motionType === MotionType.NONE) {
-          // 숨쉬는 듯한 모션
-          const breathPeriod = 1; // 호흡 주기 (초)
-          const breathPhase = (t % breathPeriod) / breathPeriod;
-          const breathWave = (fastSin(breathPhase * 360) + 1) / 2;
-          const scaleChange = 0.04; // 크기 변화량
-          const scale = 1 + scaleChange * breathWave;
+          const { periodSeconds, startOffsetSeconds } = breathing;
+          const breathProgress = ((t + startOffsetSeconds) % periodSeconds) / periodSeconds;
+          const breathWave = (fastSin(breathProgress * 360) + 1) / 2;
+          const scale = 1 + BREATH_DEPTH * breathWave;
           transform = `scale(${scale})`;
         }
 
