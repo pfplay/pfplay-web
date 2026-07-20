@@ -9,6 +9,9 @@ import { recordClientEvent } from '@/shared/lib/observability/client-events';
 export default class PartyroomClient {
   private socketClient: SocketClient;
   private subscribedRoomId: number | undefined;
+  // #469 현재 방의 "재연결 시 재입장(resync)" 핸들러 해제자. 단일 슬롯 — 방 전환 시 교체되고
+  // unsubscribeCurrentRoom(teardown 경로)에서 정리되므로 방마다 핸들러가 누적되지 않는다.
+  private roomReconnectDisposer: (() => void) | undefined;
 
   public constructor() {
     this.socketClient = new SocketClient();
@@ -25,7 +28,18 @@ export default class PartyroomClient {
   }
 
   public onConnect(callback: () => void, options?: OnConnectOptions) {
-    this.socketClient.onConnect(callback, options);
+    return this.socketClient.onConnect(callback, options);
+  }
+
+  /**
+   * #469 현재 방의 재연결 resync 핸들러를 단일 슬롯으로 등록한다. 이전 방의 핸들러는 교체(해제)되고,
+   * teardown 이 호출하는 {@link unsubscribeCurrentRoom} 에서 함께 정리되므로 `onConnectQueue` 에
+   * 방마다 핸들러가 누적되지 않는다 — 구독의 "destination당 1개 replace" 정책과 동일한 단일-방 생명주기.
+   */
+  public setRoomReconnectHandler(callback: () => void) {
+    this.roomReconnectDisposer?.();
+    // skipCurrent: 등록 시점의 연결엔 미발화(초기 enter 담당) → 이후 재연결에만 resync.
+    this.roomReconnectDisposer = this.socketClient.onConnect(callback, { skipCurrent: true });
   }
 
   /**
@@ -65,6 +79,10 @@ export default class PartyroomClient {
     const roomId = this.subscribedRoomId;
     this.socketClient.unsubscribe(`/sub/partyrooms/${roomId}`);
     this.subscribedRoomId = undefined;
+    // #469 재연결 resync 핸들러도 구독과 함께 정리 — 방을 떠나면 이 방의 재입장 핸들러가
+    // onConnectQueue 에 남아 재연결마다 stale enter 를 발사하던 누수를 차단.
+    this.roomReconnectDisposer?.();
+    this.roomReconnectDisposer = undefined;
     if (roomId != null) {
       recordClientEvent({ type: 'PARTYROOM_UNSUBSCRIBE', partyroomId: roomId });
     }
