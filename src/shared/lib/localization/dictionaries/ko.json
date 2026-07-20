@@ -240,10 +240,13 @@
       "register_queue": "DJ 대기 등록",
       "add_dj": "DJ 추가",
       "selection_completed": "선택완료",
-      "select_dj_playlist": "디제잉 플레이리스트 선택"
+      "select_dj_playlist": "디제잉 플레이리스트 선택",
+      "search_and_register_dj": "곡 검색하고 DJ 등록",
+      "pick_from_my_playlist": "내 플레이리스트에서 고르기",
+      "register_with_this_song": "이 곡으로 DJ 등록"
     },
     "para": {
-      "no_dj_crew": "현재 디제잉 인원이 없어요\n파티의 흥을 책임질 DJ가 되어보세요!",
+      "no_dj_crew": "현재 디제잉하는 사람이 없어요.\n첫 곡을 틀어보세요!",
       "create_playlist_song": "대기 등록을 위해 최소 1곡이 담긴 플레이리스트가 필요해요",
       "cancel_dj_queue": "DJ 대기 등록 취소",
       "cancel_dj_queue_confirm": "DJ 대기 등록을 취소하시겠습니까?",
@@ -261,7 +264,10 @@
       "queue_lock_detail": "잠그면 새 DJ 등록이 막히고, 현재 대기열만 유지돼요.",
       "playback_stopped_time_limit": "재생 시간 제한({{minutes}}분)을 초과하는 곡으로 재생이 중단되었습니다",
       "playback_stopped_no_limit": "재생 가능한 곡이 없어 재생이 중단되었습니다",
-      "not_playable_in_room": "이 방에선 재생 안 돼요 (재생 시간 제한 초과)"
+      "not_playable_in_room": "이 방에선 재생 안 돼요 (재생 시간 제한 초과)",
+      "search_song_to_dj": "디제잉할 곡을 검색하세요.",
+      "select_song_to_dj": "디제잉할 곡을 선택해 주세요",
+      "start_djing_with_this_song": "이 곡으로 디제잉을 시작해요"
     }
   },
   "db": {
