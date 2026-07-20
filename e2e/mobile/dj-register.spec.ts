@@ -29,6 +29,10 @@ test.describe('mobile DJ register flow', () => {
   let desktopCtx: BrowserContext;
   let user2DesktopCtx: BrowserContext;
   let partyroomUrl: string;
+  // #471 호스트(user1) page 를 테스트 내내 열어두기 위한 참조. 셋업이 이 page 를 닫으면
+  // 호스트 presence grace(10s) 카운트다운이 시작돼, cold/풀스위트 부하에서 grace 만료 →
+  // 방 TERMINATED 로 붕괴하며 user2 의 DJ 등록이 유실된다(dj-queue 빈 채로 단언 실패).
+  let hostPage: Page;
 
   test.beforeAll(async ({ browser }) => {
     // chunk 3.1 Mode C pattern: cold-start 여파 + me-pending guard 바운스 대비.
@@ -37,8 +41,8 @@ test.describe('mobile DJ register flow', () => {
     const log = (m: string) => console.log(`[dj-register beforeAll][${Date.now() - t0}ms] ${m}`);
 
     desktopCtx = await newDesktopUserContext(browser, 'a-user1.json');
-    const setupPage = await desktopCtx.newPage();
-    attachErrorTracing(setupPage, log);
+    hostPage = await desktopCtx.newPage();
+    attachErrorTracing(hostPage, log);
 
     // backend '1 user 1 host' 제약 회피용 cleanup. user1 host 로 stale 잡혀있으면
     // createPartyroom 이 '이미 다른 파티룸의 호스트입니다' 로 fail.
@@ -47,15 +51,18 @@ test.describe('mobile DJ register flow', () => {
     log('cleanup done');
 
     log('goto /parties');
-    await setupPage.goto('/parties');
+    await hostPage.goto('/parties');
     log('createPartyroom');
     partyroomUrl = await createPartyroom(
-      setupPage,
+      hostPage,
       chunk4PartyroomName('MDJ'),
       'mobile dj register'
     );
     log(`partyroom created: ${partyroomUrl}`);
-    await setupPage.close();
+    // #471 hostPage.close() 를 하지 않는다 — createPartyroom 이 호스트를 방 안(/parties/{id})까지
+    // 진입시키므로, page 를 닫으면 호스트 WS 끊김 → presence PENDING_EXIT → grace 만료 →
+    // forceOffline 퇴장 → 방 TERMINATED 로 이어진다. 호스트를 present 로 유지해 방을 테스트
+    // 내내 살리고, afterAll 의 desktopCtx.close() 가 이 page 를 정리한다.
 
     // user2 의 playlist (musicCount>0) fresh 생성 — 데스크탑 viewport 에서.
     log('setup user2 playlist (desktop)');
