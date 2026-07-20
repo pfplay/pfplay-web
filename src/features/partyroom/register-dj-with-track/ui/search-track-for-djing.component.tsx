@@ -77,6 +77,7 @@ export default function SearchTrackForDjing({
                 key={music.videoId}
                 role='button'
                 tabIndex={0}
+                aria-pressed={isSelected}
                 onClick={() => setSelectedTrack(music)}
                 className={cn(
                   'my-1 rounded border px-[12px] py-[12px] cursor-pointer transition-colors',
@@ -84,7 +85,7 @@ export default function SearchTrackForDjing({
                     ? 'border-red-300 bg-red-500/40'
                     : 'border-transparent hover:bg-gray-800'
                 )}
-                data-testid={isSelected ? 'djing-track-selected' : 'djing-track-item'}
+                data-testid='djing-track-item'
               >
                 <SearchListItem music={music} Suffix={null} />
               </div>
