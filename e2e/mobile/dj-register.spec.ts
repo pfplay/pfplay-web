@@ -29,6 +29,12 @@ test.describe('mobile DJ register flow', () => {
   let desktopCtx: BrowserContext;
   let user2DesktopCtx: BrowserContext;
   let partyroomUrl: string;
+  // #471 본 spec 이 만든 fresh 플레이리스트의 이름 — SelectPlaylistSheet 에서 이름으로 정확히
+  // 선택하기 위해 보관. `.first()` 선택은 풀스위트에서 다른 프로젝트/스펙(desktop e2e-a 도 같은
+  // a-user2 를 씀)이 기본 플리("내 플레이리스트")에 추가한 트랙에 오염된 카드를 집을 수 있고,
+  // 그 트랙이 방 재생제한(7분)을 넘으면 백엔드가 등록 직후 DJ_NO_PLAYABLE_TRACK 으로 큐에서
+  // 제거해 본 spec 이 실패한다(계측으로 확정: POST 201 → DEACTIVATE djs:[] → GET djs:[]).
+  let djPlaylistName: string;
   // #471 호스트(user1) page 를 테스트 내내 열어두기 위한 참조. 셋업이 이 page 를 닫으면
   // 호스트 presence grace(10s) 카운트다운이 시작돼, cold/풀스위트 부하에서 grace 만료 →
   // 방 TERMINATED 로 붕괴하며 user2 의 DJ 등록이 유실된다(dj-queue 빈 채로 단언 실패).
@@ -69,7 +75,8 @@ test.describe('mobile DJ register flow', () => {
     user2DesktopCtx = await newDesktopUserContext(browser, 'a-user2.json');
     const user2SetupPage = await user2DesktopCtx.newPage();
     attachErrorTracing(user2SetupPage, log);
-    await createPlaylistWithTracks(user2SetupPage, chunk4PlaylistName('MDJpl'));
+    djPlaylistName = chunk4PlaylistName('MDJpl');
+    await createPlaylistWithTracks(user2SetupPage, djPlaylistName);
     log('user2 playlist created');
     await user2SetupPage.close();
     await user2DesktopCtx.close();
@@ -93,6 +100,36 @@ test.describe('mobile DJ register flow', () => {
     const page: Page = await user2Context.newPage();
     attachErrorTracing(page, log);
 
+    // ── #471 진단 로깅(유지): 실패 시 원인 즉시 판별용 — 로그 전용, 동작 무영향 ────────
+    // 1) register POST 요청/응답 status+body — 등록 API 성공 여부를 직접 확정
+    //    (가이드 모달 노출은 mutation 성공의 증거가 아닐 수 있음)
+    // 2) 모든 dj-queue GET 응답 body — enqueue 후 GET이 비었는지 vs GET 자체가 안 떴는지
+    // 3) WS 프레임 중 DJ_QUEUE 관련 — 이벤트가 클라에 실제 도달했는지
+    page.on('request', (req) => {
+      if (req.url().includes('dj-queue')) {
+        log(`[NET→] ${req.method()} ${req.url()} post=${(req.postData() ?? '').slice(0, 120)}`);
+      }
+    });
+    page.on('response', (res) => {
+      if (res.url().includes('dj-queue')) {
+        res
+          .text()
+          .catch(() => '(body read fail)')
+          .then((body) =>
+            log(
+              `[NET←] ${res.request().method()} ${res.status()} ${res.url()} body=${body.slice(0, 300)}`
+            )
+          );
+      }
+    });
+    page.on('websocket', (ws) => {
+      ws.on('framereceived', (frame) => {
+        const p = typeof frame.payload === 'string' ? frame.payload : '';
+        if (/DJ_QUEUE|dj_queue/i.test(p)) log(`[WS←] ${p.replace(/\s+/g, ' ').slice(0, 400)}`);
+      });
+    });
+    // ── 계측 끝 ──────────────────────────────────────────────────────────────
+
     log('mobile enter');
     await enterMobileRoomAndWaitReady(page, partyroomUrl);
     log('queue tab');
@@ -100,11 +137,14 @@ test.describe('mobile DJ register flow', () => {
     log('register click');
     await page.getByTestId('member-action-register').click();
 
-    // SelectPlaylistSheet 의 musicCount>0 카드 (disabled 아님) 선택.
+    // SelectPlaylistSheet 에서 **본 spec 이 만든 플리를 이름으로 정확히** 선택 (#471).
+    // `.first()` 는 다른 스펙이 오염시킨 기본 플리(재생제한 초과 트랙 포함 가능)를 집어
+    // 등록 직후 백엔드 DJ_NO_PLAYABLE_TRACK 제거 → flake 였다. 상세는 describe 상단 주석.
     const enabledCard = page
       .locator(
         '[data-testid^="mobile-playlist-card-"]:not([data-testid$="-add-tracks"]):not([disabled])'
       )
+      .filter({ hasText: djPlaylistName })
       .first();
     await expect(enabledCard).toBeVisible({ timeout: 15_000 });
     await enabledCard.click();
