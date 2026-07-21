@@ -34,6 +34,13 @@ export type OnConnectOptions = {
    * @default false
    */
   once?: boolean;
+  /**
+   * `true`일 시, 등록 시점에 이미 연결돼 있어도 즉시 실행하지 않고 이후의 (재)연결에만 실행합니다.
+   * "현재 연결이 아니라 다음 연결부터" 동작해야 하는 재연결 resync 핸들러용(#469) — 이게 없으면
+   * 이미 연결된 상태에서 등록 시 즉시 발화해 초기 enter 와 이중 tryEnter 가 됩니다.
+   * @default false
+   */
+  skipCurrent?: boolean;
 };
 type OnConnect = {
   callback: () => void;
@@ -128,14 +135,22 @@ export default class SocketClient {
    * 커넥션이 맺히면 콜백을 실행합니다.
    * **이미 커넥션이 맺혔을 경우 즉시 실행됩니다.**
    * 기본적으론 매 연결(reconnect 등)마다 실행되지만, `options.once`가 `true`일 시 최초 connect 시에만 실행됩니다.
+   *
+   * @returns 등록을 해제하는 함수. 비-`once` 핸들러(재연결마다 실행)는 소비자 정리 시점에
+   *   반드시 해제해야 한다 — 미해제 시 `onConnectQueue`에 누적되어 재연결마다 stale 콜백이
+   *   발사된다(#469). 큐에 남지 않는 경우(연결됨+`once` 즉시 실행)에도 안전한 no-op 을 반환한다.
    */
-  public onConnect(callback: () => void, options?: OnConnectOptions) {
-    if (this.connected) {
+  public onConnect(callback: () => void, options?: OnConnectOptions): () => void {
+    if (this.connected && !options?.skipCurrent) {
       callback();
-      if (options?.once) return;
+      if (options?.once) return () => {};
     }
 
-    this.onConnectQueue.push({ callback, options });
+    const entry: OnConnect = { callback, options };
+    this.onConnectQueue.push(entry);
+    return () => {
+      this.onConnectQueue = this.onConnectQueue.filter((queued) => queued !== entry);
+    };
   }
 
   /**

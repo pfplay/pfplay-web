@@ -52,7 +52,10 @@ export default function useDjQueueChangedCallback() {
     updateCurrentDj(currentDj ? { crewId: currentDj.crewId } : undefined);
     queryClient.setQueryData<DjingQueue>(queryKey, (prev) => {
       if (!prev) {
-        queryClient.invalidateQueries({ queryKey });
+        // #471 event.djs 만으론 DjingQueue 전체(playbackActivated/queueStatus/registered/playback)를
+        // 구성할 수 없어 refetch 로 채운다. 단 큐 쿼리가 inactive(시트/모달에 가려짐)면 기본 'active'
+        // refetch 가 안 뛰어 캐시가 빈 채로 남으므로 refetchType:'all' 로 inactive 까지 강제한다.
+        queryClient.invalidateQueries({ queryKey, refetchType: 'all' });
         return prev;
       }
 

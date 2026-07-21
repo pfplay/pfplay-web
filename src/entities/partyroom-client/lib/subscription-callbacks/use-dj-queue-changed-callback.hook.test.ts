@@ -76,6 +76,21 @@ describe('useDjQueueChangedCallback', () => {
     expect(queryClient.getQueryData([QueryKeys.DjingQueue, undefined])).toBeUndefined();
   });
 
+  test('#471 캐시가 비어있으면(prev undefined) refetchType:"all"로 invalidate — inactive 큐도 강제 refetch', () => {
+    const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
+    const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
+
+    // setQueryData 하지 않음 → prev undefined. event.djs 만으론 DjingQueue 전체를 못 만들어
+    // refetch 로 채우는데, 큐 쿼리가 inactive(시트/모달에 가려짐)면 기본 'active' refetch 가
+    // 안 뛰어 등록이 UI 에 반영되지 않던 문제(#471). refetchType:'all' 로 강제해야 한다.
+    result.current(createEvent());
+
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: [QueryKeys.DjingQueue, 123],
+      refetchType: 'all',
+    });
+  });
+
   test('orderNumber가 가장 낮은 DJ를 현재 DJ로 갱신한다', () => {
     const { result, queryClient } = renderWithClient(() => useDjQueueChangedCallback());
     queryClient.setQueryData([QueryKeys.DjingQueue, 123], createQueue());

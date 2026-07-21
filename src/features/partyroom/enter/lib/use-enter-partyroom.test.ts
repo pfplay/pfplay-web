@@ -30,6 +30,7 @@ import { useEnterPartyroom } from './use-enter-partyroom';
 import { useEnterPartyroom as useEnterPartyroomMutation } from '../api/use-enter-partyroom.mutation';
 
 const mockOnConnect = vi.fn();
+const mockSetRoomReconnectHandler = vi.fn();
 const mockMutate = vi.fn();
 const mockInit = vi.fn();
 const mockPush = vi.fn();
@@ -41,6 +42,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   (usePartyroomClient as Mock).mockReturnValue({
     onConnect: mockOnConnect,
+    setRoomReconnectHandler: mockSetRoomReconnectHandler,
     subscribe: vi.fn(),
   });
   (useHandlePartyroomSubscriptionEvent as Mock).mockReturnValue(vi.fn());
@@ -127,30 +129,32 @@ describe('useEnterPartyroom', () => {
   });
 });
 
-describe('useEnterPartyroom resync (#402)', () => {
-  // calls[0] = once enter, calls[1] = resync(non-once)
+describe('useEnterPartyroom 재연결 resync (#402/#469)', () => {
+  // #469: onConnect 는 초기 enter(once) 1회만 등록되고, resync 는 그 once 핸들러 실행 시
+  // setRoomReconnectHandler 로 단일 슬롯 등록된다(방마다 누적 X). 아래는 그 resync 콜백을 꺼내온다.
   const registerAndGetResync = (partyroomId: number) => {
     const { result } = renderHook(() => useEnterPartyroom(partyroomId));
     act(() => result.current());
-    return mockOnConnect.mock.calls[1][0] as () => void;
+    mockOnConnect.mock.calls[0][0](); // once 핸들러 → 초기 enter + resync 등록
+    mockMutate.mockClear(); // 초기 enter 호출 제거 → 이후 resync enter 가 calls[0]
+    return mockSetRoomReconnectHandler.mock.calls[0][0] as () => void;
   };
 
-  test('resync 핸들러를 비-once 로 등록한다 (2번째 onConnect, options 없음)', () => {
+  test('#469 onConnect 는 once 1회만(재연결 핸들러 누적 없음), resync 는 setRoomReconnectHandler 로 등록', () => {
     const { result } = renderHook(() => useEnterPartyroom(1));
     act(() => result.current());
-    expect(mockOnConnect).toHaveBeenNthCalledWith(2, expect.any(Function));
-  });
 
-  test('첫 연결은 skip — mutate 미호출', () => {
-    const resync = registerAndGetResync(7);
-    resync(); // 첫 발화 = firstConnect skip
-    expect(mockMutate).not.toHaveBeenCalled();
+    expect(mockOnConnect).toHaveBeenCalledTimes(1);
+    expect(mockOnConnect).toHaveBeenCalledWith(expect.any(Function), { once: true });
+    expect(mockSetRoomReconnectHandler).not.toHaveBeenCalled();
+
+    mockOnConnect.mock.calls[0][0](); // once 실행 시 resync 등록
+    expect(mockSetRoomReconnectHandler).toHaveBeenCalledWith(expect.any(Function));
   });
 
   test('재연결 시 enter(tryEnter) 호출', () => {
     const resync = registerAndGetResync(7);
-    resync(); // skip
-    resync(); // 재연결
+    resync();
     expect(mockMutate).toHaveBeenCalledWith(
       expect.objectContaining({ partyroomId: 7 }),
       expect.objectContaining({ onSuccess: expect.any(Function), onError: expect.any(Function) })
@@ -159,7 +163,6 @@ describe('useEnterPartyroom resync (#402)', () => {
 
   test('reactivated=false → setup 미호출, DJ큐 invalidate', () => {
     const resync = registerAndGetResync(7);
-    resync();
     resync();
     mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER', reactivated: false });
     expect(partyroomsService.getSetupInfo).not.toHaveBeenCalled();
@@ -171,14 +174,12 @@ describe('useEnterPartyroom resync (#402)', () => {
     (partyroomsService.getNotice as Mock).mockReturnValue(new Promise(() => {}));
     const resync = registerAndGetResync(7);
     resync();
-    resync();
     mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER', reactivated: true });
     expect(partyroomsService.getSetupInfo).toHaveBeenCalled();
   });
 
   test('enter onError → 로비', () => {
     const resync = registerAndGetResync(7);
-    resync();
     resync();
     mockMutate.mock.calls[0][1].onError();
     expect(mockPush).toHaveBeenCalledWith('/parties');
@@ -266,15 +267,15 @@ describe('플레이백 요약 추적기 배선 (#444)', () => {
     });
   });
 
-  test('L2: 재연결(비-once onConnect) 시 clear — 첫 연결 skip에서는 clear하지 않음', () => {
+  test('L2: 재연결 resync 발화 시 추적기를 clear한다 (#469 setRoomReconnectHandler)', () => {
     const { result } = renderHook(() => useEnterPartyroom(7));
     act(() => result.current());
-    const resync = mockOnConnect.mock.calls[1][0] as () => void;
+    mockOnConnect.mock.calls[0][0](); // once 핸들러 → resync 등록
+    const resync = mockSetRoomReconnectHandler.mock.calls[0][0] as () => void;
 
-    resync(); // 첫 연결 skip
-    expect(mockTrackerClear).not.toHaveBeenCalled();
+    expect(mockTrackerClear).not.toHaveBeenCalled(); // 등록만으론 clear 안 함
 
-    resync(); // 재연결
+    resync(); // 재연결 발화
     expect(mockTrackerClear).toHaveBeenCalledTimes(1);
   });
 });

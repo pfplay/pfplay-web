@@ -23,6 +23,7 @@ export enum ErrorCode {
   INVALID_ACTIVE_ROOM = 'CRW-002', // 내 활성화된 방이 유효하지 않음
   NOT_PARTYROOM_CREW = 'CRW-003', // 파티룸의 크루가 아닙니다
   PROFILE_REQUIRED = 'CRW-004', // 프로필 등록이 완료되어야 파티룸에 참여할 수 있습니다
+  CONCURRENT_ACTIVE_ROOM = 'CRW-005', // 동시 입장 경쟁 패자 — 다른 기기/탭 입장이 처리 중 (잠시 후 재시도)
 
   // UserAvatarException
   AVATAR_SELECTION_FORBIDDEN = 'UAV-001', // 제한 사항(e.g. DJ 포인트 부족)으로 아바타 선택이 불가능함
