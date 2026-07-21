@@ -23,4 +23,9 @@ export default function usePartyroomEnterErrorAlerts() {
   useOnError(ErrorCode.PROFILE_REQUIRED, () => {
     openAlertDialog({ content: t.partyroom.ec.profile_required });
   });
+  // #473 동시 입장 경쟁 패자(platform#349 uk_crew_active_user). 승자의 입장이 정착되면
+  // auto-exit 이 해소하는 일시 충돌이므로 재시도 안내가 정답 — 백엔드 한글 메시지 노출(i18n 구멍) 방지.
+  useOnError(ErrorCode.CONCURRENT_ACTIVE_ROOM, () => {
+    openAlertDialog({ content: t.partyroom.ec.concurrent_entry });
+  });
 }

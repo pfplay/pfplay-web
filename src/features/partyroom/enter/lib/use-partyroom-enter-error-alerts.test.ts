@@ -14,7 +14,13 @@ const mockOpenAlertDialog = vi.fn();
 beforeEach(() => {
   vi.clearAllMocks();
   (useI18n as Mock).mockReturnValue({
-    partyroom: { ec: { shut_down: 'Room closed', profile_required: 'Profile required' } },
+    partyroom: {
+      ec: {
+        shut_down: 'Room closed',
+        profile_required: 'Profile required',
+        concurrent_entry: 'Concurrent entry',
+      },
+    },
     auth: { para: { auth_quota_exceeded: 'Limit exceeded' } },
   });
   (useDialog as Mock).mockReturnValue({ openAlertDialog: mockOpenAlertDialog });
@@ -23,14 +29,24 @@ beforeEach(() => {
 });
 
 describe('usePartyroomEnterErrorAlerts', () => {
-  test('4개의 에러 코드에 대해 useOnError를 등록한다', () => {
+  test('5개의 에러 코드에 대해 useOnError를 등록한다', () => {
     renderHook(() => usePartyroomEnterErrorAlerts());
 
-    expect(useOnError).toHaveBeenCalledTimes(4);
+    expect(useOnError).toHaveBeenCalledTimes(5);
     expect(useOnError).toHaveBeenCalledWith(ErrorCode.NOT_FOUND_ROOM, expect.any(Function));
     expect(useOnError).toHaveBeenCalledWith(ErrorCode.ALREADY_TERMINATED, expect.any(Function));
     expect(useOnError).toHaveBeenCalledWith(ErrorCode.EXCEEDED_LIMIT, expect.any(Function));
     expect(useOnError).toHaveBeenCalledWith(ErrorCode.PROFILE_REQUIRED, expect.any(Function));
+    expect(useOnError).toHaveBeenCalledWith(ErrorCode.CONCURRENT_ACTIVE_ROOM, expect.any(Function));
+  });
+
+  test('CONCURRENT_ACTIVE_ROOM 콜백이 concurrent_entry 메시지로 alert를 연다 (#473)', () => {
+    (useOnError as Mock).mockImplementation((code: ErrorCode, cb: (...args: any[]) => void) => {
+      if (code === ErrorCode.CONCURRENT_ACTIVE_ROOM) cb();
+    });
+
+    renderHook(() => usePartyroomEnterErrorAlerts());
+    expect(mockOpenAlertDialog).toHaveBeenCalledWith({ content: 'Concurrent entry' });
   });
 
   test('NOT_FOUND_ROOM 콜백이 shut_down 메시지로 alert를 연다', () => {
