@@ -330,7 +330,8 @@
     "ec": {
       "shut_down": "The party room no longer exists.",
       "data_load": "Failed to load data.\nWould you like to try entering again?",
-      "profile_required": "Complete your profile setup to join a partyroom."
+      "profile_required": "Complete your profile setup to join a partyroom.",
+      "concurrent_entry": "Another device or tab is entering a party room.\nPlease try again in a moment."
     },
     "queue": {
       "guest_cta_title": "🎧 Play music yourself",
