@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   useHandlePartyroomSubscriptionEvent,
@@ -29,8 +28,6 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
   const router = useAppRouter();
 
   const entrySource: EntrySource = options.entrySource ?? 'direct';
-  // 재연결 resync 의 첫 연결 skip 가드 (연결 간 보존). 첫 연결은 아래 once enter 가 담당. (#402)
-  const firstConnect = useRef(true);
 
   const setup = async (enterResponse: EnterResponse) => {
     // L1: 방 enter/재수화 시작 시 무조건 clear — 이전 방 스냅샷이 새 방 채팅에 방출되는 누출 방지
@@ -102,6 +99,36 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
   return () => {
     client.onConnect(
       () => {
+        // #469 재연결 resync 를 단일 슬롯으로 등록한다. skipCurrent 라 현재 연결엔 미발화(초기 enter 가
+        // 담당)하고 이후 재연결에만 동작하며, teardown 의 unsubscribeCurrentRoom 이 해제하므로
+        // 방마다 onConnectQueue 에 누적되지 않는다 (기존 firstConnect ref 꼼수 제거).
+        client.setRoomReconnectHandler(() => {
+          // L2: 재연결마다 clear — 끊김이 곡 경계를 넘었을 때 낡은 스냅샷에 새 곡 counts가 오염된
+          // 틀린 구획 방출 방지. disconnect 콜백이 공개돼 있지 않아 재연결 시점 clear가 의미상 등가
+          // (끊김~재연결 사이엔 방출/시드 이벤트가 처리되지 않음). 놓친 경계는 기념하지 않는다.
+          useCurrentPartyroom.getState().playbackSummaryTracker.clear();
+          enter(
+            { partyroomId },
+            {
+              onSuccess: (enterResponse) => {
+                const invalidateDjQueue = () =>
+                  queryClient.invalidateQueries({ queryKey: [QueryKeys.DjingQueue, partyroomId] });
+                if (enterResponse.reactivated) {
+                  // 멤버십 상실 → 풀 재수화(검정 해소). 룸 재구독은 추가하지 않음(handleConnect 가 이미 reconcile).
+                  silent(setup(enterResponse), {
+                    onSuccess: invalidateDjQueue,
+                    onError: () => router.push('/parties'),
+                  });
+                } else {
+                  // 멤버십 유지 → 경량(플레이어/구독 무영향)
+                  invalidateDjQueue();
+                }
+              },
+              onError: () => router.push('/parties'),
+            }
+          );
+        });
+
         enter(
           { partyroomId },
           {
@@ -128,38 +155,6 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
       },
       { once: true }
     );
-
-    // 재연결 resync (비-once). 첫 연결은 firstConnect ref 로 skip(이중 tryEnter 방지). (#402)
-    client.onConnect(() => {
-      if (firstConnect.current) {
-        firstConnect.current = false;
-        return;
-      }
-      // L2: 재연결마다 clear — 끊김이 곡 경계를 넘었을 때 낡은 스냅샷에 새 곡 counts가 오염된
-      // 틀린 구획 방출 방지. disconnect 콜백이 공개돼 있지 않아 재연결 시점 clear가 의미상 등가
-      // (끊김~재연결 사이엔 방출/시드 이벤트가 처리되지 않음). 놓친 경계는 기념하지 않는다.
-      useCurrentPartyroom.getState().playbackSummaryTracker.clear();
-      enter(
-        { partyroomId },
-        {
-          onSuccess: (enterResponse) => {
-            const invalidateDjQueue = () =>
-              queryClient.invalidateQueries({ queryKey: [QueryKeys.DjingQueue, partyroomId] });
-            if (enterResponse.reactivated) {
-              // 멤버십 상실 → 풀 재수화(검정 해소). 룸 재구독은 추가하지 않음(handleConnect 가 이미 reconcile).
-              silent(setup(enterResponse), {
-                onSuccess: invalidateDjQueue,
-                onError: () => router.push('/parties'),
-              });
-            } else {
-              // 멤버십 유지 → 경량(플레이어/구독 무영향)
-              invalidateDjQueue();
-            }
-          },
-          onError: () => router.push('/parties'),
-        }
-      );
-    });
   };
 }
 

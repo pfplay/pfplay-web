@@ -113,6 +113,43 @@ describe('SocketClient', () => {
     });
   });
 
+  describe('onConnect 해제 함수 반환 + skipCurrent (#469)', () => {
+    test('반환된 해제 함수 호출 시 이후 (재)연결에서 콜백이 실행되지 않는다 (핸들러 누수 차단)', () => {
+      const sc = new SocketClient();
+      const callback = vi.fn();
+
+      const dispose = sc.onConnect(callback); // 비-once, 미연결 → 큐 등록
+      triggerConnect(sc);
+      expect(callback).toHaveBeenCalledTimes(1);
+
+      dispose();
+      callback.mockClear();
+      // disconnect → 재연결
+      getStompClient(sc).__config.onWebSocketClose();
+      triggerConnect(sc);
+      expect(callback).not.toHaveBeenCalled(); // 해제되어 재발화 없음
+    });
+
+    test('연결됨 + once → 반환값은 안전한 no-op (큐에 없음)', () => {
+      const sc = new SocketClient();
+      getStompClient(sc).connected = true;
+      const dispose = sc.onConnect(vi.fn(), { once: true });
+      expect(() => dispose()).not.toThrow();
+    });
+
+    test('skipCurrent: 이미 연결돼 있어도 즉시 실행하지 않고 다음 (재)연결에만 실행한다', () => {
+      const sc = new SocketClient();
+      getStompClient(sc).connected = true;
+      const callback = vi.fn();
+
+      sc.onConnect(callback, { skipCurrent: true });
+      expect(callback).not.toHaveBeenCalled(); // 현재 연결엔 미발화 (초기 enter 와 이중 발사 방지)
+
+      triggerConnect(sc); // 다음 (재)연결
+      expect(callback).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('handleConnect (내부)', () => {
     test('큐의 모든 콜백을 실행하고 once 항목을 제거한다', () => {
       const sc = new SocketClient();

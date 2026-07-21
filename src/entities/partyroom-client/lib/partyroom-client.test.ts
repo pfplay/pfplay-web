@@ -103,6 +103,41 @@ describe('PartyroomClient', () => {
     expect(mockSocketInstance.unsubscribe).toHaveBeenCalledWith('/sub/partyrooms/10');
   });
 
+  describe('#469 재연결 resync 핸들러 — 단일 슬롯 + teardown 정리 (누수 차단)', () => {
+    test('setRoomReconnectHandler → socketClient.onConnect(cb, {skipCurrent:true}) 로 등록', () => {
+      const cb = vi.fn();
+      mockSocketInstance.onConnect.mockReturnValue(vi.fn());
+
+      client.setRoomReconnectHandler(cb);
+
+      expect(mockSocketInstance.onConnect).toHaveBeenCalledWith(cb, { skipCurrent: true });
+    });
+
+    test('두 번째 등록 시 이전 핸들러를 해제한다 (단일 슬롯, 방마다 누적 X)', () => {
+      const dispose1 = vi.fn();
+      const dispose2 = vi.fn();
+      mockSocketInstance.onConnect.mockReturnValueOnce(dispose1).mockReturnValueOnce(dispose2);
+
+      client.setRoomReconnectHandler(vi.fn());
+      client.setRoomReconnectHandler(vi.fn());
+
+      expect(dispose1).toHaveBeenCalledTimes(1); // 이전 방 핸들러 해제
+      expect(dispose2).not.toHaveBeenCalled();
+    });
+
+    test('unsubscribeCurrentRoom(=teardown 경로) 이 재연결 핸들러를 해제한다', () => {
+      const dispose = vi.fn();
+      mockSocketInstance.onConnect.mockReturnValue(dispose);
+      mockSocketInstance.subscriptions = [];
+      client.subscribe(10, vi.fn());
+      client.setRoomReconnectHandler(vi.fn());
+
+      client.unsubscribeCurrentRoom();
+
+      expect(dispose).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('sendChatMessage', () => {
     test('구독 전에 호출하면 Error를 throw한다', () => {
       expect(() => client.sendChatMessage('hello')).toThrow(
