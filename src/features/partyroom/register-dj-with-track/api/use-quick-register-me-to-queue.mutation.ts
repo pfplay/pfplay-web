@@ -19,10 +19,7 @@ export const useQuickRegisterMeToQueue = () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.Playlist],
       });
-      track('DJ Registered', {
-        partyroom_id: variables.partyroomId,
-        track_id: variables.linkId,
-      });
+      track('DJ Registered', { partyroom_id: variables.partyroomId });
     },
   });
 };
