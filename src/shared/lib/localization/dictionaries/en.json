@@ -432,6 +432,11 @@
     "in_app_title": "You can't install from here",
     "in_app_description": "You're in an in-app browser, which can't add to the home screen. Copy the link and open it in Safari or Chrome.",
     "copy_link": "Copy link",
-    "copied": "Copied"
+    "copied": "Copied",
+    "manual_title": "Add the app to your home screen",
+    "manual_chrome": "Tap <b>⋮</b> in the top right → <b>Install app</b> (or Add to Home screen).",
+    "manual_samsung": "Tap <b>≡</b> at the bottom → <b>Add page to</b> → <b>Home screen</b>.",
+    "manual_firefox": "Tap <b>⋮</b> → <b>Add to Home screen</b>.",
+    "manual_other": "Open your browser menu and choose <b>Add to Home screen</b> (or Install app)."
   }
 }

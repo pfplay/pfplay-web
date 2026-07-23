@@ -21,3 +21,18 @@ export const isStandalone = (): boolean =>
  */
 export const isInAppBrowser = (ua: string): boolean =>
   /KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps|everytimeApp|wv\)/i.test(ua);
+
+export type AndroidBrowser = 'samsung' | 'firefox' | 'chrome' | 'other';
+
+/**
+ * 수동 설치 안내를 브라우저별 메뉴 경로에 맞추기 위한 판별.
+ *
+ * SamsungBrowser·Firefox UA 에도 'Chrome' 토큰이 섞여 있어 순서가 중요하다 —
+ * 더 구체적인 브라우저를 먼저 걸러야 한다.
+ */
+export const androidBrowser = (ua: string): AndroidBrowser => {
+  if (/SamsungBrowser/i.test(ua)) return 'samsung';
+  if (/Firefox|FxiOS/i.test(ua)) return 'firefox';
+  if (/Chrome/i.test(ua)) return 'chrome';
+  return 'other';
+};

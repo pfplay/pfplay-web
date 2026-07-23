@@ -17,8 +17,8 @@ export type InstallEnvironment =
   | 'ios-guide'
   /** 외부 브라우저로 여는 법을 안내한다 */
   | 'in-app-browser'
-  /** 설치 개념이 없거나 지원하지 않는 환경 — 진입점을 숨긴다 */
-  | 'unsupported';
+  /** 네이티브 설치창이 없는 브라우저 — 홈 화면 추가 경로를 브라우저별로 안내한다 */
+  | 'manual-guide';
 
 type Input = {
   userAgent: string;
@@ -41,5 +41,5 @@ export const installEnvironment = ({
 
   if (isIOS(userAgent)) return 'ios-guide';
 
-  return 'unsupported';
+  return 'manual-guide';
 };

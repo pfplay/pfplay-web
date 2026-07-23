@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { androidBrowser, type AndroidBrowser } from '@/shared/lib/browser/browser-environment';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { BoldProcessor } from '@/shared/lib/localization/renderer';
 import { Trans } from '@/shared/lib/localization/renderer/index.ui';
@@ -75,6 +76,30 @@ const InAppBrowserGuide = () => {
   );
 };
 
+const MANUAL_STEP_KEY = {
+  chrome: 'pwa.manual_chrome',
+  samsung: 'pwa.manual_samsung',
+  firefox: 'pwa.manual_firefox',
+  other: 'pwa.manual_other',
+} as const satisfies Record<AndroidBrowser, string>;
+
+/** 네이티브 설치창이 없는 브라우저. 홈 화면 추가 메뉴 경로가 브라우저마다 달라 분기한다. */
+const ManualGuide = () => {
+  const t = useI18n();
+  const browser = typeof navigator !== 'undefined' ? androidBrowser(navigator.userAgent) : 'other';
+
+  return (
+    <div className='flexCol gap-4'>
+      <Typography type='detail1' className='text-white'>
+        {t.pwa.manual_title}
+      </Typography>
+      <Typography type='detail2' className='text-gray-200'>
+        <Trans i18nKey={MANUAL_STEP_KEY[browser]} processors={[new BoldProcessor()]} />
+      </Typography>
+    </div>
+  );
+};
+
 const InstallGuide = ({ environment, onClose }: Props) => {
   const t = useI18n();
 
@@ -92,6 +117,7 @@ const InstallGuide = ({ environment, onClose }: Props) => {
       )}
       {environment === 'ios-guide' && <IosGuide />}
       {environment === 'in-app-browser' && <InAppBrowserGuide />}
+      {environment === 'manual-guide' && <ManualGuide />}
 
       <Dialog.ButtonGroup>
         {environment === 'prompt' ? (

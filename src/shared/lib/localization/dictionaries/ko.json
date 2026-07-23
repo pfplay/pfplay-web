@@ -432,6 +432,11 @@
     "in_app_title": "여기서는 설치할 수 없어요",
     "in_app_description": "지금 앱 안에 있는 브라우저라 홈 화면에 추가할 수 없어요. 주소를 복사해 Safari나 Chrome에서 열어 주세요.",
     "copy_link": "주소 복사하기",
-    "copied": "복사했어요"
+    "copied": "복사했어요",
+    "manual_title": "홈 화면에 앱을 추가해 주세요",
+    "manual_chrome": "오른쪽 위 <b>⋮</b> → <b>앱 설치</b>(또는 홈 화면에 추가)를 누르세요.",
+    "manual_samsung": "아래쪽 <b>≡</b> → <b>현재 페이지 추가</b> → <b>홈 화면</b>을 누르세요.",
+    "manual_firefox": "<b>⋮</b> → <b>홈 화면에 추가</b>를 누르세요.",
+    "manual_other": "브라우저 메뉴에서 <b>홈 화면에 추가</b>(또는 앱 설치)를 선택하세요."
   }
 }

@@ -40,9 +40,9 @@ describe('installEnvironment', () => {
     expect(env(ANDROID_KAKAO, { hasInstallPrompt: true })).toBe('in-app-browser');
   });
 
-  test('프롬프트를 못 잡은 Android·데스크톱은 unsupported (진입점 숨김)', () => {
-    expect(env(ANDROID_CHROME)).toBe('unsupported');
-    expect(env(DESKTOP)).toBe('unsupported');
+  test('프롬프트를 못 잡은 Android·데스크톱은 manual-guide (수동 안내로 노출)', () => {
+    expect(env(ANDROID_CHROME)).toBe('manual-guide');
+    expect(env(DESKTOP)).toBe('manual-guide');
   });
 
   test('설치 완료가 다른 모든 판정보다 우선한다', () => {

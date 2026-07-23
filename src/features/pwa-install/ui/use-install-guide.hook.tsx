@@ -6,8 +6,8 @@ import InstallGuide from './install-guide.component';
 import useInstallEnvironment from '../lib/use-install-environment.hook';
 
 /**
- * 설치 안내 진입점. `canInstall` 이 false 면 메뉴 항목 자체를 노출하지 않는다 —
- * 이미 설치했거나(installed) 설치라는 개념이 없는 환경(unsupported)에서는 보여줄 게 없다.
+ * 설치 안내 진입점. 이미 설치했거나(installed) 판정 전(null)이 아니면 노출한다 —
+ * 네이티브 설치창이 없는 브라우저도 수동 안내로 이어주므로 숨기지 않는다.
  */
 export default function useInstallGuide() {
   const t = useI18n();
@@ -17,11 +17,14 @@ export default function useInstallGuide() {
   const openInstallGuide = () =>
     openDialog((_, onCancel) => ({
       title: t.pwa.title,
-      Body: () => (onCancel ? <InstallGuide environment={environment} onClose={onCancel} /> : null),
+      Body: () =>
+        environment && onCancel ? (
+          <InstallGuide environment={environment} onClose={onCancel} />
+        ) : null,
     }));
 
   return {
-    canInstall: environment !== 'installed' && environment !== 'unsupported',
+    canInstall: environment !== null && environment !== 'installed',
     openInstallGuide,
   };
 }
