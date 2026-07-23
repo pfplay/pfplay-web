@@ -4,13 +4,15 @@ import useDjingGuide from '@/features/playlist/djing-guide/ui/use-djing-guide.ho
 import { useFetchPlaylists } from '@/features/playlist/list';
 import { QueueStatus } from '@/shared/api/http/types/@enums';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
-import { Button } from '@/shared/ui/components/button';
+import { Button, ButtonProps } from '@/shared/ui/components/button';
 import { useDialog } from '@/shared/ui/components/dialog';
 import { TooltipTrigger } from '@/shared/ui/components/tooltip';
 import { useDjingQueue } from '../lib/djing-queue.context';
 import { usePartyroomId } from '../lib/partyroom-id.context';
 
-export default function RegisterButton() {
+type Props = Omit<ButtonProps, 'onClick' | 'children'> & { label?: string };
+
+export default function RegisterButton({ label, ...buttonProps }: Props) {
   const t = useI18n();
   const { data: playlists = [] } = useFetchPlaylists();
   const { openAlertDialog } = useDialog();
@@ -40,8 +42,13 @@ export default function RegisterButton() {
 
   return (
     <TooltipTrigger title={isLocked ? t.dj.para.queue_lock_detail : undefined}>
-      <Button size='lg' onClick={registerMeToDjQueue} data-testid='register-dj-queue'>
-        {t.dj.btn.register_queue}
+      <Button
+        size='lg'
+        onClick={registerMeToDjQueue}
+        data-testid='register-dj-queue'
+        {...buttonProps}
+      >
+        {label ?? t.dj.btn.register_queue}
       </Button>
     </TooltipTrigger>
   );
