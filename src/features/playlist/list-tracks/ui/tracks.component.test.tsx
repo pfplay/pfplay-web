@@ -178,7 +178,16 @@ describe('TracksInPlaylist NOW/NEXT 배지', () => {
     return found;
   };
 
-  test('커서 null: NEXT는 첫 트랙, NOW 없음(비-DJ)', () => {
+  test('비-DJ + 커서 null: NOW/NEXT 모두 없음', () => {
+    setTracks([t10(), t20(), t30()], null);
+    render(<TracksInPlaylist playlist={playlist} />);
+
+    expect(lastTrackProps.every((p) => !p.isNow)).toBe(true);
+    expect(lastTrackProps.every((p) => !p.isNext)).toBe(true);
+  });
+
+  test('내가 CurrentDJ + 커서 null: NEXT는 첫 트랙', () => {
+    setStore({ me: { crewId: 5 }, currentDj: { crewId: 5 } });
     setTracks([t10(), t20(), t30()], null);
     render(<TracksInPlaylist playlist={playlist} />);
 
@@ -198,13 +207,13 @@ describe('TracksInPlaylist NOW/NEXT 배지', () => {
     expect(byId(10).isNow).toBe(false);
   });
 
-  test('내가 CurrentDJ 아님 + 커서=20: NOW 없음, NEXT=30만', () => {
+  test('내가 CurrentDJ 아님 + 커서=20: NOW/NEXT 모두 없음', () => {
     setStore({ me: { crewId: 5 }, currentDj: { crewId: 9 } });
     setTracks([t10(), t20(), t30()], 20);
     render(<TracksInPlaylist playlist={playlist} />);
 
     expect(lastTrackProps.every((p) => !p.isNow)).toBe(true);
-    expect(byId(30).isNext).toBe(true);
+    expect(lastTrackProps.every((p) => !p.isNext)).toBe(true);
   });
 
   test('커서=마지막(30): NEXT는 wrap 하여 첫 트랙(10)', () => {

@@ -49,12 +49,14 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
 
   // 재생 커서(NOW 앵커). NEXT는 커서 + 현재(낙관적 재정렬 반영) 순서로부터 파생 → refetch 불필요.
   const cursor = data?.lastPlayedTrackId ?? null;
+  // 방 밖에선 currentDj가 없어 자연히 비활성.
   const isMeCurrentDj = me?.crewId != null && me.crewId === currentDj?.crewId;
-  const nextTrackId = resolveNextTrackId(
-    items.map((track) => track.trackId),
-    cursor
-  );
-  // NOW는 내가 CurrentDJ일 때(방 안)만. 방 밖에선 currentDj가 없어 자연히 비활성.
+  const nextTrackId = isMeCurrentDj
+    ? resolveNextTrackId(
+        items.map((track) => track.trackId),
+        cursor
+      )
+    : null;
   const nowTrackId = isMeCurrentDj ? cursor : null;
 
   useEffect(() => {

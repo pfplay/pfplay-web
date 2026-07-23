@@ -59,12 +59,17 @@ const theme = {
   },
   animation: {
     loading: 'loading 2s infinite',
+    equalizer: 'equalizer 0.9s ease-in-out infinite alternate',
   },
   keyframes: {
     loading: {
       '0%': { transform: 'rotateZ(0deg)' },
       '50%': { transform: 'rotateZ(480deg)' },
       '100%': { transform: 'rotateZ(1080deg)' },
+    },
+    equalizer: {
+      '0%': { transform: 'scaleY(0.3)' },
+      '100%': { transform: 'scaleY(1)' },
     },
   },
   aspectRatio: {
