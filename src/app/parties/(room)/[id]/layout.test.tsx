@@ -12,6 +12,10 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ replace: mockReplace }),
 }));
 
+vi.mock('@/entities/partyroom-client', () => ({
+  useSupersededSessionListener: vi.fn(),
+}));
+
 vi.mock('@/features/partyroom/enter', () => ({
   useEnterPartyroom: () => mockEnter,
 }));

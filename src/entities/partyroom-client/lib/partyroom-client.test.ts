@@ -156,4 +156,36 @@ describe('PartyroomClient', () => {
       });
     });
   });
+
+  describe('#476 멀티 디바이스 승계 지원', () => {
+    test('markEnteredRoom → myEnteredRoomId 로 노출된다', () => {
+      expect(client.myEnteredRoomId).toBeUndefined();
+      client.markEnteredRoom(42);
+      expect(client.myEnteredRoomId).toBe(42);
+    });
+
+    test('subscribeUserSession → /user/sub/session 구독, 중복 호출은 멱등(no-op)', () => {
+      const handler = vi.fn();
+      client.subscribeUserSession(handler);
+      client.subscribeUserSession(handler); // 중복
+
+      const sessionSubs = mockSocketInstance.subscriptions.filter(
+        (s) => s.destination === '/user/sub/session'
+      );
+      expect(sessionSubs).toHaveLength(1); // 중복 SoT 엔트리 없음
+    });
+
+    test('unsubscribeUserSession → 구독 해지, 이후 재구독 가능', () => {
+      client.subscribeUserSession(vi.fn());
+      client.unsubscribeUserSession();
+      expect(
+        mockSocketInstance.subscriptions.filter((s) => s.destination === '/user/sub/session')
+      ).toHaveLength(0);
+
+      client.subscribeUserSession(vi.fn());
+      expect(
+        mockSocketInstance.subscriptions.filter((s) => s.destination === '/user/sub/session')
+      ).toHaveLength(1);
+    });
+  });
 });

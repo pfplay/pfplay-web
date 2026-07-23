@@ -2,6 +2,7 @@
 
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { PropsWithChildren } from 'react';
+import { useSupersededSessionListener } from '@/entities/partyroom-client';
 import { useEnterPartyroom } from '@/features/partyroom/enter';
 import { useTeardownPartyroom } from '@/features/partyroom/exit';
 import { parseEntrySource } from '@/shared/lib/analytics/room-tracking';
@@ -15,6 +16,9 @@ export default function PartyroomLayout({ children }: PropsWithChildren) {
   const entrySource = parseEntrySource(searchParams.get('source'));
   const enter = useEnterPartyroom(partyroomId, { entrySource });
   const teardown = useTeardownPartyroom(partyroomId);
+
+  // #476 멀티 디바이스 승계 수신 — 다른 기기/탭이 입장해 이 방이 밀려나면 안내 후 로비로.
+  useSupersededSessionListener();
 
   useDidMountEffect(() => {
     enter();

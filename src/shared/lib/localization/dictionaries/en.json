@@ -220,6 +220,8 @@
       "party_rooms": "Party Rooms",
       "leave_party_confirm": "Your changes won't be saved.\nAre you sure you want to leave the party room?",
       "closed": "The party room has been closed.",
+      "superseded": "This screen was closed because you joined from another device.",
+      "supersede_confirm": "You're using a party room on another device.\nContinue here?",
       "close": "Close",
       "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
     },
