@@ -104,19 +104,19 @@ describe('Track NOW/NEXT 배지', () => {
 });
 
 describe('Track NOW/NEXT 배치 (#462)', () => {
-  test('isNow=true 면 ⋮ 메뉴 대신 배지가 자리를 차지한다', () => {
+  test('isNow=true 여도 ⋮ 메뉴는 그대로 두고 배지를 왼쪽에 붙인다', () => {
     render(<Track track={track} menuItems={[]} isNow />);
     expect(screen.getByTestId('track-badge-now')).toBeInTheDocument();
-    expect(screen.queryByTestId('icon-menu')).not.toBeInTheDocument();
+    expect(screen.getByTestId('icon-menu')).toBeInTheDocument();
   });
 
-  test('isNext=true 면 ⋮ 메뉴 대신 배지가 자리를 차지한다', () => {
+  test('isNext=true 여도 ⋮ 메뉴는 그대로 두고 배지를 왼쪽에 붙인다', () => {
     render(<Track track={track} menuItems={[]} isNext />);
     expect(screen.getByTestId('track-badge-next')).toBeInTheDocument();
-    expect(screen.queryByTestId('icon-menu')).not.toBeInTheDocument();
+    expect(screen.getByTestId('icon-menu')).toBeInTheDocument();
   });
 
-  test('일반 곡은 ⋮ 메뉴를 그대로 보여준다', () => {
+  test('일반 곡은 배지 없이 ⋮ 메뉴만 보여준다', () => {
     render(<Track track={track} menuItems={[]} />);
     expect(screen.getByTestId('icon-menu')).toBeInTheDocument();
   });

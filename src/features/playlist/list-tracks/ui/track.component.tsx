@@ -18,9 +18,9 @@ type TrackProps = {
   track: PlaylistTrack;
   menuItems: MenuItem[];
   isOverRoomLimit?: boolean;
-  /** 지금 재생 중(CurrentDJ 본인 한정, 방 안). NOW 배지 + 이퀄라이저·마퀴 모션. */
+  /** 지금 재생 중(CurrentDJ 본인 한정, 방 안). */
   isNow?: boolean;
-  /** 내가 다음에 디제잉하면 시작될 곡. NEXT 배지. */
+  /** 내가 다음에 디제잉하면 시작될 곡. */
   isNext?: boolean;
 };
 
@@ -47,7 +47,6 @@ const Track = ({
   // 미리보기용 트랙 데이터 변환
   const previewTrack = convertPlaylistTrackToPreview(track);
 
-  // 커서가 붙은 행은 배지가 ⋮ 자리를 대체한다 (#462 시안).
   const hasCursor = isNow || isNext;
 
   return (
@@ -92,19 +91,18 @@ const Track = ({
         </div>
       </div>
 
-      <div className='shrink-0'>
-        {hasCursor ? (
+      <div className='shrink-0 flexRow items-center gap-2'>
+        {hasCursor && (
           <CursorBadge
             variant={isNow ? 'now' : 'next'}
             label={isNow ? t.playlist.para.now_playing : t.playlist.para.next_up}
           />
-        ) : (
-          <IconMenu
-            MenuButtonIcon={<PFMoreVert />}
-            menuItemConfig={menuItems}
-            menuZIndex={menuZIndex}
-          />
         )}
+        <IconMenu
+          MenuButtonIcon={<PFMoreVert />}
+          menuItemConfig={menuItems}
+          menuZIndex={menuZIndex}
+        />
       </div>
     </div>
   );

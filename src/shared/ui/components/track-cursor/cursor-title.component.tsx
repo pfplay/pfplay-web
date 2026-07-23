@@ -4,18 +4,13 @@ import { Typography } from '@/shared/ui/components/typography';
 
 type Props = {
   name: string;
-  /** 재생 중이면 제목이 흐른다. 길이와 무관하게 항상. */
+  /** 제목 길이와 무관하게 항상 흐른다. */
   scrolling: boolean;
-  /** 배지가 우측에 떠 있는 행인지. 흐르는 제목이 배지 아래로 지나가므로 페이드로 가린다. */
+  /** 흐르는 제목이 우측 배지 아래로 지나가므로 페이드로 가린다. */
   faded: boolean;
 };
 
-/**
- * 플레이리스트 행의 곡 제목 (#462).
- *
- * 데스크탑 Track 과 모바일 시트가 같은 표현을 써야 해서 여기로 모았다.
- * 전광판용 TrackTitle 은 Galmuri 폰트를 강제하고 항상 흐르므로 별개다.
- */
+/** 전광판용 TrackTitle 은 Galmuri 폰트를 강제하고 항상 흐르므로 별개다. */
 const CursorTitle = ({ name, scrolling, faded }: Props) => (
   <div
     className={cn(

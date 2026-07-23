@@ -1,18 +1,12 @@
 import { cn } from '@/shared/lib/functions/cn';
 
-/** 막대별 시작 지연 — 전부 다르게 줘야 파형이 어긋나 살아 있어 보인다. */
 const BAR_DELAYS = ['0ms', '150ms', '300ms', '450ms'];
 
 type Props = {
   className?: string;
 };
 
-/**
- * 재생 중 썸네일 위에 얹는 이퀄라이저 (#462 시안).
- *
- * 썸네일을 어둡게 깔고 흰 막대가 위아래로 뛴다.
- * 상태 전달은 CursorBadge 텍스트가 하므로 여기선 aria-hidden.
- */
+/** 재생 중 상태는 CursorBadge 텍스트가 전달하므로 여기선 aria-hidden. */
 const PlayingBars = ({ className }: Props) => (
   <div
     data-testid='playing-bars'

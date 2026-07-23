@@ -94,7 +94,7 @@
   }
 }
 
-/* 모션 최소화 설정에서는 마퀴를 멈춘다. react-fast-marquee 내부 클래스 대상. */
+/* .rfm-marquee 는 react-fast-marquee 내부 클래스라 라이브러리 업데이트 시 깨질 수 있다. */
 @media (prefers-reduced-motion: reduce) {
   .rfm-marquee {
     animation: none !important;

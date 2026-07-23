@@ -2,17 +2,11 @@ import { cn } from '@/shared/lib/functions/cn';
 
 type Props = {
   variant: 'now' | 'next';
-  /** 표시 문구. i18n 조회는 호출자 책임 — 본 컴포넌트는 순수 표시. */
   label: string;
   className?: string;
 };
 
-/**
- * 현재곡·다음곡 커서 배지 (#462 시안).
- *
- * 데스크탑·시네마에서는 ⋮ 메뉴 자리를 대체하고, 모바일 시트에서는 ✕ 왼쪽에 붙는다.
- * 배치는 호출자가 className 으로 정한다.
- */
+/** 데스크탑·시네마는 ⋮ 왼쪽, 모바일 시트는 ✕ 왼쪽에 붙는다. 기존 버튼은 그대로 둔다. */
 const CursorBadge = ({ variant, label, className }: Props) => (
   <span
     data-testid={variant === 'now' ? 'track-badge-now' : 'track-badge-next'}
