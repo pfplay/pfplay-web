@@ -220,6 +220,8 @@
       "party_rooms": "Party Rooms",
       "leave_party_confirm": "변경 내용이 저장되지 않아요.\n파티룸으로 나가시겠어요?",
       "closed": "파티룸이 폐쇄되었습니다",
+      "superseded": "다른 기기에서 입장하여 이 화면의 이용이 종료되었습니다",
+      "supersede_confirm": "다른 기기에서 파티룸을 이용 중입니다.\n여기서 계속할까요?",
       "close": "폐쇄하기",
       "share_x_partyroom": "I'm listening to the {partyroom_name} room. Come hang out!"
     },

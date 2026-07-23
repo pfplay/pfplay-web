@@ -10,8 +10,10 @@ import { EnterResponse, PartyroomReaction } from '@/shared/api/http/types/partyr
 import type { EntrySource } from '@/shared/lib/analytics/events';
 import { trackPartyroomEntered } from '@/shared/lib/analytics/room-tracking';
 import silent from '@/shared/lib/functions/silent';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { useStores } from '@/shared/lib/store/stores.context';
+import { useDialog } from '@/shared/ui/components/dialog';
 import { useEnterPartyroom as useEnterPartyroomMutation } from '../api/use-enter-partyroom.mutation';
 
 type Options = {
@@ -26,6 +28,8 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
   const { mutate: enter } = useEnterPartyroomMutation();
   const queryClient = useQueryClient();
   const router = useAppRouter();
+  const { openConfirmDialog } = useDialog();
+  const t = useI18n();
 
   const entrySource: EntrySource = options.entrySource ?? 'direct';
 
@@ -128,29 +132,67 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
           });
         });
 
-        enter(
-          { partyroomId },
-          {
-            onSuccess: (enterResponse) => {
-              silent(setup(enterResponse), {
-                onSuccess: () => {
-                  client.subscribe(partyroomId, handleEvent);
-                  queryClient.invalidateQueries({
-                    queryKey: [QueryKeys.DjingQueue, partyroomId],
-                  });
-                },
-                onError: () => {
-                  router.push('/parties'); // 에러 발생 시 로비로 이동
-                },
-              });
-            },
-            onError: () => {
-              // enter 자체가 실패해 입장한 룸이 없다. 레이아웃 언마운트는 더 이상
-              // 백엔드 exit을 호출하지 않으므로 별도의 억제 워크어라운드가 필요 없다.
-              router.push('/parties'); // 에러 발생 시 로비로 이동
-            },
-          }
-        );
+        const proceedEnter = () => {
+          enter(
+            { partyroomId },
+            {
+              onSuccess: (enterResponse) => {
+                // #476 이 탭이 입장 성공한 방 기록 — 이후 다른 세션 판별(사전 컨펌)에 쓰인다.
+                client.markEnteredRoom(partyroomId);
+                silent(setup(enterResponse), {
+                  onSuccess: () => {
+                    client.subscribe(partyroomId, handleEvent);
+                    queryClient.invalidateQueries({
+                      queryKey: [QueryKeys.DjingQueue, partyroomId],
+                    });
+                  },
+                  onError: () => {
+                    router.push('/parties'); // 에러 발생 시 로비로 이동
+                  },
+                });
+              },
+              onError: () => {
+                // enter 자체가 실패해 입장한 룸이 없다. 레이아웃 언마운트는 더 이상
+                // 백엔드 exit을 호출하지 않으므로 별도의 억제 워크어라운드가 필요 없다.
+                router.push('/parties'); // 에러 발생 시 로비로 이동
+              },
+            }
+          );
+        };
+
+        // #476 사전 컨펌 — 다른 세션(탭/기기)이 활성 방을 점유 중인데 다른 방으로 입장하려 하면
+        // 확인을 받는다(데스크탑 DJ 세션을 모바일 오조작으로 잃는 사고 방지). check-then-act 레이스는
+        // 허용 — 정합성은 V38 유니크가 보장하는 순수 advisory. 서버 활성 방이 이 탭이 들어갔던
+        // 방(myEnteredRoomId)이면 같은 세션의 방 전환이므로 컨펌하지 않는다. 이 탭이 같은 방을
+        // 재입장(myEnteredRoomId===partyroomId)하는 경우 조회 자체를 생략한다.
+        if (client.myEnteredRoomId === partyroomId) {
+          proceedEnter();
+          return;
+        }
+        silent(partyroomsService.getMyActiveRoom(), {
+          onSuccess: (snapshot) => {
+            const isOtherSessionActive =
+              snapshot != null &&
+              snapshot.partyroomId !== partyroomId &&
+              snapshot.partyroomId !== client.myEnteredRoomId;
+            if (!isOtherSessionActive) {
+              proceedEnter();
+              return;
+            }
+            silent(openConfirmDialog({ content: t.party.para.supersede_confirm }), {
+              onSuccess: (confirmed) => {
+                if (confirmed) {
+                  proceedEnter();
+                } else {
+                  router.push('/parties'); // 취소 → 입장하지 않고 로비로
+                }
+              },
+              onError: () => proceedEnter(),
+            });
+          },
+          // 스냅샷 조회 실패 시 컨펌 없이 입장(advisory, fail-open — 정합성은 서버가 보장).
+          onError: () => proceedEnter(),
+        });
       },
       { once: true }
     );

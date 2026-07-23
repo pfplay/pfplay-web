@@ -6,12 +6,19 @@ import { recordClientEvent } from '@/shared/lib/observability/client-events';
  * Socket Client를 캡슐화하여 최소한의 인터페이스만을 노출하며,
  * partyroom 구독에 대한 정책을 포함하는 클래스
  */
+/** 유저 개인 세션 큐 destination — 멀티 디바이스 승계 알림 수신용(#476). */
+const USER_SESSION_DESTINATION = '/user/sub/session';
+
 export default class PartyroomClient {
   private socketClient: SocketClient;
   private subscribedRoomId: number | undefined;
   // #469 현재 방의 "재연결 시 재입장(resync)" 핸들러 해제자. 단일 슬롯 — 방 전환 시 교체되고
   // unsubscribeCurrentRoom(teardown 경로)에서 정리되므로 방마다 핸들러가 누적되지 않는다.
   private roomReconnectDisposer: (() => void) | undefined;
+  // #476 이 탭이 마지막으로 입장 성공한 방. teardown 으로 지우지 않는다(다음 입장 시 덮어씀).
+  // 사전 컨펌 판별에 쓰인다 — 서버 활성 방이 이 값과 다르면 "다른 세션(탭/기기)"이 점유 중이란 뜻.
+  private enteredRoomId: number | undefined;
+  private userSessionSubscribed = false;
 
   public constructor() {
     this.socketClient = new SocketClient();
@@ -87,6 +94,35 @@ export default class PartyroomClient {
       recordClientEvent({ type: 'PARTYROOM_UNSUBSCRIBE', partyroomId: roomId });
     }
     this.syncE2EDebugState();
+  }
+
+  /**
+   * 이 탭이 입장 성공한 방을 기록한다(#476 사전 컨펌 판별용). 입장 성공 시 호출.
+   * teardown 으로 지워지지 않으므로 같은 탭의 방 전환(X→Y)에서 X 는 "내 세션 방"으로 인식돼
+   * 사전 컨펌이 뜨지 않는다. 다른 탭/기기는 이 값이 비어 있거나 달라 컨펌 대상이 된다.
+   */
+  public markEnteredRoom(partyroomId: number) {
+    this.enteredRoomId = partyroomId;
+  }
+
+  public get myEnteredRoomId() {
+    return this.enteredRoomId;
+  }
+
+  /**
+   * 유저 개인 세션 큐(/user/sub/session)를 구독한다(#476 승계 알림). destination 당 1개 — 중복 구독을
+   * 멱등 no-op 처리하며, 재연결 시 SocketClient 가 subscriptions[] 기준으로 자동 복원한다.
+   */
+  public subscribeUserSession(handler: (message: IMessage) => void) {
+    if (this.userSessionSubscribed) return;
+    this.socketClient.subscribe(USER_SESSION_DESTINATION, handler);
+    this.userSessionSubscribed = true;
+  }
+
+  public unsubscribeUserSession() {
+    if (!this.userSessionSubscribed) return;
+    this.socketClient.unsubscribe(USER_SESSION_DESTINATION);
+    this.userSessionSubscribed = false;
   }
 
   public sendChatMessage(message: string) {
