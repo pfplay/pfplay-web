@@ -231,7 +231,7 @@
   },
   "dj": {
     "title": {
-      "current_dj": "현재 디제잉",
+      "current_dj": "Now DJing",
       "dj_queue": "DJ 대기열",
       "time_limit": "디제잉 1회당 제한시간 : **{{minutes}}**분",
       "rule_guide": "디제잉 규칙 안내"

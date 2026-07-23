@@ -63,7 +63,9 @@ export type EventPropertyMap = {
   };
   'DJ Registered': {
     partyroom_id: number;
-    playlist_id: number;
+    // 곡 검색 즉시 등록은 서버가 플레이리스트를 만들어 담아 클라이언트가 id 를 모른다
+    playlist_id?: number;
+    track_id?: string;
   };
   'DJ Playlist Changed': {
     partyroom_id: number;

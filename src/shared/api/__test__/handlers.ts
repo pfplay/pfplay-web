@@ -248,6 +248,11 @@ export const handlers = [
     return new HttpResponse(null, { status: 201 });
   }),
 
+  // POST /v1/partyrooms/:id/dj-queue/quick — quickRegisterMeToQueue
+  http.post(`${BASE_URL}/v1/partyrooms/:id/dj-queue/quick`, () => {
+    return new HttpResponse(null, { status: 201 });
+  }),
+
   // DELETE /v1/partyrooms/:id/dj-queue/me — unregisterMeFromQueue
   http.delete(`${BASE_URL}/v1/partyrooms/:id/dj-queue/me`, () => {
     return new HttpResponse(null, { status: 204 });
