@@ -49,12 +49,16 @@ const TracksInPlaylist = ({ playlist }: TracksInPlaylistProps) => {
 
   // 재생 커서(NOW 앵커). NEXT는 커서 + 현재(낙관적 재정렬 반영) 순서로부터 파생 → refetch 불필요.
   const cursor = data?.lastPlayedTrackId ?? null;
+  // NOW/NEXT 모두 내가 CurrentDJ일 때(방 안)만. 방 밖에선 currentDj가 없어 자연히 비활성.
+  // resolveNextTrackId는 커서가 없으면 첫 트랙을 돌려주므로, 게이트가 없으면 디제잉과
+  // 무관한 모든 플레이리스트의 첫 곡에 NEXT가 붙는다.
   const isMeCurrentDj = me?.crewId != null && me.crewId === currentDj?.crewId;
-  const nextTrackId = resolveNextTrackId(
-    items.map((track) => track.trackId),
-    cursor
-  );
-  // NOW는 내가 CurrentDJ일 때(방 안)만. 방 밖에선 currentDj가 없어 자연히 비활성.
+  const nextTrackId = isMeCurrentDj
+    ? resolveNextTrackId(
+        items.map((track) => track.trackId),
+        cursor
+      )
+    : null;
   const nowTrackId = isMeCurrentDj ? cursor : null;
 
   useEffect(() => {

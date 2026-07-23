@@ -28,10 +28,12 @@ const PlaylistDetailSheet: FC<Props> = ({ playlist }) => {
   // 재생 커서 기반 NOW/NEXT (데스크톱 TracksInPlaylist와 동일 규칙).
   const cursor = data?.lastPlayedTrackId ?? null;
   const isMeCurrentDj = me?.crewId != null && me.crewId === currentDj?.crewId;
-  const nextTrackId = resolveNextTrackId(
-    tracks.map((track) => track.trackId),
-    cursor
-  );
+  const nextTrackId = isMeCurrentDj
+    ? resolveNextTrackId(
+        tracks.map((track) => track.trackId),
+        cursor
+      )
+    : null;
   const nowTrackId = isMeCurrentDj ? cursor : null;
 
   const openAddTracks = () =>
