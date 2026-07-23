@@ -95,6 +95,11 @@ test('멀티 디바이스 승계: 밀려난 기기가 재연결해도 옛 방을
     expect(await subscribedRoomId(pageB)).toBe(idY);
     log(`device B(user1) entered room Y=${idY} → server autoExits user1 from X`);
 
+    // STOMP heartbeatIncoming=10s: A 의 워치독이 죽은 커넥션을 감지하고 재연결 루프에 진입할 만큼
+    // 오프라인을 충분히 유지해야 한다. 너무 짧으면(<10s) WS 가 안 끊겨 온라인 복귀해도 재연결(=resync)이 안 돈다.
+    log('holding device A offline ≥ heartbeat window to force STOMP reconnect...');
+    await pageA.waitForTimeout(20_000);
+
     // ─── device A: 온라인 (WS 재연결) → 스냅샷 분기로 로비 이탈 ────────
     await ctxA.setOffline(false);
     log('device A online — reconnecting, resync should snapshot Y≠X and leave to lobby');
