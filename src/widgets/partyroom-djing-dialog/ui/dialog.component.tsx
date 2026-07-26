@@ -16,15 +16,21 @@ export default function DjingDialog({ partyroomId, open, close }: Props) {
 
   if (!djingQueue) return;
 
+  const hasDj = !!djingQueue.djs.length;
+
   return (
     <Dialog
       open={open}
       onClose={close}
-      classNames={{ container: 'w-[800px] py-[36px] px-[40px] bg-black' }}
+      classNames={{
+        container: hasDj
+          ? 'w-[800px] py-[36px] px-[40px] bg-black'
+          : 'w-[520px] py-[36px] px-[40px]',
+      }}
       Body={
         <PartyroomIdContext.Provider value={partyroomId}>
           <DjingQueueContext.Provider value={djingQueue}>
-            {djingQueue.djs.length ? <Body onCancel={close} /> : <EmptyBody onCancel={close} />}
+            {hasDj ? <Body onCancel={close} /> : <EmptyBody onCancel={close} />}
           </DjingQueueContext.Provider>
         </PartyroomIdContext.Provider>
       }

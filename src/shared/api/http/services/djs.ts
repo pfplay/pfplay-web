@@ -1,5 +1,6 @@
 import {
   RegisterMeToQueuePayload,
+  QuickRegisterMeToQueuePayload,
   ChangeMyPlaylistPayload,
   UnregisterMeFromQueuePayload,
   UnregisterDjFromQueuePayload,
@@ -17,6 +18,10 @@ export default class DjsService extends HTTPClient implements DjsClient {
 
   public registerMeToQueue({ partyroomId, ...body }: RegisterMeToQueuePayload) {
     return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/dj-queue`, body);
+  }
+
+  public quickRegisterMeToQueue({ partyroomId, ...body }: QuickRegisterMeToQueuePayload) {
+    return this.post<void>(`${this.ROUTE_V1}/${partyroomId}/dj-queue/quick`, body);
   }
 
   public changeMyPlaylist({ partyroomId, ...body }: ChangeMyPlaylistPayload) {

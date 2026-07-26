@@ -10,6 +10,7 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { IconMenu } from '@/shared/ui/components/icon-menu';
 import { MenuItem } from '@/shared/ui/components/menu';
+import { CursorBadge, CursorTitle, PlayingBars } from '@/shared/ui/components/track-cursor';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFDragAndDrop, PFMoreVert } from '@/shared/ui/icons';
 
@@ -17,9 +18,9 @@ type TrackProps = {
   track: PlaylistTrack;
   menuItems: MenuItem[];
   isOverRoomLimit?: boolean;
-  /** 지금 재생 중(CurrentDJ 본인 한정, 방 안). NOW 배지. */
+  /** 지금 재생 중(CurrentDJ 본인 한정, 방 안). */
   isNow?: boolean;
-  /** 내가 다음에 디제잉하면 시작될 곡. NEXT 배지. */
+  /** 내가 다음에 디제잉하면 시작될 곡. */
   isNext?: boolean;
 };
 
@@ -46,11 +47,13 @@ const Track = ({
   // 미리보기용 트랙 데이터 변환
   const previewTrack = convertPlaylistTrackToPreview(track);
 
+  const hasCursor = isNow || isNext;
+
   return (
     <div
       ref={setNodeRef}
       className={cn(
-        'relative grid grid-cols-[24px_1fr_32px] items-center gap-2 cursor-default',
+        'relative grid grid-cols-[24px_1fr_auto] items-center gap-2 cursor-default',
         isOverRoomLimit && 'opacity-50'
       )}
       style={style}
@@ -62,7 +65,7 @@ const Track = ({
 
       <div className='relative w-full flexRow justify-start rounded gap-[12px] overflow-hidden select-none'>
         {/* 미리보기 기능이 통합된 썸네일 */}
-        <div className='shrink-0 pointer-events-auto'>
+        <div className='relative shrink-0 pointer-events-auto'>
           <ThumbnailWithPreview
             previewTrack={previewTrack}
             thumbnailSrc={track.thumbnailImage ?? '/images/ETC/PlaylistThumbnail.png'}
@@ -72,23 +75,11 @@ const Track = ({
             className='w-[80px] h-[44px] bg-gray-600'
             imageClassName={cn('w-full h-full object-contain select-none')}
           />
+          {isNow && <PlayingBars className='absolute inset-0 pointer-events-none' />}
         </div>
 
         <div className='flex-1 min-w-0 select-none flexCol overflow-hidden pointer-events-none'>
-          {(isNow || isNext) && (
-            <span
-              data-testid={isNow ? 'track-badge-now' : 'track-badge-next'}
-              className={cn(
-                'mb-0.5 inline-flex w-fit items-center rounded-[3px] px-1.5 py-[1px] text-[10px] font-bold leading-[14px]',
-                isNow ? 'bg-red-300 text-white' : 'bg-gray-600 text-gray-100'
-              )}
-            >
-              {isNow ? t.playlist.para.now_playing : t.playlist.para.next_up}
-            </span>
-          )}
-          <Typography type='caption1' overflow='ellipsis' className='text-gray-50'>
-            {track.name}
-          </Typography>
+          <CursorTitle name={track.name} scrolling={isNow} faded={hasCursor} />
           <Typography type='caption1' className='text-gray-400'>
             {track.duration}
           </Typography>
@@ -100,7 +91,13 @@ const Track = ({
         </div>
       </div>
 
-      <div className='shrink-0'>
+      <div className='shrink-0 flexRow items-center gap-2'>
+        {hasCursor && (
+          <CursorBadge
+            variant={isNow ? 'now' : 'next'}
+            label={isNow ? t.playlist.para.now_playing : t.playlist.para.next_up}
+          />
+        )}
         <IconMenu
           MenuButtonIcon={<PFMoreVert />}
           menuItemConfig={menuItems}

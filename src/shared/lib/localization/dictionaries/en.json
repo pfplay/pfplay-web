@@ -240,10 +240,13 @@
       "register_queue": "Register for DJ Queue",
       "add_dj": "Add DJ",
       "selection_completed": "Selection Complete",
-      "select_dj_playlist": "Select DJ Playlist"
+      "select_dj_playlist": "Select DJ Playlist",
+      "search_and_register_dj": "Search a song and be a DJ",
+      "pick_from_my_playlist": "Choose from my playlist",
+      "register_with_this_song": "Be a DJ"
     },
     "para": {
-      "no_dj_crew": "No one is DJing now.\nWhy not become the DJ and make some noise!",
+      "no_dj_crew": "No one is DJing right now.\nPlay the first song!",
       "create_playlist_song": "Before you join the queue, please create a playlist with at least one song.",
       "cancel_dj_queue": "Cancel DJ queue registration",
       "cancel_dj_queue_confirm": "Do you want to remove yourself from the DJ queue?",
@@ -261,7 +264,10 @@
       "queue_lock_detail": "Locking prevents new DJ registrations and keeps the current queue as-is.",
       "playback_stopped_time_limit": "Playback stopped: a track exceeds this room's time limit ({{minutes}} min).",
       "playback_stopped_no_limit": "Playback stopped: no playable track.",
-      "not_playable_in_room": "Not playable here (exceeds this room's time limit)"
+      "not_playable_in_room": "Not playable here (exceeds this room's time limit)",
+      "search_song_to_dj": "Search for a song to DJ",
+      "select_song_to_dj": "Choose a song to DJ",
+      "start_djing_with_this_song": "Let's start DJing with this song"
     }
   },
   "db": {
@@ -308,8 +314,8 @@
       "up_to_10_if_connect_wallet": "If you connect your wallet, you can create up to 10!",
       "no_other_playlist": "There are no other playlists to move this song to",
       "select_for_move": "Please select the playlist to move the selected song to",
-      "now_playing": "Now",
-      "next_up": "Next"
+      "now_playing": "NOW",
+      "next_up": "NEXT"
     },
     "ec": {
       "exceeded_list_connect_wallet": "You have already exceeded the number of lists that can be created. ",

@@ -93,3 +93,10 @@
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   }
 }
+
+/* .rfm-marquee 는 react-fast-marquee 내부 클래스라 라이브러리 업데이트 시 깨질 수 있다. */
+@media (prefers-reduced-motion: reduce) {
+  .rfm-marquee {
+    animation: none !important;
+  }
+}
