@@ -203,6 +203,15 @@ export type ExitPayload = {
   partyroomId: number;
 };
 
+/**
+ * 내 활성 파티룸 스냅샷 (web#477). 재연결 resync 가 기억하던 방을 되훔침(재입장)하는 대신
+ * 서버 권위 스냅샷으로 분기하기 위한 조회 결과. 활성 방이 없으면 `null`.
+ */
+export type MyActivePartyroom = {
+  partyroomId: number;
+  crewId: number;
+};
+
 export type AdjustGradePayload = {
   partyroomId: number;
   crewId: number;
@@ -310,6 +319,10 @@ export interface PartyroomsClient {
    * 파티룸 입장
    */
   enter: (payload: EnterPayload) => Promise<EnterResponse>;
+  /**
+   * 내 활성 파티룸 스냅샷 조회 (web#477). 활성 방 없으면 `null`.
+   */
+  getMyActiveRoom: () => Promise<MyActivePartyroom | null>;
   /**
    * 파티룸 퇴장
    */

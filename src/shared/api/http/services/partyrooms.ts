@@ -15,6 +15,7 @@ import type {
   GetNoticeResponse,
   GetSetupInfoPayload,
   GetSetUpInfoResponse,
+  MyActivePartyroom,
   PartyroomsClient,
   PartyroomDetailSummary,
   ReactionPayload,
@@ -86,6 +87,17 @@ export default class PartyroomsService extends HTTPClient implements PartyroomsC
   })
   public enter({ partyroomId }: EnterPayload) {
     return this.post<EnterResponse>(`${this.ROUTE_V1}/${partyroomId}/crews`);
+  }
+
+  /**
+   * 내 활성 파티룸 스냅샷 조회 (web#477). 활성 방 없으면 서버가 204(본문 없음)를 주며,
+   * 이때 응답 인터셉터(unwrapResponse)는 falsy(빈 문자열/undefined)를 반환하므로 `null` 로 정규화한다.
+   * — 200 + {data:null} 로 주면 `response.data?.data ?? response.data` 가 래퍼를 벗기지 못하는 풋건이 있어
+   *   서버 계약을 204 로 잡았다.
+   */
+  public async getMyActiveRoom() {
+    const data = await this.get<MyActivePartyroom | '' | null>(`${this.ROUTE_V1}/me/active`);
+    return data ? (data as MyActivePartyroom) : null;
   }
 
   public exit({ partyroomId }: ExitPayload) {

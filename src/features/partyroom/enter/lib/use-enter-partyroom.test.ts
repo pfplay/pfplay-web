@@ -10,7 +10,7 @@ vi.mock('@tanstack/react-query', async (importOriginal) => {
   };
 });
 vi.mock('@/shared/api/http/services', () => ({
-  partyroomsService: { getSetupInfo: vi.fn(), getNotice: vi.fn() },
+  partyroomsService: { getSetupInfo: vi.fn(), getNotice: vi.fn(), getMyActiveRoom: vi.fn() },
 }));
 vi.mock('@/shared/lib/analytics/room-tracking', () => ({
   trackPartyroomEntered: vi.fn(),
@@ -31,6 +31,8 @@ import { useEnterPartyroom as useEnterPartyroomMutation } from '../api/use-enter
 
 const mockOnConnect = vi.fn();
 const mockSetRoomReconnectHandler = vi.fn();
+const mockUnsubscribeCurrentRoom = vi.fn();
+const mockGetMyActiveRoom = partyroomsService.getMyActiveRoom as Mock;
 const mockMutate = vi.fn();
 const mockInit = vi.fn();
 const mockPush = vi.fn();
@@ -43,6 +45,7 @@ beforeEach(() => {
   (usePartyroomClient as Mock).mockReturnValue({
     onConnect: mockOnConnect,
     setRoomReconnectHandler: mockSetRoomReconnectHandler,
+    unsubscribeCurrentRoom: mockUnsubscribeCurrentRoom,
     subscribe: vi.fn(),
   });
   (useHandlePartyroomSubscriptionEvent as Mock).mockReturnValue(vi.fn());
@@ -129,14 +132,14 @@ describe('useEnterPartyroom', () => {
   });
 });
 
-describe('useEnterPartyroom 재연결 resync (#402/#469)', () => {
+describe('useEnterPartyroom 재연결 resync — 스냅샷 분기 (#477/#469/#402)', () => {
   // #469: onConnect 는 초기 enter(once) 1회만 등록되고, resync 는 그 once 핸들러 실행 시
   // setRoomReconnectHandler 로 단일 슬롯 등록된다(방마다 누적 X). 아래는 그 resync 콜백을 꺼내온다.
   const registerAndGetResync = (partyroomId: number) => {
     const { result } = renderHook(() => useEnterPartyroom(partyroomId));
     act(() => result.current());
     mockOnConnect.mock.calls[0][0](); // once 핸들러 → 초기 enter + resync 등록
-    mockMutate.mockClear(); // 초기 enter 호출 제거 → 이후 resync enter 가 calls[0]
+    mockMutate.mockClear(); // 초기 enter 호출 제거 → 재연결에서 되훔침 여부를 mockMutate 로 검증
     return mockSetRoomReconnectHandler.mock.calls[0][0] as () => void;
   };
 
@@ -152,37 +155,49 @@ describe('useEnterPartyroom 재연결 resync (#402/#469)', () => {
     expect(mockSetRoomReconnectHandler).toHaveBeenCalledWith(expect.any(Function));
   });
 
-  test('재연결 시 enter(tryEnter) 호출', () => {
+  test('#477 재연결 resync 는 enter(tryEnter) 를 재주장하지 않고 내 활성 방 스냅샷을 조회한다 (되훔침 금지)', async () => {
+    mockGetMyActiveRoom.mockResolvedValue({ partyroomId: 7, crewId: 1 });
     const resync = registerAndGetResync(7);
     resync();
-    expect(mockMutate).toHaveBeenCalledWith(
-      expect.objectContaining({ partyroomId: 7 }),
-      expect.objectContaining({ onSuccess: expect.any(Function), onError: expect.any(Function) })
+    await vi.waitFor(() => expect(mockGetMyActiveRoom).toHaveBeenCalledTimes(1));
+    expect(mockMutate).not.toHaveBeenCalled(); // tryEnter 재주장 소멸 (CRW-005 유발 경로 제거)
+  });
+
+  test('스냅샷 활성 방 == 현재 방 → 경량 resync (DJ큐 invalidate), 이탈/teardown 없음', async () => {
+    mockGetMyActiveRoom.mockResolvedValue({ partyroomId: 7, crewId: 1 });
+    const resync = registerAndGetResync(7);
+    resync();
+    await vi.waitFor(() =>
+      expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: [QueryKeys.DjingQueue, 7] })
     );
-  });
-
-  test('reactivated=false → setup 미호출, DJ큐 invalidate', () => {
-    const resync = registerAndGetResync(7);
-    resync();
-    mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER', reactivated: false });
     expect(partyroomsService.getSetupInfo).not.toHaveBeenCalled();
-    expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: [QueryKeys.DjingQueue, 7] });
+    expect(mockUnsubscribeCurrentRoom).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
-  test('reactivated=true → setup(재수화) 호출', () => {
-    (partyroomsService.getSetupInfo as Mock).mockReturnValue(new Promise(() => {}));
-    (partyroomsService.getNotice as Mock).mockReturnValue(new Promise(() => {}));
+  test('스냅샷 활성 방 != 현재 방(밀려남) → 구독 teardown + 로비, enter/exit 미호출', async () => {
+    mockGetMyActiveRoom.mockResolvedValue({ partyroomId: 99, crewId: 2 });
     const resync = registerAndGetResync(7);
     resync();
-    mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER', reactivated: true });
-    expect(partyroomsService.getSetupInfo).toHaveBeenCalled();
+    await vi.waitFor(() => expect(mockPush).toHaveBeenCalledWith('/parties'));
+    expect(mockUnsubscribeCurrentRoom).toHaveBeenCalledTimes(1);
+    expect(mockMutate).not.toHaveBeenCalled(); // 되훔침 금지
+    expect(mockInvalidateQueries).not.toHaveBeenCalled();
   });
 
-  test('enter onError → 로비', () => {
+  test('스냅샷 활성 방 없음(null) → 구독 teardown + 로비', async () => {
+    mockGetMyActiveRoom.mockResolvedValue(null);
     const resync = registerAndGetResync(7);
     resync();
-    mockMutate.mock.calls[0][1].onError();
-    expect(mockPush).toHaveBeenCalledWith('/parties');
+    await vi.waitFor(() => expect(mockPush).toHaveBeenCalledWith('/parties'));
+    expect(mockUnsubscribeCurrentRoom).toHaveBeenCalledTimes(1);
+  });
+
+  test('스냅샷 조회 실패 → 로비 이동 (fail-safe)', async () => {
+    mockGetMyActiveRoom.mockRejectedValue(new Error('network'));
+    const resync = registerAndGetResync(7);
+    resync();
+    await vi.waitFor(() => expect(mockPush).toHaveBeenCalledWith('/parties'));
   });
 });
 

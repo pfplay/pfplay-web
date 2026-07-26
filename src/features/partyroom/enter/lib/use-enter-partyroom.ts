@@ -107,26 +107,25 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
           // 틀린 구획 방출 방지. disconnect 콜백이 공개돼 있지 않아 재연결 시점 clear가 의미상 등가
           // (끊김~재연결 사이엔 방출/시드 이벤트가 처리되지 않음). 놓친 경계는 기념하지 않는다.
           useCurrentPartyroom.getState().playbackSummaryTracker.clear();
-          enter(
-            { partyroomId },
-            {
-              onSuccess: (enterResponse) => {
-                const invalidateDjQueue = () =>
-                  queryClient.invalidateQueries({ queryKey: [QueryKeys.DjingQueue, partyroomId] });
-                if (enterResponse.reactivated) {
-                  // 멤버십 상실 → 풀 재수화(검정 해소). 룸 재구독은 추가하지 않음(handleConnect 가 이미 reconcile).
-                  silent(setup(enterResponse), {
-                    onSuccess: invalidateDjQueue,
-                    onError: () => router.push('/parties'),
-                  });
-                } else {
-                  // 멤버십 유지 → 경량(플레이어/구독 무영향)
-                  invalidateDjQueue();
-                }
-              },
-              onError: () => router.push('/parties'),
-            }
-          );
+          // #477 재연결 resync 는 기억하던 방을 tryEnter 로 재주장하지 않는다 —
+          // 멀티 디바이스 승계(new-session-wins)에서 밀려난 브라우저가 재연결 순간 새 기기의 방을
+          // 역으로 밀어내는 세션 되훔침(핑퐁)의 발원지였다. 대신 서버 권위 스냅샷("내 활성 방")을
+          // 조회하고 그 결과로만 분기한다(level-triggered, 재연결=이벤트 재생 아닌 스냅샷 재취득).
+          silent(partyroomsService.getMyActiveRoom(), {
+            onSuccess: (snapshot) => {
+              if (snapshot && snapshot.partyroomId === partyroomId) {
+                // 활성 방 == 현재 화면의 방 → 멤버십 유지. 경량 resync
+                // (구독은 handleConnect 가 subscriptions[] 기준으로 이미 재구독 복원).
+                queryClient.invalidateQueries({ queryKey: [QueryKeys.DjingQueue, partyroomId] });
+              } else {
+                // 활성 방 != 현재 방(밀려남) 또는 활성 방 없음 → 로컬 teardown 후 이탈.
+                // 서버가 밀어냄을 이미 완결(명시 EXIT)했으므로 exit API 를 호출하지 않는다.
+                client.unsubscribeCurrentRoom();
+                router.push('/parties');
+              }
+            },
+            onError: () => router.push('/parties'),
+          });
         });
 
         enter(
