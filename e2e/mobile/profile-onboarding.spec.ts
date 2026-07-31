@@ -52,8 +52,21 @@ test.describe('mobile 신규 AM 프로필 온보딩 (#393)', () => {
 
     log('fill nickname + submit');
     const unique = `am${Date.now() % 100000}`;
-    await page.locator('[data-testid="mobile-profile-form"] input').first().fill(unique);
-    await page.locator('[data-testid="mobile-profile-submit"]').click();
+    const nicknameInput = page.locator('[data-testid="mobile-profile-form"] input').first();
+    const submitButton = page.locator('[data-testid="mobile-profile-submit"]');
+
+    // ⚠️ 테스트 측 방어일 뿐, 근본 원인은 제품 결함이다 — #487.
+    // 폼 기본값이 마운트 이후 비동기로 도착해 이미 입력된 값을 덮어쓴다. 페이지가 빠를수록
+    // (풀 스위트 후반처럼 warm 일 때) 우리가 먼저 입력해 값이 지워지고, 검증 실패로 제출
+    // 버튼이 disabled 로 남아 클릭이 60s 타임아웃난다. 실사용자도 빠르게 타이핑하면 같은
+    // 방식으로 입력을 잃는다. #487 이 수정되면 이 재시도 블록은 제거해도 된다.
+    await expect(async () => {
+      await nicknameInput.fill(unique);
+      await expect(nicknameInput).toHaveValue(unique, { timeout: 2_000 });
+      await expect(submitButton).toBeEnabled({ timeout: 2_000 });
+    }).toPass({ timeout: 20_000 });
+
+    await submitButton.click();
 
     // 데드엔드 #2 해소: 아바타 desktop-only 카드 거치지 않고 /parties 착지
     log('expect /parties landing (avatar 단계 생략)');
