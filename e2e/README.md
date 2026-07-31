@@ -92,19 +92,38 @@ npx playwright test --debug
 npx playwright show-report
 ```
 
-### 2. 로컬 실행의 한계 (알고 시작할 것)
+### 2. 로컬 실행 세팅 — 여기서 두 번 넘어졌다 (2026-08-01 실측)
 
-로컬 dev 서버로는 **전 스위트 GREEN 을 목표로 삼지 말 것.** 다음은 코드가 아니라 환경 때문에
-깨진다(2026-08-01 실측).
+로컬 풀 스위트는 **정상적으로 GREEN 이 난다**(19~21/21). 다만 아래 두 설정이 틀리면 코드와
+무관하게 무너지고, **둘 다 조용히 실패해서 원인이 엉뚱한 곳으로 보인다.**
 
-| 증상 | 원인 | 대응 |
-|---|---|---|
-| auth setup 전건 실패 + 화면에 `Network Error` | 백엔드 CORS 허용 오리진에 이 포트가 없음(기본 `localhost:3000` 만) | 3000 으로 띄우거나 백엔드 `CORS_ALLOWED_ORIGINS` 에 포트 추가 |
-| `createPartyroom` 의 `waitForURL` 타임아웃 | ① 같은 계정이 이미 방을 보유(활성 방 1개 불변식) ② dev 모드 룸 라우트 컴파일 지연 | 아래 방 정리 → 재실행. 모바일 project 는 dev 모드에서 여전히 실패할 수 있다(CI 프로덕션 빌드에선 통과) |
+#### (1) `E2E_API_BASE` 는 `/api/` 까지 포함해야 한다 ← 가장 악질
 
-**실행 전 잔존 방 정리** — 앞선 실패가 방을 남기면 다음 스펙이 방을 못 만든다. 증상이
-"방 생성 실패" 로 보여 원인 추적이 어렵다. 제목 접두어로 거르면 **놓친다**(데스크탑 `E2E*`,
-모바일 `MAT*` 등 제각각).
+```bash
+E2E_API_BASE=http://localhost:8080/api/   # ✅
+E2E_API_BASE=http://localhost:8080        # ❌ 조용히 망가진다
+```
+
+`cleanupMobileTestPartyrooms` 는 `new URL('v1/partyrooms', API_BASE)` 로 호출한다. 접두어가
+빠지면 404 → `if (!response.ok()) return;` 로 **아무 로그 없이 no-op** 이 된다. 그러면:
+
+1. 앞 스펙이 남긴 방이 정리되지 않고
+2. **계정당 활성 방 1개 불변식**에 걸려 다음 스펙의 방 생성이 거부되고
+3. 증상은 엉뚱하게 `createPartyroom` 의 `waitForURL` 타임아웃으로 나타난다
+
+실제로 이걸 "dev 모드 컴파일 지연" 으로 오진했다. 값을 바로잡자 모바일 11/11 이 통과했다.
+**모바일 spec 은 응답 로깅 계측이 없어 `POST /partyrooms` 성공 여부가 로그에 안 보인다** —
+DB(`partyroom` 테이블)나 trace 를 봐야 한다.
+
+#### (2) 백엔드 CORS 허용 오리진에 웹 포트가 있어야 한다
+
+없으면 **auth setup 전건이 화면의 `Network Error` 와 함께 죽는다.** 백엔드 기본값은
+`localhost:3000`(http/https)·`8080` 뿐이다. 3000 이 이미 점유돼 다른 포트로 띄운다면
+백엔드 `.env.local` 의 `CORS_ALLOWED_ORIGINS` 에 그 포트를 추가하고 app 컨테이너를 재기동한다.
+
+#### 그래도 꼬였다면 — 잔존 방 정리
+
+제목 접두어로 거르면 **놓친다**(데스크탑 `E2E*`, 모바일 `MAT*`/`MDJ*`/`MPM*` 등 제각각).
 
 ```sql
 -- 로컬 전용. Main Stage(id=1) 만 남기고 전부 종료

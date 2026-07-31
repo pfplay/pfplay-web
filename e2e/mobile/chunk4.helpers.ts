@@ -55,8 +55,18 @@ export async function newDesktopUserContext(
  */
 export async function cleanupMobileTestPartyrooms(ctx: BrowserContext): Promise<void> {
   try {
-    const response = await ctx.request.get(new URL('v1/partyrooms', API_BASE).toString());
-    if (!response.ok()) return;
+    const url = new URL('v1/partyrooms', API_BASE).toString();
+    const response = await ctx.request.get(url);
+    if (!response.ok()) {
+      // 무증상 no-op 금지(#485): 여기서 조용히 빠지면 잔존 방이 남고, 다음 spec 이
+      // "계정당 활성 방 1개" 불변식에 걸려 createPartyroom 의 waitForURL 타임아웃으로 죽는다.
+      // 증상이 원인과 멀어 추적이 어렵다. 대표 원인 = E2E_API_BASE 에 `/api/` 누락.
+      console.warn(
+        `[cleanup] 잔존 파티룸 정리 실패 — GET ${url} → ${response.status()}. ` +
+          `E2E_API_BASE 가 '/api/' 까지 포함하는지 확인할 것.`
+      );
+      return;
+    }
     const list = (await response.json()) as Array<{ partyroomId: number; title: string }>;
     const stale = list.filter((p) => E2E_PARTYROOM_TITLE_PATTERN.test(p.title));
     for (const p of stale) {
