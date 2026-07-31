@@ -2,6 +2,13 @@
 
 > 코드 품질·유지보수성 관점에서 개선이 필요한 항목을 추적한다.
 > 각 항목은 방향이 명확하여 ADR 없이 바로 실행 가능한 것들이다.
+>
+> **최종 실사: 2026-07-31** — 전 항목을 코드에서 재확인했다. 해소된 항목은 맨 아래
+> [해소된 항목](#해소된-항목) 으로 옮겼다.
+>
+> **사용자 영향이 있는 결함은 여기가 아니라 GitHub 이슈**로 간다. 이 문서는 "동작은 하지만
+> 구조가 나쁜 것" 만 다룬다. 현재 열린 사용자 영향 결함은
+> [열린 결함 이슈](#열린-결함-이슈-이-문서-범위-밖) 참조.
 
 ---
 
@@ -24,14 +31,6 @@
 - **개선 방향**: 지수 백오프 + jitter + 최대 재시도 횟수 적용
 - **참고**: ADR-002
 
-### TD-002: WebSocket 타입 백엔드 미검증
-
-- **파일**: `src/shared/api/websocket/types/partyroom.ts`
-  - `:81` — `// TODO: 임의로 작성. 실제 타입 확인 필요` (PlaybackSkipEvent)
-  - `:143` — `// FIXME: 맘대로 작성함. api 측과 enum 일치할지 확인 필요` (PARTYROOM_CLOSE)
-- **현상**: 프론트엔드가 임의로 정의한 타입이 백엔드와 불일치할 수 있음
-- **개선 방향**: 백엔드 API 스펙과 대조 후 타입 확정
-
 ### TD-003: 에러 객체 직접 변이 (mutation)
 
 - **파일**: `src/shared/api/http/client/interceptors/response.ts:53`
@@ -49,7 +48,9 @@
 - **관련**: `src/shared/lib/functions/pick.ts`, `src/widgets/partyroom-avatars/lib/use-avatar-cluster.hook.ts:346-349`, `src/entities/avatar/ui/useAvatarDance.hook.ts:22`
 - **현상**: `pick()` 셀렉터가 매번 새 객체를 반환하고 `shallow` 비교가 없어서, 채팅/공지/재생 등 무관한 상태 변경에도 Avatars 전체가 리렌더됨. 연쇄적으로 O(n) 재계산 + Avatar 자식 리렌더 유발
 - **개선 방향**: `useShallow` 적용, `useAvatarCluster` 반환값 useMemo, `registerAvatar` useCallback, `djQueueCrewIds` useMemo
-- **상세 분석**: [AVATARS_RENDER_PERFORMANCE.md](./AVATARS_RENDER_PERFORMANCE.md)
+- **2026-07-31 확인**: 유효. `avatars.component.tsx:34` 가 여전히 `pick(state, [...])` 를 쓰고,
+  `src/` 전체에 `useShallow` 사용처가 **0건**이다.
+  (기존에 링크돼 있던 `AVATARS_RENDER_PERFORMANCE.md` 는 레포에 존재하지 않아 링크를 제거했다.)
 
 ### TD-004: STOMP 하트비트 — 두 heartbeat 책임 분리 영구화
 
@@ -58,15 +59,13 @@
 - **개선 방향**: STOMP built-in heartbeat을 LB keep-alive와 별개의 disconnect 감지(presence) 책임으로 추가 활성화. 기존 커스텀 heartbeat은 LB keep-alive 책임자로 영구 유지. 두 heartbeat 영구 공존
 - **참고**: backend spec `pfplay-platform/docs/superpowers/specs/2026-05-09-presence-grace-window-design.md` § STOMP heartbeat resolved
 
-### TD-005: TODO/FIXME 41개 미해결
+### TD-005: TODO/FIXME 잔존
 
-- **현상**: `src/` 전체에 41개의 TODO/FIXME가 32개 파일에 분포
-- **주요 파일**:
-  - `src/shared/api/websocket/types/partyroom.ts` — 타입 검증 2건
-  - `src/shared/api/http/types/@enums.ts` — enum 스크립트 2건
-  - `src/entities/partyroom-client/lib/subscription-callbacks/` — 구현 누락 1건
-  - `src/entities/current-partyroom/model/` — 상태 관리 1건
-- **개선 방향**: 각 TODO를 GitHub Issue로 전환하여 추적하거나, 해결 후 제거
+- **현상 (2026-07-31 실측)**: `src/` 전체에 **33건 / 29개 파일** (2026-05 시점 41건 / 32파일에서 감소)
+- **남은 주요 지점**:
+  - `src/shared/api/http/types/@enums.ts` — enum 생성 스크립트 한계 2건 (TD-006)
+  - 나머지는 산발적. 파일당 1건 수준
+- **개선 방향**: 사용자 영향이 있는 것은 GitHub Issue 로 승격, 나머지는 해당 코드를 만질 때 정리
 
 ### TD-006: `@enums.ts` 자동 생성 스크립트 미작동
 
@@ -75,12 +74,6 @@
   - `:55` — `// TODO: 현재 스크립트가 숫자 잡아내지 못해서 수동 수정. 스크립트 수정 필요`
 - **현상**: enum 자동 생성 스크립트가 숫자형 enum을 처리하지 못하여 수동 관리 중
 - **개선 방향**: 스크립트 수정 또는 OpenAPI codegen 도입
-
-### TD-007: `usePlaybackSkipCallback` 빈 구현
-
-- **파일**: `src/entities/partyroom-client/lib/subscription-callbacks/use-playback-skip-callback.hook.ts:3-6`
-- **현상**: 콜백 함수가 `// TODO: implementation`만 있고 빈 상태
-- **개선 방향**: 재생 스킵 이벤트 수신 시 UI 상태 반영 로직 구현
 
 ---
 
@@ -119,3 +112,28 @@
 - **파일**: `src/shared/api/http/client/client.ts:12-17`
 - **현상**: API 호출에 버전 정보 없음. `baseURL`이 호스트명만 포함하며 `/v1/` 등의 prefix가 없음
 - **개선 방향**: 백엔드와 협의하여 URL prefix 또는 헤더 기반 버전 관리 도입
+
+---
+
+## 열린 결함 이슈 (이 문서 범위 밖)
+
+사용자에게 보이는 결함은 부채가 아니라 **이슈**로 추적한다. 현재 열려 있는 것들:
+
+| 이슈 | 요약 |
+|---|---|
+| [#403](https://github.com/pfplay/pfplay-web/issues/403) | stale playback 가드 부재 — `getInitialSeek` 에 상한 방어가 없어, 서버가 유령 재생 상태면 끝난 트랙이 라이브로 재생됨 |
+| [#299](https://github.com/pfplay/pfplay-web/issues/299) | 점검 자동완료 시 `MAINTENANCE_ENDED` WS 이벤트 미처리 → in-memory 오버레이 잔존 |
+| [#304](https://github.com/pfplay/pfplay-web/issues/304) | 하드 unload 시 `partyroom_exited` 텔레메트리 누락 (sendBeacon 또는 서버측 발행 필요) |
+| [#443](https://github.com/pfplay/pfplay-web/issues/443) | e2e `closeDjQueueDrawer` 헬퍼 플래키 — force 클릭이 드로어를 못 닫음 |
+| [#404](https://github.com/pfplay/pfplay-web/issues/404) | PWA — 설치·푸시 구현은 배포됨. 잔여는 운영 측 VAPID 주입 + 라이브 스모크 |
+
+---
+
+## 해소된 항목
+
+기록 보존용. 되살아나면 새 번호로 다시 등록한다.
+
+| # | 항목 | 해소 근거 (2026-07-31 확인) |
+|---|---|---|
+| TD-002 | WebSocket 타입 백엔드 미검증 | `src/shared/api/websocket/types/partyroom.ts` 에 TODO/FIXME 0건. 타입이 확정됨 |
+| TD-007 | `usePlaybackSkipCallback` 빈 구현 | 해당 파일이 제거됨. 스킵은 `use-playback-start-callback` / `use-playback-deactivated-callback` + 재생 종료 요약(`emit-playback-summary`) 경로로 처리 |

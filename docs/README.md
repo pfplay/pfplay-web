@@ -53,15 +53,49 @@ yarn
 Run development server:
 
 ```bash
-yarn dev
+yarn dev            # next dev --experimental-https --turbo → https://localhost:3000
 ```
 
-And then, open `https://localhost:3000` in your browser.
+> **If `yarn dev` fails locally (self-signed cert / turbo issues, common on Windows), run
+> `npx next dev` instead** — plain HTTP + webpack on `http://localhost:3000`. Use that URL for
+> local e2e (`E2E_BASE_URL=http://localhost:3000`).
+>
+> If the dev server behaves oddly after a branch switch, delete `.next` and make sure no stale
+> process is holding port 3000.
+
+Most screens need the backend. Bring up the full local stack from the `pfplay-platform` repo:
+
+```bash
+docker compose -f docker-compose.local.yml -p pfplay-local --env-file .env.local up -d --build
+```
+
+## Deployment targets
+
+| Branch | Environment |
+| ------ | ----------- |
+| `development` | dev (Vercel preview/dev) |
+| `main` | production — `https://pfplay.xyz` |
+
+Merging into `development` does **not** ship to production; a `development → main` PR does.
+
+## PWA
+
+The app is installable and supports Web Push (`app/manifest.ts`, `public/sw.js`,
+`src/features/push-notification`). The service worker caches **nothing at all** — its only jobs are
+satisfying installability and receiving push. That is a deliberate choice for a realtime app; see
+[ADR-013](./adr/013-pwa-service-worker-no-caching.md).
+
+## Mobile
+
+Mobile is a responsive build with dedicated widgets under `src/widgets-mobile` and
+`src/features-mobile`, selected via the `x-pf-device` header injected by `src/middleware.ts`.
+There is no longer a mobile block/redirect. See [ADR-014](./adr/014-mobile-widget-split.md).
 
 ## Testing
 
-Please refer to [Testing Guide](./TESTING.md).
+Please refer to the [Testing Guide](./TESTING.md) (unit/integration) and the
+[E2E Guide](../e2e/README.md) (Playwright).
 
 ## Contributing
 
-Please refer to [Contributing](./CONTRIBUTING.md).
+Please refer to [Contributing](./CONTRIBUTING.md). Documentation index: [DOCS_ENTRY](./DOCS_ENTRY.md).
