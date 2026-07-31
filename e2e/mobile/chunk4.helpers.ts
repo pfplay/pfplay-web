@@ -55,18 +55,8 @@ export async function newDesktopUserContext(
  */
 export async function cleanupMobileTestPartyrooms(ctx: BrowserContext): Promise<void> {
   try {
-    const url = new URL('v1/partyrooms', API_BASE).toString();
-    const response = await ctx.request.get(url);
-    if (!response.ok()) {
-      // 무증상 no-op 금지(#485): 여기서 조용히 빠지면 잔존 방이 남고, 다음 spec 이
-      // "계정당 활성 방 1개" 불변식에 걸려 createPartyroom 의 waitForURL 타임아웃으로 죽는다.
-      // 증상이 원인과 멀어 추적이 어렵다. 대표 원인 = E2E_API_BASE 에 `/api/` 누락.
-      console.warn(
-        `[cleanup] 잔존 파티룸 정리 실패 — GET ${url} → ${response.status()}. ` +
-          `E2E_API_BASE 가 '/api/' 까지 포함하는지 확인할 것.`
-      );
-      return;
-    }
+    const response = await ctx.request.get(new URL('v1/partyrooms', API_BASE).toString());
+    if (!response.ok()) return;
     const list = (await response.json()) as Array<{ partyroomId: number; title: string }>;
     const stale = list.filter((p) => E2E_PARTYROOM_TITLE_PATTERN.test(p.title));
     for (const p of stale) {
@@ -87,7 +77,23 @@ export async function cleanupMobileTestPartyrooms(ctx: BrowserContext): Promise<
  * - console.error / console.warn
  * - Next.js dev overlay DOM 주기 스캔
  */
+/** 로깅 대상 API — 방/플리 라이프사이클. 나머지는 실패(4xx/5xx)일 때만 남긴다. */
+const TRACED_ENDPOINT = /\/v1\/(partyrooms|playlists)(\/|\?|$)/;
+
 export function attachErrorTracing(page: Page, log: (m: string) => void) {
+  // #485: 모바일 spec 에는 응답 로깅이 없어 "POST /partyrooms 이 성공했는지" 를 로그로 알 수
+  // 없었다. 그 탓에 방이 실제로 생성됐는데도 "요청 자체가 안 나갔다" 고 오진했다(원인은 잔존
+  // 방 + 정리 헬퍼 no-op). 데스크탑 spec 이 각자 인라인으로 달던 계측을 공용 헬퍼로 올린다.
+  page.on('response', (res) => {
+    const url = res.url();
+    const status = res.status();
+    if (status >= 400 || TRACED_ENDPOINT.test(url)) {
+      log(`response ${status} ${res.request().method()} ${url}`);
+    }
+  });
+  page.on('requestfailed', (req) => {
+    log(`REQ_FAILED ${req.method()} ${req.url()} :: ${req.failure()?.errorText ?? 'unknown'}`);
+  });
   page.on('pageerror', (err) => {
     log(`pageerror: ${err.message}\n${err.stack ?? ''}`);
   });
