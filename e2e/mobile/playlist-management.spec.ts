@@ -114,8 +114,11 @@ test.describe('mobile playlist management (chunk 6)', () => {
     const removeBtn = page.getByTestId(/^detail-track-remove-/).first();
     await expect(removeBtn).toBeVisible({ timeout: 15_000 });
 
-    // #453: 갓 생성한 플리(커서 null) → 추가한 곡에 NEXT 배지. 비-DJ라 NOW 없음.
-    await expect(page.getByTestId('track-badge-next')).toBeVisible({ timeout: 15_000 });
+    // 커서 배지(NOW/NEXT)는 #468(시안 반영) 이후 **내가 현재 DJ일 때만** 노출된다
+    // (playlist-detail-sheet: isMeCurrentDj 가 false 면 nowTrackId/nextTrackId 모두 null).
+    // 이 시나리오는 DJ 등록 없이 플리만 관리하므로 두 배지 모두 없어야 정상이다.
+    // (구 기대값 "비-DJ 도 NEXT 노출"은 #453 시점 규칙이며 #468 에서 폐기됨 — #485)
+    await expect(page.getByTestId('track-badge-next')).toHaveCount(0);
     await expect(page.getByTestId('track-badge-now')).toHaveCount(0);
 
     // 곡 삭제 → 다시 빈 상태 (트랙 0)
