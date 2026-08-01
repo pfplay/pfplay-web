@@ -23,8 +23,10 @@ export interface ActivitySummary {
 }
 
 export interface GetMyProfileSummaryResponse {
-  nickname: string;
-  introduction?: string;
+  /** 프로필 미설정 신규 가입자는 서버가 null 을 준다 (#487). */
+  nickname: string | null;
+  /** 미입력 시 서버가 null 을 준다 — `?: string` 은 사실과 달랐다 (#487). */
+  introduction: string | null;
   avatarCompositionType: AvatarCompositionType;
   avatarBodyUri: string;
   avatarFaceUri: string;

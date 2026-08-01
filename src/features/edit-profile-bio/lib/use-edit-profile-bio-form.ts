@@ -25,9 +25,13 @@ export const useEditProfileBioForm = () => {
   } = useForm<Form.Model>({
     mode: 'all',
     resolver: zodResolver(Form.getSchema(t)),
+    // #487 (1): 서버는 미설정 값에 null 을 준다. null 을 그대로 넘기면 Input 의
+    // `value = _value ?? localValue` 가 undefined 로 떨어져 필드가 uncontrolled 로
+    // 시작하고, React 가 "value prop should not be null" / "uncontrolled → controlled"
+    // 경고를 낸다. 빈 문자열로 정규화해 처음부터 controlled 로 둔다.
     defaultValues: {
-      nickname: me.nickname,
-      introduction: me.introduction,
+      nickname: me.nickname ?? '',
+      introduction: me.introduction ?? '',
     },
   });
 
