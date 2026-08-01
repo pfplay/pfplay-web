@@ -92,7 +92,46 @@ npx playwright test --debug
 npx playwright show-report
 ```
 
-### 2. cold 실행 flake
+### 2. 로컬 실행 세팅 — 여기서 두 번 넘어졌다 (2026-08-01 실측)
+
+로컬 풀 스위트는 **정상적으로 GREEN 이 난다**(19~21/21). 다만 아래 두 설정이 틀리면 코드와
+무관하게 무너지고, **둘 다 조용히 실패해서 원인이 엉뚱한 곳으로 보인다.**
+
+#### (1) `E2E_API_BASE` 는 `/api/` 까지 포함해야 한다 ← 가장 악질
+
+```bash
+E2E_API_BASE=http://localhost:8080/api/   # ✅
+E2E_API_BASE=http://localhost:8080        # ❌ 조용히 망가진다
+```
+
+`cleanupMobileTestPartyrooms` 는 `new URL('v1/partyrooms', API_BASE)` 로 호출한다. 접두어가
+빠지면 404 → `if (!response.ok()) return;` 로 **아무 로그 없이 no-op** 이 된다. 그러면:
+
+1. 앞 스펙이 남긴 방이 정리되지 않고
+2. **계정당 활성 방 1개 불변식**에 걸려 다음 스펙의 방 생성이 거부되고
+3. 증상은 엉뚱하게 `createPartyroom` 의 `waitForURL` 타임아웃으로 나타난다
+
+실제로 이걸 "dev 모드 컴파일 지연" 으로 오진했다. 값을 바로잡자 모바일 11/11 이 통과했다.
+**모바일 spec 은 응답 로깅 계측이 없어 `POST /partyrooms` 성공 여부가 로그에 안 보인다** —
+DB(`partyroom` 테이블)나 trace 를 봐야 한다.
+
+#### (2) 백엔드 CORS 허용 오리진에 웹 포트가 있어야 한다
+
+없으면 **auth setup 전건이 화면의 `Network Error` 와 함께 죽는다.** 백엔드 기본값은
+`localhost:3000`(http/https)·`8080` 뿐이다. 3000 이 이미 점유돼 다른 포트로 띄운다면
+백엔드 `.env.local` 의 `CORS_ALLOWED_ORIGINS` 에 그 포트를 추가하고 app 컨테이너를 재기동한다.
+
+#### 그래도 꼬였다면 — 잔존 방 정리
+
+제목 접두어로 거르면 **놓친다**(데스크탑 `E2E*`, 모바일 `MAT*`/`MDJ*`/`MPM*` 등 제각각).
+
+```sql
+-- 로컬 전용. Main Stage(id=1) 만 남기고 전부 종료
+UPDATE crew SET is_active=0 WHERE partyroom_id<>1;
+UPDATE partyroom SET status='TERMINATED' WHERE partyroom_id<>1 AND status<>'TERMINATED';
+```
+
+### 3. cold 실행 flake
 
 로컬에서 처음 한 번은 Next 컴파일·백엔드 워밍 때문에 타임아웃이 날 수 있다.
 **동일 조건으로 한 번 더(warm) 돌려보고 판단한다.** 두 번째도 같은 지점에서 실패하면 그때부터
@@ -147,7 +186,24 @@ React Query devtools 오버레이가 클릭을 계속 흡수하면 드로어는 
 (크루 계급 그룹이 기본 접힘 → 기본 펼침으로 바뀌면서 kick/ban 스펙이 깨진 사례).
 **상태를 읽고 조건부로 클릭**하도록 쓴다.
 
-### 4. 백엔드 500 이 프론트 에러로 위장한다
+### 4. 라벨은 상태에 따라 바뀐다 — CTA 는 testid 로 잡는다 (#485)
+
+`getByRole('button', { name: ... })` 는 라벨이 고정일 때만 안전하다. DJ 등록 버튼은 큐 상태에
+따라 **같은 컴포넌트가 다른 라벨**로 렌더된다.
+
+| 상태 | 컴포넌트 | 라벨 |
+|---|---|---|
+| 큐에 DJ 있음 | `Body` | Register for DJ Queue |
+| 큐 비어 있음 | `EmptyBody` | **Choose from my playlist** (+ 별도 CTA `Search a song and be a DJ`) |
+
+`registerAsDj` 는 **갓 만든 방**(항상 빈 큐)에서 호출되므로 이름 매칭은 100% 실패했다.
+`data-testid` 는 양쪽에서 동일하므로 그것을 앵커로 쓴다.
+
+> 이 실패는 6개 스펙을 한꺼번에 무너뜨렸고, 표면 증상은 "방에 못 들어감"처럼 보였다(스냅샷이
+> cleanup 이후 로비였다). **증상이 아니라 trace 의 네트워크 타임라인을 먼저 볼 것** — 당시 API 는
+> 전부 2xx 였다.
+
+### 5. 백엔드 500 이 프론트 에러로 위장한다
 
 백엔드가 500 을 주면 화면에는 Suspense/에러 바운더리 메시지만 뜬다. e2e 실패 메시지도 프론트
 문제처럼 보인다. **네트워크 응답을 먼저 확인**한다(스펙 안에서 `page.on('response')` 계측).

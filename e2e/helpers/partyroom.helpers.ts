@@ -192,7 +192,11 @@ export async function createPartyroom(
 export async function registerAsDj(page: Page, playlistName?: string) {
   await openDjQueueDrawer(page);
 
-  const registerButton = page.getByRole('button', { name: /register.*dj queue|dj 대기 등록/i });
+  // 접근성 이름으로 찾지 않는다. #467 이후 이 버튼의 라벨이 큐 상태에 따라 달라진다:
+  //   - 큐에 DJ 있음(Body)      → "Register for DJ Queue"
+  //   - 큐 비어 있음(EmptyBody) → "Choose from my playlist" (+ 별도 CTA "Search a song and be a DJ")
+  // 갓 만든 방은 항상 후자라 이름 매칭은 100% 실패한다. testid 는 양쪽에서 동일하다.
+  const registerButton = page.getByTestId('register-dj-queue');
   await expect(registerButton).toBeVisible({ timeout: 10_000 });
   await expect(registerButton).toBeEnabled({ timeout: 10_000 });
   await registerButton.click({ force: true });
