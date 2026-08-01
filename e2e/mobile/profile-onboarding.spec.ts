@@ -50,21 +50,26 @@ test.describe('mobile 신규 AM 프로필 온보딩 (#393)', () => {
       timeout: 30_000,
     });
 
+    // 폼이 보여도 dev 로그인 다이얼로그는 아직 DOM 에 남아 있을 수 있다. 그 사이에 입력하면
+    // 다이얼로그의 focus trap 이 포커스를 회수해 fill 이 조용히 삼켜진다 — 값이 반영되지 않아
+    // 제출 버튼이 계속 비활성이고, 클릭이 60s 타임아웃난다.
+    //   실측(2026-08-01, 실패 재현): fill 성공 반환 직후 readback inputValue="",
+    //   그 다음 프레임에 `focusout target=BUTTON[dev-sign-in-associate] active=BODY`.
+    //   input 노드는 교체되지 않았고(동일 노드 60s 유지) input/beforeinput 이벤트는 0건 —
+    //   입력이 애초에 이 필드로 오지 않았다는 뜻이다.
+    // 다이얼로그 분리를 확인한 뒤 입력해 원인을 제거한다.
+    log('wait for dev sign-in dialog detached');
+    await dialog.waitFor({ state: 'detached', timeout: 15_000 });
+
     log('fill nickname + submit');
     const unique = `am${Date.now() % 100000}`;
     const nicknameInput = page.locator('[data-testid="mobile-profile-form"] input').first();
     const submitButton = page.locator('[data-testid="mobile-profile-submit"]');
 
-    // ⚠️ 테스트 측 방어일 뿐, 근본 원인은 제품 결함이다 — #487.
-    // 폼 기본값이 마운트 이후 비동기로 도착해 이미 입력된 값을 덮어쓴다. 페이지가 빠를수록
-    // (풀 스위트 후반처럼 warm 일 때) 우리가 먼저 입력해 값이 지워지고, 검증 실패로 제출
-    // 버튼이 disabled 로 남아 클릭이 60s 타임아웃난다. 실사용자도 빠르게 타이핑하면 같은
-    // 방식으로 입력을 잃는다. #487 이 수정되면 이 재시도 블록은 제거해도 된다.
-    await expect(async () => {
-      await nicknameInput.fill(unique);
-      await expect(nicknameInput).toHaveValue(unique, { timeout: 2_000 });
-      await expect(submitButton).toBeEnabled({ timeout: 2_000 });
-    }).toPass({ timeout: 20_000 });
+    await nicknameInput.click();
+    await nicknameInput.fill(unique);
+    // 같은 일이 다시 생기면 여기서 즉시 드러난다(제출 버튼 60s 타임아웃으로 뭉개지 않는다)
+    await expect(nicknameInput).toHaveValue(unique, { timeout: 5_000 });
 
     await submitButton.click();
 
