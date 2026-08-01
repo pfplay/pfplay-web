@@ -37,17 +37,36 @@ const mockPush = vi.fn();
 const mockInvalidateQueries = vi.fn();
 const mockTrackerClear = vi.fn();
 const mockSeedFromSetup = vi.fn();
+const mockSubscribe = vi.fn();
+const mockUpdateCrews = vi.fn();
+let storeRoomId = 7;
+let storeCrews: { crewId: number }[] = [];
+const setStoreRoomId = (id: number) => {
+  storeRoomId = id;
+};
+const mockUnsubscribeCurrentRoom = vi.fn();
+const mockHandleEvent = vi.fn();
 
 beforeEach(() => {
   vi.clearAllMocks();
   (usePartyroomClient as Mock).mockReturnValue({
     onConnect: mockOnConnect,
     setRoomReconnectHandler: mockSetRoomReconnectHandler,
-    subscribe: vi.fn(),
+    subscribe: mockSubscribe,
+    unsubscribeCurrentRoom: mockUnsubscribeCurrentRoom,
   });
-  (useHandlePartyroomSubscriptionEvent as Mock).mockReturnValue(vi.fn());
+  (useHandlePartyroomSubscriptionEvent as Mock).mockReturnValue(mockHandleEvent);
+  storeRoomId = 7;
+  storeCrews = [];
   const state = {
+    get id() {
+      return storeRoomId;
+    },
     init: mockInit,
+    get crews() {
+      return storeCrews;
+    },
+    updateCrews: mockUpdateCrews,
     playbackSummaryTracker: { clear: mockTrackerClear, seedFromSetup: mockSeedFromSetup },
   };
   (useStores as Mock).mockReturnValue({
@@ -183,6 +202,264 @@ describe('useEnterPartyroom 재연결 resync (#402/#469)', () => {
     resync();
     mockMutate.mock.calls[0][1].onError();
     expect(mockPush).toHaveBeenCalledWith('/parties');
+  });
+});
+
+describe('스냅샷-구독 유실 구간 차단 (#491)', () => {
+  const SETUP_RESPONSE = {
+    stageType: 'GENERAL',
+    crews: [{ crewId: 1, nickname: '나', gradeType: 'CLUBBER' }],
+    display: { playbackActivated: false },
+  };
+
+  const enterAndGetSubscribedHandler = (partyroomId = 7) => {
+    const { result } = renderHook(() => useEnterPartyroom(partyroomId));
+    act(() => result.current());
+    mockOnConnect.mock.calls[0][0]();
+    mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER' });
+    return mockSubscribe.mock.calls[0]?.[1] as (message: unknown) => void;
+  };
+
+  test('구독은 setup 스냅샷 조회보다 먼저 등록된다', () => {
+    (partyroomsService.getSetupInfo as Mock).mockReturnValue(new Promise(() => {}));
+    (partyroomsService.getNotice as Mock).mockReturnValue(new Promise(() => {}));
+
+    enterAndGetSubscribedHandler(7);
+
+    expect(mockSubscribe).toHaveBeenCalledWith(7, expect.any(Function));
+    // 스냅샷이 구독보다 먼저 만들어지면 그 사이 이벤트(CREW_ENTERED 등)가 영구 유실된다.
+    expect(mockSubscribe.mock.invocationCallOrder[0]).toBeLessThan(
+      (partyroomsService.getSetupInfo as Mock).mock.invocationCallOrder[0]
+    );
+  });
+
+  test('setup 적용 전 도착한 이벤트는 버퍼링됐다가 init 이후 재생된다', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockResolvedValue(SETUP_RESPONSE);
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    const handler = enterAndGetSubscribedHandler(7);
+    const message = { body: '{"eventType":"CREW_ENTERED"}' };
+    handler(message);
+
+    // 스냅샷 적용 전 — 아직 전달하지 않는다 (init이 덮어써 유실되는 것을 막기 위해)
+    expect(mockHandleEvent).not.toHaveBeenCalled();
+
+    await vi.waitFor(() => expect(mockHandleEvent).toHaveBeenCalledWith(message));
+    // 재생은 반드시 initPartyroom 이후 — 그래야 스냅샷이 이벤트를 덮어쓰지 않는다
+    expect(mockInit.mock.invocationCallOrder[0]).toBeLessThan(
+      mockHandleEvent.mock.invocationCallOrder[0]
+    );
+  });
+
+  test('setup 적용 후 도착한 이벤트는 즉시 전달된다', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockResolvedValue(SETUP_RESPONSE);
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    const handler = enterAndGetSubscribedHandler(7);
+    await vi.waitFor(() => expect(mockInit).toHaveBeenCalled());
+
+    const message = { body: '{"eventType":"CHAT_MESSAGE_SENT"}' };
+    handler(message);
+
+    expect(mockHandleEvent).toHaveBeenCalledWith(message);
+  });
+
+  test('버퍼는 재생 후 비워진다 (같은 이벤트 중복 재생 없음)', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockResolvedValue(SETUP_RESPONSE);
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    const handler = enterAndGetSubscribedHandler(7);
+    const buffered = { body: '{"eventType":"CREW_ENTERED"}' };
+    handler(buffered);
+
+    await vi.waitFor(() => expect(mockHandleEvent).toHaveBeenCalledWith(buffered));
+
+    handler({ body: '{"eventType":"CHAT_MESSAGE_SENT"}' });
+    expect(mockHandleEvent).toHaveBeenCalledTimes(2);
+  });
+
+  test('setup 실패 시 구독을 해제하고 로비로 이동한다', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockRejectedValue(new Error('setup failed'));
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    enterAndGetSubscribedHandler(7);
+
+    await vi.waitFor(() => expect(mockPush).toHaveBeenCalledWith('/parties'));
+    // 입장 실패한 방의 구독이 남으면 유령 구독이 된다
+    expect(mockUnsubscribeCurrentRoom).toHaveBeenCalled();
+  });
+
+  test('재연결 재수화(reactivated) 중 도착한 이벤트도 스냅샷에 덮이지 않는다', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockResolvedValue(SETUP_RESPONSE);
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    const { result } = renderHook(() => useEnterPartyroom(7));
+    act(() => result.current());
+    mockOnConnect.mock.calls[0][0]();
+    mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER' });
+    const handler = mockSubscribe.mock.calls[0][1] as (message: unknown) => void;
+
+    await vi.waitFor(() => expect(mockInit).toHaveBeenCalled());
+    mockHandleEvent.mockClear();
+    mockInit.mockClear();
+
+    // 재연결 → reactivated 재수화 시작
+    const resync = mockSetRoomReconnectHandler.mock.calls[0][0] as () => void;
+    mockMutate.mockClear();
+    resync();
+    mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER', reactivated: true });
+
+    const message = { body: '{"eventType":"CREW_ENTERED"}' };
+    handler(message);
+    expect(mockHandleEvent).not.toHaveBeenCalled(); // 재수화 중 — 보류
+
+    await vi.waitFor(() => expect(mockHandleEvent).toHaveBeenCalledWith(message));
+    expect(mockInit.mock.invocationCallOrder[0]).toBeLessThan(
+      mockHandleEvent.mock.invocationCallOrder[0]
+    );
+  });
+});
+
+describe('구독 등록 지연 보정 (#491 self-heal)', () => {
+  const SETUP_RESPONSE = {
+    stageType: 'GENERAL',
+    crews: [{ crewId: 1, nickname: '나', gradeType: 'CLUBBER' }],
+    display: { playbackActivated: false },
+  };
+  const RECONCILE_TIMEOUT = { timeout: 4_000 };
+
+  // 보정은 실시간 타이머로 예약되므로 앞선 테스트의 예약분이 뒤 테스트 도중 발화한다.
+  // 테스트마다 방 번호를 다르게 쓰고 스토어 id 를 거기에 맞추면, 흘러온 보정은
+  // "다른 방" 가드에 걸려 조기 return 하므로 서로를 오염시키지 않는다.
+  const enterRoom = (partyroomId: number) => {
+    setStoreRoomId(partyroomId);
+    const { result } = renderHook(() => useEnterPartyroom(partyroomId));
+    act(() => result.current());
+    mockOnConnect.mock.calls[0][0]();
+    mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER' });
+    return mockSubscribe.mock.calls[0][1] as (message: unknown) => void;
+  };
+
+  test('초기 스냅샷 적용 후 crews 스냅샷을 한 번 다시 맞춘다', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockResolvedValue({
+      ...SETUP_RESPONSE,
+      crews: [
+        { crewId: 1, nickname: '나', gradeType: 'CLUBBER' },
+        { crewId: 2, nickname: '늦게 반영된 크루', gradeType: 'CLUBBER' },
+      ],
+    });
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    enterRoom(1101);
+
+    // 초기 setup 1회 → 보정으로 1회 더
+    await vi.waitFor(
+      () => expect(partyroomsService.getSetupInfo).toHaveBeenCalledTimes(2),
+      RECONCILE_TIMEOUT
+    );
+    await vi.waitFor(() => expect(mockUpdateCrews).toHaveBeenCalled(), RECONCILE_TIMEOUT);
+    expect(mockUpdateCrews.mock.calls[0][0]()).toEqual([
+      expect.objectContaining({ crewId: 1 }),
+      expect.objectContaining({ crewId: 2 }),
+    ]);
+  });
+
+  test('어긋난 게 없으면 스토어를 건드리지 않는다 (불필요한 리렌더 방지)', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockResolvedValue(SETUP_RESPONSE);
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    enterRoom(1105);
+    storeCrews = [{ crewId: 1 }]; // 스냅샷과 동일한 멤버십
+
+    await vi.waitFor(
+      () => expect(partyroomsService.getSetupInfo).toHaveBeenCalledTimes(2),
+      RECONCILE_TIMEOUT
+    );
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    expect(mockUpdateCrews).not.toHaveBeenCalled();
+  });
+
+  test('이미 있는 크루의 라이브 상태는 보정이 되돌리지 않는다', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockResolvedValue({
+      ...SETUP_RESPONSE,
+      crews: [
+        { crewId: 1, nickname: '나', gradeType: 'CLUBBER' },
+        { crewId: 2, nickname: '놓쳤던 크루', gradeType: 'CLUBBER' },
+      ],
+    });
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    enterRoom(1106);
+    const liveCrew = { crewId: 1, reactionType: 'LIKE', motionType: 'DANCE' };
+    storeCrews = [liveCrew];
+
+    await vi.waitFor(() => expect(mockUpdateCrews).toHaveBeenCalled(), RECONCILE_TIMEOUT);
+
+    const next = mockUpdateCrews.mock.calls[0][0]();
+    expect(next[0]).toBe(liveCrew); // 동일 참조 — 반응/모션이 스냅샷으로 덮이지 않는다
+    expect(next[1]).toEqual(expect.objectContaining({ crewId: 2 }));
+  });
+
+  test('보정 중 도착한 이벤트는 보류됐다가 보정 후 재생된다', async () => {
+    let resolveReconcile: ((value: unknown) => void) | undefined;
+    (partyroomsService.getSetupInfo as Mock)
+      .mockResolvedValueOnce(SETUP_RESPONSE)
+      .mockImplementationOnce(() => new Promise((resolve) => (resolveReconcile = resolve)));
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    const handler = enterRoom(1102);
+    await vi.waitFor(() => expect(resolveReconcile).toBeDefined(), RECONCILE_TIMEOUT);
+    mockHandleEvent.mockClear();
+
+    const message = { body: '{"eventType":"CREW_ENTERED"}' };
+    handler(message);
+    expect(mockHandleEvent).not.toHaveBeenCalled(); // 보정 중 — 보류
+
+    resolveReconcile?.(SETUP_RESPONSE);
+    await vi.waitFor(() => expect(mockHandleEvent).toHaveBeenCalledWith(message), RECONCILE_TIMEOUT);
+  });
+
+  test('보정 요청이 실패해도 버퍼는 풀린다', async () => {
+    (partyroomsService.getSetupInfo as Mock)
+      .mockResolvedValueOnce(SETUP_RESPONSE)
+      .mockRejectedValueOnce(new Error('reconcile failed'));
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    const handler = enterRoom(1103);
+    await vi.waitFor(
+      () => expect(partyroomsService.getSetupInfo).toHaveBeenCalledTimes(2),
+      RECONCILE_TIMEOUT
+    );
+    mockHandleEvent.mockClear();
+
+    const message = { body: '{"eventType":"CHAT_MESSAGE_SENT"}' };
+    await vi.waitFor(() => {
+      handler(message);
+      expect(mockHandleEvent).toHaveBeenCalled();
+    }, RECONCILE_TIMEOUT);
+  });
+
+  test('보정 시점에 다른 방으로 옮겼으면 crews 를 덮지 않는다', async () => {
+    (partyroomsService.getSetupInfo as Mock).mockResolvedValue(SETUP_RESPONSE);
+    (partyroomsService.getNotice as Mock).mockResolvedValue({ content: null });
+
+    setStoreRoomId(1104);
+    const { result } = renderHook(() => useEnterPartyroom(999)); // 스토어 id(1104)와 다른 방
+    act(() => result.current());
+    mockOnConnect.mock.calls[0][0]();
+    mockMutate.mock.calls[0][1].onSuccess({ crewId: 1, gradeType: 'LISTENER' });
+
+    await vi.waitFor(() => expect(mockInit).toHaveBeenCalled(), RECONCILE_TIMEOUT);
+    mockUpdateCrews.mockClear();
+    const setupCallsBeforeReconcile = (partyroomsService.getSetupInfo as Mock).mock.calls.length;
+
+    await new Promise((resolve) => setTimeout(resolve, 1_500));
+
+    expect((partyroomsService.getSetupInfo as Mock).mock.calls.length).toBe(
+      setupCallsBeforeReconcile
+    );
+    expect(mockUpdateCrews).not.toHaveBeenCalled();
   });
 });
 
