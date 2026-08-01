@@ -23,6 +23,12 @@ type Options = {
   entrySource?: EntrySource;
 };
 
+/**
+ * 구독 등록 지연을 넉넉히 덮는 보정 시점. 측정된 지연은 수십 ms 수준이라 1s 면 충분한 여유가 있고,
+ * 초기 렌더 이후에 도는 보정이라 늦어도 사용자 체감엔 영향이 없다.
+ */
+const CREWS_RECONCILE_DELAY_MS = 1_000;
+
 export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
   const client = usePartyroomClient();
   const handleEvent = useHandlePartyroomSubscriptionEvent();
@@ -43,6 +49,56 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
     eventBufferRef.current = createSubscriptionEventBuffer(() => handleEventRef.current);
   }
   const eventBuffer = eventBufferRef.current;
+
+  /**
+   * #491 구독 등록 지연 보정 (self-heal).
+   *
+   * `SUBSCRIBE` 프레임을 보낸 시각과 브로커가 실제로 구독을 등록하는 시각 사이에는 간격이 있고,
+   * STOMP 는 SUBSCRIBE 에 ack 가 없어(Spring `enableSimpleBroker` 는 DISCONNECT 에만 RECEIPT 를
+   * 보낸다) 클라이언트가 등록 완료를 알 방법이 없다. 그래서 구독을 스냅샷보다 먼저 보내도
+   * "프레임 전송 ~ 등록 완료" 사이의 `CREW_ENTERED` 는 여전히 유실될 수 있다
+   * (측정: 유실률 37.5% → 8%, 구독-스냅샷 사이에 500ms 를 강제로 넣으면 0%).
+   *
+   * 등록이 확실히 끝났을 시점에 crews 스냅샷을 한 번 다시 맞춰 그 잔여분을 복구한다. 초기 렌더는
+   * 이미 첫 스냅샷으로 끝났으므로 사용자 체감 지연은 없다. 재조회 중 도착분은 버퍼가 보류했다가
+   * 재생하므로, 뒤늦게 적용되는 스냅샷이 그 사이 이벤트를 덮지 않는다.
+   */
+  const scheduleCrewsReconcile = () => {
+    setTimeout(async () => {
+      // 방을 떠났거나 다른 방으로 옮겼으면 낡은 방의 crews 로 덮지 않는다.
+      if (useCurrentPartyroom.getState().id !== partyroomId) return;
+
+      eventBuffer.hold();
+      try {
+        const setUpInfo = await partyroomsService.getSetupInfo({ partyroomId });
+        if (useCurrentPartyroom.getState().id !== partyroomId) return;
+
+        const motionTypeMap = crewIdToMotionTypeMap(setUpInfo.display.reaction?.motion);
+        const { crews: currentCrews, updateCrews } = useCurrentPartyroom.getState();
+        const currentById = new Map(currentCrews.map((crew) => [crew.crewId, crew]));
+        const membershipMatches =
+          currentCrews.length === setUpInfo.crews.length &&
+          setUpInfo.crews.every((crew) => currentById.has(crew.crewId));
+
+        // 어긋난 게 없으면 스토어를 건드리지 않는다. 대부분의 입장은 이 경로로,
+        // 불필요한 리렌더나 라이브 상태 손실이 생기지 않는다.
+        if (membershipMatches) return;
+
+        updateCrews(() =>
+          setUpInfo.crews.map((crew) => {
+            // 이미 있는 크루는 스토어 객체를 그대로 둔다 — 스냅샷에 없는 라이브 필드
+            // (모션·반응·마지막 채팅)를 보정이 되돌리지 않도록.
+            const existing = currentById.get(crew.crewId);
+            return existing ?? { ...crew, motionType: motionTypeMap.get(crew.crewId) ?? MotionType.NONE };
+          })
+        );
+      } catch {
+        // 보정 실패는 조용히 넘긴다 — 원래 상태를 유지할 뿐 악화시키지 않는다.
+      } finally {
+        eventBuffer.release();
+      }
+    }, CREWS_RECONCILE_DELAY_MS);
+  };
 
   const setup = async (enterResponse: EnterResponse) => {
     // L1: 방 enter/재수화 시작 시 무조건 clear — 이전 방 스냅샷이 새 방 채팅에 방출되는 누출 방지
@@ -167,6 +223,7 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
                   queryClient.invalidateQueries({
                     queryKey: [QueryKeys.DjingQueue, partyroomId],
                   });
+                  scheduleCrewsReconcile();
                 },
                 onError: () => {
                   client.unsubscribeCurrentRoom(); // 입장 실패한 방의 유령 구독을 남기지 않는다
