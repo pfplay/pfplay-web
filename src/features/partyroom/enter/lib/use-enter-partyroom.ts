@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   useHandlePartyroomSubscriptionEvent,
@@ -12,6 +13,10 @@ import { trackPartyroomEntered } from '@/shared/lib/analytics/room-tracking';
 import silent from '@/shared/lib/functions/silent';
 import { useAppRouter } from '@/shared/lib/router/use-app-router.hook';
 import { useStores } from '@/shared/lib/store/stores.context';
+import {
+  createSubscriptionEventBuffer,
+  type SubscriptionEventBuffer,
+} from './subscription-event-buffer';
 import { useEnterPartyroom as useEnterPartyroomMutation } from '../api/use-enter-partyroom.mutation';
 
 type Options = {
@@ -28,6 +33,16 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
   const router = useAppRouter();
 
   const entrySource: EntrySource = options.entrySource ?? 'direct';
+
+  // #491 구독 핸들러는 방마다 1회만 등록되지만 handleEvent 는 렌더마다 새로 만들어진다.
+  // ref 로 최신 핸들러를 가리켜 버퍼가 stale closure 를 잡지 않게 한다.
+  const handleEventRef = useRef(handleEvent);
+  handleEventRef.current = handleEvent;
+  const eventBufferRef = useRef<SubscriptionEventBuffer>();
+  if (!eventBufferRef.current) {
+    eventBufferRef.current = createSubscriptionEventBuffer(() => handleEventRef.current);
+  }
+  const eventBuffer = eventBufferRef.current;
 
   const setup = async (enterResponse: EnterResponse) => {
     // L1: 방 enter/재수화 시작 시 무조건 clear — 이전 방 스냅샷이 새 방 채팅에 방출되는 누출 방지
@@ -115,8 +130,14 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
                   queryClient.invalidateQueries({ queryKey: [QueryKeys.DjingQueue, partyroomId] });
                 if (enterResponse.reactivated) {
                   // 멤버십 상실 → 풀 재수화(검정 해소). 룸 재구독은 추가하지 않음(handleConnect 가 이미 reconcile).
+                  // #491 재수화도 스냅샷 경계를 다시 지난다 — 적용 전 도착분을 보류했다가 재생한다.
+                  // 실패 경로에선 보류를 풀지 않는다(로비로 나가므로 낡은 이벤트를 재생할 이유가 없다).
+                  eventBuffer.hold();
                   silent(setup(enterResponse), {
-                    onSuccess: invalidateDjQueue,
+                    onSuccess: () => {
+                      eventBuffer.release();
+                      invalidateDjQueue();
+                    },
                     onError: () => router.push('/parties'),
                   });
                 } else {
@@ -133,14 +154,22 @@ export function useEnterPartyroom(partyroomId: number, options: Options = {}) {
           { partyroomId },
           {
             onSuccess: (enterResponse) => {
+              // #491 스냅샷(GET /setup)보다 **먼저** 구독한다. 반대 순서였을 때는 스냅샷 생성 시점부터
+              // 구독이 브로커에 등록되기까지의 이벤트가 통째로 유실됐고(동시 입장 시 상대 크루가
+              // 영원히 안 보임), 자가치유 경로가 없어 새로고침 전까지 복구되지 않았다.
+              // 스냅샷 적용 전 도착분은 버퍼가 보류했다가 initPartyroom 이후 재생한다.
+              eventBuffer.hold();
+              client.subscribe(partyroomId, eventBuffer.handle);
+
               silent(setup(enterResponse), {
                 onSuccess: () => {
-                  client.subscribe(partyroomId, handleEvent);
+                  eventBuffer.release();
                   queryClient.invalidateQueries({
                     queryKey: [QueryKeys.DjingQueue, partyroomId],
                   });
                 },
                 onError: () => {
+                  client.unsubscribeCurrentRoom(); // 입장 실패한 방의 유령 구독을 남기지 않는다
                   router.push('/parties'); // 에러 발생 시 로비로 이동
                 },
               });
