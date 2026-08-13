@@ -284,7 +284,7 @@
       "regi_notice": "Register new announcement"
     },
     "para": {
-      "edit_only_admin": "Only Community Manager and above can make edit action",
+      "edit_only_admin": "Only Community Manager and above\ncan make edit action",
       "empty_notice": "Please post the announcement.",
       "noti_deleted": "When you add a new announcement, the old one will be removed!"
     }
