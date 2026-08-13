@@ -5,7 +5,6 @@ import LobbyMenu from './lobby-menu.component';
 
 const pushMock = vi.fn();
 const signOutMock = vi.fn();
-
 vi.mock('@/shared/lib/router/use-app-router.hook', () => ({
   useAppRouter: () => ({ push: pushMock }),
 }));

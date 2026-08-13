@@ -426,5 +426,24 @@
       "too_short": "최소 5자 이상 입력해주세요",
       "too_long": "최대 2000자까지 입력할 수 있어요"
     }
+  },
+  "pwa": {
+    "menu_label": "앱 설치하기",
+    "title": "PFPlay 앱으로 설치하기",
+    "description": "홈 화면에 추가하면 앱처럼 바로 열고, 알림도 받을 수 있어요.",
+    "install_now": "설치하기",
+    "ios_guide_title": "Safari에서 홈 화면에 추가해 주세요",
+    "ios_step_1": "주소창 아래 <b>공유</b> 버튼을 누르세요.",
+    "ios_step_2": "목록에서 <b>홈 화면에 추가</b>를 고르세요.",
+    "ios_step_3": "오른쪽 위 <b>추가</b>를 누르면 끝이에요.",
+    "in_app_title": "여기서는 설치할 수 없어요",
+    "in_app_description": "지금 앱 안에 있는 브라우저라 홈 화면에 추가할 수 없어요. 주소를 복사해 Safari나 Chrome에서 열어 주세요.",
+    "copy_link": "주소 복사하기",
+    "copied": "복사했어요",
+    "manual_title": "홈 화면에 앱을 추가해 주세요",
+    "manual_chrome": "오른쪽 위 <b>⋮</b> → <b>앱 설치</b>(또는 홈 화면에 추가)를 누르세요.",
+    "manual_samsung": "아래쪽 <b>≡</b> → <b>현재 페이지 추가</b> → <b>홈 화면</b>을 누르세요.",
+    "manual_firefox": "<b>⋮</b> → <b>홈 화면에 추가</b>를 누르세요.",
+    "manual_other": "브라우저 메뉴에서 <b>홈 화면에 추가</b>(또는 앱 설치)를 선택하세요."
   }
 }
