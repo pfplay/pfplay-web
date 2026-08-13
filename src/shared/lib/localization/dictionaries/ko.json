@@ -284,7 +284,7 @@
       "regi_notice": "신규 공지 등록"
     },
     "para": {
-      "edit_only_admin": "Community Manager이상 관리자만 수정 가능해요",
+      "edit_only_admin": "Community Manager이상\n관리자만 수정 가능해요",
       "empty_notice": "공지를 등록해주세요.",
       "noti_deleted": "공지 등록 시 기존 공지는 삭제됩니다!"
     }

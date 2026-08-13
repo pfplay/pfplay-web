@@ -184,6 +184,11 @@ export type GetNoticeResponse = {
   content?: string;
 };
 
+export type UpdateNoticePayload = {
+  partyroomId: number;
+  content: string;
+};
+
 export type EnterPayload = {
   partyroomId: number;
 };
@@ -306,6 +311,10 @@ export interface PartyroomsClient {
    * 공지사항 조회
    */
   getNotice: (payload: GetNoticePayload) => Promise<GetNoticeResponse>;
+  /**
+   * 공지사항 등록 — 방당 1개라 기존 공지를 덮어쓴다. 빈 문자열이면 공지 없음 상태가 된다.
+   */
+  updateNotice: (payload: UpdateNoticePayload) => Promise<void>;
   /**
    * 파티룸 입장
    */
