@@ -48,19 +48,19 @@ function getSheetData(sheetName) {
   const keyMap = {};
   worksheet.getColumn(키_칼럼_인덱스).eachCell({ includeEmpty: false }, (cell, rowIndex) => {
     if (rowIndex < 다국어_시작_인덱스) return;
-    keyMap[rowIndex] = cell.text.replace(/\\n/g, '\n');
+    keyMap[rowIndex] = cell.text;
   });
 
   const enMap = {};
   worksheet.getColumn(영어_칼럼_인덱스).eachCell({ includeEmpty: false }, (cell, rowIndex) => {
     if (rowIndex < 다국어_시작_인덱스) return;
-    enMap[rowIndex] = cell.text.replace(/\\n/g, '\n');
+    enMap[rowIndex] = cell.text;
   });
 
   const koMap = {};
   worksheet.getColumn(한국어_칼럼_인덱스).eachCell({ includeEmpty: false }, (cell, rowIndex) => {
     if (rowIndex < 다국어_시작_인덱스) return;
-    koMap[rowIndex] = cell.text.replace(/\\n/g, '\n');
+    koMap[rowIndex] = cell.text;
   });
 
   const en = mergeKeyWithLang(keyMap, enMap);
@@ -96,6 +96,8 @@ function fillMissingKeyValues(defaultLang, _targetLang) {
 
 /**
  * 1Depth의 원본 JSON을 개발하기 편하도록 구조화 시킵니다.
+ * 끝의 개행은 prettier 산출물과 맞추기 위한 것으로, CI 의 생성물 대조 검사가
+ * `yarn format` 실행 여부에 따라 흔들리지 않게 합니다.
  */
 const getStructuredLocale = (locale) => {
   const SEPARATOR = '.';
@@ -121,5 +123,5 @@ const getStructuredLocale = (locale) => {
     return acc;
   }, {});
 
-  return JSON.stringify(resultObj, null, 2);
+  return `${JSON.stringify(resultObj, null, 2)}\n`;
 };
