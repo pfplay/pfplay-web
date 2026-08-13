@@ -7,6 +7,7 @@ import '@/shared/ui/foundation/touch-reset.css';
 
 import { PropsWithChildren } from 'react';
 
+import { InstallPromptCapture } from '@/features/pwa-install';
 import { SystemAnnouncementSubscriber } from '@/features/system-announcement';
 import {
   AnnouncementSnapshot,
@@ -109,6 +110,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
         </ReactQueryProvider>
 
         <ServiceWorkerRegister />
+        <InstallPromptCapture />
         <div id={DomId.DrawerRoot} />
         <div id={DomId.TooltipRoot} className='pointer-events-none fixed inset-0 z-tooltip' />
       </body>

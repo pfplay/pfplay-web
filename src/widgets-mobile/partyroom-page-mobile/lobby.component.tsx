@@ -1,6 +1,7 @@
 'use client';
 
 import { FC } from 'react';
+import { InstallFab } from '@/features/pwa-install';
 import { MobilePartyroomList } from '@/features-mobile/partyroom/list';
 import SuspenseWithErrorBoundary from '@/shared/api/http/error/suspense-with-error-boundary.component';
 import LobbyMenu from './lobby-menu.component';
@@ -22,11 +23,13 @@ const MobileLobby: FC = () => {
         <h1 className='text-base font-semibold text-white'>파티 찾기</h1>
         <LobbyMenu />
       </header>
-      <div className='flex-1 px-app pt-4 pb-8'>
+      {/* pb-24: 하단 고정 InstallFab 이 마지막 카드를 가리지 않도록 확보 */}
+      <div className='flex-1 px-app pt-4 pb-24'>
         <SuspenseWithErrorBoundary enableReload>
           <MobilePartyroomList />
         </SuspenseWithErrorBoundary>
       </div>
+      <InstallFab />
     </main>
   );
 };
