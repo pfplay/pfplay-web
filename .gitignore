@@ -56,3 +56,6 @@ package-lock.json
 # 모바일 디자인 검증/외주용 스크린샷 산출물 (대용량 바이너리) — 캡처 스크립트만 추적
 mobile-screenshots/
 mobile-screenshots.zip
+
+# Excel 이 파일을 열어둔 동안 만드는 잠금 파일 (scripts/i18n.xlsx 편집 시 생김)
+~$*.xlsx
