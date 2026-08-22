@@ -4,19 +4,16 @@ on: pull_request
 
 jobs:
   eslint-test:
-    name: eslint test
+    name: lint & i18n
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.19.0'
+          node-version: "20.19.0"
       - run: npm i -g yarn@1.22.22
       - run: yarn
       - run: yarn lint
-
-      # 다국어 원본은 scripts/i18n.xlsx 이고 dictionaries/*.json 은 `yarn i18n` 이 전체
-      # 덮어쓰기로 만드는 생성물이다. JSON 을 직접 고치면 다음 생성 때 조용히 사라진다 (#494).
       - name: i18n sync check
         run: |
           yarn i18n
