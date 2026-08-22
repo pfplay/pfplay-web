@@ -96,8 +96,6 @@ function fillMissingKeyValues(defaultLang, _targetLang) {
 
 /**
  * 1Depth의 원본 JSON을 개발하기 편하도록 구조화 시킵니다.
- * 끝의 개행은 prettier 산출물과 맞추기 위한 것으로, CI 의 생성물 대조 검사가
- * `yarn format` 실행 여부에 따라 흔들리지 않게 합니다.
  */
 const getStructuredLocale = (locale) => {
   const SEPARATOR = '.';
@@ -123,5 +121,6 @@ const getStructuredLocale = (locale) => {
     return acc;
   }, {});
 
+  // yarn format으로 인해 *.json에 자동 개행 추가된다. CI 단계 파일 일치 여부 검사를 위해 개행 추가 하드코딩
   return `${JSON.stringify(resultObj, null, 2)}\n`;
 };
