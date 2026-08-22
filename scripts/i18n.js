@@ -121,5 +121,6 @@ const getStructuredLocale = (locale) => {
     return acc;
   }, {});
 
-  return JSON.stringify(resultObj, null, 2);
+  // yarn format으로 인해 *.json에 자동 개행 추가된다. CI 단계 파일 일치 여부 검사를 위해 개행 추가 하드코딩
+  return `${JSON.stringify(resultObj, null, 2)}\n`;
 };

@@ -39,10 +39,6 @@
       "kick": "Kick",
       "ban": "Ban"
     },
-    "menu": {
-      "title": "Menu",
-      "notification_settings": "Notification settings"
-    },
     "para": {
       "reason": "Reason:",
       "points_to_unlock\t": "Get {{points}} points to unlock!",
@@ -51,13 +47,17 @@
     "ec": {
       "char_limit_12": "Limit of 12 characters / No spaces and special characters",
       "char_limit_50": "Limit of 50 characters including spaces",
-      "char_limit_12_short": "Max 12 chars, no spaces",
-      "char_limit_50_short": "Max 50 characters",
       "char_limit_20": "Limit of 20 characters including spaces",
       "char_up_to_50": "You can register up to 50 characters",
       "char_limit_60_dash": "Limit of 3 to 60 characters, including letters, numbers, and hyphens (-)",
       "char_limit_30": "Limit of 30 characters for Korean and English / No special characters allowed.",
-      "char_field_required": "This field is required. Please enter the content."
+      "char_field_required": "This field is required. Please enter the content.",
+      "char_limit_12_short": "Max 12 chars, no spaces",
+      "char_limit_50_short": "Max 50 characters"
+    },
+    "menu": {
+      "title": "Menu",
+      "notification_settings": "Notification settings"
     }
   },
   "auth": {
@@ -320,10 +320,10 @@
     "ec": {
       "exceeded_list_connect_wallet": "You have already exceeded the number of lists that can be created. ",
       "exceeded_list": "Oh no! You have exceeded the number of lists that can be created. You can only create up to 10.",
-      "exceeded_list_am": "Oh no! Associate members can create only 1 playlist.\nConnect your wallet to create up to 10.",
       "up_to_100_songs": "You can add a maximum of 100 songs to each playlist",
       "duplicate_track_move": "This song already exists in the selected playlist",
-      "exceeded_track_limit_move": "The selected playlist has reached its song limit (15 songs)"
+      "exceeded_track_limit_move": "The selected playlist has reached its song limit (15 songs)",
+      "exceeded_list_am": "Oh no! Associate members can create only 1 playlist.\nConnect your wallet to create up to 10."
     }
   },
   "partyroom": {
