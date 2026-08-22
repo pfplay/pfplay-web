@@ -77,7 +77,23 @@ export async function cleanupMobileTestPartyrooms(ctx: BrowserContext): Promise<
  * - console.error / console.warn
  * - Next.js dev overlay DOM 주기 스캔
  */
+/** 로깅 대상 API — 방/플리 라이프사이클. 나머지는 실패(4xx/5xx)일 때만 남긴다. */
+const TRACED_ENDPOINT = /\/v1\/(partyrooms|playlists)(\/|\?|$)/;
+
 export function attachErrorTracing(page: Page, log: (m: string) => void) {
+  // #485: 모바일 spec 에는 응답 로깅이 없어 "POST /partyrooms 이 성공했는지" 를 로그로 알 수
+  // 없었다. 그 탓에 방이 실제로 생성됐는데도 "요청 자체가 안 나갔다" 고 오진했다(원인은 잔존
+  // 방 + 정리 헬퍼 no-op). 데스크탑 spec 이 각자 인라인으로 달던 계측을 공용 헬퍼로 올린다.
+  page.on('response', (res) => {
+    const url = res.url();
+    const status = res.status();
+    if (status >= 400 || TRACED_ENDPOINT.test(url)) {
+      log(`response ${status} ${res.request().method()} ${url}`);
+    }
+  });
+  page.on('requestfailed', (req) => {
+    log(`REQ_FAILED ${req.method()} ${req.url()} :: ${req.failure()?.errorText ?? 'unknown'}`);
+  });
   page.on('pageerror', (err) => {
     log(`pageerror: ${err.message}\n${err.stack ?? ''}`);
   });

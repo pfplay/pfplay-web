@@ -195,7 +195,8 @@ async function closeDjDrawerSafely(page: Page) {
 async function registerAsDjEscapeClose(page: Page, playlistName: string) {
   await openDjQueueDrawer(page);
 
-  const registerButton = page.getByRole('button', { name: /register.*dj queue|dj 대기 등록/i });
+  // #485: 라벨이 큐 상태에 따라 바뀌므로 testid 로 고정 (helpers.registerAsDj 와 동일 규칙)
+  const registerButton = page.getByTestId('register-dj-queue');
   await expect(registerButton).toBeVisible({ timeout: 10_000 });
   await expect(registerButton).toBeEnabled({ timeout: 10_000 });
   await registerButton.click({ force: true });

@@ -29,9 +29,10 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
   } = useForm<Form.Model>({
     mode: 'all',
     resolver: zodResolver(Form.getSchema(t)),
+    // #487: 서버가 null 을 주는 필드 — 빈 문자열로 정규화(v1·모바일 폼과 동일 규칙)
     defaultValues: {
-      nickname: me.nickname,
-      introduction: me.introduction,
+      nickname: me.nickname ?? '',
+      introduction: me.introduction ?? '',
     },
   });
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;

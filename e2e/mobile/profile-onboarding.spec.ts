@@ -50,10 +50,28 @@ test.describe('mobile 신규 AM 프로필 온보딩 (#393)', () => {
       timeout: 30_000,
     });
 
+    // 폼이 보여도 dev 로그인 다이얼로그는 아직 DOM 에 남아 있을 수 있다. 그 사이에 입력하면
+    // 다이얼로그의 focus trap 이 포커스를 회수해 fill 이 조용히 삼켜진다 — 값이 반영되지 않아
+    // 제출 버튼이 계속 비활성이고, 클릭이 60s 타임아웃난다.
+    //   실측(2026-08-01, 실패 재현): fill 성공 반환 직후 readback inputValue="",
+    //   그 다음 프레임에 `focusout target=BUTTON[dev-sign-in-associate] active=BODY`.
+    //   input 노드는 교체되지 않았고(동일 노드 60s 유지) input/beforeinput 이벤트는 0건 —
+    //   입력이 애초에 이 필드로 오지 않았다는 뜻이다.
+    // 다이얼로그 분리를 확인한 뒤 입력해 원인을 제거한다.
+    log('wait for dev sign-in dialog detached');
+    await dialog.waitFor({ state: 'detached', timeout: 15_000 });
+
     log('fill nickname + submit');
     const unique = `am${Date.now() % 100000}`;
-    await page.locator('[data-testid="mobile-profile-form"] input').first().fill(unique);
-    await page.locator('[data-testid="mobile-profile-submit"]').click();
+    const nicknameInput = page.locator('[data-testid="mobile-profile-form"] input').first();
+    const submitButton = page.locator('[data-testid="mobile-profile-submit"]');
+
+    await nicknameInput.click();
+    await nicknameInput.fill(unique);
+    // 같은 일이 다시 생기면 여기서 즉시 드러난다(제출 버튼 60s 타임아웃으로 뭉개지 않는다)
+    await expect(nicknameInput).toHaveValue(unique, { timeout: 5_000 });
+
+    await submitButton.click();
 
     // 데드엔드 #2 해소: 아바타 desktop-only 카드 거치지 않고 /parties 착지
     log('expect /parties landing (avatar 단계 생략)');

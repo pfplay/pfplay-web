@@ -28,6 +28,7 @@ export type Model = PartyroomCrew & {
  * - 디제잉 대기열 잠금
  * - 특정 멤버를 디제이로 등록
  * - 등록된 디제이 해제
+ * - 공지 등록
  */
 export class Permission {
   private constructor(private comparator: GradeComparator) {}
@@ -95,6 +96,10 @@ export class Permission {
 
   public canEdit() {
     return this.comparator.isHigherThanOrEqualTo(GradeType.HOST);
+  }
+
+  public canChangeNotice() {
+    return this.comparator.isHigherThanOrEqualTo(GradeType.COMMUNITY_MANAGER);
   }
 
   public canClose() {

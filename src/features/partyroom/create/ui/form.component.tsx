@@ -55,7 +55,7 @@ export default function PartyroomCreateForm({ onSuccess }: Props) {
           }
           classNames={{ label: 'text-gray-200' }}
         >
-          <DjListItem userConfig={{ username: me.nickname, src: me.avatarIconUri }} />
+          <DjListItem userConfig={{ username: me.nickname ?? '', src: me.avatarIconUri }} />
         </FormItem>
       }
     />

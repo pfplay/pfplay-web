@@ -14,14 +14,18 @@ vi.mock('@/shared/ui/foundation/fonts', () => ({
 vi.mock('@/shared/ui/icons', () => ({
   PFCampaign: (props: any) => <svg data-testid='campaign-icon' {...props} />,
 }));
+vi.mock('@/features/partyroom/change-notice', () => ({
+  useChangeNotice: () => mockChangeNotice,
+}));
 
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { createCurrentPartyroomStore } from '@/entities/current-partyroom/model/current-partyroom.store';
 import { useStores } from '@/shared/lib/store/stores.context';
 import Notice from './notice.component';
 
 let store: ReturnType<typeof createCurrentPartyroomStore>;
+const mockChangeNotice = vi.fn();
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -46,5 +50,24 @@ describe('Notice', () => {
   test('캠페인 아이콘이 항상 표시된다', () => {
     render(<Notice />);
     expect(screen.getByTestId('campaign-icon')).toBeTruthy();
+  });
+
+  describe('공지 편집', () => {
+    test('클릭하면 공지 등록을 호출한다', () => {
+      render(<Notice />);
+
+      const notice = screen.getByTestId('notice');
+      expect(notice.getAttribute('role')).toBe('button');
+
+      fireEvent.click(notice);
+      expect(mockChangeNotice).toHaveBeenCalledOnce();
+    });
+
+    test('Enter 키로도 공지 등록을 호출한다', () => {
+      render(<Notice />);
+      fireEvent.keyDown(screen.getByTestId('notice'), { key: 'Enter' });
+
+      expect(mockChangeNotice).toHaveBeenCalledOnce();
+    });
   });
 });

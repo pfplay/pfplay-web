@@ -39,10 +39,6 @@
       "kick": "킥",
       "ban": "밴"
     },
-    "menu": {
-      "title": "메뉴",
-      "notification_settings": "알림 설정"
-    },
     "para": {
       "reason": "사유:",
       "points_to_unlock\t": "{{points}} 포인트가 필요해요",
@@ -51,13 +47,17 @@
     "ec": {
       "char_limit_12": "한/영 포함 12자 제한 / 띄어쓰기, 특수문자 사용 불가",
       "char_limit_50": "한/영 구분 없이 띄어쓰기 포함 50자 제한",
-      "char_limit_12_short": "최대 12자, 공백·특수문자 불가",
-      "char_limit_50_short": "최대 50자",
       "char_limit_20": "한/영 구분없이 띄어쓰기 포함 20자 제한",
       "char_up_to_50": "최대 50자까지 등록 가능",
       "char_limit_60_dash": "영문/숫자/하이픈(-) 포함 3자 이상 60자 제한",
       "char_limit_30": "한글 30자, 영문 30자 제한/특수문자 사용 불가",
-      "char_field_required": "필수 입력란이에요. 내용을 입력해주세요."
+      "char_field_required": "필수 입력란이에요. 내용을 입력해주세요.",
+      "char_limit_12_short": "최대 12자, 공백·특수문자 불가",
+      "char_limit_50_short": "최대 50자"
+    },
+    "menu": {
+      "title": "메뉴",
+      "notification_settings": "알림 설정"
     }
   },
   "auth": {
@@ -284,7 +284,7 @@
       "regi_notice": "신규 공지 등록"
     },
     "para": {
-      "edit_only_admin": "Community Manager이상 관리자만 수정 가능해요",
+      "edit_only_admin": "Community Manager이상\n관리자만 수정 가능해요",
       "empty_notice": "공지를 등록해주세요.",
       "noti_deleted": "공지 등록 시 기존 공지는 삭제됩니다!"
     }
@@ -320,10 +320,10 @@
     "ec": {
       "exceeded_list_connect_wallet": "이미 생성 가능한 리스트 수를 초과했어요.\n",
       "exceeded_list": "이런! 생성 가능한 리스트 수를 초과했어요\n최대 10개 까지만 생성이 가능해요",
-      "exceeded_list_am": "이런! 준회원은 플레이리스트를 1개까지만 만들 수 있어요\n지갑을 연동하면 최대 10개까지 생성할 수 있어요",
       "up_to_100_songs": "곡은 1개 플레이리스트당 최대 100개 까지만 추가 가능해요",
       "duplicate_track_move": "선택한 플레이리스트에 이미 존재하는 곡이에요",
-      "exceeded_track_limit_move": "선택한 플레이리스트의 트랙 한도(15개)를 초과했어요"
+      "exceeded_track_limit_move": "선택한 플레이리스트의 트랙 한도(15개)를 초과했어요",
+      "exceeded_list_am": "이런! 준회원은 플레이리스트를 1개까지만 만들 수 있어요\n지갑을 연동하면 최대 10개까지 생성할 수 있어요"
     }
   },
   "partyroom": {
@@ -426,5 +426,24 @@
       "too_short": "최소 5자 이상 입력해주세요",
       "too_long": "최대 2000자까지 입력할 수 있어요"
     }
+  },
+  "pwa": {
+    "menu_label": "앱 설치하기",
+    "title": "PFPlay 앱으로 설치하기",
+    "description": "홈 화면에 추가하면 앱처럼 바로 열고, 알림도 받을 수 있어요.",
+    "install_now": "설치하기",
+    "ios_guide_title": "Safari에서 홈 화면에 추가해 주세요",
+    "ios_step_1": "주소창 아래 <b>공유</b> 버튼을 누르세요.",
+    "ios_step_2": "목록에서 <b>홈 화면에 추가</b>를 고르세요.",
+    "ios_step_3": "오른쪽 위 <b>추가</b>를 누르면 끝이에요.",
+    "in_app_title": "여기서는 설치할 수 없어요",
+    "in_app_description": "지금 앱 안에 있는 브라우저라 홈 화면에 추가할 수 없어요. 주소를 복사해 Safari나 Chrome에서 열어 주세요.",
+    "copy_link": "주소 복사하기",
+    "copied": "복사했어요",
+    "manual_title": "홈 화면에 앱을 추가해 주세요",
+    "manual_chrome": "오른쪽 위 <b>⋮</b> → <b>앱 설치</b>(또는 홈 화면에 추가)를 누르세요.",
+    "manual_samsung": "아래쪽 <b>≡</b> → <b>현재 페이지 추가</b> → <b>홈 화면</b>을 누르세요.",
+    "manual_firefox": "<b>⋮</b> → <b>홈 화면에 추가</b>를 누르세요.",
+    "manual_other": "브라우저 메뉴에서 <b>홈 화면에 추가</b>(또는 앱 설치)를 선택하세요."
   }
 }

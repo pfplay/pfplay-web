@@ -1,6 +1,7 @@
 # CI/CD 워크플로우
 
-> Last Update (26.04.25)
+> Last Update (26.07.31) — 워크플로우 4종의 파일명·트리거를 재확인했다(변동 없음).
+> 이후 추가된 **동시 실행 직렬화**만 아래 §concurrency 에 반영.
 
 GitHub Actions 워크플로우 4개로 구성되며, 브랜치 및 이벤트 종류에 따라 실행 여부가 결정됩니다.
 
@@ -110,3 +111,16 @@ jobs:
 | ----------------------------------------------- | --------------------------------- | ------------------------------- |
 | Environments → `Preview – pfplay-web` → Secrets | `VERCEL_AUTOMATION_BYPASS_SECRET` | Vercel Protection Bypass secret |
 | Secrets → Repository                            | `VERCEL_TOKEN`                    | Vercel CLI 배포용 토큰          |
+
+---
+
+## concurrency — preview e2e 직렬화 (이슈 #348)
+
+`vercel-preview-e2e.yml` 은 **공유 별칭 `stg.pfplay.xyz`** 를 갱신한 뒤 그 URL 로 e2e 를 돌린다.
+연속 머지로 run 이 겹치면 A 의 e2e 가 B 가 방금 덮어쓴 배포를 때리는 레이스가 생긴다 —
+증상은 "코드와 무관한 e2e 실패" 라 원인을 코드에서 찾게 된다.
+
+그래서 워크플로 단위 `concurrency` 그룹으로 직렬화한다. 연속 머지 시 직전 run 이 취소되고
+**최신 `development` 상태만** deploy + e2e 를 수행한다.
+
+> 취소된 run 은 실패가 아니다. 연속 머지 직후 회색으로 끝난 run 을 보고 재시도하지 말 것.

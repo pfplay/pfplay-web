@@ -39,10 +39,6 @@
       "kick": "Kick",
       "ban": "Ban"
     },
-    "menu": {
-      "title": "Menu",
-      "notification_settings": "Notification settings"
-    },
     "para": {
       "reason": "Reason:",
       "points_to_unlock\t": "Get {{points}} points to unlock!",
@@ -51,13 +47,17 @@
     "ec": {
       "char_limit_12": "Limit of 12 characters / No spaces and special characters",
       "char_limit_50": "Limit of 50 characters including spaces",
-      "char_limit_12_short": "Max 12 chars, no spaces",
-      "char_limit_50_short": "Max 50 characters",
       "char_limit_20": "Limit of 20 characters including spaces",
       "char_up_to_50": "You can register up to 50 characters",
       "char_limit_60_dash": "Limit of 3 to 60 characters, including letters, numbers, and hyphens (-)",
       "char_limit_30": "Limit of 30 characters for Korean and English / No special characters allowed.",
-      "char_field_required": "This field is required. Please enter the content."
+      "char_field_required": "This field is required. Please enter the content.",
+      "char_limit_12_short": "Max 12 chars, no spaces",
+      "char_limit_50_short": "Max 50 characters"
+    },
+    "menu": {
+      "title": "Menu",
+      "notification_settings": "Notification settings"
     }
   },
   "auth": {
@@ -284,7 +284,7 @@
       "regi_notice": "Register new announcement"
     },
     "para": {
-      "edit_only_admin": "Only Community Manager and above can make edit action",
+      "edit_only_admin": "Only Community Manager and above\ncan make edit action",
       "empty_notice": "Please post the announcement.",
       "noti_deleted": "When you add a new announcement, the old one will be removed!"
     }
@@ -320,10 +320,10 @@
     "ec": {
       "exceeded_list_connect_wallet": "You have already exceeded the number of lists that can be created. ",
       "exceeded_list": "Oh no! You have exceeded the number of lists that can be created. You can only create up to 10.",
-      "exceeded_list_am": "Oh no! Associate members can create only 1 playlist.\nConnect your wallet to create up to 10.",
       "up_to_100_songs": "You can add a maximum of 100 songs to each playlist",
       "duplicate_track_move": "This song already exists in the selected playlist",
-      "exceeded_track_limit_move": "The selected playlist has reached its song limit (15 songs)"
+      "exceeded_track_limit_move": "The selected playlist has reached its song limit (15 songs)",
+      "exceeded_list_am": "Oh no! Associate members can create only 1 playlist.\nConnect your wallet to create up to 10."
     }
   },
   "partyroom": {
@@ -426,5 +426,24 @@
       "too_short": "Please enter at least 5 characters",
       "too_long": "Up to 2000 characters allowed"
     }
+  },
+  "pwa": {
+    "menu_label": "Install app",
+    "title": "Install PFPlay",
+    "description": "Add it to your home screen to open it like an app and get notifications.",
+    "install_now": "Install",
+    "ios_guide_title": "Add to home screen in Safari",
+    "ios_step_1": "Tap the <b>Share</b> button below the address bar.",
+    "ios_step_2": "Choose <b>Add to Home Screen</b> from the list.",
+    "ios_step_3": "Tap <b>Add</b> in the top right. That's it.",
+    "in_app_title": "You can't install from here",
+    "in_app_description": "You're in an in-app browser, which can't add to the home screen. Copy the link and open it in Safari or Chrome.",
+    "copy_link": "Copy link",
+    "copied": "Copied",
+    "manual_title": "Add the app to your home screen",
+    "manual_chrome": "Tap <b>⋮</b> in the top right → <b>Install app</b> (or Add to Home screen).",
+    "manual_samsung": "Tap <b>≡</b> at the bottom → <b>Add page to</b> → <b>Home screen</b>.",
+    "manual_firefox": "Tap <b>⋮</b> → <b>Add to Home screen</b>.",
+    "manual_other": "Open your browser menu and choose <b>Add to Home screen</b> (or Install app)."
   }
 }

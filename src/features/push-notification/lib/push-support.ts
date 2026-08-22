@@ -1,3 +1,8 @@
+import { isIOS, isStandalone } from '@/shared/lib/browser/browser-environment';
+
+// pwa-install feature 와 같은 판별을 쓰므로 shared 로 옮겼다. 기존 import 경로는 유지한다.
+export { isIOS, isStandalone };
+
 /**
  * base64url(VAPID 공개키) → Uint8Array.
  * PushManager.subscribe 의 applicationServerKey 는 raw bytes 를 요구한다.
@@ -15,14 +20,6 @@ export const isPushSupported = (): boolean =>
   'serviceWorker' in navigator &&
   'PushManager' in window &&
   'Notification' in window;
-
-export const isIOS = (ua: string): boolean => /iPhone|iPad|iPod/i.test(ua);
-
-/** PWA standalone(홈화면 추가) 모드 여부. (SSR-safe) */
-export const isStandalone = (): boolean =>
-  typeof window !== 'undefined' &&
-  (window.matchMedia('(display-mode: standalone)').matches ||
-    (window.navigator as unknown as { standalone?: boolean }).standalone === true);
 
 /** iOS Safari 는 홈화면 추가(standalone) 전에는 Web Push 불가 → 설치 유도 필요. */
 export const iosNeedsInstall = (ua: string, standalone: boolean): boolean =>

@@ -1,6 +1,11 @@
 # E2E 테스트 가이드
 
-Playwright 기반 e2e 테스트. 현재 4개의 시나리오(E2E-A, E2E-B, E2E-C, E2E-D)로 파티룸 핵심 기능을 검증한다.
+Playwright 기반 e2e 테스트. 데스크탑 시나리오 A~D + 재생 요약 + 모바일 project 로 파티룸 핵심
+기능을 검증한다. 시나리오 선정 기준은 [`../docs/E2E_POLICY.md`](../docs/E2E_POLICY.md).
+
+> 실사 기준: 2026-07-31.
+> **먼저 읽을 것**: 아래 [실전 함정](#실전-함정-반복해서-당한-것들). 여기 적힌 4가지가
+> 지금까지 e2e 디버깅 시간을 가장 많이 잡아먹은 원인이다.
 
 ---
 
@@ -28,42 +33,109 @@ e2e/
 ├── helpers/                        # 파티룸/플레이리스트/DJ 등록 등 e2e 공용 동작
 │   └── partyroom.helpers.ts        # 시나리오에 공통적으로 사용되는 helper 함수
 │                                  # e.g. playlist 생성, DJ 등록, 파티룸 퇴장/종료
+├── config/env.ts                   # e2e 환경변수 파싱 (E2E_BASE_URL 등)
 ├── e2e-a.partyroom-join-sync.spec.ts   # 파티룸 생성 + Late Join 상태 동기화
 ├── e2e-b.dj-state-machine.spec.ts      # DJ 상태 머신 + 다중 클라이언트 동기화
+├── e2e-b.playback-summary.spec.ts      # 재생 종료 요약 채팅 구획
 ├── e2e-c.partyroom-moderation.spec.ts  # block / kick / ban moderation
-└── e2e-d.profile-avatar-reaction-chat.spec.ts # avatar / reaction / chat
+├── e2e-d.profile-avatar-reaction-chat.spec.ts # avatar / reaction / chat
+└── mobile/                         # 모바일 viewport(iPhone 13) 전용 project
+    ├── display-board.tos.spec.ts   # YouTube 임베드 ToS 최소 크기 가드
+    ├── dj-register.spec.ts · add-tracks.spec.ts
+    ├── playlist-management.spec.ts · profile-onboarding.spec.ts · host-cta.spec.ts
+    └── chunk4.helpers.ts · display-board.helpers.ts
 ```
+
+Playwright project 는 `auth-a`~`auth-d`(세션 준비) + `e2e-a`~`e2e-d` + `mobile` 이다.
+각 e2e project 는 대응하는 auth project 에만 의존하므로, 한 시나리오만 돌리면 그 시나리오의
+세션만 생성된다.
 
 ---
 
 ## 실행 방법
 
-### 0. dev server 시작
+### 0. 대상 서버 준비
+
+**로컬에서 돌릴 때는 백엔드까지 포함한 풀스택이 떠 있어야 한다.** e2e 는 실제 API·WS 를 때린다.
 
 ```bash
-yarn dev
+# 1) 백엔드 풀스택 (pfplay-platform 레포에서)
+docker compose -f docker-compose.local.yml -p pfplay-local --env-file .env.local up -d --build
+
+# 2) 웹 dev 서버 — HTTP + webpack 으로 띄운다
+npx next dev
 ```
 
-### 1. 인증 세션 저장
+> ⚠️ `yarn dev` 는 `next dev --experimental-https --turbo` 다. 로컬(특히 Windows)에서 이 조합은
+> 자체 인증서·turbo 문제로 실패하는 경우가 있다. **e2e 용으로는 `npx next dev`(HTTP·webpack)를
+> 쓰고, `E2E_BASE_URL` 을 `http://localhost:3000` 으로 넘긴다.**
+
+### 1. 실행
 
 ```bash
+# 전체 (auth project 가 먼저 돌며 세션을 만든다)
+E2E_BASE_URL=http://localhost:3000 yarn test:e2e
 
+# 특정 시나리오만
+E2E_BASE_URL=http://localhost:3000 yarn test:e2e --project=e2e-b
+
+# 브라우저를 보면서
+E2E_BASE_URL=http://localhost:3000 yarn test:e2e:headed
 ```
 
-### 2. 전체 테스트 실행
+`package.json` 에 정의된 e2e 스크립트는 **`test:e2e` 와 `test:e2e:headed` 둘 뿐**이다.
+UI/디버그/리포트는 Playwright CLI 를 직접 쓴다.
 
 ```bash
-yarn test:e2e
+npx playwright test --ui
+npx playwright test --debug
+npx playwright show-report
 ```
 
-### 3. 기타 실행 옵션
+### 2. 로컬 실행 세팅 — 여기서 두 번 넘어졌다 (2026-08-01 실측)
+
+로컬 풀 스위트는 **정상적으로 GREEN 이 난다**(19~21/21). 다만 아래 두 설정이 틀리면 코드와
+무관하게 무너지고, **둘 다 조용히 실패해서 원인이 엉뚱한 곳으로 보인다.**
+
+#### (1) `E2E_API_BASE` 는 `/api/` 까지 포함해야 한다 ← 가장 악질
 
 ```bash
-yarn test:e2e:headed   # 브라우저 화면을 보면서 실행
-yarn test:e2e:ui       # Playwright UI 모드
-yarn test:e2e:debug    # 디버그 모드 (step-by-step)
-yarn test:e2e:report   # 마지막 실행 리포트 열기
+E2E_API_BASE=http://localhost:8080/api/   # ✅
+E2E_API_BASE=http://localhost:8080        # ❌ 조용히 망가진다
 ```
+
+`cleanupMobileTestPartyrooms` 는 `new URL('v1/partyrooms', API_BASE)` 로 호출한다. 접두어가
+빠지면 404 → `if (!response.ok()) return;` 로 **아무 로그 없이 no-op** 이 된다. 그러면:
+
+1. 앞 스펙이 남긴 방이 정리되지 않고
+2. **계정당 활성 방 1개 불변식**에 걸려 다음 스펙의 방 생성이 거부되고
+3. 증상은 엉뚱하게 `createPartyroom` 의 `waitForURL` 타임아웃으로 나타난다
+
+실제로 이걸 "dev 모드 컴파일 지연" 으로 오진했다. 값을 바로잡자 모바일 11/11 이 통과했다.
+**모바일 spec 은 응답 로깅 계측이 없어 `POST /partyrooms` 성공 여부가 로그에 안 보인다** —
+DB(`partyroom` 테이블)나 trace 를 봐야 한다.
+
+#### (2) 백엔드 CORS 허용 오리진에 웹 포트가 있어야 한다
+
+없으면 **auth setup 전건이 화면의 `Network Error` 와 함께 죽는다.** 백엔드 기본값은
+`localhost:3000`(http/https)·`8080` 뿐이다. 3000 이 이미 점유돼 다른 포트로 띄운다면
+백엔드 `.env.local` 의 `CORS_ALLOWED_ORIGINS` 에 그 포트를 추가하고 app 컨테이너를 재기동한다.
+
+#### 그래도 꼬였다면 — 잔존 방 정리
+
+제목 접두어로 거르면 **놓친다**(데스크탑 `E2E*`, 모바일 `MAT*`/`MDJ*`/`MPM*` 등 제각각).
+
+```sql
+-- 로컬 전용. Main Stage(id=1) 만 남기고 전부 종료
+UPDATE crew SET is_active=0 WHERE partyroom_id<>1;
+UPDATE partyroom SET status='TERMINATED' WHERE partyroom_id<>1 AND status<>'TERMINATED';
+```
+
+### 3. cold 실행 flake
+
+로컬에서 처음 한 번은 Next 컴파일·백엔드 워밍 때문에 타임아웃이 날 수 있다.
+**동일 조건으로 한 번 더(warm) 돌려보고 판단한다.** 두 번째도 같은 지점에서 실패하면 그때부터
+진짜 원인을 찾는다.
 
 ---
 
@@ -80,6 +152,61 @@ Vercel 프로젝트 설정에서 Preview 환경 변수로 아래를 추가해야
 | 변수                           | 값     |
 | ------------------------------ | ------ |
 | `NEXT_PUBLIC_ENABLE_DEV_LOGIN` | `true` |
+
+---
+
+## 실전 함정 (반복해서 당한 것들)
+
+### 1. 스펙 간 플레이리스트 오염 — `.first()` 로 고르지 말 것
+
+여러 스펙이 **같은 e2e 계정을 공유**한다. 앞선 스펙이 만든 플레이리스트가 남아 있으면
+`.first()` 로 고른 플레이리스트가 내 스펙의 것이 아닐 수 있다. 특히 **7분을 넘는 트랙이 섞이면
+백엔드 재생 시간 제한이 그 트랙을 정상적으로 제거**하는데, 스펙 입장에서는 "이유 없이 큐가
+비었다" 로 보인다.
+
+- 플레이리스트·트랙은 **이름으로 선택**한다. 인덱스나 `.first()` 금지.
+- 재생 검증용 트랙은 짧은 것을 고른다(`selectShortTracks` 계열 헬퍼).
+- 이 원인은 "풀 스위트에서만 깨진다 → 부하 문제겠지" 로 두 번 오진한 뒤, 스펙 안에서 NET/WS 를
+  계측해서야 확정됐다. **풀 스위트 전용 실패를 부하로 단정하지 말 것.**
+
+### 2. force 클릭은 오버레이를 이기지 못한다 (#443)
+
+`closeDjQueueDrawer` 헬퍼는 `click({ force: true })` 를 10초 동안 반복한다. force 는
+**액션성 검사만 우회**할 뿐, 이벤트는 여전히 최상단 요소가 받는다. transition 중인 백드롭이나
+React Query devtools 오버레이가 클릭을 계속 흡수하면 드로어는 끝내 닫히지 않는다(~50% 재현,
+머신 부하 시 증폭).
+
+- 대안: transition 완료를 기다린 뒤 일반 클릭, 실패 시 **`Escape` 폴백**(Headless UI Dialog 는
+  ESC 로 닫힌다). `e2e-b.playback-summary.spec.ts` 가 이 우회 경로를 쓴다.
+- 근본 수정은 [#443](https://github.com/pfplay/pfplay-web/issues/443) 으로 열려 있다.
+
+### 3. 헬퍼는 UI 기본값에 취약하다
+
+토글·아코디언을 "무조건 클릭" 하는 헬퍼는 그 UI 의 기본 상태가 바뀌는 순간 정반대로 동작한다
+(크루 계급 그룹이 기본 접힘 → 기본 펼침으로 바뀌면서 kick/ban 스펙이 깨진 사례).
+**상태를 읽고 조건부로 클릭**하도록 쓴다.
+
+### 4. 라벨은 상태에 따라 바뀐다 — CTA 는 testid 로 잡는다 (#485)
+
+`getByRole('button', { name: ... })` 는 라벨이 고정일 때만 안전하다. DJ 등록 버튼은 큐 상태에
+따라 **같은 컴포넌트가 다른 라벨**로 렌더된다.
+
+| 상태 | 컴포넌트 | 라벨 |
+|---|---|---|
+| 큐에 DJ 있음 | `Body` | Register for DJ Queue |
+| 큐 비어 있음 | `EmptyBody` | **Choose from my playlist** (+ 별도 CTA `Search a song and be a DJ`) |
+
+`registerAsDj` 는 **갓 만든 방**(항상 빈 큐)에서 호출되므로 이름 매칭은 100% 실패했다.
+`data-testid` 는 양쪽에서 동일하므로 그것을 앵커로 쓴다.
+
+> 이 실패는 6개 스펙을 한꺼번에 무너뜨렸고, 표면 증상은 "방에 못 들어감"처럼 보였다(스냅샷이
+> cleanup 이후 로비였다). **증상이 아니라 trace 의 네트워크 타임라인을 먼저 볼 것** — 당시 API 는
+> 전부 2xx 였다.
+
+### 5. 백엔드 500 이 프론트 에러로 위장한다
+
+백엔드가 500 을 주면 화면에는 Suspense/에러 바운더리 메시지만 뜬다. e2e 실패 메시지도 프론트
+문제처럼 보인다. **네트워크 응답을 먼저 확인**한다(스펙 안에서 `page.on('response')` 계측).
 
 ---
 
@@ -202,24 +329,28 @@ E2E selector는 "UI 구현 세부사항에 덜 묶이고, 로케일/동적 데�
 - 다만 새 selector를 더 추가할 때는 먼저 role/text로 가능한지 확인한다.
 - `src/shared` 공용 컴포넌트에 테스트 전용 prop을 더 퍼뜨리기 전에, feature 레벨 wrapper나 container로 해결 가능한지 먼저 본다.
 
-## chunk 3.1 — `e2e/mobile/` project
+## `e2e/mobile/` project
 
-모바일 viewport (iPhone 13) 전용 spec 들. `display-board-tos-mobile` project 가 `playwright.config.ts` 에 등록되어 `yarn test:e2e` 의 mandatory job 으로 실행.
+모바일 viewport(iPhone 13) 전용 spec 들. `playwright.config.ts` 의 `mobile` project 로 등록돼
+`yarn test:e2e` 에 함께 실행된다.
 
-### `display-board.tos.spec.ts`
+| spec | 검증 |
+|---|---|
+| `display-board.tos.spec.ts` | YouTube 임베드 **ToS 최소 크기(≥200×200)** 가드 |
+| `dj-register.spec.ts` | 모바일 DJ 등록 흐름 |
+| `add-tracks.spec.ts` | 곡 검색·추가 |
+| `playlist-management.spec.ts` | 플레이리스트 관리 |
+| `profile-onboarding.spec.ts` | 프로필 온보딩 |
+| `host-cta.spec.ts` | 호스트 CTA |
 
-YouTube IFrame Player API ToS 가드 (chunk 3.1 핵심):
+### ToS 최소 크기 가드 (issue #420)
 
-- Mode A IFrame visible + boundingBox ≥ 80×45 + viewport 안 + 시각 hidden 아님
-- Mode A↔B 토글 시 wrapper 80×45 정확값 + IFrame DOM identity 보존 (remount 회피)
-- Mode B→A 복귀 시 동일 IFrame element
-- Mode C 시 BlankPlaceholder visible + IFrame 미존재
-- sticky-top 높이 변화 시 chat scroll offset ≤ 10px 보존
+**과거의 80×45 축소·접기 토글("Mode B")은 정책 위반이라 제거됐다.** 영상은 모든 탭에서
+전체너비를 유지한다. 현재 spec 이 잠그는 것:
 
-### Branch protection 등록 (사용자 단발 GitHub UI 작업)
+- 채팅 탭(기본)에서 IFrame viewport **≥ 200×200** + 화면 안 + 시각적으로 hidden 아님
+- **크루 탭 / DJ 큐 탭으로 전환해도 축소되지 않음** (사용자 보고 회귀에 대한 가드)
+- 재생 비활성 시 placeholder 로 대체
 
-PR `feature/mobile-responsive-spec-3.1` 머지 **전** 다음 작업 필수 (chunk 3.1 spec §3 row 15, §10 step 6):
-
-1. GitHub repo Settings → Branches → `develop` 의 Branch protection rule 편집
-2. "Require status checks to pass before merging" 에 **`Playwright E2E`** job 추가 (이미 등록되어 있다면 OK)
-3. 동일 작업을 `release` 브랜치에도 적용
+> 이 spec 은 cold-start 여파를 감안해 `test.setTimeout(180_000)` 을 쓴다. 타임아웃이 짧아
+> 실패했던 이력이 있으니 임의로 줄이지 말 것.
