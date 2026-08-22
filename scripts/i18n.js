@@ -48,19 +48,19 @@ function getSheetData(sheetName) {
   const keyMap = {};
   worksheet.getColumn(키_칼럼_인덱스).eachCell({ includeEmpty: false }, (cell, rowIndex) => {
     if (rowIndex < 다국어_시작_인덱스) return;
-    keyMap[rowIndex] = cell.text;
+    keyMap[rowIndex] = cell.text.replace(/\\n/g, '\n');
   });
 
   const enMap = {};
   worksheet.getColumn(영어_칼럼_인덱스).eachCell({ includeEmpty: false }, (cell, rowIndex) => {
     if (rowIndex < 다국어_시작_인덱스) return;
-    enMap[rowIndex] = cell.text;
+    enMap[rowIndex] = cell.text.replace(/\\n/g, '\n');
   });
 
   const koMap = {};
   worksheet.getColumn(한국어_칼럼_인덱스).eachCell({ includeEmpty: false }, (cell, rowIndex) => {
     if (rowIndex < 다국어_시작_인덱스) return;
-    koMap[rowIndex] = cell.text;
+    koMap[rowIndex] = cell.text.replace(/\\n/g, '\n');
   });
 
   const en = mergeKeyWithLang(keyMap, enMap);
