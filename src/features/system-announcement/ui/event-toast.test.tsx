@@ -18,6 +18,7 @@ const stubDict = {
   system: {
     announcement: {
       event: { close: '닫기' },
+      notice: { label: '전체 공지' },
     },
   },
 };
@@ -68,6 +69,27 @@ describe('EventToast', () => {
     render(<EventToast snapshot={mkSnapshot()} />);
     expect(screen.getByText('Event Title')).toBeInTheDocument();
     expect(screen.getByText('Event Content')).toBeInTheDocument();
+  });
+
+  test('고정 라벨 "전체 공지" 를 제목 앞에 표시', () => {
+    (useLang as Mock).mockReturnValue(Language.Ko);
+    render(<EventToast snapshot={mkSnapshot()} />);
+    expect(screen.getByText('전체 공지')).toBeInTheDocument();
+  });
+
+  test('severity 별로 아이콘 색과 배경 농도가 갈린다', () => {
+    (useLang as Mock).mockReturnValue(Language.Ko);
+    const { rerender } = render(<EventToast snapshot={mkSnapshot({ severity: 'INFO' })} />);
+    expect(screen.getByTestId('event-toast-icon')).toHaveClass('text-white');
+    expect(screen.getByTestId('event-toast')).toHaveClass('bg-white/5');
+
+    rerender(<EventToast snapshot={mkSnapshot({ severity: 'WARN' })} />);
+    expect(screen.getByTestId('event-toast-icon')).toHaveClass('text-red-200');
+    expect(screen.getByTestId('event-toast')).toHaveClass('bg-red-200/5');
+
+    rerender(<EventToast snapshot={mkSnapshot({ severity: 'CRITICAL' })} />);
+    expect(screen.getByTestId('event-toast-icon')).toHaveClass('text-red-300');
+    expect(screen.getByTestId('event-toast')).toHaveClass('bg-red-300/15');
   });
 
   test('close 버튼 클릭 시 store.dismiss(announcementId) 호출', () => {

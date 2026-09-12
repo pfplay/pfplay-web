@@ -46,7 +46,7 @@ export default function SystemAnnouncementDisplay() {
       {hasToastStack && (
         <div
           data-testid='system-announcement-toast-stack'
-          className='fixed top-3 right-3 z-40 flex flex-col gap-2 pointer-events-none max-w-[calc(100%-1.5rem)]'
+          className='fixed left-3 bottom-3 max-tablet:bottom-[72px] z-40 flex flex-col gap-2 pointer-events-none max-w-[calc(100%-1.5rem)]'
         >
           {toasts.map((a) => (
             <EventToast key={a.announcementId} snapshot={a} />
