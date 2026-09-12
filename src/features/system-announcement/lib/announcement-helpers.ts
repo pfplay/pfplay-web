@@ -19,8 +19,7 @@ export function isExpired(s: AnnouncementSnapshot, nowMs = Date.now()): boolean 
   return new Date(s.expiresAt).getTime() <= nowMs;
 }
 
-export const isToast = (s: AnnouncementSnapshot) =>
-  s.type === 'EVENT' && (s.severity === 'INFO' || s.severity === 'WARN');
+export const isToast = (s: AnnouncementSnapshot) => s.type === 'EVENT';
 
 export const isEmergencyBanner = (s: AnnouncementSnapshot) => s.type === 'EMERGENCY';
 

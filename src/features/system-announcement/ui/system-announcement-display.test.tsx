@@ -87,12 +87,12 @@ describe('SystemAnnouncementDisplay', () => {
     expect(screen.getAllByTestId('emergency')).toHaveLength(1);
   });
 
-  test('EVENT(INFO/WARN) 3개 → EventToast 3개', () => {
+  test('EVENT(INFO/WARN/CRITICAL) 3개 → EventToast 3개', () => {
     useSystemAnnouncementStore.setState({
       announcements: new Map([
         [4, mk(4, { type: 'EVENT', severity: 'INFO' })],
         [5, mk(5, { type: 'EVENT', severity: 'WARN' })],
-        [6, mk(6, { type: 'EVENT', severity: 'INFO' })],
+        [6, mk(6, { type: 'EVENT', severity: 'CRITICAL' })],
       ]),
     });
     render(<SystemAnnouncementDisplay />);
