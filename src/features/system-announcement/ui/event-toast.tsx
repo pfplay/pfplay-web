@@ -6,6 +6,7 @@ import { Language } from '@/shared/lib/localization/constants';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useLang } from '@/shared/lib/localization/lang.context';
 import { Typography } from '@/shared/ui/components/typography';
+import { PFCampaign, PFClose } from '@/shared/ui/icons';
 import { useSystemAnnouncementStore } from '../model/system-announcement.store';
 import { AnnouncementSnapshot } from '../model/system-announcement.types';
 
@@ -13,14 +14,15 @@ type Props = {
   snapshot: AnnouncementSnapshot;
 };
 
-const SEVERITY_ACCENT: Record<string, string> = {
-  INFO: 'border-l-gray-400',
-  WARN: 'border-l-red-300',
-  CRITICAL: 'border-l-red-300',
+const SEVERITY_STYLE: Record<string, { icon: string; surface: string }> = {
+  INFO: { icon: 'text-white', surface: 'bg-white/5' },
+  WARN: { icon: 'text-red-200', surface: 'bg-red-200/5' },
+  CRITICAL: { icon: 'text-red-300', surface: 'bg-red-300/15' },
 };
 
 export default function EventToast({ snapshot }: Props) {
   const t = useI18n();
+  const severityStyle = SEVERITY_STYLE[snapshot.severity] ?? SEVERITY_STYLE.INFO;
   const lang = useLang();
   const isKo = lang === Language.Ko;
   const title = isKo ? snapshot.titleKo : snapshot.titleEn;
@@ -49,29 +51,35 @@ export default function EventToast({ snapshot }: Props) {
       data-testid='event-toast'
       role='status'
       className={cn(
-        'pointer-events-auto w-[320px] bg-gray-800 border border-gray-700 rounded-[6px] border-l-[3px] shadow-lg overflow-hidden',
-        SEVERITY_ACCENT[snapshot.severity] ?? 'border-l-gray-400'
+        'pointer-events-auto max-w-[640px] backdrop-blur-[10px] rounded-[10px] px-4 py-3 flex items-center gap-3 shadow-lg',
+        severityStyle.surface
       )}
     >
-      <div className='px-4 pt-3 pb-2 flex items-start gap-3'>
-        <div className='flex-1 flex flex-col gap-1'>
-          <Typography type='body3' className='text-gray-50'>
-            {title}
-          </Typography>
-          <Typography type='detail2' className='text-gray-300 whitespace-pre-line'>
-            {message}
-          </Typography>
-        </div>
-        <button
-          type='button'
-          onClick={handleClose}
-          data-testid='event-toast-close'
-          aria-label={t.system.announcement.event.close}
-          className='text-gray-400 hover:text-gray-200 leading-none px-1 -mt-0.5'
-        >
-          ×
-        </button>
-      </div>
+      <PFCampaign
+        width={20}
+        height={20}
+        data-testid='event-toast-icon'
+        className={cn('shrink-0', severityStyle.icon)}
+      />
+      <Typography type='body3' className='text-white shrink-0'>
+        {t.system.announcement.notice.label}
+      </Typography>
+      <Typography type='detail1' className='flex-1 min-w-0 text-gray-200 break-words'>
+        <span className='text-white'>{title}</span>
+        <span aria-hidden className='text-gray-400 mx-1.5'>
+          ·
+        </span>
+        <span>{message}</span>
+      </Typography>
+      <button
+        type='button'
+        onClick={handleClose}
+        data-testid='event-toast-close'
+        aria-label={t.system.announcement.event.close}
+        className='text-gray-200 hover:text-white shrink-0'
+      >
+        <PFClose width={20} height={20} />
+      </button>
     </div>
   );
 }

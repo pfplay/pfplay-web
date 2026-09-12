@@ -65,10 +65,10 @@ describe('isExpired', () => {
 });
 
 describe('type classifiers', () => {
-  test('isToast: type=EVENT && severity in (INFO, WARN)', () => {
+  test('isToast: type=EVENT 면 severity 무관하게 true', () => {
     expect(isToast({ ...baseSnapshot, type: 'EVENT', severity: 'INFO' })).toBe(true);
     expect(isToast({ ...baseSnapshot, type: 'EVENT', severity: 'WARN' })).toBe(true);
-    expect(isToast({ ...baseSnapshot, type: 'EVENT', severity: 'CRITICAL' })).toBe(false);
+    expect(isToast({ ...baseSnapshot, type: 'EVENT', severity: 'CRITICAL' })).toBe(true);
     expect(isToast({ ...baseSnapshot, type: 'EMERGENCY', severity: 'INFO' })).toBe(false);
   });
 

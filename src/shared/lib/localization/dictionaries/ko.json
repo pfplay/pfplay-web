@@ -403,6 +403,9 @@
       },
       "emergency": {
         "label": "긴급 공지"
+      },
+      "notice": {
+        "label": "전체 공지"
       }
     }
   },

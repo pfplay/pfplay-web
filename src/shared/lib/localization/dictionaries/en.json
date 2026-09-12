@@ -403,6 +403,9 @@
       },
       "emergency": {
         "label": "Emergency Notice"
+      },
+      "notice": {
+        "label": "Notice"
       }
     }
   },
