@@ -13,5 +13,14 @@ export async function getSystemStatus(): Promise<SystemStatusResult> {
   });
   if (!res.ok) throw new Error(`system-status: HTTP ${res.status}`);
   const json = (await res.json()) as SystemStatusResponse;
-  return json.result;
+  const { activeAnnouncements, ...rest } = json.data;
+
+  return {
+    // TODO: 백엔드에서 ws/rest api response id 명칭 통일 후 변경 필요함
+    ...rest,
+    activeAnnouncements: activeAnnouncements.map(({ id, ...announcement }) => ({
+      ...announcement,
+      announcementId: id,
+    })),
+  };
 }
