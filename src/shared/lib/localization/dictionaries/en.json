@@ -37,7 +37,10 @@
       "enter_again": "Re-enter",
       "chat_mute": "Buzz",
       "kick": "Kick",
-      "ban": "Ban"
+      "ban": "Ban",
+      "back": "Back",
+      "close": "Close",
+      "view_profile": "View profile"
     },
     "para": {
       "reason": "Reason:",
@@ -114,7 +117,8 @@
       "choose_emoji": "Choose emoji"
     },
     "title": {
-      "recently_used": "Recently used"
+      "recently_used": "Recently used",
+      "live": "Live chat"
     }
   },
   "onboard": {
@@ -234,7 +238,8 @@
       "current_dj": "Now DJing",
       "dj_queue": "DJ Queue",
       "time_limit": "DJing time limit per session: **{{minutes}}** minutes",
-      "rule_guide": "DJing rule guide"
+      "rule_guide": "DJing rule guide",
+      "select_song": "Select a song"
     },
     "btn": {
       "register_queue": "Register for DJ Queue",
@@ -303,7 +308,8 @@
       "add_song": "Add song",
       "add_list": "Add list",
       "delete_playlist": "Delete from playlist",
-      "move_playlist": "Move to another playlist"
+      "move_playlist": "Move to another playlist",
+      "preview_song": "Preview"
     },
     "para": {
       "enter_playlist_name": "Please provide a name for your playlist",
@@ -374,7 +380,11 @@
       "sheet_select_confirm": "Done",
       "no_track": "No song playing right now",
       "tab_chat": "Chat",
-      "my_position": "You're #{{position}} of {{total}}"
+      "my_position": "You're #{{position}} of {{total}}",
+      "empty_cta": "Start playing from the <b>DJ queue</b> now!"
+    },
+    "para": {
+      "listening_count": "{{count}} listening"
     }
   },
   "crews": {
