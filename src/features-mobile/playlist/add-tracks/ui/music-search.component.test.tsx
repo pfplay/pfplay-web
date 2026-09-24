@@ -12,6 +12,7 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
         sheet_search_failed: '검색에 실패했어요',
       },
     },
+    playlist: { btn: { preview_song: '미리듣기', add_song: '곡 추가' } },
     system: { maintenance: { active: { retry: '재시도' } } },
   }),
 }));

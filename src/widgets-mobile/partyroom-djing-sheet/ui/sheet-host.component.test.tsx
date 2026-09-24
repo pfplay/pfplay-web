@@ -4,6 +4,10 @@ import { describe, expect, test, vi } from 'vitest';
 import SheetHost from './sheet-host.component';
 import { FullscreenSheetProvider, useFullscreenSheet } from '../lib/use-fullscreen-sheet.hook';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({ common: { btn: { back: '뒤로', close: '닫기' } } }),
+}));
+
 const wrap = ({ children }: { children: ReactNode }) => (
   <FullscreenSheetProvider>
     {children}
