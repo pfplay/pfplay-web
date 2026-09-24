@@ -118,14 +118,15 @@ export default function MobilePartyroomChatPanel({
               'absolute left-4 right-4 z-30 flex flex-col overflow-hidden transition-[top,bottom] duration-300 ease-in-out',
               expanded
                 ? 'bottom-[calc(env(safe-area-inset-bottom)+12px)]'
-                : 'top-[calc(100dvh_-_env(safe-area-inset-bottom)_-_284px)] bottom-[calc(env(safe-area-inset-bottom)+140px)]'
+                : 'bottom-[calc(env(safe-area-inset-bottom)+126px)]'
             )
           : 'flexCol h-full'
       )}
     >
       <div
         className={cn(
-          'flex h-full min-h-0 flex-col border border-gray-700 bg-gray-900',
+          'flex min-h-0 flex-col border border-gray-700 bg-gray-900',
+          !overlay || expanded ? 'h-full' : 'h-auto',
           expanded ? 'rounded-[6px] px-3 py-3' : 'rounded-[6px] px-3 pb-4 pt-4'
         )}
       >
