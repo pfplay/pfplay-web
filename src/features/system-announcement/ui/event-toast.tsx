@@ -12,6 +12,7 @@ import { AnnouncementSnapshot } from '../model/system-announcement.types';
 
 type Props = {
   snapshot: AnnouncementSnapshot;
+  className?: string;
 };
 
 const SEVERITY_STYLE: Record<string, { icon: string; surface: string }> = {
@@ -20,7 +21,7 @@ const SEVERITY_STYLE: Record<string, { icon: string; surface: string }> = {
   CRITICAL: { icon: 'text-red-300', surface: 'bg-red-300/15' },
 };
 
-export default function EventToast({ snapshot }: Props) {
+export default function EventToast({ snapshot, className }: Props) {
   const t = useI18n();
   const severityStyle = SEVERITY_STYLE[snapshot.severity] ?? SEVERITY_STYLE.INFO;
   const lang = useLang();
@@ -52,7 +53,8 @@ export default function EventToast({ snapshot }: Props) {
       role='status'
       className={cn(
         'pointer-events-auto max-w-[640px] backdrop-blur-[10px] rounded-[10px] px-4 py-3 flex items-center gap-3 shadow-lg',
-        severityStyle.surface
+        severityStyle.surface,
+        className
       )}
     >
       <PFCampaign
@@ -64,8 +66,11 @@ export default function EventToast({ snapshot }: Props) {
       <Typography type='body3' className='text-white shrink-0'>
         {t.system.announcement.notice.label}
       </Typography>
-      <Typography type='detail1' className='flex-1 min-w-0 text-gray-200 break-words'>
-        <span className='text-white'>{title}</span>
+      <Typography
+        type='detail1'
+        className='flex-1 min-w-0 break-words whitespace-pre-line text-gray-200'
+      >
+        <span className='text-white whitespace-pre-line'>{title}</span>
         <span aria-hidden className='text-gray-400 mx-1.5'>
           ·
         </span>

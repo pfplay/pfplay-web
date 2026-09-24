@@ -32,7 +32,7 @@ export default function MaintenancePlannedBanner({ snapshot }: Props) {
       <span aria-hidden className='text-base leading-none'>
         🔧
       </span>
-      <Typography type='detail1' className='flex-1 text-gray-100'>
+      <Typography type='detail1' className='flex-1 break-words whitespace-pre-line text-gray-100'>
         {text}
       </Typography>
       <button

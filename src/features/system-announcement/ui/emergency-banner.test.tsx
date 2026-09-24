@@ -18,6 +18,7 @@ const stubDict = {
   system: {
     announcement: {
       emergency: { label: '긴급 공지' },
+      event: { close: '닫기' },
     },
   },
 };
@@ -71,10 +72,10 @@ describe('EmergencyBanner', () => {
     expect(screen.getByText('Urgent message')).toBeInTheDocument();
   });
 
-  test('close 버튼이 없다 (persistent)', () => {
+  test('close 버튼으로 긴급 공지를 닫을 수 있다', () => {
     (useLang as Mock).mockReturnValue(Language.Ko);
     render(<EmergencyBanner snapshot={mkSnapshot()} />);
-    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    expect(screen.getByTestId('emergency-banner-close')).toBeInTheDocument();
   });
 
   test('expiresAt 미래면 그 시점에 store.cancel 호출', () => {
