@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { QueueStatus } from '@/shared/api/http/types/@enums';
 import { FullscreenSheetProvider } from '@/widgets-mobile/partyroom-djing-sheet';
 import useMobileRegisterMeToQueue from './use-register-me-to-queue.hook';
@@ -34,6 +34,16 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
 const wrap = ({ children }: { children: ReactNode }) => (
   <FullscreenSheetProvider>{children}</FullscreenSheetProvider>
 );
+
+beforeEach(() => {
+  openAlertMock.mockReset();
+  registerMutate.mockReset();
+  registerMutate.mockImplementation((_payload: unknown, options?: { onSuccess?: () => void }) =>
+    options?.onSuccess?.()
+  );
+  selectPlaylistMock.mockReset();
+  openDjingGuideMock.mockReset();
+});
 
 describe('useMobileRegisterMeToQueue', () => {
   test('큐 락(CLOSE) 시 alert dialog + mutation 미호출', async () => {
@@ -70,21 +80,27 @@ describe('useMobileRegisterMeToQueue', () => {
     expect(registerMutate).not.toHaveBeenCalled();
   });
 
-  test('정상 → registerMutate + showDjingGuide=true 시 openDjingGuideModal', async () => {
+  test('정상 → 등록 성공 callback + showDjingGuide=true 시 후속 동작 실행', async () => {
     selectPlaylistMock.mockResolvedValue({ id: 10, name: 'p', musicCount: 5 });
+    const onRegistered = vi.fn();
     const { result } = renderHook(
       () =>
         useMobileRegisterMeToQueue({
           partyroomId: 1,
           queueStatus: QueueStatus.OPEN,
           playlists: [{ id: 10, name: 'p', musicCount: 5 }] as never,
+          onRegistered,
         }),
       { wrapper: wrap }
     );
     await act(async () => {
       await result.current();
     });
-    expect(registerMutate).toHaveBeenCalledWith({ partyroomId: 1, playlistId: 10 });
+    expect(registerMutate).toHaveBeenCalledWith(
+      { partyroomId: 1, playlistId: 10 },
+      expect.objectContaining({ onSuccess: expect.any(Function) })
+    );
+    expect(onRegistered).toHaveBeenCalledTimes(1);
     await waitFor(() => expect(openDjingGuideMock).toHaveBeenCalled());
   });
 });

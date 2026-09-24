@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
-import MusicSearch from './music-search.component';
+import PlaylistMusicSearch from './playlist-music-search.component';
 
 vi.mock('@/shared/lib/localization/i18n.context', () => ({
   useI18n: () => ({
@@ -12,6 +12,7 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
         sheet_search_failed: '검색에 실패했어요',
       },
     },
+    system: { maintenance: { active: { retry: '재시도' } } },
   }),
 }));
 
@@ -20,23 +21,23 @@ vi.mock('@/features/playlist/add-tracks', () => ({
   useSearchMusics: (q: string) => useSearchMusicsMock(q),
 }));
 
-describe('MusicSearch', () => {
+describe('PlaylistMusicSearch', () => {
   test('초기 상태: empty placeholder', () => {
     useSearchMusicsMock.mockReturnValue({ data: undefined, isLoading: false, error: null });
-    render(<MusicSearch onPreview={vi.fn()} onAdd={vi.fn()} addPending={false} />);
+    render(<PlaylistMusicSearch onPreview={vi.fn()} onAdd={vi.fn()} addPending={false} />);
     expect(screen.getByTestId('music-search-input')).toBeInTheDocument();
   });
 
   test('input 변경 → useSearchMusics(query) 호출', async () => {
     useSearchMusicsMock.mockReturnValue({ data: undefined, isLoading: false, error: null });
-    render(<MusicSearch onPreview={vi.fn()} onAdd={vi.fn()} addPending={false} />);
+    render(<PlaylistMusicSearch onPreview={vi.fn()} onAdd={vi.fn()} addPending={false} />);
     await userEvent.type(screen.getByTestId('music-search-input'), 'love');
     await waitFor(() =>
       expect(useSearchMusicsMock).toHaveBeenCalledWith(expect.stringContaining('love'))
     );
   });
 
-  test('검색 결과 → 각 곡이 SearchListItem 로 렌더', async () => {
+  test('검색 결과 → 각 곡이 PlaylistSearchListItem 로 렌더', async () => {
     useSearchMusicsMock.mockReturnValue({
       data: [
         { videoId: 'v1', videoTitle: 'A', thumbnailUrl: '', runningTime: '3:00' },
@@ -45,7 +46,7 @@ describe('MusicSearch', () => {
       isLoading: false,
       error: null,
     });
-    render(<MusicSearch onPreview={vi.fn()} onAdd={vi.fn()} addPending={false} />);
+    render(<PlaylistMusicSearch onPreview={vi.fn()} onAdd={vi.fn()} addPending={false} />);
     await userEvent.type(screen.getByTestId('music-search-input'), 'x');
     await waitFor(() => {
       expect(screen.getByTestId('search-item-preview-v1')).toBeInTheDocument();
@@ -60,13 +61,13 @@ describe('MusicSearch', () => {
       error: new Error('boom'),
       refetch: vi.fn(),
     });
-    render(<MusicSearch onPreview={vi.fn()} onAdd={vi.fn()} addPending={false} />);
+    render(<PlaylistMusicSearch onPreview={vi.fn()} onAdd={vi.fn()} addPending={false} />);
     expect(screen.getByTestId('music-search-retry')).toBeInTheDocument();
   });
 
   test('input 채워진 + 빈 결과 → empty state', async () => {
     useSearchMusicsMock.mockReturnValue({ data: [], isLoading: false, error: null });
-    render(<MusicSearch onPreview={vi.fn()} onAdd={vi.fn()} addPending={false} />);
+    render(<PlaylistMusicSearch onPreview={vi.fn()} onAdd={vi.fn()} addPending={false} />);
     await userEvent.type(screen.getByTestId('music-search-input'), 'xxx');
     await waitFor(() => {
       expect(screen.getByText(/다른 키워드/)).toBeInTheDocument();

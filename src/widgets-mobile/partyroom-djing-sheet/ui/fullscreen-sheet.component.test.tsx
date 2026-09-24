@@ -3,6 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 import FullscreenSheet from './fullscreen-sheet.component';
 
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({ common: { btn: { back: '뒤로', close: '닫기' } } }),
+}));
+
 describe('FullscreenSheet', () => {
   test('open=false 시 미렌더', () => {
     const onClose = vi.fn();

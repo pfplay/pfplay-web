@@ -2,7 +2,7 @@
 import { FC, useRef } from 'react';
 import { convertSearchMusicToPreview } from '@/entities/music-preview/lib/preview-helpers';
 import { useAddPlaylistTrack } from '@/features/playlist/add-tracks/api/use-add-playlist-track.mutation';
-import MusicSearch from '@/features-mobile/playlist/add-tracks/ui/music-search.component';
+import PlaylistMusicSearch from '@/features-mobile/playlist/add-tracks/ui/playlist-music-search.component';
 import { Music } from '@/shared/api/http/types/playlists';
 import { useStores } from '@/shared/lib/store/stores.context';
 import { MiniPlayer } from '@/widgets-mobile/music-preview-mini-player';
@@ -14,7 +14,7 @@ interface Props {
 /**
  * 모바일 트랙 추가 시트 (spec §6.3).
  *
- * - body  = MusicSearch (검색 input + 결과 리스트)
+ * - body  = PlaylistMusicSearch (검색 input + 결과 리스트)
  * - footer = MiniPlayer (currentTrack 있을 때만 자체 렌더, 없으면 null)
  * - ▶ click → startPreview(convertSearchMusicToPreview(music))
  *   (Music → 정식 PreviewTrack. id/videoUrl 이 채워져 youtube-preview-player 가 실재생.)
@@ -60,7 +60,11 @@ const AddTracksSheet: FC<Props> = ({ playlistId }) => {
   return (
     <div className='flex flex-col h-full'>
       <div className='flex-1 min-h-0'>
-        <MusicSearch onPreview={handlePreview} onAdd={handleAddFromSearch} addPending={isPending} />
+        <PlaylistMusicSearch
+          onPreview={handlePreview}
+          onAdd={handleAddFromSearch}
+          addPending={isPending}
+        />
       </div>
       <MiniPlayer onAdd={handleAddFromMiniPlayer} addPending={isPending} />
     </div>
