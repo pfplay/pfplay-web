@@ -44,6 +44,12 @@ describe('edit-profile-bio form schema', () => {
       expect(schema.safeParse({ nickname: '테스트' }).success).toBe(true);
     });
 
+    test('서버에서 온 null은 제출 payload에서 undefined로 정규화한다', () => {
+      const result = schema.safeParse({ nickname: '테스트', introduction: null });
+      expect(result.success).toBe(true);
+      if (result.success) expect(result.data.introduction).toBeUndefined();
+    });
+
     test('유효: 빈 문자열', () => {
       expect(schema.safeParse({ nickname: '테스트', introduction: '' }).success).toBe(true);
     });
