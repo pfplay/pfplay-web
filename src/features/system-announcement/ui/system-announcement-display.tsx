@@ -1,5 +1,7 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+import { cn } from '@/shared/lib/functions/cn';
 import EmergencyBanner from './emergency-banner';
 import EventToast from './event-toast';
 import MaintenanceOverlay from './maintenance-overlay';
@@ -15,6 +17,7 @@ import { useSystemAnnouncementStore } from '../model/system-announcement.store';
  * 개별 컴포넌트는 normal flow 로 렌더해 stacking 이 자연스럽게 처리되도록 한다.
  */
 export default function SystemAnnouncementDisplay() {
+  const pathname = usePathname();
   const announcements = useSystemAnnouncementStore((s) => Array.from(s.announcements.values()));
   const maintenance = useSystemAnnouncementStore((s) => s.maintenance);
 
@@ -24,6 +27,7 @@ export default function SystemAnnouncementDisplay() {
 
   const hasTopStack = planned.length > 0 || emergencies.length > 0;
   const hasToastStack = toasts.length > 0;
+  const isPartyroomRoute = /^\/parties\/\d+(?:\/|$)/.test(pathname);
 
   return (
     <>
@@ -32,7 +36,10 @@ export default function SystemAnnouncementDisplay() {
       {hasTopStack && (
         <div
           data-testid='system-announcement-top-stack'
-          className='fixed top-3 inset-x-3 z-40 flex flex-col gap-2 pointer-events-none'
+          className={cn(
+            'fixed top-3 inset-x-3 z-40 flex flex-col gap-2 pointer-events-none',
+            isPartyroomRoute && 'max-tablet:hidden'
+          )}
         >
           {planned.map((a) => (
             <MaintenancePlannedBanner key={a.announcementId} snapshot={a} />
@@ -46,7 +53,10 @@ export default function SystemAnnouncementDisplay() {
       {hasToastStack && (
         <div
           data-testid='system-announcement-toast-stack'
-          className='fixed left-3 bottom-3 max-tablet:bottom-[72px] z-40 flex flex-col gap-2 pointer-events-none max-w-[calc(100%-1.5rem)]'
+          className={cn(
+            'fixed left-3 bottom-3 max-tablet:bottom-[72px] z-40 flex flex-col gap-2 pointer-events-none max-w-[calc(100%-1.5rem)]',
+            isPartyroomRoute && 'max-tablet:hidden'
+          )}
         >
           {toasts.map((a) => (
             <EventToast key={a.announcementId} snapshot={a} />

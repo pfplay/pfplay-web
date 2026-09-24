@@ -8,6 +8,8 @@ interface Props {
   djNickname: string | null;
   /** `M:SS` 또는 `MM:SS` 사전 포맷 문자열. parent 가 책임. */
   duration: string;
+  /** 모바일 Main Stage 카드에서는 곡명과 리액션만 먼저 보여준다. */
+  showDetails?: boolean;
 }
 
 /**
@@ -18,11 +20,11 @@ interface Props {
  *
  * **외부 배치는 NowPlayingRow (root) 책임**. `flex-1` / `min-w-0` 등 부모 토큰 미보유.
  */
-const NowPlayingMeta: FC<Props> = ({ trackName, djNickname, duration }) => {
+const NowPlayingMeta: FC<Props> = ({ trackName, djNickname, duration, showDetails = true }) => {
   return (
     <div className='flex flex-col space-y-1'>
       <TrackTitle name={trackName} emptyText='' />
-      {djNickname && (
+      {showDetails && djNickname && (
         <span
           data-testid='now-playing-dj'
           className='flex items-center gap-1 text-gray-500 min-w-0'
@@ -33,9 +35,11 @@ const NowPlayingMeta: FC<Props> = ({ trackName, djNickname, duration }) => {
           </Typography>
         </span>
       )}
-      <Typography type='caption2' className='text-gray-600 shrink-0'>
-        {duration}
-      </Typography>
+      {showDetails && (
+        <Typography type='caption2' className='text-gray-600 shrink-0'>
+          {duration}
+        </Typography>
+      )}
     </div>
   );
 };

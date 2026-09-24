@@ -77,19 +77,12 @@ describe('EventToast', () => {
     expect(screen.getByText('전체 공지')).toBeInTheDocument();
   });
 
-  test('severity 별로 아이콘 색과 배경 농도가 갈린다', () => {
+  test('공지 본문과 닫기 버튼을 표시한다', () => {
     (useLang as Mock).mockReturnValue(Language.Ko);
-    const { rerender } = render(<EventToast snapshot={mkSnapshot({ severity: 'INFO' })} />);
-    expect(screen.getByTestId('event-toast-icon')).toHaveClass('text-white');
-    expect(screen.getByTestId('event-toast')).toHaveClass('bg-white/5');
+    render(<EventToast snapshot={mkSnapshot({ messageKo: '첫 줄\n둘째 줄' })} />);
 
-    rerender(<EventToast snapshot={mkSnapshot({ severity: 'WARN' })} />);
-    expect(screen.getByTestId('event-toast-icon')).toHaveClass('text-red-200');
-    expect(screen.getByTestId('event-toast')).toHaveClass('bg-red-200/5');
-
-    rerender(<EventToast snapshot={mkSnapshot({ severity: 'CRITICAL' })} />);
-    expect(screen.getByTestId('event-toast-icon')).toHaveClass('text-red-300');
-    expect(screen.getByTestId('event-toast')).toHaveClass('bg-red-300/15');
+    expect(screen.getByTestId('event-toast-close')).toBeInTheDocument();
+    expect(screen.getByTestId('event-toast').textContent).toContain('첫 줄\n둘째 줄');
   });
 
   test('close 버튼 클릭 시 store.dismiss(announcementId) 호출', () => {

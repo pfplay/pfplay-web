@@ -1,7 +1,9 @@
 'use client';
+
 import { FC } from 'react';
 import { Music } from '@/shared/api/http/types/playlists';
 import { safeDecodeURI } from '@/shared/lib/functions/safe-decode-uri';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { TextButton } from '@/shared/ui/components/text-button';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFPlayCircleFilled, PFAdd } from '@/shared/ui/icons';
@@ -13,12 +15,9 @@ interface Props {
   addPending: boolean;
 }
 
-/**
- * 모바일 음악 검색 결과 단건 카드.
- * 제목·재생시간 노출 + ▶ 미리듣기 / [+] 추가 액션.
- * Music 도메인에는 artist 필드가 없으므로 (videoTitle 자체에 아티스트가 합쳐진 형태) 제목/재생시간만 노출.
- */
-const SearchListItem: FC<Props> = ({ music, onPreview, onAdd, addPending }) => {
+const PlaylistSearchListItem: FC<Props> = ({ music, onPreview, onAdd, addPending }) => {
+  const t = useI18n();
+
   return (
     <li className='flex items-center gap-3 px-5 py-3 border-b border-gray-800'>
       <img
@@ -37,18 +36,18 @@ const SearchListItem: FC<Props> = ({ music, onPreview, onAdd, addPending }) => {
       <TextButton
         data-testid={`search-item-preview-${music.videoId}`}
         onClick={() => onPreview(music)}
-        aria-label={`${music.videoTitle} 미리듣기`}
+        aria-label={`${music.videoTitle} ${t.playlist.btn.preview_song}`}
         Icon={<PFPlayCircleFilled width={20} height={20} aria-hidden='true' />}
       />
       <TextButton
         data-testid={`search-item-add-${music.videoId}`}
         onClick={() => onAdd(music)}
         disabled={addPending}
-        aria-label={`${music.videoTitle} 추가`}
+        aria-label={`${music.videoTitle} ${t.playlist.btn.add_song}`}
         Icon={<PFAdd width={20} height={20} aria-hidden='true' />}
       />
     </li>
   );
 };
 
-export default SearchListItem;
+export default PlaylistSearchListItem;

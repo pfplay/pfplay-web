@@ -4,6 +4,10 @@ import SystemAnnouncementDisplay from './system-announcement-display';
 import { useSystemAnnouncementStore } from '../model/system-announcement.store';
 import { AnnouncementSnapshot, MaintenanceState } from '../model/system-announcement.types';
 
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/',
+}));
+
 vi.mock('./maintenance-overlay', () => ({
   default: ({ maintenance }: { maintenance: MaintenanceState }) => (
     <div data-testid='m-overlay'>{maintenance.phase}</div>
@@ -97,6 +101,24 @@ describe('SystemAnnouncementDisplay', () => {
     });
     render(<SystemAnnouncementDisplay />);
     expect(screen.getAllByTestId('toast')).toHaveLength(3);
+  });
+
+  test('type별 공지 1개씩이면 세 공지가 각각의 stack에 모두 표시된다', () => {
+    useSystemAnnouncementStore.setState({
+      announcements: new Map([
+        [10, mk(10, { type: 'MAINTENANCE_NOTICE', scheduledStartAt: '2026-09-14T03:00:00' })],
+        [11, mk(11, { type: 'EMERGENCY', severity: 'CRITICAL' })],
+        [12, mk(12, { type: 'EVENT' })],
+      ]),
+    });
+
+    render(<SystemAnnouncementDisplay />);
+
+    expect(screen.getAllByTestId('planned')).toHaveLength(1);
+    expect(screen.getAllByTestId('emergency')).toHaveLength(1);
+    expect(screen.getAllByTestId('toast')).toHaveLength(1);
+    expect(screen.getByTestId('system-announcement-top-stack').children).toHaveLength(2);
+    expect(screen.getByTestId('system-announcement-toast-stack').children).toHaveLength(1);
   });
 
   test('ACTIVE 점검 + EMERGENCY 1 + EVENT 2 → 4개 모두 mount', () => {

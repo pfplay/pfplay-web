@@ -36,7 +36,7 @@ const MobileProfileEditForm = () => {
             >
               <Input
                 {...field}
-                maxLength={16}
+                maxLength={12}
                 placeholder={t.common.ec.char_limit_12}
                 classNames={{ container: 'w-full' }}
               />

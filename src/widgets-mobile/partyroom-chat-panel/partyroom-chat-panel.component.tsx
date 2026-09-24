@@ -1,18 +1,30 @@
 'use client';
-import { useCallback, useRef, useState } from 'react';
-import { PlaybackSummaryDivider, useCurrentPartyroomChat } from '@/entities/current-partyroom';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import {
+  ChatMessage,
+  PlaybackSummaryDivider,
+  useCurrentPartyroomChat,
+} from '@/entities/current-partyroom';
 import useAlert from '@/entities/current-partyroom/lib/alerts/use-alert.hook';
 import { useChatMessagesScrollManager } from '@/features/partyroom/list-chat-messages';
 import { useIsBlockedCrew } from '@/features/partyroom/list-my-blocked-crews';
-import { SendChatMessage, ChatEmojiPicker } from '@/features/partyroom/send-chat-message';
+import { SendChatMessage } from '@/features/partyroom/send-chat-message';
 import { PenaltyType } from '@/shared/api/http/types/@enums';
 import { ONE_MINUTE } from '@/shared/config/time';
+import { cn } from '@/shared/lib/functions/cn';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { Button } from '@/shared/ui/components/button';
 import { Input } from '@/shared/ui/components/input';
 import { Typography } from '@/shared/ui/components/typography';
 import { PFSend } from '@/shared/ui/icons';
 import ChatItem from './ui/parts/chat-item.component';
+
+type Props = {
+  overlay?: boolean;
+  expanded?: boolean;
+  expandedTop?: number;
+  onExpandedChange?: (expanded: boolean) => void;
+};
 
 /**
  * 모바일 채팅 패널 (§4.2 채팅 탭 콘텐츠):
@@ -25,7 +37,12 @@ import ChatItem from './ui/parts/chat-item.component';
  * 본 panel 은 부모 (탭 컨테이너) 가 flexCol h-full 안에 mount 한다는 전제.
  * 부모가 높이/스크롤 가시성을 보장하므로 데스크탑의 `useVerticalStretch` 는 불요.
  */
-export default function MobilePartyroomChatPanel() {
+export default function MobilePartyroomChatPanel({
+  overlay = false,
+  expanded: expandedProp,
+  expandedTop = 0,
+  onExpandedChange,
+}: Props) {
   const t = useI18n();
   const chatMessages = useCurrentPartyroomChat();
   const isBlockedCrew = useIsBlockedCrew();
@@ -37,50 +54,113 @@ export default function MobilePartyroomChatPanel() {
   });
   const banned = useTempChatBanTimer();
   const chatInputRef = useRef<HTMLInputElement>(null);
+  const [uncontrolledExpanded, setUncontrolledExpanded] = useState(false);
+  const expanded = expandedProp ?? uncontrolledExpanded;
+  const updateExpanded = useCallback(
+    (nextExpanded: boolean) => {
+      if (expandedProp === undefined) setUncontrolledExpanded(nextExpanded);
+      onExpandedChange?.(nextExpanded);
+    },
+    [expandedProp, onExpandedChange]
+  );
+  const compactMessage = useMemo(
+    () =>
+      [...chatMessages]
+        .reverse()
+        .find(
+          (message) =>
+            message.from === 'system' ||
+            (message.from === 'user' && !isBlockedCrew(message.crew.crewId))
+        ),
+    [chatMessages, isBlockedCrew]
+  );
+
+  const renderMessage = (message: ChatMessage.Model, index: number) => {
+    if (message.from === 'system') {
+      return (
+        <Typography
+          key={'system' + message.receivedAt}
+          type='caption1'
+          className='text-red-200 p-2 pl-[58px]'
+        >
+          {message.content}
+        </Typography>
+      );
+    }
+    if (message.from === 'playback-summary') {
+      return (
+        <PlaybackSummaryDivider
+          key={'playback-summary' + message.receivedAt}
+          message={message}
+          ref={index === chatMessages.length - 1 ? lastItemRef : undefined}
+        />
+      );
+    }
+    if (isBlockedCrew(message.crew.crewId)) return null;
+
+    return (
+      <ChatItem
+        key={message.message.messageId}
+        message={message}
+        ref={index === chatMessages.length - 1 ? lastItemRef : undefined}
+      />
+    );
+  };
 
   return (
-    <div className='flexCol h-full'>
+    <div
+      data-testid='mobile-chat-panel'
+      data-expanded={expanded}
+      style={overlay && expanded ? { top: expandedTop } : undefined}
+      className={cn(
+        overlay
+          ? cn(
+              'absolute left-4 right-4 z-30 flex flex-col overflow-hidden transition-[top,bottom] duration-300 ease-in-out',
+              expanded
+                ? 'bottom-[calc(env(safe-area-inset-bottom)+12px)]'
+                : 'bottom-[calc(env(safe-area-inset-bottom)+126px)]'
+            )
+          : 'flexCol h-full'
+      )}
+    >
       <div
-        ref={scrollContainerRef}
-        className='flex-[1_0_0] flexCol gap-4 overflow-y-auto py-4 px-5'
+        className={cn(
+          'flex min-h-0 flex-col border border-gray-700 bg-gray-900',
+          !overlay || expanded ? 'h-full' : 'h-auto',
+          expanded ? 'rounded-[6px] px-3 py-3' : 'rounded-[6px] px-3 pb-4 pt-4'
+        )}
       >
-        {chatMessages.map((message, i) => {
-          if (message.from === 'system') {
-            return (
-              <Typography
-                key={'system' + message.receivedAt}
-                type='caption1'
-                className='text-red-200 p-2 pl-[58px]'
-              >
-                {message.content}
-              </Typography>
-            );
-          }
-          if (message.from === 'playback-summary') {
-            const isLastDivider = i === chatMessages.length - 1;
-            return (
-              <PlaybackSummaryDivider
-                key={'playback-summary' + message.receivedAt}
-                message={message}
-                ref={isLastDivider ? lastItemRef : undefined}
-              />
-            );
-          }
-          if (isBlockedCrew(message.crew.crewId)) {
-            return null;
-          }
-          const isLast = i === chatMessages.length - 1;
-          return (
-            <ChatItem
-              key={message.message.messageId}
-              message={message}
-              ref={isLast ? lastItemRef : undefined}
-            />
-          );
-        })}
-      </div>
-
-      <div className='shrink-0 px-5 pb-3 pt-2 bg-black border-t border-gray-900'>
+        <div className='mb-4 flex items-center justify-between'>
+          <Typography type='body2' className='font-normal text-gray-200'>
+            {t.chat.title.live}
+          </Typography>
+          {expanded && (
+            <button
+              type='button'
+              data-testid='mobile-chat-close'
+              aria-label={`${t.chat.title.live} ${t.common.btn.close}`}
+              onClick={() => updateExpanded(false)}
+              className='text-[32px] font-light leading-none text-gray-100'
+            >
+              ×
+            </button>
+          )}
+        </div>
+        {expanded ? (
+          <div
+            ref={scrollContainerRef}
+            data-testid='mobile-chat-scroll'
+            className='min-h-0 flex-1 overflow-y-auto px-1'
+          >
+            <div className='flex flex-col gap-4'>{chatMessages.map(renderMessage)}</div>
+          </div>
+        ) : (
+          compactMessage && (
+            <div className='mb-3 px-1 py-1'>
+              {renderMessage(compactMessage, chatMessages.indexOf(compactMessage))}
+            </div>
+          )
+        )}
         <SendChatMessage>
           {({ message, setMessage, send, canSend }) => (
             <Input
@@ -93,17 +173,13 @@ export default function MobilePartyroomChatPanel() {
               aria-label={banned ? t.chat.para.chat_banned_hint : t.chat.para.start_chat}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onFocus={() => updateExpanded(true)}
+              onClick={() => updateExpanded(true)}
               onPressEnter={() => {
                 if (canSend) send();
               }}
               Suffix={
-                <div className='flex items-center gap-[4px]'>
-                  <ChatEmojiPicker
-                    disabled={banned}
-                    onSelect={(emoji) => setMessage(message + emoji)}
-                    // Headless UI가 닫힘 시 트리거로 포커스를 되돌리는 것과의 순서 레이스 예방 — 한 프레임 늦게 입력창으로
-                    onClosed={() => requestAnimationFrame(() => chatInputRef.current?.focus())}
-                  />
+                <div className='flex items-center gap-[2px]'>
                   <Button
                     data-testid='chat-message-send-button'
                     color='secondary'

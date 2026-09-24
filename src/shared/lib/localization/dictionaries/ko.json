@@ -37,7 +37,10 @@
       "enter_again": "다시 입장하기",
       "chat_mute": "꿀",
       "kick": "킥",
-      "ban": "밴"
+      "ban": "밴",
+      "back": "뒤로",
+      "close": "닫기",
+      "view_profile": "프로필 보기"
     },
     "para": {
       "reason": "사유:",
@@ -114,7 +117,8 @@
       "choose_emoji": "이모지 선택"
     },
     "title": {
-      "recently_used": "최근 사용"
+      "recently_used": "최근 사용",
+      "live": "실시간 채팅"
     }
   },
   "onboard": {
@@ -234,7 +238,8 @@
       "current_dj": "Now DJing",
       "dj_queue": "DJ 대기열",
       "time_limit": "디제잉 1회당 제한시간 : **{{minutes}}**분",
-      "rule_guide": "디제잉 규칙 안내"
+      "rule_guide": "디제잉 규칙 안내",
+      "select_song": "곡 선택"
     },
     "btn": {
       "register_queue": "DJ 대기 등록",
@@ -303,7 +308,8 @@
       "add_song": "곡 추가 ",
       "add_list": "리스트 추가",
       "delete_playlist": "재생목록에서 삭제",
-      "move_playlist": "다른 재생목록으로 이동"
+      "move_playlist": "다른 재생목록으로 이동",
+      "preview_song": "미리듣기"
     },
     "para": {
       "enter_playlist_name": "플레이리스트 이름을 입력해주세요",
@@ -374,7 +380,11 @@
       "sheet_select_confirm": "선택 완료",
       "no_track": "지금 재생 중인 곡이 없어요",
       "tab_chat": "채팅",
-      "my_position": "내 순서 {{position}}번째 · 총 {{total}}명"
+      "my_position": "내 순서 {{position}}번째 · 총 {{total}}명",
+      "empty_cta": "지금 당장 <b>DJ 대기열</b>에서 시작해 보세요!"
+    },
+    "para": {
+      "listening_count": "{{count}}명 청취 중"
     }
   },
   "crews": {

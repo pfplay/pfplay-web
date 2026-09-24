@@ -7,12 +7,16 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useUpdateMyBio } from '../api/use-update-my-bio.mutation';
 import * as Form from '../model/form.model';
 
+interface Props {
+  onSuccess?: () => void;
+}
+
 /**
  * 프로필 바이오(닉네임·소개) 편집 폼 로직의 단일 출처.
- * 데스크탑 `ProfileEditFormV1` 과 모바일 `MobileProfileEditForm` 이 공유한다
+ * 데스크탑 `ProfileEditFormV1`·`ProfileEditFormV2` 와 모바일 `MobileProfileEditForm` 이 공유한다
  * (레이아웃만 폼팩터별로 다름 — #390 `useBeAHost` 와 동일 패턴).
  */
-export const useEditProfileBioForm = () => {
+export const useEditProfileBioForm = ({ onSuccess }: Props = {}) => {
   const t = useI18n();
   const { data: me } = useSuspenseFetchMe();
   const { mutate: updateBio, isPending } = useUpdateMyBio();
@@ -20,8 +24,10 @@ export const useEditProfileBioForm = () => {
   const {
     handleSubmit,
     control,
+    register,
+    reset,
     setError,
-    formState: { errors, isValid },
+    formState: { errors, isValid, dirtyFields, isSubmitted },
   } = useForm<Form.Model>({
     mode: 'all',
     resolver: zodResolver(Form.getSchema(t)),
@@ -37,8 +43,15 @@ export const useEditProfileBioForm = () => {
 
   const btnDisabled = Object.keys(errors).length > 0 || !isValid;
 
+  // 처리 여부에 따른 에러 표시 여부 구분
+  const visibleErrors: typeof errors = {
+    nickname: dirtyFields.nickname || isSubmitted ? errors.nickname : undefined,
+    introduction: dirtyFields.introduction || isSubmitted ? errors.introduction : undefined,
+  };
+
   const onSubmit = handleSubmit((values) => {
     updateBio(values, {
+      onSuccess,
       onError: (err) => {
         if (err.response?.data.code === 409) {
           setError('nickname', { message: t.settings.para.nickname_taken });
@@ -47,5 +60,13 @@ export const useEditProfileBioForm = () => {
     });
   });
 
-  return { control, onSubmit, errors, btnDisabled, isPending };
+  return {
+    control,
+    register,
+    reset,
+    onSubmit,
+    errors: visibleErrors,
+    btnDisabled,
+    isPending,
+  };
 };

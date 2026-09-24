@@ -12,9 +12,15 @@ interface Args {
   partyroomId: number;
   queueStatus: QueueStatus;
   playlists: Playlist[];
+  onRegistered?: () => void;
 }
 
-export default function useMobileRegisterMeToQueue({ partyroomId, queueStatus, playlists }: Args) {
+export default function useMobileRegisterMeToQueue({
+  partyroomId,
+  queueStatus,
+  playlists,
+  onRegistered,
+}: Args) {
   const t = useI18n();
   const { openAlertDialog } = useDialog();
   const { mutate: registerMutate } = useRegisterMeToQueue();
@@ -28,8 +34,15 @@ export default function useMobileRegisterMeToQueue({ partyroomId, queueStatus, p
     }
     const selected = await selectPlaylist();
     if (!selected) return;
-    registerMutate({ partyroomId, playlistId: selected.id });
-    if (showDjingGuide) openDjingGuideModal();
+    registerMutate(
+      { partyroomId, playlistId: selected.id },
+      {
+        onSuccess: () => {
+          onRegistered?.();
+          if (showDjingGuide) openDjingGuideModal();
+        },
+      }
+    );
   }, [
     partyroomId,
     queueStatus,
@@ -37,6 +50,7 @@ export default function useMobileRegisterMeToQueue({ partyroomId, queueStatus, p
     registerMutate,
     showDjingGuide,
     openDjingGuideModal,
+    onRegistered,
     openAlertDialog,
     t.dj.para.locked_queue_by_admin,
   ]);

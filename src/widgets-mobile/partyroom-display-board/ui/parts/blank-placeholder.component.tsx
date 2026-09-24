@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { Trans } from '@/shared/lib/localization/renderer/index.ui';
 
 /**
  * Mode C (비재생) 안내 (spec §6.3, §3 row 11).
@@ -7,13 +8,19 @@ import { useI18n } from '@/shared/lib/localization/i18n.context';
  * **책임 분리**: 16:9 aspect / 검정 배경 / rounded 는 VideoFrame 의 VIDEO_WRAPPER_CLASS
  * 가 책임. 본 컴포넌트는 그 wrapper 의 *fill* (w-full h-full) + 중앙 정렬 + 텍스트만.
  *
- * Text styling: 기존 chunk 2 inline 의 `text-sm text-gray-500` 패턴 유지 (시각 회귀 0).
+ * Text styling: Main Stage reference의 두 줄 안내만 표시하고 로고/영문 문구는 노출하지 않는다.
  */
 const BlankPlaceholder: FC = () => {
   const t = useI18n();
   return (
-    <div data-testid='blank-placeholder' className='w-full h-full flex items-center justify-center'>
-      <p className='text-sm text-gray-500'>{t.partyroom.queue.no_track}</p>
+    <div
+      data-testid='blank-placeholder'
+      className='flex min-h-[360px] w-full flex-col items-center justify-center text-center text-gray-50'
+    >
+      <p className='text-[16px] leading-[1.6] text-gray-50'>{t.partyroom.queue.no_track}</p>
+      <p className='text-[16px] leading-[1.6] text-gray-50'>
+        <Trans i18nKey='partyroom.queue.empty_cta' />
+      </p>
     </div>
   );
 };

@@ -7,6 +7,7 @@ import * as Playback from '@/entities/current-partyroom/model/playback.model';
 import { useUserPreferenceStore } from '@/entities/preference';
 import { PartyroomPlayback } from '@/shared/api/http/types/partyrooms';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import BlankPlaceholder from './blank-placeholder.component';
 import type { AutoplayGestureGate } from '../../lib/use-autoplay-gesture-gate.hook';
 
@@ -26,6 +27,8 @@ interface Props {
   // MutableRefObject 가 필요. 부모는 useRef<TReactPlayer | null>(null) 로 그대로 생성.
   playerRef: MutableRefObject<TReactPlayer | null>;
   gate: AutoplayGestureGate;
+  /** 채팅 확장 상태에서는 Figma처럼 빈 영상 영역만 유지하고 안내 문구를 숨긴다. */
+  showPlaceholder?: boolean;
   /**
    * playback.endTime/duration 기반 라이브 위치 seek 에 사용.
    * 데스크탑 widgets/partyroom-display-board/ui/parts/video.component.tsx 의 seekToLive 와 동일 정책.
@@ -34,8 +37,9 @@ interface Props {
   playback?: PartyroomPlayback | null;
 }
 
-const VideoFrame: FC<Props> = ({ videoId, playerRef, gate, playback }) => {
+const VideoFrame: FC<Props> = ({ videoId, playerRef, gate, playback, showPlaceholder = true }) => {
   const isPlaying = videoId !== null;
+  const t = useI18n();
   const volume = useUserPreferenceStore((s) => s.volume);
   const muted = useUserPreferenceStore((s) => s.muted);
 
@@ -70,9 +74,18 @@ const VideoFrame: FC<Props> = ({ videoId, playerRef, gate, playback }) => {
 
   return (
     <div className='relative'>
-      <div data-testid='video-wrapper' className={cn('relative', VIDEO_WRAPPER_CLASS)}>
+      <div
+        data-testid='video-wrapper'
+        className={cn(
+          'relative',
+          isPlaying || !showPlaceholder ? VIDEO_WRAPPER_CLASS : 'min-h-[360px] w-full',
+          isPlaying || !showPlaceholder ? 'bg-black' : 'bg-transparent'
+        )}
+      >
         {!isPlaying ? (
-          <BlankPlaceholder />
+          showPlaceholder ? (
+            <BlankPlaceholder />
+          ) : null
         ) : (
           <YoutubePlayer
             key={`video-${gate.playerReady}-${gate.played}`}
@@ -82,7 +95,7 @@ const VideoFrame: FC<Props> = ({ videoId, playerRef, gate, playback }) => {
             muted={muted}
             width='100%'
             height='100%'
-            className='bg-black rounded'
+            className='rounded'
             onReady={(player: TReactPlayer) => {
               playerRef.current = player;
               seekToLive();
@@ -101,7 +114,7 @@ const VideoFrame: FC<Props> = ({ videoId, playerRef, gate, playback }) => {
           <button
             type='button'
             data-testid='autoplay-gesture-gate'
-            aria-label='클릭하여 재생'
+            aria-label={t.party.btn.click_to_play}
             onClick={gate.handleGesturePlay}
             className='absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-black/70 cursor-pointer'
           >
@@ -110,7 +123,7 @@ const VideoFrame: FC<Props> = ({ videoId, playerRef, gate, playback }) => {
                 <path d='M8 5v14l11-7z' />
               </svg>
             </span>
-            <span className='text-sm text-gray-100'>클릭하여 재생</span>
+            <span className='text-sm text-gray-100'>{t.party.btn.click_to_play}</span>
           </button>
         )}
       </div>

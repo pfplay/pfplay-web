@@ -21,25 +21,27 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
   const { data: me } = useSuspenseFetchMe();
 
   return (
-    <div className='gap-5 flexRow'>
-      <div className='flexCol gap-9'>
+    <div className='flex flex-col gap-5 sm:flex-row'>
+      <div className='flex flex-col gap-4 sm:gap-9'>
         <div
-          className='w-max h-[216px] flexRowCenter bg-[#1D1D1D] pointer-events-none select-none'
+          className='flex h-[120px] w-full items-center justify-center bg-[#1D1D1D] pointer-events-none select-none sm:h-[216px] sm:w-max'
           data-testid='my-profile-avatar-preview'
           data-avatar-body-uri={me.avatarBodyUri ?? ''}
         >
           {!!me.avatarBodyUri && (
-            <Avatar
-              height={180}
-              bodyUri={me.avatarBodyUri}
-              compositionType={me.avatarCompositionType}
-              faceUri={me.avatarFaceUri}
-              facePosX={me.combinePositionX}
-              facePosY={me.combinePositionY}
-              offsetX={me.offsetX || BASE_X}
-              offsetY={me.offsetY || BASE_Y}
-              scale={me.scale || BASE_SCALE}
-            />
+            <div className='scale-[0.66] sm:scale-100'>
+              <Avatar
+                height={180}
+                bodyUri={me.avatarBodyUri}
+                compositionType={me.avatarCompositionType}
+                faceUri={me.avatarFaceUri}
+                facePosX={me.combinePositionX}
+                facePosY={me.combinePositionY}
+                offsetX={me.offsetX || BASE_X}
+                offsetY={me.offsetY || BASE_Y}
+                scale={me.scale || BASE_SCALE}
+              />
+            </div>
           )}
         </div>
 
@@ -65,8 +67,8 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
           <Typography className='text-left text-white'>{me.introduction || '-'}</Typography>
         </div>
 
-        <div className='items-center justify-between flexRow'>
-          <div className='flexRow flex-1 justify-between'>
+        <div className='flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center'>
+          <div className='flex flex-wrap items-center gap-x-5 gap-y-2 sm:flex-1 sm:justify-between'>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               {t.lobby.title.points}
               <Typography as='span' type='body3'>
