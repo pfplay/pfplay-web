@@ -3,6 +3,10 @@ name: preview deploy and e2e
 on:
   push:
     branches: [development]
+    # 문서만 바뀐 머지는 배포·e2e 를 돌리지 않는다 (#483).
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   workflow_dispatch:
 
 # 동시 run들이 공유 stg.pfplay.xyz 별칭을 레이스하지 않도록 파이프라인 직렬화 (이슈 #348).

@@ -3,6 +3,10 @@ name: vercel production
 on:
   push:
     branches: [main]
+    # 문서만 바뀐 push 는 배포하지 않는다 (#483).
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
 
 jobs:
   deploy:
