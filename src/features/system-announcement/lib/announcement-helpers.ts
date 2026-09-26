@@ -19,8 +19,23 @@ export function isExpired(s: AnnouncementSnapshot, nowMs = Date.now()): boolean 
   return new Date(s.expiresAt).getTime() <= nowMs;
 }
 
-export const isToast = (s: AnnouncementSnapshot) =>
-  s.type === 'EVENT' && (s.severity === 'INFO' || s.severity === 'WARN');
+export const isToast = (s: AnnouncementSnapshot) => s.type === 'EVENT';
+
+export function getLatestAnnouncement<
+  T extends Pick<AnnouncementSnapshot, 'announcementId' | 'sentAt'>,
+>(announcements: T[]): T | undefined {
+  return announcements.reduce<T | undefined>((latest, current) => {
+    if (!latest) return current;
+
+    const latestSentAt = Date.parse(latest.sentAt);
+    const currentSentAt = Date.parse(current.sentAt);
+    if (currentSentAt > latestSentAt) return current;
+    if (currentSentAt === latestSentAt && current.announcementId > latest.announcementId) {
+      return current;
+    }
+    return latest;
+  }, undefined);
+}
 
 export const isEmergencyBanner = (s: AnnouncementSnapshot) => s.type === 'EMERGENCY';
 

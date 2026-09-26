@@ -22,7 +22,7 @@ import {
  *   host' 버튼이 모바일 lobby 에 부재 → 모바일 viewport 에서 setup fail.
  * - desktop (user2) 가 자기 playlist (musicCount>0) 1 개를 fresh 생성. 모바일 SelectPlaylistSheet
  *   카드 선택 → confirm 분기가 동작하려면 user2 본인 playlist 가 최소 1개 필요.
- * - 본 테스트 (mobile, user2) 가 partyroom 에 join → 큐 탭 → register → SelectPlaylistSheet
+ * - 본 테스트 (mobile, user2) 가 partyroom 에 join → DJ Queue 액션 → register → SelectPlaylistSheet
  *   카드 선택 → confirm → Me 등장 → unregister → confirm → register 버튼 재등장.
  */
 test.describe('mobile DJ register flow', () => {
@@ -132,10 +132,10 @@ test.describe('mobile DJ register flow', () => {
 
     log('mobile enter');
     await enterMobileRoomAndWaitReady(page, partyroomUrl);
-    log('queue tab');
-    await page.getByTestId('mobile-tab-queue').click();
-    log('register click');
-    await page.getByTestId('member-action-register').click();
+    log('open DJ Queue action');
+    await page.getByRole('button', { name: /^(DJ Queue|DJ 대기열)$/ }).click();
+    log('register from playlist');
+    await page.getByTestId('now-djing-register-by-playlist').click();
 
     // SelectPlaylistSheet 에서 **본 spec 이 만든 플리를 이름으로 정확히** 선택 (#471).
     // `.first()` 는 다른 스펙이 오염시킨 기본 플리(재생제한 초과 트랙 포함 가능)를 집어
@@ -153,13 +153,18 @@ test.describe('mobile DJ register flow', () => {
     await expect(confirmBtn).toBeEnabled({ timeout: 10_000 });
     await confirmBtn.click();
 
-    // 첫 디제잉 가이드 모달 (showDjingGuide=true 기본값) 이 register 직후 자동 push 됨.
-    // 본 spec 의 본질은 register/unregister UI flow 검증이므로, guide 는 dismiss 후 진행.
-    log('dismiss djing-guide modal');
+    // 가이드는 브라우저에 저장된 사용자 설정에 따라 숨겨질 수 있다.
+    // 나타나는 경우 실제 시작 버튼으로 닫고 register/unregister 검증을 이어간다.
+    log('dismiss djing-guide modal when shown');
     const guideStart = page.getByTestId('guide-start');
-    await expect(guideStart).toBeVisible({ timeout: 15_000 });
-    await guideStart.click();
+    await guideStart.waitFor({ state: 'visible', timeout: 3_000 }).catch(() => undefined);
+    if (await guideStart.isVisible()) await guideStart.click();
 
+    // 성공 callback 이 DJ sheet 를 닫는 경우와 그대로 유지하는 경우 모두 처리한다.
+    const djQueueSheet = page.locator('[data-sheet-key="now-djing"]');
+    if (!(await djQueueSheet.isVisible())) {
+      await page.getByRole('button', { name: /^(DJ Queue|DJ 대기열)$/ }).click();
+    }
     log('expect in-queue signal');
     // user2 가 유일 DJ 면 CurrentDjRow 분기 (no '(Me)' 접미사). queue-list-item 의 `(Me)`
     // 표기는 큐 대기자(orderNumber>0)에만 적용 — unit test 가 별도 커버.
@@ -172,7 +177,9 @@ test.describe('mobile DJ register flow', () => {
     // 확인 dialog
     await page.getByRole('button', { name: /^(확인|Confirm)$/ }).click();
 
-    await expect(page.getByTestId('member-action-register')).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByTestId('now-djing-register-by-playlist')).toBeVisible({
+      timeout: 15_000,
+    });
     log('done');
   });
 });

@@ -125,7 +125,7 @@ export function attachErrorTracing(page: Page, log: (m: string) => void) {
  * 모바일 viewport (user2) 의 partyroom 진입 + ready 단언.
  *
  * - goto(partyroomUrl)
- * - mobile-tab-queue (mobile 룸 shell 의 탭바) visible (= mobile room shell mounted)
+ * - DJ Queue action button visible (= mobile room shell mounted)
  * - __PFPLAY_E2E__.subscribedRoomId === partyroomId (= STOMP 구독 성공 = me/crewId 라우딩 완료)
  *
  * 데스크탑 패턴인 `enterPartyroomAndWaitUntilReady` 의 'DJ Queue' 버튼 단언은
@@ -134,7 +134,7 @@ export function attachErrorTracing(page: Page, log: (m: string) => void) {
  */
 export async function enterMobileRoomAndWaitReady(page: Page, partyroomUrl: string) {
   await page.goto(partyroomUrl);
-  await expect(page.getByTestId('mobile-tab-queue')).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole('button', { name: 'DJ Queue' })).toBeVisible({ timeout: 30_000 });
 
   const partyroomId = Number(partyroomUrl.match(/\/parties\/(\d+)/)?.[1]);
   await expect

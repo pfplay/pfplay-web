@@ -5,6 +5,7 @@ import { FC } from 'react';
 import { useCurrentPartyroomCrews } from '@/features/partyroom/list-crews';
 import { useOpenCrewProfile } from '@/features/view-crew-profile';
 import { cn } from '@/shared/lib/functions/cn';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
 
 /**
@@ -17,6 +18,7 @@ import { useStores } from '@/shared/lib/store/stores.context';
  */
 const MobilePartyroomCrewsPanel: FC = () => {
   const crews = useCurrentPartyroomCrews();
+  const t = useI18n();
   const openCrewProfile = useOpenCrewProfile();
   const { useCurrentPartyroom } = useStores();
   const currentDj = useCurrentPartyroom((state) => state.currentDj);
@@ -29,7 +31,7 @@ const MobilePartyroomCrewsPanel: FC = () => {
           'text-xs text-gray-400 border-b border-gray-800'
         )}
       >
-        {crews.length}명 청취 중
+        {t.partyroom.para.listening_count.replace('{{count}}', String(crews.length))}
       </div>
       <ul className='divide-y divide-gray-900'>
         {crews.map((crew) => {
@@ -39,7 +41,7 @@ const MobilePartyroomCrewsPanel: FC = () => {
               <button
                 type='button'
                 onClick={() => openCrewProfile(crew.crewId)}
-                aria-label={`${crew.nickname} 프로필 보기`}
+                aria-label={`${crew.nickname} ${t.common.btn.view_profile}`}
                 className='flex min-w-0 flex-1 items-center gap-3'
               >
                 <div className='relative w-8 h-8 rounded-full overflow-hidden bg-gray-800 shrink-0'>

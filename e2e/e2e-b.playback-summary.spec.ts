@@ -301,7 +301,10 @@ test.describe('E2E-B: 플레이백 종료 요약 채팅 구획 (#444)', () => {
     // 재생 중 채팅 몇 줄(맥락) + 모바일 👍 1회
     await sendChatMessage(host, 'this one is my favorite');
     await sendChatMessage(mobile, 'nice pick!!');
-    await mobileLikeButton.click();
+    await mobile.getByTestId('mobile-chat-close').click();
+    await expect(mobileLikeButton).toBeEnabled({ timeout: 15_000 });
+    // 접힌 채팅 패널이 전광판 아래 좋아요 버튼을 덮으므로 DOM 이벤트로 누른다.
+    await mobileLikeButton.dispatchEvent('click');
     log('mobile liked track1');
 
     // ── 케이스 1: 자연 완료 → 구획이 양쪽에 visible ────────────────
@@ -309,6 +312,8 @@ test.describe('E2E-B: 플레이백 종료 요약 채팅 구획 (#444)', () => {
     log(`waiting for natural completion divider (~${durations[0]}s + margin)`);
     const waitDivider = track1Ms + 120_000 - (Date.now() - playbackStartedAt);
     await expect(host.locator(DIVIDER)).toHaveCount(1, { timeout: waitDivider });
+    await mobile.getByTestId('chat-message-input').click();
+    await expect(mobile.getByTestId('mobile-chat-scroll')).toBeVisible();
     await expect(mobile.locator(DIVIDER)).toHaveCount(1, { timeout: 30_000 });
 
     // 자연 완료엔 ⏭ 뱃지가 없어야 함
@@ -319,6 +324,7 @@ test.describe('E2E-B: 플레이백 종료 요약 채팅 구획 (#444)', () => {
     await ensureDividerVisible(host, 0);
     await ensureDividerVisible(mobile, 0);
     log('case-1 divider visible on host & mobile');
+    await mobile.getByTestId('mobile-chat-close').click();
 
     // best-effort: 모바일 👍가 카운트에 반영됐는지(실패 무방)
     const divider1Text = (await host.locator(DIVIDER).first().textContent())?.trim();
@@ -333,7 +339,8 @@ test.describe('E2E-B: 플레이백 종료 요약 채팅 구획 (#444)', () => {
     // ── 케이스 2: 스킵 → 구획 + ⏭ 뱃지 visible ────────────────────
     await expect(mobileLikeButton).toBeEnabled({ timeout: 15_000 });
     await mobile.waitForTimeout(1_500); // playback 교체 전파 대기(like flag reset)
-    await mobileLikeButton.click();
+    // 접힌 채팅의 마지막 메시지가 전광판 아래 좋아요 버튼 좌표를 덮을 수 있어 DOM 이벤트로 누른다.
+    await mobileLikeButton.dispatchEvent('click');
     log('mobile liked track2');
 
     log('host opens DJ drawer and skips track2');
@@ -348,6 +355,8 @@ test.describe('E2E-B: 플레이백 종료 요약 채팅 구획 (#444)', () => {
 
     await expect(host.locator(DIVIDER)).toHaveCount(2, { timeout: 30_000 });
     await expect(host.locator(SKIPPED_BADGE)).toHaveCount(1, { timeout: 10_000 });
+    await mobile.getByTestId('chat-message-input').click();
+    await expect(mobile.getByTestId('mobile-chat-scroll')).toBeVisible();
     await expect(mobile.locator(DIVIDER)).toHaveCount(2, { timeout: 30_000 });
     await expect(mobile.locator(SKIPPED_BADGE)).toHaveCount(1, { timeout: 10_000 });
 

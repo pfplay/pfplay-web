@@ -1,7 +1,5 @@
 'use client';
 
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Avatar } from '@/entities/avatar';
 import { useSuspenseFetchMe } from '@/entities/me';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
@@ -9,8 +7,7 @@ import { Button } from '@/shared/ui/components/button';
 import { FormItemError } from '@/shared/ui/components/form-item';
 import { Input } from '@/shared/ui/components/input';
 import { TextArea } from '@/shared/ui/components/textarea';
-import { useUpdateMyBio } from '../api/use-update-my-bio.mutation';
-import * as Form from '../model/form.model';
+import { useEditProfileBioForm } from '../lib/use-edit-profile-bio-form';
 
 type V2EditModeProps = {
   changeToViewMode: () => void;
@@ -19,29 +16,9 @@ type V2EditModeProps = {
 const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
   const t = useI18n();
   const { data: me } = useSuspenseFetchMe();
-  const { mutate: updateBio, isPending } = useUpdateMyBio();
-
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors, isValid },
-  } = useForm<Form.Model>({
-    mode: 'all',
-    resolver: zodResolver(Form.getSchema(t)),
-    // #487: 서버가 null 을 주는 필드 — 빈 문자열로 정규화(v1·모바일 폼과 동일 규칙)
-    defaultValues: {
-      nickname: me.nickname ?? '',
-      introduction: me.introduction ?? '',
-    },
+  const { register, reset, onSubmit, errors, btnDisabled, isPending } = useEditProfileBioForm({
+    onSuccess: changeToViewMode,
   });
-  const btnDisabled = Object.keys(errors).length > 0 || !isValid;
-
-  const onSubmit: SubmitHandler<Form.Model> = (values) => {
-    updateBio(values, {
-      onSuccess: changeToViewMode,
-    });
-  };
 
   const handleCancelEdit = () => {
     changeToViewMode();
@@ -49,7 +26,7 @@ const V2EditMode = ({ changeToViewMode }: V2EditModeProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={onSubmit}>
       <div className='gap-5 flexRow'>
         <div className='w-max h-[216px] flexRowCenter bg-[#1D1D1D] pointer-events-none select-none'>
           {!!me.avatarBodyUri && (

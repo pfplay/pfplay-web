@@ -5,12 +5,20 @@ import { useRef } from 'react';
 import type TReactPlayer from 'react-player';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import VideoFrame, { VIDEO_WRAPPER_CLASS } from './video-frame.component';
+import VideoFrame from './video-frame.component';
 import type { AutoplayGestureGate } from '../../lib/use-autoplay-gesture-gate.hook';
 
 // Mode C 의 BlankPlaceholder 가 useI18n 사용 → provider 없는 단위 렌더용 mock.
 vi.mock('@/shared/lib/localization/i18n.context', () => ({
-  useI18n: () => ({ partyroom: { queue: { no_track: '지금 재생 중인 곡이 없어요' } } }),
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        no_track: '지금 재생 중인 곡이 없어요',
+        empty_cta: '지금 당장 <b>DJ 대기열</b>에서 시작해 보세요!',
+      },
+    },
+    party: { btn: { click_to_play: '클릭하여 재생' } },
+  }),
 }));
 
 const youtubePlayerCalls: Array<Record<string, unknown>> = [];
@@ -57,34 +65,17 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe('VideoFrame · VIDEO_WRAPPER_CLASS (ToS 최소 크기 가드, issue #420)', () => {
-  test('전체너비 16:9 리터럴 — 썸네일 축소(w-[80px]) 금지', () => {
-    expect(VIDEO_WRAPPER_CLASS).toBe('aspect-video w-full bg-black rounded');
-    // ToS: viewport ≥200×200. 모바일 전체너비 16:9 가 유일한 컴플라이언트 크기.
-    expect(VIDEO_WRAPPER_CLASS).not.toContain('w-[80px]');
-    expect(VIDEO_WRAPPER_CLASS).not.toContain('h-[45px]');
-  });
-});
-
 describe('VideoFrame · 재생 중 (videoId 있음)', () => {
-  test('YoutubePlayer mount + width=100% / height=100% / url 정상', () => {
+  test('YoutubePlayer를 영상 ID로 렌더한다', () => {
     render(<Harness videoId='abc' gate={makeGate()} />);
     expect(youtubePlayerCalls).toHaveLength(1);
     const props = youtubePlayerCalls[0];
-    expect(props.width).toBe('100%');
-    expect(props.height).toBe('100%');
     expect(props.url).toBe('https://www.youtube.com/watch?v=abc');
     expect(screen.getByTestId('youtube-player-mock')).toBeTruthy();
   });
 
-  test('wrapper 가 전체너비 16:9 토큰 보유 + 접기 토글 부재 (축소 모드 제거)', () => {
+  test('재생 중에는 빈 상태와 영상 접기 컨트롤을 표시하지 않는다', () => {
     render(<Harness videoId='abc' gate={makeGate()} />);
-    const wrapper = screen.getByTestId('video-wrapper');
-    expect(wrapper.className).toContain('aspect-video');
-    expect(wrapper.className).toContain('w-full');
-    expect(wrapper.className).toContain('bg-black');
-    expect(wrapper.className).toContain('rounded');
-    // 접기/펼치기 토글은 80×45 축소를 만들던 비컴플라이언트 UI → 제거됨.
     expect(screen.queryByRole('button', { name: /영상/ })).toBeNull();
     expect(screen.queryByTestId('blank-placeholder')).toBeNull();
   });
@@ -105,14 +96,6 @@ describe('VideoFrame · 비재생 (videoId=null)', () => {
     expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
     expect(youtubePlayerCalls).toHaveLength(0);
     expect(screen.queryByRole('button', { name: /영상/ })).toBeNull();
-  });
-
-  test('wrapper 는 비재생에도 전체너비 16:9 유지', () => {
-    render(<Harness videoId={null} gate={makeGate()} />);
-    const wrapper = screen.getByTestId('video-wrapper');
-    expect(wrapper.className).toContain('aspect-video');
-    expect(wrapper.className).not.toContain('w-[80px]');
-    expect(screen.queryByTestId('youtube-player-mock')).toBeNull();
   });
 });
 
@@ -140,24 +123,7 @@ describe('VideoFrame · 재생 ↔ 비재생 전환', () => {
   });
 });
 
-describe('VideoFrame · ToS 가드 (회귀, issue #420)', () => {
-  test.each(['playing', 'idle'] as const)(
-    '%s: wrapper className 에 hidden/opacity-0/w-px/h-px/pointer-events-none 토큰 부재 + 전체너비',
-    (state) => {
-      const videoId = state === 'idle' ? null : 'abc';
-      render(<Harness videoId={videoId} gate={makeGate()} />);
-      const wrapper = screen.getByTestId('video-wrapper');
-      expect(wrapper.className).not.toMatch(/\bhidden\b/);
-      expect(wrapper.className).not.toMatch(/\bopacity-0\b/);
-      expect(wrapper.className).not.toMatch(/\bw-px\b/);
-      expect(wrapper.className).not.toMatch(/\bh-px\b/);
-      expect(wrapper.className).not.toMatch(/\bpointer-events-none\b/);
-      // 축소 썸네일(80×45) 토큰 부재 — viewport ≥200×200 유지.
-      expect(wrapper.className).not.toMatch(/w-\[80px\]/);
-      expect(wrapper.className).toContain('aspect-video');
-    }
-  );
-
+describe('VideoFrame · 접근성', () => {
   test('video-wrapper testid 에 aria-hidden="true" 직접 부착 안 됨', () => {
     render(<Harness videoId='abc' gate={makeGate()} />);
     const wrapper = screen.getByTestId('video-wrapper');

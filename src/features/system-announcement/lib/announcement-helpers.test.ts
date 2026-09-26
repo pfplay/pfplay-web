@@ -1,5 +1,6 @@
 import {
   formatScheduledTime,
+  getLatestAnnouncement,
   getLocalizedMessage,
   getLocalizedTitle,
   isEmergencyBanner,
@@ -65,10 +66,10 @@ describe('isExpired', () => {
 });
 
 describe('type classifiers', () => {
-  test('isToast: type=EVENT && severity in (INFO, WARN)', () => {
+  test('isToast: type=EVENT 면 severity 무관하게 true', () => {
     expect(isToast({ ...baseSnapshot, type: 'EVENT', severity: 'INFO' })).toBe(true);
     expect(isToast({ ...baseSnapshot, type: 'EVENT', severity: 'WARN' })).toBe(true);
-    expect(isToast({ ...baseSnapshot, type: 'EVENT', severity: 'CRITICAL' })).toBe(false);
+    expect(isToast({ ...baseSnapshot, type: 'EVENT', severity: 'CRITICAL' })).toBe(true);
     expect(isToast({ ...baseSnapshot, type: 'EMERGENCY', severity: 'INFO' })).toBe(false);
   });
 
@@ -80,6 +81,26 @@ describe('type classifiers', () => {
   test('isPlannedNotice: type=MAINTENANCE_NOTICE', () => {
     expect(isPlannedNotice({ ...baseSnapshot, type: 'MAINTENANCE_NOTICE' })).toBe(true);
     expect(isPlannedNotice({ ...baseSnapshot, type: 'EVENT' })).toBe(false);
+  });
+});
+
+describe('getLatestAnnouncement', () => {
+  test('sentAt이 가장 최신인 공지를 반환한다', () => {
+    const older = { ...baseSnapshot, announcementId: 10, sentAt: '2026-05-03T15:00:00' };
+    const newer = { ...baseSnapshot, announcementId: 11, sentAt: '2026-05-03T15:01:00' };
+
+    expect(getLatestAnnouncement([newer, older])).toBe(newer);
+  });
+
+  test('sentAt이 같으면 announcementId가 큰 공지를 반환한다', () => {
+    const first = { ...baseSnapshot, announcementId: 10 };
+    const second = { ...baseSnapshot, announcementId: 11 };
+
+    expect(getLatestAnnouncement([first, second])).toBe(second);
+  });
+
+  test('목록이 비어 있으면 undefined를 반환한다', () => {
+    expect(getLatestAnnouncement([])).toBeUndefined();
   });
 });
 

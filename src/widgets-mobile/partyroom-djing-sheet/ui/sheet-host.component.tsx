@@ -19,7 +19,13 @@ const SheetHost: FC = () => {
   const hasBack = stack.length > 1;
 
   return (
-    <FullscreenSheet open={true} title={top.title} onClose={pop} onBack={hasBack ? pop : undefined}>
+    <FullscreenSheet
+      open={true}
+      title={top.title}
+      onClose={pop}
+      onBack={hasBack ? pop : undefined}
+      sheetKey={top.key}
+    >
       {top.node}
     </FullscreenSheet>
   );

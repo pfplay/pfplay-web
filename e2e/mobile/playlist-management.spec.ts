@@ -13,12 +13,12 @@ import { closePartyroom, createPartyroom } from '../helpers/partyroom.helpers';
  * chunk 6 — 모바일 룸 내부 플레이리스트 관리 sheet (mobile project).
  *
  * 4-level sheet stack 의 happy-path CRUD 를 e2e 로 단언:
- *   queue 탭 → "내 플레이리스트 관리"(L1) → 생성 → 카드 → L2 상세 →
+ *   플레이리스트 액션 → 관리(L1) → 생성 → 카드 → L2 상세 →
  *   곡 추가(L3 AddTracksSheet) → back → 곡 삭제 → back → 플리 삭제.
  *
  * setup 책임 분리 (dj-register / add-tracks 패턴):
  * - desktop(user1) 가 partyroom setup (모바일 lobby host CTA 는 #381 별건 branch).
- * - mobile(user2) 가 join → 큐 탭 → 자기 플레이리스트 관리. 플리/곡 mutation 은
+ * - mobile(user2) 가 join → 플레이리스트 액션 → 자기 플레이리스트 관리. 플리/곡 mutation 은
  *   user2 본인 계정 대상이라 룸 상태와 직교. 생성한 플리는 시나리오 끝에서 삭제(self-clean).
  */
 test.describe('mobile playlist management (chunk 6)', () => {
@@ -74,11 +74,9 @@ test.describe('mobile playlist management (chunk 6)', () => {
     await page
       .addStyleTag({ content: '.tsqd-parent-container{display:none!important;}' })
       .catch(() => null);
-    await page.getByTestId('mobile-tab-queue').click();
-
     // L1 진입
     log('open playlists management (L1)');
-    await page.getByTestId('member-action-manage-playlists').click();
+    await page.getByRole('button', { name: /^(Playlist|플레이리스트)$/ }).click();
     await expect(page.getByTestId('manage-create-cta')).toBeVisible({ timeout: 15_000 });
 
     // 생성

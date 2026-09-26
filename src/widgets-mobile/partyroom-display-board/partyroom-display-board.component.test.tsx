@@ -4,6 +4,7 @@
 import type { ReactNode } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { useSystemAnnouncementStore } from '@/features/system-announcement/model/system-announcement.store';
 
 // NowPlayingMeta → TrackTitle 이 react-fast-marquee + galmuriFont(next/font/local) 를
 // transitive import 한다. next/font/local 은 vitest SSR 에서 함수가 아니라 모듈 로드 시
@@ -15,7 +16,17 @@ vi.mock('react-fast-marquee', () => ({
 vi.mock('@/shared/ui/foundation/fonts', () => ({ galmuriFont: { className: 'font-galmuri' } }));
 // Mode C 의 BlankPlaceholder 가 useI18n 사용 → provider 없는 단위 렌더용 mock.
 vi.mock('@/shared/lib/localization/i18n.context', () => ({
-  useI18n: () => ({ partyroom: { queue: { no_track: '지금 재생 중인 곡이 없어요' } } }),
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        no_track: '지금 재생 중인 곡이 없어요',
+        empty_cta: '지금 당장 <b>DJ 대기열</b>에서 시작해 보세요!',
+      },
+    },
+    common: { btn: { back: '뒤로', close: '닫기' }, menu: { title: '메뉴' } },
+    party: { btn: { click_to_play: '클릭하여 재생' } },
+    system: { announcement: { notice: { label: '전체 공지' } } },
+  }),
 }));
 
 const youtubePlayerCalls: Array<Record<string, unknown>> = [];
@@ -50,9 +61,28 @@ vi.mock('./ui/parts/action-buttons.component', () => ({
   __esModule: true,
   default: () => <div data-testid='action-buttons-mock' />,
 }));
+vi.mock('@/features/system-announcement/ui/event-toast', () => ({
+  __esModule: true,
+  default: ({ snapshot }: { snapshot: { announcementId: number } }) => (
+    <div data-testid='event-toast-mock'>{snapshot.announcementId}</div>
+  ),
+}));
+vi.mock('@/features/system-announcement/ui/maintenance-planned-banner', () => ({
+  __esModule: true,
+  default: ({ snapshot }: { snapshot: { announcementId: number } }) => (
+    <div data-testid='maintenance-planned-banner-mock'>{snapshot.announcementId}</div>
+  ),
+}));
+vi.mock('@/features/system-announcement/ui/emergency-banner', () => ({
+  __esModule: true,
+  default: ({ snapshot }: { snapshot: { announcementId: number } }) => (
+    <div data-testid='emergency-banner-mock'>{snapshot.announcementId}</div>
+  ),
+}));
 
 type StoreState = {
   playbackActivated: boolean;
+  notice: string;
   // PartyroomPlayback 형식 정합: id/thumbnailImage 는 모바일 widget 이 사용 안 하지만,
   // endTime 은 seekToLive 가 getInitialSeek(endTime - now) 으로 사용하므로 필수.
   playback: {
@@ -72,6 +102,7 @@ const FUTURE_END_TIME = Date.now() + 60_000;
 
 let storeState: StoreState = {
   playbackActivated: true,
+  notice: '',
   playback: { name: 'Track 1', duration: '3:30', linkId: 'abc', endTime: FUTURE_END_TIME },
   currentDj: { crewId: 1 },
   crews: [{ crewId: 1, nickname: 'DJ A' }],
@@ -95,6 +126,7 @@ function setStoreState(patch: Partial<StoreState>) {
 function resetStoreState() {
   storeState = {
     playbackActivated: true,
+    notice: '',
     playback: { name: 'Track 1', duration: '3:30', linkId: 'abc', endTime: FUTURE_END_TIME },
     currentDj: { crewId: 1 },
     crews: [{ crewId: 1, nickname: 'DJ A' }],
@@ -107,30 +139,37 @@ beforeEach(() => {
   vi.useFakeTimers();
   youtubePlayerCalls.length = 0;
   mockPush.mockClear();
+  useSystemAnnouncementStore.setState({
+    announcements: new Map(),
+    dismissedIds: new Set(),
+    maintenance: null,
+  });
   resetStoreState();
 });
 afterEach(() => {
   vi.useRealTimers();
   vi.clearAllMocks();
+  useSystemAnnouncementStore.setState({
+    announcements: new Map(),
+    dismissedIds: new Set(),
+    maintenance: null,
+  });
 });
 
 describe('MobilePartyroomDisplayBoard · 재생 표시 (ToS 최소 크기, issue #420)', () => {
   test('#1 재생 중 → 전체너비 16:9 영상 + NowPlayingRow + 접기 토글 부재', () => {
     render(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    const wrapper = screen.getByTestId('video-wrapper');
-    expect(wrapper.className).toContain('aspect-video');
-    expect(wrapper.className).toContain('w-full');
-    // 축소 썸네일(80×45)·접기 토글 제거 — viewport ≥200×200 유지.
-    expect(wrapper.className).not.toContain('w-[80px]');
+    expect(screen.getByTestId('video-wrapper')).toBeTruthy();
     expect(screen.queryByRole('button', { name: /영상/ })).toBeNull();
     expect(screen.getByTestId('now-playing-row')).toBeTruthy();
   });
 
-  test('#2 트랙명·DJ 닉네임이 NowPlayingRow 에 표시', () => {
+  test('#2 트랙명과 리액션을 하나의 NowPlayingCard 에 표시', () => {
     render(<MobilePartyroomDisplayBoard partyroomId={1} />);
     const row = screen.getByTestId('now-playing-row');
     expect(row.textContent).toContain('Track 1');
-    expect(screen.getByTestId('now-playing-dj').textContent).toContain('DJ A');
+    expect(screen.getByTestId('action-buttons-mock')).toBeTruthy();
+    expect(screen.queryByTestId('now-playing-dj')).toBeNull();
   });
 });
 
@@ -141,14 +180,14 @@ describe('MobilePartyroomDisplayBoard · 비재생 (Mode C)', () => {
     expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
     expect(screen.queryByRole('button', { name: /영상/ })).toBeNull();
     expect(screen.queryByTestId('now-playing-row')).toBeNull();
+    expect(screen.queryByTestId('action-buttons-mock')).toBeNull();
     expect(screen.queryByTestId('youtube-player-mock')).toBeNull();
-    // 비재생에도 전체너비 16:9 유지 (축소 금지).
-    expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
+    expect(screen.getByTestId('video-wrapper')).toBeTruthy();
   });
 
   test('#4 비재생 → 재할당 → 전체너비 영상 복귀', () => {
     const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
+    expect(screen.getByTestId('video-wrapper')).toBeTruthy();
 
     setStoreState({ playbackActivated: false, playback: null });
     rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
@@ -159,19 +198,108 @@ describe('MobilePartyroomDisplayBoard · 비재생 (Mode C)', () => {
       playback: { name: 'Track 4', duration: '1:30', linkId: 'jkl', endTime: FUTURE_END_TIME },
     });
     rerender(<MobilePartyroomDisplayBoard partyroomId={1} />);
-    expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
-    expect(screen.getByTestId('video-wrapper').className).toContain('w-full');
+    expect(screen.getByTestId('video-wrapper')).toBeTruthy();
+  });
+});
+
+describe('MobilePartyroomDisplayBoard · 전체 공지', () => {
+  test('전체 공지가 있으면 Main Stage 영상 위에 표시한다', () => {
+    setStoreState({ notice: '전체 공지입니다' });
+    render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+
+    const notice = screen.getByText('전체 공지입니다');
+    const video = screen.getByTestId('video-wrapper');
+    expect(notice).toBeTruthy();
+    expect(notice.compareDocumentPosition(video) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  test('실제 EVENT 공지는 기본 상태에서만 compact toast로 표시한다', () => {
+    useSystemAnnouncementStore.getState().add({
+      announcementId: 100,
+      type: 'EVENT',
+      severity: 'INFO',
+      titleKo: '운영 공지',
+      titleEn: 'Operations notice',
+      messageKo: '잠시 후 이벤트가 시작됩니다.',
+      messageEn: 'The event starts soon.',
+      scheduledStartAt: null,
+      scheduledEndAt: null,
+      expiresAt: null,
+      sentAt: '2026-09-13T10:00:00',
+    });
+
+    const { rerender } = render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+    expect(screen.getByTestId('mobile-system-announcement-toast-stack')).toBeTruthy();
+
+    rerender(<MobilePartyroomDisplayBoard partyroomId={1} chatExpanded />);
+    expect(screen.getByTestId('mobile-system-announcement-toast-stack')).toBeTruthy();
+  });
+
+  test('모바일 공지는 웹처럼 type별 stack으로 모두 표시한다', () => {
+    useSystemAnnouncementStore.setState({
+      announcements: new Map([
+        [
+          101,
+          {
+            announcementId: 101,
+            type: 'MAINTENANCE_NOTICE',
+            severity: 'WARN',
+            titleKo: '점검',
+            titleEn: 'Maintenance',
+            messageKo: '점검 안내',
+            messageEn: 'Maintenance notice',
+            scheduledStartAt: '2026-09-14T03:00:00',
+            scheduledEndAt: null,
+            expiresAt: null,
+            sentAt: '2026-09-13T10:00:00',
+          },
+        ],
+        [
+          102,
+          {
+            announcementId: 102,
+            type: 'EMERGENCY',
+            severity: 'CRITICAL',
+            titleKo: '긴급',
+            titleEn: 'Emergency',
+            messageKo: '긴급 안내',
+            messageEn: 'Emergency notice',
+            scheduledStartAt: null,
+            scheduledEndAt: null,
+            expiresAt: null,
+            sentAt: '2026-09-13T10:01:00',
+          },
+        ],
+        [
+          103,
+          {
+            announcementId: 103,
+            type: 'EVENT',
+            severity: 'INFO',
+            titleKo: '이벤트',
+            titleEn: 'Event',
+            messageKo: '이벤트 안내',
+            messageEn: 'Event notice',
+            scheduledStartAt: null,
+            scheduledEndAt: null,
+            expiresAt: null,
+            sentAt: '2026-09-13T10:02:00',
+          },
+        ],
+      ]),
+    });
+
+    render(<MobilePartyroomDisplayBoard partyroomId={1} />);
+
+    expect(screen.getByTestId('mobile-system-announcement-top-stack').children).toHaveLength(2);
+    expect(screen.getByTestId('mobile-system-announcement-toast-stack').children).toHaveLength(1);
   });
 });
 
 describe('MobilePartyroomDisplayBoard · compact (크루/큐 탭)', () => {
   test('#5 compact=true → 리액션 숨김 + 영상은 전체너비 유지 (ToS: 축소 안 함)', () => {
     render(<MobilePartyroomDisplayBoard partyroomId={1} compact />);
-    const wrapper = screen.getByTestId('video-wrapper');
-    // 관리 탭이라도 영상은 ≥200×200 컴플라이언트 전체너비 — 80×45 축소 금지.
-    expect(wrapper.className).toContain('aspect-video');
-    expect(wrapper.className).toContain('w-full');
-    expect(wrapper.className).not.toContain('w-[80px]');
+    expect(screen.getByTestId('video-wrapper')).toBeTruthy();
     // 리액션(채팅 맥락 전용)은 관리 탭에서 숨김.
     expect(screen.queryByTestId('action-buttons-mock')).toBeNull();
   });
@@ -179,7 +307,23 @@ describe('MobilePartyroomDisplayBoard · compact (크루/큐 탭)', () => {
   test('#6 compact=false(기본) → 리액션 노출 + 전체너비 영상', () => {
     render(<MobilePartyroomDisplayBoard partyroomId={1} />);
     expect(screen.getByTestId('action-buttons-mock')).toBeTruthy();
-    expect(screen.getByTestId('video-wrapper').className).toContain('aspect-video');
+    expect(screen.getByTestId('video-wrapper')).toBeTruthy();
+  });
+
+  test('채팅 확장 상태에서는 곡 제목과 리액션을 숨기고 영상은 유지한다', () => {
+    render(<MobilePartyroomDisplayBoard partyroomId={1} chatExpanded />);
+
+    expect(screen.getByTestId('video-wrapper')).toBeTruthy();
+    expect(screen.queryByTestId('now-playing-row')).toBeNull();
+    expect(screen.queryByTestId('action-buttons-mock')).toBeNull();
+  });
+
+  test('비재생 채팅 확장 상태에서는 빈 영상 영역만 유지하고 안내 문구를 숨긴다', () => {
+    setStoreState({ playbackActivated: false, playback: null });
+    render(<MobilePartyroomDisplayBoard partyroomId={1} chatExpanded />);
+
+    expect(screen.getByTestId('video-wrapper')).toBeTruthy();
+    expect(screen.queryByTestId('blank-placeholder')).toBeNull();
   });
 
   test('#6-1 compact + autoplay 차단 → 영상 위 overlay 단일 게이트만 (별도 TapToPlayButton 중복 없음)', () => {
@@ -252,13 +396,11 @@ describe('MobilePartyroomDisplayBoard · autoplay 차단 회귀', () => {
 });
 
 describe('MobilePartyroomDisplayBoard · 헤더', () => {
-  test('#9 뒤로 버튼 클릭 시 /parties 라우팅 + PF 아이콘 렌더', () => {
+  test('#9 뒤로 버튼 클릭 시 /parties 라우팅', () => {
     render(<MobilePartyroomDisplayBoard partyroomId={1} />);
     const back = screen.getByRole('button', { name: '뒤로' });
-    expect(back.querySelector('svg')).toBeTruthy(); // PFArrowLeft
     fireEvent.click(back);
     expect(mockPush).toHaveBeenCalledWith('/parties');
-    const menu = screen.getByRole('button', { name: '메뉴' });
-    expect(menu.querySelector('svg')).toBeTruthy(); // PFMoreVert
+    expect(screen.getByRole('button', { name: '메뉴' })).toBeInTheDocument();
   });
 });

@@ -25,7 +25,8 @@ export default function useSharePartyroom(partyroomSummary: PartyroomDetailSumma
       titleAlign: 'center',
       showCloseIcon: true,
       classNames: {
-        container: 'w-[420px] py-8 px-10 bg-gray-800',
+        container:
+          'w-[calc(100vw-32px)] max-w-[calc(100vw-32px)] py-8 px-4 tablet:w-[420px] tablet:max-w-[420px] tablet:px-10 bg-gray-800',
       },
       Body: () => <Body partyroom={partyroomSummary} />,
     }));
@@ -51,7 +52,7 @@ function Body({ partyroom }: { partyroom: PartyroomDetailSummary }) {
 
   return (
     <>
-      <div className='w-[340px] flexCol gap-3'>
+      <div className='w-full max-w-[340px] flexCol gap-3'>
         <div className='w-full h-12 flexRowCenter gap-2 bg-gray-700 rounded cursor-pointer'>
           <TwitterShareButton
             title={refinedSentence}
@@ -64,8 +65,8 @@ function Body({ partyroom }: { partyroom: PartyroomDetailSummary }) {
           </TwitterShareButton>
         </div>
 
-        <div className='flex justify-between items-center gap-3'>
-          <div className='w-[245px] h-12 py-3 pl-3 pr-6 flexRowCenter gap-2 bg-gray-700 rounded'>
+        <div className='flex flex-col items-stretch gap-3 tablet:flex-row tablet:items-center tablet:justify-between'>
+          <div className='h-12 min-w-0 flex-1 py-3 pl-3 pr-6 flexRowCenter gap-2 rounded bg-gray-700'>
             <Typography type='body3' overflow='ellipsis'>
               {sharedUrl}
             </Typography>
@@ -74,7 +75,7 @@ function Body({ partyroom }: { partyroom: PartyroomDetailSummary }) {
             size='lg'
             variant='outline'
             color='secondary'
-            className='w-[83px]'
+            className='w-full shrink-0 tablet:w-[83px]'
             onClick={handleCopyLink}
           >
             {isCopied ? t.party.para.copy_completed : t.party.btn.copy_link}

@@ -18,6 +18,7 @@ const stubDict = {
   system: {
     announcement: {
       event: { close: '닫기' },
+      notice: { label: '전체 공지' },
     },
   },
 };
@@ -68,6 +69,20 @@ describe('EventToast', () => {
     render(<EventToast snapshot={mkSnapshot()} />);
     expect(screen.getByText('Event Title')).toBeInTheDocument();
     expect(screen.getByText('Event Content')).toBeInTheDocument();
+  });
+
+  test('고정 라벨 "전체 공지" 를 제목 앞에 표시', () => {
+    (useLang as Mock).mockReturnValue(Language.Ko);
+    render(<EventToast snapshot={mkSnapshot()} />);
+    expect(screen.getByText('전체 공지')).toBeInTheDocument();
+  });
+
+  test('공지 본문과 닫기 버튼을 표시한다', () => {
+    (useLang as Mock).mockReturnValue(Language.Ko);
+    render(<EventToast snapshot={mkSnapshot({ messageKo: '첫 줄\n둘째 줄' })} />);
+
+    expect(screen.getByTestId('event-toast-close')).toBeInTheDocument();
+    expect(screen.getByTestId('event-toast').textContent).toContain('첫 줄\n둘째 줄');
   });
 
   test('close 버튼 클릭 시 store.dismiss(announcementId) 호출', () => {

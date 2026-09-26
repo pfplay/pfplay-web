@@ -1,7 +1,8 @@
 'use client';
 import { FC, ReactNode, useEffect, useId, useRef } from 'react';
 import { cn } from '@/shared/lib/functions/cn';
-import { MobileSheetHeader } from '@/shared/ui/components/mobile-sheet-header';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { Typography } from '@/shared/ui/components/typography';
 import { PFArrowLeft, PFClose } from '@/shared/ui/icons';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
   onBack?: () => void;
   children: ReactNode;
   footer?: ReactNode;
+  sheetKey?: string;
 }
 
 /**
@@ -25,7 +27,16 @@ interface Props {
  * (spec §5.2: popstate listener 와 ESC handler 가 같은 pop 함수 호출).
  * SheetHost 통해서만 mount 되는 chunk 4 의 사용 패턴. standalone 사용은 OUT.
  */
-const FullscreenSheet: FC<Props> = ({ open, title, onClose, onBack, children, footer }) => {
+const FullscreenSheet: FC<Props> = ({
+  open,
+  title,
+  onClose,
+  onBack,
+  children,
+  footer,
+  sheetKey,
+}) => {
+  const t = useI18n();
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
   const backRef = useRef<HTMLButtonElement>(null);
@@ -54,26 +65,25 @@ const FullscreenSheet: FC<Props> = ({ open, title, onClose, onBack, children, fo
       role='dialog'
       aria-modal='true'
       aria-labelledby={title ? titleId : undefined}
+      data-sheet-key={sheetKey}
       className={cn(
         'fixed inset-0 z-50 bg-black flex flex-col',
         'pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]'
       )}
     >
       {/* header sticky-top */}
-      <MobileSheetHeader
-        titleId={title ? titleId : undefined}
-        title={title}
-        leading={
-          onBack ? (
+      <header className='flex h-[108px] shrink-0 items-end gap-3 px-8 pb-5'>
+        <div className='flex w-10 items-center justify-start'>
+          {onBack ? (
             <button
               ref={backRef}
               type='button'
               onClick={onBack}
               data-testid='fullscreen-sheet-back'
-              aria-label='뒤로'
+              aria-label={t.common.btn.back}
               className='p-2 -ml-2'
             >
-              <PFArrowLeft width={24} height={24} />
+              <PFArrowLeft width={30} height={30} />
             </button>
           ) : (
             <button
@@ -81,14 +91,20 @@ const FullscreenSheet: FC<Props> = ({ open, title, onClose, onBack, children, fo
               type='button'
               onClick={onClose}
               data-testid='fullscreen-sheet-close'
-              aria-label='닫기'
+              aria-label={t.common.btn.close}
               className='p-2 -ml-2'
             >
-              <PFClose width={24} height={24} />
+              <PFClose width={30} height={30} />
             </button>
-          )
-        }
-      />
+          )}
+        </div>
+        {title && (
+          <Typography id={titleId} as='h2' type='title2' className='flex-1 text-center'>
+            {title}
+          </Typography>
+        )}
+        <div className='w-10' />
+      </header>
 
       {/* body scrollable */}
       <div className='flex-1 overflow-y-auto'>{children}</div>

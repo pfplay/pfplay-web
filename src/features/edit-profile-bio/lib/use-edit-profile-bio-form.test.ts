@@ -30,6 +30,36 @@ describe('useEditProfileBioForm', () => {
     expect(updateBioMock.mock.calls[0][0]).toEqual({ nickname: 'olddata', introduction: 'hi' });
   });
 
+  test('onSuccess가 mutation 성공 콜백으로 전달된다', async () => {
+    const onSuccess = vi.fn();
+    const { result } = renderHook(() => useEditProfileBioForm({ onSuccess }));
+    await act(async () => {
+      await result.current.onSubmit({ preventDefault: () => {} } as any);
+    });
+    expect(updateBioMock.mock.calls[0][1]?.onSuccess).toBe(onSuccess);
+  });
+
+  test('값을 건드리지 않은 필드는 blur 만으로 에러를 노출하지 않는다', async () => {
+    const { result } = renderHook(() => useEditProfileBioForm());
+
+    await act(async () => {
+      await result.current.register('nickname').onBlur({
+        target: { name: 'nickname', value: '' },
+        type: 'blur',
+      } as any);
+    });
+    expect(result.current.errors.nickname).toBeUndefined();
+    expect(result.current.btnDisabled).toBe(true);
+
+    await act(async () => {
+      await result.current.register('nickname').onChange({
+        target: { name: 'nickname', value: '가'.repeat(13) },
+        type: 'change',
+      } as any);
+    });
+    expect(result.current.errors.nickname?.message).toBe('max12');
+  });
+
   test('onError(409) 와이어링 — nickname 에러 셋팅', async () => {
     const { result } = renderHook(() => useEditProfileBioForm());
     await act(async () => {

@@ -6,7 +6,14 @@ import { describe, expect, test, vi } from 'vitest';
 import BlankPlaceholder from './blank-placeholder.component';
 
 vi.mock('@/shared/lib/localization/i18n.context', () => ({
-  useI18n: () => ({ partyroom: { queue: { no_track: '지금 재생 중인 곡이 없어요' } } }),
+  useI18n: () => ({
+    partyroom: {
+      queue: {
+        no_track: '지금 재생 중인 곡이 없어요',
+        empty_cta: 'Start playing from the <b>DJ queue</b> now!',
+      },
+    },
+  }),
 }));
 
 describe('BlankPlaceholder', () => {
@@ -15,21 +22,15 @@ describe('BlankPlaceholder', () => {
     expect(screen.getByText('지금 재생 중인 곡이 없어요')).toBeTruthy();
   });
 
-  test('wrapper-fill class (w-full h-full + center) — wrapper aspect 책임은 VideoFrame', () => {
-    const { container } = render(<BlankPlaceholder />);
-    const root = container.firstElementChild as HTMLElement;
-    expect(root.className).toMatch(/\bw-full\b/);
-    expect(root.className).toMatch(/\bh-full\b/);
-    expect(root.className).toMatch(/\bflex\b/);
-    expect(root.className).toMatch(/\bitems-center\b/);
-    expect(root.className).toMatch(/\bjustify-center\b/);
-    expect(root.className).not.toMatch(/\baspect-video\b/);
-    expect(root.className).not.toMatch(/\bbg-black\b/);
-    expect(root.className).not.toMatch(/\brounded\b/);
-  });
-
   test('data-testid="blank-placeholder" 단언', () => {
     render(<BlankPlaceholder />);
     expect(screen.getByTestId('blank-placeholder')).toBeTruthy();
+  });
+
+  test('PFPlay 로고 없이 번역된 DJ 대기열 안내만 표시한다', () => {
+    render(<BlankPlaceholder />);
+
+    expect(screen.queryByAltText('PFPlay')).toBeNull();
+    expect(screen.getByText('DJ queue').tagName).toBe('B');
   });
 });

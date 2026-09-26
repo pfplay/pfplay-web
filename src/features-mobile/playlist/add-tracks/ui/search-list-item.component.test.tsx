@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
-import SearchListItem from './search-list-item.component';
+vi.mock('@/shared/lib/localization/i18n.context', () => ({
+  useI18n: () => ({ playlist: { btn: { preview_song: '미리듣기', add_song: '곡 추가' } } }),
+}));
+import PlaylistSearchListItem from './playlist-search-list-item.component';
 
-// 실제 Music 타입 (src/shared/api/http/types/playlists.ts):
-//   videoId / videoTitle / thumbnailUrl / runningTime
-// artist 필드는 도메인에 없음 — 제목 + 재생시간만 노출
 const TRACK = {
   videoId: 'abc123',
   videoTitle: 'Song A',
@@ -13,10 +13,10 @@ const TRACK = {
   runningTime: '3:30',
 };
 
-describe('SearchListItem', () => {
+describe('PlaylistSearchListItem', () => {
   test('곡 메타 (제목·재생시간) 노출', () => {
     render(
-      <SearchListItem
+      <PlaylistSearchListItem
         music={TRACK as never}
         onPreview={vi.fn()}
         onAdd={vi.fn()}
@@ -30,7 +30,7 @@ describe('SearchListItem', () => {
   test('▶ 버튼 클릭 시 onPreview(music) 호출', async () => {
     const onPreview = vi.fn();
     render(
-      <SearchListItem
+      <PlaylistSearchListItem
         music={TRACK as never}
         onPreview={onPreview}
         onAdd={vi.fn()}
@@ -44,7 +44,12 @@ describe('SearchListItem', () => {
   test('[+] 클릭 시 onAdd(music) 호출', async () => {
     const onAdd = vi.fn();
     render(
-      <SearchListItem music={TRACK as never} onPreview={vi.fn()} onAdd={onAdd} addPending={false} />
+      <PlaylistSearchListItem
+        music={TRACK as never}
+        onPreview={vi.fn()}
+        onAdd={onAdd}
+        addPending={false}
+      />
     );
     await userEvent.click(screen.getByTestId('search-item-add-abc123'));
     expect(onAdd).toHaveBeenCalledWith(TRACK);
@@ -52,26 +57,13 @@ describe('SearchListItem', () => {
 
   test('addPending=true 시 [+] disabled', () => {
     render(
-      <SearchListItem
+      <PlaylistSearchListItem
         music={TRACK as never}
         onPreview={vi.fn()}
         onAdd={vi.fn()}
-        addPending={true}
+        addPending
       />
     );
     expect(screen.getByTestId('search-item-add-abc123')).toBeDisabled();
-  });
-
-  test('미리듣기/추가 버튼에 PF 아이콘 렌더', () => {
-    render(
-      <SearchListItem
-        music={TRACK as never}
-        onPreview={vi.fn()}
-        onAdd={vi.fn()}
-        addPending={false}
-      />
-    );
-    expect(screen.getByTestId('search-item-preview-abc123').querySelector('svg')).toBeTruthy();
-    expect(screen.getByTestId('search-item-add-abc123').querySelector('svg')).toBeTruthy();
   });
 });

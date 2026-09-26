@@ -1,41 +1,123 @@
 'use client';
 
-import { FC } from 'react';
+import { useRouter } from 'next/navigation';
+import { FC, useEffect, useRef, useState } from 'react';
+import { useIsGuest } from '@/entities/me';
+import { ProfileEditFormV2 } from '@/features/edit-profile-bio';
+import { useFetchPartyroomDetailSummary } from '@/features/partyroom/get-summary';
+import { useSharePartyroom } from '@/features/partyroom/share-link';
+import { useInformSocialType } from '@/features/sign-in/by-social';
+import { useOpenPlaylistsManagement } from '@/features-mobile/playlist/manage';
+import { useI18n } from '@/shared/lib/localization/i18n.context';
+import { useDialog } from '@/shared/ui/components/dialog';
+import { Typography } from '@/shared/ui/components/typography';
+import MobilePartyroomChatPanel from '@/widgets-mobile/partyroom-chat-panel/partyroom-chat-panel.component';
 import { MobilePartyroomDisplayBoard } from '@/widgets-mobile/partyroom-display-board';
-import { MobilePartyroomRoomTabs, useTabHash } from '@/widgets-mobile/partyroom-room-tabs';
+import {
+  FullscreenSheetProvider,
+  NowDjingSheet,
+  SheetHost,
+  useFullscreenSheet,
+} from '@/widgets-mobile/partyroom-djing-sheet';
+import MobileRoomActionBar from './mobile-room-action-bar.component';
 
 interface Props {
   partyroomId: number;
 }
 
 /**
- * 모바일 룸 page-level shell (§4.2 베이스 + 채팅·크루 탭).
+ * 모바일 룸 page-level shell.
  *
- * chunk 4 (현 단계):
- * - display-board (sticky now-playing + YoutubePlayer + 리액션 + 헤더)
- * - 탭 컨테이너 (채팅 / 크루 / 큐) — 큐 탭은 `MobilePartyroomQueuePanel` (DJ 큐 + 등록·변경·해제)
- * - 탭바 🎧 N 카운트 활성화 (room-tabs 가 useFetchDjingQueue 직접 호출)
- *
- * 탭 상태 single source: `useTabHash` 를 셸에서 1회 호출해 display-board + tabs 로 분배.
- * (각자 호출하면 setActiveTab 의 pushState 가 hashchange 를 발화하지 않아 두 인스턴스가 어긋남.)
- * display-board 는 탭을 직접 모르고, 관리 탭(크루/큐)에서 영상 축소·리액션 숨김을 위한
- * `compact` 불리언만 받는다.
- *
- * enter/teardown 효과는 `(room)/[id]/layout.tsx` 가 device 무관 처리.
+ * The reference layout keeps the stage, chat card, and bottom shortcuts in one viewport.
+ * FullscreenSheetProvider owns the history-backed Now DJing/search flow while the existing
+ * room-tabs widgets remain available to their isolated consumers and tests.
  */
-const MobileRoom: FC<Props> = ({ partyroomId }) => {
-  const { activeTab, setActiveTab } = useTabHash();
-  // 크루/큐 = 관리 맥락 → 디스플레이 보드를 compact 로 (리액션 숨김 + 영상 자동 축소).
-  const compact = activeTab !== 'chat';
+const MobileRoom: FC<Props> = ({ partyroomId }) => (
+  <FullscreenSheetProvider>
+    <MobileRoomContent partyroomId={partyroomId} />
+    <SheetHost />
+  </FullscreenSheetProvider>
+);
+
+const MobileRoomContent: FC<Props> = ({ partyroomId }) => {
+  const t = useI18n();
+  const router = useRouter();
+  const isGuest = useIsGuest();
+  const informSocialType = useInformSocialType();
+  const { openDialog } = useDialog();
+  const { data: partyroomSummary } = useFetchPartyroomDetailSummary(partyroomId, !!partyroomId);
+  const sharePartyroom = useSharePartyroom(partyroomSummary);
+  const { push } = useFullscreenSheet();
+  const openPlaylists = useOpenPlaylistsManagement();
+  const [chatExpanded, setChatExpanded] = useState(false);
+  const [stageHeight, setStageHeight] = useState(0);
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      setStageHeight(Math.ceil(entry.contentRect.height));
+    });
+    observer.observe(stage);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const openNowDjing = () => {
+    push({
+      key: 'now-djing',
+      title: t.dj.title.current_dj,
+      node: <NowDjingSheet partyroomId={partyroomId} />,
+    });
+  };
+
+  const openProfile = async () => {
+    if (await isGuest()) {
+      informSocialType();
+      return;
+    }
+
+    openDialog(() => ({
+      title: ({ defaultClassName }) => (
+        <Typography type='title2' className={defaultClassName}>
+          {t.common.btn.my_profile}
+        </Typography>
+      ),
+      titleAlign: 'left',
+      showCloseIcon: true,
+      fullScreen: true,
+      Body: <ProfileEditFormV2 onClickAvatarSetting={() => router.push('/settings/avatar')} />,
+    }));
+  };
 
   return (
-    <main className='min-h-screen bg-black flex flex-col'>
-      <MobilePartyroomDisplayBoard partyroomId={partyroomId} compact={compact} />
-      <MobilePartyroomRoomTabs
-        partyroomId={partyroomId}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
+    <main className='relative flex min-h-[100dvh] flex-col overflow-hidden bg-black bg-partyRoom bg-cover bg-[position:16%_center] tablet:bg-center'>
+      <div className='absolute inset-0 bg-black/45' />
+      <div className='relative z-10 flex h-[100dvh] min-h-0 flex-1 flex-col overflow-hidden'>
+        <div
+          ref={stageRef}
+          data-testid='mobile-partyroom-stage'
+          className='relative z-10 w-full shrink-0'
+        >
+          <MobilePartyroomDisplayBoard partyroomId={partyroomId} chatExpanded={chatExpanded} />
+        </div>
+        <MobilePartyroomChatPanel
+          overlay
+          expanded={chatExpanded}
+          expandedTop={stageHeight + 16}
+          onExpandedChange={setChatExpanded}
+        />
+        {!chatExpanded && (
+          <MobileRoomActionBar
+            onOpenQueue={openNowDjing}
+            onOpenPlaylists={openPlaylists}
+            onOpenProfile={openProfile}
+            onShare={sharePartyroom}
+          />
+        )}
+      </div>
     </main>
   );
 };

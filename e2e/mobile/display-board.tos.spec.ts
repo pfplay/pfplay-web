@@ -184,28 +184,27 @@ test.describe('재생 활성 — ToS 최소 크기(≥200×200) 가드', () => {
     await expectIframeNotVisuallyHidden(page);
   });
 
-  test('크루 탭 전환: 관리 탭에서도 IFrame viewport ≥200×200 유지 (축소 회귀 가드, issue #420)', async ({
-    user2Context,
-  }) => {
+  test('플레이리스트 액션 진입: IFrame viewport ≥200×200 유지', async ({ user2Context }) => {
     test.setTimeout(60_000);
     const page = await user2Context.newPage();
     await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
 
-    // 사용자 보고 회귀: 크루 목록 탭에서 전광판이 80×45 로 축소되던 정책 위반. 이제 전체너비 유지.
-    await page.getByTestId('mobile-tab-crew').click();
-    await expect(page.getByTestId('mobile-tab-crew')).toHaveAttribute('aria-selected', 'true');
+    await page.getByRole('button', { name: /^(Playlist|플레이리스트)$/ }).click();
+    await expect(
+      page.locator('[role="dialog"][data-sheet-key="playlists-management"]')
+    ).toBeVisible();
 
     await expectIframeMeetsMinSize(page);
     await expectIframeNotVisuallyHidden(page);
   });
 
-  test('DJ 큐 탭 전환: 관리 탭에서도 IFrame viewport ≥200×200 유지', async ({ user2Context }) => {
+  test('DJ Queue 액션 진입: IFrame viewport ≥200×200 유지', async ({ user2Context }) => {
     test.setTimeout(60_000);
     const page = await user2Context.newPage();
     await gotoMobileRoomAndWaitForVideo(page, partyroomUrl);
 
-    await page.getByTestId('mobile-tab-queue').click();
-    await expect(page.getByTestId('mobile-tab-queue')).toHaveAttribute('aria-selected', 'true');
+    await page.getByRole('button', { name: /^(DJ Queue|DJ 대기열)$/ }).click();
+    await expect(page.locator('[role="dialog"][data-sheet-key="now-djing"]')).toBeVisible();
 
     await expectIframeMeetsMinSize(page);
     await expectIframeNotVisuallyHidden(page);

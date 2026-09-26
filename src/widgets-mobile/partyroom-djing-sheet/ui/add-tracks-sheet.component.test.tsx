@@ -13,6 +13,7 @@ vi.mock('@/shared/lib/localization/i18n.context', () => ({
         sheet_add_button: '+ 추가',
       },
     },
+    playlist: { btn: { preview_song: '미리듣기', add_song: '곡 추가' } },
   }),
 }));
 
