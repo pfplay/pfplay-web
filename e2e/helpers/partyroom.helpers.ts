@@ -168,8 +168,18 @@ export async function createPlaylistWithTracks(page: Page, playlistName: string)
   await expect(trackAddButtons.nth(2)).toBeVisible({ timeout: 15_000 });
   const shortIndices = await pickShortTrackIndices(page, 3, 5);
   for (const idx of shortIndices) {
+    const trackAdded = page.waitForResponse((response) => {
+      const request = response.request();
+      return (
+        request.method() === 'POST' &&
+        /\/playlists\/\d+\/tracks$/.test(new URL(response.url()).pathname)
+      );
+    });
     await trackAddButtons.nth(idx).click();
-    await page.waitForTimeout(300);
+    const response = await trackAdded;
+    if (!response.ok()) {
+      throw new Error(`Failed to add playlist track: HTTP ${response.status()}`);
+    }
   }
   await page.locator('[data-testid="music-search-close"]').click();
   await page.locator('[data-testid="drawer-close-button"]').click();
