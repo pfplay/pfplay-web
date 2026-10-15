@@ -10,6 +10,7 @@ import { cn } from '@/shared/lib/functions/cn';
 import { pick } from '@/shared/lib/functions/pick';
 import { useI18n } from '@/shared/lib/localization/i18n.context';
 import { useStores } from '@/shared/lib/store/stores.context';
+import { disableYoutubeCaptions } from '@/shared/lib/youtube/disable-captions';
 import { LoadingPanel } from '@/shared/ui/components/loading';
 import CinemaFooter from './cinema-footer.component';
 import CinemaHeader from './cinema-header.component';
@@ -108,6 +109,7 @@ export default function Video({
   // 인스턴스에 다음 영상을 load 한다. remount 가 없어야 백그라운드 탭에서도 새 트랙 autoplay 가 차단되지
   // 않고 재생이 이어진다. 새 영상이 시작되면(onStart) 라이브 위치로 맞춘다.
   const onStart = () => {
+    disableYoutubeCaptions(playerRef.current);
     seekToLive();
   };
 
@@ -130,6 +132,7 @@ export default function Video({
       playerRef.current.seekTo(startSeconds, 'seconds');
       internal?.playVideo?.();
     }
+    disableYoutubeCaptions(playerRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playbackId]);
 
