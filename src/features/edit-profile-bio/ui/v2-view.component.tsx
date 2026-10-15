@@ -21,15 +21,15 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
   const { data: me } = useSuspenseFetchMe();
 
   return (
-    <div className='flex flex-col gap-5 sm:flex-row'>
-      <div className='flex flex-col gap-4 sm:gap-9'>
+    <div className='flex flex-col gap-5 tablet:flex-row'>
+      <div className='flex flex-col gap-4 tablet:gap-9'>
         <div
-          className='flex h-[120px] w-full items-center justify-center bg-[#1D1D1D] pointer-events-none select-none sm:h-[216px] sm:w-max'
+          className='flex h-[120px] w-full items-center justify-center bg-[#1D1D1D] pointer-events-none select-none tablet:h-[216px] tablet:w-max'
           data-testid='my-profile-avatar-preview'
           data-avatar-body-uri={me.avatarBodyUri ?? ''}
         >
           {!!me.avatarBodyUri && (
-            <div className='scale-[0.66] sm:scale-100'>
+            <div className='scale-[0.66] tablet:scale-100'>
               <Avatar
                 height={180}
                 bodyUri={me.avatarBodyUri}
@@ -67,8 +67,8 @@ const V2ViewMode = ({ onAvatarSettingClick, changeToEditMode }: V2ViewModeProps)
           <Typography className='text-left text-white'>{me.introduction || '-'}</Typography>
         </div>
 
-        <div className='flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center'>
-          <div className='flex flex-wrap items-center gap-x-5 gap-y-2 sm:flex-1 sm:justify-between'>
+        <div className='flex flex-col items-start justify-between gap-3 tablet:flex-row tablet:items-center'>
+          <div className='flex flex-wrap items-center gap-x-5 gap-y-2 tablet:flex-1 tablet:justify-between'>
             <Typography type='detail1' className='items-center gap-2 text-gray-200 flexRow'>
               {t.lobby.title.points}
               <Typography as='span' type='body3'>
